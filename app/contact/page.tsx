@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import ContactForm from '../../components/ContactForm'
-import { EnvelopeClosedIcon, MobileIcon, ClockIcon, HomeIcon } from '@radix-ui/react-icons'
+import { EnvelopeClosedIcon, MobileIcon, HomeIcon } from '@radix-ui/react-icons'
 
 export const metadata: Metadata = {
   title: 'Contact - Ciphera',
@@ -66,33 +66,6 @@ export default function ContactPage() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-white dark:bg-neutral-900 p-8 rounded-3xl shadow-lg shadow-neutral-200/50 dark:shadow-black/50 border border-neutral-200 dark:border-neutral-800">
-              <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-6 flex items-center gap-3">
-                <ClockIcon className="w-6 h-6 text-brand-orange" />
-                Business Hours
-              </h2>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center pb-3 border-b border-neutral-100 dark:border-neutral-800">
-                  <span className="text-neutral-600 dark:text-neutral-400">Monday - Friday</span>
-                  <span className="font-semibold text-neutral-900 dark:text-white">9:00 AM - 6:00 PM</span>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b border-neutral-100 dark:border-neutral-800">
-                  <span className="text-neutral-600 dark:text-neutral-400">Saturday</span>
-                  <span className="font-semibold text-neutral-900 dark:text-white">10:00 AM - 4:00 PM</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-neutral-600 dark:text-neutral-400">Sunday</span>
-                  <span className="font-semibold text-neutral-500 dark:text-neutral-500">Closed</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-8 bg-brand-orange/5 dark:bg-brand-orange/10 border border-brand-orange/10 rounded-3xl">
-              <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed italic">
-                "Privacy is not a feature, it's a fundamental right. We build the infrastructure to protect it."
-              </p>
             </div>
           </div>
 
