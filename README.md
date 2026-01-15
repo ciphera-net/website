@@ -14,7 +14,7 @@ This website showcases the Ciphera ecosystem, including:
 - **Drop**: Privacy-first file sharing with end-to-end encryption
 - **Ciphera Auth**: Centralized identity provider with secure authentication
 - **Ciphera Captcha**: Bot protection service with visual and PoW challenges
-- **Ciphera Relay**: Self-hosted transactional email infrastructure
+- **Ciphera Relay**: Transactional email infrastructure
 
 ## Design System
 

@@ -1,94 +1,298 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon } from '@radix-ui/react-icons'
+import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon, GlobeIcon } from '@radix-ui/react-icons'
+import Image from 'next/image'
 
-const layers = [
+// * Architecture nodes for the ecosystem diagram
+const services = [
   {
-    title: 'Ciphera Auth',
-    description: 'The trust anchor of our platform. A secure, stateless identity provider using double-hashing and JWT protocols.',
+    id: 'drop',
+    name: 'Drop',
+    description: 'Secure file sharing',
+    icon: '/drop_icon_no_margins.png',
+    isImage: true,
+    gradient: 'from-sky-500 to-blue-600',
+    position: 'top',
+  },
+  {
+    id: 'auth',
+    name: 'Ciphera Auth',
+    description: 'Identity provider',
     icon: PersonIcon,
+    isImage: false,
+    gradient: 'from-violet-500 to-purple-600',
+    position: 'left',
   },
   {
-    title: 'Ciphera Relay',
-    description: 'The secure data pipeline. Self-hosted transactional infrastructure that never touches unencrypted content.',
-    icon: EnvelopeClosedIcon,
-  },
-  {
-    title: 'Ciphera Captcha',
-    description: 'The barrier against abuse. High-performance bot protection using Proof-of-Work challenges.',
+    id: 'captcha',
+    name: 'Ciphera Captcha',
+    description: 'Bot protection',
     icon: LockClosedIcon,
+    isImage: false,
+    gradient: 'from-emerald-500 to-green-600',
+    position: 'right',
+  },
+  {
+    id: 'relay',
+    name: 'Ciphera Relay',
+    description: 'Email infrastructure',
+    icon: EnvelopeClosedIcon,
+    isImage: false,
+    gradient: 'from-brand-orange to-orange-600',
+    position: 'bottom',
   },
 ]
 
+// * Service node component
+function ServiceNode({ service, delay }: { service: typeof services[0]; delay: number }) {
+  const Icon = service.icon as React.ComponentType<{ className?: string }>
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay }}
+      className="group"
+    >
+      <div className="relative p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+        <div className="flex items-center gap-3">
+          <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center shadow-lg`}>
+            {service.isImage ? (
+              <Image 
+                src={service.icon as string} 
+                alt={service.name} 
+                width={28} 
+                height={28} 
+                className="w-7 h-7"
+              />
+            ) : (
+              <Icon className="w-5 h-5 text-white" />
+            )}
+          </div>
+          <div>
+            <div className="font-semibold text-sm text-neutral-900 dark:text-white">
+              {service.name}
+            </div>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400">
+              {service.description}
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 export default function Infrastructure() {
   return (
-    <section className="py-24 px-4 bg-neutral-50 dark:bg-neutral-900/30">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50 overflow-hidden">
+      <div className="section-container">
+        {/* * Header */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-6">
-              The Infrastructure Layer
+          <span className="badge-primary mb-4 inline-flex">Architecture</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
+            The Ciphera Ecosystem
             </h2>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
-              Apps are only as private as the protocols they run on. We've built a foundational layer 
-              of secure microservices that power everything we do.
-            </p>
-            
-            <div className="space-y-6">
-              {layers.map((layer, index) => (
-                <div key={layer.title} className="flex gap-4">
-                  <div className="w-12 h-12 flex items-center justify-center shrink-0 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm">
-                    <layer.icon className="w-6 h-6 text-neutral-900 dark:text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-neutral-900 dark:text-white">{layer.title}</h3>
-                    <p className="text-neutral-600 dark:text-neutral-400">{layer.description}</p>
-                  </div>
-                </div>
-              ))}
+          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            A modular architecture where identity, data, and protection are strictly separated—ensuring true privacy by design.
+          </p>
+        </motion.div>
+
+        {/* * Architecture Diagram */}
+        <div className="relative max-w-3xl mx-auto">
+          {/* * Background glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-orange/20 rounded-full blur-[100px] opacity-50" />
+
+          {/* * Diagram container */}
+          <div className="relative aspect-square max-w-lg mx-auto">
+            {/* * Connection lines SVG */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
+              <defs>
+                <linearGradient id="lineGradientInfra" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#FD5E0F" stopOpacity="0.2" />
+                  <stop offset="50%" stopColor="#FD5E0F" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="#FD5E0F" stopOpacity="0.2" />
+                </linearGradient>
+                <marker id="arrowInfra" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 Z" fill="#FD5E0F" opacity="0.6" />
+                </marker>
+              </defs>
+
+              {/* * Drop -> Auth */}
+              <motion.path
+                d="M 160 100 Q 100 100 100 160"
+                stroke="url(#lineGradientInfra)"
+                strokeWidth="2"
+                fill="none"
+                markerEnd="url(#arrowInfra)"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.5 }}
+              />
+
+              {/* * Drop -> Captcha */}
+              <motion.path
+                d="M 240 100 Q 300 100 300 160"
+                stroke="url(#lineGradientInfra)"
+                strokeWidth="2"
+                fill="none"
+                markerEnd="url(#arrowInfra)"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.7 }}
+              />
+
+              {/* * Auth -> Relay */}
+              <motion.path
+                d="M 100 240 Q 100 300 160 300"
+                stroke="url(#lineGradientInfra)"
+                strokeWidth="2"
+                fill="none"
+                markerEnd="url(#arrowInfra)"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.9 }}
+              />
+
+              {/* * Auth <-> Captcha (dashed) */}
+              <motion.path
+                d="M 140 200 L 260 200"
+                stroke="url(#lineGradientInfra)"
+                strokeWidth="2"
+                strokeDasharray="6 4"
+                fill="none"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 1.1 }}
+              />
+            </svg>
+
+            {/* * Center hub */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-dashed border-brand-orange/30 flex items-center justify-center"
+              >
+                <GlobeIcon className="w-6 h-6 text-brand-orange" />
+              </motion.div>
             </div>
+
+            {/* * Service nodes positioned around */}
+            {/* * Top - Drop */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2">
+              <ServiceNode service={services[0]} delay={0.1} />
+                  </div>
+
+            {/* * Left - Auth */}
+            <div className="absolute top-1/2 -translate-y-1/2 left-0">
+              <ServiceNode service={services[1]} delay={0.2} />
+                  </div>
+
+            {/* * Right - Captcha */}
+            <div className="absolute top-1/2 -translate-y-1/2 right-0">
+              <ServiceNode service={services[2]} delay={0.3} />
+                </div>
+
+            {/* * Bottom - Relay */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+              <ServiceNode service={services[3]} delay={0.4} />
+            </div>
+
+            {/* * Connection labels */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 1.3 }}
+              className="absolute top-[22%] left-[18%]"
+            >
+              <span className="text-[10px] font-mono font-semibold text-brand-orange bg-brand-orange/10 px-2 py-0.5 rounded-full">
+                JWT
+              </span>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative h-[400px] md:h-[500px] flex items-center justify-center"
+              transition={{ duration: 0.5, delay: 1.4 }}
+              className="absolute top-[22%] right-[18%]"
           >
-            {/* * Abstract Infrastructure Graphic */}
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/20 to-transparent rounded-full blur-3xl opacity-30" />
-            <div className="relative w-full h-full border border-neutral-200 dark:border-neutral-800 rounded-3xl p-8 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm shadow-2xl flex flex-col justify-center space-y-8 overflow-hidden">
-              <div className="h-2 w-full bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
+              <span className="text-[10px] font-mono font-semibold text-brand-orange bg-brand-orange/10 px-2 py-0.5 rounded-full">
+                PoW
+              </span>
+            </motion.div>
+
                 <motion.div 
-                  initial={{ width: "0%" }}
-                  whileInView={{ width: "100%" }}
-                  transition={{ duration: 2, repeat: Infinity, repeatType: "loop" }}
-                  className="h-full bg-brand-orange"
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="h-24 rounded-2xl bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
-                <div className="h-24 rounded-2xl bg-brand-orange/20 animate-pulse" style={{ animationDelay: '0.2s' }} />
-                <div className="h-24 rounded-2xl bg-neutral-100 dark:bg-neutral-800 animate-pulse" style={{ animationDelay: '0.4s' }} />
-              </div>
-              <div className="space-y-4">
-                <div className="h-2 w-2/3 bg-neutral-100 dark:bg-neutral-800 rounded-full" />
-                <div className="h-2 w-1/2 bg-neutral-100 dark:bg-neutral-800 rounded-full" />
-                <div className="h-2 w-3/4 bg-neutral-100 dark:bg-neutral-800 rounded-full" />
-              </div>
-              <div className="absolute top-4 right-4 flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-ping" />
-                <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest">Network Secure</span>
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 1.5 }}
+              className="absolute bottom-[22%] left-[18%]"
+            >
+              <span className="text-[10px] font-mono font-semibold text-brand-orange bg-brand-orange/10 px-2 py-0.5 rounded-full">
+                SMTP
+              </span>
+            </motion.div>
               </div>
             </div>
+
+        {/* * Service details grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+          {services.map((service, index) => {
+            const Icon = service.icon as React.ComponentType<{ className?: string }>
+            return (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="card p-6 card-hover"
+              >
+                <div className={`icon-container ${service.gradient} mb-4 shadow-lg`}>
+                  {service.isImage ? (
+                    <Image 
+                      src={service.icon as string} 
+                      alt={service.name} 
+                      width={28} 
+                      height={28}
+                      className="w-7 h-7"
+                    />
+                  ) : (
+                    <Icon className="w-6 h-6 text-white" />
+                  )}
+                </div>
+                <h3 className="font-bold text-lg text-neutral-900 dark:text-white mb-1">
+                  {service.name}
+                </h3>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
+                  {service.description}
+                </p>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                  {service.id === 'drop' && 'End-to-end encrypted file sharing with zero-knowledge architecture.'}
+                  {service.id === 'auth' && 'Secure identity management with JWT tokens and double-hashed passwords.'}
+                  {service.id === 'relay' && 'Secure email infrastructure for verification and notifications.'}
+                  {service.id === 'captcha' && 'Proof-of-Work challenges and visual captchas for bot protection.'}
+                </p>
           </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>

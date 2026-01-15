@@ -2,117 +2,171 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon } from '@radix-ui/react-icons'
+import Image from 'next/image'
+import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon, ArrowRightIcon } from '@radix-ui/react-icons'
 
 const products = [
   {
     icon: '/drop_icon_no_margins.png',
+    isImage: true,
     name: 'Drop',
-    description: 'Privacy-first file sharing with end-to-end encryption. Share files securely without compromising your privacy.',
+    tagline: 'Secure file sharing',
+    description: 'Share files securely with end-to-end encryption. Your files are encrypted before they leave your device.',
+    features: ['AES-256-GCM encryption', 'Zero-knowledge storage', 'Password protection', 'Expiring links'],
     link: 'https://drop.ciphera.net',
-    color: 'from-blue-500 to-blue-600',
+    gradient: 'from-sky-500 to-blue-600',
+    available: true,
   },
   {
     icon: PersonIcon,
+    isImage: false,
     name: 'Ciphera Auth',
-    description: 'Centralized identity provider with secure authentication, OAuth flows, and JWT issuance for the Ciphera ecosystem.',
+    tagline: 'Identity provider',
+    description: 'Secure authentication for the Ciphera ecosystem with OAuth2, JWT, and advanced security features.',
+    features: ['Double-hashed passwords', 'Two-factor auth', 'Account lockout', 'Session management'],
     link: '#',
-    color: 'from-purple-500 to-purple-600',
+    gradient: 'from-violet-500 to-purple-600',
+    available: true,
   },
   {
     icon: LockClosedIcon,
+    isImage: false,
     name: 'Ciphera Captcha',
-    description: 'Bot protection service with visual captchas and Proof-of-Work challenges to prevent automated abuse.',
+    tagline: 'Bot protection',
+    description: 'Protect your applications from bots and automated abuse with visual and proof-of-work challenges.',
+    features: ['Visual captchas', 'Proof-of-Work', 'Stateless verification', 'JWT tokens'],
     link: '#',
-    color: 'from-green-500 to-green-600',
+    gradient: 'from-emerald-500 to-green-600',
+    available: true,
   },
   {
     icon: EnvelopeClosedIcon,
+    isImage: false,
     name: 'Ciphera Relay',
-    description: 'Self-hosted transactional email infrastructure for secure, privacy-first email delivery.',
+    tagline: 'Email infrastructure',
+    description: 'Transactional email infrastructure for secure, privacy-first email delivery with TLS encryption.',
+    features: ['TLS encryption', 'High deliverability', 'SMTP AUTH', 'Admin dashboard'],
     link: '#',
-    color: 'from-orange-500 to-orange-600',
+    gradient: 'from-brand-orange to-orange-600',
+    available: true,
   },
 ]
 
 export default function Products() {
   return (
-    <section className="py-24 px-4 bg-white dark:bg-neutral-950">
-      <div className="max-w-6xl mx-auto">
+    <section className="section-padding">
+      <div className="section-container">
+        {/* * Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
-            The Ciphera Ecosystem
+          <span className="badge-primary mb-4 inline-flex">Products</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
+            Privacy-first applications
           </h2>
-          <p className="text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-            A suite of privacy-first applications and infrastructure services working together seamlessly.
+          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            A suite of tools designed to protect your privacy. Each product works standalone or as part of the ecosystem.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* * Products grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {products.map((product, index) => {
-            const Icon = product.icon
+            const Icon = product.icon as React.ComponentType<{ className?: string }>
             return (
               <motion.div
                 key={product.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group bg-white dark:bg-neutral-900 p-8 rounded-3xl shadow-lg shadow-neutral-200/50 dark:shadow-black/50 border border-neutral-200 dark:border-neutral-800 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-black/70 transition-all duration-300 hover:-translate-y-1"
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group"
               >
-                <div className="w-14 h-14 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm p-3">
-                  {typeof Icon === 'string' ? (
-                    <img src={Icon} alt={product.name} className="w-full h-full object-contain" />
+                <div className="h-full p-6 lg:p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-black/50 transition-all duration-300">
+                  {/* * Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center shadow-lg`}>
+                        {product.isImage ? (
+                          <Image 
+                            src={product.icon as string} 
+                            alt={product.name} 
+                            width={32} 
+                            height={32}
+                            className="w-8 h-8"
+                          />
+                        ) : (
+                          <Icon className="w-7 h-7 text-white" />
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-neutral-900 dark:text-white">
+                          {product.name}
+                        </h3>
+                        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                          {product.tagline}
+                        </p>
+                      </div>
+                    </div>
+                    {product.available && (
+                      <span className="badge-success text-[10px]">Available</span>
+                    )}
+                  </div>
+
+                  {/* * Description */}
+                  <p className="text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed">
+                    {product.description}
+                  </p>
+
+                  {/* * Features */}
+                  <ul className="grid grid-cols-2 gap-2 mb-6">
+                    {product.features.map((feature) => (
+                      <li key={feature} className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                        <svg className="w-4 h-4 text-brand-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* * CTA */}
+                  {product.link !== '#' ? (
+                    <Link
+                      href={product.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:gap-3 transition-all duration-200"
+                    >
+                      Try {product.name}
+                      <ArrowRightIcon className="w-4 h-4" />
+                    </Link>
                   ) : (
-                    <Icon className="w-7 h-7 text-neutral-900 dark:text-white" />
+                    <span className="inline-flex items-center gap-2 text-neutral-400 font-medium">
+                      Infrastructure service
+                    </span>
                   )}
                 </div>
-                <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-3">
-                  {product.name}
-                </h3>
-                <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
-                  {product.description}
-                </p>
-                {product.link !== '#' ? (
-                  <Link
-                    href={product.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-brand-orange font-medium hover:text-brand-orange/80 transition-colors"
-                  >
-                    Learn more
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                ) : (
-                  <span className="inline-flex items-center text-neutral-400 font-medium">
-                    Coming soon
-                  </span>
-                )}
               </motion.div>
             )
           })}
         </div>
 
+        {/* * CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <Link
-            href="/products"
-            className="btn-primary text-lg px-8 py-3.5"
-          >
-            View All Products
+          <Link href="/products" className="btn-secondary">
+            View all products
+            <ArrowRightIcon className="w-4 h-4" />
           </Link>
         </motion.div>
       </div>

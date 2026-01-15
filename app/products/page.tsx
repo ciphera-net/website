@@ -1,17 +1,17 @@
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon } from '@radix-ui/react-icons'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Products - Ciphera',
-  description: 'Explore the Ciphera ecosystem of privacy-first applications and infrastructure services.',
-}
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import Image from 'next/image'
+import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon, ArrowRightIcon, CheckIcon } from '@radix-ui/react-icons'
 
 const products = [
   {
     icon: '/drop_icon_no_margins.png',
+    isImage: true,
     name: 'Drop',
-    description: 'Privacy-first file sharing with end-to-end encryption. Share files securely without compromising your privacy.',
+    tagline: 'Secure File Sharing',
+    description: 'Privacy-first file sharing with end-to-end encryption. Share files securely without compromising your privacy. Your files are encrypted before they leave your device.',
     features: [
       'Client-side encryption (AES-256-GCM)',
       'Zero-knowledge architecture',
@@ -21,11 +21,15 @@ const products = [
       'One-time download option',
     ],
     link: 'https://drop.ciphera.net',
+    gradient: 'from-sky-500 to-blue-600',
     status: 'Available',
+    highlight: true,
   },
   {
     icon: PersonIcon,
+    isImage: false,
     name: 'Ciphera Auth',
+    tagline: 'Identity Provider',
     description: 'Centralized identity provider with secure authentication, OAuth flows, and JWT issuance for the Ciphera ecosystem.',
     features: [
       'Double-hashed passwords (PBKDF2 + Argon2id)',
@@ -36,11 +40,15 @@ const products = [
       'Two-factor authentication support',
     ],
     link: '#',
+    gradient: 'from-violet-500 to-purple-600',
     status: 'Available',
+    highlight: false,
   },
   {
     icon: LockClosedIcon,
+    isImage: false,
     name: 'Ciphera Captcha',
+    tagline: 'Bot Protection',
     description: 'Bot protection service with visual captchas and Proof-of-Work challenges to prevent automated abuse.',
     features: [
       'Visual alphanumeric captchas',
@@ -50,108 +58,250 @@ const products = [
       'Configurable difficulty',
     ],
     link: '#',
+    gradient: 'from-emerald-500 to-green-600',
     status: 'Available',
+    highlight: false,
   },
   {
     icon: EnvelopeClosedIcon,
+    isImage: false,
     name: 'Ciphera Relay',
-    description: 'Self-hosted transactional email infrastructure for secure, privacy-first email delivery.',
+    tagline: 'Email Infrastructure',
+    description: 'Transactional email infrastructure for secure, privacy-first email delivery with TLS encryption.',
     features: [
       'Stalwart Mail Server',
       'TLS 1.2/1.3 encryption',
       'SMTP AUTH required',
       'High deliverability',
-      'Admin UI with SSH tunnel access',
+      'Admin UI with secure access',
     ],
     link: '#',
+    gradient: 'from-brand-orange to-orange-600',
     status: 'Available',
+    highlight: false,
   },
 ]
 
 export default function ProductsPage() {
   return (
-    <div className="min-h-screen pt-12 pb-24 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6">
-            Ciphera Products
-          </h1>
-          <p className="text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-            A comprehensive suite of privacy-first applications and infrastructure services
-          </p>
+    <>
+      {/* * Hero Section */}
+      <section className="relative section-padding overflow-hidden">
+        {/* * Background */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
+          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
-        <div className="space-y-16">
-          {products.map((product, index) => {
-            const Icon = product.icon
-            return (
-              <div
-                key={product.name}
-                className="bg-white dark:bg-neutral-900 p-8 md:p-12 rounded-3xl shadow-lg shadow-neutral-200/50 dark:shadow-black/50 border border-neutral-200 dark:border-neutral-800"
-              >
-                <div className="flex flex-col md:flex-row gap-8">
-                  <div className="flex-shrink-0">
-                    <div className="w-20 h-20 flex items-center justify-center border border-neutral-200 dark:border-neutral-800 rounded-3xl bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm p-4">
-                      {typeof Icon === 'string' ? (
-                        <img src={Icon} alt={product.name} className="w-full h-full object-contain" />
-                      ) : (
-                        <Icon className="w-10 h-10 text-neutral-900 dark:text-white" />
-                      )}
-                    </div>
+        <div className="section-container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <span className="badge-primary mb-6 inline-flex">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
+              Our Ecosystem
+            </span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6 tracking-tight">
+              Privacy-first{' '}
+              <span className="gradient-text">applications</span>
+            </h1>
+            <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              A comprehensive suite of tools designed to protect your privacy. 
+              Each product works standalone or as part of the Ciphera ecosystem.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* * Featured Product - Drop */}
+      <section className="section-container pb-16 md:pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-500/10 via-blue-500/5 to-transparent border border-sky-500/20 p-8 md:p-12">
+            {/* * Background glow */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            
+            <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/30">
+                    <Image
+                      src="/drop_icon_no_margins.png"
+                      alt="Drop"
+                      width={40}
+                      height={40}
+                      className="w-10 h-10"
+                    />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-2">
-                          {product.name}
-                        </h2>
-                        <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                          {product.status}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed">
-                      {product.description}
-                    </p>
-                    <div className="mb-6">
-                      <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4">
-                        Key Features
-                      </h3>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {product.features.map((feature) => (
-                          <li key={feature} className="flex items-start gap-2 text-neutral-600 dark:text-neutral-400">
-                            <svg className="w-5 h-5 text-brand-orange mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    {product.link !== '#' ? (
-                      <Link
-                        href={product.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-primary inline-flex items-center"
-                      >
-                        Visit {product.name}
-                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </Link>
-                    ) : (
-                      <span className="text-neutral-400 font-medium">
-                        Documentation coming soon
-                      </span>
-                    )}
+                  <div>
+                    <h2 className="text-3xl font-bold text-neutral-900 dark:text-white">Drop</h2>
+                    <p className="text-neutral-500 dark:text-neutral-400">Secure File Sharing</p>
+                  </div>
+                  <span className="badge-success ml-auto">Available</span>
+                </div>
+
+                <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+                  {products[0].description}
+                </p>
+
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                  {products[0].features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2 text-neutral-600 dark:text-neutral-400">
+                      <CheckIcon className="w-5 h-5 text-sky-500 mt-0.5 shrink-0" />
+                      <span className="text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href="https://drop.ciphera.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary inline-flex"
+                >
+                  Try Drop Now
+                  <ArrowRightIcon className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="hidden lg:block">
+                <div className="relative aspect-square max-w-sm mx-auto">
+                  <div className="absolute inset-0 bg-gradient-to-br from-sky-500/20 to-blue-600/20 rounded-3xl blur-2xl" />
+                  <div className="relative w-full h-full rounded-3xl bg-white/5 dark:bg-white/5 border border-white/10 flex items-center justify-center">
+                    <Image
+                      src="/drop_icon_no_margins.png"
+                      alt="Drop"
+                      width={200}
+                      height={200}
+                      className="w-48 h-48 opacity-80"
+                    />
                   </div>
                 </div>
               </div>
-            )
-          })}
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* * Infrastructure Services */}
+      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+        <div className="section-container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-16"
+          >
+            <span className="badge-neutral mb-4 inline-flex">Infrastructure</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+              The foundation of privacy
+            </h2>
+            <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+              Our infrastructure services power the Ciphera ecosystem, providing secure authentication, bot protection, and email delivery.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {products.slice(1).map((product, index) => {
+              const Icon = product.icon as React.ComponentType<{ className?: string }>
+              return (
+                <motion.div
+                  key={product.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="group"
+                >
+                  <div className="h-full card card-hover p-6 lg:p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center shadow-lg`}>
+                        <Icon className="w-7 h-7 text-white" />
+                      </div>
+                      <span className="badge-success text-[10px]">{product.status}</span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
+                      {product.tagline}
+                    </p>
+                    <p className="text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed text-sm">
+                      {product.description}
+                    </p>
+
+                    <ul className="space-y-2 mb-6">
+                      {product.features.slice(0, 4).map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                          <CheckIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-auto pt-4 border-t border-neutral-200 dark:border-neutral-800">
+                      <span className="text-sm text-neutral-400 font-medium">
+                        Internal service
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* * CTA Section */}
+      <section className="section-padding">
+        <div className="section-container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative overflow-hidden rounded-3xl bg-neutral-900 dark:bg-neutral-800 p-8 md:p-16 text-center"
+          >
+            {/* * Background pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div 
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+                  backgroundSize: '24px 24px'
+                }}
+              />
+            </div>
+            
+            <div className="relative">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+                Experience zero-knowledge encryption
+              </h2>
+              <p className="text-lg text-neutral-400 mb-8 max-w-xl mx-auto">
+                Try Drop—our encrypted file sharing application. Free, secure, and built on cryptographic guarantees.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="btn-primary">
+                  Get Started with Drop
+                  <ArrowRightIcon className="w-4 h-4" />
+                </Link>
+                <Link href="/about" className="btn-ghost text-white hover:text-white hover:bg-white/10">
+                  Learn more about us
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </>
   )
 }

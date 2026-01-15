@@ -1,6 +1,7 @@
 import Hero from '../components/Hero'
-import Features from '../components/Features'
 import Infrastructure from '../components/Infrastructure'
+import Features from '../components/Features'
+import Philosophy from '../components/Philosophy'
 import Products from '../components/Products'
 
 export default function HomePage() {
@@ -9,6 +10,7 @@ export default function HomePage() {
       <Hero />
       <Infrastructure />
       <Features />
+      <Philosophy />
       <Products />
     </>
   )

@@ -14,7 +14,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'Ciphera - Where Privacy Still Exists',
   description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles. Your data, your control.',
-  keywords: ['privacy', 'encryption', 'zero-knowledge', 'security', 'ciphera', 'self-hosted'],
+  keywords: ['privacy', 'encryption', 'zero-knowledge', 'security', 'ciphera', 'secure file sharing'],
   authors: [{ name: 'Ciphera' }],
   creator: 'Ciphera',
   publisher: 'Ciphera',

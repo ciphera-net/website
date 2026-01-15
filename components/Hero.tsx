@@ -1,109 +1,124 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { CheckCircledIcon, LockClosedIcon, GlobeIcon } from '@radix-ui/react-icons'
+
+// * Trust indicators displayed below CTAs
+const trustIndicators = [
+  { icon: LockClosedIcon, text: 'End-to-end encrypted' },
+  { icon: CheckCircledIcon, text: 'Open source' },
+  { icon: GlobeIcon, text: 'Zero-knowledge by design' },
+]
 
 export default function Hero() {
-  const [text, setText] = useState('Privacy')
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [wordIndex, setWordIndex] = useState(0)
-
-  // Typewriter effect logic
-  useEffect(() => {
-    const words = ['Privacy', 'Security', 'Freedom']
-    const currentWord = words[wordIndex % words.length]
-    const typeSpeed = 150
-    const deleteSpeed = 100
-    const pauseTime = 2000
-
-    let timer: NodeJS.Timeout
-
-    if (isDeleting) {
-      if (text === '') {
-        setIsDeleting(false)
-        setWordIndex((prev) => prev + 1)
-      } else {
-        timer = setTimeout(() => {
-          setText(text.slice(0, -1))
-        }, deleteSpeed)
-      }
-    } else {
-      if (text === currentWord) {
-        timer = setTimeout(() => {
-          setIsDeleting(true)
-        }, pauseTime)
-      } else {
-        timer = setTimeout(() => {
-          setText(currentWord.slice(0, text.length + 1))
-        }, typeSpeed)
-      }
-    }
-
-    return () => clearTimeout(timer)
-  }, [text, isDeleting, wordIndex])
-
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center px-4 pt-12 pb-32 overflow-hidden bg-white dark:bg-neutral-950 transition-colors duration-300">
-      {/* * Background Decorative Elements */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-orange/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[120px]" />
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+      {/* * Background */}
+      <div className="absolute inset-0 -z-10">
+        {/* * Gradient orbs */}
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-orange/10 rounded-full blur-[128px] opacity-60" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[128px] opacity-40" />
         
-        {/* * Grid pattern for Hero */}
-        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] [mask-image:linear-gradient(to_bottom,black,transparent)] pointer-events-none" 
-             style={{ 
-               backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
-               backgroundSize: '40px 40px'
-             }} 
+        {/* * Grid pattern */}
+        <div 
+          className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.03]"
+          style={{ maskImage: 'radial-gradient(ellipse at center, black 0%, transparent 70%)' }}
         />
       </div>
 
-      <div className="max-w-5xl w-full space-y-12 relative z-10">
+      <div className="section-container w-full">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* * Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center"
-        >
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-8 leading-[1.1]">
-            Where <br />
-            <span className="text-brand-orange relative inline-block">
-              Privacy
-              <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 180 20" fill="none">
-                <path d="M5 15C30 5 120 5 175 15" stroke="#FD5E0F" strokeWidth="4" strokeLinecap="round" opacity="0.3" />
-              </svg>
-            </span> Still Exists
-          </h1>
-          
-          <p className="text-2xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto leading-relaxed font-medium">
-            Ciphera is more than a suite of apps. We are building the <span className="text-neutral-900 dark:text-white underline decoration-brand-orange/30 decoration-2 underline-offset-4">privacy-first infrastructure layer</span> for a new era of the internet.
-          </p>
-        </motion.div>
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="badge-primary mb-6 inline-flex">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
+              Privacy-First Platform
+            </span>
+          </motion.div>
 
+          {/* * Main headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6"
+          >
+            Where{' '}
+            <span className="relative">
+              <span className="gradient-text">Privacy</span>
+              <svg 
+                className="absolute -bottom-2 left-0 w-full h-3 text-brand-orange/30" 
+                viewBox="0 0 200 12" 
+                preserveAspectRatio="none"
+              >
+                <path 
+                  d="M0 9C50 3 150 3 200 9" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="4" 
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
+            {' '}Still Exists
+          </motion.h1>
+
+          {/* * Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
+            Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles. 
+            Your data is encrypted before it leaves your device—we can't see it, even if we wanted to.
+          </motion.p>
+
+          {/* * CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6"
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
         >
-          <Link
-            href="/products"
-            className="btn-primary text-lg px-10 py-4 group"
-          >
-            Discover Ecosystem
-            <svg className="inline-block ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            <Link href="/products" className="btn-primary text-base sm:text-lg px-8 py-3.5">
+              Explore Products
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </Link>
-          <Link
-            href="/about"
-            className="btn-secondary text-lg px-10 py-4"
-          >
-            The Mission
+            <Link href="/about" className="btn-secondary text-base sm:text-lg px-8 py-3.5">
+              Our Mission
           </Link>
+          </motion.div>
+
+          {/* * Trust indicators */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="flex flex-wrap items-center justify-center gap-6 sm:gap-8"
+          >
+            {trustIndicators.map((item, index) => (
+              <div 
+                key={index}
+                className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400"
+              >
+                <item.icon className="w-4 h-4 text-brand-orange" />
+                <span>{item.text}</span>
+              </div>
+            ))}
         </motion.div>
+        </div>
       </div>
+
+      {/* * Bottom gradient fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent pointer-events-none" />
     </section>
   )
 }

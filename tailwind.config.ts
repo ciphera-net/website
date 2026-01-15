@@ -11,9 +11,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // * Brand color: Orange (#FD5E0F) - used as accent only
+        // * Brand colors
         brand: {
-          orange: '#FD5E0F',
+          orange: {
+            DEFAULT: '#FD5E0F',
+            hover: '#E54E00',
+          },
         },
       },
       fontFamily: {
