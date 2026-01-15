@@ -134,7 +134,7 @@ website/
 
 ## Deployment
 
-This website is designed to be deployed as a separate repository. It can be deployed to:
+The website can be deployed to:
 
 - **Vercel** (recommended for Next.js)
 - **Netlify**
@@ -142,7 +142,7 @@ This website is designed to be deployed as a separate repository. It can be depl
 
 ## Contributing
 
-This is a separate repository from the main Drop monorepo. Contributions should follow the same guidelines as other Ciphera projects. See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
+Contributions are welcome! See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
 ## Privacy
 
