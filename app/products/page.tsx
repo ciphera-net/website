@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { FileTextIcon, PersonIcon, LockClosedIcon, EnvelopeClosedIcon } from '@radix-ui/react-icons'
+import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon } from '@radix-ui/react-icons'
 
 export const metadata: Metadata = {
   title: 'Products - Ciphera',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const products = [
   {
-    icon: FileTextIcon,
+    icon: '/drop_icon_no_margins.png',
     name: 'Drop',
     description: 'Privacy-first file sharing with end-to-end encryption. Share files securely without compromising your privacy.',
     features: [
@@ -92,7 +92,11 @@ export default function ProductsPage() {
                 <div className="flex flex-col md:flex-row gap-8">
                   <div className="flex-shrink-0">
                     <div className="w-20 h-20 rounded-2xl bg-brand-orange/10 dark:bg-brand-orange/20 flex items-center justify-center">
-                      <Icon className="w-10 h-10 text-brand-orange" />
+                      {typeof Icon === 'string' ? (
+                        <img src={Icon} alt={product.name} className="w-10 h-10 object-contain" />
+                      ) : (
+                        <Icon className="w-10 h-10 text-brand-orange" />
+                      )}
                     </div>
                   </div>
                   <div className="flex-1">

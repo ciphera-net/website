@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { FileTextIcon, PersonIcon, LockClosedIcon, EnvelopeClosedIcon } from '@radix-ui/react-icons'
+import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon } from '@radix-ui/react-icons'
 
 const products = [
   {
-    icon: FileTextIcon,
+    icon: '/drop_icon_no_margins.png',
     name: 'Drop',
     description: 'Privacy-first file sharing with end-to-end encryption. Share files securely without compromising your privacy.',
     link: 'https://drop.ciphera.net',
@@ -67,7 +67,11 @@ export default function Products() {
                 className="group bg-white dark:bg-neutral-900 p-8 rounded-3xl shadow-lg shadow-neutral-200/50 dark:shadow-black/50 border border-neutral-200 dark:border-neutral-800 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-black/70 transition-all duration-300 hover:-translate-y-1"
               >
                 <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="w-7 h-7 text-white" />
+                  {typeof Icon === 'string' ? (
+                    <img src={Icon} alt={product.name} className="w-7 h-7 object-contain" />
+                  ) : (
+                    <Icon className="w-7 h-7 text-white" />
+                  )}
                 </div>
                 <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-3">
                   {product.name}
