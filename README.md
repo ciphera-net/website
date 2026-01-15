@@ -1,14 +1,20 @@
 # Ciphera Website
 
-The official marketing website for Ciphera, a privacy-first platform providing infrastructure and applications built on zero-knowledge principles.
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-green.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-blue.svg?logo=next.js&logoColor=white)](https://nextjs.org/)
+
+The official marketing website for **Ciphera**, a privacy-first platform providing infrastructure and applications built on zero-knowledge principles.
+
+**Where Privacy Still Exists**
 
 ## Overview
 
 This website showcases the Ciphera ecosystem, including:
-- **Drop**: Privacy-first file sharing
-- **Ciphera Auth**: Centralized identity provider
-- **Ciphera Captcha**: Bot protection service
-- **Ciphera Relay**: Self-hosted email infrastructure
+
+- **Drop**: Privacy-first file sharing with end-to-end encryption
+- **Ciphera Auth**: Centralized identity provider with secure authentication
+- **Ciphera Captcha**: Bot protection service with visual and PoW challenges
+- **Ciphera Relay**: Self-hosted transactional email infrastructure
 
 ## Design System
 
@@ -79,21 +85,28 @@ website/
 │   ├── Header.tsx          # Navigation header
 │   ├── Footer.tsx          # Footer component
 │   ├── Hero.tsx            # Hero section
-│   ├── Features.tsx       # Features section
+│   ├── Features.tsx        # Features section
 │   ├── Products.tsx        # Products showcase section
 │   ├── ThemeProviders.tsx  # Theme context provider
 │   └── ThemeToggle.tsx     # Dark mode toggle
 ├── styles/
 │   └── globals.css         # Global styles matching Drop
 ├── public/
-│   ├── ciphera_logo.png
+│   ├── ciphera_icon_no_margins.png
 │   └── ciphera_logo_no_margins.png
-├── package.json
-├── tailwind.config.ts      # Matching Drop config
-├── tsconfig.json
-├── next.config.ts
+├── LICENSE
 └── README.md
+└── docs/
+    └── CONTRIBUTING.md     # Contribution guidelines
 ```
+
+## Development Commands
+
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run start`: Start production server
+- `npm run lint`: Run ESLint
+- `npm run type-check`: Perform TypeScript type checking
 
 ## Development Guidelines
 
@@ -125,20 +138,11 @@ This website is designed to be deployed as a separate repository. It can be depl
 
 - **Vercel** (recommended for Next.js)
 - **Netlify**
-- **Any static hosting service** (after `next build` and `next export`)
-
-## License
-
-This project is part of the Ciphera ecosystem. See individual product repositories for license information.
+- **Any static hosting service** (after `next build`)
 
 ## Contributing
 
-This is a separate repository from the main Drop monorepo. Contributions should follow the same guidelines as other Ciphera projects:
-
-- Use clear, descriptive commit messages
-- Ensure all code follows TypeScript best practices
-- Test in multiple browsers
-- Maintain design system consistency
+This is a separate repository from the main Drop monorepo. Contributions should follow the same guidelines as other Ciphera projects. See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
 
 ## Privacy
 
@@ -146,3 +150,7 @@ This website follows privacy-first principles:
 - No tracking or analytics by default
 - Minimal data collection
 - Respects user privacy preferences
+
+## License
+
+AGPL-3.0
