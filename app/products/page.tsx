@@ -91,11 +91,11 @@ export default function ProductsPage() {
               >
                 <div className="flex flex-col md:flex-row gap-8">
                   <div className="flex-shrink-0">
-                    <div className="w-20 h-20 rounded-2xl bg-brand-orange/10 dark:bg-brand-orange/20 flex items-center justify-center">
+                    <div className="w-20 h-20 flex items-center justify-center border border-neutral-200 dark:border-neutral-800 rounded-3xl bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm p-4">
                       {typeof Icon === 'string' ? (
-                        <img src={Icon} alt={product.name} className="w-10 h-10 object-contain" />
+                        <img src={Icon} alt={product.name} className="w-full h-full object-contain" />
                       ) : (
-                        <Icon className="w-10 h-10 text-brand-orange" />
+                        <Icon className="w-10 h-10 text-neutral-900 dark:text-white" />
                       )}
                     </div>
                   </div>

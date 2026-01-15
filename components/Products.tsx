@@ -66,11 +66,11 @@ export default function Products() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="group bg-white dark:bg-neutral-900 p-8 rounded-3xl shadow-lg shadow-neutral-200/50 dark:shadow-black/50 border border-neutral-200 dark:border-neutral-800 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-black/70 transition-all duration-300 hover:-translate-y-1"
               >
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <div className="w-14 h-14 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm p-3">
                   {typeof Icon === 'string' ? (
-                    <img src={Icon} alt={product.name} className="w-7 h-7 object-contain" />
+                    <img src={Icon} alt={product.name} className="w-full h-full object-contain" />
                   ) : (
-                    <Icon className="w-7 h-7 text-white" />
+                    <Icon className="w-7 h-7 text-neutral-900 dark:text-white" />
                   )}
                 </div>
                 <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-3">

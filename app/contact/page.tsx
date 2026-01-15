@@ -31,8 +31,8 @@ export default function ContactPage() {
               <div className="space-y-6">
                 {/* Email */}
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center shrink-0">
-                    <EnvelopeClosedIcon className="w-6 h-6 text-brand-orange" />
+                  <div className="w-12 h-12 flex items-center justify-center shrink-0 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm">
+                    <EnvelopeClosedIcon className="w-6 h-6 text-neutral-900 dark:text-white" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Email</p>
@@ -42,8 +42,8 @@ export default function ContactPage() {
 
                 {/* Phone */}
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center shrink-0">
-                    <MobileIcon className="w-6 h-6 text-brand-orange" />
+                  <div className="w-12 h-12 flex items-center justify-center shrink-0 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm">
+                    <MobileIcon className="w-6 h-6 text-neutral-900 dark:text-white" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Phone</p>
@@ -53,8 +53,8 @@ export default function ContactPage() {
 
                 {/* Address */}
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center shrink-0">
-                    <HomeIcon className="w-6 h-6 text-brand-orange" />
+                  <div className="w-12 h-12 flex items-center justify-center shrink-0 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm">
+                    <HomeIcon className="w-6 h-6 text-neutral-900 dark:text-white" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Address</p>
