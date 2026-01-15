@@ -14,7 +14,7 @@ const products = [
     description: 'Share files securely with end-to-end encryption. Your files are encrypted before they leave your device.',
     features: ['AES-256-GCM encryption', 'Zero-knowledge storage', 'Password protection', 'Expiring links'],
     link: 'https://drop.ciphera.net',
-    gradient: 'from-sky-500 to-blue-600',
+    gradient: 'from-neutral-600 to-neutral-800',
     available: true,
   },
   {
@@ -25,7 +25,7 @@ const products = [
     description: 'Secure authentication for the Ciphera ecosystem with OAuth2, JWT, and advanced security features.',
     features: ['Double-hashed passwords', 'Two-factor auth', 'Account lockout', 'Session management'],
     link: '#',
-    gradient: 'from-violet-500 to-purple-600',
+    gradient: 'from-neutral-700 to-neutral-900',
     available: true,
   },
   {
@@ -36,7 +36,7 @@ const products = [
     description: 'Protect your applications from bots and automated abuse with visual and proof-of-work challenges.',
     features: ['Visual captchas', 'Proof-of-Work', 'Stateless verification', 'JWT tokens'],
     link: '#',
-    gradient: 'from-emerald-500 to-green-600',
+    gradient: 'from-neutral-500 to-neutral-700',
     available: true,
   },
   {

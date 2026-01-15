@@ -21,7 +21,7 @@ const products = [
       'One-time download option',
     ],
     link: 'https://drop.ciphera.net',
-    gradient: 'from-sky-500 to-blue-600',
+    gradient: 'from-neutral-600 to-neutral-800',
     status: 'Available',
     highlight: true,
   },
@@ -40,7 +40,7 @@ const products = [
       'Two-factor authentication support',
     ],
     link: '#',
-    gradient: 'from-violet-500 to-purple-600',
+    gradient: 'from-neutral-700 to-neutral-900',
     status: 'Available',
     highlight: false,
   },
@@ -58,7 +58,7 @@ const products = [
       'Configurable difficulty',
     ],
     link: '#',
-    gradient: 'from-emerald-500 to-green-600',
+    gradient: 'from-neutral-500 to-neutral-700',
     status: 'Available',
     highlight: false,
   },
@@ -90,7 +90,7 @@ export default function ProductsPage() {
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[128px] opacity-30" />
+          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
         <div className="section-container">
@@ -124,14 +124,14 @@ export default function ProductsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-500/10 via-blue-500/5 to-transparent border border-sky-500/20 p-8 md:p-12">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-neutral-500/10 via-neutral-400/5 to-transparent border border-neutral-400/20 dark:border-neutral-600/20 p-8 md:p-12">
             {/* * Background glow */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-neutral-500/20 dark:bg-neutral-400/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             
             <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               <div>
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/30">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neutral-600 to-neutral-800 flex items-center justify-center shadow-lg shadow-neutral-500/30 dark:shadow-neutral-400/30">
                     <Image
                       src="/drop_icon_no_margins.png"
                       alt="Drop"
@@ -154,7 +154,7 @@ export default function ProductsPage() {
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                   {products[0].features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2 text-neutral-600 dark:text-neutral-400">
-                      <CheckIcon className="w-5 h-5 text-sky-500 mt-0.5 shrink-0" />
+                      <CheckIcon className="w-5 h-5 text-brand-orange mt-0.5 shrink-0" />
                       <span className="text-sm">{feature}</span>
                     </li>
                   ))}
@@ -173,7 +173,7 @@ export default function ProductsPage() {
 
               <div className="hidden lg:block">
                 <div className="relative aspect-square max-w-sm mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-br from-sky-500/20 to-blue-600/20 rounded-3xl blur-2xl" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-neutral-500/20 to-neutral-700/20 dark:from-neutral-400/20 dark:to-neutral-600/20 rounded-3xl blur-2xl" />
                   <div className="relative w-full h-full rounded-3xl bg-white/5 dark:bg-white/5 border border-white/10 flex items-center justify-center">
                     <Image
                       src="/drop_icon_no_margins.png"

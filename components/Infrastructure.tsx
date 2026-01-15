@@ -12,7 +12,7 @@ const services = [
     description: 'Secure file sharing',
     icon: '/drop_icon_no_margins.png',
     isImage: true,
-    gradient: 'from-sky-500 to-blue-600',
+    gradient: 'from-neutral-600 to-neutral-800',
     position: 'top',
   },
   {
@@ -21,7 +21,7 @@ const services = [
     description: 'Identity provider',
     icon: PersonIcon,
     isImage: false,
-    gradient: 'from-violet-500 to-purple-600',
+    gradient: 'from-neutral-700 to-neutral-900',
     position: 'left',
   },
   {
@@ -30,7 +30,7 @@ const services = [
     description: 'Bot protection',
     icon: LockClosedIcon,
     isImage: false,
-    gradient: 'from-emerald-500 to-green-600',
+    gradient: 'from-neutral-500 to-neutral-700',
     position: 'right',
   },
   {

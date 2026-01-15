@@ -24,19 +24,19 @@ const values = [
     icon: EyeNoneIcon,
     title: 'Zero-Knowledge',
     description: 'We can\'t see your data, we can\'t share your data. Your privacy isn\'t a promise—it\'s mathematically ensured through cryptographic guarantees.',
-    gradient: 'from-violet-500 to-purple-600',
+    gradient: 'from-neutral-700 to-neutral-900',
   },
   {
     icon: CodeIcon,
     title: 'Transparency',
     description: 'We believe in open-source principles. Our code is public for anyone to inspect and verify. Trust is earned through transparency, not marketing.',
-    gradient: 'from-emerald-500 to-green-600',
+    gradient: 'from-neutral-500 to-neutral-700',
   },
   {
     icon: GlobeIcon,
     title: 'User Control',
     description: 'You own your encryption keys and can delete your data at any time—no questions asked. We can\'t access your files, even with a court order.',
-    gradient: 'from-sky-500 to-blue-600',
+    gradient: 'from-neutral-600 to-neutral-800',
   },
 ]
 
@@ -64,7 +64,7 @@ export default function AboutPage() {
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/3 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[128px] opacity-30" />
+          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
         <div className="section-container">
@@ -131,7 +131,7 @@ export default function AboutPage() {
             
             <div className="flex items-center justify-center">
               <div className="relative w-64 h-64">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/30 to-purple-500/30 rounded-full blur-3xl" />
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/30 to-neutral-600/30 dark:to-neutral-400/30 rounded-full blur-3xl" />
                 <div className="relative w-full h-full rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                   <Image
                     src="/ciphera_icon_no_margins.png"
@@ -255,7 +255,7 @@ export default function AboutPage() {
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-700 to-neutral-900 flex items-center justify-center">
                       <LockClosedIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -264,7 +264,7 @@ export default function AboutPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-600 to-neutral-800 flex items-center justify-center">
                       <Image src="/drop_icon_no_margins.png" alt="Drop" width={24} height={24} className="w-6 h-6" />
                     </div>
                     <div>
@@ -273,7 +273,7 @@ export default function AboutPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
                       <LightningBoltIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -307,7 +307,7 @@ export default function AboutPage() {
           <div className="max-w-2xl mx-auto">
             <div className="relative">
               {/* * Timeline line */}
-              <div className="absolute left-[19px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-orange via-purple-500 to-emerald-500" />
+              <div className="absolute left-[19px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-orange via-neutral-600 to-neutral-800" />
               
               <div className="space-y-8">
                 {timeline.map((item, index) => (

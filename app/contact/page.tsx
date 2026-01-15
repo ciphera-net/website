@@ -26,7 +26,7 @@ const contactMethods = [
     description: 'Report vulnerabilities responsibly',
     value: 'security@ciphera.net',
     href: 'mailto:security@ciphera.net',
-    gradient: 'from-red-500 to-rose-600',
+    gradient: 'from-neutral-700 to-neutral-900',
   },
   {
     icon: ChatBubbleIcon,
@@ -34,7 +34,7 @@ const contactMethods = [
     description: 'Partnership and enterprise inquiries',
     value: 'business@ciphera.net',
     href: 'mailto:business@ciphera.net',
-    gradient: 'from-violet-500 to-purple-600',
+    gradient: 'from-neutral-600 to-neutral-800',
   },
 ]
 
@@ -75,7 +75,7 @@ export default function ContactPage() {
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/3 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-violet-500/10 rounded-full blur-[128px] opacity-30" />
+          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
         <div className="section-container">
@@ -175,7 +175,7 @@ export default function ContactPage() {
 
               {/* * Response time note */}
               <div className="mt-6 flex items-start gap-3 text-sm text-neutral-500 dark:text-neutral-400">
-                <CheckCircledIcon className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                <CheckCircledIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                 <p>
                   We take security reports seriously. If you've found a vulnerability, 
                   please use the security email above for faster response.
@@ -273,9 +273,9 @@ export default function ContactPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 rounded-xl text-center font-medium"
+                      className="p-4 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-xl text-center font-medium"
                     >
-                      <CheckCircledIcon className="w-5 h-5 inline-block mr-2" />
+                      <CheckCircledIcon className="w-5 h-5 inline-block mr-2 text-brand-orange" />
                       Message sent successfully! We'll get back to you soon.
                     </motion.div>
                   )}

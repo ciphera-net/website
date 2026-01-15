@@ -18,7 +18,7 @@ export default function Hero() {
       <div className="absolute inset-0 -z-10">
         {/* * Gradient orbs */}
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-orange/10 rounded-full blur-[128px] opacity-60" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[128px] opacity-40" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-40" />
         
         {/* * Grid pattern */}
         <div 
