@@ -41,7 +41,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
         <ThemeProviders>
           <Header />
-          <main className="flex-1">
+          <main className="flex-1 pt-24 pb-8">
             {children}
           </main>
           <Footer />

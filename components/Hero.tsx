@@ -44,7 +44,7 @@ export default function Hero() {
   }, [text, isDeleting, wordIndex])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 pt-24 pb-32 overflow-hidden bg-white dark:bg-neutral-950 transition-colors duration-300">
+    <section className="relative min-h-screen flex items-center justify-center px-4 pt-12 pb-32 overflow-hidden bg-white dark:bg-neutral-950 transition-colors duration-300">
       <div className="max-w-5xl w-full space-y-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
