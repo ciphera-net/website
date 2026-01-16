@@ -3,6 +3,7 @@ import Footer from '../components/Footer'
 import { ThemeProviders } from '../components/ThemeProviders'
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
+import Script from 'next/script'
 import '../styles/globals.css'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -74,6 +75,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={plusJakartaSans.variable} suppressHydrationWarning>
+      <head>
+        <Script
+          defer
+          data-domain="ciphera.net"
+          src="https://analytics.ciphera.net/script.js"
+        />
+      </head>
       <body className="antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
         <ThemeProviders>
           <Header />
