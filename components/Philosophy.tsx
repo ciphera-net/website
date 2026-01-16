@@ -85,7 +85,7 @@ export default function Philosophy() {
                   className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/[0.07] hover:border-white/20 transition-all duration-300"
                 >
                   <div className="flex gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange to-orange-600 flex items-center justify-center shrink-0 shadow-lg shadow-brand-orange/20">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-hover flex items-center justify-center shrink-0 shadow-lg shadow-brand-orange/20">
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div>

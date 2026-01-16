@@ -39,7 +39,7 @@ const services = [
     description: 'Email infrastructure',
     icon: EnvelopeClosedIcon,
     isImage: false,
-    gradient: 'from-brand-orange to-orange-600',
+    gradient: 'from-brand-orange to-brand-orange-hover',
     position: 'bottom',
   },
 ]

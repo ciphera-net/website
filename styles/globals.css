@@ -114,7 +114,7 @@
   
   /* * Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-brand-orange to-orange-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-brand-orange to-brand-orange-hover bg-clip-text text-transparent;
   }
   
   /* * Badge/Tag styles */

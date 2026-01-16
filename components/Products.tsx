@@ -47,7 +47,7 @@ const products = [
     description: 'Transactional email infrastructure for secure, privacy-first email delivery with TLS encryption.',
     features: ['TLS encryption', 'High deliverability', 'SMTP AUTH', 'Admin dashboard'],
     link: '#',
-    gradient: 'from-brand-orange to-orange-600',
+    gradient: 'from-brand-orange to-brand-orange-hover',
     available: true,
   },
 ]

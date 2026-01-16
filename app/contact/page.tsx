@@ -18,7 +18,7 @@ const contactMethods = [
     description: 'For general inquiries and support',
     value: 'hello@ciphera.net',
     href: 'mailto:hello@ciphera.net',
-    gradient: 'from-brand-orange to-orange-600',
+    gradient: 'from-brand-orange to-brand-orange-hover',
   },
   {
     icon: ExclamationTriangleIcon,

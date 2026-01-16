@@ -76,7 +76,7 @@ const products = [
       'Admin UI with secure access',
     ],
     link: '#',
-    gradient: 'from-brand-orange to-orange-600',
+    gradient: 'from-brand-orange to-brand-orange-hover',
     status: 'Available',
     highlight: false,
   },

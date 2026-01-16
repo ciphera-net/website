@@ -18,7 +18,7 @@ const values = [
     icon: LockClosedIcon,
     title: 'Privacy by Design',
     description: 'Every component of the Ciphera platform is designed with privacy as the foundation. We use end-to-end encryption, zero-knowledge architecture, and minimal data collection.',
-    gradient: 'from-brand-orange to-orange-600',
+    gradient: 'from-brand-orange to-brand-orange-hover',
   },
   {
     icon: EyeNoneIcon,
