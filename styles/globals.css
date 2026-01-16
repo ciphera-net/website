@@ -4,9 +4,6 @@
 
 @layer base {
   :root {
-    /* * Brand colors */
-    --color-brand-orange: #FD5E0F;
-    
     /* * Semantic colors */
     --color-success: #10B981;
     --color-warning: #F59E0B;

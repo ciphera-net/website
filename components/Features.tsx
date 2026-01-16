@@ -77,7 +77,7 @@ export default function Features() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
               >
-                <div className="h-full p-6 lg:p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300">
+                <div className="h-full card card-hover p-6 lg:p-8">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/10 to-brand-orange/5 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
                     <Icon className="w-6 h-6 text-brand-orange" />
                   </div>
