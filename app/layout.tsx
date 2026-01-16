@@ -75,14 +75,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={plusJakartaSans.variable} suppressHydrationWarning>
-      <head>
+      <body className="antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
         <Script
           defer
           data-domain="ciphera.net"
           src="https://analytics.ciphera.net/script.js"
         />
-      </head>
-      <body className="antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
         <ThemeProviders>
           <Header />
           <main className="flex-1 pt-20 sm:pt-24 pb-6 sm:pb-8">
