@@ -63,8 +63,8 @@ export default function AboutPage() {
       <section className="relative section-padding overflow-hidden">
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/3 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
+          <div className="absolute top-0 left-1/3 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
+          <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
         <div className="section-container">
@@ -98,7 +98,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-3xl bg-neutral-900 dark:bg-neutral-800 p-8 md:p-12 lg:p-16"
+          className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-neutral-900 dark:bg-neutral-800 p-6 sm:p-8 md:p-12 lg:p-16"
         >
           {/* * Background pattern */}
           <div className="absolute inset-0 opacity-10">
@@ -130,7 +130,7 @@ export default function AboutPage() {
             </div>
             
             <div className="flex items-center justify-center">
-              <div className="relative w-64 h-64">
+              <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64">
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/30 to-neutral-600/30 dark:to-neutral-400/30 rounded-full blur-3xl" />
                 <div className="relative w-full h-full rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                   <Image
@@ -138,7 +138,7 @@ export default function AboutPage() {
                     alt="Ciphera"
                     width={120}
                     height={120}
-                    className="w-28 h-28"
+                    className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28"
                   />
                 </div>
               </div>

@@ -31,11 +31,11 @@ export default function Footer() {
 
   return (
     <footer className="w-full mt-auto border-t border-neutral-100 dark:border-neutral-800 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm">
-      <div className="mx-auto max-w-6xl px-6 py-12 lg:py-16">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 lg:py-16">
         {/* * Main footer content */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
           {/* * Brand column */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-1 lg:pr-8">
+          <div className="col-span-1 sm:col-span-2 md:col-span-4 lg:col-span-1 lg:pr-8">
             <Link href="/" className="flex items-center gap-3 mb-4 group">
               <Image
                 src="/ciphera_icon_no_margins.png"

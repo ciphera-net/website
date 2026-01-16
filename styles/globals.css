@@ -48,7 +48,8 @@
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2;
     @apply bg-brand-orange text-white font-semibold;
-    @apply px-6 py-3 rounded-xl;
+    @apply px-6 py-3 sm:py-3.5 rounded-xl;
+    @apply min-h-[44px] sm:min-h-[48px];
     @apply transition-all duration-200 ease-out;
     @apply hover:brightness-110 hover:shadow-lg hover:shadow-brand-orange/25;
     @apply active:scale-[0.98];
@@ -60,7 +61,8 @@
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2;
     @apply bg-transparent text-neutral-900 dark:text-white font-semibold;
-    @apply px-6 py-3 rounded-xl;
+    @apply px-6 py-3 sm:py-3.5 rounded-xl;
+    @apply min-h-[44px] sm:min-h-[48px];
     @apply border border-neutral-300 dark:border-neutral-700;
     @apply transition-all duration-200 ease-out;
     @apply hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600;
@@ -106,7 +108,7 @@
   
   /* * Section padding */
   .section-padding {
-    @apply py-20 md:py-28 lg:py-32;
+    @apply py-12 sm:py-16 md:py-24 lg:py-32;
   }
   
   /* * Gradient text */

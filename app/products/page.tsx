@@ -89,8 +89,8 @@ export default function ProductsPage() {
       <section className="relative section-padding overflow-hidden">
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
+          <div className="absolute top-0 right-1/4 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
+          <div className="absolute bottom-0 left-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
         <div className="section-container">
@@ -124,7 +124,7 @@ export default function ProductsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-neutral-500/10 via-neutral-400/5 to-transparent border border-neutral-400/20 dark:border-neutral-600/20 p-8 md:p-12">
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-neutral-500/10 via-neutral-400/5 to-transparent border border-neutral-400/20 dark:border-neutral-600/20 p-6 sm:p-8 md:p-12">
             {/* * Background glow */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-neutral-500/20 dark:bg-neutral-400/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             

@@ -109,10 +109,10 @@ export default function Infrastructure() {
         {/* * Architecture Diagram */}
         <div className="relative max-w-3xl mx-auto">
           {/* * Background glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-orange/20 rounded-full blur-[100px] opacity-50" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 bg-brand-orange/20 rounded-full blur-[100px] opacity-50" />
 
           {/* * Diagram container */}
-          <div className="relative aspect-square max-w-lg mx-auto">
+          <div className="relative aspect-square max-w-xs sm:max-w-sm md:max-w-lg mx-auto">
             {/* * Connection lines SVG */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
               <defs>

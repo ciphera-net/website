@@ -123,7 +123,7 @@ export default function Products() {
                   </p>
 
                   {/* * Features */}
-                  <ul className="grid grid-cols-2 gap-2 mb-6">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2 mb-6">
                     {product.features.map((feature) => (
                       <li key={feature} className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
                         <svg className="w-4 h-4 text-brand-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

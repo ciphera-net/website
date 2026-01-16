@@ -13,12 +13,12 @@ const trustIndicators = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[70vh] sm:min-h-[80vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden">
       {/* * Background */}
       <div className="absolute inset-0 -z-10">
         {/* * Gradient orbs */}
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-orange/10 rounded-full blur-[128px] opacity-60" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-40" />
+        <div className="absolute top-0 left-1/4 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] bg-brand-orange/10 rounded-full blur-[128px] opacity-60" />
+        <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-40" />
         
         {/* * Grid pattern */}
         <div 
@@ -102,7 +102,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="flex flex-wrap items-center justify-center gap-6 sm:gap-8"
+            className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8"
           >
             {trustIndicators.map((item, index) => (
               <div 
