@@ -12,9 +12,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Ciphera - Where Privacy Still Exists',
+  title: {
+    default: 'Ciphera - Where Privacy Still Exists',
+    template: '%s | Ciphera',
+  },
   description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles. Your data, your control.',
-  keywords: ['privacy', 'encryption', 'zero-knowledge', 'security', 'ciphera', 'secure file sharing'],
+  keywords: ['privacy', 'encryption', 'zero-knowledge', 'security', 'ciphera', 'secure file sharing', 'privacy-first', 'end-to-end encryption'],
   authors: [{ name: 'Ciphera' }],
   creator: 'Ciphera',
   publisher: 'Ciphera',
@@ -27,8 +30,41 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   themeColor: '#FD5E0F',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://ciphera.net',
+    siteName: 'Ciphera',
+    title: 'Ciphera - Where Privacy Still Exists',
+    description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles. Your data, your control.',
+    images: [
+      {
+        url: '/ciphera_logo_no_margins.png',
+        width: 1200,
+        height: 630,
+        alt: 'Ciphera - Where Privacy Still Exists',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ciphera - Where Privacy Still Exists',
+    description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles.',
+    images: ['/ciphera_logo_no_margins.png'],
+  },
+  alternates: {
+    canonical: 'https://ciphera.net',
+  },
+  metadataBase: new URL('https://ciphera.net'),
 }
 
 export default function RootLayout({

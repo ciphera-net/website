@@ -47,6 +47,44 @@ const subjects = [
   'Other',
 ]
 
+// * JSON-LD structured data for contact page
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'Ciphera',
+    url: 'https://ciphera.net',
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        email: 'hello@ciphera.net',
+        contactType: 'Customer Service',
+        areaServed: 'Worldwide',
+      },
+      {
+        '@type': 'ContactPoint',
+        email: 'security@ciphera.net',
+        contactType: 'Security',
+        areaServed: 'Worldwide',
+      },
+      {
+        '@type': 'ContactPoint',
+        email: 'business@ciphera.net',
+        contactType: 'Sales',
+        areaServed: 'Worldwide',
+      },
+    ],
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'The Antwerp Tower, Frankrijklei 5/401',
+      addressLocality: 'Antwerp',
+      postalCode: '2000',
+      addressCountry: 'BE',
+    },
+  },
+}
+
 export default function ContactPage() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [formData, setFormData] = useState({
@@ -70,6 +108,11 @@ export default function ContactPage() {
 
   return (
     <>
+      {/* * JSON-LD structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
+      />
       {/* * Hero Section */}
       <section className="relative section-padding overflow-hidden">
         {/* * Background */}

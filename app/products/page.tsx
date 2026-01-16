@@ -82,9 +82,58 @@ const products = [
   },
 ]
 
+// * JSON-LD structured data for products
+const productsSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Ciphera Products',
+  description: 'Privacy-first applications and infrastructure services',
+  itemListElement: [
+    {
+      '@type': 'SoftwareApplication',
+      name: 'Drop',
+      description: 'Privacy-first file sharing with end-to-end encryption',
+      applicationCategory: 'FileSharingApplication',
+      operatingSystem: 'Web',
+      url: 'https://drop.ciphera.net',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'Ciphera Auth',
+      description: 'Centralized identity provider with secure authentication',
+      applicationCategory: 'SecurityApplication',
+      operatingSystem: 'Web',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'Ciphera Captcha',
+      description: 'Bot protection service with visual captchas and Proof-of-Work challenges',
+      applicationCategory: 'SecurityApplication',
+      operatingSystem: 'Web',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'Ciphera Relay',
+      description: 'Transactional email infrastructure for secure, privacy-first email delivery',
+      applicationCategory: 'CommunicationApplication',
+      operatingSystem: 'Web',
+    },
+  ],
+}
+
 export default function ProductsPage() {
   return (
     <>
+      {/* * JSON-LD structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productsSchema) }}
+      />
       {/* * Hero Section */}
       <section className="relative section-padding overflow-hidden">
         {/* * Background */}

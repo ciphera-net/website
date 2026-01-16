@@ -56,9 +56,40 @@ const timeline = [
   { year: '2026', event: 'Continuing to expand the privacy ecosystem' },
 ]
 
+// * JSON-LD structured data for organization
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Ciphera',
+  url: 'https://ciphera.net',
+  logo: 'https://ciphera.net/ciphera_logo_no_margins.png',
+  description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
+  foundingDate: '2024',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Frankrijklei 5/401',
+    addressLocality: 'Antwerp',
+    postalCode: '2000',
+    addressCountry: 'BE',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'hello@ciphera.net',
+    contactType: 'Customer Service',
+  },
+  sameAs: [
+    'https://github.com/ciphera-net',
+  ],
+}
+
 export default function AboutPage() {
   return (
     <>
+      {/* * JSON-LD structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
       {/* * Hero Section */}
       <section className="relative section-padding overflow-hidden">
         {/* * Background */}
