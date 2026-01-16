@@ -169,6 +169,7 @@ export default function AboutPage() {
                     alt="Ciphera"
                     width={120}
                     height={120}
+                    loading="lazy"
                     className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28"
                   />
                 </div>
@@ -296,7 +297,7 @@ export default function AboutPage() {
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-600 to-neutral-800 flex items-center justify-center">
-                      <Image src="/drop_icon_no_margins.png" alt="Drop" width={24} height={24} className="w-6 h-6" />
+                      <Image src="/drop_icon_no_margins.png" alt="Drop" width={24} height={24} loading="lazy" className="w-6 h-6" />
                     </div>
                     <div>
                       <div className="font-semibold text-neutral-900 dark:text-white text-sm">Drop Backend</div>

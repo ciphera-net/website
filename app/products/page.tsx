@@ -186,6 +186,7 @@ export default function ProductsPage() {
                       alt="Drop"
                       width={40}
                       height={40}
+                      loading="lazy"
                       className="w-10 h-10"
                     />
                   </div>
@@ -229,6 +230,7 @@ export default function ProductsPage() {
                       alt="Drop"
                       width={200}
                       height={200}
+                      loading="lazy"
                       className="w-48 h-48 opacity-80"
                     />
                   </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ThemeToggle } from './ThemeToggle'
 import { HamburgerMenuIcon, Cross1Icon } from '@radix-ui/react-icons'
 
@@ -50,9 +51,12 @@ export default function Header() {
           className="flex items-center gap-3 group relative"
         >
           <div className="relative w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center shrink-0">
-            <img 
+            <Image 
               src="/ciphera_icon_no_margins.png"
               alt="Ciphera Logo"
+              width={44}
+              height={44}
+              priority
               className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 transform-gpu will-change-transform [backface-visibility:hidden]"
             />
           </div>
