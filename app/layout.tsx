@@ -80,7 +80,7 @@ export default function RootLayout({
           defer
           data-domain="ciphera.net"
           data-api="https://analytics-api.ciphera.net"
-          src="https://analytics.ciphera.net/script.js"
+          src="https://analytics.ciphera.net/script.js?v=2.0"
         />
         <ThemeProviders>
           <Header />
