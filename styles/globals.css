@@ -33,8 +33,13 @@
   
   body {
     @apply bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 antialiased;
+    @apply bg-ciphera-gradient bg-fixed;
     font-family: var(--font-plus-jakarta-sans), system-ui, -apple-system, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  
+  .dark body {
+    @apply bg-ciphera-gradient-dark;
   }
   
   /* * Selection styling */
