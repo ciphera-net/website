@@ -104,7 +104,7 @@ const productsSchema = {
     },
     {
       '@type': 'SoftwareApplication',
-      name: 'Ciphera Pulse',
+      name: 'Pulse',
       description: 'Privacy-first analytics and session replay without compromising user privacy',
       applicationCategory: 'AnalyticsApplication',
       operatingSystem: 'Web',

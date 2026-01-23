@@ -20,7 +20,7 @@ const products = [
   {
     icon: '/pulse_icon_no_margins.png',
     isImage: true,
-    name: 'Ciphera Pulse',
+    name: 'Pulse',
     tagline: 'Privacy-first analytics & replay',
     description: 'Real-time user insights and session replay without compromising user privacy. Visualize user journeys and debug issues instantly.',
     features: ['Session replay', 'Geographic heatmaps', 'Real-time traffic monitoring', 'Privacy-preserving data collection'],

@@ -17,7 +17,7 @@ const services = [
   },
   {
     id: 'pulse',
-    name: 'Ciphera Pulse',
+    name: 'Pulse',
     description: 'Privacy-first analytics',
     icon: '/pulse_icon_no_margins.png',
     isImage: true,
