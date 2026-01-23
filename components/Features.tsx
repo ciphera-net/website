@@ -60,7 +60,8 @@ export default function Features() {
             Security that doesn't compromise
           </h2>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-            Every feature is built with cryptographic guarantees. Your privacy isn't optional—it's the architecture.
+            Every feature is built with cryptographic guarantees. Your privacy isn't optional—it's the architecture. 
+            Try <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="link">Drop</a> for secure file sharing or explore our <a href="/products" className="link">complete product suite</a>.
           </p>
         </motion.div>
 

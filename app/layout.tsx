@@ -14,11 +14,11 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Ciphera - Where Privacy Still Exists',
+    default: 'Ciphera - Secure File Sharing with Zero-Knowledge Encryption',
     template: '%s | Ciphera',
   },
-  description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles. Your data, your control.',
-  keywords: ['privacy', 'encryption', 'zero-knowledge', 'security', 'ciphera', 'secure file sharing', 'privacy-first', 'end-to-end encryption'],
+  description: 'Secure file sharing with zero-knowledge encryption. End-to-end encrypted file transfer, privacy-first infrastructure, and GDPR-compliant solutions. Where privacy still exists.',
+  keywords: ['secure file sharing', 'zero-knowledge encryption', 'end-to-end encryption', 'encrypted file transfer', 'privacy-first', 'GDPR compliant file sharing', 'anonymous file upload', 'encrypted cloud storage', 'private file sharing', 'secure file transfer'],
   authors: [{ name: 'Ciphera' }],
   creator: 'Ciphera',
   publisher: 'Ciphera',
@@ -45,8 +45,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://ciphera.net',
     siteName: 'Ciphera',
-    title: 'Ciphera - Where Privacy Still Exists',
-    description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles. Your data, your control.',
+    title: 'Ciphera - Secure File Sharing with Zero-Knowledge Encryption',
+    description: 'Secure file sharing with zero-knowledge encryption. End-to-end encrypted file transfer, privacy-first infrastructure, and GDPR-compliant solutions.',
     images: [
       {
         url: '/ciphera_logo_no_margins.png',
@@ -58,8 +58,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ciphera - Where Privacy Still Exists',
-    description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles.',
+    title: 'Ciphera - Secure File Sharing with Zero-Knowledge Encryption',
+    description: 'Secure file sharing with zero-knowledge encryption. End-to-end encrypted file transfer and privacy-first infrastructure.',
     images: ['/ciphera_logo_no_margins.png'],
   },
   alternates: {

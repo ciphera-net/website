@@ -14,6 +14,7 @@ import {
   EyeNoneIcon,
   ExclamationTriangleIcon
 } from '@radix-ui/react-icons'
+import Breadcrumbs from '../../components/Breadcrumbs'
 
 const problems = [
   {
@@ -173,6 +174,7 @@ export default function CompaniesPage() {
           }),
         }}
       />
+      <Breadcrumbs items={[{ label: 'For Companies' }]} />
 
       {/* * Hero Section */}
       <section className="relative section-padding overflow-hidden">
@@ -199,7 +201,8 @@ export default function CompaniesPage() {
             </h1>
             <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
               Stop collecting data you don't need. Stop using systems that violate privacy. 
-              We help companies rebuild their infrastructure with privacy as the foundation.
+              We help companies rebuild their infrastructure with privacy as the foundation. 
+              Explore our <a href="/products" className="link">privacy-first products</a> or <a href="/contact" className="link">schedule a consultation</a>.
             </p>
           </motion.div>
         </div>
@@ -346,14 +349,14 @@ export default function CompaniesPage() {
                       <div className="flex items-center gap-4">
                         <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center shadow-lg`}>
                           {service.isImage ? (
-                            <Image 
-                              src={service.icon as string} 
-                              alt={service.name} 
-                              width={32} 
-                              height={32}
-                              loading="lazy"
-                              className="w-8 h-8"
-                            />
+                          <Image 
+                            src={service.icon as string} 
+                            alt={`${service.name} - Enterprise privacy solution icon`}
+                            width={32} 
+                            height={32}
+                            loading="lazy"
+                            className="w-8 h-8"
+                          />
                           ) : (
                             <Icon className="w-7 h-7 text-white" />
                           )}

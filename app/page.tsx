@@ -3,6 +3,7 @@ import Infrastructure from '../components/Infrastructure'
 import Features from '../components/Features'
 import Philosophy from '../components/Philosophy'
 import Products from '../components/Products'
+import FAQ from '../components/FAQ'
 
 // * JSON-LD structured data for homepage
 const homepageSchema = {
@@ -42,6 +43,7 @@ export default function HomePage() {
       <Features />
       <Philosophy />
       <Products />
+      <FAQ />
     </>
   )
 }

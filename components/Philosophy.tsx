@@ -44,7 +44,8 @@ export default function Philosophy() {
             
             <p className="text-lg text-neutral-400 leading-relaxed mb-8">
               Ciphera was built on a simple principle: if we can't see your data, we can't sell it, leak it, or lose it. 
-              Our zero-knowledge architecture ensures your files are encrypted before they leave your device—every time.
+              Our <a href="/products" className="text-brand-orange hover:text-brand-orange-hover underline">zero-knowledge architecture</a> ensures your files are encrypted before they leave your device—every time. 
+              Learn more <a href="/about" className="text-brand-orange hover:text-brand-orange-hover underline">about our mission</a>.
             </p>
 
             <div className="flex items-center gap-4">

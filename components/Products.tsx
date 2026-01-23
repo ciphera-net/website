@@ -105,7 +105,7 @@ export default function Products() {
                         {product.isImage ? (
                           <Image 
                             src={product.icon as string} 
-                            alt={product.name} 
+                            alt={`${product.name} - ${product.tagline} icon`}
                             width={32} 
                             height={32}
                             loading="lazy"

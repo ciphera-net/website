@@ -41,7 +41,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3 mb-4 group">
               <Image
                 src="/ciphera_icon_no_margins.png"
-                alt="Ciphera"
+                alt="Ciphera privacy-first platform logo"
                 width={36}
                 height={36}
                 loading="lazy"

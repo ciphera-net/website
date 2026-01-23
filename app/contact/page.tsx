@@ -10,6 +10,7 @@ import {
   CheckCircledIcon,
   ExclamationTriangleIcon
 } from '@radix-ui/react-icons'
+import Breadcrumbs from '../../components/Breadcrumbs'
 
 const contactMethods = [
   {
@@ -113,6 +114,7 @@ export default function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
       />
+      <Breadcrumbs items={[{ label: 'Contact Us' }]} />
       {/* * Hero Section */}
       <section className="relative section-padding overflow-hidden">
         {/* * Background */}

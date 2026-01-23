@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon, ArrowRightIcon, CheckIcon } from '@radix-ui/react-icons'
+import Breadcrumbs from '../../components/Breadcrumbs'
 
 const products = [
   {
@@ -147,6 +148,7 @@ export default function ProductsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productsSchema) }}
       />
+      <Breadcrumbs items={[{ label: 'Products' }]} />
       {/* * Hero Section */}
       <section className="relative section-padding overflow-hidden">
         {/* * Background */}
@@ -172,7 +174,8 @@ export default function ProductsPage() {
             </h1>
             <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
               A comprehensive suite of tools designed to protect your privacy. 
-              Each product works standalone or as part of the Ciphera ecosystem.
+              Each product works standalone or as part of the Ciphera ecosystem. 
+              Looking for <a href="/companies" className="link">enterprise solutions</a>? We offer privacy-first infrastructure for businesses.
             </p>
           </motion.div>
         </div>
@@ -196,7 +199,7 @@ export default function ProductsPage() {
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neutral-600 to-neutral-800 flex items-center justify-center shadow-lg shadow-neutral-500/30 dark:shadow-neutral-400/30">
                     <Image
                       src="/drop_icon_no_margins.png"
-                      alt="Drop"
+                      alt="Drop - Secure file sharing with end-to-end encryption logo"
                       width={40}
                       height={40}
                       loading="lazy"
@@ -240,7 +243,7 @@ export default function ProductsPage() {
                   <div className="relative w-full h-full rounded-3xl bg-white/5 dark:bg-white/5 border border-white/10 flex items-center justify-center">
                     <Image
                       src="/drop_icon_no_margins.png"
-                      alt="Drop"
+                      alt="Drop - Zero-knowledge encrypted file sharing platform"
                       width={200}
                       height={200}
                       loading="lazy"

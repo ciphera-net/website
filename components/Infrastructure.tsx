@@ -71,7 +71,7 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
             {service.isImage ? (
               <Image 
                 src={service.icon as string} 
-                alt={service.name} 
+                alt={`${service.name} - ${service.description} logo`}
                 width={32} 
                 height={32}
                 loading="lazy"
@@ -277,14 +277,14 @@ export default function Infrastructure() {
               >
                 <div className={`icon-container ${service.gradient} mb-4 shadow-lg`}>
                   {service.isImage ? (
-                    <Image 
-                      src={service.icon as string} 
-                      alt={service.name} 
-                      width={28} 
-                      height={28}
-                      loading="lazy"
-                      className="w-7 h-7"
-                    />
+              <Image 
+                src={service.icon as string} 
+                alt={`${service.name} - ${service.description} logo`}
+                width={28} 
+                height={28}
+                loading="lazy"
+                className="w-7 h-7"
+              />
                   ) : (
                     <Icon className="w-6 h-6 text-white" />
                   )}
