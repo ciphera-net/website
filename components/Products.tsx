@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon, ArrowRightIcon } from '@radix-ui/react-icons'
+import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon, ArrowRightIcon, CheckIcon } from '@radix-ui/react-icons'
 
 const products = [
   {
@@ -125,7 +125,7 @@ export default function Products() {
                       </div>
                     </div>
                     {product.available && (
-                      <span className="badge-success text-[10px]">Available</span>
+                      <span className="badge-neutral-status text-[10px]">Available</span>
                     )}
                   </div>
 
@@ -138,9 +138,7 @@ export default function Products() {
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2 mb-6">
                     {product.features.map((feature) => (
                       <li key={feature} className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                        <svg className="w-4 h-4 text-brand-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
+                        <CheckIcon className="w-4 h-4 text-brand-orange shrink-0" />
                         {feature}
                       </li>
                     ))}

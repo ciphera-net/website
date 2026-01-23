@@ -10,7 +10,7 @@ const products = [
     icon: '/drop_icon_no_margins.png',
     isImage: true,
     name: 'Drop',
-    tagline: 'Secure File Sharing',
+    tagline: 'Secure file sharing',
     description: 'Privacy-first file sharing with end-to-end encryption. Share files securely without compromising your privacy. Your files are encrypted before they leave your device.',
     features: [
       'Client-side encryption (AES-256-GCM)',
@@ -21,7 +21,7 @@ const products = [
       'One-time download option',
     ],
     link: 'https://drop.ciphera.net',
-    gradient: 'from-neutral-600 to-neutral-800',
+    gradient: 'from-neutral-500 to-neutral-700',
     status: 'Available',
     highlight: true,
   },
@@ -29,7 +29,7 @@ const products = [
     icon: PersonIcon,
     isImage: false,
     name: 'Ciphera Auth',
-    tagline: 'Identity Provider',
+    tagline: 'Identity provider',
     description: 'Centralized identity provider with secure authentication, OAuth flows, and JWT issuance for the Ciphera ecosystem.',
     features: [
       'Double-hashed passwords (PBKDF2 + Argon2id)',
@@ -40,7 +40,7 @@ const products = [
       'Two-factor authentication support',
     ],
     link: '#',
-    gradient: 'from-neutral-700 to-neutral-900',
+    gradient: 'from-neutral-500 to-neutral-700',
     status: 'Available',
     highlight: false,
   },
@@ -48,7 +48,7 @@ const products = [
     icon: LockClosedIcon,
     isImage: false,
     name: 'Ciphera Captcha',
-    tagline: 'Bot Protection',
+    tagline: 'Bot protection',
     description: 'Bot protection service with visual captchas and Proof-of-Work challenges to prevent automated abuse.',
     features: [
       'Visual alphanumeric captchas',
@@ -66,7 +66,7 @@ const products = [
     icon: EnvelopeClosedIcon,
     isImage: false,
     name: 'Ciphera Relay',
-    tagline: 'Email Infrastructure',
+    tagline: 'Email infrastructure',
     description: 'Transactional email infrastructure for secure, privacy-first email delivery with TLS encryption.',
     features: [
       'Stalwart Mail Server',
@@ -76,7 +76,7 @@ const products = [
       'Admin UI with secure access',
     ],
     link: '#',
-    gradient: 'from-brand-orange to-brand-orange-hover',
+    gradient: 'from-neutral-500 to-neutral-700',
     status: 'Available',
     highlight: false,
   },
@@ -96,6 +96,19 @@ const productsSchema = {
       applicationCategory: 'FileSharingApplication',
       operatingSystem: 'Web',
       url: 'https://drop.ciphera.net',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'Ciphera Pulse',
+      description: 'Privacy-first analytics and session replay without compromising user privacy',
+      applicationCategory: 'AnalyticsApplication',
+      operatingSystem: 'Web',
+      url: 'https://pulse.ciphera.net',
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -194,7 +207,7 @@ export default function ProductsPage() {
                     <h2 className="text-3xl font-bold text-neutral-900 dark:text-white">Drop</h2>
                     <p className="text-neutral-500 dark:text-neutral-400">Secure File Sharing</p>
                   </div>
-                  <span className="badge-success ml-auto">Available</span>
+                  <span className="badge-neutral-status text-[10px] ml-auto">Available</span>
                 </div>
 
                 <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
@@ -277,7 +290,7 @@ export default function ProductsPage() {
                       <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center shadow-lg`}>
                         <Icon className="w-7 h-7 text-white" />
                       </div>
-                      <span className="badge-success text-[10px]">{product.status}</span>
+                      <span className="badge-neutral-status text-[10px]">{product.status}</span>
                     </div>
 
                     <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-1">

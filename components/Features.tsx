@@ -78,8 +78,8 @@ export default function Features() {
                 className="group"
               >
                 <div className="h-full card card-hover p-6 lg:p-8">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/10 to-brand-orange/5 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                    <Icon className="w-6 h-6 text-brand-orange" />
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-orange/10 to-brand-orange/5 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                    <Icon className="w-7 h-7 text-brand-orange" />
                   </div>
                   
                   <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">

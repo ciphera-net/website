@@ -83,7 +83,7 @@ const services = [
       'Custom retention policies',
       'SSO integration',
     ],
-    gradient: 'from-neutral-600 to-neutral-800',
+    gradient: 'from-neutral-500 to-neutral-700',
   },
   {
     icon: PersonIcon,
@@ -98,7 +98,7 @@ const services = [
       'Enterprise SSO',
       'Custom branding',
     ],
-    gradient: 'from-neutral-700 to-neutral-900',
+    gradient: 'from-neutral-500 to-neutral-700',
   },
   {
     icon: LockClosedIcon,
@@ -128,7 +128,7 @@ const services = [
       'Email analytics',
       'Custom domain support',
     ],
-    gradient: 'from-brand-orange to-brand-orange-hover',
+    gradient: 'from-neutral-500 to-neutral-700',
   },
 ]
 
@@ -383,7 +383,7 @@ export default function CompaniesPage() {
                       href="/contact"
                       className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:gap-3 transition-all duration-200"
                     >
-                      Request Enterprise Demo
+                      Request enterprise demo
                       <ArrowRightIcon className="w-4 h-4" />
                     </Link>
                   </div>

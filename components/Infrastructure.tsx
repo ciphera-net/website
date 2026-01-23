@@ -12,8 +12,17 @@ const services = [
     description: 'Secure file sharing',
     icon: '/drop_icon_no_margins.png',
     isImage: true,
-    gradient: 'from-neutral-600 to-neutral-800',
+    gradient: 'from-neutral-500 to-neutral-700',
     position: 'top',
+  },
+  {
+    id: 'pulse',
+    name: 'Ciphera Pulse',
+    description: 'Privacy-first analytics',
+    icon: '/pulse_icon_no_margins.png',
+    isImage: true,
+    gradient: 'from-neutral-500 to-neutral-700',
+    position: 'top-right',
   },
   {
     id: 'auth',
@@ -21,7 +30,7 @@ const services = [
     description: 'Identity provider',
     icon: PersonIcon,
     isImage: false,
-    gradient: 'from-neutral-700 to-neutral-900',
+    gradient: 'from-neutral-500 to-neutral-700',
     position: 'left',
   },
   {
@@ -39,7 +48,7 @@ const services = [
     description: 'Email infrastructure',
     icon: EnvelopeClosedIcon,
     isImage: false,
-    gradient: 'from-brand-orange to-brand-orange-hover',
+    gradient: 'from-neutral-500 to-neutral-700',
     position: 'bottom',
   },
 ]
@@ -58,18 +67,18 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
     >
       <div className="relative p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
         <div className="flex items-center gap-3">
-          <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center shadow-lg`}>
+          <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center shadow-lg`}>
             {service.isImage ? (
               <Image 
                 src={service.icon as string} 
                 alt={service.name} 
-                width={28} 
-                height={28}
+                width={32} 
+                height={32}
                 loading="lazy"
-                className="w-7 h-7"
+                className="w-8 h-8"
               />
             ) : (
-              <Icon className="w-5 h-5 text-white" />
+              <Icon className="w-7 h-7 text-white" />
             )}
           </div>
           <div>
@@ -254,7 +263,7 @@ export default function Infrastructure() {
             </div>
 
         {/* * Service details grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-16">
           {services.map((service, index) => {
             const Icon = service.icon as React.ComponentType<{ className?: string }>
             return (
@@ -288,6 +297,7 @@ export default function Infrastructure() {
                 </p>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
                   {service.id === 'drop' && 'End-to-end encrypted file sharing with zero-knowledge architecture.'}
+                  {service.id === 'pulse' && 'Real-time analytics and session replay without compromising user privacy.'}
                   {service.id === 'auth' && 'Secure identity management with JWT tokens and double-hashed passwords.'}
                   {service.id === 'relay' && 'Secure email infrastructure for verification and notifications.'}
                   {service.id === 'captcha' && 'Proof-of-Work challenges and visual captchas for bot protection.'}
