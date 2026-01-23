@@ -84,7 +84,7 @@ export default function RootLayout({
         />
         <ThemeProviders>
           <Header />
-          <main className="flex-1 pt-20 sm:pt-24 pb-6 sm:pb-8">
+          <main className="flex-1 pt-24 pb-6 sm:pb-8">
             {children}
           </main>
           <Footer />
