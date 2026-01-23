@@ -75,7 +75,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            End-to-end encrypted file sharing and privacy-first infrastructure built on zero-knowledge principles. 
+            Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles. 
             Your data is encrypted before it leaves your device—we can't see it, even if we wanted to.
           </motion.p>
 
