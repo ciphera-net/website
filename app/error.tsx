@@ -31,7 +31,7 @@ export default function Error({
           {/* * Error Icon */}
           <div className="mb-8 flex justify-center">
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-brand-orange/10 dark:bg-brand-orange/20 flex items-center justify-center">
-              <ExclamationTriangleIcon className="w-10 h-10 sm:w-12 sm:h-12 text-brand-orange" />
+              <AlertTriangleIcon className="w-10 h-10 sm:w-12 sm:h-12 text-brand-orange" />
             </div>
           </div>
 
@@ -59,7 +59,7 @@ export default function Error({
               onClick={reset}
               className="btn-primary inline-flex items-center gap-2"
             >
-              <ReloadIcon className="w-5 h-5" />
+              <RefreshCwIcon className="w-5 h-5" />
               Try Again
             </button>
             <Link href="/" className="btn-secondary inline-flex items-center gap-2">
