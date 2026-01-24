@@ -1,6 +1,6 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { ThemeProviders } from '../components/ThemeProviders'
+import { ThemeProviders } from '@ciphera-net/ui'
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'

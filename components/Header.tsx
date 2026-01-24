@@ -3,8 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ThemeToggle } from './ThemeToggle'
-import { HamburgerMenuIcon, Cross1Icon } from '@radix-ui/react-icons'
+import { ThemeToggle, MenuIcon, XIcon } from '@ciphera-net/ui'
 
 // * Ciphera website header - matches ciphera-ui style
 export default function Header() {
@@ -103,7 +102,7 @@ export default function Header() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <Cross1Icon className="w-5 h-5" /> : <HamburgerMenuIcon className="w-5 h-5" />}
+            {isMobileMenuOpen ? <XIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
           </button>
         </div>
       </div>

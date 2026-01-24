@@ -2,12 +2,12 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { CheckCircledIcon, LockClosedIcon, GlobeIcon } from '@radix-ui/react-icons'
+import { CheckCircleIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
 
 // * Trust indicators displayed below CTAs
 const trustIndicators = [
-  { icon: LockClosedIcon, text: 'End-to-end encrypted' },
-  { icon: CheckCircledIcon, text: 'Open source' },
+  { icon: LockIcon, text: 'End-to-end encrypted' },
+  { icon: CheckCircleIcon, text: 'Open source' },
   { icon: GlobeIcon, text: 'Zero-knowledge by design' },
 ]
 

@@ -3,18 +3,23 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
-  EnvelopeClosedIcon, 
   ChatBubbleIcon, 
-  GlobeIcon,
   PaperPlaneIcon,
-  CheckCircledIcon,
-  ExclamationTriangleIcon
 } from '@radix-ui/react-icons'
+import { 
+  Input, 
+  Select, 
+  Button, 
+  MailIcon, 
+  GlobeIcon, 
+  CheckCircleIcon, 
+  AlertTriangleIcon 
+} from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 
 const contactMethods = [
   {
-    icon: EnvelopeClosedIcon,
+    icon: MailIcon,
     title: 'Email',
     description: 'For general inquiries and support',
     value: 'hello@ciphera.net',
@@ -22,7 +27,7 @@ const contactMethods = [
     gradient: 'from-brand-orange to-brand-orange-hover',
   },
   {
-    icon: ExclamationTriangleIcon,
+    icon: AlertTriangleIcon,
     title: 'Security',
     description: 'Report vulnerabilities responsibly',
     value: 'security@ciphera.net',
@@ -47,6 +52,8 @@ const subjects = [
   'Feature Request',
   'Other',
 ]
+
+const subjectOptions = subjects.map(s => ({ value: s, label: s }))
 
 // * JSON-LD structured data for contact page
 const contactSchema = {
@@ -220,7 +227,7 @@ export default function ContactPage() {
 
               {/* * Response time note */}
               <div className="mt-6 flex items-start gap-3 text-sm text-neutral-500 dark:text-neutral-400">
-                <CheckCircledIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                <CheckCircleIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                 <p>
                   We take security reports seriously. If you've found a vulnerability, 
                   please use the security email above for faster response.
@@ -242,13 +249,12 @@ export default function ContactPage() {
                       <label htmlFor="name" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                         Name
                       </label>
-                      <input
+                      <Input
                         type="text"
                         id="name"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 sm:py-3.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange transition-all duration-200 text-base"
                         placeholder="Your name"
                       />
                     </div>
@@ -256,13 +262,12 @@ export default function ContactPage() {
                       <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                         Email
                       </label>
-                      <input
+                      <Input
                         type="email"
                         id="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 sm:py-3.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange transition-all duration-200 text-base"
                         placeholder="you@example.com"
                       />
                     </div>
@@ -272,16 +277,14 @@ export default function ContactPage() {
                     <label htmlFor="subject" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                       Subject
                     </label>
-                    <select
+                    <Select
                       id="subject"
                       value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange transition-all duration-200"
-                    >
-                      {subjects.map((subject) => (
-                        <option key={subject} value={subject}>{subject}</option>
-                      ))}
-                    </select>
+                      onChange={(value) => setFormData({ ...formData, subject: value })}
+                      options={subjectOptions}
+                      variant="input"
+                      fullWidth
+                    />
                   </div>
 
                   <div>
@@ -299,20 +302,19 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <button
+                  <Button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="btn-primary w-full py-4"
+                    className="w-full py-4 h-auto text-base"
+                    isLoading={status === 'submitting'}
                   >
-                    {status === 'submitting' ? (
-                      <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
+                    {!status || status === 'idle' || status === 'success' || status === 'error' ? (
                       <>
-                        <PaperPlaneIcon className="w-5 h-5" />
+                        <PaperPlaneIcon className="w-5 h-5 mr-2" />
                         Send Message
                       </>
-                    )}
-                  </button>
+                    ) : null}
+                  </Button>
 
                   {status === 'success' && (
                     <motion.div
@@ -320,7 +322,7 @@ export default function ContactPage() {
                       animate={{ opacity: 1, y: 0 }}
                       className="p-4 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-xl text-center font-medium"
                     >
-                      <CheckCircledIcon className="w-5 h-5 inline-block mr-2 text-brand-orange" />
+                      <CheckCircleIcon className="w-5 h-5 inline-block mr-2 text-brand-orange" />
                       Message sent successfully! We'll get back to you soon.
                     </motion.div>
                   )}
