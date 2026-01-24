@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon, ArrowRightIcon, CheckIcon } from '@radix-ui/react-icons'
+import { UserIcon, LockIcon, MailIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 
 const products = [

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { PersonIcon, LockClosedIcon, EnvelopeClosedIcon, GlobeIcon } from '@radix-ui/react-icons'
+import { UserIcon, LockIcon, MailIcon, GlobeIcon } from '@ciphera-net/ui'
 import Image from 'next/image'
 
 // * Architecture nodes for the ecosystem diagram

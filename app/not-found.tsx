@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { HomeIcon, ArrowLeftIcon } from '@radix-ui/react-icons'
+import { HomeIcon, ArrowLeftIcon } from '@ciphera-net/ui'
 import { BackButton } from './not-found-client'
 
 export const metadata = {

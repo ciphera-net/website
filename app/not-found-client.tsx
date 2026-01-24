@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeftIcon } from '@radix-ui/react-icons'
+import { ArrowLeftIcon } from '@ciphera-net/ui'
 
 export function BackButton() {
   const handleBack = () => {

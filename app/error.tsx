@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
-import { HomeIcon, ReloadIcon, ExclamationTriangleIcon } from '@radix-ui/react-icons'
+import { HomeIcon, RefreshCwIcon, AlertTriangleIcon } from '@ciphera-net/ui'
 
 export default function Error({
   error,

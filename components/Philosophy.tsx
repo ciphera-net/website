@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { HeartIcon, LockClosedIcon, GlobeIcon } from '@radix-ui/react-icons'
+import { HeartIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
 
 const philosophyPoints = [
   {

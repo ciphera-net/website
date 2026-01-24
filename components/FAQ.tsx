@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { ChevronDownIcon } from '@radix-ui/react-icons'
+import { ChevronDownIcon } from '@ciphera-net/ui'
 
 const faqs = [
   {
