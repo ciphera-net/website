@@ -29,7 +29,7 @@ const products = [
     available: true,
   },
   {
-    icon: PersonIcon,
+    icon: UserIcon,
     isImage: false,
     name: 'Ciphera Auth',
     tagline: 'Identity provider',
@@ -40,7 +40,7 @@ const products = [
     available: true,
   },
   {
-    icon: LockClosedIcon,
+    icon: LockIcon,
     isImage: false,
     name: 'Ciphera Captcha',
     tagline: 'Bot protection',
@@ -51,7 +51,7 @@ const products = [
     available: true,
   },
   {
-    icon: EnvelopeClosedIcon,
+    icon: MailIcon,
     isImage: false,
     name: 'Ciphera Relay',
     tagline: 'Email infrastructure',

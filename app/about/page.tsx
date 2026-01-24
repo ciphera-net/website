@@ -282,7 +282,7 @@ export default function AboutPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                      <LockClosedIcon className="w-5 h-5 text-white" />
+                      <LockIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <div className="font-semibold text-neutral-900 dark:text-white text-sm">Ciphera Auth</div>
@@ -300,7 +300,7 @@ export default function AboutPage() {
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                      <LightningBoltIcon className="w-5 h-5 text-white" />
+                      <ZapIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <div className="font-semibold text-neutral-900 dark:text-white text-sm">Ciphera Captcha</div>

@@ -18,7 +18,7 @@ const problems = [
     description: 'You\'re collecting more data than necessary, violating GDPR and risking regulatory fines.',
   },
   {
-    icon: CodeIcon,
+    icon: LayoutDashboardIcon,
     title: 'Legacy Systems',
     description: 'Outdated infrastructure with security vulnerabilities and poor privacy practices.',
   },
@@ -26,7 +26,7 @@ const problems = [
 
 const solutions = [
   {
-    icon: LockClosedIcon,
+    icon: LockIcon,
     title: 'Privacy by Design',
     description: 'We help you rebuild your infrastructure with privacy as the foundation, not an afterthought.',
     benefits: [
@@ -37,7 +37,7 @@ const solutions = [
     ],
   },
   {
-    icon: LockClosedIcon,
+    icon: LockIcon,
     title: 'Secure Infrastructure',
     description: 'Replace vulnerable systems with battle-tested, privacy-first alternatives.',
     benefits: [
@@ -48,7 +48,7 @@ const solutions = [
     ],
   },
   {
-    icon: CodeIcon,
+    icon: LayoutDashboardIcon,
     title: 'Open Source & Auditable',
     description: 'Transparency builds trust. Our code is open for inspection and verification.',
     benefits: [
@@ -92,7 +92,7 @@ const services = [
     gradient: 'from-neutral-500 to-neutral-700',
   },
   {
-    icon: LockClosedIcon,
+    icon: LockIcon,
     isImage: false,
     name: 'Ciphera Captcha',
     description: 'Bot protection that respects privacy. No tracking, no cookies, just effective protection.',
@@ -414,7 +414,7 @@ export default function CompaniesPage() {
                 className="text-center"
               >
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/10 to-brand-orange/5 flex items-center justify-center mx-auto mb-4">
-                  <CheckCircledIcon className="w-6 h-6 text-brand-orange" />
+                  <CheckIcon className="w-6 h-6 text-brand-orange" />
                 </div>
                 <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">
                   {benefit.title}
