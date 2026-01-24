@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
 import { 
   Input, 
   Select, 
@@ -10,7 +9,8 @@ import {
   MailIcon, 
   GlobeIcon, 
   CheckCircleIcon, 
-  AlertTriangleIcon 
+  AlertTriangleIcon,
+  ArrowRightIcon
 } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 
