@@ -3,27 +3,17 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { 
-  LockClosedIcon, 
-  CodeIcon, 
-  CheckCircledIcon,
-  ArrowRightIcon,
-  PersonIcon,
-  EnvelopeClosedIcon,
-  LightningBoltIcon,
-  EyeNoneIcon,
-  ExclamationTriangleIcon
-} from '@radix-ui/react-icons'
+import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 
 const problems = [
   {
-    icon: ExclamationTriangleIcon,
+    icon: AlertTriangleIcon,
     title: 'Data Breaches',
     description: 'Your current systems expose sensitive data. One breach could cost millions and destroy customer trust.',
   },
   {
-    icon: EyeNoneIcon,
+    icon: EyeOffIcon,
     title: 'Privacy Violations',
     description: 'You\'re collecting more data than necessary, violating GDPR and risking regulatory fines.',
   },
@@ -87,7 +77,7 @@ const services = [
     gradient: 'from-neutral-500 to-neutral-700',
   },
   {
-    icon: PersonIcon,
+    icon: UserIcon,
     isImage: false,
     name: 'Ciphera Auth',
     description: 'Enterprise identity provider with advanced security features. Replace vulnerable authentication systems with zero-knowledge architecture.',
@@ -117,7 +107,7 @@ const services = [
     gradient: 'from-neutral-500 to-neutral-700',
   },
   {
-    icon: EnvelopeClosedIcon,
+    icon: MailIcon,
     isImage: false,
     name: 'Ciphera Relay',
     description: 'Secure email infrastructure for transactional emails. High deliverability with TLS encryption.',
@@ -300,7 +290,7 @@ export default function CompaniesPage() {
                   <ul className="space-y-2">
                     {solution.benefits.map((benefit) => (
                       <li key={benefit} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                        <CheckCircledIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
+                        <CheckIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
                         <span>{benefit}</span>
                       </li>
                     ))}
@@ -376,7 +366,7 @@ export default function CompaniesPage() {
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                       {service.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                          <CheckCircledIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
+                          <CheckIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
                           <span>{feature}</span>
                         </li>
                       ))}

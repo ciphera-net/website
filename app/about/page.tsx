@@ -3,32 +3,24 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { 
-  LockClosedIcon, 
-  EyeNoneIcon, 
-  CodeIcon, 
-  LightningBoltIcon,
-  ArrowRightIcon,
-  CheckIcon,
-  GlobeIcon
-} from '@radix-ui/react-icons'
+import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 
 const values = [
   {
-    icon: LockClosedIcon,
+    icon: LockIcon,
     title: 'Privacy by Design',
     description: 'Every component of the Ciphera platform is designed with privacy as the foundation. We use end-to-end encryption, zero-knowledge architecture, and minimal data collection.',
     gradient: 'from-neutral-500 to-neutral-700',
   },
   {
-    icon: EyeNoneIcon,
+    icon: EyeOffIcon,
     title: 'Zero-Knowledge',
     description: 'We can\'t see your data, we can\'t share your data. Your privacy isn\'t a promise—it\'s mathematically ensured through cryptographic guarantees.',
     gradient: 'from-neutral-500 to-neutral-700',
   },
   {
-    icon: CodeIcon,
+    icon: LayoutDashboardIcon,
     title: 'Transparency',
     description: 'We believe in open-source principles. Our code is public for anyone to inspect and verify. Trust is earned through transparency, not marketing.',
     gradient: 'from-neutral-500 to-neutral-700',

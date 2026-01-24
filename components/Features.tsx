@@ -1,43 +1,36 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { 
-  LockClosedIcon, 
-  EyeNoneIcon, 
-  CodeIcon, 
-  DesktopIcon,
-  CheckCircledIcon,
-  LightningBoltIcon 
-} from '@radix-ui/react-icons'
+import { LockIcon, EyeOffIcon, LayoutDashboardIcon, GlobeIcon, CheckIcon, ZapIcon } from '@ciphera-net/ui'
 
 const features = [
   {
-    icon: LockClosedIcon,
+    icon: LockIcon,
     title: 'End-to-End Encryption',
     description: 'Your data is encrypted before it leaves your device. Only you hold the keys—not even we can access your content.',
   },
   {
-    icon: EyeNoneIcon,
+    icon: EyeOffIcon,
     title: 'Zero-Knowledge Architecture',
     description: 'We can\'t see your data, we can\'t share your data. Privacy isn\'t a promise, it\'s mathematically ensured.',
   },
   {
-    icon: CodeIcon,
+    icon: LayoutDashboardIcon,
     title: 'Open Source',
     description: 'Our code is public for anyone to inspect and verify. Transparency builds trust.',
   },
   {
-    icon: DesktopIcon,
+    icon: GlobeIcon,
     title: 'Privacy by Default',
     description: 'No configuration needed. Your data is protected from the moment you sign up. Privacy isn\'t an option—it\'s the foundation.',
   },
   {
-    icon: CheckCircledIcon,
+    icon: CheckIcon,
     title: 'No Tracking',
     description: 'We don\'t track you, we don\'t profile you, we don\'t sell your data. Your privacy is not for sale.',
   },
   {
-    icon: LightningBoltIcon,
+    icon: ZapIcon,
     title: 'Modern & Fast',
     description: 'Built with modern technologies for speed and reliability without compromising on security.',
   },

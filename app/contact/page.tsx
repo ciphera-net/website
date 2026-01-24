@@ -2,10 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  ChatBubbleIcon, 
-  PaperPlaneIcon,
-} from '@radix-ui/react-icons'
+import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
 import { 
   Input, 
   Select, 
@@ -35,7 +32,7 @@ const contactMethods = [
     gradient: 'from-neutral-700 to-neutral-900',
   },
   {
-    icon: ChatBubbleIcon,
+    icon: MailIcon,
     title: 'Business',
     description: 'Partnership and enterprise inquiries',
     value: 'business@ciphera.net',
@@ -310,7 +307,7 @@ export default function ContactPage() {
                   >
                     {!status || status === 'idle' || status === 'success' || status === 'error' ? (
                       <>
-                        <PaperPlaneIcon className="w-5 h-5 mr-2" />
+                        <ArrowRightIcon className="w-5 h-5 mr-2" />
                         Send Message
                       </>
                     ) : null}

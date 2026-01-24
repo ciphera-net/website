@@ -5,7 +5,7 @@ import { HeartIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
 
 const philosophyPoints = [
   {
-    icon: LockClosedIcon,
+    icon: LockIcon,
     title: 'Cryptography First',
     description: 'We don\'t rely on promises or policies. Our architecture uses zero-knowledge cryptography, meaning we mathematically cannot access your data—even if we wanted to.',
   },
