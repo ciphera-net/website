@@ -3,12 +3,14 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { CheckCircleIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
+import SwissFlagIcon from './SwissFlagIcon'
 
 // * Trust indicators displayed below CTAs
 const trustIndicators = [
-  { icon: LockIcon, text: 'End-to-end encrypted' },
-  { icon: CheckCircleIcon, text: 'Open source' },
-  { icon: GlobeIcon, text: 'Zero-knowledge by design' },
+  { icon: LockIcon, text: 'End-to-end encrypted', iconClassName: 'w-4 h-4 text-brand-orange' },
+  { icon: CheckCircleIcon, text: 'Open source', iconClassName: 'w-4 h-4 text-brand-orange' },
+  { icon: GlobeIcon, text: 'Zero-knowledge by design', iconClassName: 'w-4 h-4 text-brand-orange' },
+  { icon: SwissFlagIcon, text: 'Swiss infrastructure', iconClassName: 'w-4 h-4' },
 ]
 
 export default function Hero() {
@@ -109,7 +111,7 @@ export default function Hero() {
                 key={index}
                 className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400"
               >
-                <item.icon className="w-4 h-4 text-brand-orange" />
+                <item.icon className={item.iconClassName ?? 'w-4 h-4 text-brand-orange'} />
                 <span>{item.text}</span>
               </div>
             ))}

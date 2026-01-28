@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { LockIcon, EyeOffIcon, LayoutDashboardIcon, GlobeIcon, CheckIcon, ZapIcon } from '@ciphera-net/ui'
+import SwissFlagIcon from './SwissFlagIcon'
 
 const features = [
   {
@@ -34,6 +35,12 @@ const features = [
     title: 'Modern & Fast',
     description: 'Built with modern technologies for speed and reliability without compromising on security.',
   },
+  {
+    icon: SwissFlagIcon,
+    title: 'Swiss Infrastructure',
+    description: 'All services run in Switzerland (Zurich). Your data benefits from Swiss data protection laws and stays in a privacy-respecting jurisdiction.',
+    useFlagIcon: true,
+  },
 ]
 
 export default function Features() {
@@ -62,6 +69,7 @@ export default function Features() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {features.map((feature, index) => {
             const Icon = feature.icon
+            const useFlagIcon = 'useFlagIcon' in feature && feature.useFlagIcon
             return (
               <motion.div
                 key={feature.title}
@@ -72,8 +80,8 @@ export default function Features() {
                 className="group"
               >
                 <div className="h-full card card-hover p-6 lg:p-8">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-orange/10 to-brand-orange/5 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                    <Icon className="w-7 h-7 text-brand-orange" />
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden ${useFlagIcon ? 'bg-neutral-100 dark:bg-neutral-800 ring-1 ring-neutral-200 dark:ring-neutral-700' : 'bg-gradient-to-br from-brand-orange/10 to-brand-orange/5'}`}>
+                    {useFlagIcon ? <SwissFlagIcon className="w-8 h-8" /> : <Icon className="w-7 h-7 text-brand-orange" />}
                   </div>
                   
                   <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { HeartIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
+import SwissFlagIcon from './SwissFlagIcon'
 
 const philosophyPoints = [
   {
@@ -18,6 +19,12 @@ const philosophyPoints = [
     icon: GlobeIcon,
     title: 'Verified, Not Vouched',
     description: 'Our code is open source because verification beats marketing. Anyone can audit our security claims, and we welcome the scrutiny.',
+  },
+  {
+    icon: SwissFlagIcon,
+    title: 'Swiss infrastructure',
+    description: 'All services run on Swiss infrastructure (Zurich). Your data benefits from Swiss data protection laws and stays in a privacy-respecting jurisdiction.',
+    useFlagIcon: true,
   },
 ]
 
@@ -76,6 +83,7 @@ export default function Philosophy() {
           >
             {philosophyPoints.map((point, index) => {
               const Icon = point.icon
+              const useFlagIcon = 'useFlagIcon' in point && point.useFlagIcon
               return (
                 <motion.div
                   key={point.title}
@@ -86,8 +94,8 @@ export default function Philosophy() {
                   className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/[0.07] hover:border-white/20 transition-all duration-300"
                 >
                   <div className="flex gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-hover flex items-center justify-center shrink-0 shadow-lg shadow-brand-orange/20">
-                      <Icon className="w-6 h-6 text-white" />
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${useFlagIcon ? 'bg-white/10 ring-1 ring-white/20' : 'bg-gradient-to-br from-brand-orange to-brand-orange-hover shadow-lg shadow-brand-orange/20'}`}>
+                      {useFlagIcon ? <SwissFlagIcon className="w-7 h-7" /> : (Icon && <Icon className="w-6 h-6 text-white" />)}
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-white mb-2">{point.title}</h3>

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { UserIcon, LockIcon, MailIcon, GlobeIcon } from '@ciphera-net/ui'
 import Image from 'next/image'
+import SwissFlagIcon from './SwissFlagIcon'
 
 // * Architecture nodes for the ecosystem diagram
 const services = [
@@ -114,6 +115,10 @@ export default function Infrastructure() {
           <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
             A modular architecture where identity, data, and protection are strictly separated—ensuring true privacy by design.
           </p>
+          <span className="badge-neutral mt-4 inline-flex items-center gap-1.5">
+            <SwissFlagIcon className="w-3.5 h-3.5" />
+            Swiss infrastructure · Zurich
+          </span>
         </motion.div>
 
         {/* * Architecture Diagram */}

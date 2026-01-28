@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { GithubIcon, TwitterIcon } from '@ciphera-net/ui'
+import SwissFlagIcon from './SwissFlagIcon'
 
 const footerLinks = {
   products: [
@@ -54,6 +55,12 @@ export default function Footer() {
             <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
               Privacy-first infrastructure and applications built on zero-knowledge principles.
             </p>
+            <div className="inline-flex items-center gap-2.5 text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 shrink-0 overflow-hidden ring-1 ring-neutral-200 dark:ring-neutral-700" aria-hidden>
+                <SwissFlagIcon className="w-5 h-5" />
+              </span>
+              <span>Swiss infrastructure (Zurich).</span>
+            </div>
             <div className="flex items-center gap-3">
               <a
                 href="https://github.com/ciphera-net"
