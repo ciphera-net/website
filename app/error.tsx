@@ -12,7 +12,7 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    // * Log error to console in development
+    // * Log error to console in developmentt
     if (process.env.NODE_ENV === 'development') {
       console.error('Error:', error)
     }
