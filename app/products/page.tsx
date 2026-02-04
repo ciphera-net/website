@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { UserIcon, LockIcon, MailIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import { track } from '../../lib/pulse'
 
 const products = [
   {
@@ -231,6 +232,7 @@ export default function ProductsPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary inline-flex"
+                  onClick={() => track('product_try_drop')}
                 >
                   Try Drop Now
                   <ArrowRightIcon className="w-4 h-4" />
@@ -357,11 +359,11 @@ export default function ProductsPage() {
                 Try Drop—our encrypted file sharing application. Free, secure, and built on cryptographic guarantees.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="btn-primary">
+                <Link href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="btn-primary" onClick={() => track('product_try_drop')}>
                   Get Started with Drop
                   <ArrowRightIcon className="w-4 h-4" />
                 </Link>
-                <Link href="/about" className="btn-ghost text-white hover:text-white hover:bg-white/10">
+                <Link href="/about" className="btn-ghost text-white hover:text-white hover:bg-white/10" onClick={() => track('cta_learn_more_about_us')}>
                   Learn more about us
                 </Link>
               </div>

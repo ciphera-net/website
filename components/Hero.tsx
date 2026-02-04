@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { CheckCircleIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
 import SwissFlagIcon from './SwissFlagIcon'
+import { track } from '../lib/pulse'
 
 // * Trust indicators displayed below CTAs
 const trustIndicators = [
@@ -88,13 +89,13 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
         >
-            <Link href="/products" className="btn-primary text-base sm:text-lg px-8 py-3.5">
+            <Link href="/products" className="btn-primary text-base sm:text-lg px-8 py-3.5" onClick={() => track('cta_explore_products')}>
               Explore Products
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </Link>
-            <Link href="/about" className="btn-secondary text-base sm:text-lg px-8 py-3.5">
+            <Link href="/about" className="btn-secondary text-base sm:text-lg px-8 py-3.5" onClick={() => track('cta_our_mission')}>
               Our Mission
           </Link>
           </motion.div>

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { ChevronDownIcon } from '@ciphera-net/ui'
+import { track } from '../lib/pulse'
 
 const faqs = [
   {
@@ -57,7 +58,10 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
       className="border-b border-neutral-200 dark:border-neutral-800"
     >
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!isOpen) track('faq_expand')
+          setIsOpen(!isOpen)
+        }}
         className="w-full py-6 flex items-center justify-between text-left hover:text-brand-orange transition-colors"
       >
         <h3 className="text-lg font-semibold text-neutral-900 dark:text-white pr-4">
@@ -133,6 +137,7 @@ export default function FAQ() {
             <a
               href="/contact"
               className="btn-secondary inline-flex"
+              onClick={() => track('faq_contact_click')}
             >
               Contact us
             </a>

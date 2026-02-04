@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { GithubIcon, TwitterIcon } from '@ciphera-net/ui'
 import SwissFlagIcon from './SwissFlagIcon'
+import { track } from '../lib/pulse'
 
 const footerLinks = {
   products: [
@@ -68,6 +69,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
                 aria-label="GitHub"
+                onClick={() => track('footer_github_click')}
               >
                 <GithubIcon className="w-5 h-5" />
               </a>

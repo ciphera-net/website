@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ThemeToggle, MenuIcon, XIcon } from '@ciphera-net/ui'
+import { track } from '../lib/pulse'
 
 // * Ciphera website header - matches ciphera-ui style
 export default function Header() {
@@ -69,7 +70,10 @@ export default function Header() {
           {/* * Mobile Menu Toggle */}
           <button
             className="md:hidden p-2.5 -mr-2 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={() => {
+              if (!isMobileMenuOpen) track('mobile_menu_open')
+              setIsMobileMenuOpen(!isMobileMenuOpen)
+            }}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <XIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}

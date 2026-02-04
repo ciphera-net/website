@@ -13,6 +13,7 @@ import {
   ArrowRightIcon
 } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import { track } from '../../lib/pulse'
 
 const contactMethods = [
   {
@@ -22,6 +23,7 @@ const contactMethods = [
     value: 'hello@ciphera.net',
     href: 'mailto:hello@ciphera.net',
     gradient: 'from-brand-orange to-brand-orange-hover',
+    trackEvent: 'contact_email_hello_click' as const,
   },
   {
     icon: AlertTriangleIcon,
@@ -30,6 +32,7 @@ const contactMethods = [
     value: 'security@ciphera.net',
     href: 'mailto:security@ciphera.net',
     gradient: 'from-neutral-700 to-neutral-900',
+    trackEvent: 'contact_email_security_click' as const,
   },
   {
     icon: MailIcon,
@@ -38,6 +41,7 @@ const contactMethods = [
     value: 'business@ciphera.net',
     href: 'mailto:business@ciphera.net',
     gradient: 'from-neutral-600 to-neutral-800',
+    trackEvent: 'contact_email_business_click' as const,
   },
 ]
 
@@ -107,6 +111,7 @@ export default function ContactPage() {
     setTimeout(() => {
       setStatus('success')
       setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' })
+      track('contact_form_submit')
       setTimeout(() => setStatus('idle'), 5000)
     }, 1500)
   }
@@ -164,6 +169,7 @@ export default function ContactPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group card card-hover p-6 text-center"
+                onClick={() => track(method.trackEvent)}
               >
                 <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${method.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   <Icon className="w-7 h-7 text-white" />

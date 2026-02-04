@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { UserIcon, LockIcon, MailIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
+import { track } from '../lib/pulse'
 
 const products = [
   {
@@ -151,6 +152,7 @@ export default function Products() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:gap-3 transition-all duration-200"
+                      onClick={() => track(product.name === 'Drop' ? 'product_try_drop' : 'product_try_pulse')}
                     >
                       Try {product.name}
                       <ArrowRightIcon className="w-4 h-4" />
@@ -174,7 +176,7 @@ export default function Products() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <Link href="/products" className="btn-secondary">
+          <Link href="/products" className="btn-secondary" onClick={() => track('view_all_products_click')}>
             View all products
             <ArrowRightIcon className="w-4 h-4" />
           </Link>
