@@ -60,7 +60,7 @@ const journeys = [
     description: 'Complete privacy-first infrastructure for your business',
     primaryProduct: 'pulse',
     flow: [
-      { product: 'pulse', label: 'Monitor' },
+      { product: 'pulse', label: 'Insights' },
       { product: 'drop', label: 'Share' },
       { product: 'auth', label: 'Authenticate' },
       { product: 'captcha', label: 'Protect' },

@@ -209,9 +209,9 @@ export default function ProductsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-purple-500/10 via-purple-400/5 to-transparent border border-purple-400/20 dark:border-purple-600/20 p-6 sm:p-8 md:p-12">
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-brand-orange/10 via-brand-orange/5 to-transparent border border-brand-orange/20 dark:border-brand-orange/30 p-6 sm:p-8 md:p-12">
             {/* * Background glow */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 dark:bg-purple-400/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/20 dark:bg-brand-orange/15 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             
             <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               <div>
@@ -261,7 +261,7 @@ export default function ProductsPage() {
 
               <div className="hidden lg:block">
                 <div className="relative aspect-square max-w-sm mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-purple-700/20 dark:from-purple-400/20 dark:to-purple-600/20 rounded-3xl blur-2xl" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/20 to-brand-orange-hover/20 dark:from-brand-orange/15 dark:to-brand-orange-hover/15 rounded-3xl blur-2xl" />
                   <div className="relative w-full h-full rounded-3xl bg-white/5 dark:bg-white/5 border border-white/10 flex items-center justify-center">
                     <Image
                       src="/pulse_icon_no_margins.png"
