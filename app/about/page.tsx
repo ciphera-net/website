@@ -60,9 +60,9 @@ const organizationSchema = {
   foundingDate: '2024',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Frankrijklei 5/401',
-    addressLocality: 'Antwerp',
-    postalCode: '2000',
+    streetAddress: 'De Kleetlaan 2',
+    addressLocality: 'Diegem',
+    postalCode: '1831',
     addressCountry: 'BE',
   },
   contactPoint: {

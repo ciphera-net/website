@@ -96,20 +96,21 @@ export default function Products() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -4 }}
                 className="group"
               >
-                <div className="h-full p-6 lg:p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-black/50 transition-all duration-300">
+                <div className="h-full p-6 lg:p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-brand-orange/50 dark:hover:border-brand-orange/50 hover:shadow-2xl hover:shadow-brand-orange/10 dark:hover:shadow-brand-orange/20 transition-all duration-300">
                   {/* * Header */}
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center shadow-lg`}>
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                         {product.isImage ? (
                           <Image 
                             src={product.icon as string} 
                             alt={`${product.name} - ${product.tagline} icon`}
                             width={32} 
                             height={32}
-                            loading="lazy"
+                            unoptimized
                             className="w-8 h-8"
                           />
                         ) : (
@@ -117,7 +118,7 @@ export default function Products() {
                         )}
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-neutral-900 dark:text-white">
+                        <h3 className="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-brand-orange transition-colors duration-200">
                           {product.name}
                         </h3>
                         <p className="text-sm text-neutral-500 dark:text-neutral-400">
@@ -155,7 +156,7 @@ export default function Products() {
                       onClick={() => track(product.name === 'Drop' ? 'product_try_drop' : 'product_try_pulse')}
                     >
                       Try {product.name}
-                      <ArrowRightIcon className="w-4 h-4" />
+                      <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                     </Link>
                   ) : (
                     <span className="inline-flex items-center gap-2 text-neutral-400 font-medium">

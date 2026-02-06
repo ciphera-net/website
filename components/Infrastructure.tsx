@@ -75,7 +75,7 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
                 alt={`${service.name} - ${service.description} logo`}
                 width={32} 
                 height={32}
-                loading="lazy"
+                unoptimized
                 className="w-8 h-8"
               />
             ) : (
@@ -117,7 +117,7 @@ export default function Infrastructure() {
           </p>
           <span className="badge-neutral mt-4 inline-flex items-center gap-1.5">
             <SwissFlagIcon className="w-3.5 h-3.5" />
-            Swiss infrastructure · Zurich
+            Swiss infrastructure
           </span>
         </motion.div>
 
@@ -287,7 +287,7 @@ export default function Infrastructure() {
                 alt={`${service.name} - ${service.description} logo`}
                 width={28} 
                 height={28}
-                loading="lazy"
+                unoptimized
                 className="w-7 h-7"
               />
                   ) : (

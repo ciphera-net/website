@@ -1,9 +1,11 @@
 import Hero from '../components/Hero'
-import Infrastructure from '../components/Infrastructure'
+import Ecosystem from '../components/Ecosystem'
 import Features from '../components/Features'
 import Philosophy from '../components/Philosophy'
+import SocialProof from '../components/SocialProof'
 import Products from '../components/Products'
-import FAQ from '../components/FAQ'
+import EnhancedFAQ from '../components/EnhancedFAQ'
+import Newsletter from '../components/Newsletter'
 
 // * JSON-LD structured data for homepage
 const homepageSchema = {
@@ -39,11 +41,13 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchema) }}
       />
       <Hero />
-      <Infrastructure />
+      <Ecosystem />
       <Features />
       <Philosophy />
+      <SocialProof />
       <Products />
-      <FAQ />
+      <EnhancedFAQ />
+      <Newsletter />
     </>
   )
 }

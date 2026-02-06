@@ -10,17 +10,21 @@ const footerLinks = {
   products: [
     { name: 'Drop', href: 'https://drop.ciphera.net', external: true },
     { name: 'Pulse', href: 'https://pulse.ciphera.net', external: true },
-    { name: 'Ciphera Auth', href: '/products#auth', external: false },
-    { name: 'Ciphera Captcha', href: '/products#captcha', external: false },
-    { name: 'Ciphera Relay', href: '/products#relay', external: false },
+    { name: 'Ciphera Auth', href: '/products/auth', external: false },
+    { name: 'Ciphera Captcha', href: '/products/captcha', external: false },
+    { name: 'Ciphera Relay', href: '/products/relay', external: false },
   ],
   company: [
     { name: 'About', href: '/about', external: false },
     { name: 'For Companies', href: '/companies', external: false },
     { name: 'Contact', href: '/contact', external: false },
+    { name: 'Careers', href: '#', external: false },
   ],
   resources: [
+    { name: 'Blog', href: '/blog', external: false },
     { name: 'Documentation', href: '#', external: false },
+    { name: 'Comparison', href: '/comparison', external: false },
+    { name: 'Status Page', href: '#', external: false },
     { name: 'GitHub', href: 'https://github.com/ciphera-net', external: true },
   ],
   legal: [
@@ -46,7 +50,7 @@ export default function Footer() {
                 alt="Ciphera privacy-first platform logo"
                 width={36}
                 height={36}
-                loading="lazy"
+                unoptimized
                 className="w-9 h-9 group-hover:scale-105 transition-transform duration-300"
               />
               <span className="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-brand-orange transition-colors duration-300">
@@ -60,7 +64,7 @@ export default function Footer() {
               <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 shrink-0 overflow-hidden ring-1 ring-neutral-200 dark:ring-neutral-700" aria-hidden>
                 <SwissFlagIcon className="w-5 h-5" />
               </span>
-              <span>Swiss infrastructure (Zurich).</span>
+              <span>Swiss infrastructure</span>
             </div>
             <div className="flex items-center gap-3">
               <a

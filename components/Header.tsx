@@ -1,14 +1,36 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ThemeToggle, MenuIcon, XIcon } from '@ciphera-net/ui'
+import { ThemeToggle, MenuIcon, XIcon, ChevronDownIcon, UserIcon, LockIcon, MailIcon } from '@ciphera-net/ui'
 import { track } from '../lib/pulse'
+
+const products = [
+  { name: 'Drop', href: 'https://drop.ciphera.net', description: 'Secure file sharing', icon: '/drop_icon_no_margins.png', external: true },
+  { name: 'Pulse', href: 'https://pulse.ciphera.net', description: 'Privacy-first analytics', icon: '/pulse_icon_no_margins.png', external: true },
+  { name: 'Ciphera Auth', href: '/products/auth', description: 'Identity provider', icon: UserIcon, external: false },
+  { name: 'Ciphera Captcha', href: '/products/captcha', description: 'Bot protection', icon: LockIcon, external: false },
+  { name: 'Ciphera Relay', href: '/products/relay', description: 'Email infrastructure', icon: MailIcon, external: false },
+]
 
 // * Ciphera website header - matches ciphera-ui style
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isProductsOpen, setIsProductsOpen] = useState(false)
+  const productsRef = useRef<HTMLDivElement>(null)
+
+  // * Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (productsRef.current && !productsRef.current.contains(event.target as Node)) {
+        setIsProductsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
     <header 
@@ -27,7 +49,8 @@ export default function Header() {
               width={44}
               height={44}
               priority
-              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 transform-gpu will-change-transform [backface-visibility:hidden]"
+              unoptimized
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
             />
           </div>
           <span className="text-lg sm:text-xl md:text-2xl font-bold text-neutral-900 dark:text-white tracking-tight group-hover:text-brand-orange transition-colors duration-300">
@@ -43,12 +66,89 @@ export default function Header() {
           >
             About
           </Link>
-          <Link
-            href="/products"
-            className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
-          >
-            Products
-          </Link>
+          
+          {/* * Products dropdown */}
+          <div className="relative" ref={productsRef}>
+            <button
+              onClick={() => {
+                setIsProductsOpen(!isProductsOpen)
+                if (!isProductsOpen) track('products_dropdown_open')
+              }}
+              className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 flex items-center gap-1"
+            >
+              Products
+              <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isProductsOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {isProductsOpen && (
+              <div className="absolute top-full right-0 mt-2 w-72 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-2xl shadow-neutral-500/20 dark:shadow-black/50 p-2 z-50 animate-in slide-in-from-top-2 fade-in duration-200">
+                {products.map((product) => {
+                  const Icon = product.icon as React.ComponentType<{ className?: string }>
+                  const content = (
+                    <div className="flex items-start gap-3 px-4 py-3 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center shrink-0">
+                        {typeof product.icon === 'string' ? (
+                          <Image 
+                            src={product.icon} 
+                            alt={product.name} 
+                            width={20} 
+                            height={20} 
+                            unoptimized
+                            className="w-5 h-5" 
+                          />
+                        ) : (
+                          <Icon className="w-5 h-5 text-white" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-neutral-900 dark:text-white text-sm">
+                          {product.name}
+                        </div>
+                        <div className="text-xs text-neutral-500 dark:text-neutral-400">
+                          {product.description}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                  
+                  return product.external ? (
+                    <a
+                      key={product.name}
+                      href={product.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => {
+                        setIsProductsOpen(false)
+                        track(`products_dropdown_${product.name.toLowerCase()}`)
+                      }}
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <Link
+                      key={product.name}
+                      href={product.href}
+                      onClick={() => {
+                        setIsProductsOpen(false)
+                        track(`products_dropdown_${product.name.toLowerCase()}`)
+                      }}
+                    >
+                      {content}
+                    </Link>
+                  )
+                })}
+                <div className="h-px bg-gradient-to-r from-transparent via-neutral-200 dark:via-neutral-800 to-transparent my-2" />
+                <Link
+                  href="/products"
+                  className="block px-4 py-3 text-sm font-medium text-brand-orange hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-colors text-center"
+                  onClick={() => setIsProductsOpen(false)}
+                >
+                  View All Products →
+                </Link>
+              </div>
+            )}
+          </div>
+          
           <Link
             href="/companies"
             className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"

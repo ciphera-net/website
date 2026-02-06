@@ -23,7 +23,7 @@ const philosophyPoints = [
   {
     icon: SwissFlagIcon,
     title: 'Swiss infrastructure',
-    description: 'All services run on Swiss infrastructure (Zurich). Your data benefits from Swiss data protection laws and stays in a privacy-respecting jurisdiction.',
+    description: 'All services run on Swiss infrastructure. Your data benefits from Swiss data protection laws and stays in a privacy-respecting jurisdiction.',
     useFlagIcon: true,
   },
 ]
@@ -91,15 +91,15 @@ export default function Philosophy() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                  className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/[0.07] hover:border-white/20 transition-all duration-300"
+                  className="p-6 lg:p-8 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/[0.08] hover:border-white/25 transition-all duration-300 hover:shadow-2xl hover:shadow-brand-orange/10"
                 >
-                  <div className="flex gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${useFlagIcon ? 'bg-white/10 ring-1 ring-white/20' : 'bg-gradient-to-br from-brand-orange to-brand-orange-hover shadow-lg shadow-brand-orange/20'}`}>
-                      {useFlagIcon ? <SwissFlagIcon className="w-7 h-7" /> : (Icon && <Icon className="w-6 h-6 text-white" />)}
+                  <div className="flex gap-5">
+                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${useFlagIcon ? 'bg-white/15 ring-1 ring-white/30' : 'bg-gradient-to-br from-brand-orange to-brand-orange-hover shadow-lg shadow-brand-orange/30'}`}>
+                      {useFlagIcon ? <SwissFlagIcon className="w-8 h-8" /> : (Icon && <Icon className="w-7 h-7 text-white" />)}
                     </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-2">{point.title}</h3>
-                      <p className="text-neutral-400 leading-relaxed text-sm">{point.description}</p>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-white mb-3">{point.title}</h3>
+                      <p className="text-neutral-300 leading-relaxed">{point.description}</p>
                     </div>
                   </div>
                 </motion.div>
