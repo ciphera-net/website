@@ -77,8 +77,8 @@ const services = [
     gradient: 'from-neutral-500 to-neutral-700',
   },
   {
-    icon: UserIcon,
-    isImage: false,
+    icon: '/auth_icon_no_margins.png',
+    isImage: true,
     name: 'Ciphera Auth',
     description: 'Enterprise identity provider with advanced security features. Replace vulnerable authentication systems with zero-knowledge architecture.',
     features: [
@@ -92,8 +92,8 @@ const services = [
     gradient: 'from-neutral-500 to-neutral-700',
   },
   {
-    icon: LockIcon,
-    isImage: false,
+    icon: '/captcha_icon_no_margins.png',
+    isImage: true,
     name: 'Ciphera Captcha',
     description: 'Bot protection that respects privacy. No tracking, no cookies, just effective protection.',
     features: [
@@ -344,8 +344,8 @@ export default function CompaniesPage() {
                             alt={`${service.name} - Enterprise privacy solution icon`}
                             width={32} 
                             height={32}
-                            loading="lazy"
-                            className="w-8 h-8"
+                            unoptimized
+                            className="w-8 h-8 object-contain"
                           />
                           ) : (
                             <Icon className="w-7 h-7 text-white" />

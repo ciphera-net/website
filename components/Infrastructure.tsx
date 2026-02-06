@@ -29,8 +29,8 @@ const services = [
     id: 'auth',
     name: 'Ciphera Auth',
     description: 'Identity provider',
-    icon: UserIcon,
-    isImage: false,
+    icon: '/auth_icon_no_margins.png',
+    isImage: true,
     gradient: 'from-neutral-500 to-neutral-700',
     position: 'left',
   },
@@ -38,8 +38,8 @@ const services = [
     id: 'captcha',
     name: 'Ciphera Captcha',
     description: 'Bot protection',
-    icon: LockIcon,
-    isImage: false,
+    icon: '/captcha_icon_no_margins.png',
+    isImage: true,
     gradient: 'from-neutral-500 to-neutral-700',
     position: 'right',
   },
@@ -76,7 +76,7 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
                 width={32} 
                 height={32}
                 unoptimized
-                className="w-8 h-8"
+                className="w-8 h-8 object-contain"
               />
             ) : (
               <Icon className="w-7 h-7 text-white" />
@@ -288,7 +288,7 @@ export default function Infrastructure() {
                 width={28} 
                 height={28}
                 unoptimized
-                className="w-7 h-7"
+                className="w-7 h-7 object-contain"
               />
                   ) : (
                     <Icon className="w-6 h-6 text-white" />

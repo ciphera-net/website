@@ -9,8 +9,8 @@ import { track } from '../lib/pulse'
 const products = [
   { name: 'Drop', href: 'https://drop.ciphera.net', description: 'Secure file sharing', icon: '/drop_icon_no_margins.png', external: true },
   { name: 'Pulse', href: 'https://pulse.ciphera.net', description: 'Privacy-first analytics', icon: '/pulse_icon_no_margins.png', external: true },
-  { name: 'Ciphera Auth', href: '/products/auth', description: 'Identity provider', icon: UserIcon, external: false },
-  { name: 'Ciphera Captcha', href: '/products/captcha', description: 'Bot protection', icon: LockIcon, external: false },
+  { name: 'Ciphera Auth', href: '/products/auth', description: 'Identity provider', icon: '/auth_icon_no_margins.png', external: false },
+  { name: 'Ciphera Captcha', href: '/products/captcha', description: 'Bot protection', icon: '/captcha_icon_no_margins.png', external: false },
   { name: 'Ciphera Relay', href: '/products/relay', description: 'Email infrastructure', icon: MailIcon, external: false },
 ]
 
@@ -94,7 +94,7 @@ export default function Header() {
                             width={20} 
                             height={20} 
                             unoptimized
-                            className="w-5 h-5" 
+                            className="w-5 h-5 object-contain" 
                           />
                         ) : (
                           <Icon className="w-5 h-5 text-white" />

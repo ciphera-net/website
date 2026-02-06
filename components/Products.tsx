@@ -30,8 +30,8 @@ const products = [
     available: true,
   },
   {
-    icon: UserIcon,
-    isImage: false,
+    icon: '/auth_icon_no_margins.png',
+    isImage: true,
     name: 'Ciphera Auth',
     tagline: 'Identity provider',
     description: 'Secure authentication for the Ciphera ecosystem with OAuth2, JWT, and advanced security features.',
@@ -41,8 +41,8 @@ const products = [
     available: true,
   },
   {
-    icon: LockIcon,
-    isImage: false,
+    icon: '/captcha_icon_no_margins.png',
+    isImage: true,
     name: 'Ciphera Captcha',
     tagline: 'Bot protection',
     description: 'Protect your applications from bots and automated abuse with visual and proof-of-work challenges.',
@@ -111,7 +111,7 @@ export default function Products() {
                             width={32} 
                             height={32}
                             unoptimized
-                            className="w-8 h-8"
+                            className="w-8 h-8 object-contain"
                           />
                         ) : (
                           <Icon className="w-7 h-7 text-white" />

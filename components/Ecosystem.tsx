@@ -14,8 +14,8 @@ const useCases = [
     description: 'Share confidential documents with clients or team members without compromising security.',
     flow: [
       { step: 'Upload', product: 'Drop', icon: '/drop_icon_no_margins.png' },
-      { step: 'Authenticate', product: 'Auth', icon: UserIcon },
-      { step: 'Protect', product: 'Captcha', icon: LockIcon },
+      { step: 'Authenticate', product: 'Auth', icon: '/auth_icon_no_margins.png' },
+      { step: 'Protect', product: 'Captcha', icon: '/captcha_icon_no_margins.png' },
     ],
     gradient: 'from-brand-orange/10 to-neutral-100',
   },
@@ -25,7 +25,7 @@ const useCases = [
     description: 'Track user behavior and debug issues while respecting user privacy.',
     flow: [
       { step: 'Track', product: 'Pulse', icon: '/pulse_icon_no_margins.png' },
-      { step: 'Verify', product: 'Auth', icon: UserIcon },
+      { step: 'Verify', product: 'Auth', icon: '/auth_icon_no_margins.png' },
       { step: 'Notify', product: 'Relay', icon: MailIcon },
     ],
     gradient: 'from-purple-100 to-neutral-100',
@@ -37,8 +37,8 @@ const useCases = [
     flow: [
       { step: 'Store', product: 'Drop', icon: '/drop_icon_no_margins.png' },
       { step: 'Analyze', product: 'Pulse', icon: '/pulse_icon_no_margins.png' },
-      { step: 'Authenticate', product: 'Auth', icon: UserIcon },
-      { step: 'Protect', product: 'Captcha', icon: LockIcon },
+      { step: 'Authenticate', product: 'Auth', icon: '/auth_icon_no_margins.png' },
+      { step: 'Protect', product: 'Captcha', icon: '/captcha_icon_no_margins.png' },
       { step: 'Communicate', product: 'Relay', icon: MailIcon },
     ],
     gradient: 'from-blue-100 to-neutral-100',
@@ -75,7 +75,7 @@ function UseCaseCard({ useCase, index }: { useCase: typeof useCases[0]; index: n
                       width={16} 
                       height={16}
                       unoptimized
-                      className="w-4 h-4"
+                      className="w-4 h-4 object-contain"
                     />
                   ) : (
                     <item.icon className="w-4 h-4 text-white" />

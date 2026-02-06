@@ -28,8 +28,8 @@ const products = [
     highlight: true,
   },
   {
-    icon: UserIcon,
-    isImage: false,
+    icon: '/auth_icon_no_margins.png',
+    isImage: true,
     name: 'Ciphera Auth',
     tagline: 'Identity provider',
     description: 'Centralized identity provider with secure authentication, OAuth flows, and JWT issuance for the Ciphera ecosystem.',
@@ -47,8 +47,8 @@ const products = [
     highlight: false,
   },
   {
-    icon: LockIcon,
-    isImage: false,
+    icon: '/captcha_icon_no_margins.png',
+    isImage: true,
     name: 'Ciphera Captcha',
     tagline: 'Bot protection',
     description: 'Bot protection service with visual captchas and Proof-of-Work challenges to prevent automated abuse.',
@@ -293,7 +293,18 @@ export default function ProductsPage() {
                   <div className="h-full card card-hover p-6 lg:p-8">
                     <div className="flex items-center justify-between mb-6">
                       <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center shadow-lg`}>
-                        <Icon className="w-7 h-7 text-white" />
+                        {product.isImage ? (
+                          <Image 
+                            src={product.icon as string} 
+                            alt={`${product.name} icon`}
+                            width={32} 
+                            height={32}
+                            unoptimized
+                            className="w-8 h-8 object-contain"
+                          />
+                        ) : (
+                          <Icon className="w-7 h-7 text-white" />
+                        )}
                       </div>
                       <span className="badge-neutral-status text-[10px]">{product.status}</span>
                     </div>
