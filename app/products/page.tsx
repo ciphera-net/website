@@ -22,7 +22,7 @@ const products = [
       'Custom event tracking',
       'Team collaboration features',
     ],
-    link: 'https://pulse.ciphera.net',
+    link: '/products/pulse',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
     highlight: true,
@@ -41,7 +41,7 @@ const products = [
       'Configurable expiration times',
       'One-time download option',
     ],
-    link: 'https://drop.ciphera.net',
+    link: '/products/drop',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
     highlight: false,
@@ -248,13 +248,11 @@ export default function ProductsPage() {
                 </ul>
 
                 <Link
-                  href="https://pulse.ciphera.net"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/products/pulse"
                   className="btn-primary inline-flex"
-                  onClick={() => track('product_try_pulse')}
+                  onClick={() => track('product_view_pulse')}
                 >
-                  Try Pulse Now
+                  Learn More
                   <ArrowRightIcon className="w-4 h-4" />
                 </Link>
               </div>
@@ -391,8 +389,8 @@ export default function ProductsPage() {
                 Try Drop—our encrypted file sharing application. Free, secure, and built on cryptographic guarantees.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="btn-primary" onClick={() => track('product_try_drop')}>
-                  Get Started with Drop
+                <Link href="/products/drop" className="btn-primary" onClick={() => track('product_view_drop')}>
+                  Learn More About Drop
                   <ArrowRightIcon className="w-4 h-4" />
                 </Link>
                 <Link href="/about" className="btn-ghost text-white hover:text-white hover:bg-white/10" onClick={() => track('cta_learn_more_about_us')}>

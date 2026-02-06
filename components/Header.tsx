@@ -7,8 +7,8 @@ import { ThemeToggle, MenuIcon, XIcon, ChevronDownIcon, UserIcon, LockIcon, Mail
 import { track } from '../lib/pulse'
 
 const products = [
-  { name: 'Pulse', href: 'https://pulse.ciphera.net', description: 'Privacy-first analytics', icon: '/pulse_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: true },
-  { name: 'Drop', href: 'https://drop.ciphera.net', description: 'Secure file sharing', icon: '/drop_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: true },
+  { name: 'Pulse', href: '/products/pulse', description: 'Privacy-first analytics', icon: '/pulse_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
+  { name: 'Drop', href: '/products/drop', description: 'Secure file sharing', icon: '/drop_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
   { name: 'Ciphera Auth', href: '/products/auth', description: 'Identity provider', icon: '/auth_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
   { name: 'Ciphera Captcha', href: '/products/captcha', description: 'Bot protection', icon: '/captcha_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
   { name: 'Ciphera Relay', href: '/products/relay', description: 'Email infrastructure', icon: MailIcon, iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },

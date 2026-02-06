@@ -14,7 +14,7 @@ const products = [
     tagline: 'Privacy-first analytics & replay',
     description: 'Real-time user insights and session replay without compromising user privacy. Visualize user journeys and debug issues instantly.',
     features: ['Session replay', 'Geographic heatmaps', 'Real-time traffic monitoring', 'Privacy-preserving data collection'],
-    link: 'https://pulse.ciphera.net',
+    link: '/products/pulse',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
@@ -25,7 +25,7 @@ const products = [
     tagline: 'Secure file sharing',
     description: 'Share files securely with end-to-end encryption. Your files are encrypted before they leave your device.',
     features: ['AES-256-GCM encryption', 'Zero-knowledge storage', 'Password protection', 'Expiring links'],
-    link: 'https://drop.ciphera.net',
+    link: '/products/drop',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
@@ -150,12 +150,10 @@ export default function Products() {
                   {product.link !== '#' ? (
                     <Link
                       href={product.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:gap-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
-                      onClick={() => track(product.name === 'Drop' ? 'product_try_drop' : 'product_try_pulse')}
+                      onClick={() => track(product.name === 'Drop' ? 'product_view_drop' : 'product_view_pulse')}
                     >
-                      Try {product.name}
+                      Learn More
                       <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                     </Link>
                   ) : (

@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { LockIcon, CheckIcon, ArrowRightIcon } from '@ciphera-net/ui'
 
 // * Icon aliases for consistent display
@@ -18,8 +19,14 @@ export default function CipheraCaptchaPage() {
       <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center mx-auto mb-6 shadow-2xl">
-              <LockIcon className="w-10 h-10 text-white" />
+            <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
+              <Image
+                src="/captcha_icon_no_margins.png"
+                alt="Ciphera Captcha"
+                width={64}
+                height={64}
+                className="w-full h-full object-contain"
+              />
             </div>
             <span className="badge-primary mb-4 inline-flex">Bot Protection</span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6">
