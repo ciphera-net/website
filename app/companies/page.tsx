@@ -74,7 +74,7 @@ const services = [
       'Custom retention policies',
       'SSO integration',
     ],
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
   },
   {
     icon: '/auth_icon_no_margins.png',
@@ -89,7 +89,7 @@ const services = [
       'Enterprise SSO',
       'Custom branding',
     ],
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
   },
   {
     icon: '/captcha_icon_no_margins.png',
@@ -104,7 +104,7 @@ const services = [
       'Custom difficulty settings',
       'Analytics-free',
     ],
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
   },
   {
     icon: MailIcon,
@@ -119,7 +119,7 @@ const services = [
       'Email analytics',
       'Custom domain support',
     ],
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
   },
 ]
 
@@ -337,7 +337,7 @@ export default function CompaniesPage() {
                   <div className="h-full card card-hover p-6 lg:p-8">
                     <div className="flex items-start justify-between mb-6">
                       <div className="flex items-center gap-4">
-                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center shadow-lg`}>
+                        <div className={`w-14 h-14 rounded-2xl ${service.iconBg} flex items-center justify-center shadow-lg p-2`}>
                           {service.isImage ? (
                           <Image 
                             src={service.icon as string} 
@@ -345,10 +345,10 @@ export default function CompaniesPage() {
                             width={32} 
                             height={32}
                             unoptimized
-                            className="w-8 h-8 object-contain"
+                            className="w-full h-full object-contain"
                           />
                           ) : (
-                            <Icon className="w-7 h-7 text-white" />
+                            <Icon className="w-7 h-7 text-brand-orange" />
                           )}
                         </div>
                         <div>

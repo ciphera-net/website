@@ -8,21 +8,21 @@ import SwissFlagIcon from './SwissFlagIcon'
 // * Architecture nodes for the ecosystem diagram
 const services = [
   {
-    id: 'drop',
-    name: 'Drop',
-    description: 'Secure file sharing',
-    icon: '/drop_icon_no_margins.png',
-    isImage: true,
-    gradient: 'from-neutral-500 to-neutral-700',
-    position: 'top',
-  },
-  {
     id: 'pulse',
     name: 'Pulse',
     description: 'Privacy-first analytics',
     icon: '/pulse_icon_no_margins.png',
     isImage: true,
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    position: 'top',
+  },
+  {
+    id: 'drop',
+    name: 'Drop',
+    description: 'Secure file sharing',
+    icon: '/drop_icon_no_margins.png',
+    isImage: true,
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     position: 'top-right',
   },
   {
@@ -31,7 +31,7 @@ const services = [
     description: 'Identity provider',
     icon: '/auth_icon_no_margins.png',
     isImage: true,
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     position: 'left',
   },
   {
@@ -40,7 +40,7 @@ const services = [
     description: 'Bot protection',
     icon: '/captcha_icon_no_margins.png',
     isImage: true,
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     position: 'right',
   },
   {
@@ -49,7 +49,7 @@ const services = [
     description: 'Email infrastructure',
     icon: MailIcon,
     isImage: false,
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     position: 'bottom',
   },
 ]
@@ -68,7 +68,7 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
     >
       <div className="relative p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
         <div className="flex items-center gap-3">
-          <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center shadow-lg`}>
+          <div className={`w-14 h-14 rounded-2xl ${service.iconBg} flex items-center justify-center shadow-lg p-2`}>
             {service.isImage ? (
               <Image 
                 src={service.icon as string} 
@@ -76,10 +76,10 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
                 width={32} 
                 height={32}
                 unoptimized
-                className="w-8 h-8 object-contain"
+                className="w-full h-full object-contain"
               />
             ) : (
-              <Icon className="w-7 h-7 text-white" />
+              <Icon className="w-7 h-7 text-brand-orange" />
             )}
           </div>
           <div>
@@ -280,7 +280,7 @@ export default function Infrastructure() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="card p-6 card-hover"
               >
-                <div className={`icon-container ${service.gradient} mb-4 shadow-lg`}>
+                <div className={`icon-container ${service.iconBg} mb-4 shadow-lg p-2`}>
                   {service.isImage ? (
               <Image 
                 src={service.icon as string} 
@@ -288,10 +288,10 @@ export default function Infrastructure() {
                 width={28} 
                 height={28}
                 unoptimized
-                className="w-7 h-7 object-contain"
+                className="w-full h-full object-contain"
               />
                   ) : (
-                    <Icon className="w-6 h-6 text-white" />
+                    <Icon className="w-6 h-6 text-brand-orange" />
                   )}
                 </div>
                 <h3 className="font-bold text-lg text-neutral-900 dark:text-white mb-1">

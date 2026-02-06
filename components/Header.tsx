@@ -7,11 +7,11 @@ import { ThemeToggle, MenuIcon, XIcon, ChevronDownIcon, UserIcon, LockIcon, Mail
 import { track } from '../lib/pulse'
 
 const products = [
-  { name: 'Drop', href: 'https://drop.ciphera.net', description: 'Secure file sharing', icon: '/drop_icon_no_margins.png', external: true },
-  { name: 'Pulse', href: 'https://pulse.ciphera.net', description: 'Privacy-first analytics', icon: '/pulse_icon_no_margins.png', external: true },
-  { name: 'Ciphera Auth', href: '/products/auth', description: 'Identity provider', icon: '/auth_icon_no_margins.png', external: false },
-  { name: 'Ciphera Captcha', href: '/products/captcha', description: 'Bot protection', icon: '/captcha_icon_no_margins.png', external: false },
-  { name: 'Ciphera Relay', href: '/products/relay', description: 'Email infrastructure', icon: MailIcon, external: false },
+  { name: 'Pulse', href: 'https://pulse.ciphera.net', description: 'Privacy-first analytics', icon: '/pulse_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: true },
+  { name: 'Drop', href: 'https://drop.ciphera.net', description: 'Secure file sharing', icon: '/drop_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: true },
+  { name: 'Ciphera Auth', href: '/products/auth', description: 'Identity provider', icon: '/auth_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
+  { name: 'Ciphera Captcha', href: '/products/captcha', description: 'Bot protection', icon: '/captcha_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
+  { name: 'Ciphera Relay', href: '/products/relay', description: 'Email infrastructure', icon: MailIcon, iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
 ]
 
 // * Ciphera website header - matches ciphera-ui style
@@ -86,7 +86,7 @@ export default function Header() {
                   const Icon = product.icon as React.ComponentType<{ className?: string }>
                   const content = (
                     <div className="flex items-start gap-3 px-4 py-3 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center shrink-0">
+                      <div className={`w-10 h-10 rounded-xl ${product.iconBg} flex items-center justify-center shrink-0 p-1.5`}>
                         {typeof product.icon === 'string' ? (
                           <Image 
                             src={product.icon} 
@@ -94,10 +94,10 @@ export default function Header() {
                             width={20} 
                             height={20} 
                             unoptimized
-                            className="w-5 h-5 object-contain" 
+                            className="w-full h-full object-contain" 
                           />
                         ) : (
-                          <Icon className="w-5 h-5 text-white" />
+                          <Icon className="w-5 h-5 text-brand-orange" />
                         )}
                       </div>
                       <div className="flex-1">

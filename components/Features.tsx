@@ -54,7 +54,7 @@ export default function Features() {
           </h2>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
             Every feature is built with cryptographic guarantees. Your privacy isn't optional—it's the architecture. 
-            Try <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="link">Drop</a> for secure file sharing or explore our <a href="/products" className="link">complete product suite</a>.
+            Try <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer" className="link">Pulse</a> for privacy-first analytics or explore our <a href="/products" className="link">complete product suite</a>.
           </p>
         </motion.div>
 

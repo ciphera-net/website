@@ -374,15 +374,15 @@ export default function AboutPage() {
             className="text-center max-w-2xl mx-auto"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-6">
-              Start sharing files securely
+              Experience Privacy-First Analytics
             </h2>
             <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8">
-              Try Drop—our encrypted file sharing application. 
-              See how zero-knowledge encryption works in practice.
+              Try Pulse—our privacy-first analytics platform. 
+              See how analytics can work without compromising user privacy.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                Try Drop Free
+              <Link href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer" className="btn-primary">
+                Try Pulse Free
                 <ArrowRightIcon className="w-4 h-4" />
               </Link>
               <Link href="/products" className="btn-secondary">

@@ -8,8 +8,8 @@ import { track } from '../lib/pulse'
 
 const footerLinks = {
   products: [
-    { name: 'Drop', href: 'https://drop.ciphera.net', external: true },
     { name: 'Pulse', href: 'https://pulse.ciphera.net', external: true },
+    { name: 'Drop', href: 'https://drop.ciphera.net', external: true },
     { name: 'Ciphera Auth', href: '/products/auth', external: false },
     { name: 'Ciphera Captcha', href: '/products/captcha', external: false },
     { name: 'Ciphera Relay', href: '/products/relay', external: false },

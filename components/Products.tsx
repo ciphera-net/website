@@ -8,17 +8,6 @@ import { track } from '../lib/pulse'
 
 const products = [
   {
-    icon: '/drop_icon_no_margins.png',
-    isImage: true,
-    name: 'Drop',
-    tagline: 'Secure file sharing',
-    description: 'Share files securely with end-to-end encryption. Your files are encrypted before they leave your device.',
-    features: ['AES-256-GCM encryption', 'Zero-knowledge storage', 'Password protection', 'Expiring links'],
-    link: 'https://drop.ciphera.net',
-    gradient: 'from-neutral-500 to-neutral-700',
-    available: true,
-  },
-  {
     icon: '/pulse_icon_no_margins.png',
     isImage: true,
     name: 'Pulse',
@@ -26,7 +15,18 @@ const products = [
     description: 'Real-time user insights and session replay without compromising user privacy. Visualize user journeys and debug issues instantly.',
     features: ['Session replay', 'Geographic heatmaps', 'Real-time traffic monitoring', 'Privacy-preserving data collection'],
     link: 'https://pulse.ciphera.net',
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    available: true,
+  },
+  {
+    icon: '/drop_icon_no_margins.png',
+    isImage: true,
+    name: 'Drop',
+    tagline: 'Secure file sharing',
+    description: 'Share files securely with end-to-end encryption. Your files are encrypted before they leave your device.',
+    features: ['AES-256-GCM encryption', 'Zero-knowledge storage', 'Password protection', 'Expiring links'],
+    link: 'https://drop.ciphera.net',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
   {
@@ -37,7 +37,7 @@ const products = [
     description: 'Secure authentication for the Ciphera ecosystem with OAuth2, JWT, and advanced security features.',
     features: ['Double-hashed passwords', 'Two-factor auth', 'Account lockout', 'Session management'],
     link: '#',
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
   {
@@ -48,7 +48,7 @@ const products = [
     description: 'Protect your applications from bots and automated abuse with visual and proof-of-work challenges.',
     features: ['Visual captchas', 'Proof-of-Work', 'Stateless verification', 'JWT tokens'],
     link: '#',
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
   {
@@ -59,7 +59,7 @@ const products = [
     description: 'Transactional email infrastructure for secure, privacy-first email delivery with TLS encryption.',
     features: ['TLS encryption', 'High deliverability', 'SMTP AUTH', 'Admin dashboard'],
     link: '#',
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
 ]
@@ -103,7 +103,7 @@ export default function Products() {
                   {/* * Header */}
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <div className={`w-14 h-14 rounded-2xl ${product.iconBg} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 p-2`}>
                         {product.isImage ? (
                           <Image 
                             src={product.icon as string} 
@@ -111,10 +111,10 @@ export default function Products() {
                             width={32} 
                             height={32}
                             unoptimized
-                            className="w-8 h-8 object-contain"
+                            className="w-full h-full object-contain"
                           />
                         ) : (
-                          <Icon className="w-7 h-7 text-white" />
+                          <Icon className="w-7 h-7 text-brand-orange" />
                         )}
                       </div>
                       <div>

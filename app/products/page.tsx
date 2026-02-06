@@ -9,6 +9,25 @@ import { track } from '../../lib/pulse'
 
 const products = [
   {
+    icon: '/pulse_icon_no_margins.png',
+    isImage: true,
+    name: 'Pulse',
+    tagline: 'Privacy-first analytics & replay',
+    description: 'Real-time user insights and session replay without compromising user privacy. Visualize user journeys and debug issues instantly. Built for privacy advocates who need analytics.',
+    features: [
+      'Session replay with privacy filters',
+      'Geographic heatmaps',
+      'Real-time traffic monitoring',
+      'Privacy-preserving data collection',
+      'Custom event tracking',
+      'Team collaboration features',
+    ],
+    link: 'https://pulse.ciphera.net',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    status: 'Available',
+    highlight: true,
+  },
+  {
     icon: '/drop_icon_no_margins.png',
     isImage: true,
     name: 'Drop',
@@ -23,9 +42,9 @@ const products = [
       'One-time download option',
     ],
     link: 'https://drop.ciphera.net',
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
-    highlight: true,
+    highlight: false,
   },
   {
     icon: '/auth_icon_no_margins.png',
@@ -42,7 +61,7 @@ const products = [
       'Two-factor authentication support',
     ],
     link: '#',
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
     highlight: false,
   },
@@ -60,7 +79,7 @@ const products = [
       'Configurable difficulty',
     ],
     link: '#',
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
     highlight: false,
   },
@@ -78,7 +97,7 @@ const products = [
       'Admin UI with secure access',
     ],
     link: '#',
-    gradient: 'from-neutral-500 to-neutral-700',
+    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
     highlight: false,
   },
@@ -93,11 +112,11 @@ const productsSchema = {
   itemListElement: [
     {
       '@type': 'SoftwareApplication',
-      name: 'Drop',
-      description: 'Privacy-first file sharing with end-to-end encryption',
-      applicationCategory: 'FileSharingApplication',
+      name: 'Pulse',
+      description: 'Privacy-first analytics and session replay without compromising user privacy',
+      applicationCategory: 'AnalyticsApplication',
       operatingSystem: 'Web',
-      url: 'https://drop.ciphera.net',
+      url: 'https://pulse.ciphera.net',
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -106,11 +125,11 @@ const productsSchema = {
     },
     {
       '@type': 'SoftwareApplication',
-      name: 'Pulse',
-      description: 'Privacy-first analytics and session replay without compromising user privacy',
-      applicationCategory: 'AnalyticsApplication',
+      name: 'Drop',
+      description: 'Privacy-first file sharing with end-to-end encryption',
+      applicationCategory: 'FileSharingApplication',
       operatingSystem: 'Web',
-      url: 'https://pulse.ciphera.net',
+      url: 'https://drop.ciphera.net',
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -182,7 +201,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* * Featured Product - Drop */}
+      {/* * Featured Product - Pulse */}
       <section className="section-container pb-16 md:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -190,27 +209,27 @@ export default function ProductsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-neutral-500/10 via-neutral-400/5 to-transparent border border-neutral-400/20 dark:border-neutral-600/20 p-6 sm:p-8 md:p-12">
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-purple-500/10 via-purple-400/5 to-transparent border border-purple-400/20 dark:border-purple-600/20 p-6 sm:p-8 md:p-12">
             {/* * Background glow */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-neutral-500/20 dark:bg-neutral-400/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 dark:bg-purple-400/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             
             <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               <div>
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neutral-600 to-neutral-800 flex items-center justify-center shadow-lg shadow-neutral-500/30 dark:shadow-neutral-400/30">
+                  <div className="w-16 h-16 rounded-2xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center shadow-lg p-3">
                     <Image
-                      src="/drop_icon_no_margins.png"
-                      alt="Drop - Secure file sharing with end-to-end encryption logo"
+                      src="/pulse_icon_no_margins.png"
+                      alt="Pulse - Privacy-first analytics and session replay logo"
                       width={40}
                       height={40}
                       loading="lazy"
                       unoptimized
-                      className="w-10 h-10 object-contain"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold text-neutral-900 dark:text-white">Drop</h2>
-                    <p className="text-neutral-500 dark:text-neutral-400">Secure File Sharing</p>
+                    <h2 className="text-3xl font-bold text-neutral-900 dark:text-white">Pulse</h2>
+                    <p className="text-neutral-500 dark:text-neutral-400">Privacy-First Analytics</p>
                   </div>
                   <span className="badge-neutral-status text-[10px] ml-auto">Available</span>
                 </div>
@@ -229,24 +248,24 @@ export default function ProductsPage() {
                 </ul>
 
                 <Link
-                  href="https://drop.ciphera.net"
+                  href="https://pulse.ciphera.net"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary inline-flex"
-                  onClick={() => track('product_try_drop')}
+                  onClick={() => track('product_try_pulse')}
                 >
-                  Try Drop Now
+                  Try Pulse Now
                   <ArrowRightIcon className="w-4 h-4" />
                 </Link>
               </div>
 
               <div className="hidden lg:block">
                 <div className="relative aspect-square max-w-sm mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-br from-neutral-500/20 to-neutral-700/20 dark:from-neutral-400/20 dark:to-neutral-600/20 rounded-3xl blur-2xl" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-purple-700/20 dark:from-purple-400/20 dark:to-purple-600/20 rounded-3xl blur-2xl" />
                   <div className="relative w-full h-full rounded-3xl bg-white/5 dark:bg-white/5 border border-white/10 flex items-center justify-center">
                     <Image
-                      src="/drop_icon_no_margins.png"
-                      alt="Drop - Zero-knowledge encrypted file sharing platform"
+                      src="/pulse_icon_no_margins.png"
+                      alt="Pulse - Privacy-first analytics and session replay platform"
                       width={200}
                       height={200}
                       loading="lazy"
@@ -294,7 +313,7 @@ export default function ProductsPage() {
                 >
                   <div className="h-full card card-hover p-6 lg:p-8">
                     <div className="flex items-center justify-between mb-6">
-                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center shadow-lg`}>
+                      <div className={`w-14 h-14 rounded-2xl ${product.iconBg} flex items-center justify-center shadow-lg p-2`}>
                         {product.isImage ? (
                           <Image 
                             src={product.icon as string} 
@@ -302,10 +321,10 @@ export default function ProductsPage() {
                             width={32} 
                             height={32}
                             unoptimized
-                            className="w-8 h-8 object-contain"
+                            className="w-full h-full object-contain"
                           />
                         ) : (
-                          <Icon className="w-7 h-7 text-white" />
+                          <Icon className="w-7 h-7 text-brand-orange" />
                         )}
                       </div>
                       <span className="badge-neutral-status text-[10px]">{product.status}</span>

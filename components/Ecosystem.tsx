@@ -1,102 +1,157 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, UserIcon, LockIcon, MailIcon } from '@ciphera-net/ui'
 import SwissFlagIcon from './SwissFlagIcon'
 
-// * Use case-focused approach showing real-world scenarios
-const useCases = [
+// * All products in the ecosystem
+const allProducts = [
+  { id: 'pulse', name: 'Pulse', icon: '/pulse_icon_no_margins.png', color: 'purple', description: 'Privacy-first analytics' },
+  { id: 'drop', name: 'Drop', icon: '/drop_icon_no_margins.png', color: 'orange', description: 'Secure file sharing' },
+  { id: 'auth', name: 'Auth', icon: '/auth_icon_no_margins.png', color: 'blue', description: 'Identity provider' },
+  { id: 'captcha', name: 'Captcha', icon: '/captcha_icon_no_margins.png', color: 'red', description: 'Bot protection' },
+  { id: 'relay', name: 'Relay', icon: MailIcon, color: 'emerald', description: 'Email infrastructure' },
+]
+
+// * User scenarios/journeys
+const journeys = [
   {
-    id: 'secure-sharing',
-    title: 'Secure File Sharing',
-    description: 'Share confidential documents with clients or team members without compromising security.',
+    id: 'analytics',
+    title: 'I need analytics',
+    description: 'Track user behavior and debug issues while respecting privacy',
+    primaryProduct: 'pulse',
     flow: [
-      { step: 'Upload', product: 'Drop', icon: '/drop_icon_no_margins.png' },
-      { step: 'Authenticate', product: 'Auth', icon: '/auth_icon_no_margins.png' },
-      { step: 'Protect', product: 'Captcha', icon: '/captcha_icon_no_margins.png' },
+      { product: 'pulse', label: 'Track Events' },
+      { product: 'auth', label: 'Authenticate Users' },
+      { product: 'relay', label: 'Send Alerts' },
     ],
-    gradient: 'from-brand-orange/10 to-neutral-100',
+    integrations: ['auth', 'relay'],
   },
   {
-    id: 'user-analytics',
-    title: 'Privacy-First Analytics',
-    description: 'Track user behavior and debug issues while respecting user privacy.',
+    id: 'file-sharing',
+    title: 'I need file sharing',
+    description: 'Share confidential files securely with clients or team',
+    primaryProduct: 'drop',
     flow: [
-      { step: 'Track', product: 'Pulse', icon: '/pulse_icon_no_margins.png' },
-      { step: 'Verify', product: 'Auth', icon: '/auth_icon_no_margins.png' },
-      { step: 'Notify', product: 'Relay', icon: MailIcon },
+      { product: 'drop', label: 'Upload File' },
+      { product: 'auth', label: 'Verify Identity' },
+      { product: 'captcha', label: 'Block Bots' },
     ],
-    gradient: 'from-purple-100 to-neutral-100',
+    integrations: ['auth', 'captcha'],
   },
   {
-    id: 'complete-workflow',
-    title: 'Complete Privacy Stack',
-    description: 'Build your application with end-to-end privacy protection.',
+    id: 'identity',
+    title: 'I need authentication',
+    description: 'Secure user authentication for your application',
+    primaryProduct: 'auth',
     flow: [
-      { step: 'Store', product: 'Drop', icon: '/drop_icon_no_margins.png' },
-      { step: 'Analyze', product: 'Pulse', icon: '/pulse_icon_no_margins.png' },
-      { step: 'Authenticate', product: 'Auth', icon: '/auth_icon_no_margins.png' },
-      { step: 'Protect', product: 'Captcha', icon: '/captcha_icon_no_margins.png' },
-      { step: 'Communicate', product: 'Relay', icon: MailIcon },
+      { product: 'auth', label: 'Handle Login' },
+      { product: 'captcha', label: 'Prevent Bots' },
+      { product: 'relay', label: 'Email Verification' },
     ],
-    gradient: 'from-blue-100 to-neutral-100',
+    integrations: ['captcha', 'relay'],
+  },
+  {
+    id: 'complete',
+    title: 'I need everything',
+    description: 'Complete privacy-first infrastructure for your business',
+    primaryProduct: 'pulse',
+    flow: [
+      { product: 'pulse', label: 'Monitor' },
+      { product: 'drop', label: 'Share' },
+      { product: 'auth', label: 'Authenticate' },
+      { product: 'captcha', label: 'Protect' },
+      { product: 'relay', label: 'Communicate' },
+    ],
+    integrations: ['drop', 'auth', 'captcha', 'relay'],
   },
 ]
 
-function UseCaseCard({ useCase, index }: { useCase: typeof useCases[0]; index: number }) {
+// * Product node component for the journey visualization
+function ProductNode({ 
+  product, 
+  isActive, 
+  isPrimary,
+  delay 
+}: { 
+  product: typeof allProducts[0]
+  isActive: boolean
+  isPrimary: boolean
+  delay: number 
+}) {
+  const Icon = product.icon as React.ComponentType<{ className?: string }>
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ 
+        opacity: isActive ? 1 : 0.4,
+        scale: isPrimary ? 1.1 : 1,
+      }}
+      transition={{ duration: 0.3, delay }}
+      className="relative"
     >
-      <div className={`h-full p-6 lg:p-8 rounded-2xl bg-gradient-to-br ${useCase.gradient} dark:from-neutral-900 dark:to-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-black/50 transition-all duration-300 hover:-translate-y-1`}>
-        <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-3">
-          {useCase.title}
-        </h3>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed">
-          {useCase.description}
-        </p>
-
-        {/* * Product flow */}
-        <div className="flex flex-wrap items-center gap-2">
-          {useCase.flow.map((item, idx) => (
-            <div key={idx} className="flex items-center gap-2">
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 shadow-sm">
-                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                  {typeof item.icon === 'string' ? (
-                    <Image 
-                      src={item.icon} 
-                      alt={item.product}
-                      width={16} 
-                      height={16}
-                      unoptimized
-                      className="w-4 h-4 object-contain"
-                    />
-                  ) : (
-                    <item.icon className="w-4 h-4 text-white" />
-                  )}
-                </div>
-                <span className="text-xs font-semibold text-neutral-700 dark:text-neutral-300">
-                  {item.product}
-                </span>
-              </div>
-              {idx < useCase.flow.length - 1 && (
-                <ArrowRightIcon className="w-4 h-4 text-neutral-400" />
-              )}
+      <div className={`p-6 rounded-2xl bg-white dark:bg-neutral-900 border-2 transition-all duration-300 ${
+        isPrimary 
+          ? 'border-brand-orange shadow-2xl shadow-brand-orange/20' 
+          : isActive 
+            ? 'border-brand-orange/50 shadow-lg' 
+            : 'border-neutral-200 dark:border-neutral-800'
+      }`}>
+        <div className="flex flex-col items-center text-center gap-3">
+          <div className={`w-16 h-16 rounded-2xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center shadow-lg p-3 transition-transform duration-300 ${
+            isPrimary ? 'scale-110' : ''
+          }`}>
+            {typeof product.icon === 'string' ? (
+              <Image 
+                src={product.icon} 
+                alt={product.name}
+                width={32} 
+                height={32}
+                unoptimized
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <Icon className="w-8 h-8 text-brand-orange" />
+            )}
+          </div>
+          <div>
+            <div className="font-bold text-neutral-900 dark:text-white text-sm">
+              {product.name}
             </div>
-          ))}
+            <div className="text-xs text-neutral-500 dark:text-neutral-400">
+              {product.description}
+            </div>
+          </div>
         </div>
+        
+        {isPrimary && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute -top-2 -right-2"
+          >
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-semibold bg-brand-orange text-white shadow-lg">
+              Primary
+            </span>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   )
 }
 
 export default function Ecosystem() {
+  const [selectedJourney, setSelectedJourney] = useState<string>('analytics')
+
+  const activeJourney = journeys.find((j) => j.id === selectedJourney)
+  const activeProducts = activeJourney 
+    ? [activeJourney.primaryProduct, ...activeJourney.integrations]
+    : []
+
   return (
     <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50 overflow-hidden">
       <div className="section-container">
@@ -106,15 +161,14 @@ export default function Ecosystem() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <span className="badge-primary mb-4 inline-flex">Use Cases</span>
+          <span className="badge-primary mb-4 inline-flex">Interactive Journey</span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
-            Privacy by Design, Not by Policy
+            What do you need?
           </h2>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-            Choose individual products for specific needs, or combine them for a complete privacy-first infrastructure. 
-            Each tool works independently or as part of your privacy stack.
+            Click a scenario below to see how Ciphera products work together to solve your privacy challenges.
           </p>
           <span className="badge-neutral mt-4 inline-flex items-center gap-1.5">
             <SwissFlagIcon className="w-3.5 h-3.5" />
@@ -122,49 +176,138 @@ export default function Ecosystem() {
           </span>
         </motion.div>
 
-        {/* * Use cases grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-          {useCases.map((useCase, index) => (
-            <UseCaseCard key={useCase.id} useCase={useCase} index={index} />
+        {/* * Journey selector buttons */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {journeys.map((journey) => (
+            <button
+              key={journey.id}
+              onClick={() => setSelectedJourney(journey.id)}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                selectedJourney === journey.id
+                  ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/30 scale-105'
+                  : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-neutral-200 dark:border-neutral-700'
+              }`}
+            >
+              {journey.title}
+            </button>
           ))}
         </div>
 
-        {/* * Product benefits */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="card p-8 text-center max-w-4xl mx-auto"
-        >
-          <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-6">
-            Why Choose Ciphera's Ecosystem?
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="text-center">
-              <CheckIcon className="w-8 h-8 text-brand-orange mx-auto mb-3" />
-              <h4 className="font-semibold text-neutral-900 dark:text-white mb-2">Modular & Flexible</h4>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">Use one product or combine them all</p>
-            </div>
-            <div className="text-center">
-              <CheckIcon className="w-8 h-8 text-brand-orange mx-auto mb-3" />
-              <h4 className="font-semibold text-neutral-900 dark:text-white mb-2">Zero-Knowledge</h4>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">We can't access your data, mathematically</p>
-            </div>
-            <div className="text-center">
-              <CheckIcon className="w-8 h-8 text-brand-orange mx-auto mb-3" />
-              <h4 className="font-semibold text-neutral-900 dark:text-white mb-2">Open Source</h4>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">Verify our claims, audit our code</p>
-            </div>
-          </div>
-        </motion.div>
+        {/* * Active journey visualization */}
+        <AnimatePresence mode="wait">
+          {activeJourney && (
+            <motion.div
+              key={activeJourney.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="mb-12"
+            >
+              <div className="card p-8 max-w-5xl mx-auto">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
+                    {activeJourney.title}
+                  </h3>
+                  <p className="text-neutral-600 dark:text-neutral-400">
+                    {activeJourney.description}
+                  </p>
+                </div>
+
+                {/* * Product flow visualization */}
+                <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+                  {activeJourney.flow.map((step, idx) => {
+                    const product = allProducts.find((p) => p.id === step.product)
+                    if (!product) return null
+                    const Icon = product.icon as React.ComponentType<{ className?: string }>
+                    const isPrimary = step.product === activeJourney.primaryProduct
+
+                    return (
+                      <div key={idx} className="flex items-center gap-3">
+                        <motion.div
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: idx * 0.1 }}
+                          className={`relative p-4 rounded-xl border-2 ${
+                            isPrimary 
+                              ? 'border-brand-orange bg-brand-orange/5' 
+                              : 'border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800'
+                          }`}
+                        >
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center p-2">
+                              {typeof product.icon === 'string' ? (
+                                <Image 
+                                  src={product.icon} 
+                                  alt={product.name}
+                                  width={24} 
+                                  height={24}
+                                  unoptimized
+                                  className="w-full h-full object-contain"
+                                />
+                              ) : (
+                                <Icon className="w-6 h-6 text-brand-orange" />
+                              )}
+                            </div>
+                            <div className="text-center">
+                              <div className="text-xs font-bold text-neutral-900 dark:text-white">
+                                {product.name}
+                              </div>
+                              <div className="text-[10px] text-neutral-500 dark:text-neutral-400">
+                                {step.label}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {isPrimary && (
+                            <div className="absolute -top-2 -right-2">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-orange text-white">
+                                Primary
+                              </span>
+                            </div>
+                          )}
+                        </motion.div>
+                        
+                        {idx < activeJourney.flow.length - 1 && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: idx * 0.1 + 0.2 }}
+                          >
+                            <ArrowRightIcon className="w-6 h-6 text-brand-orange" />
+                          </motion.div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+
+                {/* * Integration note */}
+                <div className="text-center text-sm text-neutral-600 dark:text-neutral-400">
+                  <p>
+                    <span className="font-semibold text-neutral-900 dark:text-white">{allProducts.find(p => p.id === activeJourney.primaryProduct)?.name}</span>
+                    {' '}integrates seamlessly with{' '}
+                    {activeJourney.integrations.map((id, idx) => (
+                      <span key={id}>
+                        <span className="font-semibold text-neutral-900 dark:text-white">
+                          {allProducts.find(p => p.id === id)?.name}
+                        </span>
+                        {idx < activeJourney.integrations.length - 1 && (idx === activeJourney.integrations.length - 2 ? ' and ' : ', ')}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* * CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
           className="text-center mt-12"
         >
           <Link href="/products" className="btn-primary">

@@ -188,11 +188,11 @@ export default function ComparisonPage() {
               Ready to Experience True Privacy?
             </h2>
             <p className="text-lg text-white/90 mb-8">
-              Start using Ciphera Drop today with 5GB file sharing, completely free.
+              Start using Ciphera Pulse today for privacy-first analytics and session replay, completely free.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://drop.ciphera.net" className="btn bg-white text-brand-orange hover:bg-white/90">
-                Try Drop Free
+              <a href="https://pulse.ciphera.net" className="btn bg-white text-brand-orange hover:bg-white/90">
+                Try Pulse Free
                 <ArrowRightIcon className="w-4 h-4" />
               </a>
               <Link href="/products" className="btn bg-white/10 text-white hover:bg-white/20 border-white/20">
