@@ -204,7 +204,8 @@ export default function ProductsPage() {
                       width={40}
                       height={40}
                       loading="lazy"
-                      className="w-10 h-10"
+                      unoptimized
+                      className="w-10 h-10 object-contain"
                     />
                   </div>
                   <div>
@@ -249,7 +250,8 @@ export default function ProductsPage() {
                       width={200}
                       height={200}
                       loading="lazy"
-                      className="w-48 h-48 opacity-80"
+                      unoptimized
+                      className="w-48 h-48 object-contain opacity-80"
                     />
                   </div>
                 </div>

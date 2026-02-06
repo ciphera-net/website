@@ -50,7 +50,7 @@ export default function Header() {
               height={44}
               priority
               unoptimized
-              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+              className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300"
             />
           </div>
           <span className="text-lg sm:text-xl md:text-2xl font-bold text-neutral-900 dark:text-white tracking-tight group-hover:text-brand-orange transition-colors duration-300">
