@@ -40,7 +40,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
           {/* * Brand column */}
           <div className="col-span-1 sm:col-span-2 md:col-span-4 lg:col-span-1 lg:pr-8">
-            <Link href="/" className="flex items-center gap-3 mb-4 group">
+            <Link href="/" className="flex items-center gap-3 mb-4 group focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded">
               <Image
                 src="/ciphera_icon_no_margins.png"
                 alt="Ciphera privacy-first platform logo"
@@ -67,7 +67,7 @@ export default function Footer() {
                 href="https://github.com/ciphera-net"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 aria-label="GitHub"
                 onClick={() => track('footer_github_click')}
               >
@@ -75,7 +75,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 aria-label="Twitter"
               >
                 <TwitterIcon className="w-5 h-5" />
@@ -94,14 +94,14 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
                     >
                       {link.name}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
                     >
                       {link.name}
                     </Link>
@@ -119,7 +119,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors"
+                    className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
                   >
                     {link.name}
                   </Link>
@@ -139,14 +139,14 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
                     >
                       {link.name}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
                     >
                       {link.name}
                     </Link>
@@ -164,7 +164,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors"
+                    className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
                   >
                     {link.name}
                   </Link>

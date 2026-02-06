@@ -168,7 +168,7 @@ export default function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group card card-hover p-6 text-center"
+                className="group card card-hover p-6 text-center focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
                 onClick={() => track(method.trackEvent)}
               >
                 <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${method.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>

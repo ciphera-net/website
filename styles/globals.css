@@ -82,6 +82,7 @@
     @apply px-4 py-2 rounded-lg;
     @apply transition-all duration-200 ease-out;
     @apply hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800;
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 dark:focus:ring-offset-neutral-950;
   }
   
   /* * Card styles */
@@ -161,6 +162,7 @@
   .link {
     @apply text-brand-orange hover:text-brand-orange-hover transition-colors duration-200;
     @apply underline decoration-brand-orange/30 underline-offset-2 hover:decoration-brand-orange;
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded;
   }
   
   /* * Prose/Content styling */

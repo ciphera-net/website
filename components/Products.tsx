@@ -151,7 +151,7 @@ export default function Products() {
                       href={product.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:gap-3 transition-all duration-200"
+                      className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:gap-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
                       onClick={() => track(product.name === 'Drop' ? 'product_try_drop' : 'product_try_pulse')}
                     >
                       Try {product.name}
