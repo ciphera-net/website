@@ -118,14 +118,12 @@ export default function ContactPage() {
     email: '',
     subject: 'General Inquiry',
     message: '',
-    gdprConsent: false,
   })
   const [fieldErrors, setFieldErrors] = useState({
     name: '',
     email: '',
     message: '',
   })
-  const [attachedFile, setAttachedFile] = useState<File | null>(null)
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null)
   
   // * Captcha state - matching auth implementation
@@ -157,19 +155,6 @@ export default function ContactPage() {
   const handleFieldBlur = (field: string, value: string) => {
     const error = validateField(field, value)
     setFieldErrors({ ...fieldErrors, [field]: error })
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      // * Limit file size to 5MB
-      if (file.size > 5 * 1024 * 1024) {
-        setErrorMessage('File size must not exceed 5MB')
-        return
-      }
-      setAttachedFile(file)
-      setErrorMessage('')
-    }
   }
 
   const copyToClipboard = async (email: string) => {
@@ -205,21 +190,15 @@ export default function ContactPage() {
       return
     }
 
-    if (!formData.gdprConsent) {
-      setErrorMessage('Please accept the privacy policy to continue')
-      return
-    }
-
     setStatus('submitting')
     
     // * Simulated submission - connect to actual API endpoint in production
     setTimeout(() => {
-      // * TODO: Connect to actual API - send formData, captchaId, captchaSolution, captchaToken, attachedFile
+      // * TODO: Connect to actual API - send formData, captchaId, captchaSolution, captchaToken
       const success = Math.random() > 0.1 // * 90% success rate simulation
       if (success) {
         setStatus('success')
-        setFormData({ name: '', email: '', subject: 'General Inquiry', message: '', gdprConsent: false })
-        setAttachedFile(null)
+        setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' })
         setCaptchaId('')
         setCaptchaSolution('')
         setCaptchaToken('')
@@ -636,44 +615,6 @@ export default function ContactPage() {
                     )}
                   </div>
 
-                  {/* * File attachment */}
-                  <div>
-                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                      Attachment (optional)
-                    </label>
-                    <div className="flex items-center gap-3">
-                      <label className="flex-1 px-4 py-3 rounded-xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 hover:border-brand-orange dark:hover:border-brand-orange cursor-pointer transition-colors">
-                        <input
-                          type="file"
-                          onChange={handleFileChange}
-                          className="hidden"
-                          accept="image/*,.pdf,.doc,.docx,.txt"
-                        />
-                        <div className="flex items-center gap-2 justify-center text-sm text-neutral-600 dark:text-neutral-400">
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                          </svg>
-                          {attachedFile ? attachedFile.name : 'Choose file (max 5MB)'}
-                        </div>
-                      </label>
-                      {attachedFile && (
-                        <button
-                          type="button"
-                          onClick={() => setAttachedFile(null)}
-                          className="p-2 text-neutral-500 hover:text-red-600 transition-colors"
-                          title="Remove file"
-                        >
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      )}
-                    </div>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
-                      Supported: Images, PDF, DOC, DOCX, TXT
-                    </p>
-                  </div>
-
                   {/* * Ciphera Captcha - same implementation as auth */}
                   <div className="pt-2">
                     <Captcha
@@ -685,25 +626,6 @@ export default function ContactPage() {
                       }}
                       apiUrl={process.env.NEXT_PUBLIC_CAPTCHA_API_URL}
                     />
-                  </div>
-
-                  {/* * GDPR Consent */}
-                  <div className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      id="gdpr"
-                      checked={formData.gdprConsent}
-                      onChange={(e) => setFormData({ ...formData, gdprConsent: e.target.checked })}
-                      className="mt-1 w-4 h-4 rounded border-neutral-300 dark:border-neutral-600 text-brand-orange focus:ring-brand-orange"
-                      required
-                    />
-                    <label htmlFor="gdpr" className="text-sm text-neutral-600 dark:text-neutral-400">
-                      I agree to the processing of my personal data as described in the{' '}
-                      <a href="#" className="text-brand-orange hover:underline">
-                        Privacy Policy
-                      </a>
-                      . Your data is encrypted in transit and handled securely. <span className="text-brand-orange">*</span>
-                    </label>
                   </div>
 
                   <Button
