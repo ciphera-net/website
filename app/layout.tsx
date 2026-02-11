@@ -80,6 +80,8 @@ export default function RootLayout({
           defer
           data-domain="ciphera.net"
           data-api="https://pulse-api.ciphera.net"
+          data-storage="local"
+          data-storage-ttl="24"
           src="https://pulse.ciphera.net/script.js?v=3.0"
         />
         <ThemeProviders>
