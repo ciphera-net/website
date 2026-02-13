@@ -299,7 +299,7 @@ export default function ProductsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {products.slice(1).map((product, index) => {
-              const Icon = product.icon as React.ComponentType<{ className?: string }>
+              const Icon = product.icon as unknown as React.ComponentType<{ className?: string }>
               return (
                 <motion.div
                   key={product.name}

@@ -88,7 +88,7 @@ export default function Products() {
         {/* * Products grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {products.map((product, index) => {
-            const Icon = product.icon as React.ComponentType<{ className?: string }>
+            const Icon = product.icon as unknown as React.ComponentType<{ className?: string }>
             return (
               <motion.div
                 key={product.name}

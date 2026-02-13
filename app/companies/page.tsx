@@ -324,7 +324,7 @@ export default function CompaniesPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             {services.map((service, index) => {
-              const Icon = service.icon as React.ComponentType<{ className?: string }>
+              const Icon = service.icon as unknown as React.ComponentType<{ className?: string }>
               return (
                 <motion.div
                   key={service.name}

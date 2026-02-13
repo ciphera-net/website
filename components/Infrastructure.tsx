@@ -56,7 +56,7 @@ const services = [
 
 // * Service node component
 function ServiceNode({ service, delay }: { service: typeof services[0]; delay: number }) {
-  const Icon = service.icon as React.ComponentType<{ className?: string }>
+  const Icon = service.icon as unknown as React.ComponentType<{ className?: string }>
 
   return (
     <motion.div
@@ -270,7 +270,7 @@ export default function Infrastructure() {
         {/* * Service details grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-16">
           {services.map((service, index) => {
-            const Icon = service.icon as React.ComponentType<{ className?: string }>
+            const Icon = service.icon as unknown as React.ComponentType<{ className?: string }>
             return (
               <motion.div
                 key={service.id}

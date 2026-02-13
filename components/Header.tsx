@@ -83,7 +83,7 @@ export default function Header() {
             {isProductsOpen && (
               <div className="absolute top-full right-0 mt-2 w-72 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-2xl shadow-neutral-500/20 dark:shadow-black/50 p-2 z-50 animate-in slide-in-from-top-2 fade-in duration-200">
                 {products.map((product) => {
-                  const Icon = product.icon as React.ComponentType<{ className?: string }>
+                  const Icon = product.icon as unknown as React.ComponentType<{ className?: string }>
                   const content = (
                     <div className="flex items-start gap-3 px-4 py-3 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
                       <div className={`w-10 h-10 rounded-xl ${product.iconBg} flex items-center justify-center shrink-0 p-1.5`}>

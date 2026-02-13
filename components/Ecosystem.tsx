@@ -82,7 +82,7 @@ function ProductNode({
   isPrimary: boolean
   delay: number 
 }) {
-  const Icon = product.icon as React.ComponentType<{ className?: string }>
+  const Icon = product.icon as unknown as React.ComponentType<{ className?: string }>
 
   return (
     <motion.div
@@ -219,7 +219,7 @@ export default function Ecosystem() {
                   {activeJourney.flow.map((step, idx) => {
                     const product = allProducts.find((p) => p.id === step.product)
                     if (!product) return null
-                    const Icon = product.icon as React.ComponentType<{ className?: string }>
+                    const Icon = product.icon as unknown as React.ComponentType<{ className?: string }>
                     const isPrimary = step.product === activeJourney.primaryProduct
 
                     return (
