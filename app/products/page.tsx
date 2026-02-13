@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { UserIcon, LockIcon, MailIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
+import { UserIcon, LockIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { track } from '../../lib/pulse'
 
@@ -84,8 +84,8 @@ const products = [
     highlight: false,
   },
   {
-    icon: MailIcon,
-    isImage: false,
+    icon: '/relay_icon_no_margins.png',
+    isImage: true,
     name: 'Ciphera Relay',
     tagline: 'Email infrastructure',
     description: 'Transactional email infrastructure for secure, privacy-first email delivery with TLS encryption.',

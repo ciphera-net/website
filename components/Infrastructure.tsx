@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { UserIcon, LockIcon, MailIcon, GlobeIcon } from '@ciphera-net/ui'
+import { UserIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
 import Image from 'next/image'
 import SwissFlagIcon from './SwissFlagIcon'
 
@@ -47,8 +47,8 @@ const services = [
     id: 'relay',
     name: 'Ciphera Relay',
     description: 'Email infrastructure',
-    icon: MailIcon,
-    isImage: false,
+    icon: '/relay_icon_no_margins.png',
+    isImage: true,
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     position: 'bottom',
   },

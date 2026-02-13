@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRightIcon, CheckIcon, UserIcon, LockIcon, MailIcon } from '@ciphera-net/ui'
+import { ArrowRightIcon, CheckIcon, UserIcon, LockIcon } from '@ciphera-net/ui'
 import SwissFlagIcon from './SwissFlagIcon'
 
 // * All products in the ecosystem
@@ -13,7 +13,7 @@ const allProducts = [
   { id: 'drop', name: 'Drop', icon: '/drop_icon_no_margins.png', color: 'orange', description: 'Secure file sharing' },
   { id: 'auth', name: 'Auth', icon: '/auth_icon_no_margins.png', color: 'blue', description: 'Identity provider' },
   { id: 'captcha', name: 'Captcha', icon: '/captcha_icon_no_margins.png', color: 'red', description: 'Bot protection' },
-  { id: 'relay', name: 'Relay', icon: MailIcon, color: 'emerald', description: 'Email infrastructure' },
+  { id: 'relay', name: 'Relay', icon: '/relay_icon_no_margins.png', color: 'emerald', description: 'Email infrastructure' },
 ]
 
 // * User scenarios/journeys

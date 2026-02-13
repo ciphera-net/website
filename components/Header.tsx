@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ThemeToggle, MenuIcon, XIcon, ChevronDownIcon, UserIcon, LockIcon, MailIcon } from '@ciphera-net/ui'
+import { ThemeToggle, MenuIcon, XIcon, ChevronDownIcon } from '@ciphera-net/ui'
 import { track } from '../lib/pulse'
 
 const products = [
@@ -11,7 +11,7 @@ const products = [
   { name: 'Drop', href: '/products/drop', description: 'Secure file sharing', icon: '/drop_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
   { name: 'Ciphera Auth', href: '/products/auth', description: 'Identity provider', icon: '/auth_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
   { name: 'Ciphera Captcha', href: '/products/captcha', description: 'Bot protection', icon: '/captcha_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
-  { name: 'Ciphera Relay', href: '/products/relay', description: 'Email infrastructure', icon: MailIcon, iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
+  { name: 'Ciphera Relay', href: '/products/relay', description: 'Email infrastructure', icon: '/relay_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
 ]
 
 // * Ciphera website header - matches ciphera-ui style

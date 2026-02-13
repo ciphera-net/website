@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { MailIcon, CheckIcon, GlobeIcon, LockIcon, ArrowRightIcon } from '@ciphera-net/ui'
 
 // * Icon aliases for consistent display
@@ -19,7 +20,14 @@ export default function CipheraRelayPage() {
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
             <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
-              <MailIcon className="w-10 h-10 text-brand-orange" />
+              <Image
+                src="/relay_icon_no_margins.png"
+                alt="Ciphera Relay - Secure email infrastructure"
+                width={56}
+                height={56}
+                unoptimized
+                className="w-full h-full object-contain"
+              />
             </div>
             <span className="badge-primary mb-4 inline-flex">Email Infrastructure</span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6">

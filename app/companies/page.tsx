@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
+import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 
 const problems = [
@@ -107,8 +107,8 @@ const services = [
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
   },
   {
-    icon: MailIcon,
-    isImage: false,
+    icon: '/relay_icon_no_margins.png',
+    isImage: true,
     name: 'Ciphera Relay',
     description: 'Secure email infrastructure for transactional emails. High deliverability with TLS encryption.',
     features: [
