@@ -4,6 +4,8 @@
 
 @layer base {
   :root {
+    /* * Brand - from ciphera-ui design system (kept for utilities that need rgb) */
+    --color-brand-orange-rgb: 253, 94, 15;
     /* * Semantic colors */
     --color-success: #10B981;
     --color-warning: #F59E0B;
@@ -138,7 +140,7 @@
   }
   
   .glow-orange-sm {
-    box-shadow: 0 0 20px -5px rgba(253, 94, 15, 0.4);
+    box-shadow: 0 0 20px -5px rgba(var(--color-brand-orange-rgb), 0.4);
   }
 }
 
