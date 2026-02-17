@@ -41,11 +41,6 @@
   .dark body {
     @apply bg-ciphera-gradient-dark;
   }
-  
-  /* * Selection styling */
-  ::selection {
-    @apply bg-brand-orange/20 text-neutral-900 dark:text-white;
-  }
 }
 
 @layer components {
@@ -99,14 +94,6 @@
     @apply hover:-translate-y-1;
   }
   
-  /* * Glass card effect */
-  .card-glass {
-    @apply bg-white/80 dark:bg-neutral-900/80;
-    @apply backdrop-blur-xl;
-    @apply border border-neutral-200/50 dark:border-neutral-800/50;
-    @apply rounded-2xl;
-  }
-  
   /* * Section container */
   .section-container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
@@ -117,20 +104,11 @@
     @apply py-12 sm:py-16 md:py-24 lg:py-32;
   }
   
-  /* * Gradient text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-brand-orange to-brand-orange-hover bg-clip-text text-transparent;
-  }
-  
   /* * Badge/Tag styles */
   .badge {
     @apply inline-flex items-center gap-1.5;
     @apply px-3 py-1 rounded-full;
     @apply text-xs font-semibold uppercase tracking-wider;
-  }
-  
-  .badge-primary {
-    @apply badge bg-brand-orange/10 text-brand-orange border border-brand-orange/20;
   }
   
   .badge-success {
@@ -192,16 +170,6 @@
   /* * Gradient backgrounds */
   .bg-gradient-radial {
     background: radial-gradient(circle at center, var(--tw-gradient-stops));
-  }
-  
-  .bg-grid-pattern {
-    background-image: radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0);
-    background-size: 32px 32px;
-  }
-  
-  /* * Glow effects */
-  .glow-orange {
-    box-shadow: 0 0 40px -10px rgba(253, 94, 15, 0.5);
   }
   
   .glow-orange-sm {
