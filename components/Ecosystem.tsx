@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, UserIcon, LockIcon } from '@ciphera-net/ui'
-import SwissFlagIcon from './SwissFlagIcon'
+import { SwissFlagIcon } from '@ciphera-net/ui'
 
 // * All products in the ecosystem
 const allProducts = [

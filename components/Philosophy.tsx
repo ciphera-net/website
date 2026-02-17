@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { HeartIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
-import SwissFlagIcon from './SwissFlagIcon'
+import { SwissFlagIcon } from '@ciphera-net/ui'
 
 const philosophyPoints = [
   {

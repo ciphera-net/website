@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { CheckCircleIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
-import SwissFlagIcon from './SwissFlagIcon'
+import { SwissFlagIcon } from '@ciphera-net/ui'
 import { track } from '../lib/pulse'
 
 // * Trust indicators displayed below CTAs

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { UserIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
 import Image from 'next/image'
-import SwissFlagIcon from './SwissFlagIcon'
+import { SwissFlagIcon } from '@ciphera-net/ui'
 
 // * Architecture nodes for the ecosystem diagram
 const services = [
