@@ -8,7 +8,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     title: 'Pulse vs Google Analytics vs Plausible vs Fathom: Which Analytics Tool Wins in 2026?',
     description: 'Side-by-side comparison of 4 analytics tools on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.',
     category: 'Analytics',
-    date: '2026-03-02',
+    date: '2026-02-14',
     readTime: '14 min read',
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
@@ -330,7 +330,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     title: 'The Biggest Data Breaches of 2025-2026: What Went Wrong and How to Protect Your Data',
     description: 'Analysis of the largest data breaches of 2025-2026 affecting 280M+ people. IBM reports the average breach costs $4.44M globally, $10.22M in the U.S.',
     category: 'Security',
-    date: '2026-03-02',
+    date: '2026-02-05',
     readTime: '12 min read',
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
@@ -609,7 +609,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     title: 'Why Swiss Infrastructure Matters for Data Privacy',
     description: 'Switzerland hosts 75 data centers outside CLOUD Act reach. Learn why Swiss FADP, neutrality, and encryption protections make it the top choice for privacy-focused infrastructure.',
     category: 'Privacy',
-    date: '2026-03-02',
+    date: '2026-01-27',
     readTime: '11 min read',
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
@@ -919,7 +919,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     title: 'Why Privacy Can\'t Be an Afterthought: Privacy Washing vs. Real Privacy Engineering',
     description: '82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta paid $2B+ in privacy fines. Here\'s what real privacy architecture looks like.',
     category: 'Privacy',
-    date: '2026-03-02',
+    date: '2026-01-15',
     readTime: '10 min read',
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
@@ -1206,7 +1206,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     title: 'Drop vs WeTransfer vs Google Drive vs Dropbox: Encrypted File Sharing Compared (2026)',
     description: '82% of breaches involve cloud data. We compare 7 file sharing services on encryption, privacy, jurisdiction, and cost — only 3 use zero-knowledge encryption.',
     category: 'Comparison',
-    date: '2026-03-02',
+    date: '2026-02-21',
     readTime: '12 min read',
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
@@ -1574,7 +1574,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
   'privacy-statistics-2026': {
     title: '25 Privacy Statistics That Define 2026: Breaches, Fines, and the Trust Crisis',
     description: '25 sourced privacy statistics for 2026 — from $4.44M average breach costs to \u20AC7.1B in GDPR fines. The numbers every business needs to see.',
-    date: '2026-03-02',
+    date: '2026-02-28',
     readTime: '12 min read',
     category: 'Privacy',
     content: `
@@ -2397,18 +2397,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!post) {
     return {
-      title: 'Post Not Found | Ciphera Blog',
+      title: 'Post Not Found',
     }
   }
 
   return {
-    title: `${post.title} | Ciphera Blog`,
+    title: post.title,
     description: post.description,
     alternates: {
       canonical: `https://ciphera.net/blog/${slug}`,
     },
     openGraph: {
-      title: `${post.title} | Ciphera Blog`,
+      title: post.title,
       description: post.description,
       url: `https://ciphera.net/blog/${slug}`,
       siteName: 'Ciphera',
@@ -2418,7 +2418,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${post.title} | Ciphera Blog`,
+      title: post.title,
       description: post.description,
       images: ['/ciphera_logo_no_margins.png'],
     },
@@ -2435,7 +2435,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const articleSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
     headline: post.title,
     description: post.description,
     image: 'https://ciphera.net/ciphera_logo_no_margins.png',
@@ -2445,12 +2445,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     articleSection: post.category,
     author: {
       '@type': 'Organization',
+      '@id': 'https://ciphera.net/#organization',
       name: 'Ciphera',
       url: 'https://ciphera.net',
-      logo: 'https://ciphera.net/ciphera_logo_no_margins.png',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+      },
     },
     publisher: {
       '@type': 'Organization',
+      '@id': 'https://ciphera.net/#organization',
       name: 'Ciphera',
       url: 'https://ciphera.net',
       logo: {
@@ -2492,11 +2497,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <span className="badge-neutral">{post.category}</span>
             <span className="text-neutral-500 dark:text-neutral-400">{post.readTime}</span>
             <span className="text-neutral-500 dark:text-neutral-400">
-              {new Date(post.date).toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
+              {new Date(post.date).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
                 year: 'numeric',
-              })}
+              }).replace(/\//g, '-')}
             </span>
           </div>
 

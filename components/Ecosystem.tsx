@@ -152,7 +152,7 @@ export default function Ecosystem() {
     : []
 
   return (
-    <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50 overflow-hidden">
+    <section className="section-padding overflow-hidden">
       <div className="section-container">
         {/* * Header */}
         <motion.div

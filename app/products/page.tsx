@@ -205,9 +205,8 @@ export default function ProductsPage() {
               <span className="gradient-text">applications</span>
             </h1>
             <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              A comprehensive suite of tools designed to protect your privacy. 
-              Each product works standalone or as part of the Ciphera ecosystem. 
-              Looking for <a href="/companies" className="link">enterprise solutions</a>? We offer privacy-first infrastructure for businesses.
+              A comprehensive suite of tools designed to protect your privacy.
+              Each product works standalone or as part of the Ciphera ecosystem.
             </p>
           </motion.div>
         </div>
@@ -289,7 +288,7 @@ export default function ProductsPage() {
       </section>
 
       {/* * Infrastructure Services */}
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

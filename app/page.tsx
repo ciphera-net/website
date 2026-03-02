@@ -29,7 +29,10 @@ const homepageSchemas = [
     '@id': 'https://ciphera.net/#organization',
     name: 'Ciphera',
     url: 'https://ciphera.net',
-    logo: 'https://ciphera.net/ciphera_logo_no_margins.png',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+    },
     description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
     foundingDate: '2024-01-01',
     address: {
@@ -39,7 +42,7 @@ const homepageSchemas = [
       postalCode: '1831',
       addressCountry: 'BE',
     },
-    telephone: '+32078480710',
+    telephone: '+3278480710',
     contactPoint: {
       '@type': 'ContactPoint',
       email: 'hello@ciphera.net',

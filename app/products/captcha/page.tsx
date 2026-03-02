@@ -8,25 +8,25 @@ const ShieldIcon = LockIcon
 const ZapIcon = LockIcon
 
 export const metadata: Metadata = {
-  title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
+  title: 'Ciphera Captcha - Privacy-First Bot Protection',
   description: 'Protect your applications from bots with visual captchas and proof-of-work challenges. Privacy-respecting, stateless verification with JWT tokens.',
   alternates: {
     canonical: 'https://ciphera.net/products/captcha',
   },
   openGraph: {
-    title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
-    description: 'Protect your applications from bots with visual captchas and proof-of-work challenges.',
+    title: 'Ciphera Captcha - Privacy-First Bot Protection',
+    description: 'Protect your applications from bots with visual captchas and proof-of-work challenges. Privacy-respecting, stateless verification with JWT tokens.',
     url: 'https://ciphera.net/products/captcha',
     siteName: 'Ciphera',
-    images: [{ url: '/captcha_icon_no_margins.png', width: 512, height: 512, alt: 'Ciphera Captcha - Bot Protection' }],
+    images: [{ url: '/captcha_icon_no_margins.png', width: 512, height: 512, alt: 'Ciphera Captcha - Privacy-First Bot Protection' }],
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
-    description: 'Privacy-respecting bot protection with visual captchas and proof-of-work challenges.',
-    images: ['/ciphera_logo_no_margins.png'],
+    title: 'Ciphera Captcha - Privacy-First Bot Protection',
+    description: 'Protect your applications from bots with visual captchas and proof-of-work challenges. Stateless JWT verification.',
+    images: ['/captcha_icon_no_margins.png'],
   },
 }
 
@@ -58,7 +58,7 @@ export default function CipheraCaptchaPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(captchaSchema) }} />
       {/* * Hero */}
-      <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
+      <section className="section-padding pt-32">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
             <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
@@ -119,7 +119,7 @@ export default function CipheraCaptchaPage() {
       </section>
 
       {/* * Comparison */}
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
             Why Choose Ciphera Captcha?
@@ -162,18 +162,18 @@ export default function CipheraCaptchaPage() {
       {/* * CTA */}
       <section className="section-padding">
         <div className="section-container">
-          <div className="card p-12 text-center max-w-3xl mx-auto bg-gradient-to-br from-brand-orange to-brand-orange-hover text-white">
-            <h2 className="text-3xl font-bold mb-4">
+          <div className="w-full text-center bg-gradient-to-br from-brand-orange to-brand-orange-hover rounded-3xl px-6 sm:px-10 md:px-16 py-12 sm:py-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Protect Your Application Today
             </h2>
             <p className="text-lg text-white/90 mb-8">
               Start blocking bots with privacy-respecting challenges.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact" className="btn bg-white text-brand-orange hover:bg-white/90">
+              <Link href="/contact" className="px-8 py-3.5 rounded-xl font-semibold bg-white text-brand-orange hover:bg-white/90 transition-all duration-200 inline-flex items-center gap-2">
                 Get Started Free
               </Link>
-              <Link href="/contact" className="btn bg-white/10 text-white hover:bg-white/20 border-white/20">
+              <Link href="/contact" className="px-8 py-3.5 rounded-xl font-semibold bg-white/10 text-white hover:bg-white/20 border border-white/20 transition-all duration-200 inline-flex items-center gap-2">
                 Contact Sales
               </Link>
             </div>

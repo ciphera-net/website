@@ -4,13 +4,13 @@ import { ArrowRightIcon } from '@ciphera-net/ui'
 
 export const metadata: Metadata = {
   title: 'Blog - Privacy & Security Insights',
-  description: 'Learn about zero-knowledge encryption, privacy-first technologies, and secure development practices from the Ciphera team.',
+  description: 'Privacy and security insights from the Ciphera team. Data breach analysis, encryption guides, tool comparisons, and privacy statistics backed by sourced data.',
   alternates: {
     canonical: 'https://ciphera.net/blog',
   },
   openGraph: {
-    title: 'Blog - Privacy & Security Insights | Ciphera',
-    description: 'Learn about zero-knowledge encryption, privacy-first technologies, and secure development practices.',
+    title: 'Blog - Privacy & Security Insights',
+    description: 'Privacy and security insights from the Ciphera team. Data breach analysis, encryption guides, tool comparisons, and privacy statistics backed by sourced data.',
     url: 'https://ciphera.net/blog',
     siteName: 'Ciphera',
     images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: 'Ciphera Blog' }],
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Blog - Privacy & Security Insights | Ciphera',
-    description: 'Learn about zero-knowledge encryption, privacy-first technologies, and secure development practices.',
+    title: 'Blog - Privacy & Security Insights',
+    description: 'Privacy and security insights from the Ciphera team. Data breach analysis, encryption guides, and privacy statistics.',
     images: ['/ciphera_logo_no_margins.png'],
   },
 }
@@ -50,7 +50,7 @@ const blogPosts = [
     title: 'Why Privacy Can\'t Be an Afterthought: Privacy Washing vs. Real Privacy Engineering',
     description: '82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta paid $2B+ in privacy fines. Here\'s what real privacy architecture looks like.',
     category: 'Privacy',
-    date: '2026-03-02',
+    date: '2026-01-15',
     readTime: '10 min read',
   },
   {
@@ -58,7 +58,7 @@ const blogPosts = [
     title: 'Why Swiss Infrastructure Matters for Data Privacy',
     description: 'Switzerland hosts 75 data centers outside CLOUD Act reach. Learn why Swiss FADP, neutrality, and encryption protections make it the top choice for privacy infrastructure.',
     category: 'Privacy',
-    date: '2026-03-02',
+    date: '2026-01-27',
     readTime: '11 min read',
   },
   {
@@ -66,7 +66,7 @@ const blogPosts = [
     title: 'The Biggest Data Breaches of 2025-2026: What Went Wrong and How to Protect Your Data',
     description: 'Analysis of the largest data breaches of 2025-2026 affecting 280M+ people. IBM reports the average breach costs $4.44M globally, $10.22M in the U.S.',
     category: 'Security',
-    date: '2026-03-02',
+    date: '2026-02-05',
     readTime: '12 min read',
   },
   {
@@ -74,7 +74,7 @@ const blogPosts = [
     title: 'Pulse vs Google Analytics vs Plausible vs Fathom: Which Analytics Tool Wins in 2026?',
     description: 'Side-by-side comparison of 4 analytics tools on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.',
     category: 'Analytics',
-    date: '2026-03-02',
+    date: '2026-02-14',
     readTime: '14 min read',
   },
   {
@@ -82,7 +82,7 @@ const blogPosts = [
     title: 'Drop vs WeTransfer vs Google Drive vs Dropbox: Encrypted File Sharing Compared (2026)',
     description: '82% of breaches involve cloud data. We compare 7 file sharing services on encryption, privacy, jurisdiction, and cost — only 3 use zero-knowledge encryption.',
     category: 'Comparison',
-    date: '2026-03-02',
+    date: '2026-02-21',
     readTime: '12 min read',
   },
   {
@@ -90,7 +90,7 @@ const blogPosts = [
     title: '25 Privacy Statistics That Define 2026: Breaches, Fines, and the Trust Crisis',
     description: '25 sourced privacy statistics for 2026 — from $4.44M average breach costs to \u20AC7.1B in GDPR fines. The numbers every business needs to see.',
     category: 'Privacy',
-    date: '2026-03-02',
+    date: '2026-02-28',
     readTime: '12 min read',
   },
   {
@@ -108,7 +108,7 @@ export default function BlogPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
       {/* * Hero */}
-      <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
+      <section className="section-padding pt-32">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
             <span className="badge-primary mb-4 inline-flex">Blog</span>
@@ -148,11 +148,11 @@ export default function BlogPage() {
 
                   <div className="flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-neutral-800">
                     <span className="text-sm text-neutral-500 dark:text-neutral-400">
-                      {new Date(post.date).toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: 'numeric',
+                      {new Date(post.date).toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
                         year: 'numeric',
-                      })}
+                      }).replace(/\//g, '-')}
                     </span>
                     <span className="inline-flex items-center gap-1 text-sm font-medium text-brand-orange group-hover:gap-2 transition-all">
                       Read more

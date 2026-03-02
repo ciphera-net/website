@@ -27,14 +27,14 @@ export default function Newsletter() {
   }
 
   return (
-    <section className="section-padding bg-gradient-to-br from-brand-orange to-brand-orange-hover">
+    <section className="section-padding !pt-6 sm:!pt-8 md:!pt-12">
       <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="max-w-2xl mx-auto text-center"
+          className="w-full mx-auto text-center bg-gradient-to-br from-brand-orange to-brand-orange-hover rounded-3xl px-6 sm:px-10 md:px-16 py-12 sm:py-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             Stay Updated on Privacy

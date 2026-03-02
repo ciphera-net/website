@@ -53,9 +53,13 @@ const timeline = [
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': 'https://ciphera.net/#organization',
   name: 'Ciphera',
   url: 'https://ciphera.net',
-  logo: 'https://ciphera.net/ciphera_logo_no_margins.png',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+  },
   description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
   foundingDate: '2024-01-01',
   address: {
@@ -65,7 +69,7 @@ const organizationSchema = {
     postalCode: '1831',
     addressCountry: 'BE',
   },
-  telephone: '+32078480710',
+  telephone: '+3278480710',
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'hello@ciphera.net',
@@ -112,7 +116,7 @@ export default function AboutPage() {
             <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
               Ciphera is dedicated to creating <a href="/products" className="link">privacy-first infrastructure and applications</a> 
               that put users in control of their data. We believe <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="link">encryption should be the default</a>, 
-              not an add-on. Explore our <a href="/companies" className="link">solutions for businesses</a>.
+              not an add-on.
             </p>
           </motion.div>
         </div>
@@ -176,7 +180,7 @@ export default function AboutPage() {
       </section>
 
       {/* * Values Section */}
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -317,7 +321,7 @@ export default function AboutPage() {
       </section>
 
       {/* * Timeline Section */}
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

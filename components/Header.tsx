@@ -6,6 +6,10 @@ import Image from 'next/image'
 import { ThemeToggle, MenuIcon, XIcon, ChevronDownIcon } from '@ciphera-net/ui'
 import { track } from '../lib/pulse'
 
+const resources = [
+  { name: 'Blog', href: '/blog', description: 'Privacy & security insights' },
+]
+
 const products = [
   { name: 'Pulse', href: '/products/pulse', description: 'Privacy-first analytics', icon: '/pulse_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
   { name: 'Drop', href: '/products/drop', description: 'Secure file sharing', icon: '/drop_icon_no_margins.png', iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40', external: false },
@@ -18,13 +22,18 @@ const products = [
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isProductsOpen, setIsProductsOpen] = useState(false)
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false)
   const productsRef = useRef<HTMLDivElement>(null)
+  const resourcesRef = useRef<HTMLDivElement>(null)
 
-  // * Close dropdown when clicking outside
+  // * Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (productsRef.current && !productsRef.current.contains(event.target as Node)) {
         setIsProductsOpen(false)
+      }
+      if (resourcesRef.current && !resourcesRef.current.contains(event.target as Node)) {
+        setIsResourcesOpen(false)
       }
     }
 
@@ -147,18 +156,44 @@ export default function Header() {
             )}
           </div>
           
-          <Link
-            href="/companies"
-            className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
-          >
-            For Companies
-          </Link>
-          <Link
-            href="/blog"
-            className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
-          >
-            Blog
-          </Link>
+          {/* * Resources dropdown */}
+          <div className="relative" ref={resourcesRef}>
+            <button
+              onClick={() => {
+                setIsResourcesOpen(!isResourcesOpen)
+                if (!isResourcesOpen) track('resources_dropdown_open')
+              }}
+              className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 flex items-center gap-1"
+            >
+              Resources
+              <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isResourcesOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {isResourcesOpen && (
+              <div className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-2xl shadow-neutral-500/20 dark:shadow-black/50 p-2 z-50 animate-in slide-in-from-top-2 fade-in duration-200">
+                {resources.map((resource) => (
+                  <Link
+                    key={resource.name}
+                    href={resource.href}
+                    onClick={() => {
+                      setIsResourcesOpen(false)
+                      track(`resources_dropdown_${resource.name.toLowerCase()}`)
+                    }}
+                  >
+                    <div className="flex flex-col px-4 py-3 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+                      <div className="font-semibold text-neutral-900 dark:text-white text-sm">
+                        {resource.name}
+                      </div>
+                      <div className="text-xs text-neutral-500 dark:text-neutral-400">
+                        {resource.description}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
           <Link
             href="/contact"
             className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
@@ -205,16 +240,10 @@ export default function Header() {
             >
               Products
             </Link>
-            <Link
-              href="/companies"
-              className="px-4 py-3 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              For Companies
-            </Link>
+            <div className="px-4 py-2 text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">Resources</div>
             <Link
               href="/blog"
-              className="px-4 py-3 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+              className="px-4 py-3 pl-6 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Blog

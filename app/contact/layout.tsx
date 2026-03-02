@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Ciphera | Get in Touch',
-  description: 'Contact Ciphera for general inquiries, security reports, or business partnerships. We\'re here to help with privacy-first solutions and support.',
+  title: 'Contact Us - Get in Touch',
+  description: 'Contact Ciphera for general inquiries, security reports, or business partnerships. Based in Diegem, Belgium with Swiss-hosted infrastructure.',
   keywords: ['contact ciphera', 'ciphera support', 'security report', 'business inquiry', 'privacy support'],
   openGraph: {
-    title: 'Contact Us - Ciphera | Get in Touch',
-    description: 'Contact Ciphera for general inquiries, security reports, or business partnerships. We\'re here to help with privacy-first solutions and support.',
+    title: 'Contact Us - Get in Touch',
+    description: 'Contact Ciphera for general inquiries, security reports, or business partnerships. Based in Diegem, Belgium with Swiss-hosted infrastructure.',
     url: 'https://ciphera.net/contact',
     siteName: 'Ciphera',
     images: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Us - Ciphera | Get in Touch',
+    title: 'Contact Us - Get in Touch',
     description: 'Contact Ciphera for general inquiries, security reports, or business partnerships.',
     images: ['/ciphera_logo_no_margins.png'],
   },

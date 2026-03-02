@@ -102,7 +102,7 @@ export default function FAQ() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

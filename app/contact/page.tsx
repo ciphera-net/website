@@ -77,8 +77,10 @@ const contactSchema = {
   '@type': 'ContactPage',
   mainEntity: {
     '@type': 'Organization',
+    '@id': 'https://ciphera.net/#organization',
     name: 'Ciphera',
     url: 'https://ciphera.net',
+    telephone: '+3278480710',
     contactPoint: [
       {
         '@type': 'ContactPoint',
@@ -416,7 +418,7 @@ export default function ContactPage() {
       </section>
 
       {/* * Contact Form Section */}
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
             {/* * Left - Info */}

@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'About Us - Ciphera | Building Privacy-First Infrastructure',
-  description: 'Learn about Ciphera\'s mission to build privacy-first infrastructure. Discover our values, tech stack, and zero-knowledge journey.',
+  title: 'About Us - Building Privacy-First Infrastructure',
+  description: 'Ciphera is a Belgian privacy company building zero-knowledge infrastructure. Learn about our mission, values, technology stack, and journey since 2024.',
   keywords: ['about ciphera', 'privacy company', 'zero-knowledge', 'encryption', 'privacy-first', 'ciphera mission'],
   openGraph: {
-    title: 'About Us - Ciphera | Building Privacy-First Infrastructure',
-    description: 'Learn about Ciphera\'s mission to build privacy-first infrastructure and applications. Discover our values, technology stack, and journey in creating zero-knowledge solutions.',
+    title: 'About Us - Building Privacy-First Infrastructure',
+    description: 'Ciphera is a Belgian privacy company building zero-knowledge infrastructure. Learn about our mission, values, technology stack, and journey since 2024.',
     url: 'https://ciphera.net/about',
     siteName: 'Ciphera',
     images: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
         url: '/ciphera_logo_no_margins.png',
         width: 1200,
         height: 630,
-        alt: 'Ciphera Logo',
+        alt: 'Ciphera - Building Privacy-First Infrastructure',
       },
     ],
     locale: 'en_US',
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Us - Ciphera | Building Privacy-First Infrastructure',
-    description: 'Learn about Ciphera\'s mission to build privacy-first infrastructure and applications.',
+    title: 'About Us - Building Privacy-First Infrastructure',
+    description: 'Ciphera is a Belgian privacy company building zero-knowledge infrastructure. Learn about our mission, values, and technology.',
     images: ['/ciphera_logo_no_margins.png'],
   },
   alternates: {

@@ -15,13 +15,11 @@ const footerLinks = {
   ],
   company: [
     { name: 'About', href: '/about', external: false },
-    { name: 'For Companies', href: '/companies', external: false },
-    { name: 'Contact', href: '/contact', external: false },
+{ name: 'Contact', href: '/contact', external: false },
   ],
   resources: [
     { name: 'Blog', href: '/blog', external: false },
-    { name: 'Comparison', href: '/comparison', external: false },
-    { name: 'GitHub', href: 'https://github.com/ciphera-net', external: true },
+{ name: 'GitHub', href: 'https://github.com/ciphera-net', external: true },
   ],
   legal: [
     { name: 'Privacy Policy', href: '/privacy', external: false },

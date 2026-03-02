@@ -5,6 +5,7 @@ import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import '../styles/globals.css'
+import HeroBackground from '../components/HeroBackground'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -44,8 +45,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://ciphera.net',
     siteName: 'Ciphera',
-    title: 'Ciphera - Secure File Sharing with Zero-Knowledge Encryption',
-    description: 'Secure file sharing with zero-knowledge encryption. End-to-end encrypted file transfer, privacy-first infrastructure, and GDPR-compliant solutions.',
+    title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
+    description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
     images: [
       {
         url: '/ciphera_logo_no_margins.png',
@@ -57,8 +58,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ciphera - Secure File Sharing with Zero-Knowledge Encryption',
-    description: 'Secure file sharing with zero-knowledge encryption. End-to-end encrypted file transfer and privacy-first infrastructure.',
+    title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
+    description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
     images: ['/ciphera_logo_no_margins.png'],
   },
   alternates: {
@@ -83,7 +84,10 @@ export default function RootLayout({
         <link rel="dns-prefetch" href={new URL(process.env.NEXT_PUBLIC_PULSE_SCRIPT_URL || 'https://pulse.ciphera.net/script.js').origin} />
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_PULSE_API_URL || 'https://pulse-api.ciphera.net'} />
       </head>
-      <body className="antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
+      <body className="relative antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
+        <div className="fixed inset-0 -z-10 overflow-hidden">
+          <HeroBackground />
+        </div>
         <Script
           strategy="lazyOnload"
           data-domain="ciphera.net"
@@ -92,7 +96,7 @@ export default function RootLayout({
         />
         <ThemeProviders>
           <Header />
-          <main className="flex-1 pt-24 pb-6 sm:pb-8 overflow-x-hidden">
+          <main className="flex-1 pt-24 overflow-x-hidden">
             {children}
           </main>
           <Footer />

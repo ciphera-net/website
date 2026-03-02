@@ -17,19 +17,6 @@ const trustIndicators = [
 export default function Hero() {
   return (
     <section className="relative min-h-[70vh] sm:min-h-[80vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden">
-      {/* * Background */}
-      <div className="absolute inset-0 -z-10">
-        {/* * Gradient orbs */}
-        <div className="absolute top-0 left-1/4 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] bg-brand-orange/10 rounded-full blur-[128px] opacity-60" />
-        <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-40" />
-        
-        {/* * Grid pattern */}
-        <div 
-          className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.03]"
-          style={{ maskImage: 'radial-gradient(ellipse at center, black 0%, transparent 70%)' }}
-        />
-      </div>
-
       <div className="section-container w-full">
         <div className="max-w-4xl mx-auto text-center">
           {/* * Badge */}
@@ -113,9 +100,6 @@ export default function Hero() {
         </motion.div>
         </div>
       </div>
-
-      {/* * Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent pointer-events-none" />
     </section>
   )
 }

@@ -9,25 +9,25 @@ const ChartIcon = GlobeIcon
 const ZapIcon = LockIcon
 
 export const metadata: Metadata = {
-  title: 'Pulse - Privacy-First Analytics | Ciphera',
-  description: 'Privacy-respecting website analytics that gives you insights without compromising user privacy. GDPR compliant, no cookies, no tracking.',
+  title: 'Pulse - Privacy-First Website Analytics',
+  description: 'Cookie-free website analytics with real-time dashboards, session replay, and geographic heatmaps. GDPR compliant by design. Under 1.6 KB tracking script.',
   alternates: {
     canonical: 'https://ciphera.net/products/pulse',
   },
   openGraph: {
-    title: 'Pulse - Privacy-First Analytics | Ciphera',
-    description: 'Privacy-respecting website analytics that gives you insights without compromising user privacy. GDPR compliant, no cookies, no tracking.',
+    title: 'Pulse - Privacy-First Website Analytics',
+    description: 'Cookie-free website analytics with real-time dashboards, session replay, and geographic heatmaps. GDPR compliant by design. Under 1.6 KB tracking script.',
     url: 'https://ciphera.net/products/pulse',
     siteName: 'Ciphera',
-    images: [{ url: '/pulse_icon_no_margins.png', width: 512, height: 512, alt: 'Pulse - Privacy-First Analytics' }],
+    images: [{ url: '/pulse_icon_no_margins.png', width: 512, height: 512, alt: 'Pulse - Privacy-First Website Analytics' }],
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pulse - Privacy-First Analytics | Ciphera',
-    description: 'Privacy-respecting website analytics without compromising user privacy.',
-    images: ['/ciphera_logo_no_margins.png'],
+    title: 'Pulse - Privacy-First Website Analytics',
+    description: 'Cookie-free website analytics with real-time dashboards, session replay, and geographic heatmaps. GDPR compliant by design.',
+    images: ['/pulse_icon_no_margins.png'],
   },
 }
 
@@ -59,7 +59,7 @@ export default function PulsePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pulseSchema) }} />
       {/* * Hero */}
-      <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
+      <section className="section-padding pt-32">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
             <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
@@ -114,7 +114,7 @@ export default function PulsePage() {
       </section>
 
       {/* * Features */}
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
             Analytics That Respect Privacy
@@ -141,7 +141,7 @@ export default function PulsePage() {
       </section>
 
       {/* * Key Metrics */}
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
             Essential Metrics Without Compromise
@@ -250,7 +250,7 @@ export default function PulsePage() {
       </section>
 
       {/* * Comparison */}
-      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+      <section className="section-padding">
         <div className="section-container">
           <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-6 text-center">
             How Pulse Compares
@@ -298,18 +298,18 @@ export default function PulsePage() {
       {/* * CTA */}
       <section className="section-padding">
         <div className="section-container">
-          <div className="card p-12 text-center max-w-3xl mx-auto bg-gradient-to-br from-brand-orange to-brand-orange-hover text-white">
-            <h2 className="text-3xl font-bold mb-4">
+          <div className="w-full text-center bg-gradient-to-br from-brand-orange to-brand-orange-hover rounded-3xl px-6 sm:px-10 md:px-16 py-12 sm:py-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Start Tracking With Privacy
             </h2>
             <p className="text-lg text-white/90 mb-8">
               Get started with Pulse today and respect your visitors' privacy.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://pulse.ciphera.net" className="btn bg-white text-brand-orange hover:bg-white/90">
+              <a href="https://pulse.ciphera.net" className="px-8 py-3.5 rounded-xl font-semibold bg-white text-brand-orange hover:bg-white/90 transition-all duration-200 inline-flex items-center gap-2">
                 Get Started Free
               </a>
-              <Link href="/contact" className="btn bg-white/10 text-white hover:bg-white/20 border-white/20">
+              <Link href="/contact" className="px-8 py-3.5 rounded-xl font-semibold bg-white/10 text-white hover:bg-white/20 border border-white/20 transition-all duration-200 inline-flex items-center gap-2">
                 Contact Sales
               </Link>
             </div>
