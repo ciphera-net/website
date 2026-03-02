@@ -46,6 +46,14 @@ const blogSchema = [
 
 const blogPosts = [
   {
+    slug: 'why-privacy-cant-be-an-afterthought',
+    title: 'Why Privacy Can\'t Be an Afterthought: Privacy Washing vs. Real Privacy Engineering',
+    description: '82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta paid $2B+ in privacy fines. Here\'s what real privacy architecture looks like.',
+    category: 'Privacy',
+    date: '2026-03-02',
+    readTime: '10 min read',
+  },
+  {
     slug: 'why-swiss-infrastructure-matters-for-data-privacy',
     title: 'Why Swiss Infrastructure Matters for Data Privacy',
     description: 'Switzerland hosts 75 data centers outside CLOUD Act reach. Learn why Swiss FADP, neutrality, and encryption protections make it the top choice for privacy infrastructure.',
@@ -68,6 +76,14 @@ const blogPosts = [
     category: 'Analytics',
     date: '2026-03-02',
     readTime: '14 min read',
+  },
+  {
+    slug: 'drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing',
+    title: 'Drop vs WeTransfer vs Google Drive vs Dropbox: Encrypted File Sharing Compared (2026)',
+    description: '82% of breaches involve cloud data. We compare 7 file sharing services on encryption, privacy, jurisdiction, and cost — only 3 use zero-knowledge encryption.',
+    category: 'Comparison',
+    date: '2026-03-02',
+    readTime: '12 min read',
   },
 ]
 

@@ -915,6 +915,662 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
     `,
   },
+  'why-privacy-cant-be-an-afterthought': {
+    title: 'Why Privacy Can\'t Be an Afterthought: Privacy Washing vs. Real Privacy Engineering',
+    description: '82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta paid $2B+ in privacy fines. Here\'s what real privacy architecture looks like.',
+    category: 'Privacy',
+    date: '2026-03-02',
+    readTime: '10 min read',
+    content: `
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        Every major tech company says it cares about privacy. Google's homepage says "keeping your information safe." Apple calls privacy "a fundamental human right." Meta talks about "putting privacy first." And in 2025 alone, those three companies collectively paid over $2 billion in privacy-related fines and settlements. Something doesn't add up. According to the <a href="https://cpl.thalesgroup.com/about-us/newsroom/digital-trust-index-2025" target="_blank" rel="noopener noreferrer">Thales 2025 Digital Trust Index</a>, no single industry sector reaches above 50% consumer trust for handling personal data. And 82% of consumers abandoned a brand in the past 12 months because of data concerns.
+      </p>
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>TL;DR:</strong> Privacy washing — claiming to protect data while profiting from it — cost Google, Apple, and Meta over $2 billion in fines in 2025. Real privacy requires architecture, not marketing: zero-knowledge encryption, open-source code, and zero personal data collection. Ciphera builds every product on these principles because you can't fake a cryptographic guarantee.
+      </blockquote>
+
+      <h2>What Does Privacy Washing Actually Look Like?</h2>
+
+      <p>
+        In September 2025, Google had an extraordinary month. France's CNIL fined the company <a href="https://www.cnil.fr/en/cookies-and-advertisements-inserted-between-emails-google-fined-325-million-euros-cnil" target="_blank" rel="noopener noreferrer">EUR 325 million</a> for inserting ads disguised as emails in Gmail without consent and placing cookies without valid permission — affecting 74 million accounts. That same month, a US federal jury <a href="https://www.axios.com/2025/09/04/google-privacy-lawsuit-pay-425-million-jury-rules" target="_blank" rel="noopener noreferrer">ordered Google to pay $425.7 million</a> after finding the company continued collecting user data through third-party app partnerships even when 98 million users had explicitly disabled the "Web &amp; App Activity" setting. Users toggled the switch to "off." Google kept collecting anyway. For eight years.
+      </p>
+
+      <p>
+        Google wasn't the only one. In January 2025, Apple agreed to pay <a href="https://www.npr.org/2025/01/03/g-s1-40940/apple-settle-lawsuit-siri-privacy" target="_blank" rel="noopener noreferrer">$95 million</a> to settle allegations that Siri was recording conversations even without the "Hey, Siri" trigger — and that those recordings were shared with advertisers. Plaintiffs reported seeing targeted ads for products they'd only mentioned out loud near their Apple devices. This from a company that runs billion-dollar ad campaigns about privacy being a human right.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 660 360" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="330" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="currentColor">Privacy Washing: The Claim vs. The Reality</text>
+          <text x="330" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">Major enforcement actions, 2023-2025</text>
+          <!-- Column headers -->
+          <text x="60" y="80" font-size="11" font-weight="700" fill="currentColor">Company</text>
+          <text x="210" y="80" font-size="11" font-weight="700" fill="#a3a3a3">The Claim</text>
+          <text x="410" y="80" font-size="11" font-weight="700" fill="#ef4444">The Reality</text>
+          <text x="600" y="80" font-size="11" font-weight="700" fill="#FD5E0F">Fine</text>
+          <line x1="20" y1="90" x2="640" y2="90" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <!-- Row 1: Google — tracking despite opt-out -->
+          <text x="60" y="120" font-size="12" font-weight="600" fill="currentColor">Google</text>
+          <text x="210" y="114" font-size="10" fill="#a3a3a3">Users can disable</text>
+          <text x="210" y="128" font-size="10" fill="#a3a3a3">Web &amp; App Activity</text>
+          <text x="410" y="114" font-size="10" fill="#ef4444">Kept collecting via</text>
+          <text x="410" y="128" font-size="10" fill="#ef4444">third-party apps (8 yrs)</text>
+          <text x="600" y="120" font-size="12" font-weight="700" fill="#FD5E0F">$425.7M</text>
+          <line x1="20" y1="146" x2="640" y2="146" stroke="#a3a3a3" stroke-width="0.3" opacity="0.15"/>
+          <!-- Row 2: Google — Gmail cookies -->
+          <text x="60" y="176" font-size="12" font-weight="600" fill="currentColor">Google</text>
+          <text x="210" y="170" font-size="10" fill="#a3a3a3">Proper cookie</text>
+          <text x="210" y="184" font-size="10" fill="#a3a3a3">consent in Gmail</text>
+          <text x="410" y="170" font-size="10" fill="#ef4444">Ads disguised as emails,</text>
+          <text x="410" y="184" font-size="10" fill="#ef4444">cookies without consent</text>
+          <text x="600" y="176" font-size="12" font-weight="700" fill="#FD5E0F">€325M</text>
+          <line x1="20" y1="202" x2="640" y2="202" stroke="#a3a3a3" stroke-width="0.3" opacity="0.15"/>
+          <!-- Row 3: Apple — Siri -->
+          <text x="60" y="232" font-size="12" font-weight="600" fill="currentColor">Apple</text>
+          <text x="210" y="226" font-size="10" fill="#a3a3a3">Siri only listens</text>
+          <text x="210" y="240" font-size="10" fill="#a3a3a3">when triggered</text>
+          <text x="410" y="226" font-size="10" fill="#ef4444">Recorded without trigger,</text>
+          <text x="410" y="240" font-size="10" fill="#ef4444">shared with advertisers</text>
+          <text x="600" y="232" font-size="12" font-weight="700" fill="#FD5E0F">$95M</text>
+          <line x1="20" y1="258" x2="640" y2="258" stroke="#a3a3a3" stroke-width="0.3" opacity="0.15"/>
+          <!-- Row 4: Meta — EU data transfers -->
+          <text x="60" y="288" font-size="12" font-weight="600" fill="currentColor">Meta</text>
+          <text x="210" y="282" font-size="10" fill="#a3a3a3">GDPR-compliant</text>
+          <text x="210" y="296" font-size="10" fill="#a3a3a3">data transfers</text>
+          <text x="410" y="282" font-size="10" fill="#ef4444">Transferred EU data</text>
+          <text x="410" y="296" font-size="10" fill="#ef4444">to US without safeguards</text>
+          <text x="600" y="288" font-size="12" font-weight="700" fill="#FD5E0F">€1.2B</text>
+          <line x1="20" y1="314" x2="640" y2="314" stroke="#a3a3a3" stroke-width="0.3" opacity="0.15"/>
+          <!-- Total -->
+          <text x="410" y="342" font-size="13" font-weight="700" fill="currentColor">Total (these 4 alone):</text>
+          <text x="600" y="342" font-size="14" font-weight="800" fill="#FD5E0F">$2B+</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Sources: Axios, CNIL, NPR, Meta/DPC — 2023-2025 enforcement actions</figcaption>
+      </figure>
+
+      <p>
+        And then there's Meta. The Irish Data Protection Commission fined Meta EUR 1.2 billion in May 2023 — the largest GDPR fine ever — for transferring EU personal data to the United States without adequate safeguards. All while claiming GDPR compliance on every product page. Privacy washing isn't subtle. It's a pattern: say one thing in the marketing, architect another in the code.
+      </p>
+
+      <h2>Why Does Privacy Washing Keep Happening?</h2>
+
+      <p>
+        The global data broker market is worth <a href="https://www.mordorintelligence.com/industry-reports/data-broker-market" target="_blank" rel="noopener noreferrer">$294-313 billion</a> (Mordor Intelligence, 2025). Consumer data accounts for 35.1% of that revenue — driven by demand for personalized marketing and real-time customer profiling. When user data is this valuable, privacy will always conflict with the business model. You can't simultaneously monetize personal data and protect it.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&h=630&fit=crop&q=80" alt="Green cascading digital code on a dark screen representing the hidden data collection happening behind user interfaces" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <p>
+        The information asymmetry makes it worse. Only 9% of Americans always read privacy policies before agreeing. 36% never read them at all. Can you blame them? <a href="https://nordvpn.com/blog/privacy-policy-study-us/" target="_blank" rel="noopener noreferrer">Meta's privacy policies total 19,434 words</a> — 82 minutes of reading. The average privacy policy runs 4,000-7,000 words. If you tried to read every privacy policy you encounter in a month, it would take 46.6 hours. That's longer than a full work week.
+      </p>
+
+      <p>
+        Cookie consent banners are privacy theater. A <a href="https://www.cookieyes.com/blog/cookie-consent-trends/" target="_blank" rel="noopener noreferrer">CookieYes meta-analysis</a> of 26 studies found that 37% of users always click "accept all" regardless of design, and 69% close or ignore banners entirely without providing consent. In the US, over 80% accept cookies. In Germany and France, fewer than 25% do — because European regulators forced sites to show a visible "Reject All" button. When "Reject All" is equally prominent, 50-70% of users reject cookies. The design was the manipulation all along.
+      </p>
+
+      <p>
+        Here's the uncomfortable truth: companies that make money from data have a structural incentive to make privacy hard to exercise. Long policies nobody reads. Dark patterns in consent banners. Settings that don't actually turn off collection. These aren't bugs. They're features of the business model.
+      </p>
+
+      <h2>Can You Actually Verify a Company's Privacy Claims?</h2>
+
+      <p>
+        The <a href="https://canonical.com/blog/state-of-global-open-source-2025" target="_blank" rel="noopener noreferrer">Linux Foundation's 2025 survey</a> found that 83% of enterprises consider open-source software valuable, with 78% citing improved security as a key reason. There's a simple explanation: open source is the only way to verify what software actually does with your data. Everything else is a trust exercise.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1200&h=630&fit=crop&q=80" alt="Programming code displayed on a laptop screen in a dark developer workspace representing open source transparency" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <p>
+        Think about Apple's Siri recording scandal. It happened because nobody outside Apple could inspect what Siri was doing. The code was closed. The behavior was hidden. Users had to trust Apple's marketing — and that trust was betrayed. With open-source software, the recording behavior would have been discovered in the code before it ever shipped. That's not hypothetical. It's how open-source security works in practice: thousands of eyes catching what internal teams miss or ignore.
+      </p>
+
+      <!-- [PERSONAL EXPERIENCE] -->
+      <p>
+        Every Ciphera product is open source. Not "source available." Not "shared source under a restrictive license." Genuinely open source on GitHub. <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer">Ciphera Drop</a>. <a href="https://github.com/ciphera-net/pulse" target="_blank" rel="noopener noreferrer">Pulse</a>. The authentication service. The UI library. If we claimed zero-knowledge encryption but actually decrypted files server-side, anyone could read the code and call us out. That's the point. Open source doesn't ask you to trust us. It invites you to verify us.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="430" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="currentColor">Data Collection: Big Tech vs. Privacy-First</text>
+          <text x="430" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">What each service collects from you</text>
+          <!-- Axis -->
+          <line x1="200" y1="72" x2="200" y2="340" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <!-- Row 1: Search -->
+          <text x="190" y="100" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Search</text>
+          <rect x="210" y="86" width="380" height="14" rx="3" fill="#ef4444" opacity="0.7"/>
+          <text x="600" y="98" font-size="10" fill="#ef4444">Google — location, history, browsing, device, contacts</text>
+          <rect x="210" y="104" width="40" height="14" rx="3" fill="#22c55e" opacity="0.7"/>
+          <text x="260" y="116" font-size="10" fill="#22c55e">DuckDuckGo — query only (not stored)</text>
+          <!-- Row 2: Email -->
+          <text x="190" y="152" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Email</text>
+          <rect x="210" y="138" width="340" height="14" rx="3" fill="#ef4444" opacity="0.7"/>
+          <text x="560" y="150" font-size="10" fill="#ef4444">Gmail — content, contacts, purchases, location</text>
+          <rect x="210" y="156" width="30" height="14" rx="3" fill="#22c55e" opacity="0.7"/>
+          <text x="250" y="168" font-size="10" fill="#22c55e">ProtonMail — zero-access encryption</text>
+          <!-- Row 3: File Sharing -->
+          <text x="190" y="204" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">File Sharing</text>
+          <rect x="210" y="190" width="300" height="14" rx="3" fill="#ef4444" opacity="0.7"/>
+          <text x="520" y="202" font-size="10" fill="#ef4444">Google Drive — contents, metadata, sharing logs</text>
+          <rect x="210" y="208" width="10" height="14" rx="3" fill="#FD5E0F" opacity="0.8"/>
+          <text x="230" y="220" font-size="10" font-weight="600" fill="#FD5E0F">Ciphera Drop — zero (client-side AES-256-GCM)</text>
+          <!-- Row 4: Analytics -->
+          <text x="190" y="256" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Analytics</text>
+          <rect x="210" y="242" width="360" height="14" rx="3" fill="#ef4444" opacity="0.7"/>
+          <text x="580" y="254" font-size="10" fill="#ef4444">Google Analytics — IP, location, device, behavior</text>
+          <rect x="210" y="260" width="10" height="14" rx="3" fill="#FD5E0F" opacity="0.8"/>
+          <text x="230" y="272" font-size="10" font-weight="600" fill="#FD5E0F">Ciphera Pulse — zero personal data</text>
+          <!-- Row 5: Messaging -->
+          <text x="190" y="308" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Messaging</text>
+          <rect x="210" y="294" width="280" height="14" rx="3" fill="#ef4444" opacity="0.7"/>
+          <text x="500" y="306" font-size="10" fill="#ef4444">WhatsApp — metadata, contacts, groups, location</text>
+          <rect x="210" y="312" width="10" height="14" rx="3" fill="#22c55e" opacity="0.7"/>
+          <text x="230" y="324" font-size="10" fill="#22c55e">Signal — zero metadata retention</text>
+          <!-- Legend -->
+          <rect x="280" y="350" width="10" height="10" rx="2" fill="#ef4444" opacity="0.7"/>
+          <text x="296" y="359" font-size="9" fill="#a3a3a3">Surveillance model</text>
+          <rect x="410" y="350" width="10" height="10" rx="2" fill="#22c55e" opacity="0.7"/>
+          <text x="426" y="359" font-size="9" fill="#a3a3a3">Privacy-first</text>
+          <rect x="510" y="350" width="10" height="10" rx="2" fill="#FD5E0F" opacity="0.8"/>
+          <text x="526" y="359" font-size="9" fill="#a3a3a3">Ciphera</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Sources: Security.org data collection ratings, product documentation</figcaption>
+      </figure>
+
+      <p>
+        An <a href="https://www.security.org/resources/data-tech-companies-have/" target="_blank" rel="noopener noreferrer">Android device with Chrome communicates location data back to Google 340 times per 24-hour period</a> — 14 times per hour (Security.org / Vanderbilt University). Background data collection is double that of active usage. Google earns Security.org's worst possible rating for data collection: an "F." The bars in the chart above aren't proportional for readability, but the gap is real: services built on surveillance collect hundreds of data points per user per day. Privacy-first alternatives collect close to zero.
+      </p>
+
+      <h2>How Ciphera's Architecture Makes Privacy Washing Impossible</h2>
+
+      <p>
+        <a href="https://www.cisco.com/c/dam/en_us/about/doing_business/trust-center/docs/cisco-privacy-benchmark-study-2025.pdf" target="_blank" rel="noopener noreferrer">Cisco's 2025 Privacy Benchmark Study</a> found that 96% of organizations report their privacy investment pays for itself, with a median ROI of 1.6x. Privacy isn't a cost center — it's an asset. But it only works when it's built into the architecture, not bolted on as a policy. Here's what that looks like in practice.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=630&fit=crop&q=80" alt="A golden padlock resting on a computer keyboard representing encryption and digital data protection" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <!-- [ORIGINAL DATA] -->
+      <p>
+        <strong>Zero-knowledge encryption.</strong> When you share a file through <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">Ciphera Drop</a>, it's encrypted with AES-256-GCM in your browser before it leaves your device. The server receives ciphertext. It never has the decryption key. This isn't a policy we could change next quarter. It's cryptography. The server <em>cannot</em> read your files — not "we choose not to," but "it's mathematically impossible without the key." Google Drive can read every file you upload. Dropbox can too. They encrypt data "at rest," but they hold the keys. That's a policy. Our approach is math.
+      </p>
+
+      <p>
+        <strong>Zero personal data collection.</strong> <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Pulse</a> provides website analytics without cookies, fingerprinting, or IP storage. It doesn't collect personal data as defined by GDPR Article 4. There's no consent banner needed because there's nothing to consent to. Compare that to Google Analytics, which collects IP addresses, sets tracking cookies, builds cross-site behavioral profiles, and requires a full cookie consent banner plus a Data Processing Agreement. We didn't build "Google Analytics but more private." We built something architecturally different.
+      </p>
+
+      <p>
+        <strong>Open source where it matters.</strong> The client applications — <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer">Drop</a>, <a href="https://github.com/ciphera-net/pulse" target="_blank" rel="noopener noreferrer">Pulse</a>, and the <a href="https://github.com/ciphera-net/ciphera-ui" target="_blank" rel="noopener noreferrer">UI library</a> — are open source on GitHub. Since all encryption happens client-side, that's where the privacy guarantees live. You can read the code that encrypts your files and verify it does what we say. If Apple had published Siri's voice processing code, the recording scandal would have been caught in a code review, not a lawsuit.
+      </p>
+
+      <p>
+        <strong><a href="https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy">Swiss infrastructure</a>.</strong> Our servers are hosted in Switzerland, governed by the FADP, outside the reach of the US CLOUD Act, and outside Five Eyes intelligence-sharing alliances. Ciphera is a Belgian company — not a US entity — so the CLOUD Act can't compel us to hand over data.
+      </p>
+
+      <p>
+        <strong>No advertising business model.</strong> This is the one that matters most. Google, Meta, and increasingly Apple make money from advertising. Advertising requires user data. When your revenue depends on knowing everything about your users, privacy will always lose. Ciphera has zero advertising revenue. We make money from the products we sell, not from the data we collect. When there's no financial incentive to collect data, the decision to not collect it is easy.
+      </p>
+
+      <!-- [UNIQUE INSIGHT] -->
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>The key difference:</strong> You can change a privacy policy overnight. You can't fake a zero-knowledge encryption implementation. When privacy is in the architecture — client-side encryption, zero data collection, open-source code — it's verifiable and permanent. When privacy is in the marketing, it lasts until the next quarterly earnings call.
+      </blockquote>
+
+      <h2>The Privacy Market Is Growing — Here's Why</h2>
+
+      <p>
+        The privacy-enhancing technologies market stood at <a href="https://www.grandviewresearch.com/industry-analysis/privacy-enhancing-technologies-market-report" target="_blank" rel="noopener noreferrer">$3.1-5.0 billion in 2025</a> and is projected to reach $12-40 billion by 2030, growing at 19-26% CAGR (Grand View Research). People aren't just expressing concern in surveys. They're switching. Signal reached #1 in app stores across Finland, Belgium, Italy, and the Netherlands in 2025, with <a href="https://techcrunch.com/2025/03/02/signal-is-the-number-one-downloaded-app-in-the-netherlands-but-why/" target="_blank" rel="noopener noreferrer">Dutch downloads surging 958%</a> in three months. Proton grew from a 10,000-person crowdfunding campaign to <a href="https://proton.me/blog/proton-100-million-accounts" target="_blank" rel="noopener noreferrer">100 million accounts</a>. DuckDuckGo handles 98.8 million searches daily.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <defs>
+            <linearGradient id="petGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FD5E0F" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#FD5E0F" stop-opacity="0.03"/>
+            </linearGradient>
+          </defs>
+          <text x="320" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="currentColor">Privacy-Enhancing Tech Market Growth</text>
+          <text x="320" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">Billions USD — Grand View Research, Mordor Intelligence</text>
+          <!-- Y axis -->
+          <text x="60" y="82" text-anchor="end" font-size="11" fill="#a3a3a3">$15B</text>
+          <line x1="68" y1="78" x2="580" y2="78" stroke="#a3a3a3" stroke-width="0.3" opacity="0.2"/>
+          <text x="60" y="132" text-anchor="end" font-size="11" fill="#a3a3a3">$10B</text>
+          <line x1="68" y1="128" x2="580" y2="128" stroke="#a3a3a3" stroke-width="0.3" opacity="0.2"/>
+          <text x="60" y="182" text-anchor="end" font-size="11" fill="#a3a3a3">$5B</text>
+          <line x1="68" y1="178" x2="580" y2="178" stroke="#a3a3a3" stroke-width="0.3" opacity="0.2"/>
+          <!-- Baseline -->
+          <line x1="68" y1="278" x2="580" y2="278" stroke="#a3a3a3" stroke-width="0.5"/>
+          <!-- Scale: 0=278, 15B=78. Per B = 200/15 = 13.33px -->
+          <!-- 2018: $0.5B → y=271 -->
+          <!-- 2020: $1.2B → y=262 -->
+          <!-- 2022: $2.0B → y=251 -->
+          <!-- 2025: $4.0B → y=225 -->
+          <!-- 2030: $12B → y=118 -->
+          <polygon points="100,271 200,262 310,251 440,225 560,118 560,278 440,278 310,278 200,278 100,278" fill="url(#petGrad)"/>
+          <polyline points="100,271 200,262 310,251 440,225 560,118" fill="none" stroke="#FD5E0F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Data points -->
+          <circle cx="100" cy="271" r="5" fill="#FD5E0F"/>
+          <text x="100" y="260" text-anchor="middle" font-size="10" fill="#a3a3a3">$0.5B</text>
+          <text x="100" y="296" text-anchor="middle" font-size="10" fill="#a3a3a3">2018</text>
+          <circle cx="200" cy="262" r="5" fill="#FD5E0F"/>
+          <text x="200" y="251" text-anchor="middle" font-size="10" fill="#a3a3a3">$1.2B</text>
+          <text x="200" y="296" text-anchor="middle" font-size="10" fill="#a3a3a3">2020</text>
+          <circle cx="310" cy="251" r="5" fill="#FD5E0F"/>
+          <text x="310" y="240" text-anchor="middle" font-size="10" fill="#a3a3a3">$2.0B</text>
+          <text x="310" y="296" text-anchor="middle" font-size="10" fill="#a3a3a3">2022</text>
+          <circle cx="440" cy="225" r="6" fill="#FD5E0F"/>
+          <text x="440" y="214" text-anchor="middle" font-size="12" font-weight="600" fill="#FD5E0F">~$4B</text>
+          <text x="440" y="296" text-anchor="middle" font-size="11" font-weight="600" fill="#FD5E0F">2025</text>
+          <circle cx="560" cy="118" r="7" fill="#FD5E0F"/>
+          <text x="560" y="107" text-anchor="middle" font-size="14" font-weight="700" fill="#FD5E0F">$12B</text>
+          <text x="560" y="296" text-anchor="middle" font-size="11" font-weight="700" fill="#FD5E0F">2030</text>
+          <!-- Annotation -->
+          <rect x="460" y="155" width="110" height="22" rx="5" fill="#FD5E0F" opacity="0.1"/>
+          <text x="515" y="170" text-anchor="middle" font-size="10" font-weight="600" fill="#FD5E0F">3x growth projected</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Sources: Grand View Research, Mordor Intelligence — Privacy-Enhancing Technologies market</figcaption>
+      </figure>
+
+      <p>
+        An <a href="https://www.expressvpn.com/blog/digital-privacy-us-attitudes-survey-2025/" target="_blank" rel="noopener noreferrer">ExpressVPN survey</a> (2025) found that 21% of Americans would pay for a social media platform that doesn't use their data to train AI, with another 50% saying they'd consider it depending on features and pricing. That's 71% of Americans open to paying for privacy. The demand isn't theoretical. People are tired of being the product, and they're putting their money where their frustration is.
+      </p>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>Is Ciphera really open source?</h3>
+      <p>
+        The client applications — <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer">Drop</a>, <a href="https://github.com/ciphera-net/pulse" target="_blank" rel="noopener noreferrer">Pulse</a>, and the <a href="https://github.com/ciphera-net/ciphera-ui" target="_blank" rel="noopener noreferrer">UI library</a> — are open source on GitHub. Since all encryption happens client-side, the privacy-critical code is fully auditable. The Linux Foundation (2025) found 78% of enterprises cite improved security from open source because code is inspectable by anyone, not just the company that wrote it.
+      </p>
+
+      <h3>What does zero-knowledge encryption mean in practice?</h3>
+      <p>
+        It means Ciphera's servers can't read your files. Data is encrypted with AES-256-GCM in your browser before upload. The decryption key stays with you — embedded in the URL fragment or derived from your password. Even in a worst-case server breach, attackers find only encrypted blobs with no keys.
+      </p>
+
+      <h3>Does Ciphera sell any user data?</h3>
+      <p>
+        No. We don't collect personal data, so there's nothing to sell. Pulse collects zero personal data by architecture. Drop encrypts files client-side so we can't access them. The data broker market is worth $294-313 billion (<a href="https://www.mordorintelligence.com/industry-reports/data-broker-market" target="_blank" rel="noopener noreferrer">Mordor Intelligence</a>, 2025). We opted out of that economy entirely.
+      </p>
+
+      <h3>How is Ciphera different from Proton or Signal?</h3>
+      <p>
+        We love Proton and Signal — we use them daily. They've done incredible work proving that privacy-first products can compete at scale. Ciphera isn't a replacement for either. It fills a different gap: encrypted file sharing (Drop), privacy-first analytics (Pulse), authentication, bot protection, and email infrastructure — all <a href="https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy">Swiss-hosted</a>. Think of it as the privacy infrastructure layer that complements tools like Proton and Signal.
+      </p>
+
+      <p>
+        Privacy isn't a feature you can add to a product that was built to collect data. It's a foundation you either build on from day one or you don't. We built Ciphera because we were tired of reading privacy policies that contradicted the code behind them. Every architectural decision — client-side encryption, zero data collection, open source, Swiss hosting, no ad model — exists because we believe privacy should be verifiable, not promised. Don't take our word for it. <a href="https://github.com/ciphera-net" target="_blank" rel="noopener noreferrer">Read the code</a>.
+      </p>
+    `,
+  },
+  'drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing': {
+    title: 'Drop vs WeTransfer vs Google Drive vs Dropbox: Encrypted File Sharing Compared (2026)',
+    description: '82% of breaches involve cloud data. We compare 7 file sharing services on encryption, privacy, jurisdiction, and cost — only 3 use zero-knowledge encryption.',
+    category: 'Comparison',
+    date: '2026-03-02',
+    readTime: '12 min read',
+    content: `
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        Every file you share through WeTransfer, Google Drive, or Dropbox passes through servers where the provider holds the encryption keys. They can read your files. So can any government that serves them a court order. According to <a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM's 2025 Cost of a Data Breach Report</a>, 82% of all data breaches now involve cloud-stored data — and the average cloud breach costs $5.05 million.
+      </p>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        But not every file sharing service works this way. A small number use zero-knowledge encryption — where your files are encrypted on your device before upload, and the server never has the key. We compared 7 services across encryption, privacy, jurisdiction, pricing, and usability to find out which ones actually protect your files and which ones just say they do.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=630&fit=crop&q=80" alt="A golden padlock resting on a computer keyboard representing encrypted file sharing and data protection" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;" loading="lazy" />
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>TL;DR:</strong> Of 7 file sharing services tested, only Drop, Tresorit, and Send use zero-knowledge encryption where the provider can't read your files. Cloud breaches cost $5.05M on average (<a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM</a>, 2025). Drop is the only free, no-account option with client-side AES-256-GCM encryption and Swiss-hosted infrastructure outside CLOUD Act reach.
+      </blockquote>
+
+      <h2>Quick Comparison: How Do 7 File Sharing Services Stack Up?</h2>
+
+      <p>
+        The <a href="https://www.openpr.com/news/4229197/file-sharing-software-market-by-type-and-application-valued" target="_blank" rel="noopener noreferrer">file sharing software market</a> hit $6.2 billion in 2026 and is growing at 7.6% annually. Yet most services in this booming market still use server-side encryption — meaning the provider holds the keys and can access your data. Here's how 7 popular services compare across the dimensions that actually matter for privacy.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 800px;">
+        <svg viewBox="0 0 780 520" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" aria-label="Feature comparison matrix of 7 file sharing services across 8 privacy and usability dimensions">
+          <text x="390" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">File Sharing Services: Feature Comparison</text>
+          <!-- Column Headers -->
+          <text x="160" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="currentColor">Drop</text>
+          <text x="248" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="currentColor">WeTransfer</text>
+          <text x="336" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="currentColor">Google Drive</text>
+          <text x="424" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="currentColor">Dropbox</text>
+          <text x="512" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="currentColor">OneDrive</text>
+          <text x="600" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="currentColor">Tresorit</text>
+          <text x="688" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="currentColor">Send</text>
+          <!-- Horizontal lines -->
+          <line x1="20" y1="65" x2="760" y2="65" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <line x1="20" y1="115" x2="760" y2="115" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="20" y1="165" x2="760" y2="165" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="20" y1="215" x2="760" y2="215" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="20" y1="265" x2="760" y2="265" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="20" y1="315" x2="760" y2="315" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="20" y1="365" x2="760" y2="365" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="20" y1="415" x2="760" y2="415" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="20" y1="465" x2="760" y2="465" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <!-- Row labels -->
+          <text x="75" y="95" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">E2E Encrypted</text>
+          <text x="75" y="145" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">Zero-Knowledge</text>
+          <text x="75" y="195" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">No Account</text>
+          <text x="75" y="245" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">Max Free File</text>
+          <text x="75" y="295" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">Non-US Law</text>
+          <text x="75" y="345" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">Open Source</text>
+          <text x="75" y="395" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">Free Tier</text>
+          <text x="75" y="445" text-anchor="middle" font-size="10" fill="currentColor" font-weight="600">No Ads</text>
+          <!-- Row 1: E2E Encrypted -->
+          <circle cx="160" cy="92" r="8" fill="#22c55e" opacity="0.8"/><text x="160" y="96" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="248" cy="92" r="8" fill="#ef4444" opacity="0.7"/><text x="248" y="96" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="336" cy="92" r="8" fill="#ef4444" opacity="0.7"/><text x="336" y="96" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="424" cy="92" r="8" fill="#ef4444" opacity="0.7"/><text x="424" y="96" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="512" cy="92" r="8" fill="#ef4444" opacity="0.7"/><text x="512" y="96" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="600" cy="92" r="8" fill="#22c55e" opacity="0.8"/><text x="600" y="96" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="688" cy="92" r="8" fill="#22c55e" opacity="0.8"/><text x="688" y="96" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <!-- Row 2: Zero-Knowledge -->
+          <circle cx="160" cy="142" r="8" fill="#22c55e" opacity="0.8"/><text x="160" y="146" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="248" cy="142" r="8" fill="#ef4444" opacity="0.7"/><text x="248" y="146" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="336" cy="142" r="8" fill="#ef4444" opacity="0.7"/><text x="336" y="146" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="424" cy="142" r="8" fill="#ef4444" opacity="0.7"/><text x="424" y="146" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="512" cy="142" r="8" fill="#ef4444" opacity="0.7"/><text x="512" y="146" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="600" cy="142" r="8" fill="#22c55e" opacity="0.8"/><text x="600" y="146" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="688" cy="142" r="8" fill="#22c55e" opacity="0.8"/><text x="688" y="146" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <!-- Row 3: No Account -->
+          <circle cx="160" cy="192" r="8" fill="#22c55e" opacity="0.8"/><text x="160" y="196" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="248" cy="192" r="8" fill="#22c55e" opacity="0.8"/><text x="248" y="196" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="336" cy="192" r="8" fill="#ef4444" opacity="0.7"/><text x="336" y="196" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="424" cy="192" r="8" fill="#ef4444" opacity="0.7"/><text x="424" y="196" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="512" cy="192" r="8" fill="#ef4444" opacity="0.7"/><text x="512" y="196" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="600" cy="192" r="8" fill="#ef4444" opacity="0.7"/><text x="600" y="196" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="688" cy="192" r="8" fill="#22c55e" opacity="0.8"/><text x="688" y="196" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <!-- Row 4: Max Free File -->
+          <text x="160" y="249" text-anchor="middle" font-size="10" fill="#FD5E0F" font-weight="700">5 GB</text>
+          <text x="248" y="249" text-anchor="middle" font-size="10" fill="#a3a3a3">3 GB</text>
+          <text x="336" y="249" text-anchor="middle" font-size="10" fill="#a3a3a3">5 GB*</text>
+          <text x="424" y="249" text-anchor="middle" font-size="10" fill="#a3a3a3">100 MB</text>
+          <text x="512" y="249" text-anchor="middle" font-size="10" fill="#a3a3a3">5 GB*</text>
+          <text x="600" y="249" text-anchor="middle" font-size="10" fill="#a3a3a3">N/A</text>
+          <text x="688" y="249" text-anchor="middle" font-size="10" fill="#a3a3a3">2.5 GB</text>
+          <!-- Row 5: Non-US Law -->
+          <circle cx="160" cy="292" r="8" fill="#22c55e" opacity="0.8"/><text x="160" y="296" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="248" cy="292" r="8" fill="#22c55e" opacity="0.8"/><text x="248" y="296" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="336" cy="292" r="8" fill="#ef4444" opacity="0.7"/><text x="336" y="296" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="424" cy="292" r="8" fill="#ef4444" opacity="0.7"/><text x="424" y="296" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="512" cy="292" r="8" fill="#ef4444" opacity="0.7"/><text x="512" y="296" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="600" cy="292" r="8" fill="#22c55e" opacity="0.8"/><text x="600" y="296" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="688" cy="292" r="8" fill="#eab308" opacity="0.7"/><text x="688" y="296" text-anchor="middle" font-size="9" fill="white" font-weight="700">~</text>
+          <!-- Row 6: Open Source -->
+          <circle cx="160" cy="342" r="8" fill="#22c55e" opacity="0.8"/><text x="160" y="346" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="248" cy="342" r="8" fill="#ef4444" opacity="0.7"/><text x="248" y="346" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="336" cy="342" r="8" fill="#ef4444" opacity="0.7"/><text x="336" y="346" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="424" cy="342" r="8" fill="#ef4444" opacity="0.7"/><text x="424" y="346" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="512" cy="342" r="8" fill="#ef4444" opacity="0.7"/><text x="512" y="346" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="600" cy="342" r="8" fill="#ef4444" opacity="0.7"/><text x="600" y="346" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="688" cy="342" r="8" fill="#22c55e" opacity="0.8"/><text x="688" y="346" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <!-- Row 7: Free Tier -->
+          <circle cx="160" cy="392" r="8" fill="#22c55e" opacity="0.8"/><text x="160" y="396" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="248" cy="392" r="8" fill="#eab308" opacity="0.7"/><text x="248" y="396" text-anchor="middle" font-size="9" fill="white" font-weight="700">~</text>
+          <circle cx="336" cy="392" r="8" fill="#22c55e" opacity="0.8"/><text x="336" y="396" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="424" cy="392" r="8" fill="#eab308" opacity="0.7"/><text x="424" y="396" text-anchor="middle" font-size="9" fill="white" font-weight="700">~</text>
+          <circle cx="512" cy="392" r="8" fill="#22c55e" opacity="0.8"/><text x="512" y="396" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="600" cy="392" r="8" fill="#ef4444" opacity="0.7"/><text x="600" y="396" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="688" cy="392" r="8" fill="#22c55e" opacity="0.8"/><text x="688" y="396" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <!-- Row 8: No Ads -->
+          <circle cx="160" cy="442" r="8" fill="#22c55e" opacity="0.8"/><text x="160" y="446" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="248" cy="442" r="8" fill="#ef4444" opacity="0.7"/><text x="248" y="446" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10007;</text>
+          <circle cx="336" cy="442" r="8" fill="#22c55e" opacity="0.8"/><text x="336" y="446" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="424" cy="442" r="8" fill="#22c55e" opacity="0.8"/><text x="424" y="446" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="512" cy="442" r="8" fill="#22c55e" opacity="0.8"/><text x="512" y="446" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="600" cy="442" r="8" fill="#22c55e" opacity="0.8"/><text x="600" y="446" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <circle cx="688" cy="442" r="8" fill="#22c55e" opacity="0.8"/><text x="688" y="446" text-anchor="middle" font-size="9" fill="white" font-weight="700">&#10003;</text>
+          <!-- Footer note -->
+          <text x="390" y="490" text-anchor="middle" font-size="9" fill="#a3a3a3">*Google Drive and OneDrive are storage services; file size refers to upload limit within free storage quota.</text>
+          <text x="390" y="505" text-anchor="middle" font-size="9" fill="#a3a3a3">~ = Limited (WeTransfer: 10 transfers/month cap; Dropbox Transfer free: 100 MB limit; Send: depends on host)</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Product documentation and pricing pages, verified March 2026</figcaption>
+      </figure>
+
+      <p>
+        The pattern is clear. Of seven services, only three — Drop, Tresorit, and Send — use end-to-end encryption with a zero-knowledge architecture. The other four encrypt your data on their servers, but they hold the keys. That distinction matters more than any other feature on this list.
+      </p>
+
+      <h2>What's the Difference Between "Encrypted" and "Zero-Knowledge"?</h2>
+
+      <p>
+        Cloud breaches cost $5.05 million on average when data spans multiple environments, compared to $4.01 million for on-premise breaches (<a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM</a>, 2025). The reason is straightforward: when a provider holds your encryption keys, a breach exposes everything. Zero-knowledge encryption eliminates that risk entirely.
+      </p>
+
+      <p>
+        Here's the difference in plain terms. <strong>Server-side encryption</strong> (used by WeTransfer, Google Drive, Dropbox, OneDrive) means the provider encrypts your file after it arrives on their server. They hold the decryption key. They can read your files, scan them for policy compliance, and hand them to law enforcement on request. It's a safe deposit box where the bank keeps a master key.
+      </p>
+
+      <p>
+        <strong>Zero-knowledge encryption</strong> (used by Drop, Tresorit, Send) means your file is encrypted on your device <em>before</em> it ever leaves. The server only stores ciphertext — scrambled data that's useless without your key. The provider can't read your files even if they wanted to. Even if their entire server infrastructure gets compromised, attackers get nothing but encrypted blobs. It's a safe deposit box where only you have the key, and the bank never made a copy.
+      </p>
+
+      <!-- [UNIQUE INSIGHT] -->
+      <p>
+        This isn't a theoretical distinction. When Dropbox's Sign service was <a href="https://thehackernews.com/2024/05/dropbox-discloses-breach-of-digital.html" target="_blank" rel="noopener noreferrer">breached in April 2024</a>, attackers accessed emails, usernames, phone numbers, hashed passwords, API keys, and OAuth tokens for all Sign users. If Dropbox used zero-knowledge encryption, that credential data wouldn't have been readable in the first place.
+      </p>
+
+      <h2>How Do WeTransfer, Google Drive, and Dropbox Handle Your Files?</h2>
+
+      <p>
+        The US experienced <a href="https://www.prnewswire.com/news-releases/3-332-data-breaches-in-the-united-states-in-2025-regolo-powered-by-seeweb-offers-european-infrastructure-to-help-avoid-the-cloud-act-and-support-ai-act-compliance-302699464.html" target="_blank" rel="noopener noreferrer">3,332 data breaches in 2025</a>, exposing over 278 million individuals. Three of the biggest file sharing providers — Google, Dropbox, and Microsoft — are US companies subject to the CLOUD Act, which compels them to hand over user data regardless of where it's stored. Here's what that means for each service.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop&q=80" alt="Rows of illuminated server racks in a modern data center representing cloud file storage infrastructure" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <h3>WeTransfer</h3>
+      <p>
+        WeTransfer was acquired by <a href="https://techcrunch.com/2024/12/18/wetransfers-free-plan-now-has-a-monthly-limit-of-10-transfers/" target="_blank" rel="noopener noreferrer">Bending Spoons in mid-2024</a>, and things changed fast. The free tier now caps you at 10 transfers per month with a combined 3 GB monthly limit — and files expire after just 3 days. Paid plans start at $6.99/month. Files aren't end-to-end encrypted. WeTransfer can read them, scan them, and the company's privacy policy allows processing data for "service improvement." In 2019, WeTransfer sent file notification emails to the wrong recipients, exposing file links to strangers.
+      </p>
+
+      <h3>Google Drive</h3>
+      <p>
+        Google encrypts files at rest with AES-256 — but Google holds the keys. Their terms of service grant them the right to scan file content for policy compliance. As a US company, Google falls under the <a href="https://www.justice.gov/criminal/cloud-act-resources" target="_blank" rel="noopener noreferrer">CLOUD Act</a>: the government can compel disclosure of your data even if it's stored in Europe. Google received over 190,000 government data requests in 2023 and complied with roughly 80% of them.
+      </p>
+
+      <h3>Dropbox</h3>
+      <p>
+        Dropbox has had three significant security incidents. In 2012, 68 million user credentials were leaked (disclosed publicly in 2016). In 2022, a phishing attack exposed 130 internal GitHub repos containing API keys and customer data. In April 2024, the <a href="https://www.kiteworks.com/cybersecurity-risk-management/dropbox-sign-breach/" target="_blank" rel="noopener noreferrer">Dropbox Sign breach</a> gave attackers access to emails, hashed passwords, API keys, and OAuth tokens for all Sign users. Dropbox holds encryption keys server-side — employees with the right internal access can read your files.
+      </p>
+
+      <h3>OneDrive</h3>
+      <p>
+        Microsoft's OneDrive lives under the same data access framework as all Microsoft services. In 2023, a misconfigured Azure instance exposed 38 terabytes of internal Microsoft data, including passwords and Teams messages (Wiz Research). Like Google, Microsoft is subject to the CLOUD Act and complied with 55,000+ law enforcement requests in the first half of 2023 alone.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 780px;">
+        <svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" aria-label="Diagram showing who can access your files with each file sharing service">
+          <text x="380" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">Who Can Read Your Files?</text>
+          <text x="380" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">The encryption path from your device to the server</text>
+          <!-- Headers -->
+          <text x="100" y="82" text-anchor="middle" font-size="10" font-weight="600" fill="currentColor">Service</text>
+          <text x="310" y="82" text-anchor="middle" font-size="10" font-weight="600" fill="currentColor">What the server stores</text>
+          <text x="600" y="82" text-anchor="middle" font-size="10" font-weight="600" fill="currentColor">Who else can see it</text>
+          <line x1="20" y1="92" x2="740" y2="92" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <!-- Drop -->
+          <text x="100" y="120" text-anchor="middle" font-size="11" font-weight="700" fill="#FD5E0F">Drop</text>
+          <text x="310" y="120" text-anchor="middle" font-size="10" fill="#22c55e">Encrypted blob (AES-256-GCM)</text>
+          <text x="600" y="120" text-anchor="middle" font-size="11" font-weight="700" fill="#22c55e">Nobody</text>
+          <line x1="20" y1="138" x2="740" y2="138" stroke="#a3a3a3" stroke-width="0.5" opacity="0.1"/>
+          <!-- Tresorit -->
+          <text x="100" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">Tresorit</text>
+          <text x="310" y="162" text-anchor="middle" font-size="10" fill="#22c55e">Encrypted blob (AES-256 + RSA)</text>
+          <text x="600" y="162" text-anchor="middle" font-size="11" font-weight="700" fill="#22c55e">Nobody</text>
+          <line x1="20" y1="180" x2="740" y2="180" stroke="#a3a3a3" stroke-width="0.5" opacity="0.1"/>
+          <!-- Send -->
+          <text x="100" y="204" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">Send</text>
+          <text x="310" y="204" text-anchor="middle" font-size="10" fill="#22c55e">Encrypted blob (Web Crypto API)</text>
+          <text x="600" y="204" text-anchor="middle" font-size="11" font-weight="700" fill="#22c55e">Nobody</text>
+          <line x1="20" y1="222" x2="740" y2="222" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <!-- WeTransfer -->
+          <text x="100" y="252" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">WeTransfer</text>
+          <text x="310" y="252" text-anchor="middle" font-size="10" fill="#ef4444">Your actual file (readable)</text>
+          <text x="600" y="252" text-anchor="middle" font-size="10" fill="#ef4444">Staff, law enforcement</text>
+          <line x1="20" y1="270" x2="740" y2="270" stroke="#a3a3a3" stroke-width="0.5" opacity="0.1"/>
+          <!-- Google Drive -->
+          <text x="100" y="294" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">Google Drive</text>
+          <text x="310" y="294" text-anchor="middle" font-size="10" fill="#ef4444">Your actual file (readable)</text>
+          <text x="600" y="294" text-anchor="middle" font-size="10" fill="#ef4444">Google, US gov (CLOUD Act)</text>
+          <line x1="20" y1="312" x2="740" y2="312" stroke="#a3a3a3" stroke-width="0.5" opacity="0.1"/>
+          <!-- Dropbox -->
+          <text x="100" y="336" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">Dropbox</text>
+          <text x="310" y="336" text-anchor="middle" font-size="10" fill="#ef4444">Your actual file (readable)</text>
+          <text x="600" y="336" text-anchor="middle" font-size="10" fill="#ef4444">Staff, US gov (CLOUD Act)</text>
+          <line x1="20" y1="354" x2="740" y2="354" stroke="#a3a3a3" stroke-width="0.5" opacity="0.1"/>
+          <!-- OneDrive -->
+          <text x="100" y="378" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">OneDrive</text>
+          <text x="310" y="378" text-anchor="middle" font-size="10" fill="#ef4444">Your actual file (readable)</text>
+          <text x="600" y="378" text-anchor="middle" font-size="10" fill="#ef4444">Microsoft, US gov (CLOUD Act)</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Product documentation, encryption architecture analysis</figcaption>
+      </figure>
+
+      <h2>Which Services Actually Protect Your Privacy?</h2>
+
+      <p>
+        The encryption software market is growing at <a href="https://www.grandviewresearch.com/industry-analysis/encryption-software-market" target="_blank" rel="noopener noreferrer">16.2% annually</a> toward $44.55 billion by 2030 (Grand View Research). Demand is real. But of the seven services in this comparison, only three deliver genuine zero-knowledge file sharing. Here's how each one works — and where they fall short.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop&q=80" alt="Abstract cybersecurity visualization with glowing circuit board patterns representing digital encryption" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <!-- [ORIGINAL DATA] -->
+      <h3>Drop</h3>
+      <p>
+        <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">Drop</a> encrypts every file with AES-256-GCM in your browser before upload. The server stores only ciphertext. No account needed. No file size limit below 5 GB. No transfer caps. No ads. The <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer">client code is open source</a>, so anyone can verify the encryption happens where we say it does — in your browser, not on our server.
+      </p>
+      <p>
+        Ciphera is a Belgian company with servers hosted in Switzerland, governed by the <a href="https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy">Swiss FADP</a>. That puts it outside the US CLOUD Act, outside Five Eyes intelligence-sharing, and under some of the strongest data protection law in the world. Even if someone compromises the server, they get encrypted blobs with no way to decrypt them.
+      </p>
+
+      <h3>Tresorit</h3>
+      <p>
+        Tresorit is the closest competitor on privacy. Swiss-based (acquired by Swiss Post in 2021), zero-knowledge, end-to-end encrypted with AES-256 and RSA-4096. Strong privacy jurisdiction. No known breaches. But there are trade-offs: no free tier (starts at <a href="https://tresorit.com/pricing/personal" target="_blank" rel="noopener noreferrer">$4.75/month</a> for 50 GB), account required for senders, and the code is proprietary. You're trusting their encryption claims without being able to verify them.
+      </p>
+
+      <h3>Send (send.vis.ee)</h3>
+      <p>
+        Send is the open-source successor to Firefox Send (discontinued by Mozilla in 2020). It's fully end-to-end encrypted using the Web Crypto API, requires no account, and is free. The catch? It's community-hosted. The vis.ee instance is run by volunteers with no SLA, no uptime guarantees, and no legal entity behind it. File limit is 2.5 GB. Privacy depends entirely on whoever runs the specific instance you're using.
+      </p>
+
+      <h3>Swiss Transfer</h3>
+      <p>
+        Swiss Transfer, operated by Infomaniak, offers a generous 50 GB free transfer limit from <a href="https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy">Swiss infrastructure</a>. Files are stored under the FADP. But here's the important detail: Swiss Transfer is <strong>not</strong> zero-knowledge encrypted. Infomaniak holds the encryption keys and can technically access your files. Password protection is optional and doesn't provide true end-to-end encryption. It's better than US-based services on jurisdiction, but it's not in the same privacy category as Drop or Tresorit.
+      </p>
+
+      <h2>What Does Encrypted File Sharing Actually Cost?</h2>
+
+      <p>
+        GDPR enforcement has produced more than 2,200 fines totaling <a href="https://www.enforcementtracker.com/" target="_blank" rel="noopener noreferrer">EUR 5.6 billion</a> through 2025. For businesses sharing files that contain personal data, the "free" tier of a non-compliant service can end up being the most expensive choice. Here's what each service actually costs.
+      </p>
+
+      <!-- [PERSONAL EXPERIENCE] -->
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" aria-label="Pricing comparison of file sharing services showing free tier limits and paid tier starting prices">
+          <text x="350" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">Pricing: Free Tier vs. Paid Starting Price</text>
+          <text x="350" y="44" text-anchor="middle" font-size="11" fill="#a3a3a3">Monthly cost for the cheapest paid plan</text>
+          <!-- Labels -->
+          <text x="120" y="90" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Drop</text>
+          <text x="120" y="135" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Send</text>
+          <text x="120" y="180" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Swiss Transfer</text>
+          <text x="120" y="225" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Google Drive</text>
+          <text x="120" y="270" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Tresorit</text>
+          <text x="120" y="315" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">WeTransfer</text>
+          <text x="120" y="355" text-anchor="end" font-size="11" fill="currentColor" font-weight="600">Dropbox</text>
+          <!-- Bars -->
+          <rect x="135" y="78" width="8" height="18" rx="3" fill="#FD5E0F" opacity="0.9"/>
+          <text x="152" y="92" font-size="10" font-weight="700" fill="#FD5E0F">Free — 5 GB, unlimited transfers</text>
+          <rect x="135" y="123" width="8" height="18" rx="3" fill="#22c55e" opacity="0.8"/>
+          <text x="152" y="137" font-size="10" fill="#22c55e">Free — 2.5 GB (community-hosted)</text>
+          <rect x="135" y="168" width="8" height="18" rx="3" fill="#22c55e" opacity="0.8"/>
+          <text x="152" y="182" font-size="10" fill="#22c55e">Free — 50 GB (not zero-knowledge)</text>
+          <rect x="135" y="213" width="40" height="18" rx="3" fill="#a3a3a3" opacity="0.5"/>
+          <text x="182" y="227" font-size="10" fill="#a3a3a3">$1.99/mo — 100 GB storage (not zero-knowledge)</text>
+          <rect x="135" y="258" width="95" height="18" rx="3" fill="#a3a3a3" opacity="0.5"/>
+          <text x="237" y="272" font-size="10" fill="#a3a3a3">$4.75/mo — 50 GB (no free tier)</text>
+          <rect x="135" y="303" width="140" height="18" rx="3" fill="#a3a3a3" opacity="0.5"/>
+          <text x="282" y="317" font-size="10" fill="#a3a3a3">$6.99/mo — free tier capped at 10 transfers</text>
+          <rect x="135" y="343" width="240" height="18" rx="3" fill="#a3a3a3" opacity="0.5"/>
+          <text x="382" y="357" font-size="10" fill="#a3a3a3">$11.99/mo — free Transfer limited to 100 MB</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Product pricing pages, verified March 2026</figcaption>
+      </figure>
+
+      <p>
+        Drop is the only service that's completely free with zero-knowledge encryption, no transfer caps, and no account requirement. Tresorit charges $4.75/month minimum for its cheapest plan. WeTransfer's "free" tier has been gutted to 10 transfers per month since Bending Spoons took over. And Dropbox Transfer's free tier is limited to 100 MB per transfer — essentially useless for real file sharing.
+      </p>
+
+      <p>
+        Then there's the hidden cost. Google Drive and OneDrive offer generous free storage, but they're not end-to-end encrypted. If you're a business sharing documents containing personal data, using a service where the provider holds the keys means you're relying on their security. When 39% of organizations experienced a cloud environment breach in 2024 (<a href="https://cpl.thalesgroup.com/cloud-security-research" target="_blank" rel="noopener noreferrer">Thales Cloud Security Study</a>), that's not a theoretical risk.
+      </p>
+
+      <h2>Who Should Use What?</h2>
+
+      <p>
+        If you're sharing files that contain anything sensitive — personal data, financial documents, medical records, legal files, intellectual property — zero-knowledge encryption isn't optional. <a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM reports</a> US breach costs hit an all-time high of $10.22 million in 2025. Here's a straightforward decision guide.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&h=630&fit=crop&q=80" alt="Green digital matrix code cascading on a dark screen representing data encryption and cybersecurity" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <!-- [UNIQUE INSIGHT] -->
+      <p>
+        <strong>Privacy-conscious individuals and freelancers:</strong> <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">Drop</a>. Free, zero-knowledge, no account needed, 5 GB per file. Share the link, the recipient downloads and decrypts in their browser. That's it. No sign-up flow, no tracking, no ads.
+      </p>
+
+      <p>
+        <strong>Teams needing encrypted collaboration and cloud storage:</strong> Tresorit. It's the only zero-knowledge option with admin dashboards, granular permissions, and team management features. The $4.75/month starting price is worth it if you need persistent encrypted storage alongside file sharing.
+      </p>
+
+      <p>
+        <strong>Developers who want full control:</strong> Send. Self-host it, configure your own limits, audit every line of code. But you're responsible for uptime, security updates, and infrastructure.
+      </p>
+
+      <p>
+        <strong>Already deep in Google/Microsoft ecosystem:</strong> You can keep using Drive or OneDrive for non-sensitive files — but understand the trade-off. Your files are accessible to the provider, to governments via the CLOUD Act, and to anyone who breaches their systems. For anything sensitive, use Drop alongside your existing tools. It takes 10 seconds to encrypt and share a file.
+      </p>
+
+      <p>
+        <strong>Casual one-off transfers, nothing sensitive:</strong> WeTransfer still works for sending a mood board to a client. Just know you're limited to 10 transfers per month on free, files expire in 3 days, and nothing is end-to-end encrypted.
+      </p>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>Is Drop really free?</h3>
+      <p>
+        Yes. Drop is free for files up to 5 GB, with no transfer limits, no account required, and no ads. There are no hidden paywalls or monthly caps. Ciphera makes revenue from other products in its <a href="https://ciphera.net/products">privacy infrastructure platform</a> — Drop is free because making encrypted file sharing accessible is part of the company's mission.
+      </p>
+
+      <h3>Can WeTransfer read my files?</h3>
+      <p>
+        Yes. WeTransfer doesn't use end-to-end encryption. Files are encrypted in transit (TLS) and at rest on their servers, but WeTransfer holds the decryption keys. Their privacy policy permits data processing for service improvement. Following the Bending Spoons acquisition in 2024, <a href="https://techcrunch.com/2024/12/18/wetransfers-free-plan-now-has-a-monthly-limit-of-10-transfers/" target="_blank" rel="noopener noreferrer">75% of staff were laid off</a> and the free tier was significantly restricted.
+      </p>
+
+      <h3>Is Tresorit better than Drop?</h3>
+      <p>
+        They solve different problems. Tresorit is an encrypted cloud storage and collaboration platform — think encrypted Dropbox with team features. Drop is a file transfer tool — think encrypted WeTransfer. If you need persistent storage with admin controls, Tresorit wins. If you need to share a file quickly, for free, without creating an account, Drop wins. Both use zero-knowledge encryption.
+      </p>
+
+      <h3>What happens if Ciphera's servers get hacked?</h3>
+      <p>
+        Attackers get encrypted blobs. Zero-knowledge architecture means the server never has the decryption keys — those exist only in the browser of the person who uploaded the file and anyone who has the share link. Even a complete server compromise yields nothing readable. Compare that to the <a href="https://ciphera.net/blog/biggest-data-breaches-2025-2026">Dropbox Sign breach of 2024</a>, where the lack of zero-knowledge encryption meant attackers walked away with emails, passwords, and API tokens for every user.
+      </p>
+
+      <h2>The Bottom Line</h2>
+
+      <p>
+        Most file sharing services encrypt your data but keep the keys for themselves. That's not privacy — it's a policy decision that can be reversed, breached, or compelled by a court order. Zero-knowledge encryption is different. It's math. The server <em>can't</em> read your files, not "won't."
+      </p>
+
+      <p>
+        Of seven services compared, only Drop offers all of these: zero-knowledge encryption, no account required, a generous free tier (5 GB), open source client code, and <a href="https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy">Swiss-hosted infrastructure</a> outside US jurisdiction. Tresorit comes close on privacy but requires an account and starts at $4.75/month. Send matches on encryption and openness but has no SLA or corporate backing.
+      </p>
+
+      <p>
+        Try <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">Drop</a> — share a file right now, encrypted end-to-end, for free. No sign-up needed.
+      </p>
+    `,
+  },
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
