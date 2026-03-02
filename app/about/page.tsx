@@ -73,6 +73,7 @@ const organizationSchema = {
   },
   sameAs: [
     'https://github.com/ciphera-net',
+    'https://x.com/CipheraNET',
   ],
 }
 

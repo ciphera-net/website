@@ -92,8 +92,29 @@ export default function PulsePage() {
         </div>
       </section>
 
-      {/* * Features */}
+      {/* * What is Pulse */}
       <section className="section-padding">
+        <div className="section-container max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-6">
+            What Is Pulse?
+          </h2>
+          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+            Ciphera Pulse is a privacy-first website analytics platform that provides pageview tracking, referrer analysis, and geographic insights without using cookies, fingerprinting, or collecting any personal data as defined by GDPR Article 4. Unlike Google Analytics, which sets tracking cookies and builds cross-site behavioral profiles, Pulse treats each page view as an independent event with no persistent identifiers.
+          </p>
+          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+            The Pulse tracking script is under 2KB gzipped — compared to Google Analytics at approximately 45KB and Segment at approximately 70KB. This means faster page loads and lower bandwidth consumption for your visitors. The script loads asynchronously and never blocks page rendering.
+          </p>
+          <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+            Because Pulse collects no personal data, it is GDPR compliant by architecture rather than by configuration. You do not need cookie consent banners for Pulse, you do not need a Data Processing Agreement, and you cannot receive data subject access requests because there are no data subjects in the dataset. IP addresses are used only for country-level geolocation at the edge and immediately discarded — they are never stored, logged, or written to disk.
+          </p>
+          <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            Pulse is open source and available on <a href="https://github.com/ciphera-net/pulse" target="_blank" rel="noopener noreferrer" className="text-brand-orange hover:underline">GitHub</a>. All analytics data is processed on Swiss infrastructure protected by the Swiss Federal Act on Data Protection (FADP).
+          </p>
+        </div>
+      </section>
+
+      {/* * Features */}
+      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
         <div className="section-container">
           <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
             Analytics That Respect Privacy
@@ -192,12 +213,51 @@ export default function PulsePage() {
         </div>
       </section>
 
-      {/* * Comparison */}
+      {/* * Technical Specifications */}
       <section className="section-padding">
-        <div className="section-container">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
-            Why Choose Pulse?
+        <div className="section-container max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-8 text-center">
+            Technical Specifications
           </h2>
+          <div className="card p-8">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                  {[
+                    ['Script Size', 'Under 2KB gzipped'],
+                    ['Loading Strategy', 'Async, non-blocking — never delays page rendering'],
+                    ['Cookies', 'None — no first-party or third-party cookies'],
+                    ['IP Handling', 'Used for country-level geo lookup at edge, then immediately discarded'],
+                    ['Data Storage', 'Aggregated metrics only — no individual user records'],
+                    ['Geolocation', 'Country-level only (no city, no precise coordinates)'],
+                    ['Infrastructure', 'Swiss-hosted servers (FADP protected)'],
+                    ['API', 'REST API for programmatic access to analytics data'],
+                    ['Framework Support', 'Works with any framework: HTML, React, Next.js, Vue, Svelte, WordPress'],
+                    ['Source Code', 'Open source — client and server on GitHub'],
+                    ['Consent Required', 'No — exempt from ePrivacy cookie consent requirements'],
+                    ['Pricing', 'Free tier available'],
+                  ].map(([spec, value]) => (
+                    <tr key={spec}>
+                      <td className="py-3 pr-4 font-semibold text-neutral-900 dark:text-white whitespace-nowrap">{spec}</td>
+                      <td className="py-3 text-neutral-600 dark:text-neutral-400">{value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* * Comparison */}
+      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
+        <div className="section-container">
+          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-6 text-center">
+            How Pulse Compares
+          </h2>
+          <p className="text-center text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-12">
+            Google Analytics is installed on over 28 million websites, but it requires cookie consent banners in the EU and builds cross-site behavioral profiles. Pulse provides the metrics that drive product decisions without the surveillance trade-offs.
+          </p>
           <div className="card p-8 max-w-4xl mx-auto">
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -213,8 +273,10 @@ export default function PulsePage() {
                     ['No cookies required', true, false],
                     ['GDPR compliant by default', true, false],
                     ['No consent banner needed', true, false],
-                    ['Privacy-respecting', true, false],
-                    ['Lightweight script', true, false],
+                    ['Open source', true, false],
+                    ['Script under 5KB', true, false],
+                    ['Swiss infrastructure', true, false],
+                    ['No cross-site tracking', true, false],
                   ].map(([feature, pulse, ga], index) => (
                     <tr key={index} className="border-b border-neutral-200 dark:border-neutral-800">
                       <td className="py-4 px-4 text-neutral-600 dark:text-neutral-400">{feature}</td>

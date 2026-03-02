@@ -45,7 +45,7 @@ const homepageSchemas = [
       email: 'hello@ciphera.net',
       contactType: 'customer service',
     },
-    sameAs: ['https://github.com/ciphera-net'],
+    sameAs: ['https://github.com/ciphera-net', 'https://x.com/CipheraNET'],
   },
 ]
 

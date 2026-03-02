@@ -92,8 +92,26 @@ export default function DropPage() {
         </div>
       </section>
 
-      {/* * Features */}
+      {/* * What is Drop */}
       <section className="section-padding">
+        <div className="section-container max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-6">
+            What Is Drop?
+          </h2>
+          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+            Ciphera Drop is an end-to-end encrypted file sharing service that uses AES-256-GCM client-side encryption to ensure files are encrypted in your browser before upload. Unlike traditional file sharing services such as Dropbox or Google Drive, Drop operates on a zero-knowledge architecture where the server never possesses decryption keys. The encryption key is embedded in the URL fragment (the part after the #), which browsers never send to servers in HTTP requests.
+          </p>
+          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+            Drop is designed for anyone who needs to share files without trusting a third party with the contents. Whether you are sending sensitive legal documents, sharing medical records with a healthcare provider, transferring financial data to an accountant, or simply sending personal files you want to keep private, Drop ensures that only the intended recipient can access the file contents.
+          </p>
+          <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            Drop is completely free to use with no account required. Files up to 5GB are supported, with optional password protection and configurable expiration times. All data is stored on Swiss infrastructure protected by the Swiss Federal Act on Data Protection (FADP). The service is fully open source — both the client and server code are available on <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer" className="text-brand-orange hover:underline">GitHub</a> for independent security verification.
+          </p>
+        </div>
+      </section>
+
+      {/* * Features */}
+      <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
         <div className="section-container">
           <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
             Enterprise-Grade File Security
@@ -217,6 +235,42 @@ export default function DropPage() {
                   </span>
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* * Technical Specifications */}
+      <section className="section-padding">
+        <div className="section-container max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-8 text-center">
+            Technical Specifications
+          </h2>
+          <div className="card p-8">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                  {[
+                    ['Encryption Algorithm', 'AES-256-GCM (Galois/Counter Mode)'],
+                    ['Key Generation', 'Web Crypto API — crypto.getRandomValues()'],
+                    ['Key Length', '256-bit (32 bytes)'],
+                    ['Encryption Location', 'Client-side only (browser)'],
+                    ['Maximum File Size', '5 GB per file'],
+                    ['Supported File Types', 'All file types (documents, images, videos, archives, etc.)'],
+                    ['Password Protection', 'Optional — PBKDF2 key derivation from password'],
+                    ['Link Expiration', 'Configurable (1 hour to 30 days, or manual deletion)'],
+                    ['Infrastructure', 'Swiss-hosted servers (FADP protected)'],
+                    ['Transport Security', 'TLS 1.3'],
+                    ['Source Code', 'Open source (AGPL-3.0) — client and server'],
+                    ['Account Required', 'No — anonymous file sharing by default'],
+                  ].map(([spec, value]) => (
+                    <tr key={spec}>
+                      <td className="py-3 pr-4 font-semibold text-neutral-900 dark:text-white whitespace-nowrap">{spec}</td>
+                      <td className="py-3 text-neutral-600 dark:text-neutral-400">{value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

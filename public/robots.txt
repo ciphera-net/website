@@ -7,17 +7,28 @@ Allow: /
 # Sitemap location
 Sitemap: https://ciphera.net/sitemap.xml
 
-# Block AI scrapers that don't respect privacy
+# Allow AI search crawlers (for search result visibility)
+# These crawlers index content for AI-powered search features
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# Block AI training crawlers (content should not be used for model training)
 User-agent: CCBot
 Disallow: /
 
 User-agent: anthropic-ai
-Disallow: /
-
-User-agent: Claude-Web
 Disallow: /
 
 User-agent: cohere-ai
@@ -26,13 +37,13 @@ Disallow: /
 User-agent: Google-Extended
 Disallow: /
 
-User-agent: FacebookBot
-Disallow: /
-
 User-agent: Bytespider
 Disallow: /
 
-User-agent: PerplexityBot
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: FacebookBot
 Disallow: /
 
 User-agent: Amazonbot
@@ -41,7 +52,13 @@ Disallow: /
 User-agent: YouBot
 Disallow: /
 
-User-agent: Applebot-Extended
+User-agent: Diffbot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: Omgilibot
 Disallow: /
 
 # Block aggressive crawlers

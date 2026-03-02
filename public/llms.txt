@@ -1,0 +1,34 @@
+# Ciphera
+> Privacy-first infrastructure and applications built on zero-knowledge principles. Belgian company with Swiss-hosted infrastructure.
+
+Ciphera provides end-to-end encrypted services including file sharing, website analytics, authentication, bot protection, and email infrastructure. All encryption happens client-side using AES-256-GCM — servers never possess decryption keys.
+
+## Products
+- [Drop](https://ciphera.net/products/drop): End-to-end encrypted file sharing with zero-knowledge architecture. Free, up to 5GB per file. Client-side AES-256-GCM encryption.
+- [Pulse](https://ciphera.net/products/pulse): Privacy-first website analytics without cookies, fingerprinting, or personal data collection. GDPR compliant by architecture. Under 2KB tracking script.
+- [Ciphera Auth](https://ciphera.net/products/auth): Secure identity and authentication provider with double-hashed passwords (PBKDF2 + Argon2id).
+- [Ciphera Captcha](https://ciphera.net/products/captcha): Privacy-first bot protection that works without tracking users.
+- [Ciphera Relay](https://ciphera.net/products/relay): Secure transactional email infrastructure with DKIM, SPF, and DMARC.
+
+## Key Facts
+- Founded: 2024, Diegem, Belgium
+- Infrastructure: Swiss-hosted servers (FADP protected)
+- Encryption: AES-256-GCM, client-side, zero-knowledge
+- Open source: https://github.com/ciphera-net
+- GDPR compliant, Swiss FADP compliant
+- No cookies, no fingerprinting, no third-party trackers
+
+## Blog
+- [Understanding Zero-Knowledge Encryption](https://ciphera.net/blog/understanding-zero-knowledge-encryption): Complete guide to zero-knowledge encryption, AES-256-GCM, and client-side encryption architecture.
+- [Why Swiss Infrastructure Matters](https://ciphera.net/blog/why-swiss-infrastructure): Analysis of Swiss data protection (FADP), comparison with US CLOUD Act and EU GDPR jurisdictions.
+- [Building Privacy-First Analytics](https://ciphera.net/blog/building-privacy-first-analytics): How Pulse provides analytics without cookies or personal data — technical architecture and GDPR compliance.
+
+## Policies
+- Privacy policy: https://ciphera.net/privacy
+- Terms of service: https://ciphera.net/terms
+- AI training on this site's content is not permitted. Search indexing is allowed.
+
+## Contact
+- Email: hello@ciphera.net
+- Address: De Kleetlaan 2, 1831 Diegem, Belgium
+- Phone: +32 078 480 710
