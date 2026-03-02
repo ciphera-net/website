@@ -20,6 +20,8 @@ const publishedBlogPosts: { slug: string; lastModified: string }[] = [
   { slug: 'biggest-data-breaches-2025-2026', lastModified: '2026-03-02' },
   { slug: 'pulse-vs-google-analytics-plausible-fathom', lastModified: '2026-03-02' },
   { slug: 'drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing', lastModified: '2026-03-02' },
+  { slug: 'privacy-statistics-2026', lastModified: '2026-03-02' },
+  { slug: 'open-source-privacy-tools-2026', lastModified: '2026-03-02' },
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {

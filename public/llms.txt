@@ -24,6 +24,8 @@ Ciphera provides end-to-end encrypted services including file sharing, website a
 - [The Biggest Data Breaches of 2025-2026](https://ciphera.net/blog/biggest-data-breaches-2025-2026): Analysis of the largest data breaches affecting 280M+ people, breach cost data from IBM, and how encryption reduces damage.
 - [Pulse vs Google Analytics vs Plausible vs Fathom](https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom): Side-by-side comparison of 4 analytics tools on privacy, performance, accuracy, and cost.
 - [Drop vs WeTransfer vs Google Drive vs Dropbox](https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing): Comparison of 7 file sharing services on encryption, privacy, jurisdiction, and cost. Only 3 use zero-knowledge encryption.
+- [25 Privacy Statistics That Define 2026](https://ciphera.net/blog/privacy-statistics-2026): 25 sourced statistics on breach costs ($4.44M global average), GDPR fines (\u20AC7.1B cumulative), consumer trust erosion, surveillance economy scale, and the 1.6x ROI on privacy investment.
+- [Open Source Privacy Tools: The Complete List (2026)](https://ciphera.net/blog/open-source-privacy-tools-2026): 30 open source privacy tools across 10 categories including messaging, email, file sharing, analytics, VPN, browsers, password managers, cloud storage, operating systems, and search. Covers Signal, Proton, Drop, Pulse, Mullvad, Brave, Bitwarden, Nextcloud, and more.
 
 ## Policies
 - Privacy policy: https://ciphera.net/privacy

@@ -114,9 +114,21 @@
   .prose-ciphera {
     @apply text-neutral-600 dark:text-neutral-400 leading-relaxed;
   }
-  
+
   .prose-ciphera strong {
     @apply text-neutral-900 dark:text-white font-semibold;
+  }
+
+  /* * Blog prose link styling — brand orange */
+  .prose a {
+    @apply text-brand-orange transition-colors duration-200;
+    text-decoration: underline;
+    text-decoration-color: rgba(253, 94, 15, 0.3);
+    text-underline-offset: 2px;
+  }
+
+  .prose a:hover {
+    text-decoration-color: #FD5E0F;
   }
 }
 

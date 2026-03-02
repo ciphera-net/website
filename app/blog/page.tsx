@@ -85,6 +85,22 @@ const blogPosts = [
     date: '2026-03-02',
     readTime: '12 min read',
   },
+  {
+    slug: 'privacy-statistics-2026',
+    title: '25 Privacy Statistics That Define 2026: Breaches, Fines, and the Trust Crisis',
+    description: '25 sourced privacy statistics for 2026 — from $4.44M average breach costs to \u20AC7.1B in GDPR fines. The numbers every business needs to see.',
+    category: 'Privacy',
+    date: '2026-03-02',
+    readTime: '12 min read',
+  },
+  {
+    slug: 'open-source-privacy-tools-2026',
+    title: 'Open Source Privacy Tools: The Complete List (2026)',
+    description: '30 open source privacy tools across 10 categories. 96% of orgs increased OSS use in 2025. Every tool here has auditable code and no hidden data collection.',
+    category: 'Privacy',
+    date: '2026-03-02',
+    readTime: '15 min read',
+  },
 ]
 
 export default function BlogPage() {
