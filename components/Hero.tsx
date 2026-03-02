@@ -45,42 +45,36 @@ export default function Hero() {
           </motion.div>
 
           {/* * Main headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+          <h1
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6"
           >
             Where{' '}
             <span className="relative">
               <span className="gradient-text">Privacy</span>
-              <svg 
-                className="absolute -bottom-2 left-0 w-full h-3 text-brand-orange/30" 
-                viewBox="0 0 200 12" 
+              <svg
+                className="absolute -bottom-2 left-0 w-full h-3 text-brand-orange/30"
+                viewBox="0 0 200 12"
                 preserveAspectRatio="none"
               >
-                <path 
-                  d="M0 9C50 3 150 3 200 9" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="4" 
+                <path
+                  d="M0 9C50 3 150 3 200 9"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="4"
                   strokeLinecap="round"
                 />
               </svg>
             </span>
             {' '}Still Exists
-          </motion.h1>
+          </h1>
 
           {/* * Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+          <p
             className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles. 
+            Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles.
             Your data is encrypted before it leaves your device—we can't see it, even if we wanted to.
-          </motion.p>
+          </p>
 
           {/* * CTA Buttons */}
         <motion.div

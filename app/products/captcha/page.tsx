@@ -38,6 +38,8 @@ const captchaSchema = [
     description: 'Protect your applications from bots with visual captchas and proof-of-work challenges. Privacy-respecting, stateless verification with JWT tokens.',
     applicationCategory: 'SecurityApplication',
     operatingSystem: 'Web',
+    url: 'https://ciphera.net/products/captcha',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     provider: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
   },
   {
@@ -46,7 +48,7 @@ const captchaSchema = [
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
       { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
-      { '@type': 'ListItem', position: 3, name: 'Ciphera Captcha', item: 'https://ciphera.net/products/captcha' },
+      { '@type': 'ListItem', position: 3, name: 'Ciphera Captcha' },
     ],
   },
 ]
@@ -77,10 +79,10 @@ export default function CipheraCaptchaPage() {
               Stop automated abuse without compromising user privacy.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#" className="btn-primary">
+              <Link href="/contact" className="btn-primary">
                 Try Ciphera Captcha
                 <ArrowRightIcon className="w-4 h-4" />
-              </a>
+              </Link>
               <Link href="/contact" className="btn-secondary">
                 Contact Sales
               </Link>
@@ -168,9 +170,9 @@ export default function CipheraCaptchaPage() {
               Start blocking bots with privacy-respecting challenges.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#" className="btn bg-white text-brand-orange hover:bg-white/90">
+              <Link href="/contact" className="btn bg-white text-brand-orange hover:bg-white/90">
                 Get Started Free
-              </a>
+              </Link>
               <Link href="/contact" className="btn bg-white/10 text-white hover:bg-white/20 border-white/20">
                 Contact Sales
               </Link>

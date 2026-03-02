@@ -166,29 +166,8 @@ export default function EnhancedFAQ() {
     return categories
   }, [searchQuery, selectedCategory])
 
-  // * Generate JSON-LD schema
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqCategories.flatMap((category) =>
-      category.faqs.map((faq) => ({
-        '@type': 'Question',
-        name: faq.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: faq.answer,
-        },
-      }))
-    ),
-  }
-
   return (
     <>
-      {/* * JSON-LD FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
 
       <section className="section-padding bg-neutral-50 dark:bg-neutral-900/50">
         <div className="section-container">

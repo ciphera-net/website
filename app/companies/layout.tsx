@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'For Companies - Ciphera | Privacy-First Solutions for Business',
-  description: 'Transform your company into a privacy-first organization. Ciphera offers enterprise-grade privacy infrastructure, secure authentication, and encrypted file sharing solutions for businesses.',
+  description: 'Transform your business into a privacy-first organization with Ciphera\'s enterprise-grade encryption, authentication, and infrastructure.',
   keywords: ['enterprise privacy', 'business security', 'company privacy solutions', 'enterprise encryption', 'privacy transformation', 'B2B privacy', 'corporate security'],
   openGraph: {
     title: 'For Companies - Ciphera | Privacy-First Solutions for Business',

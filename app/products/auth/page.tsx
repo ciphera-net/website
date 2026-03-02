@@ -9,7 +9,7 @@ const KeyIcon = LockIcon
 
 export const metadata: Metadata = {
   title: 'Ciphera Auth - Secure Identity Provider | Ciphera',
-  description: 'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles. Secure identity management with double-hashed passwords and two-factor authentication.',
+  description: 'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles. Double-hashed passwords and two-factor authentication.',
   alternates: {
     canonical: 'https://ciphera.net/products/auth',
   },
@@ -39,6 +39,7 @@ const authSchema = [
     applicationCategory: 'SecurityApplication',
     operatingSystem: 'Web',
     url: 'https://auth.ciphera.net',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     provider: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
   },
   {
@@ -47,7 +48,7 @@ const authSchema = [
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
       { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
-      { '@type': 'ListItem', position: 3, name: 'Ciphera Auth', item: 'https://ciphera.net/products/auth' },
+      { '@type': 'ListItem', position: 3, name: 'Ciphera Auth' },
     ],
   },
 ]
@@ -171,7 +172,7 @@ export default function CipheraAuthPage() {
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                   <span className="text-neutral-600 dark:text-neutral-400">
-                    99.9% uptime SLA with 24/7 support
+                    Enterprise-grade reliability and support
                   </span>
                 </li>
               </ul>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'About Us - Ciphera | Building Privacy-First Infrastructure',
-  description: 'Learn about Ciphera\'s mission to build privacy-first infrastructure and applications. Discover our values, technology stack, and journey in creating zero-knowledge solutions.',
+  description: 'Learn about Ciphera\'s mission to build privacy-first infrastructure. Discover our values, tech stack, and zero-knowledge journey.',
   keywords: ['about ciphera', 'privacy company', 'zero-knowledge', 'encryption', 'privacy-first', 'ciphera mission'],
   openGraph: {
     title: 'About Us - Ciphera | Building Privacy-First Infrastructure',

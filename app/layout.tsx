@@ -1,7 +1,7 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { ThemeProviders } from '@ciphera-net/ui'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import '../styles/globals.css'
@@ -14,10 +14,10 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Ciphera - Privacy-First Infrastructure & Zero-Knowledge Encryption',
+    default: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
     template: '%s | Ciphera',
   },
-  description: 'Secure file sharing with zero-knowledge encryption. End-to-end encrypted file transfer, privacy-first infrastructure, and GDPR-compliant solutions. Where privacy still exists.',
+  description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
   keywords: ['secure file sharing', 'zero-knowledge encryption', 'end-to-end encryption', 'encrypted file transfer', 'privacy-first', 'GDPR compliant file sharing', 'anonymous file upload', 'encrypted cloud storage', 'private file sharing', 'secure file transfer'],
   authors: [{ name: 'Ciphera' }],
   creator: 'Ciphera',
@@ -39,7 +39,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  themeColor: '#FD5E0F',
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -68,6 +67,10 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://ciphera.net'),
 }
 
+export const viewport: Viewport = {
+  themeColor: '#FD5E0F',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -76,8 +79,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={plusJakartaSans.variable} suppressHydrationWarning>
       <head>
-        <link rel="dns-prefetch" href="https://pulse.ciphera.net" />
-        <link rel="dns-prefetch" href="https://pulse-api.ciphera.net" />
+        {/* DNS prefetch for analytics - uses env vars at build time, falls back to production */}
+        <link rel="dns-prefetch" href={new URL(process.env.NEXT_PUBLIC_PULSE_SCRIPT_URL || 'https://pulse.ciphera.net/script.js').origin} />
+        <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_PULSE_API_URL || 'https://pulse-api.ciphera.net'} />
       </head>
       <body className="antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
         <Script
@@ -88,7 +92,7 @@ export default function RootLayout({
         />
         <ThemeProviders>
           <Header />
-          <main className="flex-1 pt-24 pb-6 sm:pb-8">
+          <main className="flex-1 pt-24 pb-6 sm:pb-8 overflow-x-hidden">
             {children}
           </main>
           <Footer />

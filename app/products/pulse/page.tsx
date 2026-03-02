@@ -49,7 +49,7 @@ const pulseSchema = [
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
       { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
-      { '@type': 'ListItem', position: 3, name: 'Pulse', item: 'https://ciphera.net/products/pulse' },
+      { '@type': 'ListItem', position: 3, name: 'Pulse' },
     ],
   },
 ]

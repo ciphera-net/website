@@ -49,7 +49,7 @@ const dropSchema = [
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
       { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
-      { '@type': 'ListItem', position: 3, name: 'Drop', item: 'https://ciphera.net/products/drop' },
+      { '@type': 'ListItem', position: 3, name: 'Drop' },
     ],
   },
 ]
@@ -265,7 +265,7 @@ export default function DropPage() {
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                      No logs, no metadata retention
+                      Minimal metadata (file size, expiration only)
                     </li>
                   </ul>
                 </div>

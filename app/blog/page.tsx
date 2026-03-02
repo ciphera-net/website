@@ -39,8 +39,35 @@ const blogSchema = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://ciphera.net/blog' },
+      { '@type': 'ListItem', position: 2, name: 'Blog' },
     ],
+  },
+]
+
+const blogPosts = [
+  {
+    slug: 'understanding-zero-knowledge-encryption',
+    title: 'Understanding Zero-Knowledge Encryption: A Complete Guide',
+    description: 'Learn what zero-knowledge encryption is, how it works, and why it matters for protecting your data. A comprehensive guide from the Ciphera team.',
+    category: 'Security',
+    date: '2026-03-02',
+    readTime: '8 min read',
+  },
+  {
+    slug: 'why-swiss-infrastructure',
+    title: 'Why Swiss Infrastructure Matters for Data Privacy',
+    description: 'Discover why Switzerland\'s data protection laws make it the ideal location for privacy-focused infrastructure and how Ciphera leverages Swiss hosting.',
+    category: 'Privacy',
+    date: '2026-02-28',
+    readTime: '6 min read',
+  },
+  {
+    slug: 'building-privacy-first-analytics',
+    title: 'Building Privacy-First Analytics: How Pulse Works Without Cookies',
+    description: 'How we built Pulse, a privacy-first analytics platform that provides meaningful insights without cookies, fingerprinting, or personal data collection.',
+    category: 'Engineering',
+    date: '2026-02-25',
+    readTime: '7 min read',
   },
 ]
 
@@ -63,25 +90,46 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* * Coming Soon */}
+      {/* * Blog Posts Grid */}
       <section className="section-padding">
         <div className="section-container">
-          <div className="max-w-2xl mx-auto text-center py-16">
-            <div className="w-16 h-16 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">
-              Coming Soon
-            </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
-              We&apos;re working on in-depth articles about zero-knowledge encryption, privacy-first development, and secure infrastructure. Stay tuned for our first posts.
-            </p>
-            <Link href="/#newsletter" className="btn-primary">
-              Get Notified
-              <ArrowRightIcon className="w-4 h-4" />
-            </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {blogPosts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="group flex flex-col rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden hover:border-brand-orange/50 dark:hover:border-brand-orange/50 transition-all duration-200 hover:shadow-lg"
+              >
+                <div className="flex flex-col flex-1 p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="badge-neutral text-xs">{post.category}</span>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400">{post.readTime}</span>
+                  </div>
+
+                  <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-3 group-hover:text-brand-orange transition-colors">
+                    {post.title}
+                  </h2>
+
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6 flex-1">
+                    {post.description}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-neutral-800">
+                    <span className="text-sm text-neutral-500 dark:text-neutral-400">
+                      {new Date(post.date).toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-sm font-medium text-brand-orange group-hover:gap-2 transition-all">
+                      Read more
+                      <ArrowRightIcon className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

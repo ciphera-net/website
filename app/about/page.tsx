@@ -57,7 +57,7 @@ const organizationSchema = {
   url: 'https://ciphera.net',
   logo: 'https://ciphera.net/ciphera_logo_no_margins.png',
   description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
-  foundingDate: '2024',
+  foundingDate: '2024-01-01',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'De Kleetlaan 2',

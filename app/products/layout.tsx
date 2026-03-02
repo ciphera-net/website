@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Products - Ciphera | Privacy-First Applications',
-  description: 'Explore Ciphera\'s suite of privacy-first applications: Drop for secure file sharing with zero-knowledge encryption, Pulse for privacy-first analytics, Ciphera Auth for identity management, Ciphera Captcha for bot protection, and Ciphera Relay for email infrastructure.',
+  description: 'Explore Ciphera\'s privacy-first apps: Drop for encrypted file sharing, Pulse for analytics, Auth, Captcha, and Relay.',
   keywords: ['ciphera products', 'drop file sharing', 'pulse analytics', 'privacy analytics', 'secure file sharing software', 'encrypted file transfer', 'zero-knowledge file sharing', 'privacy tools', 'GDPR compliant tools', 'end-to-end encryption'],
   openGraph: {
     title: 'Products - Ciphera | Privacy-First Applications',

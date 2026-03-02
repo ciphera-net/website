@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     description: 'Terms of Service for Ciphera products and services.',
     url: 'https://ciphera.net/terms',
     siteName: 'Ciphera',
+    images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: 'Ciphera Terms of Service' }],
     locale: 'en_US',
     type: 'website',
   },
@@ -21,12 +22,14 @@ const termsSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   name: 'Terms of Service',
+  description: 'Terms of Service for Ciphera products and services. Covers acceptable use, intellectual property, liability, and governing law.',
   url: 'https://ciphera.net/terms',
+  dateModified: '2026-03-02',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
-      { '@type': 'ListItem', position: 2, name: 'Terms of Service', item: 'https://ciphera.net/terms' },
+      { '@type': 'ListItem', position: 2, name: 'Terms of Service' },
     ],
   },
 }

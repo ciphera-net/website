@@ -7,21 +7,47 @@ import EnhancedFAQ from '../components/EnhancedFAQ'
 import Newsletter from '../components/Newsletter'
 
 // * JSON-LD structured data for homepage
-const homepageSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Ciphera',
-  url: 'https://ciphera.net',
-  description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles.',
-  publisher: {
-    '@type': 'Organization',
+const homepageSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
     name: 'Ciphera',
-    logo: {
-      '@type': 'ImageObject',
-      url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+    url: 'https://ciphera.net',
+    description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles.',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Ciphera',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+      },
     },
   },
-}
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': 'https://ciphera.net/#organization',
+    name: 'Ciphera',
+    url: 'https://ciphera.net',
+    logo: 'https://ciphera.net/ciphera_logo_no_margins.png',
+    description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
+    foundingDate: '2024-01-01',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'De Kleetlaan 2',
+      addressLocality: 'Diegem',
+      postalCode: '1831',
+      addressCountry: 'BE',
+    },
+    telephone: '+32078480710',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: 'hello@ciphera.net',
+      contactType: 'customer service',
+    },
+    sameAs: ['https://github.com/ciphera-net'],
+  },
+]
 
 export default function HomePage() {
   return (
@@ -29,7 +55,7 @@ export default function HomePage() {
       {/* * JSON-LD structured data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchemas) }}
       />
       <Hero />
       <Ecosystem />

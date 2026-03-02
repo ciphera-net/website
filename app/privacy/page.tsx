@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     description: 'Learn how Ciphera protects your privacy with zero-knowledge encryption and minimal data collection.',
     url: 'https://ciphera.net/privacy',
     siteName: 'Ciphera',
+    images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: 'Ciphera Privacy Policy' }],
     locale: 'en_US',
     type: 'website',
   },
@@ -21,12 +22,14 @@ const privacySchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   name: 'Privacy Policy',
+  description: 'Learn how Ciphera protects your privacy with zero-knowledge encryption and minimal data collection.',
   url: 'https://ciphera.net/privacy',
+  dateModified: '2026-03-02',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
-      { '@type': 'ListItem', position: 2, name: 'Privacy Policy', item: 'https://ciphera.net/privacy' },
+      { '@type': 'ListItem', position: 2, name: 'Privacy Policy' },
     ],
   },
 }

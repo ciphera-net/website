@@ -86,14 +86,14 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded inline-block py-1"
                     >
                       {link.name}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded inline-block py-1"
                     >
                       {link.name}
                     </Link>
@@ -111,7 +111,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
+                    className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded inline-block py-1"
                   >
                     {link.name}
                   </Link>
@@ -131,14 +131,14 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded inline-block py-1"
                     >
                       {link.name}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded inline-block py-1"
                     >
                       {link.name}
                     </Link>
@@ -156,7 +156,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
+                    className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded inline-block py-1"
                   >
                     {link.name}
                   </Link>

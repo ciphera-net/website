@@ -50,7 +50,7 @@ const relaySchema = [
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
       { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
-      { '@type': 'ListItem', position: 3, name: 'Ciphera Relay', item: 'https://ciphera.net/products/relay' },
+      { '@type': 'ListItem', position: 3, name: 'Ciphera Relay' },
     ],
   },
 ]
@@ -81,10 +81,10 @@ export default function CipheraRelayPage() {
               High deliverability with TLS encryption and Swiss data protection.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#" className="btn-primary">
+              <Link href="/contact" className="btn-primary">
                 Try Ciphera Relay
                 <ArrowRightIcon className="w-4 h-4" />
-              </a>
+              </Link>
               <Link href="/contact" className="btn-secondary">
                 Contact Sales
               </Link>
@@ -214,12 +214,12 @@ export default function CipheraRelayPage() {
               Start Sending Secure Emails
             </h2>
             <p className="text-lg text-white/90 mb-8">
-              Join thousands of developers using Ciphera Relay for their transactional emails.
+              Get started with Ciphera Relay for your transactional emails.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#" className="btn bg-white text-brand-orange hover:bg-white/90">
+              <Link href="/contact" className="btn bg-white text-brand-orange hover:bg-white/90">
                 Start Free Trial
-              </a>
+              </Link>
               <Link href="/contact" className="btn bg-white/10 text-white hover:bg-white/20 border-white/20">
                 Talk to Sales
               </Link>

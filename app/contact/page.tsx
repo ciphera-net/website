@@ -13,7 +13,6 @@ import {
   LockIcon,
   ArrowRightIcon,
   GithubIcon,
-  TwitterIcon,
   Captcha
 } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
@@ -374,12 +373,12 @@ export default function ContactPage() {
               GitHub
             </a>
             <a
-              href="#"
+              href="mailto:hello@ciphera.net"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-neutral-700 dark:text-neutral-300"
-              onClick={() => track('contact_twitter_click')}
+              onClick={() => track('contact_email_direct_click')}
             >
-              <TwitterIcon className="w-5 h-5" />
-              Twitter
+              <MailIcon className="w-5 h-5" />
+              Email Us
             </a>
           </div>
         </motion.div>
