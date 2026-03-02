@@ -77,7 +77,7 @@ export default function Products() {
           className="text-center mb-16"
         >
           <span className="badge-primary mb-4 inline-flex">Products</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
+          <h2 className="heading-2 mb-4">
             Privacy-first applications
           </h2>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
@@ -99,7 +99,7 @@ export default function Products() {
                 whileHover={{ y: -4 }}
                 className="group"
               >
-                <div className="h-full p-6 lg:p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-brand-orange/50 dark:hover:border-brand-orange/50 hover:shadow-2xl hover:shadow-brand-orange/10 dark:hover:shadow-brand-orange/20 transition-all duration-300">
+                <div className="card card-hover h-full p-6 lg:p-8 hover:border-brand-orange/50 dark:hover:border-brand-orange/50">
                   {/* * Header */}
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center gap-4">
@@ -117,7 +117,7 @@ export default function Products() {
                         )}
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-brand-orange transition-colors duration-200">
+                        <h3 className="heading-3 group-hover:text-brand-orange transition-colors duration-200">
                           {product.name}
                         </h3>
                         <p className="text-sm text-neutral-500 dark:text-neutral-400">

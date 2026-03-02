@@ -66,7 +66,7 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
       transition={{ duration: 0.5, delay }}
       className="group"
     >
-      <div className="relative p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+      <div className="card card-hover relative p-4 shadow-lg">
         <div className="flex items-center gap-3">
           <div className={`w-14 h-14 rounded-2xl ${service.iconBg} flex items-center justify-center shadow-lg p-2`}>
             {service.isImage ? (
@@ -108,7 +108,7 @@ export default function Infrastructure() {
           className="text-center mb-16"
           >
           <span className="badge-primary mb-4 inline-flex">Architecture</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
+          <h2 className="heading-2 mb-4">
             The Ciphera Ecosystem
             </h2>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
@@ -292,7 +292,7 @@ export default function Infrastructure() {
                     <Icon className="w-6 h-6 text-brand-orange" />
                   )}
                 </div>
-                <h3 className="font-bold text-lg text-neutral-900 dark:text-white mb-1">
+                <h3 className="heading-3 mb-1">
                   {service.name}
                 </h3>
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">

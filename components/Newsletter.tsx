@@ -57,7 +57,7 @@ export default function Newsletter() {
             <button
               type="submit"
               disabled={status === 'loading' || status === 'success'}
-              className="px-6 py-3 rounded-xl bg-white text-brand-orange font-semibold hover:bg-white/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
+              className="btn-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {status === 'loading' && 'Subscribing...'}
               {status === 'success' && 'Subscribed!'}

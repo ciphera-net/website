@@ -73,7 +73,7 @@ export default function CipheraRelayPage() {
               />
             </div>
             <span className="badge-primary mb-4 inline-flex">Email Infrastructure</span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6">
+            <h1 className="heading-1 mb-6">
               Ciphera Relay
             </h1>
             <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
@@ -96,7 +96,7 @@ export default function CipheraRelayPage() {
       {/* * Features */}
       <section className="section-padding">
         <div className="section-container">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
+          <h2 className="heading-2 mb-12 text-center">
             Enterprise Email Delivery
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -108,7 +108,7 @@ export default function CipheraRelayPage() {
             ].map((feature) => (
               <div key={feature.title} className="card p-6">
                 <feature.icon className="w-12 h-12 text-brand-orange mb-4" />
-                <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">
+                <h3 className="heading-3 mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
@@ -123,7 +123,7 @@ export default function CipheraRelayPage() {
       {/* * Use Cases */}
       <section className="section-padding">
         <div className="section-container">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
+          <h2 className="heading-2 mb-12 text-center">
             Perfect for Transactional Emails
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -145,7 +145,7 @@ export default function CipheraRelayPage() {
               },
             ].map((useCase) => (
               <div key={useCase.title} className="card p-6">
-                <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-3">
+                <h3 className="heading-3 mb-3">
                   {useCase.title}
                 </h3>
                 <p className="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
@@ -168,7 +168,7 @@ export default function CipheraRelayPage() {
       {/* * Pricing Preview */}
       <section className="section-padding">
         <div className="section-container">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
+          <h2 className="heading-2 mb-12 text-center">
             Simple, Transparent Pricing
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -181,7 +181,7 @@ export default function CipheraRelayPage() {
                 key={plan.name}
                 className={`card p-8 ${plan.highlight ? 'ring-2 ring-brand-orange' : ''}`}
               >
-                <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
+                <h3 className="heading-3 mb-2">
                   {plan.name}
                 </h3>
                 <div className="text-4xl font-bold text-brand-orange mb-1">
@@ -217,10 +217,10 @@ export default function CipheraRelayPage() {
               Get started with Ciphera Relay for your transactional emails.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact" className="px-8 py-3.5 rounded-xl font-semibold bg-white text-brand-orange hover:bg-white/90 transition-all duration-200 inline-flex items-center gap-2">
+              <Link href="/contact" className="btn-white">
                 Start Free Trial
               </Link>
-              <Link href="/contact" className="px-8 py-3.5 rounded-xl font-semibold bg-white/10 text-white hover:bg-white/20 border border-white/20 transition-all duration-200 inline-flex items-center gap-2">
+              <Link href="/contact" className="btn-white-outline">
                 Talk to Sales
               </Link>
             </div>

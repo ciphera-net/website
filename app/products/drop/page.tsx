@@ -72,7 +72,7 @@ export default function DropPage() {
               />
             </div>
             <span className="badge-primary mb-4 inline-flex">Secure File Sharing</span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6">
+            <h1 className="heading-1 mb-6">
               Drop
             </h1>
             <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
@@ -95,7 +95,7 @@ export default function DropPage() {
       {/* * What is Drop */}
       <section className="section-padding">
         <div className="section-container max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-6">
+          <h2 className="heading-2 mb-6">
             What Is Drop?
           </h2>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
@@ -113,7 +113,7 @@ export default function DropPage() {
       {/* * Features */}
       <section className="section-padding">
         <div className="section-container">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
+          <h2 className="heading-2 mb-12 text-center">
             Enterprise-Grade File Security
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -127,7 +127,7 @@ export default function DropPage() {
             ].map((feature) => (
               <div key={feature.title} className="card p-6">
                 <feature.icon className="w-12 h-12 text-brand-orange mb-4" />
-                <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                <h3 className="heading-3 mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
@@ -142,7 +142,7 @@ export default function DropPage() {
       {/* * How It Works */}
       <section className="section-padding">
         <div className="section-container">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
+          <h2 className="heading-2 mb-12 text-center">
             How Drop Works
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -167,7 +167,7 @@ export default function DropPage() {
                 <div className="w-12 h-12 rounded-full bg-brand-orange text-white font-bold text-xl flex items-center justify-center mx-auto mb-4">
                   {step.step}
                 </div>
-                <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-3">
+                <h3 className="heading-3 mb-3">
                   {step.title}
                 </h3>
                 <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
@@ -182,12 +182,12 @@ export default function DropPage() {
       {/* * Use Cases */}
       <section className="section-padding">
         <div className="section-container">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-12 text-center">
+          <h2 className="heading-2 mb-12 text-center">
             Perfect For Any Sharing Need
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="card p-8">
-              <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">
+              <h3 className="heading-3 mb-4">
                 For Individuals
               </h3>
               <ul className="space-y-3">
@@ -212,7 +212,7 @@ export default function DropPage() {
               </ul>
             </div>
             <div className="card p-8">
-              <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">
+              <h3 className="heading-3 mb-4">
                 For Businesses
               </h3>
               <ul className="space-y-3">
@@ -243,7 +243,7 @@ export default function DropPage() {
       {/* * Technical Specifications */}
       <section className="section-padding">
         <div className="section-container max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-8 text-center">
+          <h2 className="heading-2 mb-8 text-center">
             Technical Specifications
           </h2>
           <div className="card p-8">
@@ -280,13 +280,13 @@ export default function DropPage() {
       <section className="section-padding">
         <div className="section-container">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-8 text-center">
+            <h2 className="heading-2 mb-8 text-center">
               Security You Can Trust
             </h2>
             <div className="card p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-3">
+                  <h3 className="heading-3 mb-3">
                     Encryption Standards
                   </h3>
                   <ul className="space-y-2 text-neutral-600 dark:text-neutral-400">
@@ -305,7 +305,7 @@ export default function DropPage() {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-3">
+                  <h3 className="heading-3 mb-3">
                     Infrastructure
                   </h3>
                   <ul className="space-y-2 text-neutral-600 dark:text-neutral-400">
@@ -340,10 +340,10 @@ export default function DropPage() {
               No account needed. Just upload, encrypt, and share with complete privacy.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://drop.ciphera.net" className="px-8 py-3.5 rounded-xl font-semibold bg-white text-brand-orange hover:bg-white/90 transition-all duration-200 inline-flex items-center gap-2">
+              <a href="https://drop.ciphera.net" className="btn-white">
                 Start Using Drop
               </a>
-              <Link href="/contact" className="px-8 py-3.5 rounded-xl font-semibold bg-white/10 text-white hover:bg-white/20 border border-white/20 transition-all duration-200 inline-flex items-center gap-2">
+              <Link href="/contact" className="btn-white-outline">
                 Contact Sales
               </Link>
             </div>

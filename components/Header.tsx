@@ -70,7 +70,7 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-1">
           <Link
             href="/about"
-            className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+            className="nav-link"
           >
             About
           </Link>
@@ -82,7 +82,7 @@ export default function Header() {
                 setIsProductsOpen(!isProductsOpen)
                 if (!isProductsOpen) track('products_dropdown_open')
               }}
-              className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 flex items-center gap-1"
+              className="nav-link flex items-center gap-1"
             >
               Products
               <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isProductsOpen ? 'rotate-180' : ''}`} />
@@ -163,7 +163,7 @@ export default function Header() {
                 setIsResourcesOpen(!isResourcesOpen)
                 if (!isResourcesOpen) track('resources_dropdown_open')
               }}
-              className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 flex items-center gap-1"
+              className="nav-link flex items-center gap-1"
             >
               Resources
               <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isResourcesOpen ? 'rotate-180' : ''}`} />
@@ -196,7 +196,7 @@ export default function Header() {
 
           <Link
             href="/contact"
-            className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+            className="nav-link"
           >
             Contact
           </Link>
@@ -228,14 +228,14 @@ export default function Header() {
           <div className="bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl shadow-xl p-2 flex flex-col gap-1">
             <Link
               href="/about"
-              className="px-4 py-3 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+              className="nav-link py-3"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               About
             </Link>
             <Link
               href="/products"
-              className="px-4 py-3 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+              className="nav-link py-3"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Products
@@ -243,14 +243,14 @@ export default function Header() {
             <div className="px-4 py-2 text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">Resources</div>
             <Link
               href="/blog"
-              className="px-4 py-3 pl-6 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+              className="nav-link py-3 pl-6"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className="px-4 py-3 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+              className="nav-link py-3"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact

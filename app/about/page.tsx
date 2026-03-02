@@ -109,7 +109,7 @@ export default function AboutPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
               Our Story
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6 tracking-tight">
+            <h1 className="heading-1 mb-6">
               Building the future of{' '}
               <span className="gradient-text">privacy</span>
             </h1>
@@ -190,7 +190,7 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <span className="badge-neutral mb-4 inline-flex">Our Values</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="heading-2 mb-4">
               What we stand for
             </h2>
             <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
@@ -214,7 +214,7 @@ export default function AboutPage() {
                     <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${value.gradient} flex items-center justify-center shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
                       <Icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-3">
+                    <h3 className="heading-3 mb-3">
                       {value.title}
                     </h3>
                     <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
@@ -239,7 +239,7 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
             >
               <span className="badge-primary mb-6 inline-flex">Technology</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-6">
+              <h2 className="heading-2 mb-6">
                 Built with modern, secure technologies
               </h2>
               <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
@@ -278,7 +278,7 @@ export default function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <div className="card p-6 lg:p-8">
-                <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-6">
+                <h3 className="heading-3 mb-6">
                   Architecture Overview
                 </h3>
                 <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
@@ -331,7 +331,7 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <span className="badge-neutral mb-4 inline-flex">Our Journey</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="heading-2 mb-4">
               Building privacy, one step at a time
             </h2>
           </motion.div>
@@ -378,7 +378,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center max-w-2xl mx-auto"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-6">
+            <h2 className="heading-2 mb-6">
               Experience Privacy-First Analytics
             </h2>
             <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8">

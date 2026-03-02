@@ -33,7 +33,7 @@ export default function Hero() {
 
           {/* * Main headline */}
           <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6"
+            className="heading-1 lg:text-7xl mb-6"
           >
             Where{' '}
             <span className="relative">

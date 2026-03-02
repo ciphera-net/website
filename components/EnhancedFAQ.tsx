@@ -109,7 +109,7 @@ function FAQItem({ faq, index, categoryIndex }: { faq: { question: string; answe
         aria-expanded={isOpen}
         aria-controls={`faq-answer-${categoryIndex}-${index}`}
       >
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white pr-4">
+        <h3 className="heading-3 pr-4">
           {faq.question}
         </h3>
         <ChevronDownIcon
@@ -179,7 +179,7 @@ export default function EnhancedFAQ() {
             className="text-center mb-12"
           >
             <span className="badge-primary mb-4 inline-flex">FAQ</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="heading-2 mb-4">
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
@@ -248,7 +248,7 @@ export default function EnhancedFAQ() {
             {filteredCategories.length > 0 ? (
               filteredCategories.map((category, categoryIndex) => (
                 <div key={category.id} className="mb-8">
-                  <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-4">
+                  <h3 className="heading-3 mb-4">
                     {category.name}
                   </h3>
                   {category.faqs.map((faq, index) => (

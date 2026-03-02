@@ -241,7 +241,7 @@ export default function ContactPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
               Get in Touch
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6 tracking-tight">
+            <h1 className="heading-1 mb-6">
               We're here to{' '}
               <span className="gradient-text">help</span>
             </h1>
@@ -270,7 +270,7 @@ export default function ContactPage() {
                 <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${method.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   <Icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-1">
+                <h3 className="heading-3 mb-1">
                   {method.title}
                 </h3>
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
@@ -318,7 +318,7 @@ export default function ContactPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-1">
+            <h3 className="heading-3 mb-1">
               Phone
             </h3>
             <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
@@ -395,7 +395,7 @@ export default function ContactPage() {
           transition={{ duration: 0.5 }}
           className="card p-8 max-w-3xl mx-auto"
         >
-          <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-6 text-center">
+          <h3 className="heading-3 mb-6 text-center">
             Before you contact us, you might find your answer here:
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -429,7 +429,7 @@ export default function ContactPage() {
               transition={{ duration: 0.6 }}
             >
               <span className="badge-neutral mb-6 inline-flex">Contact Form</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-6">
+              <h2 className="heading-2 mb-6">
                 Send us a message
               </h2>
               <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">

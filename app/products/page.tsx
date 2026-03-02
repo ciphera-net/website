@@ -200,7 +200,7 @@ export default function ProductsPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
               Our Ecosystem
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-6 tracking-tight">
+            <h1 className="heading-1 mb-6">
               Privacy-first{' '}
               <span className="gradient-text">applications</span>
             </h1>
@@ -238,7 +238,7 @@ export default function ProductsPage() {
                     />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold text-neutral-900 dark:text-white">Pulse</h2>
+                    <h2 className="heading-2">Pulse</h2>
                     <p className="text-neutral-500 dark:text-neutral-400">Privacy-First Analytics</p>
                   </div>
                   <span className="badge-neutral-status text-[10px] ml-auto">Available</span>
@@ -298,7 +298,7 @@ export default function ProductsPage() {
             className="text-center mb-16"
           >
             <span className="badge-neutral mb-4 inline-flex">Infrastructure</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="heading-2 mb-4">
               The foundation of privacy
             </h2>
             <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
@@ -336,7 +336,7 @@ export default function ProductsPage() {
                       <span className="badge-neutral-status text-[10px]">{product.status}</span>
                     </div>
 
-                    <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-1">
+                    <h3 className="heading-3 mb-1">
                       {product.name}
                     </h3>
                     <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">

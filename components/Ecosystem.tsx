@@ -163,7 +163,7 @@ export default function Ecosystem() {
           className="text-center mb-12"
         >
           <span className="badge-primary mb-4 inline-flex">Interactive Journey</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
+          <h2 className="heading-2 mb-4">
             What do you need?
           </h2>
           <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
@@ -205,7 +205,7 @@ export default function Ecosystem() {
             >
               <div className="card p-8 max-w-5xl mx-auto">
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
+                  <h3 className="heading-3 mb-2">
                     {activeJourney.title}
                   </h3>
                   <p className="text-neutral-600 dark:text-neutral-400">
