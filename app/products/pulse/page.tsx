@@ -11,11 +11,53 @@ const ZapIcon = LockIcon
 export const metadata: Metadata = {
   title: 'Pulse - Privacy-First Analytics | Ciphera',
   description: 'Privacy-respecting website analytics that gives you insights without compromising user privacy. GDPR compliant, no cookies, no tracking.',
+  alternates: {
+    canonical: 'https://ciphera.net/products/pulse',
+  },
+  openGraph: {
+    title: 'Pulse - Privacy-First Analytics | Ciphera',
+    description: 'Privacy-respecting website analytics that gives you insights without compromising user privacy. GDPR compliant, no cookies, no tracking.',
+    url: 'https://ciphera.net/products/pulse',
+    siteName: 'Ciphera',
+    images: [{ url: '/pulse_icon_no_margins.png', width: 512, height: 512, alt: 'Pulse - Privacy-First Analytics' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pulse - Privacy-First Analytics | Ciphera',
+    description: 'Privacy-respecting website analytics without compromising user privacy.',
+    images: ['/ciphera_logo_no_margins.png'],
+  },
 }
+
+const pulseSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Pulse',
+    description: 'Privacy-respecting website analytics that gives you insights without compromising user privacy. GDPR compliant, no cookies, no tracking.',
+    applicationCategory: 'AnalyticsApplication',
+    operatingSystem: 'Web',
+    url: 'https://pulse.ciphera.net',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
+      { '@type': 'ListItem', position: 3, name: 'Pulse', item: 'https://ciphera.net/products/pulse' },
+    ],
+  },
+]
 
 export default function PulsePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pulseSchema) }} />
       {/* * Hero */}
       <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
         <div className="section-container">

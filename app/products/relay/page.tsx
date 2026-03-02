@@ -10,11 +10,55 @@ const ZapIcon = LockIcon
 export const metadata: Metadata = {
   title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
   description: 'Privacy-first transactional email delivery with TLS encryption. High deliverability rates for verification emails, notifications, and alerts.',
+  alternates: {
+    canonical: 'https://ciphera.net/products/relay',
+  },
+  openGraph: {
+    title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
+    description: 'Privacy-first transactional email delivery with TLS encryption. High deliverability rates.',
+    url: 'https://ciphera.net/products/relay',
+    siteName: 'Ciphera',
+    images: [{ url: '/relay_icon_no_margins.png', width: 512, height: 512, alt: 'Ciphera Relay - Email Infrastructure' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
+    description: 'Privacy-first transactional email delivery with TLS encryption.',
+    images: ['/ciphera_logo_no_margins.png'],
+  },
 }
+
+const relaySchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Ciphera Relay',
+    description: 'Privacy-first transactional email delivery with TLS encryption. High deliverability rates for verification emails, notifications, and alerts.',
+    applicationCategory: 'CommunicationApplication',
+    operatingSystem: 'Web',
+    offers: [
+      { '@type': 'Offer', name: 'Starter', price: '0', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'Pro', price: '29', priceCurrency: 'USD' },
+    ],
+    provider: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
+      { '@type': 'ListItem', position: 3, name: 'Ciphera Relay', item: 'https://ciphera.net/products/relay' },
+    ],
+  },
+]
 
 export default function CipheraRelayPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(relaySchema) }} />
       {/* * Hero */}
       <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
         <div className="section-container">
@@ -25,7 +69,6 @@ export default function CipheraRelayPage() {
                 alt="Ciphera Relay - Secure email infrastructure"
                 width={56}
                 height={56}
-                unoptimized
                 className="w-full h-full object-contain"
               />
             </div>

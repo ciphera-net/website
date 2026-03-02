@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { GithubIcon, TwitterIcon, SwissFlagIcon } from '@ciphera-net/ui'
+import { GithubIcon, SwissFlagIcon } from '@ciphera-net/ui'
 import { track } from '../lib/pulse'
 
 const footerLinks = {
@@ -17,18 +17,15 @@ const footerLinks = {
     { name: 'About', href: '/about', external: false },
     { name: 'For Companies', href: '/companies', external: false },
     { name: 'Contact', href: '/contact', external: false },
-    { name: 'Careers', href: '#', external: false },
   ],
   resources: [
     { name: 'Blog', href: '/blog', external: false },
-    { name: 'Documentation', href: '#', external: false },
     { name: 'Comparison', href: '/comparison', external: false },
-    { name: 'Status Page', href: '#', external: false },
     { name: 'GitHub', href: 'https://github.com/ciphera-net', external: true },
   ],
   legal: [
-    { name: 'Privacy Policy', href: '#', external: false },
-    { name: 'Terms of Service', href: '#', external: false },
+    { name: 'Privacy Policy', href: '/privacy', external: false },
+    { name: 'Terms of Service', href: '/terms', external: false },
   ],
 }
 
@@ -49,7 +46,6 @@ export default function Footer() {
                 alt="Ciphera privacy-first platform logo"
                 width={36}
                 height={36}
-                unoptimized
                 className="w-9 h-9 object-contain group-hover:scale-105 transition-transform duration-300"
               />
               <span className="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-brand-orange transition-colors duration-300">
@@ -70,18 +66,11 @@ export default function Footer() {
                 href="https://github.com/ciphera-net"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                className="w-11 h-11 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 aria-label="GitHub"
                 onClick={() => track('footer_github_click')}
               >
                 <GithubIcon className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
-                aria-label="Twitter"
-              >
-                <TwitterIcon className="w-5 h-5" />
               </a>
             </div>
           </div>

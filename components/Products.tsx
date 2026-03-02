@@ -36,7 +36,7 @@ const products = [
     tagline: 'Identity provider',
     description: 'Secure authentication for the Ciphera ecosystem with OAuth2, JWT, and advanced security features.',
     features: ['Double-hashed passwords', 'Two-factor auth', 'Account lockout', 'Session management'],
-    link: '#',
+    link: '/products/auth',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
@@ -47,7 +47,7 @@ const products = [
     tagline: 'Bot protection',
     description: 'Protect your applications from bots and automated abuse with visual and proof-of-work challenges.',
     features: ['Visual captchas', 'Proof-of-Work', 'Stateless verification', 'JWT tokens'],
-    link: '#',
+    link: '/products/captcha',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
@@ -58,7 +58,7 @@ const products = [
     tagline: 'Email infrastructure',
     description: 'Transactional email infrastructure for secure, privacy-first email delivery with TLS encryption.',
     features: ['TLS encryption', 'High deliverability', 'SMTP AUTH', 'Admin dashboard'],
-    link: '#',
+    link: '/products/relay',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     available: true,
   },
@@ -110,7 +110,6 @@ export default function Products() {
                             alt={`${product.name} - ${product.tagline} icon`}
                             width={32} 
                             height={32}
-                            unoptimized
                             className="w-full h-full object-contain"
                           />
                         ) : (
@@ -147,20 +146,14 @@ export default function Products() {
                   </ul>
 
                   {/* * CTA */}
-                  {product.link !== '#' ? (
-                    <Link
-                      href={product.link}
-                      className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:gap-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
-                      onClick={() => track(product.name === 'Drop' ? 'product_view_drop' : 'product_view_pulse')}
-                    >
-                      Learn More
-                      <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                    </Link>
-                  ) : (
-                    <span className="inline-flex items-center gap-2 text-neutral-400 font-medium">
-                      Infrastructure service
-                    </span>
-                  )}
+                  <Link
+                    href={product.link}
+                    className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:gap-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded"
+                    onClick={() => track(`product_view_${product.name.toLowerCase().replace(/\s+/g, '_')}`)}
+                  >
+                    Learn More
+                    <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+                  </Link>
                 </div>
               </motion.div>
             )

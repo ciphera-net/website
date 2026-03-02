@@ -3,9 +3,45 @@ import Link from 'next/link'
 import { CheckIcon, XIcon, ArrowRightIcon } from '@ciphera-net/ui'
 
 export const metadata: Metadata = {
-  title: 'Ciphera vs Competitors - Privacy-First File Sharing Comparison | Ciphera',
+  title: 'Ciphera vs Competitors - Privacy-First File Sharing Comparison',
   description: 'See how Ciphera compares to other file sharing and privacy solutions. Zero-knowledge encryption, Swiss infrastructure, and open source.',
+  alternates: {
+    canonical: 'https://ciphera.net/comparison',
+  },
+  openGraph: {
+    title: 'Ciphera vs Competitors - Privacy-First Comparison',
+    description: 'See how Ciphera compares to Dropbox, Google Drive, Proton Drive, and Tresorit.',
+    url: 'https://ciphera.net/comparison',
+    siteName: 'Ciphera',
+    images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: 'Ciphera vs Competitors' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ciphera vs Competitors - Privacy-First Comparison',
+    description: 'See how Ciphera compares to other file sharing and privacy solutions.',
+    images: ['/ciphera_logo_no_margins.png'],
+  },
 }
+
+const comparisonSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Ciphera vs Competitors - Privacy-First File Sharing Comparison',
+    description: 'See how Ciphera compares to other file sharing and privacy solutions.',
+    url: 'https://ciphera.net/comparison',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
+      { '@type': 'ListItem', position: 2, name: 'Comparison', item: 'https://ciphera.net/comparison' },
+    ],
+  },
+]
 
 const comparisonData = {
   categories: [
@@ -70,6 +106,7 @@ function CellValue({ value }: { value: boolean | string }) {
 export default function ComparisonPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(comparisonSchema) }} />
       {/* * Hero */}
       <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
         <div className="section-container">

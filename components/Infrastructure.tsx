@@ -75,7 +75,6 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
                 alt={`${service.name} - ${service.description} logo`}
                 width={32} 
                 height={32}
-                unoptimized
                 className="w-full h-full object-contain"
               />
             ) : (
@@ -287,7 +286,6 @@ export default function Infrastructure() {
                 alt={`${service.name} - ${service.description} logo`}
                 width={28} 
                 height={28}
-                unoptimized
                 className="w-full h-full object-contain"
               />
                   ) : (

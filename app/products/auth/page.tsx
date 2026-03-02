@@ -10,11 +10,52 @@ const KeyIcon = LockIcon
 export const metadata: Metadata = {
   title: 'Ciphera Auth - Secure Identity Provider | Ciphera',
   description: 'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles. Secure identity management with double-hashed passwords and two-factor authentication.',
+  alternates: {
+    canonical: 'https://ciphera.net/products/auth',
+  },
+  openGraph: {
+    title: 'Ciphera Auth - Secure Identity Provider | Ciphera',
+    description: 'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles.',
+    url: 'https://ciphera.net/products/auth',
+    siteName: 'Ciphera',
+    images: [{ url: '/auth_icon_no_margins.png', width: 512, height: 512, alt: 'Ciphera Auth - Identity Provider' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ciphera Auth - Secure Identity Provider | Ciphera',
+    description: 'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles.',
+    images: ['/ciphera_logo_no_margins.png'],
+  },
 }
+
+const authSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Ciphera Auth',
+    description: 'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles. Secure identity management with double-hashed passwords and two-factor authentication.',
+    applicationCategory: 'SecurityApplication',
+    operatingSystem: 'Web',
+    url: 'https://auth.ciphera.net',
+    provider: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
+      { '@type': 'ListItem', position: 3, name: 'Ciphera Auth', item: 'https://ciphera.net/products/auth' },
+    ],
+  },
+]
 
 export default function CipheraAuthPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(authSchema) }} />
       {/* * Hero */}
       <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
         <div className="section-container">

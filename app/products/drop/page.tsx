@@ -11,11 +11,53 @@ const ZapIcon = LockIcon
 export const metadata: Metadata = {
   title: 'Drop - Secure File Sharing | Ciphera',
   description: 'End-to-end encrypted file sharing with zero-knowledge architecture. Share files securely with automatic expiration and password protection.',
+  alternates: {
+    canonical: 'https://ciphera.net/products/drop',
+  },
+  openGraph: {
+    title: 'Drop - Secure File Sharing | Ciphera',
+    description: 'End-to-end encrypted file sharing with zero-knowledge architecture. Share files securely with automatic expiration and password protection.',
+    url: 'https://ciphera.net/products/drop',
+    siteName: 'Ciphera',
+    images: [{ url: '/drop_icon_no_margins.png', width: 512, height: 512, alt: 'Drop - Secure File Sharing' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Drop - Secure File Sharing | Ciphera',
+    description: 'End-to-end encrypted file sharing with zero-knowledge architecture.',
+    images: ['/ciphera_logo_no_margins.png'],
+  },
 }
+
+const dropSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Drop',
+    description: 'End-to-end encrypted file sharing with zero-knowledge architecture. Share files securely with automatic expiration and password protection.',
+    applicationCategory: 'SecurityApplication',
+    operatingSystem: 'Web',
+    url: 'https://drop.ciphera.net',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
+      { '@type': 'ListItem', position: 3, name: 'Drop', item: 'https://ciphera.net/products/drop' },
+    ],
+  },
+]
 
 export default function DropPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dropSchema) }} />
       {/* * Hero */}
       <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
         <div className="section-container">

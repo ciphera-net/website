@@ -2,7 +2,6 @@ import Hero from '../components/Hero'
 import Ecosystem from '../components/Ecosystem'
 import Features from '../components/Features'
 import Philosophy from '../components/Philosophy'
-import SocialProof from '../components/SocialProof'
 import Products from '../components/Products'
 import EnhancedFAQ from '../components/EnhancedFAQ'
 import Newsletter from '../components/Newsletter'
@@ -22,14 +21,6 @@ const homepageSchema = {
       url: 'https://ciphera.net/ciphera_logo_no_margins.png',
     },
   },
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: 'https://ciphera.net/search?q={search_term_string}',
-    },
-    'query-input': 'required name=search_term_string',
-  },
 }
 
 export default function HomePage() {
@@ -44,7 +35,6 @@ export default function HomePage() {
       <Ecosystem />
       <Features />
       <Philosophy />
-      <SocialProof />
       <Products />
       <EnhancedFAQ />
       <Newsletter />

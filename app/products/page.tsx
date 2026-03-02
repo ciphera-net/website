@@ -60,7 +60,7 @@ const products = [
       'Account lockout protection',
       'Two-factor authentication support',
     ],
-    link: '#',
+    link: '/products/auth',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
     highlight: false,
@@ -78,7 +78,7 @@ const products = [
       'JWT-based tokens',
       'Configurable difficulty',
     ],
-    link: '#',
+    link: '/products/captcha',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
     highlight: false,
@@ -96,7 +96,7 @@ const products = [
       'High deliverability',
       'Admin UI with secure access',
     ],
-    link: '#',
+    link: '/products/relay',
     iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
     status: 'Available',
     highlight: false,
@@ -111,51 +111,63 @@ const productsSchema = {
   description: 'Privacy-first applications and infrastructure services',
   itemListElement: [
     {
-      '@type': 'SoftwareApplication',
-      name: 'Pulse',
-      description: 'Privacy-first analytics and session replay without compromising user privacy',
-      applicationCategory: 'AnalyticsApplication',
-      operatingSystem: 'Web',
-      url: 'https://pulse.ciphera.net',
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
+      '@type': 'ListItem',
+      position: 1,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: 'Pulse',
+        description: 'Privacy-first analytics and session replay without compromising user privacy',
+        applicationCategory: 'AnalyticsApplication',
+        operatingSystem: 'Web',
+        url: 'https://pulse.ciphera.net',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       },
     },
     {
-      '@type': 'SoftwareApplication',
-      name: 'Drop',
-      description: 'Privacy-first file sharing with end-to-end encryption',
-      applicationCategory: 'FileSharingApplication',
-      operatingSystem: 'Web',
-      url: 'https://drop.ciphera.net',
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
+      '@type': 'ListItem',
+      position: 2,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: 'Drop',
+        description: 'Privacy-first file sharing with end-to-end encryption',
+        applicationCategory: 'FileSharingApplication',
+        operatingSystem: 'Web',
+        url: 'https://drop.ciphera.net',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       },
     },
     {
-      '@type': 'SoftwareApplication',
-      name: 'Ciphera Auth',
-      description: 'Centralized identity provider with secure authentication',
-      applicationCategory: 'SecurityApplication',
-      operatingSystem: 'Web',
+      '@type': 'ListItem',
+      position: 3,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: 'Ciphera Auth',
+        description: 'Centralized identity provider with secure authentication',
+        applicationCategory: 'SecurityApplication',
+        operatingSystem: 'Web',
+      },
     },
     {
-      '@type': 'SoftwareApplication',
-      name: 'Ciphera Captcha',
-      description: 'Bot protection service with visual captchas and Proof-of-Work challenges',
-      applicationCategory: 'SecurityApplication',
-      operatingSystem: 'Web',
+      '@type': 'ListItem',
+      position: 4,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: 'Ciphera Captcha',
+        description: 'Bot protection service with visual captchas and Proof-of-Work challenges',
+        applicationCategory: 'SecurityApplication',
+        operatingSystem: 'Web',
+      },
     },
     {
-      '@type': 'SoftwareApplication',
-      name: 'Ciphera Relay',
-      description: 'Transactional email infrastructure for secure, privacy-first email delivery',
-      applicationCategory: 'CommunicationApplication',
-      operatingSystem: 'Web',
+      '@type': 'ListItem',
+      position: 5,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: 'Ciphera Relay',
+        description: 'Transactional email infrastructure for secure, privacy-first email delivery',
+        applicationCategory: 'CommunicationApplication',
+        operatingSystem: 'Web',
+      },
     },
   ],
 }
@@ -223,7 +235,6 @@ export default function ProductsPage() {
                       width={40}
                       height={40}
                       loading="lazy"
-                      unoptimized
                       className="w-full h-full object-contain"
                     />
                   </div>
@@ -267,7 +278,6 @@ export default function ProductsPage() {
                       width={200}
                       height={200}
                       loading="lazy"
-                      unoptimized
                       className="w-48 h-48 object-contain opacity-80"
                     />
                   </div>
@@ -318,7 +328,6 @@ export default function ProductsPage() {
                             alt={`${product.name} icon`}
                             width={32} 
                             height={32}
-                            unoptimized
                             className="w-full h-full object-contain"
                           />
                         ) : (

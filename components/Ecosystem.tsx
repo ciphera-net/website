@@ -111,7 +111,6 @@ function ProductNode({
                 alt={product.name}
                 width={32} 
                 height={32}
-                unoptimized
                 className="w-full h-full object-contain"
               />
             ) : (
@@ -242,7 +241,6 @@ export default function Ecosystem() {
                                   alt={product.name}
                                   width={24} 
                                   height={24}
-                                  unoptimized
                                   className="w-full h-full object-contain"
                                 />
                               ) : (

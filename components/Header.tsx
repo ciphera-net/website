@@ -49,7 +49,6 @@ export default function Header() {
               width={44}
               height={44}
               priority
-              unoptimized
               className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300"
             />
           </div>
@@ -92,8 +91,7 @@ export default function Header() {
                             src={product.icon} 
                             alt={product.name} 
                             width={20} 
-                            height={20} 
-                            unoptimized
+                            height={20}
                             className="w-full h-full object-contain" 
                           />
                         ) : (
@@ -156,6 +154,12 @@ export default function Header() {
             For Companies
           </Link>
           <Link
+            href="/blog"
+            className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+          >
+            Blog
+          </Link>
+          <Link
             href="/contact"
             className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
           >
@@ -207,6 +211,13 @@ export default function Header() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               For Companies
+            </Link>
+            <Link
+              href="/blog"
+              className="px-4 py-3 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-xl hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Blog
             </Link>
             <Link
               href="/contact"

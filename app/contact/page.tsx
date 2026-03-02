@@ -90,7 +90,7 @@ const contactSchema = {
       {
         '@type': 'ContactPoint',
         email: 'security@ciphera.net',
-        contactType: 'Security',
+        contactType: 'technical support',
         areaServed: 'Worldwide',
       },
       {
@@ -445,7 +445,6 @@ export default function ContactPage() {
                       src="/office.jpeg"
                       alt="Ciphera headquarters in Diegem, Belgium"
                       fill
-                      unoptimized
                       className="object-cover"
                       onError={(e) => {
                         // * Fallback to placeholder if image doesn't exist

@@ -14,7 +14,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Ciphera - Secure File Sharing with Zero-Knowledge Encryption',
+    default: 'Ciphera - Privacy-First Infrastructure & Zero-Knowledge Encryption',
     template: '%s | Ciphera',
   },
   description: 'Secure file sharing with zero-knowledge encryption. End-to-end encrypted file transfer, privacy-first infrastructure, and GDPR-compliant solutions. Where privacy still exists.',
@@ -75,9 +75,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={plusJakartaSans.variable} suppressHydrationWarning>
+      <head>
+        <link rel="dns-prefetch" href="https://pulse.ciphera.net" />
+        <link rel="dns-prefetch" href="https://pulse-api.ciphera.net" />
+      </head>
       <body className="antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
         <Script
-          defer
+          strategy="lazyOnload"
           data-domain="ciphera.net"
           data-api={process.env.NEXT_PUBLIC_PULSE_API_URL || 'https://pulse-api.ciphera.net'}
           src={process.env.NEXT_PUBLIC_PULSE_SCRIPT_URL || 'https://pulse.ciphera.net/script.js?v=3.0'}

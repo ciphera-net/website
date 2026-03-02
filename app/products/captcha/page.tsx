@@ -10,11 +10,51 @@ const ZapIcon = LockIcon
 export const metadata: Metadata = {
   title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
   description: 'Protect your applications from bots with visual captchas and proof-of-work challenges. Privacy-respecting, stateless verification with JWT tokens.',
+  alternates: {
+    canonical: 'https://ciphera.net/products/captcha',
+  },
+  openGraph: {
+    title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
+    description: 'Protect your applications from bots with visual captchas and proof-of-work challenges.',
+    url: 'https://ciphera.net/products/captcha',
+    siteName: 'Ciphera',
+    images: [{ url: '/captcha_icon_no_margins.png', width: 512, height: 512, alt: 'Ciphera Captcha - Bot Protection' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
+    description: 'Privacy-respecting bot protection with visual captchas and proof-of-work challenges.',
+    images: ['/ciphera_logo_no_margins.png'],
+  },
 }
+
+const captchaSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Ciphera Captcha',
+    description: 'Protect your applications from bots with visual captchas and proof-of-work challenges. Privacy-respecting, stateless verification with JWT tokens.',
+    applicationCategory: 'SecurityApplication',
+    operatingSystem: 'Web',
+    provider: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
+      { '@type': 'ListItem', position: 3, name: 'Ciphera Captcha', item: 'https://ciphera.net/products/captcha' },
+    ],
+  },
+]
 
 export default function CipheraCaptchaPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(captchaSchema) }} />
       {/* * Hero */}
       <section className="section-padding pt-32 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
         <div className="section-container">

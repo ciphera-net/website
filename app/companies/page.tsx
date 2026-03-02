@@ -344,7 +344,6 @@ export default function CompaniesPage() {
                             alt={`${service.name} - Enterprise privacy solution icon`}
                             width={32} 
                             height={32}
-                            unoptimized
                             className="w-full h-full object-contain"
                           />
                           ) : (
