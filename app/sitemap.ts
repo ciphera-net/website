@@ -15,12 +15,9 @@ import { MetadataRoute } from 'next'
 // Only add a post here once it has substantive body content (not placeholder text).
 // The date should reflect the actual publication or last-edit date.
 const publishedBlogPosts: { slug: string; lastModified: string }[] = [
-  { slug: 'understanding-zero-knowledge-encryption', lastModified: '2026-03-02' },
-  { slug: 'why-swiss-infrastructure', lastModified: '2026-02-28' },
-  { slug: 'building-privacy-first-analytics', lastModified: '2026-02-25' },
-  // { slug: 'secure-file-sharing-best-practices', lastModified: '2026-01-15' },
-  // { slug: 'gdpr-compliance-guide', lastModified: '2026-01-10' },
-  // { slug: 'open-source-security', lastModified: '2026-01-05' },
+  { slug: 'why-swiss-infrastructure-matters-for-data-privacy', lastModified: '2026-03-02' },
+  { slug: 'biggest-data-breaches-2025-2026', lastModified: '2026-03-02' },
+  { slug: 'pulse-vs-google-analytics-plausible-fathom', lastModified: '2026-03-02' },
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {

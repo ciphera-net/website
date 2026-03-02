@@ -19,9 +19,9 @@ Ciphera provides end-to-end encrypted services including file sharing, website a
 - No cookies, no fingerprinting, no third-party trackers
 
 ## Blog
-- [Understanding Zero-Knowledge Encryption](https://ciphera.net/blog/understanding-zero-knowledge-encryption): Complete guide to zero-knowledge encryption, AES-256-GCM, and client-side encryption architecture.
-- [Why Swiss Infrastructure Matters](https://ciphera.net/blog/why-swiss-infrastructure): Analysis of Swiss data protection (FADP), comparison with US CLOUD Act and EU GDPR jurisdictions.
-- [Building Privacy-First Analytics](https://ciphera.net/blog/building-privacy-first-analytics): How Pulse provides analytics without cookies or personal data — technical architecture and GDPR compliance.
+- [Why Swiss Infrastructure Matters for Data Privacy](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy): Why Switzerland's FADP, neutrality, and encryption protections make it the top jurisdiction for privacy-focused infrastructure. Includes CLOUD Act analysis and sovereign cloud trends.
+- [The Biggest Data Breaches of 2025-2026](https://ciphera.net/blog/biggest-data-breaches-2025-2026): Analysis of the largest data breaches affecting 280M+ people, breach cost data from IBM, and how encryption reduces damage.
+- [Pulse vs Google Analytics vs Plausible vs Fathom](https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom): Side-by-side comparison of 4 analytics tools on privacy, performance, accuracy, and cost.
 
 ## Policies
 - Privacy policy: https://ciphera.net/privacy

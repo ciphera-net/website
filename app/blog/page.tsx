@@ -46,28 +46,28 @@ const blogSchema = [
 
 const blogPosts = [
   {
-    slug: 'understanding-zero-knowledge-encryption',
-    title: 'Understanding Zero-Knowledge Encryption: A Complete Guide',
-    description: 'Learn what zero-knowledge encryption is, how it works, and why it matters for protecting your data. A comprehensive guide from the Ciphera team.',
+    slug: 'why-swiss-infrastructure-matters-for-data-privacy',
+    title: 'Why Swiss Infrastructure Matters for Data Privacy',
+    description: 'Switzerland hosts 75 data centers outside CLOUD Act reach. Learn why Swiss FADP, neutrality, and encryption protections make it the top choice for privacy infrastructure.',
+    category: 'Privacy',
+    date: '2026-03-02',
+    readTime: '11 min read',
+  },
+  {
+    slug: 'biggest-data-breaches-2025-2026',
+    title: 'The Biggest Data Breaches of 2025-2026: What Went Wrong and How to Protect Your Data',
+    description: 'Analysis of the largest data breaches of 2025-2026 affecting 280M+ people. IBM reports the average breach costs $4.44M globally, $10.22M in the U.S.',
     category: 'Security',
     date: '2026-03-02',
-    readTime: '8 min read',
+    readTime: '12 min read',
   },
   {
-    slug: 'why-swiss-infrastructure',
-    title: 'Why Swiss Infrastructure Matters for Data Privacy',
-    description: 'Discover why Switzerland\'s data protection laws make it the ideal location for privacy-focused infrastructure and how Ciphera leverages Swiss hosting.',
-    category: 'Privacy',
-    date: '2026-02-28',
-    readTime: '6 min read',
-  },
-  {
-    slug: 'building-privacy-first-analytics',
-    title: 'Building Privacy-First Analytics: How Pulse Works Without Cookies',
-    description: 'How we built Pulse, a privacy-first analytics platform that provides meaningful insights without cookies, fingerprinting, or personal data collection.',
-    category: 'Engineering',
-    date: '2026-02-25',
-    readTime: '7 min read',
+    slug: 'pulse-vs-google-analytics-plausible-fathom',
+    title: 'Pulse vs Google Analytics vs Plausible vs Fathom: Which Analytics Tool Wins in 2026?',
+    description: 'Side-by-side comparison of 4 analytics tools on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.',
+    category: 'Analytics',
+    date: '2026-03-02',
+    readTime: '14 min read',
   },
 ]
 
