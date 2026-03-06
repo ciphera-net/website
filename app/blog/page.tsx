@@ -117,6 +117,14 @@ const blogPosts = [
     date: '2026-03-09',
     readTime: '13 min read',
   },
+  {
+    slug: 'eu-ai-act-compliance-guide-2026',
+    title: 'EU AI Act Compliance Guide: What Every Business Needs to Know in 2026',
+    description: 'Only 18% of EU employers feel ready for the AI Act. Fines reach EUR 35M or 7% of turnover. Here\'s what every business must do before the August 2026 deadline.',
+    category: 'Privacy',
+    date: '2026-03-13',
+    readTime: '12 min read',
+  },
 ]
 
 export default function BlogPage() {
