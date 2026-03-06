@@ -22,6 +22,8 @@ const publishedBlogPosts: { slug: string; lastModified: string }[] = [
   { slug: 'drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing', lastModified: '2026-02-21' },
   { slug: 'privacy-statistics-2026', lastModified: '2026-02-28' },
   { slug: 'open-source-privacy-tools-2026', lastModified: '2026-03-02' },
+  { slug: 'passkeys-vs-passwords-2026', lastModified: '2026-03-06' },
+  { slug: 'recaptcha-privacy-liability-alternatives-2026', lastModified: '2026-03-09' },
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -70,11 +72,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Legal pages
     {
       url: `${baseUrl}/privacy`,
-      lastModified: '2026-03-02',
+      lastModified: '2026-03-06',
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: '2026-03-02',
+      lastModified: '2026-03-06',
     },
 
     // Blog index (include even if posts are drafts -- the index page itself is valid)

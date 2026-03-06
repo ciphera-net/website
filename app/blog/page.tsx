@@ -101,6 +101,22 @@ const blogPosts = [
     date: '2026-03-02',
     readTime: '15 min read',
   },
+  {
+    slug: 'passkeys-vs-passwords-2026',
+    title: 'Passkeys vs Passwords: Why 2026 Is the Tipping Point',
+    description: 'Passkeys succeed 93% of the time vs 63% for passwords (FIDO Alliance, 2025). With 87% of enterprises deploying, 2026 marks the end of the password era.',
+    category: 'Security',
+    date: '2026-03-06',
+    readTime: '12 min read',
+  },
+  {
+    slug: 'recaptcha-privacy-liability-alternatives-2026',
+    title: 'Why reCAPTCHA Is a Privacy Liability in 2026 (and What to Use Instead)',
+    description: 'reCAPTCHA holds 85% market share but collects fingerprints, behavioral data, and cross-site cookies. With €7.1B in GDPR fines, here are 3 alternatives.',
+    category: 'Privacy',
+    date: '2026-03-09',
+    readTime: '13 min read',
+  },
 ]
 
 export default function BlogPage() {
