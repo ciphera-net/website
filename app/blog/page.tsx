@@ -122,7 +122,7 @@ const blogPosts = [
     title: 'EU AI Act Compliance Guide: What Every Business Needs to Know in 2026',
     description: 'Only 18% of EU employers feel ready for the AI Act. Fines reach EUR 35M or 7% of turnover. Here\'s what every business must do before the August 2026 deadline.',
     category: 'Privacy',
-    date: '2026-03-13',
+    date: '2026-03-07',
     readTime: '12 min read',
   },
 ]
