@@ -58,6 +58,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    site: '@CipheraNET',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
     description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
     images: ['/ciphera_logo_no_margins.png'],

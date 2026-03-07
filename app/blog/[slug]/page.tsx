@@ -5,8 +5,8 @@ import { notFound } from 'next/navigation'
 
 const blogPosts: Record<string, { title: string; description: string; content: string; date: string; dateModified: string; category: string; readTime: string; faqs: { question: string; answer: string }[] }> = {
   'pulse-vs-google-analytics-plausible-fathom': {
-    title: 'Pulse vs Google Analytics vs Plausible vs Fathom: Which Analytics Tool Wins in 2026?',
-    description: 'Side-by-side comparison of 4 analytics tools on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.',
+    title: 'Pulse vs GA vs Plausible vs Fathom (2026)',
+    description: 'Side-by-side comparison of Pulse, Google Analytics, Plausible, and Fathom on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.',
     category: 'Analytics',
     date: '2026-02-14',
     dateModified: '2026-03-07',
@@ -215,7 +215,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </div>
 
       <p>
-        Pulse, Plausible, and Fathom are all GDPR-compliant by architecture — they don't collect personal data, so most GDPR obligations don't apply. Google Analytics requires explicit cookie consent under GDPR, extensive configuration to approach compliance, and still transfers data to US servers by default. Pulse differentiates itself with Swiss data residency under the FADP and a fully open-source codebase. Plausible leads on self-hosting capability, running on German infrastructure by default. Fathom routes EU data through EU servers but isn't open source.
+        Pulse, Plausible, and Fathom are all GDPR-compliant by architecture — they don't collect personal data, so most GDPR obligations don't apply. Google Analytics requires explicit cookie consent under GDPR, extensive configuration to approach compliance, and still transfers data to US servers by default. Pulse differentiates itself with <a href="https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy">Swiss data residency under the FADP</a> and a fully open-source codebase. Plausible leads on self-hosting capability, running on German infrastructure by default. Fathom routes EU data through EU servers but isn't open source.
       </p>
       <p>
         With <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5275559" target="_blank" rel="noopener noreferrer">172 countries now having data privacy laws</a> (up from 120 in 2017), GDPR compliance isn't just a European concern. It's becoming the global baseline. Picking an analytics tool that's compliant by design saves you from playing legal whack-a-mole as new regulations appear.
@@ -250,7 +250,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </figure>
 
       <p>
-        A lighter analytics script isn't just about speed. It's about trust. According to the <a href="https://cpl.thalesgroup.com/digital-trust-index" target="_blank" rel="noopener noreferrer">Thales 2025 Digital Trust Index</a>, 82% of internet users are highly concerned about how their data is collected, and 74% want stronger control over their online privacy. A bloated tracking script that sets cookies and phones home to Google's servers sends a clear signal to privacy-conscious visitors: you don't respect their boundaries.
+        A lighter analytics script isn't just about speed. It's about trust. According to the <a href="https://cpl.thalesgroup.com/digital-trust-index" target="_blank" rel="noopener noreferrer">Thales 2025 Digital Trust Index</a>, 82% of internet users are highly concerned about how their data is collected, and 74% want stronger control over their online privacy. Our <a href="https://ciphera.net/blog/privacy-statistics-2026">25 privacy statistics for 2026</a> show this concern is only accelerating. A bloated tracking script that sets cookies and phones home to Google's servers sends a clear signal to privacy-conscious visitors: you don't respect their boundaries.
       </p>
       <p>
         Here's the practical impact. A 175 KB script on a 3G mobile connection adds roughly 1.5 seconds to your page load. That's time spent downloading code whose sole purpose is surveillance. Pulse and Plausible both load in under 50 milliseconds on the same connection. For sites where every millisecond of Largest Contentful Paint matters — and Google's ranking algorithm says it should — privacy-first analytics is a performance win, not a compromise.
@@ -389,7 +389,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         <li><strong>You want self-hosting control:</strong> Plausible. It's the only tool here that lets you run the full stack on your own infrastructure, which is a strong advantage for organizations with strict data residency requirements.</li>
         <li><strong>You need SOC 2 and ISO 27001 certification:</strong> Fathom. If your compliance team requires formal certifications from your analytics provider, Fathom is the only privacy-first option that holds both.</li>
         <li><strong>You need advertising integrations and remarketing:</strong> Google Analytics. If your business model depends on Google Ads, retargeting audiences, and attribution modeling, GA is still the tool for you — just budget for consent management and legal review.</li>
-        <li><strong>You're an EU-focused business that values data sovereignty:</strong> Pulse. Swiss data residency under the FADP, combined with a zero-cookie architecture, gives you the strongest legal position of any tool on this list.</li>
+        <li><strong>You're an EU-focused business that values data sovereignty:</strong> Pulse. Swiss data residency under the FADP, combined with a zero-cookie architecture, gives you the strongest legal position of any tool on this list. Companies that treat <a href="https://ciphera.net/blog/why-privacy-cant-be-an-afterthought">privacy as an afterthought</a> end up paying for it — in fines, in trust, and in churn.</li>
       </ul>
 
       <h2>Frequently Asked Questions</h2>
@@ -429,12 +429,12 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         <li><strong>Fathom:</strong> SOC 2 + ISO 27001 certified, EU data routing, clean dashboard</li>
       </ul>
       <p>
-        The privacy-first analytics market is growing at 25.3% CAGR for a reason. Businesses are realizing that accurate, compliant analytics doesn't require tracking individual users across the web. If you're ready to stop losing 80-90% of your EU visitor data and start getting the full picture, <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">try Pulse for free</a>.
+        The privacy-first analytics market is growing at 25.3% CAGR for a reason. Businesses are realizing that accurate, compliant analytics doesn't require tracking individual users across the web. The <a href="https://ciphera.net/blog/biggest-data-breaches-2025-2026">biggest data breaches of 2025-2026</a> only reinforce why minimizing data collection matters. If you're ready to stop losing 80-90% of your EU visitor data and start getting the full picture, <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">try Pulse for free</a>.
       </p>
     `,
   },
   'biggest-data-breaches-2025-2026': {
-    title: 'The Biggest Data Breaches of 2025-2026: What Went Wrong and How to Protect Your Data',
+    title: 'Biggest Data Breaches of 2025-2026',
     description: 'Analysis of the largest data breaches of 2025-2026 affecting 280M+ people. IBM reports the average breach costs $4.44M globally, $10.22M in the U.S.',
     category: 'Security',
     date: '2026-02-05',
@@ -461,7 +461,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         <strong>TL;DR:</strong> The U.S. saw a record 3,322 data compromises in 2025, while Europe averaged 443 breach notifications daily (<a href="https://www.idtheftcenter.org/post/2025-annual-data-breach-report-record-number-compromises/" target="_blank" rel="noopener noreferrer">ITRC</a>, <a href="https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026" target="_blank" rel="noopener noreferrer">DLA Piper</a>). The two largest breaches — Change Healthcare and PowerSchool — both happened because of missing multi-factor authentication. Encryption reduces breach costs by $208,000 per incident. The pattern is clear: most breaches are preventable with basic security hygiene.
       </blockquote>
 
-      <h2>2025 in Numbers: A Record Year for Data Breaches</h2>
+      <h2>How Bad Were Data Breaches in 2025?</h2>
 
       <p>
         The <a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank" rel="noopener noreferrer">Verizon 2025 DBIR</a> analyzed 22,052 security incidents and confirmed 12,195 data breaches across 139 countries — a sharp increase from the prior year. In the U.S., the ITRC counted 3,322 compromises, up 5% from 2024 and nearly double the 2020 figure. Europe wasn't spared. Breach notifications hit record volume across the continent, with the Netherlands reporting 33,471 and Germany logging 27,829.
@@ -518,7 +518,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         How are attackers getting in? The Verizon DBIR breaks it down: credential abuse leads at 22%, followed by vulnerability exploitation at 20% and phishing at 16%. Ransomware was present in 44% of breaches, up 37% year-over-year. Perhaps most telling: 60% of all breaches involved the human element — credentials being reused, employees clicking phishing links, systems left misconfigured. Third-party involvement in breaches doubled to 30%.
       </p>
 
-      <h2>The 6 Breaches That Defined 2025-2026</h2>
+      <h2>Which 6 Breaches Defined 2025-2026?</h2>
 
       <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop&q=80" alt="Rows of illuminated servers in a modern data center facility where sensitive data is stored" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
 
@@ -721,8 +721,8 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     `,
   },
   'why-swiss-infrastructure-matters-for-data-privacy': {
-    title: 'Why Swiss Infrastructure Matters for Data Privacy',
-    description: 'Switzerland hosts 75 data centers outside CLOUD Act reach. Learn why Swiss FADP, neutrality, and encryption protections make it the top choice for privacy-focused infrastructure.',
+    title: 'Why Swiss Infrastructure Matters for Privacy',
+    description: 'Switzerland hosts 75 data centers outside CLOUD Act reach. Swiss FADP and neutrality make it the top choice for privacy infrastructure.',
     category: 'Privacy',
     date: '2026-01-27',
     dateModified: '2026-03-07',
@@ -1050,7 +1050,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
 
       <p>
-        The cost isn't just financial. A <a href="https://www.kiteworks.com/cybersecurity-risk-management/2026-data-sovereignty-report-findings-canada-middle-east-europe/" target="_blank" rel="noopener noreferrer">Kiteworks survey</a> (2026) found that 44% of IT and security professionals cite sovereignty concerns as their top barrier to cloud adoption. In other words, getting jurisdiction wrong doesn't just risk fines — it risks losing customers who won't trust you with their data in the first place.
+        The cost isn't just financial. A <a href="https://www.kiteworks.com/cybersecurity-risk-management/2026-data-sovereignty-report-findings-canada-middle-east-europe/" target="_blank" rel="noopener noreferrer">Kiteworks survey</a> (2026) found that 44% of IT and security professionals cite sovereignty concerns as their top barrier to cloud adoption. The <a href="https://ciphera.net/blog/biggest-data-breaches-2025-2026">biggest data breaches of 2025-2026</a> show what happens when jurisdiction fails — 280 million people affected across just six incidents. Getting jurisdiction wrong doesn't just risk fines — it risks losing customers who won't trust you with their data in the first place.
       </p>
 
       <p>
@@ -1084,12 +1084,12 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
 
       <p>
-        If you're ready to start with infrastructure that matches this standard, <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">try Ciphera Drop</a> for encrypted file sharing or explore <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Pulse</a> for privacy-first analytics. Your data deserves better than a jurisdiction that can't guarantee where it ends up.
+        If you're ready to start with infrastructure that matches this standard, <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">try Ciphera Drop</a> for <a href="https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing">encrypted file sharing</a> or explore <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Pulse</a> for <a href="https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom">privacy-first analytics</a>. Your data deserves better than a jurisdiction that can't guarantee where it ends up.
       </p>
     `,
   },
   'why-privacy-cant-be-an-afterthought': {
-    title: 'Why Privacy Can\'t Be an Afterthought: Privacy Washing vs. Real Privacy Engineering',
+    title: 'Why Privacy Can\'t Be an Afterthought',
     description: '82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta paid $2B+ in privacy fines. Here\'s what real privacy architecture looks like.',
     category: 'Privacy',
     date: '2026-01-15',
@@ -1426,7 +1426,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     `,
   },
   'drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing': {
-    title: 'Drop vs WeTransfer vs Google Drive vs Dropbox: Encrypted File Sharing Compared (2026)',
+    title: 'Encrypted File Sharing: 7 Services Compared',
     description: '82% of breaches involve cloud data. We compare 7 file sharing services on encryption, privacy, jurisdiction, and cost — only 3 use zero-knowledge encryption.',
     category: 'Comparison',
     date: '2026-02-21',
@@ -1958,7 +1958,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     `,
   },
   'privacy-statistics-2026': {
-    title: '25 Privacy Statistics That Define 2026: Breaches, Fines, and the Trust Crisis',
+    title: '25 Privacy Statistics for 2026',
     description: '25 sourced privacy statistics for 2026 — from $4.44M average breach costs to \u20AC7.1B in GDPR fines. The numbers every business needs to see.',
     date: '2026-02-28',
     dateModified: '2026-03-07',
@@ -2347,7 +2347,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     `,
   },
   'open-source-privacy-tools-2026': {
-    title: 'Open Source Privacy Tools: The Complete List (2026)',
+    title: 'Open Source Privacy Tools: Complete List 2026',
     description: '30 open source privacy tools across 10 categories. 96% of orgs increased OSS use in 2025. Every tool here has auditable code and no hidden data collection.',
     date: '2026-03-02',
     dateModified: '2026-03-07',
@@ -3221,7 +3221,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
   },
 
   'recaptcha-privacy-liability-alternatives-2026': {
-    title: 'Why reCAPTCHA Is a Privacy Liability in 2026 (and What to Use Instead)',
+    title: 'reCAPTCHA Privacy Risks: 3 Alternatives (2026)',
     description: 'reCAPTCHA holds 85% market share but collects fingerprints, behavioral data, and cross-site cookies. With €7.1B in GDPR fines, here are 3 alternatives.',
     category: 'Privacy',
     date: '2026-03-09',
@@ -3822,7 +3822,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     `,
   },
   'eu-ai-act-compliance-guide-2026': {
-    title: 'EU AI Act Compliance Guide: What Every Business Needs to Know in 2026',
+    title: 'EU AI Act Compliance Guide for 2026',
     description: 'Only 18% of EU employers feel ready for the AI Act. Fines reach EUR 35M or 7% of turnover. Here\'s what every business must do before the August 2026 deadline.',
     category: 'Privacy',
     date: '2026-03-07',
@@ -4208,13 +4208,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: 'Ciphera',
       type: 'article',
       locale: 'en_US',
-      images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: post.title }],
+      images: [{ url: `/blog/og/${slug}.png`, width: 1376, height: 768, alt: post.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
-      images: ['/ciphera_logo_no_margins.png'],
+      images: [`/blog/og/${slug}.png`],
     },
   }
 }

@@ -156,6 +156,14 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group flex flex-col rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden hover:border-brand-orange/50 dark:hover:border-brand-orange/50 transition-all duration-200 hover:shadow-lg"
               >
+                <div className="aspect-video w-full overflow-hidden">
+                  <img
+                    src={`/blog/og/${post.slug}.png`}
+                    alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
                 <div className="flex flex-col flex-1 p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="badge-neutral text-xs">{post.category}</span>
