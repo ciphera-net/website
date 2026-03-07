@@ -3,13 +3,21 @@ import Link from 'next/link'
 import { ArrowLeftIcon } from '@ciphera-net/ui'
 import { notFound } from 'next/navigation'
 
-const blogPosts: Record<string, { title: string; description: string; content: string; date: string; category: string; readTime: string }> = {
+const blogPosts: Record<string, { title: string; description: string; content: string; date: string; dateModified: string; category: string; readTime: string; faqs: { question: string; answer: string }[] }> = {
   'pulse-vs-google-analytics-plausible-fathom': {
     title: 'Pulse vs Google Analytics vs Plausible vs Fathom: Which Analytics Tool Wins in 2026?',
     description: 'Side-by-side comparison of 4 analytics tools on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.',
     category: 'Analytics',
     date: '2026-02-14',
+    dateModified: '2026-03-07',
     readTime: '14 min read',
+    faqs: [
+      { question: 'Is Google Analytics illegal in Europe?', answer: 'Not outright, but it\'s under active legal challenge. The Cologne District Court ruled in August 2025 that standard GA usage violates GDPR, and multiple EU data protection authorities have issued similar findings. Using GA4 without proper consent mechanisms carries real regulatory risk — GDPR fines exceeded EUR 7.1 billion cumulatively by end of 2025.' },
+      { question: 'Can privacy analytics track conversions?', answer: 'Yes. Plausible, Fathom, and Pulse all support custom event tracking and goal conversions without cookies. You can track form submissions, button clicks, and signups by firing events from your frontend code.' },
+      { question: 'Which privacy analytics tool is easiest to set up?', answer: 'Pulse requires a single line of HTML — just a script tag with your domain and the Pulse source URL. No npm packages, no build step, no configuration files. Plausible uses a nearly identical one-line setup. Fathom also uses a single script tag.' },
+      { question: 'Do I still need a cookie banner with Pulse?', answer: 'No. Pulse doesn\'t set any cookies — no first-party, no third-party, no session cookies. Because it doesn\'t use cookies, no consent is required under the ePrivacy Directive.' },
+      { question: 'How accurate are cookieless analytics compared to Google Analytics?', answer: 'In EU markets, cookieless analytics are more accurate than GA because they count every visitor, not just the 10-20% who accept cookies (SealMetrics, 2025). Unique visitor counts may differ slightly because privacy tools estimate sessions without persistent identifiers, but traffic trends and patterns remain reliable.' },
+    ],
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
         Cookie-based analytics is bleeding data. According to <a href="https://docs.sealmetrics.com/blog/cookie-banner-ghosting-data-loss/" target="_blank" rel="noopener noreferrer">SealMetrics</a> (2025), websites running cookie-dependent analytics tools lose 80-90% of their visitor data in EU markets. Visitors either ghost the consent banner entirely, actively reject cookies, or browse with ad blockers that strip tracking scripts on arrival. Meanwhile, EU regulators levied <a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/europe-tech-sector-eu1-2-billion-fines-gdpr-2025" target="_blank" rel="noopener noreferrer">EUR 1.2 billion in GDPR fines</a> in 2025 alone — and Google itself was hit with a EUR 325 million penalty from France's CNIL for consent violations.
@@ -141,6 +149,71 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Compiled from official documentation, 2026</figcaption>
       </figure>
 
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Feature</th>
+              <th style="padding: 0.75rem; text-align: center; color: #FD5E0F; font-weight: 700;">Pulse</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Google Analytics</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Plausible</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Fathom</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Cookie-free</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">No consent banner</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Open source</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">EU data residency</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes (Swiss)</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes (Germany)</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">No data sampling</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Self-hostable</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+            </tr>
+            <tr style="border-bottom: 2px solid #404040;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 700;">Score</td>
+              <td style="padding: 0.75rem; text-align: center; color: #FD5E0F; font-weight: 700;">5/6</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 700;">0/6</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 700;">6/6</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 700;">4/6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <p>
         Pulse, Plausible, and Fathom are all GDPR-compliant by architecture — they don't collect personal data, so most GDPR obligations don't apply. Google Analytics requires explicit cookie consent under GDPR, extensive configuration to approach compliance, and still transfers data to US servers by default. Pulse differentiates itself with Swiss data residency under the FADP and a fully open-source codebase. Plausible leads on self-hosting capability, running on German infrastructure by default. Fathom routes EU data through EU servers but isn't open source.
       </p>
@@ -263,6 +336,40 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Official pricing pages, 2026</figcaption>
       </figure>
 
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Tool</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Monthly Cost at 100K Pageviews</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 600;">Pulse</td>
+              <td style="padding: 0.75rem; color: #22c55e; font-weight: 700;">$0 (free tier)</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">No CMP, DPA, or consent banner required</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Google Analytics</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">$0*</td>
+              <td style="padding: 0.75rem; color: #f59e0b;">*Plus $100–500/mo for consent management (CMP)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Plausible</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">$19/mo</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">Starts at $9/mo for 10K pageviews</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Fathom</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">$14/mo</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">Up to 100K pageviews included</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <p>
         Plausible starts at $9/month for up to 10K pageviews and scales to $19/month at 100K. Fathom charges $14/month for up to 100K pageviews. Pulse offers a free tier. None of the privacy-first tools require a CMP, a DPA, or GDPR configuration — which means their sticker price is their actual cost.
       </p>
@@ -331,7 +438,15 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     description: 'Analysis of the largest data breaches of 2025-2026 affecting 280M+ people. IBM reports the average breach costs $4.44M globally, $10.22M in the U.S.',
     category: 'Security',
     date: '2026-02-05',
+    dateModified: '2026-03-07',
     readTime: '12 min read',
+    faqs: [
+      { question: 'What was the biggest data breach of 2025?', answer: 'Change Healthcare affected 192.7 million people, making it the largest healthcare breach in U.S. history. In Europe, Free\'s breach exposed 19.2 million French customers. By raw record count, the Mars Hydro IoT exposure leaked 2.7 billion records — though these were device logs rather than personal identifiers.' },
+      { question: 'How much does a data breach cost on average?', answer: 'The global average is $4.44 million per breach in 2025, according to IBM. U.S. breaches average $10.22 million — a new record. Healthcare leads at $7.42 million per incident. These figures include detection, response, notification, and lost business costs.' },
+      { question: 'Does encryption actually reduce data breach costs?', answer: 'Yes. IBM\'s 2025 report found that extensive data encryption reduced breach costs by $208,000 per incident. More importantly, if attackers steal encrypted data they can\'t decrypt, the breach may not qualify as a "personal data breach" under GDPR — potentially avoiding regulatory fines entirely.' },
+      { question: 'What percentage of data breaches involve human error?', answer: 'The Verizon 2025 DBIR found that 60% of breaches involved the human element — credential misuse, phishing, social engineering, or configuration errors. The two largest breaches of 2025 (Change Healthcare and PowerSchool) both resulted from stolen credentials used on portals without multi-factor authentication.' },
+      { question: 'Should companies pay ransomware demands?', answer: 'The data says no. Ransomware payment rates hit an all-time low of 28% in 2025 (Chainalysis, 2026). PowerSchool paid $2.85 million and was re-extorted anyway. Median payments surged 368% to $59,556 — paying emboldens attackers without guaranteeing data deletion.' },
+    ],
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
         2025 set a record nobody wanted. The Identity Theft Resource Center tracked <a href="https://www.idtheftcenter.org/post/2025-annual-data-breach-report-record-number-compromises/" target="_blank" rel="noopener noreferrer">3,322 data compromises</a> in the United States alone — a 79% jump over five years. Across the Atlantic, European data protection authorities logged 443 breach notifications per day, a 22% increase year-over-year (<a href="https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026" target="_blank" rel="noopener noreferrer">DLA Piper</a>, 2026). The <a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM Cost of a Data Breach Report 2025</a> puts the global average at $4.44 million per incident, with U.S. breaches hitting a record $10.22 million.
@@ -610,7 +725,14 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     description: 'Switzerland hosts 75 data centers outside CLOUD Act reach. Learn why Swiss FADP, neutrality, and encryption protections make it the top choice for privacy-focused infrastructure.',
     category: 'Privacy',
     date: '2026-01-27',
+    dateModified: '2026-03-07',
     readTime: '11 min read',
+    faqs: [
+      { question: 'Is Switzerland GDPR compliant?', answer: 'Switzerland has its own law — the FADP — not GDPR directly. But the EU confirmed Switzerland\'s data protection as adequate in January 2024, meaning personal data flows freely between the EU and Switzerland without Standard Contractual Clauses. The revised FADP (2023) closely mirrors GDPR in scope, breach reporting, and extraterritorial application.' },
+      { question: 'Can the US CLOUD Act reach data stored in Switzerland?', answer: 'Not if the company hosting the data isn\'t American. The CLOUD Act applies to US-incorporated companies and their subsidiaries. A Swiss or European company hosting data on Swiss servers is outside its jurisdiction entirely. That\'s why corporate structure matters as much as server location.' },
+      { question: 'What is the Swiss FADP?', answer: 'The Federal Act on Data Protection (FADP) is Switzerland\'s national privacy law. The revised version (September 2023) introduced penalties up to CHF 250,000, mandatory breach reporting, expanded sensitive data categories to include biometric and genetic data, and extraterritorial scope.' },
+      { question: 'Why doesn\'t Ciphera host data in the EU instead?', answer: 'EU GDPR is strong, but EU member states are part of intelligence-sharing alliances (Nine Eyes, Fourteen Eyes) and subject to EU-level bulk data directives. Switzerland provides consistent, strong, nationally unified protection — no variation between states, no intelligence-sharing obligations, and a 25-year track record of EU adequacy.' },
+    ],
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
         In June 2025, Microsoft executive Anton Carniaux sat before the French Senate and testified under oath that Microsoft <a href="https://www.theregister.com/2025/07/25/microsoft_admits_it_cannot_guarantee/" target="_blank" rel="noopener noreferrer">"cannot guarantee"</a> that French citizen data won't be transmitted to American authorities. One of the world's largest cloud providers, in the most public setting possible, admitted it can't keep your data out of a foreign government's hands. That admission cuts to the core of why infrastructure location matters — and why Switzerland has become the jurisdiction of choice for privacy-focused companies.
@@ -743,6 +865,57 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Sources: Swiss FADP, EU GDPR, US CLOUD Act, FISA Section 702</figcaption>
       </figure>
+
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Category</th>
+              <th style="padding: 0.75rem; text-align: center; color: #FD5E0F; font-weight: 600;">Switzerland</th>
+              <th style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 600;">EU (GDPR)</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">United States</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Government data access</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">No CLOUD Act</td>
+              <td style="padding: 0.75rem; text-align: center; color: #eab308;">GDPR limits</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">CLOUD Act + FISA</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Intelligence-sharing alliance</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #eab308;">14 Eyes members</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Five Eyes founder</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Encryption rights</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Fully protected</td>
+              <td style="padding: 0.75rem; text-align: center; color: #eab308;">Scanning proposals</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No protection</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">EU adequacy status</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Confirmed (2024)</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">N/A (origin)</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Under ECJ appeal</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Bulk data retention</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">No directive</td>
+              <td style="padding: 0.75rem; text-align: center; color: #eab308;">State directives</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">NSA bulk collection</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Maximum penalty</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">CHF 250,000</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">4% global revenue</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">No federal law</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p>
         The practical result: data stored in Switzerland by a non-US company is outside the reach of the CLOUD Act, outside Five Eyes intelligence sharing, and governed by a law that explicitly protects encryption. That's a combination no other major hosting jurisdiction can match.
@@ -920,7 +1093,14 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     description: '82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta paid $2B+ in privacy fines. Here\'s what real privacy architecture looks like.',
     category: 'Privacy',
     date: '2026-01-15',
+    dateModified: '2026-03-07',
     readTime: '10 min read',
+    faqs: [
+      { question: 'Is Ciphera really open source?', answer: 'The client applications — Drop, Pulse, and the UI library — are open source on GitHub. Since all encryption happens client-side, the privacy-critical code is fully auditable. The Linux Foundation (2025) found 78% of enterprises cite improved security from open source because code is inspectable by anyone.' },
+      { question: 'What does zero-knowledge encryption mean in practice?', answer: 'It means Ciphera\'s servers can\'t read your files. Data is encrypted with AES-256-GCM in your browser before upload. The decryption key stays with you — embedded in the URL fragment or derived from your password. Even in a worst-case server breach, attackers find only encrypted blobs with no keys.' },
+      { question: 'Does Ciphera sell any user data?', answer: 'No. We don\'t collect personal data, so there\'s nothing to sell. Pulse collects zero personal data by architecture. Drop encrypts files client-side so we can\'t access them. The data broker market is worth $294-313 billion (Mordor Intelligence, 2025). We opted out of that economy entirely.' },
+      { question: 'How is Ciphera different from Proton or Signal?', answer: 'Ciphera fills a different gap: encrypted file sharing (Drop), privacy-first analytics (Pulse), authentication, bot protection, and email infrastructure — all Swiss-hosted. Think of it as the privacy infrastructure layer that complements tools like Proton and Signal.' },
+    ],
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
         Every major tech company says it cares about privacy. Google's homepage says "keeping your information safe." Apple calls privacy "a fundamental human right." Meta talks about "putting privacy first." And in 2025 alone, those three companies collectively paid over $2 billion in privacy-related fines and settlements. Something doesn't add up. According to the <a href="https://cpl.thalesgroup.com/about-us/newsroom/digital-trust-index-2025" target="_blank" rel="noopener noreferrer">Thales 2025 Digital Trust Index</a>, no single industry sector reaches above 50% consumer trust for handling personal data. And 82% of consumers abandoned a brand in the past 12 months because of data concerns.
@@ -988,6 +1168,49 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Sources: Axios, CNIL, NPR, Meta/DPC — 2023-2025 enforcement actions</figcaption>
       </figure>
+
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Company</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">The Claim</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">The Reality</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Fine</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Google</td>
+              <td style="padding: 0.75rem; color: #a3a3a3;">Users can disable Web &amp; App Activity</td>
+              <td style="padding: 0.75rem; color: #ef4444;">Kept collecting via third-party apps for 8 years</td>
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 700;">$425.7M</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Google</td>
+              <td style="padding: 0.75rem; color: #a3a3a3;">Proper cookie consent in Gmail</td>
+              <td style="padding: 0.75rem; color: #ef4444;">Ads disguised as emails, cookies without consent</td>
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 700;">€325M</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Apple</td>
+              <td style="padding: 0.75rem; color: #a3a3a3;">Siri only listens when triggered</td>
+              <td style="padding: 0.75rem; color: #ef4444;">Recorded without trigger, shared with advertisers</td>
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 700;">$95M</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Meta</td>
+              <td style="padding: 0.75rem; color: #a3a3a3;">GDPR-compliant data transfers</td>
+              <td style="padding: 0.75rem; color: #ef4444;">Transferred EU data to US without safeguards</td>
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 700;">€1.2B</td>
+            </tr>
+            <tr style="border-bottom: 2px solid #404040;">
+              <td colspan="3" style="padding: 0.75rem; color: #d4d4d4; font-weight: 700; text-align: right;">Total (these 4 alone):</td>
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 800;">$2B+</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p>
         And then there's Meta. The Irish Data Protection Commission fined Meta EUR 1.2 billion in May 2023 — the largest GDPR fine ever — for transferring EU personal data to the United States without adequate safeguards. All while claiming GDPR compliance on every product page. Privacy washing isn't subtle. It's a pattern: say one thing in the marketing, architect another in the code.
@@ -1207,7 +1430,14 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     description: '82% of breaches involve cloud data. We compare 7 file sharing services on encryption, privacy, jurisdiction, and cost — only 3 use zero-knowledge encryption.',
     category: 'Comparison',
     date: '2026-02-21',
+    dateModified: '2026-03-07',
     readTime: '12 min read',
+    faqs: [
+      { question: 'Is Drop really free?', answer: 'Yes. Drop is free for files up to 5 GB, with no transfer limits, no account required, and no ads. There are no hidden paywalls or monthly caps. Ciphera makes revenue from other products in its privacy infrastructure platform.' },
+      { question: 'Can WeTransfer read my files?', answer: 'Yes. WeTransfer doesn\'t use end-to-end encryption. Files are encrypted in transit (TLS) and at rest on their servers, but WeTransfer holds the decryption keys. Their privacy policy permits data processing for service improvement.' },
+      { question: 'Is Tresorit better than Drop?', answer: 'They solve different problems. Tresorit is an encrypted cloud storage and collaboration platform — think encrypted Dropbox with team features. Drop is a file transfer tool — think encrypted WeTransfer. If you need persistent storage with admin controls, Tresorit wins. If you need to share a file quickly, for free, without creating an account, Drop wins. Both use zero-knowledge encryption.' },
+      { question: 'What happens if Ciphera\'s servers get hacked?', answer: 'Attackers get encrypted blobs. Zero-knowledge architecture means the server never has the decryption keys — those exist only in the browser of the person who uploaded the file and anyone who has the share link. Even a complete server compromise yields nothing readable.' },
+    ],
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
         Every file you share through WeTransfer, Google Drive, or Dropbox passes through servers where the provider holds the encryption keys. They can read your files. So can any government that serves them a court order. According to <a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM's 2025 Cost of a Data Breach Report</a>, 82% of all data breaches now involve cloud-stored data — and the average cloud breach costs $5.05 million.
@@ -1328,6 +1558,105 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Product documentation and pricing pages, verified March 2026</figcaption>
       </figure>
+
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 700px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Feature</th>
+              <th style="padding: 0.75rem; text-align: center; color: #FD5E0F; font-weight: 700;">Drop</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">WeTransfer</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Google Drive</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Dropbox</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">OneDrive</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Tresorit</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Send</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">E2E Encrypted</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Zero-Knowledge</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">No Account Required</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Max Free File Size</td>
+              <td style="padding: 0.75rem; text-align: center; color: #FD5E0F; font-weight: 700;">5 GB</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">3 GB</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">5 GB*</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">100 MB</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">5 GB*</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #d4d4d4;">2.5 GB</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Non-US Jurisdiction</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #eab308;">Varies</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Open Source</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Free Tier</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #eab308;">Limited</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #eab308;">Limited</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">No Ads</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Yes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p>
         The pattern is clear. Of seven services, only three — Drop, Tresorit, and Send — use end-to-end encryption with a zero-knowledge architecture. The other four encrypt your data on their servers, but they hold the keys. That distinction matters more than any other feature on this list.
@@ -1497,6 +1826,63 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Product pricing pages, verified March 2026</figcaption>
       </figure>
 
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Service</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Free Tier</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Paid Starting Price</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 600;">Drop</td>
+              <td style="padding: 0.75rem; color: #22c55e;">5 GB, unlimited transfers</td>
+              <td style="padding: 0.75rem; color: #22c55e;">Free</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">Zero-knowledge, no account required</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Send</td>
+              <td style="padding: 0.75rem; color: #22c55e;">2.5 GB</td>
+              <td style="padding: 0.75rem; color: #22c55e;">Free</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">Community-hosted</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Swiss Transfer</td>
+              <td style="padding: 0.75rem; color: #22c55e;">50 GB</td>
+              <td style="padding: 0.75rem; color: #22c55e;">Free</td>
+              <td style="padding: 0.75rem; color: #f59e0b;">Not zero-knowledge</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Google Drive</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">15 GB storage</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">$1.99/mo (100 GB)</td>
+              <td style="padding: 0.75rem; color: #f59e0b;">Not zero-knowledge</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Tresorit</td>
+              <td style="padding: 0.75rem; color: #ef4444;">No free tier</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">$4.75/mo (50 GB)</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">Zero-knowledge encryption</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">WeTransfer</td>
+              <td style="padding: 0.75rem; color: #ef4444;">Capped at 10 transfers/mo</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">$6.99/mo</td>
+              <td style="padding: 0.75rem; color: #f59e0b;">Not zero-knowledge</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 600;">Dropbox</td>
+              <td style="padding: 0.75rem; color: #ef4444;">Transfer limited to 100 MB</td>
+              <td style="padding: 0.75rem; color: #d4d4d4;">$11.99/mo</td>
+              <td style="padding: 0.75rem; color: #f59e0b;">Not zero-knowledge</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <p>
         Drop is the only service that's completely free with zero-knowledge encryption, no transfer caps, and no account requirement. Tresorit charges $4.75/month minimum for its cheapest plan. WeTransfer's "free" tier has been gutted to 10 transfers per month since Bending Spoons took over. And Dropbox Transfer's free tier is limited to 100 MB per transfer — essentially useless for real file sharing.
       </p>
@@ -1575,8 +1961,16 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     title: '25 Privacy Statistics That Define 2026: Breaches, Fines, and the Trust Crisis',
     description: '25 sourced privacy statistics for 2026 — from $4.44M average breach costs to \u20AC7.1B in GDPR fines. The numbers every business needs to see.',
     date: '2026-02-28',
+    dateModified: '2026-03-07',
     readTime: '12 min read',
     category: 'Privacy',
+    faqs: [
+      { question: 'What is the average cost of a data breach in 2025-2026?', answer: 'The global average is $4.44 million, up 10% year-over-year. In the United States, it\'s $10.22 million — more than double the global figure. Healthcare is the costliest industry at $7.42 million per breach (IBM, 2025).' },
+      { question: 'How much have GDPR fines totaled since 2018?', answer: 'Cumulative GDPR fines reached \u20AC7.1 billion by end of 2025, with \u20AC1.2 billion issued in 2025 alone (DLA Piper, 2025). Meta and TikTok received the largest individual fines, but smaller companies face penalties too — averaging \u20AC150,000 for basic compliance failures.' },
+      { question: 'Do consumers actually switch brands over privacy?', answer: 'Yes. 48% of consumers have stopped buying from a company specifically over data privacy concerns, and 75% say they won\'t purchase from companies they don\'t trust with their data (Cisco, 2025). Privacy is now a purchasing factor on par with price and product quality.' },
+      { question: 'How many US states have privacy laws?', answer: 'Twenty states will have comprehensive privacy laws by end of 2026, up from just California in 2018 (IAPP, 2026). Without a federal privacy law, each state sets its own rules — creating compliance challenges for businesses operating nationally.' },
+      { question: 'Is investing in privacy worth it for businesses?', answer: '99% of companies report positive business benefits, and the average ROI is 1.6x — meaning $1.60 returned for every dollar invested. Privacy spending also correlates with fewer breaches, shorter sales cycles, and higher customer retention (Cisco, 2026).' },
+    ],
     content: `
       <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop&q=80" alt="Server room with rows of data center racks illuminated by blue and orange lights representing digital infrastructure" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;" loading="lazy" />
 
@@ -1596,7 +1990,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         <strong>TL;DR:</strong> Privacy failures cost businesses $4.44M per breach on average while GDPR fines have hit \u20AC7.1B cumulative (<a href="https://www.dlapiper.com/en-us/insights/publications/2025/01/dla-piper-gdpr-fines-and-data-breach-survey-2025" target="_blank" rel="noopener noreferrer">DLA Piper</a>, 2025). But privacy investment pays: 99% of companies report positive returns and the average ROI is 1.6x (<a href="https://www.cisco.com/c/en/us/about/trust-center/data-privacy-benchmark-study.html" target="_blank" rel="noopener noreferrer">Cisco</a>, 2026). The gap between privacy leaders and laggards is widening fast.
       </blockquote>
 
-      <h2>The Cost of Getting Privacy Wrong (Statistics 1-5)</h2>
+      <h2>What Does Getting Privacy Wrong Actually Cost? (Statistics 1-5)</h2>
 
       <p>
         Data breaches aren't abstract risks anymore — they're line items. IBM's annual Cost of a Data Breach report tracks real financial impact across hundreds of organizations, and the 2025 numbers are the highest ever recorded.
@@ -1678,7 +2072,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         The single-year total continues to grow. TikTok's \u20AC530 million fine for transferring EU children's data to China was the largest individual penalty of 2025 (<a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/gdpr-fines-2025" target="_blank" rel="noopener noreferrer">Bitdefender</a>, 2025). Smaller companies aren't exempt either — mid-market firms received fines averaging \u20AC150,000 for basic compliance failures like missing Data Protection Impact Assessments.
       </p>
 
-      <h2>Consumers Have Stopped Trusting (Statistics 6-10)</h2>
+      <h2>Why Have Consumers Stopped Trusting Companies With Their Data? (Statistics 6-10)</h2>
 
       <img src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=1200&h=630&fit=crop&q=80" alt="Digital padlock on a dark background representing online security and consumer privacy concerns" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
 
@@ -1744,7 +2138,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         This figure has been climbing steadily since GDPR took effect in 2018. In Cisco's global survey, the percentage is consistent across age groups and geographies (<a href="https://www.cisco.com/c/en/us/about/trust-center/data-privacy-benchmark-study.html" target="_blank" rel="noopener noreferrer">Cisco</a>, 2025). Privacy awareness isn't generational — it's universal.
       </p>
 
-      <h2>The Surveillance Economy by the Numbers (Statistics 11-15)</h2>
+      <h2>How Big Is the Surveillance Economy? (Statistics 11-15)</h2>
 
       <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1200&h=630&fit=crop&q=80" alt="Surveillance cameras mounted on a wall illustrating the scale of mass data collection infrastructure" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
 
@@ -1782,7 +2176,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         That's more than 33 breaches every single day. The total represents reported incidents only — the actual number including unreported breaches is certainly higher (<a href="https://www.itgovernance.co.uk/blog/data-breaches-and-cyber-attacks-monthly-review" target="_blank" rel="noopener noreferrer">IT Governance</a>, 2025). Small and mid-size businesses accounted for 43% of targets, despite having fewer resources for defense.
       </p>
 
-      <h2>Regulation Is Catching Up (Statistics 16-20)</h2>
+      <h2>How Fast Is Privacy Regulation Catching Up? (Statistics 16-20)</h2>
 
       <p>
         For years, privacy regulation lagged behind the technology it was supposed to govern. That gap is closing. Europe set the standard with GDPR, and the rest of the world is following — sometimes with even stricter rules.
@@ -1862,7 +2256,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         The acceleration is dramatic. It took regulators two years to reach their first billion, then just 18 months to double it. The growth curve shows no sign of plateauing — enforcement capacity is still ramping up as more national data protection authorities hire staff and develop technical expertise (<a href="https://www.dlapiper.com/en-us/insights/publications/2025/01/dla-piper-gdpr-fines-and-data-breach-survey-2025" target="_blank" rel="noopener noreferrer">DLA Piper</a>, 2025).
       </p>
 
-      <h2>The Business Case for Privacy (Statistics 21-25)</h2>
+      <h2>What Is the Business Case for Privacy Investment? (Statistics 21-25)</h2>
 
       <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&h=630&fit=crop&q=80" alt="Wooden gavel on a desk representing legal compliance and the business case for privacy regulation" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
 
@@ -1900,7 +2294,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         Zero trust — the principle that no user or system is trusted by default — is becoming the standard security model. Organizations are moving beyond perimeter-based security toward continuous verification at every access point (<a href="https://www.gartner.com/en/newsroom/press-releases/2024-02-22-gartner-predicts-zero-trust" target="_blank" rel="noopener noreferrer">Gartner</a>, 2025). Meanwhile, 93% already encrypt data in transit, though encryption at rest and true end-to-end encryption lag behind.
       </p>
 
-      <h2>What These Numbers Mean for You</h2>
+      <h2>What Do These Privacy Statistics Mean for Your Business?</h2>
 
       <p>
         Twenty-five statistics, one conclusion: the gap between privacy leaders and privacy laggards is widening, and the cost of being on the wrong side keeps growing. Breaches are more expensive. Consumers are less forgiving. Regulators have bigger budgets and sharper teeth.
@@ -1956,8 +2350,16 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     title: 'Open Source Privacy Tools: The Complete List (2026)',
     description: '30 open source privacy tools across 10 categories. 96% of orgs increased OSS use in 2025. Every tool here has auditable code and no hidden data collection.',
     date: '2026-03-02',
+    dateModified: '2026-03-07',
     readTime: '15 min read',
     category: 'Privacy',
+    faqs: [
+      { question: 'What\'s the most important open source privacy tool to start with?', answer: 'Signal and Bitwarden. Messaging and passwords are the two highest-risk categories for most people. Signal has 70 million monthly users and handles all message types with end-to-end encryption (Backlinko, 2025). Bitwarden covers cross-device password management — and the free tier is enough for most individuals.' },
+      { question: 'Is open source software really more secure?', answer: '68% of organizations believe so (OpenLogic, 2025). Public code means vulnerabilities are found faster and there\'s no hidden data collection. However, 87% of commercial codebases contain at least one open source vulnerability (Black Duck, 2026), so keeping software updated matters just as much as using it.' },
+      { question: 'Are these tools hard to set up?', answer: 'Most work out of the box. Signal, Brave, Bitwarden, and Proton Mail install like any other app — under 5 minutes each. Self-hosted tools like Nextcloud, Plausible, and SearXNG need a server but all offer Docker deployments that take under 30 minutes.' },
+      { question: 'Can I use these tools on mobile?', answer: 'Yes. Signal, Proton Mail, Bitwarden, Brave, Mullvad, Cryptomator, and Tuta all have iOS and Android apps. GrapheneOS replaces your entire phone operating system (Pixel devices only). Tor Browser is available on Android. The only category that\'s desktop-only is operating systems like Tails and QubesOS.' },
+      { question: 'Do open source privacy tools work for businesses?', answer: 'Absolutely. Nextcloud serves government agencies across Europe. Bitwarden reports 99% of organizations strengthened security after deployment. Proton has over 50,000 business customers. Matomo has 100M+ Docker downloads. Enterprise support is available for most tools on this list.' },
+    ],
     content: `
       <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=1200&h=630&fit=crop&q=80" alt="Lines of code on a computer screen representing open source software development and transparency" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;" loading="lazy" />
 
@@ -2014,7 +2416,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
       </figure>
 
-      <h2>1. Encrypted Messaging</h2>
+      <h2>What Are the Best Open Source Encrypted Messaging Apps?</h2>
 
       <img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1200&h=630&fit=crop&q=80" alt="Digital padlock symbolizing encrypted messaging and private communication" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
 
@@ -2046,7 +2448,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
       <p><strong>License:</strong> GPL-3.0 &bull; <strong>Cost:</strong> Free &bull; <strong>Platforms:</strong> Android (desktop in beta)</p>
 
-      <h2>2. Private Email</h2>
+      <h2>What Are the Best Open Source Private Email Providers?</h2>
 
       <h3>Proton Mail — Best for Encrypted Email</h3>
 
@@ -2069,7 +2471,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
       <p><strong>License:</strong> MPL-2.0 &bull; <strong>Cost:</strong> Free &bull; <strong>Platforms:</strong> Windows, macOS, Linux</p>
 
-      <h2>3. Encrypted File Sharing</h2>
+      <h2>What Are the Best Open Source Encrypted File Sharing Tools?</h2>
 
       <p>
         82% of data breaches in 2024 involved cloud-stored data (<a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM</a>, 2025). How you share files matters. For a detailed breakdown of 7 services, see our <a href="https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing">Drop vs WeTransfer vs Google Drive comparison</a>.
@@ -2096,7 +2498,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
       <p><strong>License:</strong> GPL-3.0 &bull; <strong>Cost:</strong> Free &bull; <strong>Platforms:</strong> Windows, macOS, Linux</p>
 
-      <h2>4. Privacy-First Analytics</h2>
+      <h2>What Are the Best Open Source Privacy-First Analytics Tools?</h2>
 
       <p>
         Google Analytics collects 72+ data points per visitor. Privacy-first alternatives prove you can measure what matters without surveillance. For a detailed comparison, see our <a href="https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom">Pulse vs Google Analytics vs Plausible vs Fathom</a> breakdown.
@@ -2157,7 +2559,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
       </figure>
 
-      <h2>5. VPN &amp; Network Privacy</h2>
+      <h2>What Are the Best Open Source VPN and Network Privacy Tools?</h2>
 
       <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop&q=80" alt="Cybersecurity concept with digital circuit board and shield icon representing network privacy protection" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
 
@@ -2186,7 +2588,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
       <p><strong>License:</strong> GPL-2.0 &bull; <strong>Cost:</strong> Free &bull; <strong>Platforms:</strong> Linux kernel, all major OS</p>
 
-      <h2>6. Privacy Browsers</h2>
+      <h2>What Are the Best Open Source Privacy Browsers?</h2>
 
       <h3>Firefox — Best Independent Browser</h3>
 
@@ -2216,7 +2618,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
       <p><strong>License:</strong> MPL-2.0 &bull; <strong>Cost:</strong> Free &bull; <strong>Platforms:</strong> Windows, macOS, Linux</p>
 
-      <h2>7. Password Managers</h2>
+      <h2>What Are the Best Open Source Password Managers?</h2>
 
       <h3>Bitwarden — Best Overall Password Manager</h3>
 
@@ -2232,7 +2634,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
       <p><strong>License:</strong> GPL-2.0 &bull; <strong>Cost:</strong> Free &bull; <strong>Platforms:</strong> Windows, macOS, Linux</p>
 
-      <h2>8. Cloud Storage &amp; Encryption</h2>
+      <h2>What Are the Best Open Source Cloud Storage and Encryption Tools?</h2>
 
       <h3>Nextcloud — Best Self-Hosted Cloud Platform</h3>
 
@@ -2288,7 +2690,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
       </figure>
 
-      <h2>9. Private Operating Systems</h2>
+      <h2>What Are the Best Open Source Private Operating Systems?</h2>
 
       <img src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1200&h=630&fit=crop&q=80" alt="Person using a smartphone in low light representing mobile privacy and secure operating systems" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
 
@@ -2313,7 +2715,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
       <p><strong>License:</strong> GPL-2.0 &bull; <strong>Cost:</strong> Free &bull; <strong>Platforms:</strong> x86 desktops/laptops</p>
 
-      <h2>10. Private Search</h2>
+      <h2>What Are the Best Open Source Private Search Engines?</h2>
 
       <h3>SearXNG — Best Self-Hosted Search</h3>
 
@@ -2378,7 +2780,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         Absolutely. Nextcloud serves government agencies across Europe. Bitwarden reports 99% of organizations strengthened security after deployment (<a href="https://www.businesswire.com/news/home/20250730060878/en/Bitwarden-Report-Finds-99-of-Organizations-Strengthened-Security-Posture-After-Deploying-Password-Management" target="_blank" rel="noopener noreferrer">Bitwarden</a>, 2025). Proton has over 50,000 business customers. Matomo has 100M+ Docker downloads. Enterprise support is available for most tools on this list.
       </p>
 
-      <h2>Start With Three</h2>
+      <h2>Which Three Open Source Privacy Tools Should You Start With?</h2>
 
       <p>
         You don't need all 30 tools. Start with three: <a href="https://signal.org" target="_blank" rel="noopener noreferrer">Signal</a> for messaging, <a href="https://bitwarden.com" target="_blank" rel="noopener noreferrer">Bitwarden</a> for passwords, and <a href="https://brave.com" target="_blank" rel="noopener noreferrer">Brave</a> or <a href="https://www.mozilla.org/firefox" target="_blank" rel="noopener noreferrer">Firefox</a> for browsing. That covers the three areas where the most personal data leaks happen — and all three are free.
@@ -2394,7 +2796,15 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     description: 'Passkeys succeed 93% of the time vs 63% for passwords (FIDO Alliance, 2025). With 87% of enterprises deploying, 2026 marks the end of the password era.',
     category: 'Security',
     date: '2026-03-06',
+    dateModified: '2026-03-07',
     readTime: '12 min read',
+    faqs: [
+      { question: 'Can I use passkeys on all my devices?', answer: 'Most modern devices support passkeys natively — iPhone (iOS 16+), Android (9+), Windows (10+), and macOS (Ventura+). Passkeys sync within ecosystems via cloud keychains: iCloud Keychain for Apple, Google Password Manager for Android and Chrome. Cross-ecosystem use works through QR code-based authentication. Password managers like Bitwarden and 1Password also sync passkeys across platforms.' },
+      { question: 'What happens if I lose my phone?', answer: 'Your passkeys aren\'t lost if they\'re synced to your cloud account. Sign into iCloud or Google on a new device and your passkeys restore automatically. For maximum security, register a hardware security key (like a YubiKey) as a backup authentication method on critical accounts.' },
+      { question: 'Are passkeys safer than two-factor authentication?', answer: 'Yes. Traditional 2FA methods — SMS codes, authenticator apps, push notifications — are vulnerable to SIM swapping, real-time phishing proxies, and MFA fatigue attacks. Passkeys are cryptographically bound to the legitimate domain, making phishing structurally impossible — not just harder.' },
+      { question: 'Do passkeys work with password managers?', answer: 'Yes. 1Password, Bitwarden, and Dashlane all support storing and syncing passkeys alongside traditional credentials. A passkey stored in Bitwarden works on any device where Bitwarden is installed, regardless of operating system.' },
+      { question: 'Should my business adopt passkeys now?', answer: 'If you\'re building or maintaining user authentication, yes. The FIDO Alliance reports that 87% of large enterprises are already deploying passkeys, and 77% saw reduced help desk costs post-deployment. Start by offering passkeys as an option alongside passwords.' },
+    ],
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
         Passwords are dying — and the data proves it. <a href="https://www.microsoft.com/en-us/security/blog/2025/05/01/pushing-passkeys-forward-microsofts-latest-updates-for-simpler-safer-sign-ins/" target="_blank" rel="noopener noreferrer">Microsoft reported in May 2025</a> that passkey sign-ins succeed 98% of the time, compared to just 32% for traditional passwords. Meanwhile, the <a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank" rel="noopener noreferrer">Verizon 2025 DBIR</a> confirmed that stolen credentials remain the initial access vector in 22% of all confirmed breaches — making passwords the single largest attack surface in cybersecurity.
@@ -2489,6 +2899,57 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: FIDO Alliance, Verizon 2025 DBIR</figcaption>
       </figure>
+
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Attack Type</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Password</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">SMS 2FA</th>
+              <th style="padding: 0.75rem; text-align: center; color: #a3a3a3; font-weight: 600;">Hardware Key</th>
+              <th style="padding: 0.75rem; text-align: center; color: #FD5E0F; font-weight: 600;">Passkey</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Phishing</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Vulnerable</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b;">Partial</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Resistant</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 700;">Immune</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Credential Stuffing</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Vulnerable</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 700;">Immune</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">SIM Swap</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Vulnerable</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 700;">Immune</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Brute Force</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Vulnerable</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 700;">Immune</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">MFA Fatigue</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Vulnerable</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">N/A</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 700;">Immune</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p>
         Every credential-based attack — phishing, credential stuffing, brute force, replay attacks, SIM swapping — depends on a shared secret existing somewhere that can be intercepted or guessed (<a href="https://fidoalliance.org/passkey-index-2025/" target="_blank" rel="noopener noreferrer">FIDO Alliance</a>, 2025). Passkeys eliminate shared secrets entirely. That makes these attacks structurally impossible, not merely difficult.
@@ -2764,7 +3225,15 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     description: 'reCAPTCHA holds 85% market share but collects fingerprints, behavioral data, and cross-site cookies. With €7.1B in GDPR fines, here are 3 alternatives.',
     category: 'Privacy',
     date: '2026-03-09',
+    dateModified: '2026-03-09',
     readTime: '13 min read',
+    faqs: [
+      { question: 'Is reCAPTCHA GDPR compliant in 2026?', answer: 'Not by default. reCAPTCHA collects behavioral data, device fingerprints, and sets cross-site cookies — all of which require explicit user consent under GDPR and the ePrivacy Directive. After April 2, 2026, site operators become the sole data controller for this data. CNIL\'s EUR 25,000 fine against Cityscoot confirms that deploying reCAPTCHA without consent violates EU law.' },
+      { question: 'What happens if I keep using reCAPTCHA without a consent banner?', answer: 'You risk GDPR enforcement. Spain\'s DPA alone issued 932 fines through early 2026, with "insufficient legal basis" as the top violation. The Cityscoot precedent specifically targets reCAPTCHA consent failures. After the April 2 processor switch, you can\'t rely on Google\'s controllership as a shield.' },
+      { question: 'Is Cloudflare Turnstile really free?', answer: 'Yes — unlimited requests at every tier, including enterprise. Turnstile doesn\'t set cookies or collect personal data, so it doesn\'t require a consent banner. It runs on Cloudflare\'s edge network with negligible performance impact.' },
+      { question: 'Can I use reCAPTCHA behind a cookie consent banner to stay compliant?', answer: 'Technically yes, but it creates problems. If a visitor rejects cookies, your bot protection doesn\'t load — leaving that session completely unprotected. Research shows 50-66% of users now reject cookies when given a clear option. That means half your visitors get no bot protection at all.' },
+      { question: 'Which CAPTCHA alternative is best for e-commerce?', answer: 'Cloudflare Turnstile. E-commerce sites are especially sensitive to CAPTCHA friction — Baymard Institute found an 8% first-attempt failure rate for traditional CAPTCHAs, and Stanford research shows up to 40% conversion drops. Turnstile is invisible, free, fast, and doesn\'t require consent.' },
+    ],
     content: `
       <p>
         reCAPTCHA runs on <a href="https://www.wmtips.com/technologies/captchas/recaptcha/" target="_blank" rel="noopener noreferrer">85.4% of CAPTCHA-protected websites</a> globally. It's the default choice — the thing you install and forget about. But on April 2, 2026, something changes. Google is transitioning reCAPTCHA from a data controller role to a data processor, which means <em>you</em> — the site operator — become the sole data controller for everything reCAPTCHA collects on your visitors.
@@ -2875,6 +3344,85 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: GDPRregister.eu, Prosopo, Cloudflare Docs, hCaptcha Docs, Friendly Captcha Docs (2024-2025)</figcaption>
       </figure>
+
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Data Type</th>
+              <th style="padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 600;">reCAPTCHA v3</th>
+              <th style="padding: 0.75rem; text-align: center; color: #f59e0b; font-weight: 600;">hCaptcha</th>
+              <th style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 600;">Turnstile</th>
+              <th style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 600;">Friendly Captcha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">IP address</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #3b82f6;">Limited</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">Limited</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Persistent cookies</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Cross-site tracking</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Behavioral fingerprinting</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b;">Limited</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Device fingerprinting</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b;">Limited</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Browser screenshots</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Data sent to US servers</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Runs across entire site</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Collects</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+              <td style="padding: 0.75rem; text-align: center; color: #a3a3a3;">None</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Requires cookie consent</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444;">Yes</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b;">Limited</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">No</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e;">No</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p>
         Here's the uncomfortable comparison. reCAPTCHA v3 checks every box for invasive data collection. It sets persistent Google cookies, tracks behavior across sites, fingerprints devices, takes browser screenshots, ships everything to US servers, and runs in the background across your entire domain — not just on forms. Privacy-focused alternatives like Cloudflare Turnstile and Friendly Captcha collect almost nothing. The difference isn't marginal. It's structural.
@@ -3134,6 +3682,64 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Aggregated from Cloudflare Docs, hCaptcha Docs, Friendly Captcha Docs, OOPSpam performance data, Google reCAPTCHA Enterprise pricing (2025-2026)</figcaption>
       </figure>
 
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Metric</th>
+              <th style="padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 600;">reCAPTCHA</th>
+              <th style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 600;">Turnstile</th>
+              <th style="padding: 0.75rem; text-align: center; color: #f59e0b; font-weight: 600;">hCaptcha</th>
+              <th style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 600;">Friendly Captcha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">GDPR compliance</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 600;">2/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 600;">4/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b; font-weight: 600;">3/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 600;">5/5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Performance</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 600;">2/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 600;">5/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b; font-weight: 600;">3/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 600;">4/5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">User experience</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 600;">3/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 600;">5/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b; font-weight: 600;">2/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 600;">4/5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Cost (free tier)</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 600;">3/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 600;">5/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b; font-weight: 600;">4/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 600;">2/5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">Bot detection</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 600;">4/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 600;">4/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b; font-weight: 600;">4/5</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 600;">3/5</td>
+            </tr>
+            <tr style="border-bottom: 2px solid #404040;">
+              <td style="padding: 0.75rem; color: #d4d4d4; font-weight: 700;">Total</td>
+              <td style="padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 800;">14/25</td>
+              <td style="padding: 0.75rem; text-align: center; color: #3b82f6; font-weight: 800;">23/25</td>
+              <td style="padding: 0.75rem; text-align: center; color: #f59e0b; font-weight: 800;">16/25</td>
+              <td style="padding: 0.75rem; text-align: center; color: #22c55e; font-weight: 800;">18/25</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <p>
         Cloudflare Turnstile scores 23/25 across GDPR compliance, performance, user experience, cost, and bot detection — outperforming reCAPTCHA (14/25) in every category except raw bot detection, where they tie. For sites needing strict EU-only data hosting, Friendly Captcha (18/25) leads on compliance at a higher price point. hCaptcha (16/25) sits in between — better than reCAPTCHA on privacy but limited by US data hosting and visual challenges that hurt UX.
       </p>
@@ -3220,7 +3826,15 @@ const blogPosts: Record<string, { title: string; description: string; content: s
     description: 'Only 18% of EU employers feel ready for the AI Act. Fines reach EUR 35M or 7% of turnover. Here\'s what every business must do before the August 2026 deadline.',
     category: 'Privacy',
     date: '2026-03-07',
+    dateModified: '2026-03-07',
     readTime: '12 min read',
+    faqs: [
+      { question: 'Does the EU AI Act apply to companies outside Europe?', answer: 'Yes. The AI Act applies to any provider placing an AI system on the EU market and any deployer located within the EU. It also covers systems whose output is used within the EU, regardless of where the provider is based. Like GDPR, it has extraterritorial reach.' },
+      { question: 'What counts as a "high-risk" AI system?', answer: 'High-risk systems fall into eight categories defined in Annex III: biometrics, critical infrastructure, education, employment, essential service access, law enforcement, migration, and justice. The European Commission estimates only 5-15% of AI systems qualify (CEPS, 2024). Common examples include AI hiring tools, credit scoring, and automated insurance underwriting.' },
+      { question: 'What is the AI literacy obligation and is it already active?', answer: 'Yes — Article 4 has been enforceable since February 2, 2025. All providers and deployers must ensure staff has sufficient AI literacy — meaning formal understanding of how AI systems work, their limitations, and associated risks. The requirement applies regardless of your system\'s risk classification.' },
+      { question: 'How much does EU AI Act compliance cost?', answer: 'Bringing a single high-risk AI product into compliance can cost up to EUR 400,000 for SMEs starting from scratch — including quality management setup (EUR 193,000-330,000) and annual maintenance (EUR 71,400), according to CEPS. That\'s roughly 17% overhead on AI spending.' },
+      { question: 'How do AI Act fines compare to GDPR fines?', answer: 'AI Act penalties are steeper. The maximum fine for prohibited practices is EUR 35 million or 7% of global turnover — nearly double GDPR\'s EUR 20 million or 4% ceiling. Cumulative GDPR fines have reached EUR 7.1 billion since 2018 (DLA Piper, 2026).' },
+    ],
     content: `
       <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
         The EU AI Act isn't approaching. It's here. Since February 2, 2025, certain AI practices are outright banned across the European Union. The next wave hits August 2, 2026 — five months from now — when mandatory compliance kicks in for high-risk AI systems. Yet only 18% of European employers feel "very prepared," while 20% report being "not at all prepared" (<a href="https://www.littler.com/press/press-release/european-employers-face-renewed-uncertainty-amid-looming-compliance-deadlines" target="_blank" rel="noopener noreferrer">Littler</a>, 2025).
@@ -3269,6 +3883,40 @@ const blogPosts: Record<string, { title: string; description: string; content: s
         </svg>
         <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: EU AI Act Article 99; DLA Piper, 2026</figcaption>
       </figure>
+
+      <div style="overflow-x: auto; margin: 0 0 2rem 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Regulation / Tier</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">Maximum Fine</th>
+              <th style="padding: 0.75rem; text-align: left; color: #a3a3a3; font-weight: 600;">% of Global Turnover</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">AI Act — Prohibited practices</td>
+              <td style="padding: 0.75rem; color: #ef4444; font-weight: 600;">EUR 35 million</td>
+              <td style="padding: 0.75rem; color: #ef4444; font-weight: 600;">7%</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">GDPR — Maximum</td>
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 600;">EUR 20 million</td>
+              <td style="padding: 0.75rem; color: #FD5E0F; font-weight: 600;">4%</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">AI Act — Other violations</td>
+              <td style="padding: 0.75rem; color: #f59e0b; font-weight: 600;">EUR 15 million</td>
+              <td style="padding: 0.75rem; color: #f59e0b; font-weight: 600;">3%</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #262626;">
+              <td style="padding: 0.75rem; color: #d4d4d4;">AI Act — Information supply</td>
+              <td style="padding: 0.75rem; color: #22c55e; font-weight: 600;">EUR 7.5 million</td>
+              <td style="padding: 0.75rem; color: #22c55e; font-weight: 600;">1%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p>
         Why does this matter for businesses that aren't building AI? Because the Act covers deployers too — companies that use AI systems, not just those developing them. If you run an AI-powered hiring tool, a chatbot that makes automated decisions, or a credit scoring system, you're a deployer. And deployers carry their own compliance obligations.
@@ -3586,7 +4234,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     description: post.description,
     image: 'https://ciphera.net/ciphera_logo_no_margins.png',
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.dateModified,
     wordCount: post.content.split(/\s+/).length,
     articleSection: post.category,
     author: {
@@ -3627,7 +4275,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema, ...(post.faqs.length > 0 ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: post.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) }] : [])]) }} />
       {/* * Hero */}
       <section className="section-padding pt-32">
         <div className="section-container max-w-4xl">
