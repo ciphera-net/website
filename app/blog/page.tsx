@@ -133,6 +133,14 @@ const blogPosts = [
     date: '2026-03-10',
     readTime: '11 min read',
   },
+  {
+    slug: 'data-privacy-audit-guide-startups',
+    title: 'How to Run a Data Privacy Audit for Your Startup (2026 Step-by-Step Guide)',
+    description: 'GDPR fines hit EUR 7.1B cumulatively and breaches cost $4.44M on average (IBM, 2025). Here\'s a 6-step data privacy audit you can run without a legal team.',
+    category: 'Privacy',
+    date: '2026-03-12',
+    readTime: '12 min read',
+  },
 ]
 
 export default function BlogPage() {

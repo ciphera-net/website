@@ -25,6 +25,8 @@ const publishedBlogPosts: { slug: string; lastModified: string }[] = [
   { slug: 'passkeys-vs-passwords-2026', lastModified: '2026-03-06' },
   { slug: 'recaptcha-privacy-liability-alternatives-2026', lastModified: '2026-03-09' },
   { slug: 'eu-ai-act-compliance-guide-2026', lastModified: '2026-03-07' },
+  { slug: 'zero-knowledge-encryption-guide', lastModified: '2026-03-10' },
+  { slug: 'data-privacy-audit-guide-startups', lastModified: '2026-03-12' },
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -83,7 +85,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Blog index (include even if posts are drafts -- the index page itself is valid)
     {
       url: `${baseUrl}/blog`,
-      lastModified: '2026-03-07',
+      lastModified: '2026-03-12',
     },
   ]
 
