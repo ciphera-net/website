@@ -4183,6 +4183,306 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
     `,
   },
+  'zero-knowledge-encryption-guide': {
+    title: 'Zero-Knowledge Encryption Guide (2026)',
+    description: '47% of sensitive cloud data is still unencrypted (Thales, 2026). Zero-knowledge encryption means the provider can never read your data. Here\'s how it works.',
+    category: 'Security',
+    date: '2026-03-10',
+    dateModified: '2026-03-10',
+    readTime: '11 min read',
+    faqs: [
+      { question: 'Is zero-knowledge encryption the same as end-to-end encryption?', answer: 'Often, but not always. End-to-end encryption means data is encrypted from sender to recipient with no intermediary access. However, some E2EE implementations derive keys server-side, giving the provider a theoretical access path. Zero-knowledge encryption is the stronger guarantee: the provider has zero access to keys or plaintext by architecture. All ZKE is E2EE, but not all E2EE is ZKE.' },
+      { question: 'Can zero-knowledge encryption be broken?', answer: 'AES-256-GCM, the cipher used in ZKE implementations, is considered computationally unbreakable with current and foreseeable technology. The practical risks are endpoint compromise (malware on your device), weak passwords, or implementation bugs — not attacks on the cipher itself. Even early quantum computers at current qubit counts can\'t crack AES-256.' },
+      { question: 'Does zero-knowledge encryption comply with GDPR?', answer: 'ZKE supports GDPR compliance but doesn\'t automatically satisfy it. If you can\'t access personal data because it\'s client-side encrypted and you don\'t hold keys, you have minimal processing liability. However, you still need lawful basis for storing ciphertext and must provide erasure mechanisms. ZKE makes GDPR Article 32 (security of processing) straightforward to satisfy.' },
+      { question: 'What is the difference between zero-knowledge encryption and zero-knowledge proofs?', answer: 'They\'re unrelated despite the shared name. Zero-knowledge proofs (ZKPs) are a cryptographic protocol where one party proves knowledge of something without revealing it — used in blockchain and authentication. Zero-knowledge encryption refers to a service architecture where the provider has zero access to plaintext data. Different concepts, coincidental naming.' },
+      { question: 'How does Ciphera Drop protect files differently from Dropbox?', answer: 'Dropbox uses server-side AES-256, meaning Dropbox holds the encryption keys and can decrypt your files for features like search indexing and thumbnail generation. Ciphera Drop encrypts files in your browser with AES-256-GCM before upload. The key stays in the URL fragment — which the server never receives — or is derived from a password that never leaves your browser. Ciphera cannot decrypt your files even under a court order.' },
+    ],
+    content: `
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        Nearly half of all sensitive cloud data — 47% — sits unencrypted right now, even as AI systems gain broader access to corporate environments (<a href="https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/" target="_blank" rel="noopener noreferrer">Thales 2026 Data Threat Report</a>, n=3,120 organizations). The zero-knowledge encryption market is growing from $1.28 billion to a projected $7.59 billion by 2033 (<a href="https://www.grandviewresearch.com/industry-analysis/zero-knowledge-proof-market-report" target="_blank" rel="noopener noreferrer">Grand View Research</a>, 2025). That's a 22.1% compound annual growth rate — the industry is voting with its wallet.
+      </p>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        But what is zero-knowledge encryption, actually? Not the marketing version. Not the Wikipedia abstract. This guide explains ZKE in plain English: what it means, how it works inside real products, what it can't protect against, and how to spot vendors faking it. No math degree required.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop&q=80" alt="A modern data center corridor with illuminated server racks representing cloud data storage and encryption infrastructure" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;" loading="lazy" />
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>TL;DR:</strong> Zero-knowledge encryption means the service storing your data can't read it — not by policy, but by architecture. Data is encrypted on your device before upload. The server only ever sees ciphertext. 47% of sensitive cloud data remains unencrypted globally (<a href="https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/" target="_blank" rel="noopener noreferrer">Thales</a>, 2026). ZKE closes that gap completely.
+      </blockquote>
+
+      <h2>What Does "Zero-Knowledge" Actually Mean?</h2>
+
+      <p>
+        The <a href="https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/" target="_blank" rel="noopener noreferrer">Thales 2026 Data Threat Report</a> found that only 34% of organizations know where all their data resides — and even fewer encrypt the sensitive parts. Zero-knowledge encryption solves a specific problem: it ensures the company storing your data has zero knowledge of its contents. Not "they promise not to look." Mathematically, they can't.
+      </p>
+      <p>
+        Think of it like a safety deposit box. A traditional cloud service is a bank vault — you hand your valuables to the bank, they lock it up, and they hold a copy of the key. They promise security, but they can open your box anytime. Zero-knowledge encryption is different: you bring your own padlock, you keep the only key, and the bank stores a sealed box they can't open.
+      </p>
+      <p>
+        Formally: ZKE means all encryption and decryption happens on your device. Your encryption keys never leave your device. The server receives, stores, and transmits ciphertext — encrypted data it can't read.
+      </p>
+      <p>
+        One common confusion worth clearing up. Zero-knowledge encryption is not the same as zero-knowledge proofs. They share a name but differ fundamentally. Zero-knowledge proofs (ZKPs) are a mathematical protocol where one party proves they know something without revealing the information itself — used in blockchain and authentication systems (<a href="https://csrc.nist.gov/projects/pec/zkproof" target="_blank" rel="noopener noreferrer">NIST</a>). Zero-knowledge encryption describes a service architecture where the provider has no access to your plaintext data. Related concepts, different applications.
+      </p>
+
+      <h2>Why Should a Non-Technical Founder Care?</h2>
+
+      <p>
+        The average data breach costs $4.44 million globally and $10.22 million in the United States (<a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM Cost of a Data Breach Report</a>, 2025). If your cloud provider holds your encryption keys, a breach of their systems exposes your data — regardless of whether "encryption" appears on their features page. Server-side encryption protects against physical disk theft. It doesn't protect against the vendor itself, government subpoenas, insider threats, or breaches of the key management infrastructure.
+      </p>
+      <p>
+        The Dropbox Sign breach of April 2024 demonstrated this precisely. Dropbox uses server-side AES-256 encryption — but because Dropbox holds the keys, the breach exposed API keys, OAuth tokens, and user data. The encryption existed, but the company holding the keys got compromised. With zero-knowledge encryption, the same breach yields nothing but unreadable ciphertext. For a detailed breakdown of recent incidents, see our analysis of the <a href="https://ciphera.net/blog/biggest-data-breaches-2025-2026">biggest data breaches of 2025-2026</a>.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" aria-label="Horizontal bar chart comparing data exposure across four encryption approaches: no encryption, server-side AES, server plus HSM, and client-side ZKE">
+          <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">Who Can Read Your Files?</text>
+          <text x="280" y="50" text-anchor="middle" font-size="11" fill="#a3a3a3">Data exposure across four encryption approaches</text>
+
+          <text x="150" y="100" text-anchor="end" font-size="12" font-weight="600" fill="currentColor">No Encryption</text>
+          <text x="150" y="155" text-anchor="end" font-size="12" font-weight="600" fill="currentColor">Server-Side AES</text>
+          <text x="150" y="210" text-anchor="end" font-size="12" font-weight="600" fill="currentColor">Server + HSM</text>
+          <text x="150" y="265" text-anchor="end" font-size="12" font-weight="600" fill="#FD5E0F">Client-Side ZKE</text>
+
+          <rect x="165" y="83" width="370" height="28" rx="4" fill="currentColor" opacity="0.06"/>
+          <rect x="165" y="138" width="370" height="28" rx="4" fill="currentColor" opacity="0.06"/>
+          <rect x="165" y="193" width="370" height="28" rx="4" fill="currentColor" opacity="0.06"/>
+          <rect x="165" y="248" width="370" height="28" rx="4" fill="currentColor" opacity="0.06"/>
+
+          <rect x="165" y="83" width="370" height="28" rx="4" fill="#ef4444" opacity="0.7"/>
+          <text x="350" y="102" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">Everyone: hackers, vendor, governments</text>
+
+          <rect x="165" y="138" width="260" height="28" rx="4" fill="#f97316" opacity="0.6"/>
+          <text x="295" y="157" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">Vendor, subpoenas, insider threats</text>
+
+          <rect x="165" y="193" width="130" height="28" rx="4" fill="#eab308" opacity="0.5"/>
+          <text x="230" y="212" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">Subpoenas only</text>
+
+          <rect x="165" y="248" width="6" height="28" rx="3" fill="#22c55e" opacity="0.8"/>
+          <text x="190" y="267" font-size="11" font-weight="600" fill="#22c55e">No one</text>
+
+          <text x="280" y="310" text-anchor="middle" font-size="9" fill="#a3a3a3">Source: Ciphera analysis based on Thales 2026 Data Threat Report, IBM 2025</text>
+        </svg>
+        <figcaption style="font-size: 0.8rem; color: #a3a3a3; margin-top: 0.5rem;">Source: Ciphera analysis based on Thales 2026 and IBM 2025</figcaption>
+      </figure>
+
+      <p>
+        67% of organizations that experienced cloud attacks in 2025 identified credential theft as the primary attack vector (<a href="https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/" target="_blank" rel="noopener noreferrer">Thales</a>, 2026). Stolen credentials give attackers access to everything the vendor's encryption was supposed to protect. ZKE makes credential theft irrelevant to your data — even with full server access, there are no keys to find.
+      </p>
+
+      <h2>How Does ZKE Work in Plain English?</h2>
+
+      <p>
+        According to the <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment" target="_blank" rel="noopener noreferrer">MDN Web Docs</a> specification, the fragment portion of a URL — everything after the <code>#</code> symbol — is never transmitted to the server. This single browser behavior is what makes zero-knowledge file sharing possible. Here's the full process, step by step:
+      </p>
+      <ol>
+        <li><strong>You select a file.</strong> Your browser generates a random 256-bit encryption key using the Web Crypto API.</li>
+        <li><strong>Your browser encrypts the file.</strong> Using AES-256-GCM — a NIST-approved cipher (<a href="https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-38d.pdf" target="_blank" rel="noopener noreferrer">SP 800-38D</a>) that would take longer than the age of the universe to brute-force — your browser turns the file into ciphertext.</li>
+        <li><strong>Only the ciphertext uploads.</strong> The encrypted file goes to the server. The encryption key stays in your browser.</li>
+        <li><strong>The server stores what it can't read.</strong> The server holds a blob of encrypted data. No key. No plaintext. No way in.</li>
+        <li><strong>You share a link with the key embedded.</strong> The decryption key sits after the <code>#</code> in the URL. Since browsers never send the fragment to servers, the key travels directly from your link to the recipient's browser — never touching any server.</li>
+        <li><strong>The recipient's browser decrypts.</strong> Their browser reads the key from the URL fragment and decrypts the file locally. Done.</li>
+      </ol>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" aria-label="Flow diagram showing the five steps of zero-knowledge file sharing: browser encrypts, uploads ciphertext, server stores, recipient downloads, browser decrypts">
+          <defs>
+            <marker id="arrowZKE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#a3a3a3"/>
+            </marker>
+          </defs>
+          <text x="280" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">How Zero-Knowledge File Sharing Works</text>
+
+          <!-- Box 1: Your Browser -->
+          <rect x="15" y="55" width="80" height="50" rx="8" fill="#FD5E0F" opacity="0.15" stroke="#FD5E0F" stroke-width="1.5"/>
+          <text x="55" y="77" text-anchor="middle" font-size="10" font-weight="600" fill="#FD5E0F">Your</text>
+          <text x="55" y="92" text-anchor="middle" font-size="10" font-weight="600" fill="#FD5E0F">Browser</text>
+
+          <!-- Arrow 1: encrypt -->
+          <text x="113" y="68" text-anchor="middle" font-size="9" font-weight="500" fill="#a3a3a3">encrypt</text>
+          <line x1="100" y1="80" x2="125" y2="80" stroke="#a3a3a3" stroke-width="1.5" marker-end="url(#arrowZKE)"/>
+
+          <!-- Box 2: AES-256-GCM -->
+          <rect x="130" y="55" width="80" height="50" rx="8" fill="#FD5E0F" opacity="0.15" stroke="#FD5E0F" stroke-width="1.5"/>
+          <text x="170" y="77" text-anchor="middle" font-size="10" font-weight="600" fill="#FD5E0F">AES-256</text>
+          <text x="170" y="92" text-anchor="middle" font-size="10" font-weight="600" fill="#FD5E0F">GCM</text>
+
+          <!-- Arrow 2: upload -->
+          <text x="228" y="68" text-anchor="middle" font-size="9" font-weight="500" fill="#a3a3a3">upload</text>
+          <line x1="215" y1="80" x2="240" y2="80" stroke="#a3a3a3" stroke-width="1.5" marker-end="url(#arrowZKE)"/>
+
+          <!-- Box 3: Server -->
+          <rect x="245" y="55" width="80" height="50" rx="8" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="1" stroke-opacity="0.2"/>
+          <text x="285" y="77" text-anchor="middle" font-size="10" font-weight="600" fill="currentColor">Server</text>
+          <text x="285" y="92" text-anchor="middle" font-size="9" fill="#a3a3a3">(ciphertext)</text>
+
+          <!-- Arrow 3: download -->
+          <text x="343" y="68" text-anchor="middle" font-size="9" font-weight="500" fill="#a3a3a3">download</text>
+          <line x1="330" y1="80" x2="355" y2="80" stroke="#a3a3a3" stroke-width="1.5" marker-end="url(#arrowZKE)"/>
+
+          <!-- Box 4: Recipient Browser -->
+          <rect x="360" y="55" width="80" height="50" rx="8" fill="#FD5E0F" opacity="0.15" stroke="#FD5E0F" stroke-width="1.5"/>
+          <text x="400" y="77" text-anchor="middle" font-size="10" font-weight="600" fill="#FD5E0F">Recipient</text>
+          <text x="400" y="92" text-anchor="middle" font-size="10" font-weight="600" fill="#FD5E0F">Browser</text>
+
+          <!-- Arrow 4: decrypt -->
+          <text x="458" y="68" text-anchor="middle" font-size="9" font-weight="500" fill="#a3a3a3">decrypt</text>
+          <line x1="445" y1="80" x2="470" y2="80" stroke="#a3a3a3" stroke-width="1.5" marker-end="url(#arrowZKE)"/>
+
+          <!-- Box 5: File -->
+          <rect x="475" y="55" width="70" height="50" rx="8" fill="#22c55e" opacity="0.15" stroke="#22c55e" stroke-width="1.5"/>
+          <text x="510" y="85" text-anchor="middle" font-size="10" font-weight="600" fill="#22c55e">File</text>
+
+          <!-- Key path annotation -->
+          <path d="M 55 110 C 55 158, 400 158, 400 110" fill="none" stroke="#FD5E0F" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <text x="228" y="175" text-anchor="middle" font-size="10" font-weight="500" fill="#FD5E0F">Key travels via URL fragment (never touches server)</text>
+
+          <text x="280" y="205" text-anchor="middle" font-size="9" fill="#a3a3a3">Source: Ciphera Drop architecture</text>
+        </svg>
+      </figure>
+
+      <p>
+        If you set a password on the shared link, the process adds one step: your browser derives the encryption key from your password using PBKDF2 — a key derivation function that runs thousands of hash iterations to turn your password into a strong key. The password itself never leaves your browser. The recipient enters the same password, their browser runs the same derivation, and they get the same key to decrypt.
+      </p>
+
+      <h2>What ZKE Cannot Protect Against</h2>
+
+      <p>
+        No encryption system protects against everything. ZKE has real boundaries, and understanding them matters more than the marketing copy. Here's what it won't save you from:
+      </p>
+      <p>
+        <strong>Endpoint compromise.</strong> If malware is running on your device before encryption happens, the attacker sees your plaintext file before it gets encrypted. ZKE protects data in transit and at rest — not data at the moment you're looking at it on a compromised machine.
+      </p>
+      <p>
+        <strong>User error.</strong> If you share a ZKE link with someone who forwards it to the wrong person, the encryption is irrelevant. The key is in the link. Sharing the link is sharing access.
+      </p>
+      <p>
+        <strong>Metadata leakage.</strong> ZKE encrypts file contents, not metadata. The server still knows file sizes, upload timestamps, and who shared with whom. Some services minimize this metadata; others don't.
+      </p>
+      <p>
+        <strong>Weak passwords.</strong> When you use password-based key derivation (PBKDF2, Argon2id), the encryption key is only as strong as your password. A four-character password produces a guessable key. PBKDF2's intentionally slow iterations help — but a weak password is still a weak password.
+      </p>
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>Our take:</strong> We include these limitations because honesty builds trust. ZKE is one layer in a security strategy — not a silver bullet. For the full picture of what privacy engineering looks like, read <a href="https://ciphera.net/blog/why-privacy-cant-be-an-afterthought">why privacy can't be an afterthought</a>.
+      </blockquote>
+
+      <h2>How Do You Tell If a Product Is Actually Zero-Knowledge?</h2>
+
+      <p>
+        45% of organizations reported experiencing a data breach in 2025, and only 39% can fully classify their data (<a href="https://cpl.thalesgroup.com/about-us/newsroom/2025-thales-data-threat-report-reveals-nearly-70-percent-of-organizations-identify-ais-fast-moving-ecosystem-as-top-genai-related-security-risk" target="_blank" rel="noopener noreferrer">Thales 2025 Data Threat Report</a>). Many tools claim "encryption" without specifying who holds the keys. Here are four questions that expose the difference in five minutes:
+      </p>
+      <ol>
+        <li><strong>Can they reset your password without you providing the old one?</strong> True ZKE derives encryption keys from your password. If the vendor can reset it independently, they hold a separate key — which means they can access your data.</li>
+        <li><strong>Does "forgot password" recovery work without a user-generated recovery key?</strong> In ZKE, losing your password means losing access. If recovery works without a recovery key you set up yourself, the vendor has a backdoor.</li>
+        <li><strong>Can customer support access your files for troubleshooting?</strong> If support can see your files, they're not zero-knowledge. Real ZKE means the vendor literally can't help you recover data — because they can't see it.</li>
+        <li><strong>Are the client applications closed-source?</strong> You can't verify that encryption happens client-side if you can't inspect the code. Open-source clients let anyone audit the encryption implementation.</li>
+      </ol>
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>How we built Drop:</strong> We designed <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">Ciphera Drop</a> so that even Ciphera staff cannot access your files. There's no admin panel for file contents, no support override, no key escrow. If you lose your link and password, the file is permanently inaccessible to everyone — including us. That's not a bug. That's the guarantee. Drop is open source — you can <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer">verify every claim in the code</a>.
+      </blockquote>
+
+      <h2>Why Is ZKE Becoming the Standard?</h2>
+
+      <p>
+        The zero-knowledge encryption market grew from $1.28 billion in 2024 to a projected $7.59 billion by 2033 — a 22.1% compound annual growth rate (<a href="https://www.grandviewresearch.com/industry-analysis/zero-knowledge-proof-market-report" target="_blank" rel="noopener noreferrer">Grand View Research</a>, 2025). Three forces are driving this shift: regulation, breach liability, and post-quantum readiness.
+      </p>
+      <p>
+        On regulation: GDPR, the Swiss FADP, and emerging U.S. state privacy laws (20 states now have comprehensive privacy laws, up from 6 in 2023, according to <a href="https://iapp.org/resources/article/key-trends-developments-and-practices-for-2026" target="_blank" rel="noopener noreferrer">IAPP</a>) all create liability for providers that can be compelled to hand over plaintext data. ZKE makes legal compulsion irrelevant — there's nothing plaintext to hand over.
+      </p>
+      <p>
+        On breach liability: when your cloud provider suffers a breach and they held the encryption keys, your data is exposed and you share liability. With ZKE, the same breach yields only ciphertext. Your exposure drops to near zero.
+      </p>
+      <p>
+        On post-quantum: 60% of organizations are already evaluating post-quantum cryptography solutions, with 63% citing future encryption compromise as their top quantum risk (<a href="https://cpl.thalesgroup.com/about-us/newsroom/2025-thales-data-threat-report-reveals-nearly-70-percent-of-organizations-identify-ais-fast-moving-ecosystem-as-top-genai-related-security-risk" target="_blank" rel="noopener noreferrer">Thales</a>, 2025). ZKE's client-side architecture makes algorithm upgrades possible without re-engineering the entire system — the encryption happens in the client, so upgrading the cipher is a client update, not a server migration.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" aria-label="Bar chart showing zero-knowledge encryption market growth from 1.28 billion dollars in 2024 to 7.59 billion dollars projected in 2033">
+          <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">Zero-Knowledge Encryption Market Growth</text>
+          <text x="280" y="50" text-anchor="middle" font-size="11" fill="#a3a3a3">Global market size, 2024-2033 (USD billions)</text>
+
+          <text x="48" y="82" text-anchor="end" font-size="10" fill="#a3a3a3">$8B</text>
+          <text x="48" y="132" text-anchor="end" font-size="10" fill="#a3a3a3">$6B</text>
+          <text x="48" y="182" text-anchor="end" font-size="10" fill="#a3a3a3">$4B</text>
+          <text x="48" y="232" text-anchor="end" font-size="10" fill="#a3a3a3">$2B</text>
+          <text x="48" y="282" text-anchor="end" font-size="10" fill="#a3a3a3">$0</text>
+
+          <line x1="55" y1="78" x2="540" y2="78" stroke="currentColor" stroke-opacity="0.08"/>
+          <line x1="55" y1="128" x2="540" y2="128" stroke="currentColor" stroke-opacity="0.08"/>
+          <line x1="55" y1="178" x2="540" y2="178" stroke="currentColor" stroke-opacity="0.08"/>
+          <line x1="55" y1="228" x2="540" y2="228" stroke="currentColor" stroke-opacity="0.08"/>
+          <line x1="55" y1="278" x2="540" y2="278" stroke="currentColor" stroke-opacity="0.08"/>
+
+          <rect x="85" y="246" width="60" height="32" rx="4" fill="#FD5E0F" opacity="0.5"/>
+          <text x="115" y="240" text-anchor="middle" font-size="11" font-weight="600" fill="#FD5E0F">$1.28B</text>
+          <text x="115" y="298" text-anchor="middle" font-size="10" fill="#a3a3a3">2024</text>
+
+          <rect x="175" y="239" width="60" height="39" rx="4" fill="#FD5E0F" opacity="0.55"/>
+          <text x="205" y="233" text-anchor="middle" font-size="11" font-weight="600" fill="#FD5E0F">$1.56B</text>
+          <text x="205" y="298" text-anchor="middle" font-size="10" fill="#a3a3a3">2025</text>
+
+          <rect x="265" y="220" width="60" height="58" rx="4" fill="#FD5E0F" opacity="0.65"/>
+          <text x="295" y="214" text-anchor="middle" font-size="11" font-weight="600" fill="#FD5E0F">$2.33B</text>
+          <text x="295" y="298" text-anchor="middle" font-size="10" fill="#a3a3a3">2027</text>
+
+          <rect x="355" y="170" width="60" height="108" rx="4" fill="#FD5E0F" opacity="0.75"/>
+          <text x="385" y="164" text-anchor="middle" font-size="11" font-weight="600" fill="#FD5E0F">$4.32B</text>
+          <text x="385" y="298" text-anchor="middle" font-size="10" fill="#a3a3a3">2030</text>
+
+          <rect x="445" y="88" width="60" height="190" rx="4" fill="#FD5E0F" opacity="0.9"/>
+          <text x="475" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="#FD5E0F">$7.59B</text>
+          <text x="475" y="298" text-anchor="middle" font-size="10" fill="#a3a3a3">2033</text>
+
+          <text x="280" y="316" text-anchor="middle" font-size="9" fill="#a3a3a3">Source: Grand View Research, 2025 | CAGR: 22.1%</text>
+        </svg>
+        <figcaption style="font-size: 0.8rem; color: #a3a3a3; margin-top: 0.5rem;">Source: Grand View Research, 2025</figcaption>
+      </figure>
+
+      <p>
+        The <a href="https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy">Swiss FADP and neutrality</a> add another layer. US-hosted services can be compelled under the CLOUD Act to hand over data stored anywhere globally. Swiss-hosted ZKE services are outside that jurisdiction entirely — and even if they were compelled, there's no plaintext to hand over.
+      </p>
+
+      <h2>ZKE in Practice: Drop, Auth, and Your Business</h2>
+
+      <p>
+        Organizations that use AI and security automation save an average of $1.9 million per breach and reduce the breach lifecycle by 80 days (<a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM</a>, 2025). Choosing tools with built-in ZKE is one of the fastest ways to reduce your attack surface without adding operational overhead. Here's how Ciphera implements it:
+      </p>
+
+      <h3>Drop: Zero-Knowledge File Sharing</h3>
+      <p>
+        <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">Ciphera Drop</a> encrypts files in your browser with AES-256-GCM before upload. The decryption key is embedded in the URL fragment — which <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment" target="_blank" rel="noopener noreferrer">the browser specification</a> guarantees never reaches the server. For password-protected links, the key is derived from your password via PBKDF2 — again, entirely in your browser. The server stores only ciphertext. Drop is <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer">fully open source</a>. For a detailed comparison with other services, see our <a href="https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing">encrypted file sharing comparison</a>.
+      </p>
+
+      <h3>Auth: Double-Hashed Passwords</h3>
+      <p>
+        <a href="https://auth.ciphera.net" target="_blank" rel="noopener noreferrer">Ciphera Auth</a> never sees your plaintext password. Your browser hashes it with PBKDF2 before transmission. The server then hashes it again with Argon2id — the current gold standard for password hashing. Even a full database breach exposes only Argon2id hashes of PBKDF2-derived values. An attacker would need to crack both layers to recover the original password. That's why <a href="https://ciphera.net/blog/passkeys-vs-passwords-2026">passkeys and strong hashing are complementary</a> — not competing approaches.
+      </p>
+
+      <h3>Pulse: Data Minimization Instead of Encryption</h3>
+      <p>
+        <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Ciphera Pulse</a> takes a different approach: instead of encrypting sensitive analytics data, it doesn't collect any. No cookies, no personal data, no IP addresses stored. You can't breach what doesn't exist. In our <a href="https://ciphera.net/blog/open-source-privacy-tools-2026">open source privacy tools list</a>, data minimization and ZKE are two sides of the same coin.
+      </p>
+
+      <h2>The Bottom Line</h2>
+
+      <p>
+        Zero-knowledge encryption isn't a feature checkbox — it's an architecture decision that determines whether your provider can read your data. Here's what to remember:
+      </p>
+      <ul>
+        <li><strong>47% of sensitive cloud data is unencrypted</strong> — and server-side encryption doesn't close the gap if the vendor holds the keys</li>
+        <li><strong>ZKE means encryption happens on your device</strong> — the server never sees your plaintext data or your keys</li>
+        <li><strong>The password reset test is the fastest way to verify claims</strong> — if a vendor can reset your password without you, they're not zero-knowledge</li>
+        <li><strong>ZKE has real limits</strong> — it doesn't protect against malware on your device, user error, or weak passwords</li>
+        <li><strong>The ZKE market is growing at 22.1% annually</strong> — regulation, breach liability, and post-quantum threats are driving adoption</li>
+      </ul>
+      <p>
+        For more on building a complete privacy strategy, read <a href="https://ciphera.net/blog/why-privacy-cant-be-an-afterthought">why privacy can't be an afterthought</a>. If you're evaluating file-sharing tools, our <a href="https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing">Drop vs. WeTransfer comparison</a> covers seven services in detail.
+      </p>
+    `,
+  },
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

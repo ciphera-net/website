@@ -125,6 +125,14 @@ const blogPosts = [
     date: '2026-03-07',
     readTime: '12 min read',
   },
+  {
+    slug: 'zero-knowledge-encryption-guide',
+    title: 'Zero-Knowledge Encryption: A Plain-English Guide for Non-Technical Founders (2026)',
+    description: '47% of sensitive cloud data is still unencrypted (Thales, 2026). Zero-knowledge encryption means the provider can never read your data. Here\'s how it works.',
+    category: 'Security',
+    date: '2026-03-10',
+    readTime: '11 min read',
+  },
 ]
 
 export default function BlogPage() {
