@@ -165,7 +165,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/30 to-neutral-600/30 dark:to-neutral-400/30 rounded-full blur-3xl" />
                 <div className="relative w-full h-full rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                   <Image
-                    src="/ciphera_icon_no_margins.png"
+                    src="/ciphera_icon.png"
                     alt="Ciphera - Privacy-first infrastructure logo"
                     width={120}
                     height={120}

@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   creator: 'Ciphera',
   publisher: 'Ciphera',
   icons: {
-    icon: '/ciphera_icon_no_margins.png',
-    shortcut: '/ciphera_icon_no_margins.png',
-    apple: '/ciphera_icon_no_margins.png',
+    icon: '/ciphera_icon.png',
+    shortcut: '/ciphera_icon.png',
+    apple: '/ciphera_icon.png',
   },
   // * Privacy-first: No tracking
   robots: {

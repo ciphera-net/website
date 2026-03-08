@@ -40,7 +40,7 @@ export default function Footer() {
           <div className="col-span-1 sm:col-span-2 md:col-span-4 lg:col-span-1 lg:pr-8">
             <Link href="/" className="flex items-center gap-3 mb-4 group focus:outline-none focus:ring-2 focus:ring-brand-orange focus:rounded">
               <Image
-                src="/ciphera_icon_no_margins.png"
+                src="/ciphera_icon.png"
                 alt="Ciphera privacy-first platform logo"
                 width={36}
                 height={36}
