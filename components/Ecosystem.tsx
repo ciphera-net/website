@@ -5,7 +5,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, UserIcon, LockIcon } from '@ciphera-net/ui'
-import { SwissFlagIcon } from '@ciphera-net/ui'
 
 // * All products in the ecosystem
 const allProducts = [
@@ -169,10 +168,6 @@ export default function Ecosystem() {
           <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
             Click a scenario below to see how Ciphera products work together to solve your privacy challenges.
           </p>
-          <span className="badge-neutral mt-4 inline-flex items-center gap-1.5">
-            <SwissFlagIcon className="w-3.5 h-3.5" />
-            Swiss infrastructure
-          </span>
         </motion.div>
 
         {/* * Journey selector buttons */}

@@ -2,12 +2,15 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeftIcon } from '@ciphera-net/ui'
 import { notFound } from 'next/navigation'
+import TableOfContents from '../../../components/TableOfContents'
+import RelatedPosts from '../../../components/RelatedPosts'
+import ReadingProgress from '../../../components/ReadingProgress'
 
 const blogPosts: Record<string, { title: string; description: string; content: string; date: string; dateModified: string; category: string; readTime: string; faqs: { question: string; answer: string }[] }> = {
   'pulse-vs-google-analytics-plausible-fathom': {
     title: 'Pulse vs GA vs Plausible vs Fathom (2026)',
     description: 'Side-by-side comparison of Pulse, Google Analytics, Plausible, and Fathom on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.',
-    category: 'Analytics',
+    category: 'Comparison',
     date: '2026-02-14',
     dateModified: '2026-03-07',
     readTime: '14 min read',
@@ -4854,6 +4857,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound()
   }
 
+  const allPosts = Object.entries(blogPosts).map(([s, p]) => ({
+    slug: s,
+    title: p.title,
+    description: p.description,
+    category: p.category,
+    date: p.date,
+    readTime: p.readTime,
+  }))
+
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -4903,6 +4915,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema, ...(post.faqs.length > 0 ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: post.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) }] : [])]) }} />
+      <ReadingProgress />
       {/* * Hero */}
       <section className="section-padding pt-32">
         <div className="section-container max-w-4xl">
@@ -4914,8 +4927,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             Back to Blog
           </Link>
 
-          <div className="flex items-center gap-3 mb-6 text-sm">
+          <div className="flex items-center gap-3 mb-6 text-sm flex-wrap">
             <span className="badge-neutral">{post.category}</span>
+            <span className="text-neutral-500 dark:text-neutral-400">By Ciphera Team</span>
             <span className="text-neutral-500 dark:text-neutral-400">{post.readTime}</span>
             <span className="text-neutral-500 dark:text-neutral-400">
               {new Date(post.date).toLocaleDateString('en-GB', {
@@ -4930,10 +4944,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.title}
           </h1>
 
+          <TableOfContents content={post.content} />
+
           <div
             className="prose prose-neutral dark:prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
+          <RelatedPosts currentSlug={slug} currentCategory={post.category} allPosts={allPosts} />
 
           <div className="mt-12 pt-12 border-t border-neutral-200 dark:border-neutral-800">
             <Link

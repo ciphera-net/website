@@ -8,15 +8,15 @@ import { track } from '../lib/pulse'
 
 // * Trust indicators displayed below CTAs
 const trustIndicators = [
-  { icon: LockIcon, text: 'End-to-end encrypted', iconClassName: 'w-4 h-4 text-brand-orange' },
-  { icon: CheckCircleIcon, text: 'Open source', iconClassName: 'w-4 h-4 text-brand-orange' },
-  { icon: GlobeIcon, text: 'Zero-knowledge by design', iconClassName: 'w-4 h-4 text-brand-orange' },
-  { icon: SwissFlagIcon, text: 'Swiss infrastructure', iconClassName: 'w-4 h-4' },
+  { icon: LockIcon, text: 'End-to-end encrypted', iconClassName: 'w-5 h-5 text-brand-orange' },
+  { icon: CheckCircleIcon, text: 'Open source', iconClassName: 'w-5 h-5 text-brand-orange' },
+  { icon: GlobeIcon, text: 'Zero-knowledge by design', iconClassName: 'w-5 h-5 text-brand-orange' },
+  { icon: SwissFlagIcon, text: 'Swiss infrastructure', iconClassName: 'w-5 h-5' },
 ]
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[70vh] sm:min-h-[80vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[60vh] sm:min-h-[65vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden">
       <div className="section-container w-full">
         <div className="max-w-4xl mx-auto text-center">
           {/* * Badge */}
@@ -89,12 +89,12 @@ export default function Hero() {
             className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8"
           >
             {trustIndicators.map((item, index) => (
-              <div 
-                key={index}
-                className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400"
-              >
-                <item.icon className={item.iconClassName ?? 'w-4 h-4 text-brand-orange'} />
-                <span>{item.text}</span>
+              <div key={index} className="flex items-center gap-2">
+                {index > 0 && (
+                  <span className="hidden sm:block w-px h-4 bg-neutral-300 dark:bg-neutral-700 mr-2" />
+                )}
+                <item.icon className={item.iconClassName ?? 'w-5 h-5 text-brand-orange'} />
+                <span className="text-sm font-medium text-neutral-600 dark:text-neutral-300">{item.text}</span>
               </div>
             ))}
         </motion.div>

@@ -1,8 +1,6 @@
 import Hero from '../components/Hero'
 import Ecosystem from '../components/Ecosystem'
-import Features from '../components/Features'
 import Philosophy from '../components/Philosophy'
-import Products from '../components/Products'
 import EnhancedFAQ from '../components/EnhancedFAQ'
 import Newsletter from '../components/Newsletter'
 
@@ -62,9 +60,7 @@ export default function HomePage() {
       />
       <Hero />
       <Ecosystem />
-      <Features />
       <Philosophy />
-      <Products />
       <EnhancedFAQ />
       <Newsletter />
     </>

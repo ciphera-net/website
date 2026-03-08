@@ -5,15 +5,6 @@ import { useState, useMemo } from 'react'
 import { ChevronDownIcon } from '@ciphera-net/ui'
 import { track } from '../lib/pulse'
 
-// * Simple search icon component
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  )
-}
-
 const faqCategories = [
   {
     id: 'general',
@@ -137,34 +128,15 @@ function FAQItem({ faq, index, categoryIndex }: { faq: { question: string; answe
 }
 
 export default function EnhancedFAQ() {
-  const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
-  // * Filter FAQs based on search and category
+  // * Filter FAQs based on category
   const filteredCategories = useMemo(() => {
-    let categories = faqCategories
-
-    // * Filter by category
     if (selectedCategory) {
-      categories = categories.filter((cat) => cat.id === selectedCategory)
+      return faqCategories.filter((cat) => cat.id === selectedCategory)
     }
-
-    // * Filter by search query
-    if (searchQuery) {
-      categories = categories
-        .map((category) => ({
-          ...category,
-          faqs: category.faqs.filter(
-            (faq) =>
-              faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
-          ),
-        }))
-        .filter((category) => category.faqs.length > 0)
-    }
-
-    return categories
-  }, [searchQuery, selectedCategory])
+    return faqCategories
+  }, [selectedCategory])
 
   return (
     <>
@@ -185,29 +157,6 @@ export default function EnhancedFAQ() {
             <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
               Find answers to common questions about Ciphera's privacy-first products and services.
             </p>
-          </motion.div>
-
-          {/* * Search bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="max-w-2xl mx-auto mb-8"
-          >
-            <div className="relative">
-              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value)
-                  if (e.target.value) track('faq_search')
-                }}
-                placeholder="Search questions..."
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange transition-shadow"
-              />
-            </div>
           </motion.div>
 
           {/* * Category tabs */}
@@ -264,7 +213,7 @@ export default function EnhancedFAQ() {
             ) : (
               <div className="text-center py-12">
                 <p className="text-neutral-600 dark:text-neutral-400">
-                  No questions found matching "{searchQuery}"
+                  No questions found for this category.
                 </p>
               </div>
             )}

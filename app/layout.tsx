@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
     images: [
       {
-        url: '/ciphera_logo_no_margins.png',
+        url: '/og-homepage.png',
         width: 1200,
         height: 630,
         alt: 'Ciphera - Where Privacy Still Exists',
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     site: '@CipheraNET',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
     description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
-    images: ['/ciphera_logo_no_margins.png'],
+    images: ['/og-homepage.png'],
   },
   alternates: {
     canonical: 'https://ciphera.net',
@@ -84,6 +84,7 @@ export default function RootLayout({
         {/* DNS prefetch for analytics - uses env vars at build time, falls back to production */}
         <link rel="dns-prefetch" href={new URL(process.env.NEXT_PUBLIC_PULSE_SCRIPT_URL || 'https://pulse.ciphera.net/script.js').origin} />
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_PULSE_API_URL || 'https://pulse-api.ciphera.net'} />
+        <link rel="alternate" type="application/rss+xml" title="Ciphera Blog" href="/feed.xml" />
       </head>
       <body className="relative antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
         <div className="fixed inset-0 -z-10 overflow-hidden">

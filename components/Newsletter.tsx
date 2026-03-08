@@ -15,75 +15,76 @@ export default function Newsletter() {
 
     setStatus('loading')
     track('newsletter_signup_attempt')
-    
+
     // * Simulate API call - replace with actual newsletter service
     setTimeout(() => {
       setStatus('success')
       track('newsletter_signup_success')
       setEmail('')
-      
+
       setTimeout(() => setStatus('idle'), 5000)
     }, 1000)
   }
 
   return (
-    <section className="section-padding !pt-6 sm:!pt-8 md:!pt-12">
+    <section className="section-padding">
       <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="w-full mx-auto text-center bg-gradient-to-br from-brand-orange to-brand-orange-hover rounded-3xl px-6 sm:px-10 md:px-16 py-12 sm:py-16"
+          className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            Stay Updated on Privacy
-          </h2>
-          <p className="text-lg text-white/90 mb-8 leading-relaxed">
-            Get the latest updates on privacy-first technologies, security tips, and product announcements. 
-            No spam, unsubscribe anytime.
-          </p>
+          <div className="p-8 sm:p-12 md:p-16 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+            <h2 className="heading-2 mb-3">
+              New article every week
+            </h2>
+            <p className="text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed max-w-lg mx-auto">
+              Privacy guides, security research, and product updates. No spam, no tracking — obviously.
+            </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm"
-              disabled={status === 'loading' || status === 'success'}
-              required
-            />
-            <button
-              type="submit"
-              disabled={status === 'loading' || status === 'success'}
-              className="btn-white disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {status === 'loading' && 'Subscribing...'}
-              {status === 'success' && 'Subscribed!'}
-              {status === 'idle' && (
-                <>
-                  Subscribe
-                  <ArrowRightIcon className="w-4 h-4" />
-                </>
-              )}
-              {status === 'error' && 'Try Again'}
-            </button>
-          </form>
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="flex-1 px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent text-sm"
+                disabled={status === 'loading' || status === 'success'}
+                required
+              />
+              <button
+                type="submit"
+                disabled={status === 'loading' || status === 'success'}
+                className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white text-sm font-medium px-6 py-3 rounded-xl transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status === 'loading' && 'Subscribing...'}
+                {status === 'success' && 'Subscribed!'}
+                {status === 'idle' && (
+                  <>
+                    Subscribe
+                    <ArrowRightIcon className="w-4 h-4" />
+                  </>
+                )}
+                {status === 'error' && 'Try Again'}
+              </button>
+            </form>
 
-          {status === 'success' && (
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-white/90 mt-4 text-sm"
-            >
-              ✓ Thanks for subscribing! Check your inbox for confirmation.
-            </motion.p>
-          )}
+            {status === 'success' && (
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-brand-orange mt-4 text-sm font-medium"
+              >
+                Thanks for subscribing! Check your inbox for confirmation.
+              </motion.p>
+            )}
 
-          <p className="text-white/70 text-sm mt-6">
-            We respect your privacy. Your email will never be shared.
-          </p>
+            <p className="text-neutral-500 text-xs mt-6">
+              We respect your privacy. Unsubscribe anytime.
+            </p>
+          </div>
         </motion.div>
       </div>
     </section>
