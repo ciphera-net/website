@@ -2,7 +2,7 @@
 
 import { useTheme } from '@ciphera-net/ui'
 import { useEffect, useState } from 'react'
-import { MoonIcon, SunIcon } from '@radix-ui/react-icons'
+import { MoonIcon, SunIcon } from '@ciphera-net/ui'
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false)
