@@ -625,6 +625,7 @@ export default function ContactPage() {
                         track('contact_captcha_verified')
                       }}
                       apiUrl={process.env.NEXT_PUBLIC_CAPTCHA_API_URL}
+                      action="contact"
                     />
                   </div>
 
