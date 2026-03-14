@@ -104,4 +104,12 @@ export const blogPosts: BlogPost[] = [
     date: '2026-03-12',
     readTime: '12 min read',
   },
+  {
+    slug: 'cdn-performance-monitoring-bunnycdn-analytics',
+    title: 'How to Monitor BunnyCDN Performance Without Google Analytics',
+    description: 'A 0.1s speed improvement lifts retail conversions 8.4%. Track BunnyCDN bandwidth, cache ratios, and traffic maps in a privacy-first analytics dashboard.',
+    category: 'Tutorial',
+    date: '2026-03-14',
+    readTime: '9 min read',
+  },
 ]
