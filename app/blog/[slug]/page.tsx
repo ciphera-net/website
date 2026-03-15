@@ -5075,6 +5075,342 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
     `,
   },
+  'why-most-analytics-tools-skip-user-journeys': {
+    title: 'Why Most Analytics Tools Can\'t Show You How Visitors Navigate Your Site',
+    description: 'The customer journey analytics market hits $4.96B in 2025, yet Plausible, Fathom, and Simple Analytics offer zero flow visualization. Here\'s why — and what Pulse does differently.',
+    category: 'Comparison',
+    date: '2026-03-15',
+    dateModified: '2026-03-15',
+    readTime: '12 min read',
+    faqs: [
+      { question: 'What are user journeys in web analytics?', answer: 'User journeys show the actual page-to-page paths visitors take through your site — visualized as a Sankey (flow) diagram. Unlike basic pageview counts, journeys reveal navigation sequences: where visitors enter, which pages they visit next, and where they drop off. Pulse tracks this without cookies using aggregated session data.' },
+      { question: 'Why don\'t Plausible and Fathom have user journey features?', answer: 'Both tools prioritize simplicity and minimal data collection. Building flow visualization requires storing page sequences per session, which increases storage and processing costs significantly. Plausible\'s community has requested the feature since 2020 (GitHub Discussion #149), but it hasn\'t reached the roadmap. Fathom focuses on a single-page dashboard by design.' },
+      { question: 'Does Google Analytics have user flow visualization?', answer: 'GA4 offers "Path Exploration" in its Explorations tab, but it requires manual configuration of dimensions, metrics, and segments. Over 75% of SEOs report dissatisfaction with GA4 (Search Engine Roundtable, 2023), and the tool still requires cookie consent banners that lose 40-70% of EU visitor data.' },
+      { question: 'Can you track user journeys without cookies?', answer: 'Yes. Pulse aggregates page-to-page transitions from session data without setting any cookies or tracking individual users. The system processes pageview events in hourly batches, deduplicates reloads, and stores only aggregated transition counts — not individual user paths. No consent banner is needed.' },
+      { question: 'How much does it cost to add user journey analytics to my site?', answer: 'Running a privacy analytics tool ($9-15/mo) plus a behavior analytics tool like Hotjar ($99/mo) costs $108-214/mo. Matomo offers a paid User Flow plugin for EUR 94-282/year on top of hosting costs. Pulse includes built-in user journey visualization within its standard plans — no add-ons or separate tools required.' },
+    ],
+    content: `
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        Your analytics dashboard shows pageviews, bounce rates, and referral sources. It tells you <em>what</em> pages get traffic. But can it tell you <em>how</em> a visitor moved from your homepage to your pricing page to your signup form — or where they gave up and left? For most privacy-focused analytics tools, the answer is no. The customer journey analytics market reached <a href="https://www.fortunebusinessinsights.com/customer-journey-analytics-market-107799" target="_blank" rel="noopener noreferrer">$4.96 billion in 2025</a> (Fortune Business Insights) precisely because standard analytics tools don't show you the paths visitors actually take.
+      </p>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        We built user journey visualization into <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Pulse</a> because we think privacy-first analytics shouldn't mean feature-poor analytics. Here's why most tools skip this feature, what it costs you, and how we built it without compromising on privacy.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&q=80" alt="Web analytics dashboard displaying colorful performance graphs, session data, and traffic visualizations" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;" loading="lazy" />
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>TL;DR:</strong> Privacy analytics tools like Plausible, Fathom, and Simple Analytics don't offer user journey visualization — leaving a $4.96B gap (Fortune Business Insights, 2025). Most site owners end up running two separate tools at $108-214/month to see how visitors navigate. Pulse includes Sankey-diagram flow visualization natively, built on aggregated session data with zero cookies.
+      </blockquote>
+
+      <h2>What Do User Journeys Actually Show You?</h2>
+
+      <p>
+        Standard analytics gives you a spreadsheet view of your site: page A got 500 visits, page B got 300. But it doesn't show you that 200 of those visitors went from A to B, while 150 left entirely. User journey visualization — typically rendered as a Sankey diagram — maps the actual flow of traffic through your site as a connected graph. Each node is a page. Each link is a transition. The width of each link represents how many sessions followed that path.
+      </p>
+      <p>
+        This matters because websites aren't collections of isolated pages. They're navigation structures. According to <a href="https://www.digitalwebsolutions.com/blog/average-bounce-rate-by-industry/" target="_blank" rel="noopener noreferrer">Digital Web Solutions</a> (2025), the average visitor views 2.5-4 pages per session across industries, with desktop users averaging 3.4 pages. That's 2-3 page transitions per visit that standard analytics simply can't show you. Where do visitors go after your homepage? Where do they exit your pricing page? Which blog posts actually lead to signups?
+      </p>
+      <p>
+        Without flow data, you're guessing. With it, you can see — in hard numbers — where your navigation works and where it breaks.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=1200&q=80" alt="Designer sketching user flow wireframes and journey maps on paper with user goals written" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <h2>Why Don't Plausible, Fathom, and Simple Analytics Offer This?</h2>
+
+      <p>
+        The privacy analytics market has grown fast. <a href="https://w3techs.com/technologies/details/ta-googleanalytics" target="_blank" rel="noopener noreferrer">Google Analytics still powers 43.6% of all websites</a> (W3Techs, March 2026), but tools like Plausible, Fathom, and Matomo are carving out real share — Matomo alone runs on <a href="https://matomo.org/" target="_blank" rel="noopener noreferrer">over 1 million websites</a> across 190+ countries. Yet none of the popular privacy-first tools ship user journey visualization out of the box. Why?
+      </p>
+      <p>
+        Three reasons keep coming up.
+      </p>
+      <h3>1. Philosophical Minimalism</h3>
+      <p>
+        Plausible, Fathom, and Simple Analytics all market themselves on simplicity. One-page dashboards. No complexity. The pitch is "the opposite of Google Analytics." That positioning works — but it creates a ceiling. User journey visualization requires storing page sequences per session, which conflicts with the "track as little as possible" ethos. Plausible's community has been requesting user flow visualization since <a href="https://github.com/plausible/analytics/discussions/149" target="_blank" rel="noopener noreferrer">2020</a>, with a separate <a href="https://feedback.plausible.io/178" target="_blank" rel="noopener noreferrer">feature request</a> on their feedback board. It hasn't reached the roadmap.
+      </p>
+      <h3>2. Infrastructure Cost</h3>
+      <p>
+        Pageview counts are cheap to store. A single counter increments. But journey data requires ordered sequences of pages per session, transitions between page pairs, step indices, and temporal ordering. For a site with 100,000 monthly sessions averaging 3.4 pages each, that's 340,000 pageview events to process into 240,000 transitions daily. The database tables, aggregation workers, and query caching add real cost to a product that might charge $9/month.
+      </p>
+      <h3>3. Visualization Complexity</h3>
+      <p>
+        A pageview table is trivial to render. A Sankey diagram isn't. It requires a graph layout algorithm (D3-Sankey), dynamic SVG rendering, node merging for high-cardinality paths, interactive filtering, and responsive sizing. Most small analytics teams don't have frontend capacity for this kind of visualization work. So the feature keeps getting deferred.
+      </p>
+
+      <!-- [UNIQUE INSIGHT] -->
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>The real gap:</strong> Privacy analytics tools chose minimalism as a philosophy, not just a privacy requirement. You can track page-to-page flows without identifying individual users — you just need to aggregate session data. The privacy constraint doesn't prevent journey visualization. The product philosophy does.
+      </blockquote>
+
+      <h2>Doesn't Google Analytics Already Have This?</h2>
+
+      <p>
+        Technically, yes. GA4 offers "Path Exploration" inside its Explorations tab, which can render a tree-style flow of page transitions. But calling it accessible would be generous. A <a href="https://www.seroundtable.com/75-are-not-happy-with-google-analytics-4-ga4-35843.html" target="_blank" rel="noopener noreferrer">poll of 1,700+ SEOs</a> (Search Engine Roundtable, 2023) found that 75% were unhappy with GA4 — 50% said they "hate it" and another 26% rated it "somewhat negative." Path Exploration is a perfect example of why.
+      </p>
+      <p>
+        To use it, you manually create an exploration, drag in dimensions and metrics from a variable panel, configure segments, set starting or ending points, and hope the interface doesn't time out. GA4 limits you to 200 individual explorations per user and 500 shared per property. Dimensions and metrics have compatibility restrictions that aren't documented clearly. And because GA4 uses cookies, you're losing <a href="https://ignite.video/en/articles/basics/cookie-consent-studies" target="_blank" rel="noopener noreferrer">40-70% of tracking data</a> (Ignite Video meta-analysis, 2024-2025) in markets with GDPR cookie consent banners.
+      </p>
+      <p>
+        So GA4 technically has the feature — buried three clicks deep, behind a configuration wall, running on incomplete data. Is that really "having" it?
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200&q=80" alt="Analytics dashboard displaying cohort analysis reports and geographic session data on a laptop screen" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <h2>The Two-Tool Tax: What This Gap Actually Costs</h2>
+
+      <p>
+        Because privacy analytics tools don't include journey visualization, teams that need this data end up running two tools. A privacy-first analytics platform for compliant pageview tracking, plus a behavior analytics tool for flow and session data. The costs stack up quickly.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 400" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">Monthly Cost: Analytics + User Journey Insights</text>
+          <text x="280" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">Minimum plans with both pageview analytics and flow visualization</text>
+
+          <!-- Y-axis labels -->
+          <text x="195" y="93" text-anchor="end" font-size="11" fill="#a3a3a3">Fathom + FullStory</text>
+          <text x="195" y="143" text-anchor="end" font-size="11" fill="#a3a3a3">GA4 + Heap</text>
+          <text x="195" y="193" text-anchor="end" font-size="11" fill="#a3a3a3">Plausible + Hotjar</text>
+          <text x="195" y="243" text-anchor="end" font-size="11" fill="#a3a3a3">Matomo + Plugin</text>
+          <text x="195" y="293" text-anchor="end" font-size="11" fill="#FD5E0F" font-weight="600">Pulse</text>
+
+          <!-- Bars -->
+          <rect x="200" y="78" width="310" height="28" rx="4" fill="#737373" opacity="0.6"/>
+          <text x="516" y="97" font-size="11" font-weight="700" fill="#d4d4d4">$214/mo</text>
+
+          <rect x="200" y="128" width="302" height="28" rx="4" fill="#737373" opacity="0.5"/>
+          <text x="508" y="147" font-size="11" font-weight="700" fill="#d4d4d4">$208/mo</text>
+
+          <rect x="200" y="178" width="156" height="28" rx="4" fill="#737373" opacity="0.4"/>
+          <text x="362" y="197" font-size="11" font-weight="700" fill="#d4d4d4">$108/mo</text>
+
+          <rect x="200" y="228" width="46" height="28" rx="4" fill="#737373" opacity="0.3"/>
+          <text x="252" y="247" font-size="11" font-weight="700" fill="#d4d4d4">$31/mo</text>
+
+          <rect x="200" y="278" width="22" height="28" rx="4" fill="#FD5E0F" opacity="0.9"/>
+          <text x="228" y="297" font-size="11" font-weight="700" fill="#FD5E0F">$15/mo</text>
+
+          <!-- Annotation -->
+          <line x1="200" y1="330" x2="520" y2="330" stroke="#a3a3a3" stroke-width="0.5" opacity="0.2"/>
+          <text x="280" y="352" text-anchor="middle" font-size="10" fill="#a3a3a3">Fathom ($15) + FullStory ($199) &middot; GA4 (free) + Heap Growth (~$208)</text>
+          <text x="280" y="368" text-anchor="middle" font-size="10" fill="#a3a3a3">Plausible ($9) + Hotjar Business ($99) &middot; Matomo Cloud ($23) + Users Flow plugin ($8/mo annualized)</text>
+          <text x="280" y="384" text-anchor="middle" font-size="10" fill="#a3a3a3">Pulse includes journey visualization in standard plans</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Official pricing pages, compiled March 2026</figcaption>
+      </figure>
+
+      <p>
+        The cheapest two-tool combination with real flow visualization is Matomo Cloud plus the paid Users Flow plugin at around $31/month. But Matomo's <a href="https://plugins.matomo.org/UsersFlow" target="_blank" rel="noopener noreferrer">Users Flow plugin costs EUR 94-282/year</a> depending on team size, on top of hosting. And self-hosted Matomo means managing your own infrastructure. The most common pairing — Plausible at $9/month plus Hotjar Business at $99/month — costs $108/month for what should be a single dashboard.
+      </p>
+      <p>
+        That's the two-tool tax. You pay twice because your analytics platform decided user journeys weren't worth building.
+      </p>
+
+      <!-- [UNIQUE INSIGHT] -->
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>The hidden cost isn't just dollars.</strong> Running two analytics tools means two scripts loading on your site, two dashboards to check, two mental models to maintain, and two vendors with access to your traffic data. That fragmentation adds cognitive overhead to every product decision you make.
+      </blockquote>
+
+      <h2>How Pulse Built User Journeys Without Compromising Privacy</h2>
+
+      <p>
+        The web analytics market is projected to reach <a href="https://www.mordorintelligence.com/industry-reports/web-analytics-market" target="_blank" rel="noopener noreferrer">$18.62 billion by 2031</a> (Mordor Intelligence, 2025), with the Customer Journey Mapping segment growing fastest at 15.95% CAGR. We built journey visualization into Pulse because the demand is clearly there — but no privacy-first tool was addressing it. Here's how the system works without tracking individual users.
+      </p>
+
+      <h3>Aggregated, Not Individual</h3>
+      <p>
+        Pulse's tracking script sends standard pageview events — path, timestamp, session identifier. No cookies. No persistent user IDs. No fingerprinting. The session identifier rotates daily and is never stored long-term. On the backend, an aggregation worker processes these events in hourly batches, grouping pageviews by session and constructing page sequences.
+      </p>
+
+      <h3>Two-Table Architecture</h3>
+      <p>
+        The system stores two types of aggregated data. First, session flows: the ordered sequence of pages a session visited, capped at 10 pages, with entry path, exit path, and total duration. Second, path transitions: pre-computed counts of how many sessions moved from page A to page B at each step. Individual events are processed and discarded. What remains is aggregate flow data — "43 sessions went from /pricing to /signup" — with no way to reconstruct an individual visitor's identity.
+      </p>
+
+      <h3>The Sankey Visualization</h3>
+      <p>
+        The frontend renders this data as an interactive Sankey diagram using D3's Sankey layout algorithm. You see your site's traffic flow as a connected graph: entry pages on the left, subsequent pages in columns moving right, exit nodes in grey. The width of each connection shows volume. You can adjust depth from 2-10 steps, filter by entry page, and see the exact session count for each transition.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=1200&q=80" alt="Abstract network of connected translucent nodes on a dark background representing data flow paths" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <!-- [PERSONAL EXPERIENCE] -->
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>What we found building this:</strong> The hardest part wasn't privacy — it was performance. Processing 340,000 pageview events into aggregated transitions every hour, across thousands of sites, required a worker pool with distributed locking to prevent duplicate aggregation. The privacy constraints (no individual tracking, no cookies) actually simplified the data model. Aggregation is both the privacy mechanism and the performance optimization.
+      </blockquote>
+
+      <h2>The Privacy Analytics Feature Gap</h2>
+
+      <p>
+        Here's the landscape today. We looked at seven analytics tools and compared their support for privacy compliance, user journey visualization, and setup complexity. Only one checks every box.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 440" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">The Privacy Analytics Feature Gap</text>
+          <text x="280" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">Which tools offer privacy + journey visualization + easy setup?</text>
+
+          <!-- Column headers -->
+          <line x1="10" y1="72" x2="550" y2="72" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <text x="125" y="66" font-size="11" font-weight="700" fill="#a3a3a3" text-anchor="middle">Tool</text>
+          <text x="255" y="66" font-size="11" font-weight="700" fill="#a3a3a3" text-anchor="middle">Cookie-Free</text>
+          <text x="345" y="66" font-size="11" font-weight="700" fill="#a3a3a3" text-anchor="middle">User Journeys</text>
+          <text x="445" y="66" font-size="11" font-weight="700" fill="#a3a3a3" text-anchor="middle">Easy Setup</text>
+          <text x="525" y="66" font-size="10" font-weight="700" fill="#a3a3a3" text-anchor="middle">Score</text>
+
+          <!-- Plausible -->
+          <text x="125" y="102" font-size="12" fill="#d4d4d4" text-anchor="middle">Plausible</text>
+          <text x="255" y="102" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="345" y="102" font-size="16" fill="#ef4444" text-anchor="middle" font-weight="700">&#10007;</text>
+          <text x="445" y="102" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="525" y="102" font-size="12" fill="#a3a3a3" text-anchor="middle">2/3</text>
+          <line x1="10" y1="114" x2="550" y2="114" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+
+          <!-- Fathom -->
+          <text x="125" y="142" font-size="12" fill="#d4d4d4" text-anchor="middle">Fathom</text>
+          <text x="255" y="142" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="345" y="142" font-size="16" fill="#ef4444" text-anchor="middle" font-weight="700">&#10007;</text>
+          <text x="445" y="142" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="525" y="142" font-size="12" fill="#a3a3a3" text-anchor="middle">2/3</text>
+          <line x1="10" y1="154" x2="550" y2="154" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+
+          <!-- Simple Analytics -->
+          <text x="125" y="182" font-size="12" fill="#d4d4d4" text-anchor="middle">Simple Analytics</text>
+          <text x="255" y="182" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="345" y="182" font-size="16" fill="#ef4444" text-anchor="middle" font-weight="700">&#10007;</text>
+          <text x="445" y="182" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="525" y="182" font-size="12" fill="#a3a3a3" text-anchor="middle">2/3</text>
+          <line x1="10" y1="194" x2="550" y2="194" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+
+          <!-- Matomo -->
+          <text x="125" y="222" font-size="12" fill="#d4d4d4" text-anchor="middle">Matomo</text>
+          <text x="255" y="222" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="255" y="236" font-size="8" fill="#a3a3a3" text-anchor="middle">(configurable)</text>
+          <text x="345" y="222" font-size="16" fill="#f59e0b" text-anchor="middle" font-weight="700">$</text>
+          <text x="345" y="236" font-size="8" fill="#a3a3a3" text-anchor="middle">(paid plugin)</text>
+          <text x="445" y="222" font-size="16" fill="#ef4444" text-anchor="middle" font-weight="700">&#10007;</text>
+          <text x="445" y="236" font-size="8" fill="#a3a3a3" text-anchor="middle">(self-host)</text>
+          <text x="525" y="222" font-size="12" fill="#a3a3a3" text-anchor="middle">1.5/3</text>
+          <line x1="10" y1="248" x2="550" y2="248" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+
+          <!-- GA4 -->
+          <text x="125" y="278" font-size="12" fill="#d4d4d4" text-anchor="middle">Google Analytics 4</text>
+          <text x="255" y="278" font-size="16" fill="#ef4444" text-anchor="middle" font-weight="700">&#10007;</text>
+          <text x="345" y="278" font-size="16" fill="#f59e0b" text-anchor="middle" font-weight="700">~</text>
+          <text x="345" y="292" font-size="8" fill="#a3a3a3" text-anchor="middle">(complex)</text>
+          <text x="445" y="278" font-size="16" fill="#ef4444" text-anchor="middle" font-weight="700">&#10007;</text>
+          <text x="525" y="278" font-size="12" fill="#a3a3a3" text-anchor="middle">0.5/3</text>
+          <line x1="10" y1="304" x2="550" y2="304" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+
+          <!-- PostHog -->
+          <text x="125" y="334" font-size="12" fill="#d4d4d4" text-anchor="middle">PostHog</text>
+          <text x="255" y="334" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="345" y="334" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="445" y="334" font-size="16" fill="#ef4444" text-anchor="middle" font-weight="700">&#10007;</text>
+          <text x="445" y="348" font-size="8" fill="#a3a3a3" text-anchor="middle">(event setup)</text>
+          <text x="525" y="334" font-size="12" fill="#a3a3a3" text-anchor="middle">2/3</text>
+          <line x1="10" y1="360" x2="550" y2="360" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+
+          <!-- Pulse -->
+          <rect x="15" y="370" width="530" height="36" rx="6" fill="#FD5E0F" opacity="0.08"/>
+          <text x="125" y="393" font-size="12" fill="#FD5E0F" text-anchor="middle" font-weight="700">Pulse</text>
+          <text x="255" y="393" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="345" y="393" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="445" y="393" font-size="16" fill="#22c55e" text-anchor="middle" font-weight="700">&#10003;</text>
+          <text x="525" y="393" font-size="12" fill="#FD5E0F" text-anchor="middle" font-weight="700">3/3</text>
+          <line x1="10" y1="416" x2="550" y2="416" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Official documentation, compiled March 2026</figcaption>
+      </figure>
+
+      <p>
+        PostHog comes closest — it's cookieless, open-source, and has excellent path visualization. But it's a product analytics platform, not a web analytics tool. You need to instrument custom events, manage a data pipeline, and accept a fundamentally different mental model (product events vs. pageviews). For a marketing team that just wants to see how visitors flow through their site, that's overkill. For an analytics-curious founder who installed a script tag in five minutes, it's a non-starter.
+      </p>
+
+      <h2>What Can You Actually Do With Journey Data?</h2>
+
+      <p>
+        Organizations that map customer journeys report <a href="https://www.clearvoice.com/resources/data-study-how-marketers-use-customer-journey-maps/" target="_blank" rel="noopener noreferrer">70% higher conversion rates</a> versus those that don't (Aberdeen Research, cited in ClearVoice). Yet only 48% of marketers have a customer journey map, and just 43% of those have validated their maps against actual data. The gap between "we think users do this" and "users actually do this" is where journey analytics earns its value. Here's what becomes possible.
+      </p>
+
+      <h3>Find Your Real Drop-Off Points</h3>
+      <p>
+        Your bounce rate might be 45% — the <a href="https://www.digitalwebsolutions.com/blog/average-bounce-rate-by-industry/" target="_blank" rel="noopener noreferrer">cross-industry average</a> (Digital Web Solutions, 2025). But bounce rate doesn't tell you <em>where in the navigation flow</em> visitors abandon. Journey data shows you that 60% of visitors who reach your features page leave without visiting pricing. Or that visitors who enter through your blog almost never reach your product pages. These are specific, actionable problems that pageview counts alone can't surface.
+      </p>
+
+      <h3>Validate Your Site Architecture</h3>
+      <p>
+        You designed your navigation assuming visitors follow a logical path: homepage → features → pricing → signup. Journey data often reveals the reality is messier. Maybe visitors actually go homepage → blog → about → exit. That's not a traffic problem — it's a navigation design problem. And you can't fix it without seeing the actual flow.
+      </p>
+
+      <h3>Optimize Entry Points</h3>
+      <p>
+        Pulse's entry point filter lets you isolate traffic by landing page. Filter to "/blog" entries and see where blog readers go next. Filter to paid ad landing pages and track whether that traffic reaches your conversion pages. Different entry points produce different journeys — and they need different optimization strategies.
+      </p>
+
+      <h3>Measure Navigation Changes</h3>
+      <p>
+        Moved a CTA? Reorganized your header? Journey data gives you before-and-after evidence. If you changed your pricing page link from the footer to the main nav, you can see exactly how many more sessions now flow from homepage → pricing. No guessing. No A/B testing frameworks. Just direct observation of traffic flow.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80" alt="Laptop displaying a web analytics dashboard with area charts, daily active users, and marketing metrics" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <h2>Why the Industry Is Moving Toward Integrated Journey Analytics</h2>
+
+      <p>
+        The customer journey analytics market is growing at <a href="https://www.fortunebusinessinsights.com/customer-journey-analytics-market-107799" target="_blank" rel="noopener noreferrer">9.84% CAGR</a>, projected to reach $11.58 billion by 2034 (Fortune Business Insights, 2025). Cloud deployment already captures 79.82% of that market. <a href="https://www.forrester.com/blogs/key-trends-in-customer-journey-mapping/" target="_blank" rel="noopener noreferrer">Forrester reports</a> (2024) that 63% of companies now map customer experiences — but only 25% say their programs actually improve CX. The problem isn't awareness. It's tooling.
+      </p>
+      <p>
+        When journey data lives in a separate tool from your pageview analytics, it creates friction. You check one dashboard for traffic volumes and another for navigation patterns. Insights that should connect — "our highest-traffic landing page has the worst journey completion rate" — require mentally merging data from two sources. Customer-obsessed organizations report <a href="https://onramp.us/blog/customer-experience-statistics" target="_blank" rel="noopener noreferrer">41% faster revenue growth</a> (Forrester, 2024), but getting there requires integrated data, not dashboard sprawl.
+      </p>
+      <p>
+        That's why we didn't build Pulse's journey feature as an add-on or premium plugin. It's part of the core product. The same script that tracks pageviews also generates the session data that powers journey visualization. One tool, one script, one dashboard.
+      </p>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>What are user journeys in web analytics?</h3>
+      <p>
+        User journeys show the actual page-to-page paths visitors take through your site — visualized as a Sankey (flow) diagram. Unlike basic pageview counts, journeys reveal navigation sequences: where visitors enter, which pages they visit next, and where they drop off. Pulse tracks this without cookies using aggregated session data.
+      </p>
+
+      <h3>Why don't Plausible and Fathom have user journey features?</h3>
+      <p>
+        Both tools prioritize simplicity and minimal data collection. Building flow visualization requires storing page sequences per session, which increases storage and processing costs. Plausible's community has requested the feature since 2020 (<a href="https://github.com/plausible/analytics/discussions/149" target="_blank" rel="noopener noreferrer">GitHub Discussion #149</a>), but it hasn't reached the roadmap. Fathom focuses on a single-page dashboard by design.
+      </p>
+
+      <h3>Does Google Analytics have user flow visualization?</h3>
+      <p>
+        GA4 offers "Path Exploration" in its Explorations tab, but it requires manual configuration of dimensions, metrics, and segments. Over <a href="https://www.seroundtable.com/75-are-not-happy-with-google-analytics-4-ga4-35843.html" target="_blank" rel="noopener noreferrer">75% of SEOs report dissatisfaction</a> with GA4 (Search Engine Roundtable, 2023), and the tool still requires cookie consent banners that lose 40-70% of EU visitor data.
+      </p>
+
+      <h3>Can you track user journeys without cookies?</h3>
+      <p>
+        Yes. Pulse aggregates page-to-page transitions from session data without setting any cookies or tracking individual users. The system processes pageview events in hourly batches, deduplicates reloads, and stores only aggregated transition counts — not individual user paths. No consent banner is needed.
+      </p>
+
+      <h3>How much does it cost to add user journey analytics to my site?</h3>
+      <p>
+        Running a privacy analytics tool ($9-15/mo) plus a behavior tool like Hotjar ($99/mo) costs $108-214/mo. Matomo offers a paid User Flow plugin for <a href="https://plugins.matomo.org/UsersFlow" target="_blank" rel="noopener noreferrer">EUR 94-282/year</a>. Pulse includes built-in user journey visualization within its standard plans — no add-ons or separate tools required.
+      </p>
+
+      <h2>Key Takeaways</h2>
+
+      <ul>
+        <li><strong>Most privacy analytics tools don't offer user journeys</strong> — Plausible, Fathom, and Simple Analytics focus on simplicity over depth, leaving a critical feature gap</li>
+        <li><strong>GA4 has the feature but buries it</strong> — Path Exploration requires manual setup, runs on cookie-dependent data that loses 40-70% of EU traffic, and 75% of professionals are unhappy with the interface</li>
+        <li><strong>The two-tool tax is real</strong> — combining a privacy analytics tool with a behavior platform costs $108-214/month and fragments your data across two dashboards</li>
+        <li><strong>Privacy doesn't prevent journey tracking</strong> — aggregated session flows reveal navigation patterns without identifying individual users or setting cookies</li>
+        <li><strong>Journey data drives real decisions</strong> — organizations using customer journey maps see 70% higher conversion rates (Aberdeen Research)</li>
+        <li><strong>Pulse includes journey visualization natively</strong> — one script, one dashboard, interactive Sankey diagrams with depth control and entry point filtering, no add-ons</li>
+      </ul>
+
+      <p>
+        Ready to see how visitors actually navigate your site? <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Try Pulse</a> — privacy-first analytics with built-in user journey visualization. For a broader comparison of privacy analytics tools, check our <a href="https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom">Pulse vs GA vs Plausible vs Fathom comparison</a>.
+      </p>
+    `,
+  },
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

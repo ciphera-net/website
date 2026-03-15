@@ -112,4 +112,12 @@ export const blogPosts: BlogPost[] = [
     date: '2026-03-14',
     readTime: '9 min read',
   },
+  {
+    slug: 'why-most-analytics-tools-skip-user-journeys',
+    title: 'Why Most Analytics Tools Can\'t Show You How Visitors Navigate Your Site',
+    description: 'The customer journey analytics market hits $4.96B in 2025, yet Plausible, Fathom, and Simple Analytics offer zero flow visualization. Here\'s why — and what Pulse does differently.',
+    category: 'Comparison',
+    date: '2026-03-15',
+    readTime: '12 min read',
+  },
 ]
