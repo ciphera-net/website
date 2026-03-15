@@ -5411,6 +5411,275 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
     `,
   },
+  'google-search-console-privacy-first-analytics': {
+    title: 'How to Use Google Search Console with Privacy-First Analytics in 2026',
+    description: '75% of GSC impression data is filtered from reports. Here\'s how to combine Search Console with privacy-first analytics for complete, cookie-free search and traffic insights.',
+    category: 'Tutorial',
+    date: '2026-03-15',
+    dateModified: '2026-03-15',
+    readTime: '11 min read',
+    faqs: [
+      { question: 'Do I still need Google Analytics if I use Pulse with Search Console?', answer: 'No. Pulse provides complete traffic analytics — pageviews, referrers, devices, locations, custom events, and user journeys — without cookies. Combined with GSC\'s search query data, you get a fuller picture than GA provides. GA\'s market share dropped from 81.8% to 78.6% in 12 months (W3Techs, 2026), partly because privacy-first alternatives now cover its core features.' },
+      { question: 'Does connecting Google Search Console to Pulse share my data with third parties?', answer: 'No. Pulse uses a read-only OAuth 2.0 connection to pull your GSC metrics. Your search data is stored on Swiss infrastructure under the FADP. No visitor data is shared with Google, no cookies are set on your visitors\' browsers, and you can disconnect the integration at any time from your site settings.' },
+      { question: 'Can I use Google Search Console with other privacy-first analytics tools like Plausible or Fathom?', answer: 'GSC works independently — you can view its data at search.google.com regardless of your analytics tool. However, neither Plausible nor Fathom offers a built-in GSC integration, so you\'d check two separate dashboards. Pulse pulls GSC data directly into your analytics dashboard for a unified view alongside traffic, behavior, and user journey data.' },
+      { question: 'How often does Pulse sync Google Search Console data?', answer: 'Pulse syncs GSC data automatically in the background. Google\'s API typically makes data available with a 2-3 day delay, which is a Google-side limitation. Your dashboard displays the last synced timestamp and connection status — green for active, amber for syncing, red if an error occurs.' },
+      { question: 'Does connecting GSC to Pulse require a cookie consent banner?', answer: 'No. The GSC integration is a server-to-server OAuth connection between Pulse and Google\'s API. No cookies are set on your visitors\' browsers, and no client-side tracking code changes. Your site remains fully cookie-free and consent-banner-free.' },
+    ],
+    content: `
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        Google Search Console is one of the most valuable free tools for understanding how your site performs in search. But here's what most marketers don't realize: 75% of your impression data never makes it into GSC reports. An analysis of 450 million impressions across 10 B2B SaaS sites found that Google filters between 59.3% and 93.6% of impressions before you ever see them (<a href="https://hilandseo.com/google-search-console-data-is-75-incomplete/" target="_blank" rel="noopener noreferrer">Kevin Indig/Hiland SEO</a>, 2025).
+      </p>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        That's a massive blind spot. And if you're pairing GSC with Google Analytics to fill the gaps? You're stacking one incomplete dataset on top of another. GA loses 80-90% of EU visitor data to cookie consent rejection (<a href="https://docs.sealmetrics.com/blog/cookie-banner-ghosting-data-loss/" target="_blank" rel="noopener noreferrer">SealMetrics</a>, 2025). You end up making SEO decisions based on a fraction of a fraction.
+      </p>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        There's a better approach: pair Search Console with privacy-first analytics. You keep GSC's search query data — clicks, impressions, CTR, average position — and replace the leaky GA layer with cookieless analytics that counts every visitor. No consent banners. No data sampling. No regulatory risk. This guide shows you how using <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Pulse</a>'s built-in GSC integration.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200&h=630&fit=crop&q=80" alt="Analytics dashboard displaying geographic data maps, cohort analysis charts, and device breakdowns on a laptop screen" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;" loading="lazy" />
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>TL;DR:</strong> Google Search Console filters 75% of impression data and caps exports at 1,000 rows (<a href="https://hilandseo.com/google-search-console-data-is-75-incomplete/" target="_blank" rel="noopener noreferrer">Hiland SEO</a>, 2025). Pairing GSC with cookie-based analytics doubles the blind spot — only 10-20% of EU visitors accept cookies. Connecting GSC to privacy-first analytics gives you search insights alongside complete traffic data, with no cookies or consent banners.
+      </blockquote>
+
+      <h2>Why Is 75% of Your Search Console Data Missing?</h2>
+
+      <p>
+        Google applies aggressive privacy thresholds to Search Console data. An analysis by Kevin Indig of 450 million impressions across 10 B2B SaaS sites found that GSC filters out 75% of impressions on average — with individual sites ranging from 59.3% to 93.6% (<a href="https://hilandseo.com/google-search-console-data-is-75-incomplete/" target="_blank" rel="noopener noreferrer">Hiland SEO</a>, 2025). Roughly 38% of clicks are also filtered. The queries and pages you see in your GSC dashboard represent a minority of your actual search visibility.
+      </p>
+      <p>
+        The limitations don't stop at filtering. GSC caps data exports at 1,000 rows per report and retains performance data for only 16 months (<a href="https://seotesting.com/google-search-console/data-limitations/" target="_blank" rel="noopener noreferrer">SEOTesting</a>). If your site ranks for more than 1,000 queries — and most content-heavy sites do — you're missing long-tail keywords that could inform your content strategy. Historical trend analysis beyond 16 months? You'll need a separate tool to store that data.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">How Much Data Google Search Console Hides</text>
+          <text x="280" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">Analysis of 450M impressions across 10 B2B SaaS sites</text>
+
+          <text x="155" y="100" text-anchor="end" font-size="13" fill="currentColor" dominant-baseline="middle">Impressions (avg)</text>
+          <rect x="165" y="87" width="281" height="26" rx="4" fill="#ef4444" opacity="0.8"/>
+          <text x="454" y="100" font-size="13" font-weight="700" fill="#ef4444" dominant-baseline="middle">75%</text>
+
+          <text x="155" y="150" text-anchor="end" font-size="13" fill="currentColor" dominant-baseline="middle">Impressions (worst)</text>
+          <rect x="165" y="137" width="351" height="26" rx="4" fill="#ef4444"/>
+          <text x="468" y="150" font-size="12" font-weight="700" fill="#fff" dominant-baseline="middle">93.6%</text>
+
+          <text x="155" y="200" text-anchor="end" font-size="13" fill="currentColor" dominant-baseline="middle">Clicks (avg)</text>
+          <rect x="165" y="187" width="143" height="26" rx="4" fill="#F97316" opacity="0.8"/>
+          <text x="316" y="200" font-size="13" font-weight="700" fill="#F97316" dominant-baseline="middle">38%</text>
+
+          <line x1="165" y1="230" x2="540" y2="230" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <text x="165" y="248" text-anchor="start" font-size="10" fill="#a3a3a3">0%</text>
+          <text x="352" y="248" text-anchor="middle" font-size="10" fill="#a3a3a3">50%</text>
+          <text x="540" y="248" text-anchor="end" font-size="10" fill="#a3a3a3">100%</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Kevin Indig / Hiland SEO, 2025</figcaption>
+      </figure>
+
+      <p>
+        In September 2025, Google removed the <code>num=100</code> parameter from search results. The impact was immediate: reported impressions dropped 30.6% overnight (<a href="https://www.wenstein.com/your-google-search-console-data-just-changed-forever/" target="_blank" rel="noopener noreferrer">Wenstein Beyond Digital</a>, 2025). What actually happened? The inflated impression counts had included bot-generated pageviews. The data you'd been optimizing around was partly artificial. GSC is powerful — but it's not the complete picture it appears to be.
+      </p>
+
+      <!-- Citation capsule -->
+      <p>
+        According to a 2025 analysis of 450 million search impressions, Google Search Console filters approximately 75% of impression data and 38% of click data before it reaches site owners (<a href="https://hilandseo.com/google-search-console-data-is-75-incomplete/" target="_blank" rel="noopener noreferrer">Hiland SEO</a>, 2025). This means SEO decisions based solely on GSC data are built on roughly one quarter of actual search visibility.
+      </p>
+
+      <h2>What Happens When You Combine GSC with Cookie-Based Analytics?</h2>
+
+      <p>
+        Google Analytics' market share dropped from 81.8% to 78.6% between March 2025 and March 2026 — a 3.2 percentage-point decline in a single year (<a href="https://w3techs.com/technologies/history_overview/traffic_analysis" target="_blank" rel="noopener noreferrer">W3Techs</a>, 2026). Marketers aren't leaving because they found a fancier dashboard. They're leaving because cookie-based analytics is fundamentally broken in markets with consent requirements.
+      </p>
+      <p>
+        The math is grim. Europeans spend a collective 575 million hours per year interacting with cookie consent banners — about 1.4 hours per user (<a href="https://cookie-script.com/news/consent-fatigue-strategies-to-improve-user-experience-and-boost-opt-in-rates" target="_blank" rel="noopener noreferrer">Cookie Script</a>, 2025). And when they do interact? Only 25.4% accept all cookies. Another 33.6% ignore the banner entirely, and 40.6% dismiss it without consenting (<a href="https://www.advance-metrics.com/en/blog/cookie-behaviour-study/" target="_blank" rel="noopener noreferrer">Advance Metrics</a>, 2023). Three-quarters of your audience stays invisible to any cookie-dependent tool.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">What Users Do When They See a Cookie Banner</text>
+          <text x="280" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">1.2 million users across international B2B websites</text>
+
+          <circle cx="180" cy="200" r="85" fill="none" stroke="#ef4444" stroke-width="45" stroke-dasharray="216.83 534.07" stroke-dashoffset="0" transform="rotate(-90 180 200)"/>
+          <circle cx="180" cy="200" r="85" fill="none" stroke="#F97316" stroke-width="45" stroke-dasharray="179.45 534.07" stroke-dashoffset="-216.83" transform="rotate(-90 180 200)"/>
+          <circle cx="180" cy="200" r="85" fill="none" stroke="#22c55e" stroke-width="45" stroke-dasharray="135.65 534.07" stroke-dashoffset="-396.28" transform="rotate(-90 180 200)"/>
+          <circle cx="180" cy="200" r="85" fill="none" stroke="#737373" stroke-width="45" stroke-dasharray="2.14 534.07" stroke-dashoffset="-531.93" transform="rotate(-90 180 200)"/>
+
+          <text x="180" y="195" text-anchor="middle" font-size="22" font-weight="800" fill="currentColor">74.6%</text>
+          <text x="180" y="215" text-anchor="middle" font-size="11" fill="#a3a3a3">invisible to GA</text>
+
+          <rect x="320" y="120" width="14" height="14" rx="3" fill="#ef4444"/>
+          <text x="340" y="132" font-size="12" fill="currentColor">Close/dismiss &#8212; 40.6%</text>
+
+          <rect x="320" y="155" width="14" height="14" rx="3" fill="#F97316"/>
+          <text x="340" y="167" font-size="12" fill="currentColor">Ignore completely &#8212; 33.6%</text>
+
+          <rect x="320" y="190" width="14" height="14" rx="3" fill="#22c55e"/>
+          <text x="340" y="202" font-size="12" fill="currentColor">Accept all &#8212; 25.4%</text>
+
+          <rect x="320" y="225" width="14" height="14" rx="3" fill="#737373"/>
+          <text x="340" y="237" font-size="12" fill="currentColor">Open settings &#8212; 0.4%</text>
+
+          <text x="400" y="280" text-anchor="middle" font-size="11" fill="#22c55e">&#8593; Only these visitors are tracked by GA</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: Advance Metrics cookie behaviour study, 2023 (1.2M users)</figcaption>
+      </figure>
+
+      <p>
+        Stack that on top of GSC's 75% filtering, and you're working with a sliver of reality. Add the 42.7% of internet users running ad blockers (<a href="https://backlinko.com/ad-blockers-users" target="_blank" rel="noopener noreferrer">Backlinko</a>, 2026) — nearly a billion people globally — and the picture gets worse. Privacy-first analytics sidesteps all of this by not using cookies in the first place. Every visitor counts, regardless of banner interaction or browser extensions. For a detailed comparison of how these tools stack up, see our <a href="https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom">Pulse vs GA vs Plausible vs Fathom breakdown</a>.
+      </p>
+
+      <h2>How Does Pulse's Search Console Integration Work?</h2>
+
+      <p>
+        The privacy-enhancing technologies market reached USD 4.97 billion in 2025, growing at 19.79% CAGR toward USD 12.26 billion by 2030 (<a href="https://www.mordorintelligence.com/industry-reports/privacy-enhancing-technologies-market" target="_blank" rel="noopener noreferrer">Mordor Intelligence</a>, 2025). Pulse's Google Search Console integration is part of this shift — it connects your search performance data to a cookieless analytics dashboard via OAuth 2.0, giving you four core metrics in one place: total clicks, total impressions, average CTR, and average ranking position.
+      </p>
+
+      <!-- [UNIQUE INSIGHT] -->
+      <p>
+        What makes this different from checking GSC in a separate tab? Context. When your search data sits alongside actual traffic data — pageviews, referrers, devices, locations — patterns emerge that neither tool reveals alone. A query might show strong impressions in GSC but drive no engagement on your site. Or a page with low search visibility might convert far better than your top-ranking content. You can't spot these connections when your data lives in two separate dashboards.
+      </p>
+      <p>
+        Pulse's search page includes a time-series chart tracking daily clicks and impressions with dual Y-axes, tables for top queries and top pages (paginated at 50 rows), and expandable drill-down rows. Click a query to see which pages it ranks for. Click a page to see which queries found it. There's also a "new queries" badge that flags search terms appearing only in the current period — useful for spotting emerging topics before they show up in your regular reporting cycle. Date ranges are flexible: today, last 7 or 28 days, this month, or custom.
+      </p>
+
+      <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=630&fit=crop&q=80" alt="Padlock resting on a dark keyboard illuminated with red and green light, symbolizing data security and privacy protection" style="width: 100%; border-radius: 12px; margin: 2rem 0;" loading="lazy" />
+
+      <!-- Citation capsule -->
+      <p>
+        The global privacy-enhancing technologies market is projected to grow from USD 4.97 billion in 2025 to USD 12.26 billion by 2030 at a 19.79% compound annual growth rate (<a href="https://www.grandviewresearch.com/industry-analysis/privacy-enhancing-technologies-market-report" target="_blank" rel="noopener noreferrer">Grand View Research</a>, 2025). Tools that combine search intelligence with cookieless analytics represent one of the fastest-growing segments of this market.
+      </p>
+
+      <h2>How to Connect Google Search Console to Pulse</h2>
+
+      <p>
+        82% of internet users express high concern about personal data collection (<a href="https://www.datastackhub.com/insights/data-privacy-statistics/" target="_blank" rel="noopener noreferrer">DataStackHub</a>, citing Cisco, 2025). Connecting a privacy-first analytics tool to GSC lets you get search performance data without adding to that concern — and the setup takes under two minutes. If you've already added your site to Pulse, you're halfway there.
+      </p>
+
+      <ol>
+        <li><strong>Add your site to Pulse</strong> — If you haven't already, add a single script tag to your site's <code>&lt;head&gt;</code>. No npm packages, no build step.</li>
+        <li><strong>Open your site settings</strong> — Navigate to your site dashboard and click Settings &#8594; Integrations.</li>
+        <li><strong>Click "Connect Google Search Console"</strong> — This launches Google's OAuth flow. Sign in with the Google account that has access to your GSC property.</li>
+        <li><strong>Select your property</strong> — Choose the GSC property that matches your domain. Pulse links it to your site automatically.</li>
+        <li><strong>Wait for the initial sync</strong> — A status indicator shows the connection state: green for active, amber for syncing, red if something went wrong. The first sync typically completes within minutes.</li>
+      </ol>
+
+      <p>
+        Once connected, your settings page displays the linked Google account email, the GSC property name, the last sync timestamp, and the connection creation date. If a sync fails, Pulse surfaces the error message directly in settings so you can troubleshoot without guessing. Admins and site owners can disconnect the integration at any time.
+      </p>
+
+      <!-- [PERSONAL EXPERIENCE] -->
+      <p>
+        One thing worth noting: Google's Search Console API typically has a 2-3 day data delay. That's a Google-side limitation, not a Pulse one. Your most recent search data will always lag slightly behind your real-time traffic numbers. We've found this actually works well in practice — it naturally separates "what's happening now" (Pulse traffic data) from "what happened in search this week" (GSC data), giving you two complementary time horizons.
+      </p>
+
+      <h2>What Can Privacy-First Analytics Show You That GA Can't?</h2>
+
+      <p>
+        Google Analytics has been declared non-compliant with GDPR by data protection authorities in six EU countries: Austria, France, Italy, Denmark, Sweden, and Norway (<a href="https://wp-statistics.com/2025/09/is-google-analytics-gdpr-compliant/" target="_blank" rel="noopener noreferrer">WP Statistics</a>, 2025). The Cologne District Court confirmed in August 2025 that standard GA usage violates GDPR data transfer requirements. Cumulative GDPR fines have reached EUR 7.1 billion (<a href="https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026" target="_blank" rel="noopener noreferrer">DLA Piper</a>, 2026). This isn't a theoretical risk — it's an enforcement trend that's accelerating.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">Cumulative GDPR Fines Keep Climbing</text>
+          <text x="280" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">EUR billions, 2020&#8211;2025</text>
+
+          <line x1="55" y1="260" x2="505" y2="260" stroke="#a3a3a3" stroke-width="0.5" opacity="0.3"/>
+          <line x1="55" y1="204" x2="505" y2="204" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="55" y1="148" x2="505" y2="148" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="55" y1="91" x2="505" y2="91" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+
+          <text x="50" y="264" text-anchor="end" font-size="10" fill="#a3a3a3">&#8364;0B</text>
+          <text x="50" y="208" text-anchor="end" font-size="10" fill="#a3a3a3">&#8364;2B</text>
+          <text x="50" y="152" text-anchor="end" font-size="10" fill="#a3a3a3">&#8364;4B</text>
+          <text x="50" y="95" text-anchor="end" font-size="10" fill="#a3a3a3">&#8364;6B</text>
+
+          <rect x="65" y="252" width="55" height="8" rx="4" fill="#ef4444" opacity="0.4"/>
+          <text x="92" y="246" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">&#8364;0.3B</text>
+
+          <rect x="140" y="223" width="55" height="37" rx="4" fill="#ef4444" opacity="0.5"/>
+          <text x="167" y="218" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">&#8364;1.3B</text>
+
+          <rect x="215" y="181" width="55" height="79" rx="4" fill="#ef4444" opacity="0.6"/>
+          <text x="242" y="176" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">&#8364;2.8B</text>
+
+          <rect x="290" y="142" width="55" height="118" rx="4" fill="#ef4444" opacity="0.7"/>
+          <text x="317" y="136" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">&#8364;4.2B</text>
+
+          <rect x="365" y="99" width="55" height="161" rx="4" fill="#ef4444" opacity="0.85"/>
+          <text x="392" y="94" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">&#8364;5.7B</text>
+
+          <rect x="440" y="60" width="55" height="200" rx="4" fill="#FD5E0F"/>
+          <text x="467" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#FD5E0F">&#8364;7.1B</text>
+
+          <text x="92" y="278" text-anchor="middle" font-size="11" fill="#a3a3a3">2020</text>
+          <text x="167" y="278" text-anchor="middle" font-size="11" fill="#a3a3a3">2021</text>
+          <text x="242" y="278" text-anchor="middle" font-size="11" fill="#a3a3a3">2022</text>
+          <text x="317" y="278" text-anchor="middle" font-size="11" fill="#a3a3a3">2023</text>
+          <text x="392" y="278" text-anchor="middle" font-size="11" fill="#a3a3a3">2024</text>
+          <text x="467" y="278" text-anchor="middle" font-size="11" fill="#a3a3a3">2025</text>
+        </svg>
+        <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: #a3a3a3;">Source: DLA Piper / CMS Enforcement Tracker, 2026</figcaption>
+      </figure>
+
+      <p>
+        Privacy-first analytics avoids this entirely. Because tools like Pulse don't collect personal data, don't set cookies, and don't transfer data to US servers, most GDPR obligations simply don't apply. Your analytics keeps working regardless of consent banners, ad blockers, or browser privacy settings. Every visitor gets counted. Pulse stores data on <a href="https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy">Swiss infrastructure under the FADP</a> — providing strong data protection without the legal complexity of EU-US data transfers.
+      </p>
+      <p>
+        Combined with GSC data, you get a setup that's both more complete and more compliant than GA alone. Your search performance comes from Google's own index. Your site analytics comes from a cookieless tool that counts every visitor. No sampling, no consent walls, no regulatory exposure. For more on the current state of privacy enforcement, see our <a href="https://ciphera.net/blog/privacy-statistics-2026">2026 privacy statistics roundup</a>.
+      </p>
+
+      <h2>Does This Setup Actually Improve Your SEO Decisions?</h2>
+
+      <p>
+        79% of the global population is now covered by at least one data protection law, with over 140 countries having enacted privacy legislation (<a href="https://www.datastackhub.com/insights/data-privacy-statistics/" target="_blank" rel="noopener noreferrer">DataStackHub</a>, citing UNCTAD, 2025). Building your analytics on cookieless foundations isn't just about compliance — it's about data quality. When your analytics tool only sees 10-20% of EU visitors, your understanding of which content performs, which referrers convert, and which pages need work is systematically biased. Privacy-first analytics removes that bias by counting everyone.
+      </p>
+      <p>
+        Add GSC's search intelligence on top, and you can connect search visibility to actual site behavior with confidence. That 79% global coverage isn't shrinking. Whether you care about privacy for ethical, practical, or legal reasons, cookieless analytics means you won't need to rebuild your stack when the next regulation lands. For context on upcoming changes, our <a href="https://ciphera.net/blog/eu-ai-act-compliance-guide-2026">EU AI Act compliance guide</a> covers what businesses need to prepare for.
+      </p>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>Do I still need Google Analytics if I use Pulse with Search Console?</h3>
+      <p>
+        No. Pulse provides complete traffic analytics — pageviews, referrers, devices, locations, custom events, and <a href="https://ciphera.net/blog/why-most-analytics-tools-skip-user-journeys">user journeys</a> — without cookies. Combined with GSC's search query data, you get a fuller picture than GA provides. GA's market share dropped from 81.8% to 78.6% in 12 months (<a href="https://w3techs.com/technologies/history_overview/traffic_analysis" target="_blank" rel="noopener noreferrer">W3Techs</a>, 2026), partly because privacy-first alternatives now cover its core features.
+      </p>
+
+      <h3>Does connecting Google Search Console to Pulse share my data with third parties?</h3>
+      <p>
+        No. Pulse uses a read-only OAuth 2.0 connection to pull your GSC metrics. Your search data is stored on Swiss infrastructure under the FADP. No visitor data is shared with Google, no cookies are set on your visitors' browsers, and you can disconnect the integration at any time from your site settings.
+      </p>
+
+      <h3>Can I use Google Search Console with other privacy-first analytics tools?</h3>
+      <p>
+        GSC works independently — you can view its data at search.google.com regardless of your analytics tool. However, neither Plausible nor Fathom offers a built-in GSC integration, so you'd check two separate dashboards. Pulse pulls GSC data directly into your analytics dashboard for a unified view alongside traffic, behavior, and user journey data.
+      </p>
+
+      <h3>How often does Pulse sync Google Search Console data?</h3>
+      <p>
+        Pulse syncs GSC data automatically in the background. Google's API typically makes data available with a 2-3 day delay, which is a Google-side limitation. Your dashboard displays the last synced timestamp and connection status — green for active, amber for syncing, red if an error occurs.
+      </p>
+
+      <h3>Does connecting GSC to Pulse require a cookie consent banner?</h3>
+      <p>
+        No. The GSC integration is a server-to-server OAuth connection between Pulse and Google's API. No cookies are set on your visitors' browsers, and no client-side tracking code changes. Your site remains fully cookie-free and consent-banner-free. 82% of internet users express concern about data collection (<a href="https://www.datastackhub.com/insights/data-privacy-statistics/" target="_blank" rel="noopener noreferrer">DataStackHub</a>, citing Cisco, 2025) — not adding another consent prompt is a user experience win.
+      </p>
+
+      <h2>Key Takeaways</h2>
+
+      <ul>
+        <li><strong>GSC data is powerful but incomplete</strong> — 75% of impressions and 38% of clicks are filtered before reaching your dashboard, with a 1,000-row export cap and 16-month retention window</li>
+        <li><strong>Cookie-based analytics compounds the problem</strong> — only 25.4% of users accept cookies, meaning GA misses three-quarters of your EU audience on top of GSC's own filtering</li>
+        <li><strong>Privacy-first analytics fills the gap</strong> — cookieless tools count every visitor regardless of consent banners or ad blockers, giving you an accurate traffic baseline</li>
+        <li><strong>Pulse's GSC integration brings search and traffic together</strong> — one dashboard showing clicks, impressions, CTR, rankings alongside complete site analytics with drill-down and new query detection</li>
+        <li><strong>Regulatory pressure is accelerating</strong> — EUR 7.1 billion in cumulative GDPR fines, six countries ruling GA non-compliant, and 79% of the world's population covered by privacy laws</li>
+        <li><strong>Setup takes under two minutes</strong> — OAuth connect, select your property, and your search data appears alongside privacy-first traffic analytics with zero cookies</li>
+      </ul>
+
+      <p>
+        Ready to combine Google Search Console with privacy-first analytics? <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Try Pulse</a> — connect your GSC property and see your search performance alongside complete, cookieless traffic data. Already using BunnyCDN? Check out our guide on <a href="https://ciphera.net/blog/cdn-performance-monitoring-bunnycdn-analytics">monitoring CDN performance without Google Analytics</a>.
+      </p>
+    `,
+  },
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

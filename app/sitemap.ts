@@ -29,6 +29,7 @@ const publishedBlogPosts: { slug: string; lastModified: string }[] = [
   { slug: 'data-privacy-audit-guide-startups', lastModified: '2026-03-12' },
   { slug: 'cdn-performance-monitoring-bunnycdn-analytics', lastModified: '2026-03-14' },
   { slug: 'why-most-analytics-tools-skip-user-journeys', lastModified: '2026-03-15' },
+  { slug: 'google-search-console-privacy-first-analytics', lastModified: '2026-03-15' },
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {

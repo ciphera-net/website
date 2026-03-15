@@ -120,4 +120,12 @@ export const blogPosts: BlogPost[] = [
     date: '2026-03-15',
     readTime: '12 min read',
   },
+  {
+    slug: 'google-search-console-privacy-first-analytics',
+    title: 'How to Use Google Search Console with Privacy-First Analytics in 2026',
+    description: '75% of GSC impression data is filtered from reports. Here\'s how to combine Search Console with privacy-first analytics for complete, cookie-free search and traffic insights.',
+    category: 'Tutorial',
+    date: '2026-03-15',
+    readTime: '11 min read',
+  },
 ]
