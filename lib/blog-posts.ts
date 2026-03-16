@@ -128,4 +128,12 @@ export const blogPosts: BlogPost[] = [
     date: '2026-03-15',
     readTime: '11 min read',
   },
+  {
+    slug: 'why-we-chose-bunnycdn',
+    title: 'Why We Chose BunnyCDN as Ciphera\'s CDN',
+    description: '97% of EU cloud infra is US-controlled. Here\'s why we picked an EU-native CDN with 119+ PoPs, $0.01/GB pricing, and GDPR baked in — not bolted on.',
+    category: 'Privacy',
+    date: '2026-03-16',
+    readTime: '11 min read',
+  },
 ]

@@ -30,6 +30,7 @@ const publishedBlogPosts: { slug: string; lastModified: string }[] = [
   { slug: 'cdn-performance-monitoring-bunnycdn-analytics', lastModified: '2026-03-14' },
   { slug: 'why-most-analytics-tools-skip-user-journeys', lastModified: '2026-03-15' },
   { slug: 'google-search-console-privacy-first-analytics', lastModified: '2026-03-15' },
+  { slug: 'why-we-chose-bunnycdn', lastModified: '2026-03-16' },
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -88,7 +89,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Blog index (include even if posts are drafts -- the index page itself is valid)
     {
       url: `${baseUrl}/blog`,
-      lastModified: '2026-03-15',
+      lastModified: '2026-03-16',
     },
   ]
 

@@ -5680,6 +5680,311 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       </p>
     `,
   },
+  'why-we-chose-bunnycdn': {
+    title: 'Why We Chose BunnyCDN as Ciphera\'s CDN',
+    description: '97% of EU cloud infra is US-controlled. Here\'s why we picked an EU-native CDN with 119+ PoPs, $0.01/GB pricing, and GDPR baked in — not bolted on.',
+    category: 'Privacy',
+    date: '2026-03-16',
+    dateModified: '2026-03-16',
+    readTime: '11 min read',
+    faqs: [
+      { question: 'Is BunnyCDN GDPR compliant?', answer: 'Yes. Bunny.net is headquartered in Slovenia — an EU member state — making it subject to GDPR by default. The company holds ISO 27001 and SOC 2 Type II certifications, offers a built-in Data Processing Agreement, anonymizes all end-user logs, and provides EU-only Routing Filters that restrict content delivery to European edge nodes exclusively.' },
+      { question: 'How fast is BunnyCDN compared to other CDNs?', answer: 'BunnyCDN averages roughly 25ms global latency across 119+ Points of Presence in 82 countries, backed by over 200 Tbps of network capacity. The HTTP Archive Web Almanac (2025) found that CDNs deliver DNS responses 60% faster on desktop and 19% faster on mobile versus origin servers — and BunnyCDN consistently ranks among the top performers on CDNPerf benchmarks.' },
+      { question: 'Can you use BunnyCDN with end-to-end encrypted files?', answer: 'Yes. Because client-side encryption happens before upload, the CDN only ever caches and delivers opaque encrypted blobs. BunnyCDN doesn\'t need to read or transform the file contents — it simply moves bytes closer to the recipient. This is exactly how Ciphera\'s Drop service works: AES-256-GCM encryption in the browser, then BunnyCDN handles edge delivery.' },
+      { question: 'How much does BunnyCDN cost?', answer: 'BunnyCDN charges $0.01 per GB in North America and Europe — 88% cheaper than AWS CloudFront at $0.085/GB for equivalent traffic (Backblaze, 2025). There are no minimum commitments or monthly fees. You pay only for what you use, with volume discounts dropping to $0.005/GB for the first 500 TB and lower beyond that.' },
+    ],
+    content: `
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        According to the <a href="https://www.weforum.org/stories/2025/01/europe-digital-sovereignty/" target="_blank" rel="noopener noreferrer">World Economic Forum</a> (2025), 97% of Europe's cloud infrastructure is controlled by non-European providers. American tech giants dominate CDN, compute, and storage — which means most "GDPR-compliant" services are really just US companies with European data centers and a checkbox DPA. When we built Ciphera, a platform where every file is encrypted before it leaves your browser, we couldn't afford that kind of compliance theater. We needed a CDN that treated European data privacy as a founding principle, not a feature toggle.
+      </p>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+        That's why we chose <a href="https://bunny.net?ref=00y9gyb6dz" target="_blank" rel="noopener noreferrer">BunnyCDN</a>. Here's the full story — what we looked for, what we rejected, and why an EU-native CDN headquartered in Slovenia won out.
+      </p>
+
+      <img src="/bunnycdn_53a0dec5c9.png" alt="Bunny.net official logo — an orange geometric origami-style rabbit representing the BunnyCDN content delivery network" style="width: 240px; margin: 0 auto 2rem; display: block;" loading="lazy" />
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>TL;DR:</strong> We chose BunnyCDN because it's EU-headquartered (Slovenia), GDPR-native with ISO 27001 and SOC 2 Type II certifications, 88% cheaper than AWS CloudFront at $0.01/GB (<a href="https://www.backblaze.com/blog/aws-cloudfront-vs-bunny-net-how-do-the-cdns-compare/" target="_blank" rel="noopener noreferrer">Backblaze</a>, 2025), and delivers ~25ms global latency across 119+ edge locations. Privacy baked in — not bolted on.
+      </blockquote>
+
+      <h2>What Does a Privacy-First Platform Actually Need From a CDN?</h2>
+
+      <p>
+        CDNs deliver DNS responses 60% faster on desktop and 19% faster on mobile compared to origin servers, according to the <a href="https://almanac.httparchive.org/en/2025/cdn" target="_blank" rel="noopener noreferrer">HTTP Archive Web Almanac</a> (2025). Speed matters — a 1-second delay in page load time results in a 7% reduction in conversions (<a href="https://blog.hubspot.com/marketing/page-load-time-conversion-rates" target="_blank" rel="noopener noreferrer">HubSpot</a>, 2025). But when your entire product is built around the promise that nobody — not even you — can read your users' files, speed isn't enough.
+      </p>
+      <p>
+        Here's what our CDN checklist looked like:
+      </p>
+      <ul>
+        <li><strong>EU jurisdiction</strong> — headquartered in an EU member state, not just hosting EU data centers</li>
+        <li><strong>No PII logging</strong> — anonymized access logs by default, not as an opt-in</li>
+        <li><strong>Data routing control</strong> — ability to restrict delivery to EU-only edge nodes</li>
+        <li><strong>E2EE compatibility</strong> — works with opaque encrypted blobs, no need to inspect or transform content</li>
+        <li><strong>Transparent pricing</strong> — pay-as-you-go without enterprise sales calls or hidden fees</li>
+        <li><strong>Security certifications</strong> — ISO 27001, SOC 2, or equivalent</li>
+      </ul>
+      <p>
+        Most major CDNs failed at least two of these. Cloudflare is US-headquartered and routes through US infrastructure by default. AWS CloudFront is a subsidiary of the world's largest surveillance-adjacent cloud provider. Fastly is publicly traded in the US with data processing governed by US law. Are they fast? Absolutely. But for a privacy platform, jurisdiction and data handling aren't negotiable.
+      </p>
+
+      <!-- [UNIQUE INSIGHT] -->
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>Our take:</strong> GDPR compliance isn't a feature you bolt onto a US-headquartered service. It's a property of where a company is incorporated, where its data flows, and which courts have jurisdiction over it. That distinction matters more than any checkbox on a compliance page.
+      </blockquote>
+
+      <h2>Why Did BunnyCDN Stand Out?</h2>
+
+      <p>
+        The <a href="https://www.weforum.org/stories/2025/01/europe-digital-sovereignty/" target="_blank" rel="noopener noreferrer">World Economic Forum</a> (2025) reports that American tech giants control over 70% of EU cloud infrastructure. Bunny.net is one of the rare exceptions. Headquartered in Medvode, Slovenia — an EU member state since 2004 — BunnyCDN is subject to GDPR natively. It isn't a US company with a European subsidiary. It's a European company, full stop.
+      </p>
+      <p>
+        That single fact changes everything downstream. Their <a href="https://bunny.net/gdpr/" target="_blank" rel="noopener noreferrer">Data Processing Agreement</a> isn't a legal patch over a US-first architecture. Their <a href="https://bunny.net/blog/introducing-routing-filters-gdpr-friendly-eu-only-cdn-routing/" target="_blank" rel="noopener noreferrer">EU-only Routing Filters</a> let you restrict content delivery entirely to European edge nodes — so encrypted files never touch a server outside EU jurisdiction. And their logging is anonymized by default. No IP addresses. No PII. No opt-in toggles required.
+      </p>
+      <p>
+        On top of that, Bunny.net holds both <a href="https://bunny.net/blog/bunnynet-achieves-iso-27001-certification/" target="_blank" rel="noopener noreferrer">ISO 27001</a> and SOC 2 Type II certifications. These are the same standards expected from enterprise-grade providers charging ten times the price. With GDPR fines reaching EUR 5.88 billion cumulatively and EUR 1.2 billion in 2024 alone (<a href="https://secureprivacy.ai/blog/gdpr-compliance-2026" target="_blank" rel="noopener noreferrer">Secure Privacy</a>, 2026), the cost of getting this wrong is real. Picking a CDN that's natively aligned with EU law isn't paranoia — it's risk management.
+      </p>
+
+      <p>
+        71% of organizations now cite cross-border data transfer compliance as their top regulatory challenge (<a href="https://www.forcepoint.com/blog/insights/tracking-global-data-protection-laws-2026" target="_blank" rel="noopener noreferrer">Forcepoint</a>, 2025). BunnyCDN sidesteps this entirely for EU-to-EU delivery. When you flip on Routing Filters, your data stays in Europe. No Schrems II headaches. No standard contractual clause gymnastics. Just European bytes on European servers, governed by European law.
+      </p>
+
+      <h2>How Does BunnyCDN's Performance Stack Up?</h2>
+
+      <p>
+        The <a href="https://almanac.httparchive.org/en/2025/cdn" target="_blank" rel="noopener noreferrer">HTTP Archive Web Almanac</a> (2025) measured CDN impact across millions of websites: DNS resolution drops from 129ms to 52ms on desktop (60% faster), and TLS negotiation drops from 177ms to 57ms (68% faster). BunnyCDN specifically runs 119+ Points of Presence across 82 countries on 6 continents, backed by over 200 Tbps of network capacity and an average global latency of roughly 25ms (<a href="https://www.cdnplanet.com/cdns/bunnycdn/" target="_blank" rel="noopener noreferrer">CDN Planet</a>, 2025).
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 380" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="280" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">CDN vs Origin Server Performance</text>
+          <text x="280" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">Lower is better — milliseconds (HTTP Archive Web Almanac, 2025)</text>
+
+          <!-- Legend -->
+          <rect x="140" y="62" width="12" height="12" rx="2" fill="#FD5E0F"/>
+          <text x="158" y="73" font-size="11" fill="#a3a3a3">With CDN</text>
+          <rect x="280" y="62" width="12" height="12" rx="2" fill="#a3a3a3" opacity="0.4"/>
+          <text x="298" y="73" font-size="11" fill="#a3a3a3">Origin Server</text>
+
+          <!-- DNS Desktop -->
+          <text x="28" y="115" text-anchor="end" font-size="11" fill="#a3a3a3">DNS</text>
+          <text x="28" y="128" text-anchor="end" font-size="9" fill="#737373">Desktop</text>
+          <rect x="34" y="104" width="168" height="16" rx="4" fill="#FD5E0F"/>
+          <text x="210" y="116" font-size="11" font-weight="600" fill="#FD5E0F">52ms</text>
+          <rect x="34" y="124" width="418" height="16" rx="4" fill="#a3a3a3" opacity="0.4"/>
+          <text x="460" y="136" font-size="11" font-weight="600" fill="#a3a3a3">129ms</text>
+
+          <!-- DNS Mobile -->
+          <text x="28" y="175" text-anchor="end" font-size="11" fill="#a3a3a3">DNS</text>
+          <text x="28" y="188" text-anchor="end" font-size="9" fill="#737373">Mobile</text>
+          <rect x="34" y="164" width="285" height="16" rx="4" fill="#FD5E0F"/>
+          <text x="327" y="176" font-size="11" font-weight="600" fill="#FD5E0F">176ms</text>
+          <rect x="34" y="184" width="352" height="16" rx="4" fill="#a3a3a3" opacity="0.4"/>
+          <text x="394" y="196" font-size="11" font-weight="600" fill="#a3a3a3">217ms</text>
+
+          <!-- TLS Desktop -->
+          <text x="28" y="235" text-anchor="end" font-size="11" fill="#a3a3a3">TLS</text>
+          <text x="28" y="248" text-anchor="end" font-size="9" fill="#737373">Desktop</text>
+          <rect x="34" y="224" width="184" height="16" rx="4" fill="#FD5E0F"/>
+          <text x="226" y="236" font-size="11" font-weight="600" fill="#FD5E0F">57ms</text>
+          <rect x="34" y="244" width="456" height="16" rx="4" fill="#a3a3a3" opacity="0.4"/>
+          <text x="498" y="256" font-size="11" font-weight="600" fill="#a3a3a3">177ms</text>
+
+          <!-- TLS Mobile -->
+          <text x="28" y="295" text-anchor="end" font-size="11" fill="#a3a3a3">TLS</text>
+          <text x="28" y="308" text-anchor="end" font-size="9" fill="#737373">Mobile</text>
+          <rect x="34" y="284" width="297" height="16" rx="4" fill="#FD5E0F"/>
+          <text x="339" y="296" font-size="11" font-weight="600" fill="#FD5E0F">183ms</text>
+          <rect x="34" y="304" width="490" height="16" rx="4" fill="#a3a3a3" opacity="0.4"/>
+          <text x="530" y="316" font-size="11" font-weight="600" fill="#a3a3a3">302ms</text>
+
+          <!-- Improvement labels -->
+          <text x="500" y="116" font-size="10" font-weight="700" fill="#22c55e">-60%</text>
+          <text x="500" y="176" font-size="10" font-weight="700" fill="#22c55e">-19%</text>
+          <text x="530" y="236" font-size="10" font-weight="700" fill="#22c55e">-68%</text>
+          <text x="545" y="296" font-size="10" font-weight="700" fill="#22c55e">-39%</text>
+
+          <text x="280" y="365" text-anchor="middle" font-size="10" fill="#737373">Source: HTTP Archive Web Almanac, 2025</text>
+        </svg>
+      </figure>
+
+      <p>
+        What about the real-world impact on users? It's significant. 53% of mobile users abandon sites that take over 3 seconds to load, and conversion rates plummet from 3.05% at 1 second to just 1.08% at 5 seconds (<a href="https://www.hostinger.com/tutorials/website-load-time-statistics" target="_blank" rel="noopener noreferrer">Hostinger</a>, citing Google research, 2026). For a file-sharing platform like Drop, where users upload and download encrypted files, every millisecond of CDN latency translates directly into user experience.
+      </p>
+      <p>
+        BunnyCDN also supports TLS 1.3 across its entire network. The Web Almanac found that 99% of CDN-served HTML requests use TLS 1.3, compared to just 77.7% on origin servers. Faster handshakes, better security, zero configuration on our end.
+      </p>
+
+      <h2>What About Cost? Privacy Doesn't Have to Be Expensive</h2>
+
+      <p>
+        An independent comparison by <a href="https://www.backblaze.com/blog/aws-cloudfront-vs-bunny-net-how-do-the-cdns-compare/" target="_blank" rel="noopener noreferrer">Backblaze</a> (2025) found that BunnyCDN charges $0.01/GB in North America and Europe — compared to AWS CloudFront's $0.085/GB for the first 10 TB. For 5 TB of monthly bandwidth in EU/NA, that's roughly $50 with BunnyCDN versus $425 with CloudFront. An 88% cost reduction for a CDN that's also EU-headquartered and privacy-first.
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="280" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">CDN Cost for 5 TB Monthly Bandwidth (NA/EU)</text>
+          <text x="280" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">Lower is better — USD per month</text>
+
+          <!-- BunnyCDN -->
+          <text x="120" y="100" text-anchor="end" font-size="12" fill="currentColor" font-weight="600">BunnyCDN</text>
+          <rect x="130" y="86" width="62" height="24" rx="4" fill="#FD5E0F"/>
+          <text x="200" y="103" font-size="12" font-weight="700" fill="#FD5E0F">$50</text>
+
+          <!-- Fastly -->
+          <text x="120" y="150" text-anchor="end" font-size="12" fill="currentColor">Fastly</text>
+          <rect x="130" y="136" width="310" height="24" rx="4" fill="#a3a3a3" opacity="0.5"/>
+          <text x="448" y="153" font-size="12" font-weight="600" fill="#a3a3a3">~$250</text>
+
+          <!-- CloudFront -->
+          <text x="120" y="200" text-anchor="end" font-size="12" fill="currentColor">CloudFront</text>
+          <rect x="130" y="186" width="395" height="24" rx="4" fill="#a3a3a3" opacity="0.35"/>
+          <text x="533" y="203" font-size="12" font-weight="600" fill="#a3a3a3">$425</text>
+
+          <!-- Savings callout -->
+          <rect x="160" y="240" width="240" height="40" rx="8" fill="#22c55e" opacity="0.15"/>
+          <text x="280" y="265" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e">BunnyCDN saves 88% vs CloudFront</text>
+
+          <text x="280" y="315" text-anchor="middle" font-size="10" fill="#737373">Sources: Backblaze (2025), bunny.net pricing, Fastly pricing</text>
+        </svg>
+      </figure>
+
+      <p>
+        There's no minimum commitment. No enterprise contract. No sales call required. You sign up, configure a pull zone, and pay for exactly what you use. Volume discounts kick in automatically — $0.005/GB for the first 500 TB, dropping further beyond that. For a startup, this pricing model means you can start small and scale without worrying about surprise invoices.
+      </p>
+      <p>
+        BunnyCDN's <a href="https://bunny.net/optimizer/" target="_blank" rel="noopener noreferrer">Bunny Optimizer</a> adds another layer of savings. It handles automatic WebP conversion (up to 80% file size reduction), on-the-fly image resizing via query parameters, and CSS/JS minification at the edge. These transforms are cached, so your origin server handles less load and your bandwidth bill shrinks further. For a platform serving encrypted file downloads alongside a marketing site, that optimization matters.
+      </p>
+
+      <!-- [PERSONAL EXPERIENCE] -->
+      <h2>How BunnyCDN Fits Into Ciphera's Architecture</h2>
+
+      <p>
+        The <a href="https://www.precedenceresearch.com/content-delivery-network-market" target="_blank" rel="noopener noreferrer">global CDN market</a> is valued at $32.70 billion in 2025 and projected to hit $38.75 billion by 2026 (Precedence Research). But most CDN architectures assume they'll inspect, transform, or cache readable content. Ciphera's model is different. Every file uploaded through <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer">Drop</a> is encrypted with AES-256-GCM in the user's browser before it ever hits our servers. The CDN never sees plaintext. It caches and delivers opaque encrypted blobs.
+      </p>
+
+      <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
+        <strong>How it works:</strong> The browser encrypts the file → uploads to our backend → backend stores the blob in S3-compatible storage → BunnyCDN sits in front as a pull zone → recipients download the encrypted blob from the nearest edge node → their browser decrypts it locally. BunnyCDN never needs to read the file. It just moves encrypted bytes closer to the user.
+      </blockquote>
+
+      <p>
+        This architecture means BunnyCDN's caching works perfectly — encrypted blobs are static, immutable files with unique URLs. Cache hit ratios stay high. Edge delivery stays fast. And because the CDN can't read the content, there's zero risk of accidental data exposure at the edge. Even if an attacker compromised a BunnyCDN edge node, they'd only find encrypted noise.
+      </p>
+      <p>
+        We also use BunnyCDN's Routing Filters for files that require EU-only delivery. A single toggle ensures those encrypted blobs are served exclusively from European PoPs. No workaround, no Terraform scripting, no manual edge configuration. It just works.
+      </p>
+      <p>
+        Want to see how we monitor this setup? Check out our guide on <a href="https://ciphera.net/blog/cdn-performance-monitoring-bunnycdn-analytics">monitoring BunnyCDN performance without Google Analytics</a>.
+      </p>
+
+      <h2>What's Next for CDN and Privacy?</h2>
+
+      <p>
+        The CDN market is on track to reach $164.06 billion by 2035 — a 17.50% compound annual growth rate (<a href="https://www.precedenceresearch.com/content-delivery-network-market" target="_blank" rel="noopener noreferrer">Precedence Research</a>, 2025). At the same time, GDPR enforcement is accelerating. Cumulative fines have hit EUR 5.88 billion, with EUR 1.2 billion levied in 2024 alone (<a href="https://secureprivacy.ai/blog/gdpr-compliance-2026" target="_blank" rel="noopener noreferrer">Secure Privacy</a>, 2026). And 71% of organizations now rank cross-border data compliance as their top regulatory challenge (<a href="https://www.forcepoint.com/blog/insights/tracking-global-data-protection-laws-2026" target="_blank" rel="noopener noreferrer">Forcepoint</a>, 2025).
+      </p>
+
+      <figure style="margin: 2.5rem auto; text-align: center; padding: 1.5rem; max-width: 740px;">
+        <svg viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <text x="280" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">Page Load Time vs Conversion Rate</text>
+          <text x="280" y="48" text-anchor="middle" font-size="11" fill="#a3a3a3">Every second costs you users (Hostinger / Google, 2026)</text>
+
+          <!-- Axes -->
+          <line x1="70" y1="260" x2="520" y2="260" stroke="#a3a3a3" stroke-width="1" opacity="0.3"/>
+          <line x1="70" y1="80" x2="70" y2="260" stroke="#a3a3a3" stroke-width="1" opacity="0.3"/>
+
+          <!-- Y-axis labels -->
+          <text x="62" y="265" text-anchor="end" font-size="10" fill="#a3a3a3">0%</text>
+          <text x="62" y="220" text-anchor="end" font-size="10" fill="#a3a3a3">1%</text>
+          <text x="62" y="175" text-anchor="end" font-size="10" fill="#a3a3a3">2%</text>
+          <text x="62" y="130" text-anchor="end" font-size="10" fill="#a3a3a3">3%</text>
+          <text x="62" y="85" text-anchor="end" font-size="10" fill="#a3a3a3">4%</text>
+
+          <!-- Grid lines -->
+          <line x1="70" y1="220" x2="520" y2="220" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="70" y1="175" x2="520" y2="175" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="70" y1="130" x2="520" y2="130" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+          <line x1="70" y1="85" x2="520" y2="85" stroke="#a3a3a3" stroke-width="0.5" opacity="0.15"/>
+
+          <!-- X-axis labels -->
+          <text x="130" y="280" text-anchor="middle" font-size="10" fill="#a3a3a3">1s</text>
+          <text x="250" y="280" text-anchor="middle" font-size="10" fill="#a3a3a3">2s</text>
+          <text x="370" y="280" text-anchor="middle" font-size="10" fill="#a3a3a3">3s</text>
+          <text x="490" y="280" text-anchor="middle" font-size="10" fill="#a3a3a3">5s</text>
+
+          <!-- Line path: 1s=3.05%, 2s=1.68%, 3s=1.12%, 5s=1.08% -->
+          <!-- Y scale: 0% = 260, 4% = 80 → 1% = 45px -->
+          <!-- 3.05% → 260 - (3.05*45) = 122.75 -->
+          <!-- 1.68% → 260 - (1.68*45) = 184.4 -->
+          <!-- 1.12% → 260 - (1.12*45) = 209.6 -->
+          <!-- 1.08% → 260 - (1.08*45) = 211.4 -->
+          <polyline points="130,123 250,184 370,210 490,211" fill="none" stroke="#FD5E0F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- Data points -->
+          <circle cx="130" cy="123" r="5" fill="#FD5E0F"/>
+          <circle cx="250" cy="184" r="5" fill="#FD5E0F"/>
+          <circle cx="370" cy="210" r="5" fill="#FD5E0F"/>
+          <circle cx="490" cy="211" r="5" fill="#FD5E0F"/>
+
+          <!-- Value labels -->
+          <text x="130" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#FD5E0F">3.05%</text>
+          <text x="250" y="178" text-anchor="middle" font-size="11" font-weight="700" fill="#FD5E0F">1.68%</text>
+          <text x="370" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#FD5E0F">1.12%</text>
+          <text x="490" y="203" text-anchor="middle" font-size="11" font-weight="700" fill="#FD5E0F">1.08%</text>
+
+          <!-- Drop callout -->
+          <text x="195" y="155" text-anchor="middle" font-size="10" font-weight="600" fill="#ef4444">-45%</text>
+
+          <!-- Axis titles -->
+          <text x="295" y="300" text-anchor="middle" font-size="11" fill="#a3a3a3">Load Time (seconds)</text>
+          <text x="20" y="175" text-anchor="middle" font-size="11" fill="#a3a3a3" transform="rotate(-90, 20, 175)">Conversion Rate</text>
+
+          <text x="280" y="330" text-anchor="middle" font-size="10" fill="#737373">Source: Hostinger / Google Research, 2026</text>
+        </svg>
+      </figure>
+
+      <p>
+        These trends point in one direction. Companies that route European user data through US-jurisdictioned infrastructure face growing legal exposure. The EU's push for digital sovereignty isn't slowing down. Choosing an EU-native CDN today isn't just about current compliance — it's about not having to rip out your infrastructure when the next regulatory wave hits.
+      </p>
+      <p>
+        CDN adoption already reaches 71% among the top 1,000 websites (<a href="https://almanac.httparchive.org/en/2025/cdn" target="_blank" rel="noopener noreferrer">HTTP Archive</a>, 2025). As the market grows, the question won't be whether you use a CDN — it'll be whether your CDN provider shares your values on data privacy. For us, that answer is <a href="https://bunny.net?ref=00y9gyb6dz" target="_blank" rel="noopener noreferrer">BunnyCDN</a>.
+      </p>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>Is BunnyCDN GDPR compliant?</h3>
+      <p>
+        Yes. Bunny.net is headquartered in Slovenia — an EU member state — making it subject to GDPR by default. The company holds ISO 27001 and SOC 2 Type II certifications, offers a built-in Data Processing Agreement, anonymizes all end-user logs, and provides EU-only Routing Filters that restrict content delivery to European edge nodes exclusively.
+      </p>
+
+      <h3>How fast is BunnyCDN compared to other CDNs?</h3>
+      <p>
+        BunnyCDN averages roughly 25ms global latency across 119+ Points of Presence in 82 countries, backed by over 200 Tbps of network capacity. The HTTP Archive Web Almanac (2025) found that CDNs deliver DNS responses 60% faster on desktop versus origin servers — and BunnyCDN consistently ranks among the top performers on <a href="https://www.cdnperf.com/cdn-provider/bunny-net/" target="_blank" rel="noopener noreferrer">CDNPerf</a> benchmarks.
+      </p>
+
+      <h3>Can you use BunnyCDN with end-to-end encrypted files?</h3>
+      <p>
+        Yes. Because client-side encryption happens before upload, the CDN only caches and delivers opaque encrypted blobs. BunnyCDN doesn't need to read or transform file contents — it moves bytes closer to the recipient. This is exactly how Ciphera's Drop service works: AES-256-GCM encryption in the browser, then BunnyCDN handles edge delivery.
+      </p>
+
+      <h3>How much does BunnyCDN cost?</h3>
+      <p>
+        BunnyCDN charges $0.01 per GB in North America and Europe — 88% cheaper than AWS CloudFront at $0.085/GB for equivalent traffic (<a href="https://www.backblaze.com/blog/aws-cloudfront-vs-bunny-net-how-do-the-cdns-compare/" target="_blank" rel="noopener noreferrer">Backblaze</a>, 2025). No minimum commitments or monthly fees. Volume discounts drop to $0.005/GB for the first 500 TB and lower beyond that.
+      </p>
+
+      <h2>Key Takeaways</h2>
+
+      <ul>
+        <li><strong>Jurisdiction matters more than features</strong> — BunnyCDN is EU-headquartered (Slovenia), so GDPR applies natively. 97% of EU cloud infrastructure is US-controlled, making EU-native providers a rare and valuable choice.</li>
+        <li><strong>Privacy-first doesn't mean slow</strong> — 119+ PoPs, 82 countries, ~25ms global latency, and 200+ Tbps capacity. CDNs improve DNS resolution by 60% on desktop over origin servers.</li>
+        <li><strong>Cost scales with usage</strong> — $0.01/GB in NA/EU is 88% cheaper than CloudFront. No minimums, no enterprise contracts, no sales calls.</li>
+        <li><strong>E2EE and CDN caching work together</strong> — encrypted blobs are static, immutable, and cache-friendly. The CDN never sees plaintext.</li>
+        <li><strong>EU-only delivery is one toggle away</strong> — Routing Filters restrict content to European edge nodes, eliminating cross-border data transfer headaches.</li>
+      </ul>
+
+      <p>
+        If you're building something where privacy isn't optional, we'd recommend giving <a href="https://bunny.net?ref=00y9gyb6dz" target="_blank" rel="noopener noreferrer">BunnyCDN</a> a serious look. It's the rare CDN where performance, pricing, and privacy actually align. Already using BunnyCDN? See how to <a href="https://ciphera.net/blog/cdn-performance-monitoring-bunnycdn-analytics">monitor its performance with privacy-first analytics</a>.
+      </p>
+    `,
+  },
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
