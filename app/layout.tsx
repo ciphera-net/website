@@ -91,10 +91,14 @@ export default function RootLayout({
           <HeroBackground />
         </div>
         <Script
-          strategy="lazyOnload"
+          defer
           data-domain="ciphera.net"
-          data-api={process.env.NEXT_PUBLIC_PULSE_API_URL || 'https://pulse-api.ciphera.net'}
-          src={process.env.NEXT_PUBLIC_PULSE_SCRIPT_URL || 'https://pulse.ciphera.net/script.js?v=3.0'}
+          data-api="https://pulse-api.ciphera.net"
+          src="https://pulse.ciphera.net/script.js"
+        />
+        <Script
+          defer
+          src="https://pulse.ciphera.net/script.frustration.js"
         />
         <ThemeProviders>
           <Header />
