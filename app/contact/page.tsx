@@ -443,7 +443,7 @@ export default function ContactPage() {
                 <div className="rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-700 shadow-lg">
                   <div className="relative aspect-video w-full bg-neutral-100 dark:bg-neutral-800">
                     <Image
-                      src="/office.jpeg"
+                      src="/office-hq.jpeg"
                       alt="Ciphera headquarters in Diegem, Belgium"
                       fill
                       className="object-cover"
