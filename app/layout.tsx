@@ -5,7 +5,7 @@ import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import '../styles/globals.css'
-import HeroBackground from '../components/HeroBackground'
+// import HeroBackground from '../components/HeroBackground'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -87,9 +87,6 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="Ciphera Blog" href="/feed.xml" />
       </head>
       <body className="relative antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
-        <div className="fixed inset-0 -z-10 overflow-hidden">
-          <HeroBackground />
-        </div>
         <Script
           defer
           data-domain="ciphera.net"
@@ -102,7 +99,7 @@ export default function RootLayout({
         />
         <ThemeProviders>
           <Header />
-          <main className="flex-1 pt-24 overflow-x-hidden">
+          <main className="flex-1 overflow-x-hidden">
             {children}
           </main>
           <Footer />

@@ -10,7 +10,7 @@
     --color-success: #10B981;
     --color-warning: #F59E0B;
     --color-error: #EF4444;
-    
+
     /* * Neutral greys - refined scale */
     --color-neutral-50: #FAFAFA;
     --color-neutral-100: #F5F5F5;
@@ -23,6 +23,50 @@
     --color-neutral-800: #262626;
     --color-neutral-900: #171717;
     --color-neutral-950: #0A0A0A;
+
+    /* * shadcn design tokens - mapped to Ciphera palette */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
+    --primary: 21 94% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 21 94% 53%;
+    --radius: 0.5rem;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --primary: 21 94% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 21 94% 53%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 98%;
+    --card: 0 0% 9%;
+    --card-foreground: 0 0% 98%;
   }
   
   * {
@@ -35,12 +79,7 @@
   
   body {
     @apply bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 antialiased;
-    @apply bg-ciphera-gradient bg-fixed;
     font-family: var(--font-plus-jakarta-sans), system-ui, -apple-system, sans-serif;
-  }
-  
-  .dark body {
-    @apply bg-ciphera-gradient-dark;
   }
 }
 
