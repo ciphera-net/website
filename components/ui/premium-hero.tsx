@@ -50,6 +50,7 @@ const trustIndicators = [
 const privacyTitles = ["encrypted", "private", "secure", "anonymous", "yours"];
 
 export const PremiumHero = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const noiseRef = useRef<HTMLCanvasElement>(null);
   const beamsRef = useRef<Beam[]>([]);
@@ -62,31 +63,35 @@ export const PremiumHero = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const noiseCanvas = noiseRef.current;
-    if (!canvas || !noiseCanvas) return;
+    const container = containerRef.current;
+    if (!canvas || !noiseCanvas || !container) return;
     const ctx = canvas.getContext("2d");
     const nCtx = noiseCanvas.getContext("2d");
     if (!ctx || !nCtx) return;
 
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
 
-      noiseCanvas.width = window.innerWidth * dpr;
-      noiseCanvas.height = window.innerHeight * dpr;
-      noiseCanvas.style.width = `${window.innerWidth}px`;
-      noiseCanvas.style.height = `${window.innerHeight}px`;
+      noiseCanvas.width = w * dpr;
+      noiseCanvas.height = h * dpr;
+      noiseCanvas.style.width = `${w}px`;
+      noiseCanvas.style.height = `${h}px`;
       nCtx.setTransform(1, 0, 0, 1, 0, 0);
       nCtx.scale(dpr, dpr);
 
       beamsRef.current = [];
       for (let layer = 1; layer <= LAYERS; layer++) {
         for (let i = 0; i < BEAMS_PER_LAYER; i++) {
-          beamsRef.current.push(createBeam(window.innerWidth, window.innerHeight, layer));
+          beamsRef.current.push(createBeam(w, h, layer));
         }
       }
     };
@@ -128,18 +133,15 @@ export const PremiumHero = () => {
     const animate = () => {
       if (!canvas || !ctx) return;
 
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, "#050505");
-      gradient.addColorStop(1, "#111111");
-      ctx.fillStyle = gradient;
+      ctx.fillStyle = "#0A0A0A";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       beamsRef.current.forEach((beam) => {
         beam.y -= beam.speed * (beam.layer / LAYERS + 0.5);
         beam.pulse += beam.pulseSpeed;
         if (beam.y + beam.length < -50) {
-          beam.y = window.innerHeight + 50;
-          beam.x = Math.random() * window.innerWidth;
+          beam.y = container.clientHeight + 50;
+          beam.x = Math.random() * container.clientWidth;
         }
         drawBeam(beam);
       });
@@ -163,32 +165,27 @@ export const PremiumHero = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden -mt-[88px] pt-[88px]">
+    <div ref={containerRef} className="relative w-full h-[130vh] overflow-hidden -mt-[88px] pt-[88px]">
       <canvas ref={noiseRef} className="absolute inset-0 z-0 pointer-events-none" />
       <canvas ref={canvasRef} className="absolute inset-0 z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-[40vh] z-20 pointer-events-none" style={{ background: 'linear-gradient(to top, hsl(0 0% 4%) 0%, hsl(0 0% 4%) 15%, transparent 100%)' }} />
 
-      <div className="relative z-20 flex h-screen w-full items-center justify-center px-6 text-center">
+      <div className="relative z-20 flex h-screen w-full items-center justify-center px-6 text-center -mt-16">
         <div className="container mx-auto flex flex-col items-center gap-12 text-center">
-          <Button variant="secondary" size="sm" className="gap-4" asChild>
-            <Link href="/products">
-              Privacy-First Platform <MoveRight className="w-4 h-4" />
-            </Link>
-          </Button>
-
           <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter font-regular">
             <span className="text-white">Your data is</span>
-            <span className="relative flex w-full justify-center overflow-hidden md:pb-4 md:pt-1">
+            <span className="relative flex w-full justify-center md:pb-4 md:pt-1">
               &nbsp;
               {privacyTitles.map((title, index) => (
                 <motion.span
                   key={index}
                   className="absolute font-semibold text-brand-orange"
-                  initial={{ opacity: 0, y: "-100" }}
+                  initial={{ opacity: 0, y: 50 }}
                   transition={{ type: "spring", stiffness: 50 }}
                   animate={
                     titleNumber === index
                       ? { y: 0, opacity: 1 }
-                      : { y: titleNumber > index ? -150 : 150, opacity: 0 }
+                      : { y: -50, opacity: 0 }
                   }
                 >
                   {title}
@@ -208,7 +205,7 @@ export const PremiumHero = () => {
                 Explore Products <MoveRight className="w-4 h-4" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="gap-4 border-neutral-700 text-white hover:bg-neutral-800" asChild>
+            <Button size="lg" variant="outline" className="gap-4 border-neutral-600 text-white hover:bg-neutral-800 hover:border-neutral-500" asChild>
               <Link href="/about" onClick={() => track("cta_our_mission")}>
                 Our Mission
               </Link>

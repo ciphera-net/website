@@ -105,7 +105,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isInView, setIsInView] = useState(false);
+  const [isInView, setIsInView] = useState(true);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
   const memoizedColor = useMemo(() => {
@@ -211,7 +211,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     if (!ctx) return;
 
     let animationFrameId: number;
-    let gridParams: ReturnType<typeof setupCanvas>;
+    let gridParams: ReturnType<typeof setupCanvas> = null!;
 
     const updateCanvasSize = () => {
       const newWidth = width || container.clientWidth;
@@ -221,6 +221,17 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     };
 
     updateCanvasSize();
+
+    // Pre-render immediately so grid is visible when scrolled into view
+    drawGrid(
+      ctx,
+      canvas.width,
+      canvas.height,
+      gridParams.cols,
+      gridParams.rows,
+      gridParams.squares,
+      gridParams.dpr,
+    );
 
     let lastTime = 0;
     const animate = (time: number) => {
@@ -257,9 +268,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 
     intersectionObserver.observe(canvas);
 
-    if (isInView) {
-      animationFrameId = requestAnimationFrame(animate);
-    }
+    animationFrameId = requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
