@@ -206,7 +206,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <a
-            href="https://auth.ciphera.net/create-account"
+            href="https://auth.ciphera.net/signup"
             className="hidden md:inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors duration-200 shadow-sm shadow-brand-orange/20"
             onClick={() => track('header_cta_get_started')}
           >
@@ -263,7 +263,7 @@ export default function Header() {
               Contact
             </Link>
             <a
-              href="https://auth.ciphera.net/create-account"
+              href="https://auth.ciphera.net/signup"
               className="mx-2 mt-2 flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white text-sm font-medium px-4 py-3 rounded-xl transition-colors duration-200"
               onClick={() => track('header_cta_get_started_mobile')}
             >
