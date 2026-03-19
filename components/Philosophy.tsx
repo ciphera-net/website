@@ -30,7 +30,7 @@ const philosophyPoints = [
 
 export default function Philosophy() {
   return (
-    <section className="section-padding bg-neutral-900 dark:bg-neutral-950 text-white overflow-hidden">
+    <section className="section-padding bg-neutral-950 text-white overflow-hidden">
       <div className="section-container">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* * Left - Main message */}

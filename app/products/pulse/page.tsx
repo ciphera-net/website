@@ -62,7 +62,7 @@ export default function PulsePage() {
       <section className="section-padding pt-32">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
+            <div className="w-20 h-20 rounded-3xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
               <Image
                 src="/pulse_icon_no_margins.png"
                 alt="Pulse"
@@ -75,7 +75,7 @@ export default function PulsePage() {
             <h1 className="heading-1 mb-6">
               Pulse
             </h1>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
               Get the insights you need without compromising user privacy. 
               No cookies, no tracking, just clean analytics that respect your visitors.
             </p>
@@ -98,16 +98,16 @@ export default function PulsePage() {
           <h2 className="heading-2 mb-6">
             What Is Pulse?
           </h2>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+          <p className="text-lg text-neutral-400 leading-relaxed mb-6">
             Ciphera Pulse is a privacy-first website analytics platform that provides pageview tracking, referrer analysis, and geographic insights without using cookies, fingerprinting, or collecting any personal data as defined by GDPR Article 4. Unlike Google Analytics, which sets tracking cookies and builds cross-site behavioral profiles, Pulse treats each page view as an independent event with no persistent identifiers.
           </p>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+          <p className="text-lg text-neutral-400 leading-relaxed mb-6">
             The Pulse tracking script is under 2KB gzipped — compared to Google Analytics at approximately 45KB and Segment at approximately 70KB. This means faster page loads and lower bandwidth consumption for your visitors. The script loads asynchronously and never blocks page rendering.
           </p>
-          <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+          <p className="text-neutral-400 leading-relaxed mb-6">
             Because Pulse collects no personal data, it is GDPR compliant by architecture rather than by configuration. You do not need cookie consent banners for Pulse, you do not need a Data Processing Agreement, and you cannot receive data subject access requests because there are no data subjects in the dataset. IP addresses are used only for country-level geolocation at the edge and immediately discarded — they are never stored, logged, or written to disk.
           </p>
-          <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          <p className="text-neutral-400 leading-relaxed">
             Pulse is open source and available on <a href="https://github.com/ciphera-net/pulse" target="_blank" rel="noopener noreferrer" className="text-brand-orange hover:underline">GitHub</a>. All analytics data is processed on Swiss infrastructure protected by the Swiss Federal Act on Data Protection (FADP).
           </p>
         </div>
@@ -131,7 +131,7 @@ export default function PulsePage() {
                 <h3 className="heading-3 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                <p className="text-sm text-neutral-400 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -154,25 +154,25 @@ export default function PulsePage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Page views and unique visitors
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Referrer sources and UTM parameters
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Device type, browser, and OS
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Geographic location (country-level only)
                   </span>
                 </li>
@@ -185,25 +185,25 @@ export default function PulsePage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     No personal identification data
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     No cross-site tracking
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     No fingerprinting techniques
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     No sale of data to third parties
                   </span>
                 </li>
@@ -222,7 +222,7 @@ export default function PulsePage() {
           <div className="card p-8">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                <tbody className="divide-y divide-neutral-800">
                   {[
                     ['Script Size', 'Under 2KB gzipped'],
                     ['Loading Strategy', 'Async, non-blocking — never delays page rendering'],
@@ -238,8 +238,8 @@ export default function PulsePage() {
                     ['Pricing', 'Free tier available'],
                   ].map(([spec, value]) => (
                     <tr key={spec}>
-                      <td className="py-3 pr-4 font-semibold text-neutral-900 dark:text-white whitespace-nowrap">{spec}</td>
-                      <td className="py-3 text-neutral-600 dark:text-neutral-400">{value}</td>
+                      <td className="py-3 pr-4 font-semibold text-white whitespace-nowrap">{spec}</td>
+                      <td className="py-3 text-neutral-400">{value}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -255,17 +255,17 @@ export default function PulsePage() {
           <h2 className="heading-2 mb-6 text-center">
             How Pulse Compares
           </h2>
-          <p className="text-center text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-12">
+          <p className="text-center text-neutral-400 max-w-3xl mx-auto mb-12">
             Google Analytics is installed on over 28 million websites, but it requires cookie consent banners in the EU and builds cross-site behavioral profiles. Pulse provides the metrics that drive product decisions without the surveillance trade-offs.
           </p>
           <div className="card p-8 max-w-4xl mx-auto">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <th className="text-left py-4 px-4 font-bold text-neutral-900 dark:text-white">Feature</th>
+                  <tr className="border-b border-neutral-800">
+                    <th className="text-left py-4 px-4 font-bold text-white">Feature</th>
                     <th className="text-center py-4 px-4 font-bold text-brand-orange">Pulse</th>
-                    <th className="text-center py-4 px-4 font-bold text-neutral-500 dark:text-neutral-400">Google Analytics</th>
+                    <th className="text-center py-4 px-4 font-bold text-neutral-400">Google Analytics</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -278,8 +278,8 @@ export default function PulsePage() {
                     ['Swiss infrastructure', true, false],
                     ['No cross-site tracking', true, false],
                   ].map(([feature, pulse, ga], index) => (
-                    <tr key={index} className="border-b border-neutral-200 dark:border-neutral-800">
-                      <td className="py-4 px-4 text-neutral-600 dark:text-neutral-400">{feature}</td>
+                    <tr key={index} className="border-b border-neutral-800">
+                      <td className="py-4 px-4 text-neutral-400">{feature}</td>
                       <td className="text-center py-4 px-4">
                         {pulse ? <CheckIcon className="w-5 h-5 text-brand-orange mx-auto" /> : '—'}
                       </td>

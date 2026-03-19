@@ -93,15 +93,15 @@ function ProductNode({
       transition={{ duration: 0.3, delay }}
       className="relative"
     >
-      <div className={`p-6 rounded-2xl bg-white dark:bg-neutral-900 border-2 transition-all duration-300 ${
+      <div className={`p-6 rounded-2xl bg-neutral-900 border-2 transition-all duration-300 ${
         isPrimary 
           ? 'border-brand-orange shadow-2xl shadow-brand-orange/20' 
           : isActive 
             ? 'border-brand-orange/50 shadow-lg' 
-            : 'border-neutral-200 dark:border-neutral-800'
+            : 'border-neutral-800'
       }`}>
         <div className="flex flex-col items-center text-center gap-3">
-          <div className={`w-16 h-16 rounded-2xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center shadow-lg p-3 transition-transform duration-300 ${
+          <div className={`w-16 h-16 rounded-2xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center shadow-lg p-3 transition-transform duration-300 ${
             isPrimary ? 'scale-110' : ''
           }`}>
             {typeof product.icon === 'string' ? (
@@ -117,10 +117,10 @@ function ProductNode({
             )}
           </div>
           <div>
-            <div className="font-bold text-neutral-900 dark:text-white text-sm">
+            <div className="font-bold text-white text-sm">
               {product.name}
             </div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400">
+            <div className="text-xs text-neutral-400">
               {product.description}
             </div>
           </div>
@@ -165,7 +165,7 @@ export default function Ecosystem() {
           <h2 className="heading-2 mb-4">
             What do you need?
           </h2>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
             Click a scenario below to see how Ciphera products work together to solve your privacy challenges.
           </p>
         </motion.div>
@@ -179,7 +179,7 @@ export default function Ecosystem() {
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                 selectedJourney === journey.id
                   ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/30 scale-105'
-                  : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-neutral-200 dark:border-neutral-700'
+                  : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 border border-neutral-700'
               }`}
             >
               {journey.title}
@@ -203,7 +203,7 @@ export default function Ecosystem() {
                   <h3 className="heading-3 mb-2">
                     {activeJourney.title}
                   </h3>
-                  <p className="text-neutral-600 dark:text-neutral-400">
+                  <p className="text-neutral-400">
                     {activeJourney.description}
                   </p>
                 </div>
@@ -225,11 +225,11 @@ export default function Ecosystem() {
                           className={`relative p-4 rounded-xl border-2 ${
                             isPrimary 
                               ? 'border-brand-orange bg-brand-orange/5' 
-                              : 'border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800'
+                              : 'border-neutral-700 bg-neutral-800'
                           }`}
                         >
                           <div className="flex flex-col items-center gap-2">
-                            <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center p-2">
+                            <div className="w-12 h-12 rounded-xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center p-2">
                               {typeof product.icon === 'string' ? (
                                 <Image 
                                   src={product.icon} 
@@ -243,10 +243,10 @@ export default function Ecosystem() {
                               )}
                             </div>
                             <div className="text-center">
-                              <div className="text-xs font-bold text-neutral-900 dark:text-white">
+                              <div className="text-xs font-bold text-white">
                                 {product.name}
                               </div>
-                              <div className="text-[10px] text-neutral-500 dark:text-neutral-400">
+                              <div className="text-[10px] text-neutral-400">
                                 {step.label}
                               </div>
                             </div>
@@ -276,13 +276,13 @@ export default function Ecosystem() {
                 </div>
 
                 {/* * Integration note */}
-                <div className="text-center text-sm text-neutral-600 dark:text-neutral-400">
+                <div className="text-center text-sm text-neutral-400">
                   <p>
-                    <span className="font-semibold text-neutral-900 dark:text-white">{allProducts.find(p => p.id === activeJourney.primaryProduct)?.name}</span>
+                    <span className="font-semibold text-white">{allProducts.find(p => p.id === activeJourney.primaryProduct)?.name}</span>
                     {' '}integrates seamlessly with{' '}
                     {activeJourney.integrations.map((id, idx) => (
                       <span key={id}>
-                        <span className="font-semibold text-neutral-900 dark:text-white">
+                        <span className="font-semibold text-white">
                           {allProducts.find(p => p.id === id)?.name}
                         </span>
                         {idx < activeJourney.integrations.length - 1 && (idx === activeJourney.integrations.length - 2 ? ' and ' : ', ')}

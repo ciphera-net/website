@@ -52,7 +52,7 @@ export default function BlogPage() {
             <h1 className="heading-1 mb-6">
               Privacy & Security Insights
             </h1>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
               Learn about zero-knowledge encryption, privacy-first technologies, and secure development practices.
             </p>
           </div>
@@ -85,7 +85,7 @@ export default function BlogPage() {
                     track('blog_search')
                   }
                 }}
-                className="w-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl pl-11 pr-4 py-3 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors duration-200"
+                className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors duration-200"
               />
             </div>
 
@@ -101,7 +101,7 @@ export default function BlogPage() {
                   className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200 ${
                     activeCategory === category
                       ? 'bg-brand-orange text-white'
-                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700'
+                      : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'
                   }`}
                 >
                   {category}
@@ -121,7 +121,7 @@ export default function BlogPage() {
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="group flex flex-col rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden hover:border-brand-orange/50 dark:hover:border-brand-orange/50 transition-all duration-200 hover:shadow-lg"
+                  className="group flex flex-col rounded-2xl border border-neutral-800 bg-neutral-900 overflow-hidden hover:border-brand-orange/50 transition-all duration-200 hover:shadow-lg"
                 >
                   <div className="aspect-video w-full overflow-hidden">
                     <img
@@ -134,19 +134,19 @@ export default function BlogPage() {
                   <div className="flex flex-col flex-1 p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <span className="badge-neutral text-xs">{post.category}</span>
-                      <span className="text-xs text-neutral-500 dark:text-neutral-400">{post.readTime}</span>
+                      <span className="text-xs text-neutral-400">{post.readTime}</span>
                     </div>
 
-                    <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-3 group-hover:text-brand-orange transition-colors">
+                    <h2 className="text-xl font-semibold text-white mb-3 group-hover:text-brand-orange transition-colors">
                       {post.title}
                     </h2>
 
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6 flex-1">
+                    <p className="text-sm text-neutral-400 leading-relaxed mb-6 flex-1">
                       {post.description}
                     </p>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-neutral-800">
-                      <span className="text-sm text-neutral-500 dark:text-neutral-400">
+                    <div className="flex items-center justify-between pt-4 border-t border-neutral-800">
+                      <span className="text-sm text-neutral-400">
                         {new Date(post.date).toLocaleDateString('en-GB', {
                           day: '2-digit',
                           month: '2-digit',
@@ -165,7 +165,7 @@ export default function BlogPage() {
           ) : (
             <div className="max-w-6xl mx-auto flex flex-col items-center justify-center py-20 text-center">
               <svg
-                className="w-12 h-12 text-neutral-300 dark:text-neutral-600 mb-4"
+                className="w-12 h-12 text-neutral-600 mb-4"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={1.5}
@@ -177,8 +177,8 @@ export default function BlogPage() {
                   d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
                 />
               </svg>
-              <p className="text-lg font-medium text-neutral-900 dark:text-white mb-1">No articles found</p>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+              <p className="text-lg font-medium text-white mb-1">No articles found</p>
+              <p className="text-sm text-neutral-400">
                 Try adjusting your search or filter to find what you&apos;re looking for.
               </p>
             </div>

@@ -95,7 +95,7 @@ export default function AboutPage() {
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/3 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
+          <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
         <div className="section-container">
@@ -113,7 +113,7 @@ export default function AboutPage() {
               Building the future of{' '}
               <span className="gradient-text">privacy</span>
             </h1>
-            <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
               Ciphera is dedicated to creating <a href="/products" className="link">privacy-first infrastructure and applications</a> 
               that put users in control of their data. We believe <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="link">encryption should be the default</a>, 
               not an add-on.
@@ -129,7 +129,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-neutral-900 dark:bg-neutral-800 p-6 sm:p-8 md:p-12 lg:p-16"
+          className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-neutral-800 p-6 sm:p-8 md:p-12 lg:p-16"
         >
           {/* * Background pattern */}
           <div className="absolute inset-0 opacity-10">
@@ -162,7 +162,7 @@ export default function AboutPage() {
             
             <div className="flex items-center justify-center">
               <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/30 to-neutral-600/30 dark:to-neutral-400/30 rounded-full blur-3xl" />
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/30 to-neutral-400/30 rounded-full blur-3xl" />
                 <div className="relative w-full h-full rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                   <Image
                     src="/ciphera_icon.png"
@@ -193,7 +193,7 @@ export default function AboutPage() {
             <h2 className="heading-2 mb-4">
               What we stand for
             </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
               These principles guide every decision we make and every line of code we write.
             </p>
           </motion.div>
@@ -217,7 +217,7 @@ export default function AboutPage() {
                     <h3 className="heading-3 mb-3">
                       {value.title}
                     </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                    <p className="text-neutral-400 leading-relaxed">
                       {value.description}
                     </p>
                   </div>
@@ -242,7 +242,7 @@ export default function AboutPage() {
               <h2 className="heading-2 mb-6">
                 Built with modern, secure technologies
               </h2>
-              <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+              <p className="text-lg text-neutral-400 leading-relaxed mb-8">
                 We use battle-tested technologies chosen for their security, performance, and reliability. 
                 Every component is carefully selected to ensure your data stays protected.
               </p>
@@ -259,10 +259,10 @@ export default function AboutPage() {
                   >
                     <CheckIcon className="w-5 h-5 text-brand-orange mt-0.5 shrink-0" />
                     <div>
-                      <div className="font-semibold text-neutral-900 dark:text-white text-sm">
+                      <div className="font-semibold text-white text-sm">
                         {tech.name}
                       </div>
-                      <div className="text-xs text-neutral-500 dark:text-neutral-400">
+                      <div className="text-xs text-neutral-400">
                         {tech.description}
                       </div>
                     </div>
@@ -281,35 +281,35 @@ export default function AboutPage() {
                 <h3 className="heading-3 mb-6">
                   Architecture Overview
                 </h3>
-                <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+                <p className="text-neutral-400 leading-relaxed mb-6">
                   Ciphera follows a microservices architecture with strict separation of concerns. 
                   Each service is isolated to maintain security boundaries.
                 </p>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
                       <LockIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold text-neutral-900 dark:text-white text-sm">Ciphera Auth</div>
+                      <div className="font-semibold text-white text-sm">Ciphera Auth</div>
                       <div className="text-xs text-neutral-500">Identity management</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
                       <Image src="/drop_icon_no_margins.png" alt="Drop - Secure file sharing application icon" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain" />
                     </div>
                     <div>
-                      <div className="font-semibold text-neutral-900 dark:text-white text-sm">Drop Backend</div>
+                      <div className="font-semibold text-white text-sm">Drop Backend</div>
                       <div className="text-xs text-neutral-500">Application logic</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
                       <ZapIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold text-neutral-900 dark:text-white text-sm">Ciphera Captcha</div>
+                      <div className="font-semibold text-white text-sm">Ciphera Captcha</div>
                       <div className="text-xs text-neutral-500">Bot protection</div>
                     </div>
                   </div>
@@ -352,13 +352,13 @@ export default function AboutPage() {
                     className="relative flex gap-6"
                   >
                     <div className="relative">
-                      <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 border-2 border-brand-orange flex items-center justify-center shadow-lg">
+                      <div className="w-10 h-10 rounded-full bg-neutral-800 border-2 border-brand-orange flex items-center justify-center shadow-lg">
                         <div className="w-3 h-3 rounded-full bg-brand-orange" />
                       </div>
                     </div>
                     <div className="flex-1 pt-1">
                       <div className="text-sm font-bold text-brand-orange mb-1">{item.year}</div>
-                      <p className="text-neutral-600 dark:text-neutral-400">{item.event}</p>
+                      <p className="text-neutral-400">{item.event}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -381,7 +381,7 @@ export default function AboutPage() {
             <h2 className="heading-2 mb-6">
               Experience Privacy-First Analytics
             </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8">
+            <p className="text-lg text-neutral-400 mb-8">
               Try Pulse—our privacy-first analytics platform. 
               See how analytics can work without compromising user privacy.
             </p>

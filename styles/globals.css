@@ -24,30 +24,7 @@
     --color-neutral-900: #171717;
     --color-neutral-950: #0A0A0A;
 
-    /* * shadcn design tokens - mapped to Ciphera palette */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
-    --primary: 21 94% 53%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 21 94% 53%;
-    --radius: 0.5rem;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
-  }
-
-  .dark {
+    /* * shadcn design tokens - dark mode (default) */
     --background: 0 0% 4%;
     --foreground: 0 0% 98%;
     --primary: 21 94% 53%;
@@ -63,22 +40,23 @@
     --border: 0 0% 15%;
     --input: 0 0% 15%;
     --ring: 21 94% 53%;
+    --radius: 0.5rem;
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 98%;
     --card: 0 0% 9%;
     --card-foreground: 0 0% 98%;
   }
-  
+
   * {
-    @apply border-neutral-200 dark:border-neutral-800;
+    @apply border-neutral-800;
   }
-  
+
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
-    @apply bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 antialiased;
+    @apply bg-neutral-950 text-neutral-100 antialiased;
     font-family: var(--font-plus-jakarta-sans), system-ui, -apple-system, sans-serif;
   }
 }
@@ -93,21 +71,21 @@
     @apply transition-all duration-200 ease-out;
     @apply hover:brightness-110 hover:shadow-lg hover:shadow-brand-orange/25;
     @apply active:scale-[0.98];
-    @apply focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 dark:focus:ring-offset-neutral-950;
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 focus:ring-offset-neutral-950;
     @apply disabled:opacity-50 disabled:cursor-not-allowed;
   }
-  
+
   /* * Secondary button - Outlined style */
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2;
-    @apply bg-transparent text-neutral-900 dark:text-white font-semibold;
+    @apply bg-transparent text-white font-semibold;
     @apply px-6 py-3 sm:py-3.5 rounded-xl;
     @apply min-h-[44px] sm:min-h-[48px];
-    @apply border border-neutral-300 dark:border-neutral-700;
+    @apply border border-neutral-700;
     @apply transition-all duration-200 ease-out;
-    @apply hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600;
+    @apply hover:bg-neutral-800 hover:border-neutral-600;
     @apply active:scale-[0.98];
-    @apply focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-950;
+    @apply focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 focus:ring-offset-neutral-950;
   }
   
   /* * Badge/Tag styles */
@@ -118,15 +96,15 @@
   }
   
   .badge-success {
-    @apply badge bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-300 dark:border-neutral-700;
+    @apply badge bg-neutral-800 text-neutral-300 border border-neutral-700;
   }
-  
+
   .badge-neutral-status {
-    @apply badge bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-300 dark:border-neutral-700;
+    @apply badge bg-neutral-800 text-neutral-300 border border-neutral-700;
   }
-  
+
   .badge-neutral {
-    @apply badge bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400;
+    @apply badge bg-neutral-800 text-neutral-400;
   }
   
   /* * Icon container */
@@ -139,7 +117,7 @@
   
   /* * Divider */
   .divider {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-neutral-200 dark:via-neutral-800 to-transparent;
+    @apply h-px w-full bg-gradient-to-r from-transparent via-neutral-800 to-transparent;
   }
   
   /* * Link styles */
@@ -151,11 +129,11 @@
   
   /* * Prose/Content styling */
   .prose-ciphera {
-    @apply text-neutral-600 dark:text-neutral-400 leading-relaxed;
+    @apply text-neutral-400 leading-relaxed;
   }
 
   .prose-ciphera strong {
-    @apply text-neutral-900 dark:text-white font-semibold;
+    @apply text-white font-semibold;
   }
 
   /* * Blog prose link styling — brand orange */

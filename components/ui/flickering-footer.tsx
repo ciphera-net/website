@@ -316,8 +316,8 @@ export const Component = () => {
 
   return (
     <footer id="footer" className="w-full pb-0">
-      <div className="relative border-t border-black/[0.06] dark:border-white/[0.06]">
-        <div className="absolute inset-0 -z-10 backdrop-blur-xl bg-white/60 dark:bg-neutral-950/60 supports-[backdrop-filter]:bg-white/50 dark:supports-[backdrop-filter]:bg-neutral-950/50" />
+      <div className="relative border-t border-white/[0.06]">
+        <div className="absolute inset-0 -z-10 backdrop-blur-xl bg-neutral-950/60 supports-[backdrop-filter]:bg-neutral-950/50" />
         <div className="flex flex-col md:flex-row md:items-start md:justify-between mx-auto max-w-6xl px-6 py-12 lg:py-16">
           <div className="flex flex-col items-start justify-start gap-y-4 max-w-xs mx-0">
             <Link href="/" className="hover:bg-accent rounded-md p-2 -ml-2 flex items-center gap-2 transition-colors">
@@ -348,8 +348,8 @@ export const Component = () => {
               © 2024-{new Date().getFullYear()} Ciphera. All rights reserved.
             </p>
           </div>
-          <div className="pt-8 md:pt-0 md:w-1/2">
-            <div className="flex flex-col items-start justify-start md:flex-row md:items-start md:justify-between gap-y-6 lg:pl-10">
+          <div className="pt-8 md:pt-0">
+            <div className="flex flex-col items-start justify-start md:flex-row md:items-start gap-x-16 gap-y-6">
               {footerLinks.map((column, columnIndex) => (
                 <ul key={columnIndex} className="flex flex-col gap-y-1">
                   <li className="mb-2 text-xs text-muted-foreground uppercase tracking-wider">
@@ -359,7 +359,7 @@ export const Component = () => {
                     <li key={link.id}>
                       <Link
                         href={link.url}
-                        className="text-sm font-medium text-muted-foreground hover:text-accent-foreground rounded-sm px-2 py-1.5 -ml-2 inline-block hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-colors"
+                        className="text-sm font-medium text-muted-foreground hover:text-accent-foreground rounded-sm px-2 py-1.5 -ml-2 inline-block hover:bg-white/[0.06] transition-colors"
                       >
                         {link.title}
                       </Link>

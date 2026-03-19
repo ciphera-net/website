@@ -1,6 +1,5 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { ThemeProviders } from '@ciphera-net/ui'
 import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
@@ -79,14 +78,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={plusJakartaSans.variable} suppressHydrationWarning>
+    <html lang="en" className={`${plusJakartaSans.variable} dark`} suppressHydrationWarning>
       <head>
         {/* DNS prefetch for analytics - uses env vars at build time, falls back to production */}
         <link rel="dns-prefetch" href={new URL(process.env.NEXT_PUBLIC_PULSE_SCRIPT_URL || 'https://pulse.ciphera.net/script.js').origin} />
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_PULSE_API_URL || 'https://pulse-api.ciphera.net'} />
         <link rel="alternate" type="application/rss+xml" title="Ciphera Blog" href="/feed.xml" />
       </head>
-      <body className="relative antialiased min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50">
+      <body className="relative antialiased min-h-screen flex flex-col bg-neutral-950 text-neutral-50">
         <Script
           defer
           data-domain="ciphera.net"
@@ -97,13 +96,11 @@ export default function RootLayout({
           defer
           src="https://pulse.ciphera.net/script.frustration.js"
         />
-        <ThemeProviders>
-          <Header />
-          <main className="flex-1 overflow-x-hidden">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProviders>
+        <Header />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   )

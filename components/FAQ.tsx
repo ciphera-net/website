@@ -55,7 +55,7 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
-      className="border-b border-neutral-200 dark:border-neutral-800"
+      className="border-b border-neutral-800"
     >
       <button
         onClick={() => {
@@ -84,7 +84,7 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
           transition={{ duration: 0.3 }}
           className="pb-6"
         >
-          <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          <p className="text-neutral-400 leading-relaxed">
             {faq.answer}
           </p>
         </motion.div>
@@ -115,7 +115,7 @@ export default function FAQ() {
             <h2 className="heading-2 mb-4">
               Frequently asked questions
             </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
               Learn more about zero-knowledge encryption, file security, and how Ciphera protects your privacy.
             </p>
           </motion.div>
@@ -134,7 +134,7 @@ export default function FAQ() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-center mt-12"
           >
-            <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+            <p className="text-neutral-400 mb-4">
               Still have questions?
             </p>
             <a

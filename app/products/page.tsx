@@ -23,7 +23,7 @@ const products = [
       'Team collaboration features',
     ],
     link: '/products/pulse',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     status: 'Available',
     highlight: true,
   },
@@ -42,7 +42,7 @@ const products = [
       'One-time download option',
     ],
     link: '/products/drop',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     status: 'Available',
     highlight: false,
   },
@@ -61,7 +61,7 @@ const products = [
       'Two-factor authentication support',
     ],
     link: '/products/auth',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     status: 'Available',
     highlight: false,
   },
@@ -79,7 +79,7 @@ const products = [
       'Configurable difficulty',
     ],
     link: '/products/captcha',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     status: 'Available',
     highlight: false,
   },
@@ -97,7 +97,7 @@ const products = [
       'Admin UI with secure access',
     ],
     link: '/products/relay',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     status: 'Available',
     highlight: false,
   },
@@ -186,7 +186,7 @@ export default function ProductsPage() {
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 right-1/4 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 left-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
+          <div className="absolute bottom-0 left-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
         <div className="section-container">
@@ -204,7 +204,7 @@ export default function ProductsPage() {
               Privacy-first{' '}
               <span className="gradient-text">applications</span>
             </h1>
-            <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
               A comprehensive suite of tools designed to protect your privacy.
               Each product works standalone or as part of the Ciphera ecosystem.
             </p>
@@ -220,14 +220,14 @@ export default function ProductsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-brand-orange/10 via-brand-orange/5 to-transparent border border-brand-orange/20 dark:border-brand-orange/30 p-6 sm:p-8 md:p-12">
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-brand-orange/10 via-brand-orange/5 to-transparent border border-brand-orange/30 p-6 sm:p-8 md:p-12">
             {/* * Background glow */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/20 dark:bg-brand-orange/15 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/15 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             
             <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               <div>
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-2xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center shadow-lg p-3">
+                  <div className="w-16 h-16 rounded-2xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center shadow-lg p-3">
                     <Image
                       src="/pulse_icon_no_margins.png"
                       alt="Pulse - Privacy-first analytics and session replay logo"
@@ -239,18 +239,18 @@ export default function ProductsPage() {
                   </div>
                   <div>
                     <h2 className="heading-2">Pulse</h2>
-                    <p className="text-neutral-500 dark:text-neutral-400">Privacy-First Analytics</p>
+                    <p className="text-neutral-400">Privacy-First Analytics</p>
                   </div>
                   <span className="badge-neutral-status text-[10px] ml-auto">Available</span>
                 </div>
 
-                <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+                <p className="text-lg text-neutral-400 mb-8 leading-relaxed">
                   {products[0].description}
                 </p>
 
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                   {products[0].features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-neutral-600 dark:text-neutral-400">
+                    <li key={feature} className="flex items-start gap-2 text-neutral-400">
                       <CheckIcon className="w-5 h-5 text-brand-orange mt-0.5 shrink-0" />
                       <span className="text-sm">{feature}</span>
                     </li>
@@ -269,8 +269,8 @@ export default function ProductsPage() {
 
               <div className="hidden lg:block">
                 <div className="relative aspect-square max-w-sm mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/20 to-brand-orange-hover/20 dark:from-brand-orange/15 dark:to-brand-orange-hover/15 rounded-3xl blur-2xl" />
-                  <div className="relative w-full h-full rounded-3xl bg-white/5 dark:bg-white/5 border border-white/10 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/15 to-brand-orange-hover/15 rounded-3xl blur-2xl" />
+                  <div className="relative w-full h-full rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center">
                     <Image
                       src="/pulse_icon_no_margins.png"
                       alt="Pulse - Privacy-first analytics and session replay platform"
@@ -301,7 +301,7 @@ export default function ProductsPage() {
             <h2 className="heading-2 mb-4">
               The foundation of privacy
             </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
               Our infrastructure services power the Ciphera ecosystem, providing secure authentication, bot protection, and email delivery.
             </p>
           </motion.div>
@@ -339,23 +339,23 @@ export default function ProductsPage() {
                     <h3 className="heading-3 mb-1">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
+                    <p className="text-sm text-neutral-400 mb-4">
                       {product.tagline}
                     </p>
-                    <p className="text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed text-sm">
+                    <p className="text-neutral-400 mb-6 leading-relaxed text-sm">
                       {product.description}
                     </p>
 
                     <ul className="space-y-2 mb-6">
                       {product.features.slice(0, 4).map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                        <li key={feature} className="flex items-start gap-2 text-sm text-neutral-400">
                           <CheckIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
                           <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="mt-auto pt-4 border-t border-neutral-200 dark:border-neutral-800">
+                    <div className="mt-auto pt-4 border-t border-neutral-800">
                       <span className="text-sm text-neutral-400 font-medium">
                         Internal service
                       </span>
@@ -376,7 +376,7 @@ export default function ProductsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative overflow-hidden rounded-3xl bg-neutral-900 dark:bg-neutral-800 p-8 md:p-16 text-center"
+            className="relative overflow-hidden rounded-3xl bg-neutral-800 p-8 md:p-16 text-center"
           >
             {/* * Background pattern */}
             <div className="absolute inset-0 opacity-10">

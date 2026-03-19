@@ -15,7 +15,7 @@ const products = [
     description: 'Real-time user insights and session replay without compromising user privacy. Visualize user journeys and debug issues instantly.',
     features: ['Session replay', 'Geographic heatmaps', 'Real-time traffic monitoring', 'Privacy-preserving data collection'],
     link: '/products/pulse',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     available: true,
   },
   {
@@ -26,7 +26,7 @@ const products = [
     description: 'Share files securely with end-to-end encryption. Your files are encrypted before they leave your device.',
     features: ['AES-256-GCM encryption', 'Zero-knowledge storage', 'Password protection', 'Expiring links'],
     link: '/products/drop',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     available: true,
   },
   {
@@ -37,7 +37,7 @@ const products = [
     description: 'Secure authentication for the Ciphera ecosystem with OAuth2, JWT, and advanced security features.',
     features: ['Double-hashed passwords', 'Two-factor auth', 'Account lockout', 'Session management'],
     link: '/products/auth',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     available: true,
   },
   {
@@ -48,7 +48,7 @@ const products = [
     description: 'Protect your applications from bots and automated abuse with visual and proof-of-work challenges.',
     features: ['Visual captchas', 'Proof-of-Work', 'Stateless verification', 'JWT tokens'],
     link: '/products/captcha',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     available: true,
   },
   {
@@ -59,7 +59,7 @@ const products = [
     description: 'Transactional email infrastructure for secure, privacy-first email delivery with TLS encryption.',
     features: ['TLS encryption', 'High deliverability', 'SMTP AUTH', 'Admin dashboard'],
     link: '/products/relay',
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     available: true,
   },
 ]
@@ -80,7 +80,7 @@ export default function Products() {
           <h2 className="heading-2 mb-4">
             Privacy-first applications
           </h2>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
             A suite of tools designed to protect your privacy. Each product works standalone or as part of the ecosystem.
           </p>
         </motion.div>
@@ -99,7 +99,7 @@ export default function Products() {
                 whileHover={{ y: -4 }}
                 className="group"
               >
-                <div className="card card-hover h-full p-6 lg:p-8 hover:border-brand-orange/50 dark:hover:border-brand-orange/50">
+                <div className="card card-hover h-full p-6 lg:p-8 hover:border-brand-orange/50">
                   {/* * Header */}
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center gap-4">
@@ -120,7 +120,7 @@ export default function Products() {
                         <h3 className="heading-3 group-hover:text-brand-orange transition-colors duration-200">
                           {product.name}
                         </h3>
-                        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                        <p className="text-sm text-neutral-400">
                           {product.tagline}
                         </p>
                       </div>
@@ -131,14 +131,14 @@ export default function Products() {
                   </div>
 
                   {/* * Description */}
-                  <p className="text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed">
+                  <p className="text-neutral-400 mb-6 leading-relaxed">
                     {product.description}
                   </p>
 
                   {/* * Features */}
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2 mb-6">
                     {product.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                      <li key={feature} className="flex items-center gap-2 text-sm text-neutral-400">
                         <CheckIcon className="w-4 h-4 text-brand-orange shrink-0" />
                         {feature}
                       </li>

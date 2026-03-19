@@ -89,7 +89,7 @@ function FAQItem({ faq, index, categoryIndex }: { faq: { question: string; answe
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
-      className="border-b border-neutral-200 dark:border-neutral-800"
+      className="border-b border-neutral-800"
     >
       <button
         onClick={() => {
@@ -118,7 +118,7 @@ function FAQItem({ faq, index, categoryIndex }: { faq: { question: string; answe
           transition={{ duration: 0.3 }}
           className="pb-6"
         >
-          <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          <p className="text-neutral-400 leading-relaxed">
             {faq.answer}
           </p>
         </motion.div>
@@ -154,7 +154,7 @@ export default function EnhancedFAQ() {
             <h2 className="heading-2 mb-4">
               Frequently Asked Questions
             </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
               Find answers to common questions about Ciphera's privacy-first products and services.
             </p>
           </motion.div>
@@ -172,7 +172,7 @@ export default function EnhancedFAQ() {
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 selectedCategory === null
                   ? 'bg-brand-orange text-white'
-                  : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-700'
+                  : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-300 hover:bg-neutral-700'
               }`}
             >
               All
@@ -184,7 +184,7 @@ export default function EnhancedFAQ() {
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                   selectedCategory === category.id
                     ? 'bg-brand-orange text-white'
-                    : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-700'
+                    : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-300 hover:bg-neutral-700'
                 }`}
               >
                 {category.name}
@@ -212,7 +212,7 @@ export default function EnhancedFAQ() {
               ))
             ) : (
               <div className="text-center py-12">
-                <p className="text-neutral-600 dark:text-neutral-400">
+                <p className="text-neutral-400">
                   No questions found for this category.
                 </p>
               </div>
@@ -227,7 +227,7 @@ export default function EnhancedFAQ() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-center mt-12"
           >
-            <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+            <p className="text-neutral-400 mb-4">
               Still have questions?
             </p>
             <a

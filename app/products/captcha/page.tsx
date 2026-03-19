@@ -61,7 +61,7 @@ export default function CipheraCaptchaPage() {
       <section className="section-padding pt-32">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
+            <div className="w-20 h-20 rounded-3xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
               <Image
                 src="/captcha_icon_no_margins.png"
                 alt="Ciphera Captcha"
@@ -74,7 +74,7 @@ export default function CipheraCaptchaPage() {
             <h1 className="heading-1 mb-6">
               Ciphera Captcha
             </h1>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
               Privacy-respecting bot protection with visual captchas and proof-of-work challenges. 
               Stop automated abuse without compromising user privacy.
             </p>
@@ -109,7 +109,7 @@ export default function CipheraCaptchaPage() {
                 <h3 className="heading-3 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                <p className="text-sm text-neutral-400 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -128,10 +128,10 @@ export default function CipheraCaptchaPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <th className="text-left py-4 px-4 font-bold text-neutral-900 dark:text-white">Feature</th>
+                  <tr className="border-b border-neutral-800">
+                    <th className="text-left py-4 px-4 font-bold text-white">Feature</th>
                     <th className="text-center py-4 px-4 font-bold text-brand-orange">Ciphera</th>
-                    <th className="text-center py-4 px-4 font-bold text-neutral-500 dark:text-neutral-400">Others</th>
+                    <th className="text-center py-4 px-4 font-bold text-neutral-400">Others</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -142,8 +142,8 @@ export default function CipheraCaptchaPage() {
                     ['Open source', true, false],
                     ['Stateless verification', true, false],
                   ].map(([feature, ciphera, others], index) => (
-                    <tr key={index} className="border-b border-neutral-200 dark:border-neutral-800">
-                      <td className="py-4 px-4 text-neutral-600 dark:text-neutral-400">{feature}</td>
+                    <tr key={index} className="border-b border-neutral-800">
+                      <td className="py-4 px-4 text-neutral-400">{feature}</td>
                       <td className="text-center py-4 px-4">
                         {ciphera ? <CheckIcon className="w-5 h-5 text-brand-orange mx-auto" /> : '—'}
                       </td>

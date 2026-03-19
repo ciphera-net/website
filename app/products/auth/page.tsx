@@ -61,7 +61,7 @@ export default function CipheraAuthPage() {
       <section className="section-padding pt-32">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
+            <div className="w-20 h-20 rounded-3xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
               <Image
                 src="/auth_icon_no_margins.png"
                 alt="Ciphera Auth"
@@ -74,7 +74,7 @@ export default function CipheraAuthPage() {
             <h1 className="heading-1 mb-6">
               Ciphera Auth
             </h1>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
               Enterprise-grade authentication infrastructure with OAuth2, JWT tokens, and advanced security features. 
               Built for the Ciphera ecosystem and your applications.
             </p>
@@ -111,7 +111,7 @@ export default function CipheraAuthPage() {
                 <h3 className="heading-3 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                <p className="text-neutral-400 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -134,19 +134,19 @@ export default function CipheraAuthPage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     RESTful API with comprehensive documentation
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Client libraries for JavaScript, Python, and Go
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Webhook support for real-time event notifications
                   </span>
                 </li>
@@ -159,19 +159,19 @@ export default function CipheraAuthPage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     SSO integration with existing identity providers
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Audit logs and compliance reporting
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Enterprise-grade reliability and support
                   </span>
                 </li>

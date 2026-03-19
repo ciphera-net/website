@@ -227,7 +227,7 @@ export default function ContactPage() {
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/3 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-500/10 dark:bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
+          <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
         <div className="section-container">
@@ -245,7 +245,7 @@ export default function ContactPage() {
               We're here to{' '}
               <span className="gradient-text">help</span>
             </h1>
-            <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
               Have questions about our privacy tools? Want to report a security issue? 
               Or just want to say hello? We'd love to hear from you.
             </p>
@@ -273,7 +273,7 @@ export default function ContactPage() {
                 <h3 className="heading-3 mb-1">
                   {method.title}
                 </h3>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
+                <p className="text-sm text-neutral-400 mb-3">
                   {method.description}
                 </p>
                 <div className="flex items-center justify-center gap-2 mb-2">
@@ -286,7 +286,7 @@ export default function ContactPage() {
                   </a>
                   <button
                     onClick={() => copyToClipboard(method.value)}
-                    className="p-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                    className="p-1.5 rounded-lg hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
                     title="Copy to clipboard"
                   >
                     {copiedEmail === method.value ? (
@@ -298,7 +298,7 @@ export default function ContactPage() {
                     )}
                   </button>
                 </div>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                <p className="text-xs text-neutral-400">
                   Response: {method.responseTime}
                 </p>
               </motion.div>
@@ -321,7 +321,7 @@ export default function ContactPage() {
             <h3 className="heading-3 mb-1">
               Phone
             </h3>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
+            <p className="text-sm text-neutral-400 mb-3">
               For urgent matters
             </p>
             <div className="flex items-center justify-center gap-2 mb-2">
@@ -334,7 +334,7 @@ export default function ContactPage() {
               </a>
               <button
                 onClick={() => copyToClipboard('+32 078 480 710')}
-                className="p-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                className="p-1.5 rounded-lg hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 title="Copy to clipboard"
               >
                 {copiedEmail === '+32 078 480 710' ? (
@@ -346,7 +346,7 @@ export default function ContactPage() {
                 )}
               </button>
             </div>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">
+            <p className="text-xs text-neutral-400">
               Mon-Fri, 08:00-12:00, 13:00-18:00
             </p>
           </motion.div>
@@ -360,7 +360,7 @@ export default function ContactPage() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-8 text-center"
         >
-          <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+          <p className="text-sm text-neutral-400 mb-4">
             You can also reach us on
           </p>
           <div className="flex items-center justify-center gap-4">
@@ -368,7 +368,7 @@ export default function ContactPage() {
               href="https://github.com/ciphera-net"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-neutral-700 dark:text-neutral-300"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 transition-colors text-neutral-300"
               onClick={() => track('contact_github_click')}
             >
               <GithubIcon className="w-5 h-5" />
@@ -376,7 +376,7 @@ export default function ContactPage() {
             </a>
             <a
               href="mailto:hello@ciphera.net"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-neutral-700 dark:text-neutral-300"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 transition-colors text-neutral-300"
               onClick={() => track('contact_email_direct_click')}
             >
               <MailIcon className="w-5 h-5" />
@@ -403,11 +403,11 @@ export default function ContactPage() {
               <a
                 key={index}
                 href={item.link}
-                className="flex items-center gap-3 p-4 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors group"
+                className="flex items-center gap-3 p-4 rounded-xl hover:bg-neutral-800 transition-colors group"
                 onClick={() => track('contact_common_question_click')}
               >
                 <CheckCircleIcon className="w-5 h-5 text-brand-orange shrink-0" />
-                <span className="text-neutral-700 dark:text-neutral-300 group-hover:text-brand-orange transition-colors">
+                <span className="text-neutral-300 group-hover:text-brand-orange transition-colors">
                   {item.question}
                 </span>
                 <ArrowRightIcon className="w-4 h-4 text-neutral-400 ml-auto group-hover:translate-x-1 transition-transform" />
@@ -432,7 +432,7 @@ export default function ContactPage() {
               <h2 className="heading-2 mb-6">
                 Send us a message
               </h2>
-              <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+              <p className="text-lg text-neutral-400 mb-8 leading-relaxed">
                 Fill out the form and we'll get back to you as soon as possible. 
                 We typically respond within 24-48 hours.
               </p>
@@ -440,8 +440,8 @@ export default function ContactPage() {
               {/* * Office Info */}
               <div className="space-y-4">
                 {/* * Office Photo */}
-                <div className="rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-700 shadow-lg">
-                  <div className="relative aspect-video w-full bg-neutral-100 dark:bg-neutral-800">
+                <div className="rounded-2xl overflow-hidden border border-neutral-700 shadow-lg">
+                  <div className="relative aspect-video w-full bg-neutral-800">
                     <Image
                       src="/office-hq.jpeg"
                       alt="Ciphera headquarters in Diegem, Belgium"
@@ -454,7 +454,7 @@ export default function ContactPage() {
                         const parent = target.parentElement
                         if (parent) {
                           parent.innerHTML = `
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-neutral-400 text-neutral-600">
                               <svg class="w-16 h-16 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                               </svg>
@@ -465,14 +465,14 @@ export default function ContactPage() {
                       }}
                     />
                   </div>
-                  <div className="p-4 bg-white dark:bg-neutral-800">
+                  <div className="p-4 bg-neutral-800">
                     <div className="flex items-start gap-3">
                       <GlobeIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="font-semibold text-neutral-900 dark:text-white mb-1">
+                        <h4 className="font-semibold text-white mb-1">
                           Headquarters
                         </h4>
-                        <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
+                        <p className="text-neutral-400 text-sm leading-relaxed">
                           De Kleetlaan 2<br />
                           1831 Diegem, Belgium
                         </p>
@@ -482,18 +482,18 @@ export default function ContactPage() {
                 </div>
 
                 {/* * Business hours */}
-                <div className="p-6 rounded-2xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+                <div className="p-6 rounded-2xl bg-neutral-800 border border-neutral-700">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/10 dark:from-brand-orange/30 dark:to-brand-orange/20 flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/10 from-brand-orange/30 to-brand-orange/20 flex items-center justify-center shrink-0">
                       <svg className="w-6 h-6 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-neutral-900 dark:text-white mb-1">
+                      <h4 className="font-semibold text-white mb-1">
                         Business Hours
                       </h4>
-                      <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
+                      <p className="text-neutral-400 text-sm leading-relaxed">
                         Monday - Friday<br />
                         08:00 - 12:00, 13:00 - 18:00 CET
                       </p>
@@ -504,14 +504,14 @@ export default function ContactPage() {
 
               {/* * Important notes */}
               <div className="mt-6 space-y-3">
-                <div className="flex items-start gap-3 text-sm text-neutral-500 dark:text-neutral-400">
+                <div className="flex items-start gap-3 text-sm text-neutral-400">
                   <CheckCircleIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                   <p>
                     We take security reports seriously. If you've found a vulnerability, 
                     please use the security email above for faster response.
                   </p>
                 </div>
-                <div className="flex items-start gap-3 text-sm text-neutral-500 dark:text-neutral-400">
+                <div className="flex items-start gap-3 text-sm text-neutral-400">
                   <CheckCircleIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                   <p>
                     You'll receive an automatic confirmation email once we receive your message.
@@ -531,7 +531,7 @@ export default function ContactPage() {
                 <div className="space-y-4 sm:space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                      <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
                         Name <span className="text-brand-orange">*</span>
                       </label>
                       <Input
@@ -547,11 +547,11 @@ export default function ContactPage() {
                         placeholder="Your name"
                       />
                       {fieldErrors.name && (
-                        <p className="text-sm text-red-600 dark:text-red-400 mt-1">{fieldErrors.name}</p>
+                        <p className="text-sm text-red-400 mt-1">{fieldErrors.name}</p>
                       )}
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                      <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
                         Email <span className="text-brand-orange">*</span>
                       </label>
                       <Input
@@ -567,13 +567,13 @@ export default function ContactPage() {
                         placeholder="you@example.com"
                       />
                       {fieldErrors.email && (
-                        <p className="text-sm text-red-600 dark:text-red-400 mt-1">{fieldErrors.email}</p>
+                        <p className="text-sm text-red-400 mt-1">{fieldErrors.email}</p>
                       )}
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                    <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
                       Subject <span className="text-brand-orange">*</span>
                     </label>
                     <Select
@@ -588,10 +588,10 @@ export default function ContactPage() {
 
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label htmlFor="message" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                      <label htmlFor="message" className="block text-sm font-medium text-neutral-300">
                         Message <span className="text-brand-orange">*</span>
                       </label>
-                      <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                      <span className="text-xs text-neutral-400">
                         {formData.message.length}/{MESSAGE_MAX_LENGTH}
                       </span>
                     </div>
@@ -607,11 +607,11 @@ export default function ContactPage() {
                         }
                       }}
                       onBlur={(e) => handleFieldBlur('message', e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange transition-all duration-200 resize-none"
+                      className="w-full px-4 py-3 rounded-xl border border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange transition-all duration-200 resize-none"
                       placeholder="How can we help you?"
                     />
                     {fieldErrors.message && (
-                      <p className="text-sm text-red-600 dark:text-red-400 mt-1">{fieldErrors.message}</p>
+                      <p className="text-sm text-red-400 mt-1">{fieldErrors.message}</p>
                     )}
                   </div>
 
@@ -647,7 +647,7 @@ export default function ContactPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 rounded-xl"
+                      className="p-4 bg-green-900/20 border border-green-800 text-green-300 rounded-xl"
                       role="alert"
                       aria-live="polite"
                     >
@@ -668,7 +668,7 @@ export default function ContactPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-xl"
+                      className="p-4 bg-red-900/20 border border-red-800 text-red-300 rounded-xl"
                       role="alert"
                       aria-live="polite"
                     >
@@ -688,7 +688,7 @@ export default function ContactPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 text-yellow-700 dark:text-yellow-300 rounded-xl text-sm"
+                      className="p-3 bg-yellow-900/20 border border-yellow-800 text-yellow-300 rounded-xl text-sm"
                       role="alert"
                       aria-live="polite"
                     >

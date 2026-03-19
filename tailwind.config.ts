@@ -4,7 +4,6 @@ const config: Config = {
   presets: [
     require('@ciphera-net/ui/dist/tailwind-preset').default,
   ],
-  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',

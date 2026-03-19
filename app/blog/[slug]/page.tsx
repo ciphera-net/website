@@ -22,10 +22,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'How accurate are cookieless analytics compared to Google Analytics?', answer: 'In EU markets, cookieless analytics are more accurate than GA because they count every visitor, not just the 10-20% who accept cookies (SealMetrics, 2025). Unique visitor counts may differ slightly because privacy tools estimate sessions without persistent identifiers, but traffic trends and patterns remain reliable.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Cookie-based analytics is bleeding data. According to <a href="https://docs.sealmetrics.com/blog/cookie-banner-ghosting-data-loss/" target="_blank" rel="noopener noreferrer">SealMetrics</a> (2025), websites running cookie-dependent analytics tools lose 80-90% of their visitor data in EU markets. Visitors either ghost the consent banner entirely, actively reject cookies, or browse with ad blockers that strip tracking scripts on arrival. Meanwhile, EU regulators levied <a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/europe-tech-sector-eu1-2-billion-fines-gdpr-2025" target="_blank" rel="noopener noreferrer">EUR 1.2 billion in GDPR fines</a> in 2025 alone — and Google itself was hit with a EUR 325 million penalty from France's CNIL for consent violations.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         So what's the alternative? Privacy-first analytics tools promise accurate data without cookies, consent banners, or legal risk. But how do they actually compare? We put four tools — Pulse, Google Analytics, Plausible, and Fathom — through a side-by-side comparison on privacy compliance, script performance, data accuracy, and total cost of ownership.
       </p>
 
@@ -451,10 +451,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'Should companies pay ransomware demands?', answer: 'The data says no. Ransomware payment rates hit an all-time low of 28% in 2025 (Chainalysis, 2026). PowerSchool paid $2.85 million and was re-extorted anyway. Median payments surged 368% to $59,556 — paying emboldens attackers without guaranteeing data deletion.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         2025 set a record nobody wanted. The Identity Theft Resource Center tracked <a href="https://www.idtheftcenter.org/post/2025-annual-data-breach-report-record-number-compromises/" target="_blank" rel="noopener noreferrer">3,322 data compromises</a> in the United States alone — a 79% jump over five years. Across the Atlantic, European data protection authorities logged 443 breach notifications per day, a 22% increase year-over-year (<a href="https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026" target="_blank" rel="noopener noreferrer">DLA Piper</a>, 2026). The <a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM Cost of a Data Breach Report 2025</a> puts the global average at $4.44 million per incident, with U.S. breaches hitting a record $10.22 million.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Behind every number is a company that got something wrong. A missing MFA setting. An unprotected database. A call center employee who trusted the wrong caller. This article breaks down the six biggest breaches from 2025 and early 2026 — three from North America, three from Europe — and extracts the lessons that matter for anyone who handles sensitive data.
       </p>
 
@@ -737,7 +737,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'Why doesn\'t Ciphera host data in the EU instead?', answer: 'EU GDPR is strong, but EU member states are part of intelligence-sharing alliances (Nine Eyes, Fourteen Eyes) and subject to EU-level bulk data directives. Switzerland provides consistent, strong, nationally unified protection — no variation between states, no intelligence-sharing obligations, and a 25-year track record of EU adequacy.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         In June 2025, Microsoft executive Anton Carniaux sat before the French Senate and testified under oath that Microsoft <a href="https://www.theregister.com/2025/07/25/microsoft_admits_it_cannot_guarantee/" target="_blank" rel="noopener noreferrer">"cannot guarantee"</a> that French citizen data won't be transmitted to American authorities. One of the world's largest cloud providers, in the most public setting possible, admitted it can't keep your data out of a foreign government's hands. That admission cuts to the core of why infrastructure location matters — and why Switzerland has become the jurisdiction of choice for privacy-focused companies.
       </p>
 
@@ -1105,7 +1105,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'How is Ciphera different from Proton or Signal?', answer: 'Ciphera fills a different gap: encrypted file sharing (Drop), privacy-first analytics (Pulse), authentication, bot protection, and email infrastructure — all Swiss-hosted. Think of it as the privacy infrastructure layer that complements tools like Proton and Signal.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Every major tech company says it cares about privacy. Google's homepage says "keeping your information safe." Apple calls privacy "a fundamental human right." Meta talks about "putting privacy first." And in 2025 alone, those three companies collectively paid over $2 billion in privacy-related fines and settlements. Something doesn't add up. According to the <a href="https://cpl.thalesgroup.com/about-us/newsroom/digital-trust-index-2025" target="_blank" rel="noopener noreferrer">Thales 2025 Digital Trust Index</a>, no single industry sector reaches above 50% consumer trust for handling personal data. And 82% of consumers abandoned a brand in the past 12 months because of data concerns.
       </p>
 
@@ -1442,10 +1442,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'What happens if Ciphera\'s servers get hacked?', answer: 'Attackers get encrypted blobs. Zero-knowledge architecture means the server never has the decryption keys — those exist only in the browser of the person who uploaded the file and anyone who has the share link. Even a complete server compromise yields nothing readable.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Every file you share through WeTransfer, Google Drive, or Dropbox passes through servers where the provider holds the encryption keys. They can read your files. So can any government that serves them a court order. According to <a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM's 2025 Cost of a Data Breach Report</a>, 82% of all data breaches now involve cloud-stored data — and the average cloud breach costs $5.05 million.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         But not every file sharing service works this way. A small number use zero-knowledge encryption — where your files are encrypted on your device before upload, and the server never has the key. We compared 7 services across encryption, privacy, jurisdiction, pricing, and usability to find out which ones actually protect your files and which ones just say they do.
       </p>
 
@@ -2809,10 +2809,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'Should my business adopt passkeys now?', answer: 'If you\'re building or maintaining user authentication, yes. The FIDO Alliance reports that 87% of large enterprises are already deploying passkeys, and 77% saw reduced help desk costs post-deployment. Start by offering passkeys as an option alongside passwords.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Passwords are dying — and the data proves it. <a href="https://www.microsoft.com/en-us/security/blog/2025/05/01/pushing-passkeys-forward-microsofts-latest-updates-for-simpler-safer-sign-ins/" target="_blank" rel="noopener noreferrer">Microsoft reported in May 2025</a> that passkey sign-ins succeed 98% of the time, compared to just 32% for traditional passwords. Meanwhile, the <a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank" rel="noopener noreferrer">Verizon 2025 DBIR</a> confirmed that stolen credentials remain the initial access vector in 22% of all confirmed breaches — making passwords the single largest attack surface in cybersecurity.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         So what exactly are passkeys, and why is 2026 the year they go mainstream? This guide breaks down the technology, the adoption data, and the practical trade-offs — so you can decide whether it's time to ditch passwords for good.
       </p>
 
@@ -3839,10 +3839,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'How do AI Act fines compare to GDPR fines?', answer: 'AI Act penalties are steeper. The maximum fine for prohibited practices is EUR 35 million or 7% of global turnover — nearly double GDPR\'s EUR 20 million or 4% ceiling. Cumulative GDPR fines have reached EUR 7.1 billion since 2018 (DLA Piper, 2026).' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         The EU AI Act isn't approaching. It's here. Since February 2, 2025, certain AI practices are outright banned across the European Union. The next wave hits August 2, 2026 — five months from now — when mandatory compliance kicks in for high-risk AI systems. Yet only 18% of European employers feel "very prepared," while 20% report being "not at all prepared" (<a href="https://www.littler.com/press/press-release/european-employers-face-renewed-uncertainty-amid-looming-compliance-deadlines" target="_blank" rel="noopener noreferrer">Littler</a>, 2025).
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         The penalties dwarf GDPR: up to EUR 35 million or 7% of global turnover. And the EU follows through — <a href="https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026" target="_blank" rel="noopener noreferrer">EUR 7.1 billion in cumulative GDPR fines</a> since 2018 removes any doubt (DLA Piper, 2026). This guide breaks down what the AI Act requires, how risk classification works, and exactly what your business should do before August 2026.
       </p>
 
@@ -4201,10 +4201,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'How does Ciphera Drop protect files differently from Dropbox?', answer: 'Dropbox uses server-side AES-256, meaning Dropbox holds the encryption keys and can decrypt your files for features like search indexing and thumbnail generation. Ciphera Drop encrypts files in your browser with AES-256-GCM before upload. The key stays in the URL fragment — which the server never receives — or is derived from a password that never leaves your browser. Ciphera cannot decrypt your files even under a court order.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Nearly half of all sensitive cloud data — 47% — sits unencrypted right now, even as AI systems gain broader access to corporate environments (<a href="https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/" target="_blank" rel="noopener noreferrer">Thales 2026 Data Threat Report</a>, n=3,120 organizations). The zero-knowledge encryption market is growing from $1.28 billion to a projected $7.59 billion by 2033 (<a href="https://www.grandviewresearch.com/industry-analysis/zero-knowledge-proof-market-report" target="_blank" rel="noopener noreferrer">Grand View Research</a>, 2025). That's a 22.1% compound annual growth rate — the industry is voting with its wallet.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         But what is zero-knowledge encryption, actually? Not the marketing version. Not the Wikipedia abstract. This guide explains ZKE in plain English: what it means, how it works inside real products, what it can't protect against, and how to spot vendors faking it. No math degree required.
       </p>
 
@@ -4501,10 +4501,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'What happens if the audit finds major compliance gaps?', answer: 'Prioritize findings by risk: critical gaps (no encryption on personal data, no DSAR process) get fixed within 1-2 weeks. High-priority items (missing DPAs with vendors, incomplete data maps) within 30 days. Medium and low items within a quarter. Document everything — regulators look favorably on organizations that identified issues and have a remediation plan, even if the plan isn\'t fully executed yet.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         The average data breach now costs $4.44 million globally — and $10.22 million in the United States (<a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">IBM Cost of a Data Breach Report</a>, 2025). Cumulative GDPR fines since 2018 have passed EUR 7.1 billion, with European regulators issuing EUR 1.2 billion in penalties in 2025 alone (<a href="https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026" target="_blank" rel="noopener noreferrer">DLA Piper</a>, 2026). And 144 countries now have data protection laws on the books, covering roughly 82% of the world's population (<a href="https://unctad.org/page/data-protection-and-privacy-legislation-worldwide" target="_blank" rel="noopener noreferrer">UNCTAD</a>, 2025).
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Most startups don't think about any of this until it's too late. They're shipping fast, plugging in third-party tools, collecting user data across half a dozen services — and nobody's mapped where that data actually goes. A privacy audit fixes that. It's not a legal exercise. It's a structured, technical review of what data you collect, where it lives, who can access it, and whether your practices match the regulations you're subject to. Here's how to run one in six steps, no legal team required.
       </p>
 
@@ -4828,13 +4828,13 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'Is BunnyCDN a good choice for privacy-conscious websites?', answer: 'BunnyCDN is a European company based in Slovenia with pricing starting at $0.01/GB and 119+ PoPs across 70+ countries. Combined with Pulse\'s cookie-free analytics and Swiss data residency, you get complete CDN monitoring without any visitor tracking or consent requirements.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Most teams treat their CDN as a "set it and forget it" layer. You configure BunnyCDN, point your DNS, and move on. But a CDN that isn't monitored is a CDN that's silently degrading. Cache hit ratios drift. Origin servers slow down. Geographic traffic patterns shift. You won't notice until users start bouncing.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         According to <a href="https://www.precedenceresearch.com/content-delivery-network-market" target="_blank" rel="noopener noreferrer">Precedence Research</a> (2025), the global CDN market reached $32.7 billion — projected to hit $164 billion by 2035. CDNs are infrastructure that matters more every year. Yet <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/page-load-time-statistics/" target="_blank" rel="noopener noreferrer">Google's own data</a> shows 53% of mobile users abandon sites taking longer than 3 seconds to load. If your CDN underperforms, you're losing visitors before your page even renders.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         This guide walks you through connecting BunnyCDN to <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Pulse</a> — a privacy-first analytics platform — so you can track bandwidth, cache performance, origin response times, and per-datacenter traffic distribution from one dashboard. No cookies. No Google. No third-party data sharing.
       </p>
 
@@ -5090,10 +5090,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'How much does it cost to add user journey analytics to my site?', answer: 'Running a privacy analytics tool ($9-15/mo) plus a behavior analytics tool like Hotjar ($99/mo) costs $108-214/mo. Matomo offers a paid User Flow plugin for EUR 94-282/year on top of hosting costs. Pulse includes built-in user journey visualization within its standard plans — no add-ons or separate tools required.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Your analytics dashboard shows pageviews, bounce rates, and referral sources. It tells you <em>what</em> pages get traffic. But can it tell you <em>how</em> a visitor moved from your homepage to your pricing page to your signup form — or where they gave up and left? For most privacy-focused analytics tools, the answer is no. The customer journey analytics market reached <a href="https://www.fortunebusinessinsights.com/customer-journey-analytics-market-107799" target="_blank" rel="noopener noreferrer">$4.96 billion in 2025</a> (Fortune Business Insights) precisely because standard analytics tools don't show you the paths visitors actually take.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         We built user journey visualization into <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Pulse</a> because we think privacy-first analytics shouldn't mean feature-poor analytics. Here's why most tools skip this feature, what it costs you, and how we built it without compromising on privacy.
       </p>
 
@@ -5426,13 +5426,13 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'Does connecting GSC to Pulse require a cookie consent banner?', answer: 'No. The GSC integration is a server-to-server OAuth connection between Pulse and Google\'s API. No cookies are set on your visitors\' browsers, and no client-side tracking code changes. Your site remains fully cookie-free and consent-banner-free.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         Google Search Console is one of the most valuable free tools for understanding how your site performs in search. But here's what most marketers don't realize: 75% of your impression data never makes it into GSC reports. An analysis of 450 million impressions across 10 B2B SaaS sites found that Google filters between 59.3% and 93.6% of impressions before you ever see them (<a href="https://hilandseo.com/google-search-console-data-is-75-incomplete/" target="_blank" rel="noopener noreferrer">Kevin Indig/Hiland SEO</a>, 2025).
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         That's a massive blind spot. And if you're pairing GSC with Google Analytics to fill the gaps? You're stacking one incomplete dataset on top of another. GA loses 80-90% of EU visitor data to cookie consent rejection (<a href="https://docs.sealmetrics.com/blog/cookie-banner-ghosting-data-loss/" target="_blank" rel="noopener noreferrer">SealMetrics</a>, 2025). You end up making SEO decisions based on a fraction of a fraction.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         There's a better approach: pair Search Console with privacy-first analytics. You keep GSC's search query data — clicks, impressions, CTR, average position — and replace the leaky GA layer with cookieless analytics that counts every visitor. No consent banners. No data sampling. No regulatory risk. This guide shows you how using <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer">Pulse</a>'s built-in GSC integration.
       </p>
 
@@ -5694,10 +5694,10 @@ const blogPosts: Record<string, { title: string; description: string; content: s
       { question: 'How much does BunnyCDN cost?', answer: 'BunnyCDN charges $0.01 per GB in North America and Europe — 88% cheaper than AWS CloudFront at $0.085/GB for equivalent traffic (Backblaze, 2025). There are no minimum commitments or monthly fees. You pay only for what you use, with volume discounts dropping to $0.005/GB for the first 500 TB and lower beyond that.' },
     ],
     content: `
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         According to the <a href="https://www.weforum.org/stories/2025/01/europe-digital-sovereignty/" target="_blank" rel="noopener noreferrer">World Economic Forum</a> (2025), 97% of Europe's cloud infrastructure is controlled by non-European providers. American tech giants dominate CDN, compute, and storage — which means most "GDPR-compliant" services are really just US companies with European data centers and a checkbox DPA. When we built Ciphera, a platform where every file is encrypted before it leaves your browser, we couldn't afford that kind of compliance theater. We needed a CDN that treated European data privacy as a founding principle, not a feature toggle.
       </p>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+      <p class="text-lg text-neutral-400 leading-relaxed mb-8">
         That's why we chose <a href="https://bunny.net?ref=00y9gyb6dz" target="_blank" rel="noopener noreferrer">BunnyCDN</a>. Here's the full story — what we looked for, what we rejected, and why an EU-native CDN headquartered in Slovenia won out.
       </p>
 
@@ -6093,7 +6093,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="section-container max-w-4xl">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-brand-orange transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-neutral-400 hover:text-brand-orange transition-colors mb-8"
           >
             <ArrowLeftIcon className="w-4 h-4" />
             Back to Blog
@@ -6101,9 +6101,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className="flex items-center gap-3 mb-6 text-sm flex-wrap">
             <span className="badge-neutral">{post.category}</span>
-            <span className="text-neutral-500 dark:text-neutral-400">By Ciphera Team</span>
-            <span className="text-neutral-500 dark:text-neutral-400">{post.readTime}</span>
-            <span className="text-neutral-500 dark:text-neutral-400">
+            <span className="text-neutral-400">By Ciphera Team</span>
+            <span className="text-neutral-400">{post.readTime}</span>
+            <span className="text-neutral-400">
               {new Date(post.date).toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
@@ -6112,20 +6112,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 dark:text-white mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-12">
             {post.title}
           </h1>
 
           <TableOfContents content={post.content} />
 
           <div
-            className="prose prose-neutral dark:prose-invert max-w-none"
+            className="prose prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
           <RelatedPosts currentSlug={slug} currentCategory={post.category} allPosts={allPosts} />
 
-          <div className="mt-12 pt-12 border-t border-neutral-200 dark:border-neutral-800">
+          <div className="mt-12 pt-12 border-t border-neutral-800">
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 text-brand-orange hover:underline"

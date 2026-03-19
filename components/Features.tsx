@@ -52,7 +52,7 @@ export default function Features() {
           <h2 className="heading-2 mb-4">
             Security that doesn't compromise
           </h2>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
             Every feature is built with cryptographic guarantees. Your privacy isn't optional—it's the architecture. 
             Try <a href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer" className="link">Pulse</a> for privacy-first analytics or explore our <a href="/products" className="link">complete product suite</a>.
           </p>
@@ -80,7 +80,7 @@ export default function Features() {
                     {feature.title}
                   </h3>
                   
-                  <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  <p className="text-neutral-400 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>

@@ -63,7 +63,7 @@ export default function CipheraRelayPage() {
       <section className="section-padding pt-32">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
+            <div className="w-20 h-20 rounded-3xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
               <Image
                 src="/relay_icon_no_margins.png"
                 alt="Ciphera Relay - Secure email infrastructure"
@@ -76,7 +76,7 @@ export default function CipheraRelayPage() {
             <h1 className="heading-1 mb-6">
               Ciphera Relay
             </h1>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
               Secure, privacy-first email infrastructure for transactional emails. 
               High deliverability with TLS encryption and Swiss data protection.
             </p>
@@ -111,7 +111,7 @@ export default function CipheraRelayPage() {
                 <h3 className="heading-3 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                <p className="text-sm text-neutral-400 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -148,12 +148,12 @@ export default function CipheraRelayPage() {
                 <h3 className="heading-3 mb-3">
                   {useCase.title}
                 </h3>
-                <p className="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
+                <p className="text-neutral-400 mb-4 leading-relaxed">
                   {useCase.description}
                 </p>
                 <ul className="space-y-2">
                   {useCase.examples.map((example) => (
-                    <li key={example} className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+                    <li key={example} className="flex items-center gap-2 text-sm text-neutral-400">
                       <CheckIcon className="w-4 h-4 text-brand-orange shrink-0" />
                       {example}
                     </li>
@@ -188,10 +188,10 @@ export default function CipheraRelayPage() {
                   {plan.price}
                   {plan.price !== 'Free' && plan.price !== 'Custom' && <span className="text-lg text-neutral-500">/mo</span>}
                 </div>
-                <p className="text-neutral-500 dark:text-neutral-400 mb-6">{plan.emails} emails/month</p>
+                <p className="text-neutral-400 mb-6">{plan.emails} emails/month</p>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                    <li key={feature} className="flex items-start gap-2 text-sm text-neutral-400">
                       <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                       {feature}
                     </li>

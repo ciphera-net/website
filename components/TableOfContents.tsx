@@ -66,12 +66,12 @@ export default function TableOfContents({ content }: { content: string }) {
   if (headings.length < 3) return null
 
   return (
-    <nav className="mb-10 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+    <nav className="mb-10 rounded-2xl border border-neutral-800 bg-neutral-900">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full px-6 py-4 text-left rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-900"
+        className="flex items-center justify-between w-full px-6 py-4 text-left rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 focus:ring-offset-neutral-900"
       >
-        <span className="text-sm font-semibold text-neutral-900 dark:text-white">
+        <span className="text-sm font-semibold text-white">
           Table of Contents
         </span>
         <ChevronDownIcon
@@ -89,7 +89,7 @@ export default function TableOfContents({ content }: { content: string }) {
                 className={`block text-sm py-1 transition-colors duration-200 ${
                   activeId === heading.id
                     ? 'text-brand-orange font-medium'
-                    : 'text-neutral-600 dark:text-neutral-400 hover:text-brand-orange'
+                    : 'text-neutral-400 hover:text-brand-orange'
                 }`}
               >
                 {i + 1}. {heading.text}

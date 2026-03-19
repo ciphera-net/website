@@ -22,7 +22,6 @@ import {
     Mail,
 } from 'lucide-react';
 import Image from 'next/image';
-import { ThemeToggle } from '@ciphera-net/ui';
 import { track } from '@/lib/pulse';
 
 type LinkItem = {
@@ -51,10 +50,10 @@ export function Header() {
     return (
         <header
             className={cn('sticky top-0 z-50 w-full border-b border-transparent', {
-                'border-black/[0.06] dark:border-white/[0.06]': scrolled,
+                'border-white/[0.06]': scrolled,
             })}
         >
-            <div className="absolute inset-0 -z-10 backdrop-blur-xl bg-white/60 dark:bg-neutral-950/60 supports-[backdrop-filter]:bg-white/50 dark:supports-[backdrop-filter]:bg-neutral-950/50" />
+            <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300", scrolled ? "opacity-100 backdrop-blur-xl bg-neutral-950/60 supports-[backdrop-filter]:bg-neutral-950/50" : "opacity-0")} />
             <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 my-3">
                 <div className="flex items-center gap-5">
                     <a href="/" className="hover:bg-accent rounded-md p-2 flex items-center gap-2">
@@ -75,7 +74,7 @@ export function Header() {
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger className="bg-transparent">Products</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5">
-                                    <ul className="grid w-[32rem] grid-cols-2 gap-2 rounded-md border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.04] dark:bg-white/[0.04] p-2">
+                                    <ul className="grid w-[32rem] grid-cols-2 gap-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
                                         {productLinks.map((item, i) => (
                                             <li key={i}>
                                                 <ListItem {...item} />
@@ -96,7 +95,7 @@ export function Header() {
                                 <NavigationMenuTrigger className="bg-transparent">Company</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5 pb-1.5">
                                     <div className="grid w-[32rem] grid-cols-2 gap-2">
-                                        <ul className="space-y-2 rounded-md border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.04] dark:bg-white/[0.04] p-2">
+                                        <ul className="space-y-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
                                             {companyLinks.map((item, i) => (
                                                 <li key={i}>
                                                     <ListItem {...item} />
@@ -108,7 +107,7 @@ export function Header() {
                                                 <li key={i}>
                                                     <NavigationMenuLink
                                                         href={item.href}
-                                                        className="flex p-2 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] flex-row rounded-md items-center gap-x-2 transition-colors"
+                                                        className="flex p-2 hover:bg-white/[0.06] flex-row rounded-md items-center gap-x-2 transition-colors"
                                                     >
                                                         {item.icon && <item.icon className="text-foreground size-4" />}
                                                         <span className="text-sm font-medium">{item.title}</span>
@@ -123,7 +122,7 @@ export function Header() {
                                 <NavigationMenuTrigger className="bg-transparent">Resources & Support</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5 pb-1.5">
                                     <div className="grid w-[32rem] grid-cols-2 gap-2">
-                                        <ul className="space-y-2 rounded-md border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.04] dark:bg-white/[0.04] p-2">
+                                        <ul className="space-y-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
                                             {resourcesLinks.map((item, i) => (
                                                 <li key={i}>
                                                     <ListItem {...item} />
@@ -146,7 +145,6 @@ export function Header() {
                     </NavigationMenu>
                 </div>
                 <div className="hidden items-center gap-2 md:flex">
-                    <ThemeToggle />
                     <Button variant="outline" asChild>
                         <a href="https://auth.ciphera.net" onClick={() => track('header_sign_in')}>Sign In</a>
                     </Button>
@@ -155,7 +153,6 @@ export function Header() {
                     </Button>
                 </div>
                 <div className="flex items-center gap-2 md:hidden">
-                    <ThemeToggle />
                     <Button
                         size="icon"
                         variant="outline"
@@ -246,9 +243,9 @@ function ListItem({
     ...props
 }: React.ComponentProps<typeof NavigationMenuLink> & LinkItem) {
     return (
-        <NavigationMenuLink className={cn('w-full flex flex-row gap-x-2 data-[active=true]:focus:bg-white/[0.06] data-[active=true]:hover:bg-black/[0.06] dark:hover:bg-white/[0.06] data-[active=true]:bg-white/[0.04] data-[active=true]:text-accent-foreground hover:bg-black/[0.06] dark:hover:bg-white/[0.06] hover:text-accent-foreground focus:bg-white/[0.06] focus:text-accent-foreground rounded-sm p-2 transition-colors', className)} {...props} asChild>
+        <NavigationMenuLink className={cn('w-full flex flex-row gap-x-2 data-[active=true]:focus:bg-white/[0.06] data-[active=true]:hover:bg-white/[0.06] data-[active=true]:text-accent-foreground hover:bg-white/[0.06] hover:text-accent-foreground focus:bg-white/[0.06] focus:text-accent-foreground rounded-sm p-2 transition-colors', className)} {...props} asChild>
             <a href={href}>
-                <div className="flex aspect-square size-12 items-center justify-center rounded-md border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.05] dark:bg-white/[0.05] shadow-sm p-2">
+                <div className="flex aspect-square size-12 items-center justify-center rounded-md border border-white/[0.08] bg-white/[0.05] shadow-sm p-2">
                     {image ? (
                         <Image src={image} alt={title} width={32} height={32} className="object-contain max-w-8 max-h-8" />
                     ) : Icon ? (

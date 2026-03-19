@@ -13,7 +13,7 @@ const services = [
     description: 'Privacy-first analytics',
     icon: '/pulse_icon_no_margins.png',
     isImage: true,
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'top',
   },
   {
@@ -22,7 +22,7 @@ const services = [
     description: 'Secure file sharing',
     icon: '/drop_icon_no_margins.png',
     isImage: true,
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'top-right',
   },
   {
@@ -31,7 +31,7 @@ const services = [
     description: 'Identity provider',
     icon: '/auth_icon_no_margins.png',
     isImage: true,
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'left',
   },
   {
@@ -40,7 +40,7 @@ const services = [
     description: 'Bot protection',
     icon: '/captcha_icon_no_margins.png',
     isImage: true,
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'right',
   },
   {
@@ -49,7 +49,7 @@ const services = [
     description: 'Email infrastructure',
     icon: '/relay_icon_no_margins.png',
     isImage: true,
-    iconBg: 'bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40',
+    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'bottom',
   },
 ]
@@ -82,10 +82,10 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
             )}
           </div>
           <div>
-            <div className="font-semibold text-sm text-neutral-900 dark:text-white">
+            <div className="font-semibold text-sm text-white">
               {service.name}
             </div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400">
+            <div className="text-xs text-neutral-400">
               {service.description}
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function Infrastructure() {
           <h2 className="heading-2 mb-4">
             The Ciphera Ecosystem
             </h2>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
             A modular architecture where identity, data, and protection are strictly separated—ensuring true privacy by design.
           </p>
           <span className="badge-neutral mt-4 inline-flex items-center gap-1.5">
@@ -295,10 +295,10 @@ export default function Infrastructure() {
                 <h3 className="heading-3 mb-1">
                   {service.name}
                 </h3>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
+                <p className="text-sm text-neutral-400 mb-3">
                   {service.description}
                 </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm text-neutral-400">
                   {service.id === 'drop' && 'End-to-end encrypted file sharing with zero-knowledge architecture.'}
                   {service.id === 'pulse' && 'Real-time analytics and session replay without compromising user privacy.'}
                   {service.id === 'auth' && 'Secure identity management with JWT tokens and double-hashed passwords.'}

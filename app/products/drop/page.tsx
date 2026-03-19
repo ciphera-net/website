@@ -62,7 +62,7 @@ export default function DropPage() {
       <section className="section-padding pt-32">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="w-20 h-20 rounded-3xl bg-white dark:bg-neutral-800 ring-2 ring-brand-orange/30 dark:ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
+            <div className="w-20 h-20 rounded-3xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
               <Image
                 src="/drop_icon_no_margins.png"
                 alt="Drop"
@@ -75,7 +75,7 @@ export default function DropPage() {
             <h1 className="heading-1 mb-6">
               Drop
             </h1>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed">
+            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
               Share files securely with end-to-end encryption and zero-knowledge architecture. 
               Your files, your control, complete privacy.
             </p>
@@ -98,13 +98,13 @@ export default function DropPage() {
           <h2 className="heading-2 mb-6">
             What Is Drop?
           </h2>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+          <p className="text-lg text-neutral-400 leading-relaxed mb-6">
             Ciphera Drop is an end-to-end encrypted file sharing service that uses AES-256-GCM client-side encryption to ensure files are encrypted in your browser before upload. Unlike traditional file sharing services such as Dropbox or Google Drive, Drop operates on a zero-knowledge architecture where the server never possesses decryption keys. The encryption key is embedded in the URL fragment (the part after the #), which browsers never send to servers in HTTP requests.
           </p>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
+          <p className="text-lg text-neutral-400 leading-relaxed mb-6">
             Drop is designed for anyone who needs to share files without trusting a third party with the contents. Whether you are sending sensitive legal documents, sharing medical records with a healthcare provider, transferring financial data to an accountant, or simply sending personal files you want to keep private, Drop ensures that only the intended recipient can access the file contents.
           </p>
-          <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          <p className="text-neutral-400 leading-relaxed">
             Drop is completely free to use with no account required. Files up to 5GB are supported, with optional password protection and configurable expiration times. All data is stored on Swiss infrastructure protected by the Swiss Federal Act on Data Protection (FADP). The service is fully open source — both the client and server code are available on <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer" className="text-brand-orange hover:underline">GitHub</a> for independent security verification.
           </p>
         </div>
@@ -130,7 +130,7 @@ export default function DropPage() {
                 <h3 className="heading-3 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                <p className="text-neutral-400 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -170,7 +170,7 @@ export default function DropPage() {
                 <h3 className="heading-3 mb-3">
                   {step.title}
                 </h3>
-                <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                <p className="text-neutral-400 leading-relaxed">
                   {step.description}
                 </p>
               </div>
@@ -193,19 +193,19 @@ export default function DropPage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Share sensitive documents securely
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Send large files without email limits
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Temporary file sharing with auto-deletion
                   </span>
                 </li>
@@ -218,19 +218,19 @@ export default function DropPage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Comply with data protection regulations
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Share confidential documents with clients
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-400">
                     Control access with passwords and expiration
                   </span>
                 </li>
@@ -249,7 +249,7 @@ export default function DropPage() {
           <div className="card p-8">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                <tbody className="divide-y divide-neutral-800">
                   {[
                     ['Encryption Algorithm', 'AES-256-GCM (Galois/Counter Mode)'],
                     ['Key Generation', 'Web Crypto API — crypto.getRandomValues()'],
@@ -265,8 +265,8 @@ export default function DropPage() {
                     ['Account Required', 'No — anonymous file sharing by default'],
                   ].map(([spec, value]) => (
                     <tr key={spec}>
-                      <td className="py-3 pr-4 font-semibold text-neutral-900 dark:text-white whitespace-nowrap">{spec}</td>
-                      <td className="py-3 text-neutral-600 dark:text-neutral-400">{value}</td>
+                      <td className="py-3 pr-4 font-semibold text-white whitespace-nowrap">{spec}</td>
+                      <td className="py-3 text-neutral-400">{value}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -289,7 +289,7 @@ export default function DropPage() {
                   <h3 className="heading-3 mb-3">
                     Encryption Standards
                   </h3>
-                  <ul className="space-y-2 text-neutral-600 dark:text-neutral-400">
+                  <ul className="space-y-2 text-neutral-400">
                     <li className="flex items-start gap-2">
                       <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                       AES-256-GCM encryption
@@ -308,7 +308,7 @@ export default function DropPage() {
                   <h3 className="heading-3 mb-3">
                     Infrastructure
                   </h3>
-                  <ul className="space-y-2 text-neutral-600 dark:text-neutral-400">
+                  <ul className="space-y-2 text-neutral-400">
                     <li className="flex items-start gap-2">
                       <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                       Swiss-hosted servers
