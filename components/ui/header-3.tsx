@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
@@ -32,9 +33,19 @@ type LinkItem = {
     description?: string;
 };
 
+const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string }> = {
+    '/products/pulse': { logo: '/pulse_icon_no_margins.png', name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
+    '/products/drop': { logo: '/drop_icon_no_margins.png', name: 'Drop' },
+    '/products/auth': { logo: '/auth_icon_no_margins.png', name: 'Ciphera Auth' },
+    '/products/captcha': { logo: '/captcha_icon_no_margins.png', name: 'Ciphera Captcha' },
+    '/products/relay': { logo: '/relay_icon_no_margins.png', name: 'Ciphera Relay' },
+};
+
 export function Header() {
     const [open, setOpen] = React.useState(false);
     const scrolled = useScroll(10);
+    const pathname = usePathname();
+    const branding = productBranding[pathname];
 
     React.useEffect(() => {
         if (open) {
@@ -56,17 +67,17 @@ export function Header() {
             <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300", scrolled ? "opacity-100 backdrop-blur-xl bg-neutral-950/60 supports-[backdrop-filter]:bg-neutral-950/50" : "opacity-0")} />
             <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 my-3">
                 <div className="flex items-center gap-5">
-                    <a href="/" className="hover:bg-accent rounded-md p-2 flex items-center gap-2">
+                    <a href={branding ? pathname : "/"} className="hover:bg-accent rounded-md p-2 flex items-center gap-2">
                         <Image
-                            src="/ciphera_icon.png"
-                            alt="Ciphera"
+                            src={branding?.logo || "/ciphera_icon.png"}
+                            alt={branding?.name || "Ciphera"}
                             width={36}
                             height={36}
                             priority
-                            className="object-contain"
+                            className={cn("object-contain", branding ? "w-8 h-8" : "")}
                         />
                         <span className="text-xl font-bold text-foreground tracking-tight">
-                            Ciphera
+                            {branding?.name || "Ciphera"}
                         </span>
                     </a>
                     <NavigationMenu className="hidden md:flex">
@@ -146,10 +157,10 @@ export function Header() {
                 </div>
                 <div className="hidden items-center gap-2 md:flex">
                     <Button variant="outline" asChild>
-                        <a href="https://auth.ciphera.net" onClick={() => track('header_sign_in')}>Sign In</a>
+                        <a href={branding?.signIn || "https://auth.ciphera.net"} onClick={() => track('header_sign_in')}>Sign In</a>
                     </Button>
                     <Button asChild>
-                        <a href="https://auth.ciphera.net/signup" onClick={() => track('header_cta_get_started')}>Get Started</a>
+                        <a href={branding?.signUp || "https://auth.ciphera.net/signup"} onClick={() => track('header_cta_get_started')}>Get Started</a>
                     </Button>
                 </div>
                 <div className="flex items-center gap-2 md:hidden">
@@ -187,12 +198,12 @@ export function Header() {
                 </NavigationMenu>
                 <div className="flex flex-col gap-2">
                     <Button variant="outline" className="w-full bg-transparent" asChild>
-                        <a href="https://auth.ciphera.net" onClick={() => track('header_sign_in_mobile')}>
+                        <a href={branding?.signIn || "https://auth.ciphera.net"} onClick={() => track('header_sign_in_mobile')}>
                             Sign In
                         </a>
                     </Button>
                     <Button className="w-full" asChild>
-                        <a href="https://auth.ciphera.net/signup" onClick={() => track('header_cta_get_started_mobile')}>
+                        <a href={branding?.signUp || "https://auth.ciphera.net/signup"} onClick={() => track('header_cta_get_started_mobile')}>
                             Get Started
                         </a>
                     </Button>
