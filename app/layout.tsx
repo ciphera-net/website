@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     default: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
     template: '%s | Ciphera',
   },
-  description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
+  description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Built for privacy.',
   keywords: ['secure file sharing', 'zero-knowledge encryption', 'end-to-end encryption', 'encrypted file transfer', 'privacy-first', 'GDPR compliant file sharing', 'anonymous file upload', 'encrypted cloud storage', 'private file sharing', 'secure file transfer'],
   authors: [{ name: 'Ciphera' }],
   creator: 'Ciphera',
@@ -45,13 +45,13 @@ export const metadata: Metadata = {
     url: 'https://ciphera.net',
     siteName: 'Ciphera',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-    description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
+    description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Built for privacy.',
     images: [
       {
         url: '/og-homepage.png',
         width: 1200,
         height: 630,
-        alt: 'Ciphera - Where Privacy Still Exists',
+        alt: 'Ciphera - Built for privacy',
       },
     ],
   },
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@CipheraNET',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-    description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Where privacy still exists.',
+    description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Built for privacy.',
     images: ['/og-homepage.png'],
   },
   alternates: {

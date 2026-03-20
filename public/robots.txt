@@ -1,4 +1,4 @@
-# Ciphera - Where Privacy Still Exists
+# Ciphera - Built for privacy
 # https://ciphera.net
 
 User-agent: *

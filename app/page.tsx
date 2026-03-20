@@ -11,7 +11,7 @@ const homepageSchemas = [
     '@type': 'WebSite',
     name: 'Ciphera',
     url: 'https://ciphera.net',
-    description: 'Where Privacy Still Exists. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles.',
+    description: 'Built for privacy. Ciphera provides privacy-first infrastructure and applications built on zero-knowledge principles.',
     publisher: {
       '@type': 'Organization',
       name: 'Ciphera',

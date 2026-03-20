@@ -7,6 +7,7 @@ import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import { CheckCircleIcon, LockIcon, GlobeIcon, SwissFlagIcon } from "@ciphera-net/ui";
 import { track } from "@/lib/pulse";
+import { AnimatedCarousel } from "@/components/ui/logo-carousel";
 
 interface Beam {
   x: number;
@@ -48,6 +49,19 @@ const trustIndicators = [
 ];
 
 const privacyTitles = ["encrypted", "private", "secure", "anonymous", "yours"];
+
+const techLogos = [
+  "https://cdn.simpleicons.org/nextdotjs/white",
+  "https://cdn.simpleicons.org/go/white",
+  "https://cdn.simpleicons.org/postgresql/white",
+  "https://cdn.simpleicons.org/minio/white",
+  "https://cdn.simpleicons.org/redis/white",
+  "https://cdn.simpleicons.org/bunnydotnet/white",
+  "https://cdn.simpleicons.org/exoscale/white",
+  "https://cdn.simpleicons.org/docker/white",
+  "https://cdn.simpleicons.org/github/white",
+  "https://cdn.simpleicons.org/letsencrypt/white",
+];
 
 export const PremiumHero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -224,6 +238,24 @@ export const PremiumHero = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="absolute bottom-24 left-0 right-0 z-30">
+        <AnimatedCarousel
+          title="Powered by modern infrastructure"
+          logos={techLogos}
+          autoPlay={true}
+          autoPlayInterval={3000}
+          itemsPerViewMobile={3}
+          itemsPerViewDesktop={5}
+          logoContainerWidth="w-40"
+          logoContainerHeight="h-20"
+          logoImageWidth="w-auto"
+          logoImageHeight="h-10"
+          padding="py-0"
+          containerClassName="bg-transparent"
+          titleClassName="text-white text-lg md:text-2xl"
+        />
       </div>
     </div>
   );

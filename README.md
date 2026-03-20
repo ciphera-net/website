@@ -6,7 +6,7 @@
 
 The official marketing website for **Ciphera**, a privacy-first platform providing infrastructure and applications built on zero-knowledge principles.
 
-**Where Privacy Still Exists**
+**Built for privacy**
 
 ## Overview
 

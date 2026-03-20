@@ -384,7 +384,7 @@ export const Component = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-transparent to-background z-10 from-40%" />
         <div className="absolute inset-0">
           <FlickeringGrid
-            text={tablet ? "Privacy" : "Built for Privacy"}
+            text={tablet ? "privacy" : "Built for privacy"}
             fontSize={tablet ? 90 : 130}
             className="h-full w-full"
             squareSize={2}
