@@ -23,6 +23,14 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
       question: "Is Ciphera GDPR compliant?",
       answer: "Yes. Ciphera is built with privacy-by-design principles and is fully GDPR compliant. We collect minimal data, encrypt everything, and you maintain full control over your information.",
     },
+    {
+      question: "Do I need an account to use Drop?",
+      answer: "No. You can upload and share encrypted files without creating an account. However, a free Ciphera ID gives you access to additional features like download tracking, higher file size limits, and file management across all Ciphera services.",
+    },
+    {
+      question: "How is Ciphera different from Google Drive or Dropbox?",
+      answer: "Unlike traditional cloud storage, Ciphera encrypts your files on your device before upload. We never have access to your data. There's no data mining, no ad targeting, and no third-party access. Privacy isn't a feature we added — it's the foundation.",
+    },
   ],
   security: [
     {
@@ -36,6 +44,14 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     {
       question: "What happens if I lose my encryption key?",
       answer: "Since we use zero-knowledge encryption, we cannot recover your files if you lose your encryption key. This is by design — it ensures that only you have access to your data. We recommend securely storing your keys.",
+    },
+    {
+      question: "Has Ciphera been independently audited?",
+      answer: "Our code is open source, allowing anyone to audit our security implementations. We also conduct regular internal security reviews and penetration testing. All cryptographic implementations use well-established, peer-reviewed libraries.",
+    },
+    {
+      question: "How does Ciphera handle password storage?",
+      answer: "Your password is hashed client-side using PBKDF2 before being sent to our servers, where it's hashed again with Argon2id. This double-hashing approach means we never see your actual password — not during signup, login, or at any other point.",
     },
   ],
   features: [
@@ -51,6 +67,14 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
       question: "Do you support password-protected shares?",
       answer: "Yes. You can add an additional layer of security by password-protecting your file shares. Recipients must enter the correct password to access the encrypted file.",
     },
+    {
+      question: "What is burn-after-download?",
+      answer: "Burn-after-download automatically deletes a shared file from our servers after it has been downloaded once. This ensures sensitive files don't linger online and gives you full control over the lifecycle of your shared data.",
+    },
+    {
+      question: "Does Pulse use cookies to track visitors?",
+      answer: "No. Pulse is our privacy-first analytics tool that works without cookies, fingerprinting, or any form of personal data collection. It gives you meaningful insights like page views, referrers, and visitor counts while being fully GDPR compliant out of the box.",
+    },
   ],
   technical: [
     {
@@ -64,6 +88,14 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     {
       question: "Is the code open source?",
       answer: "Yes! Our code is open source and available on GitHub. We believe transparency builds trust. Anyone can audit our security implementations and verify our privacy claims.",
+    },
+    {
+      question: "What happens to my data if Ciphera shuts down?",
+      answer: "Since your files are encrypted client-side, they remain encrypted and inaccessible on our servers regardless of what happens to the company. Active files can be downloaded by their owners at any time. We'd provide ample notice and migration tools in any shutdown scenario.",
+    },
+    {
+      question: "Can I self-host Ciphera services?",
+      answer: "Since our code is open source, you can inspect and run it yourself. However, we don't currently offer official self-hosting documentation or support. Our managed infrastructure ensures you get automatic updates, security patches, and Swiss data residency.",
     },
   ],
 };

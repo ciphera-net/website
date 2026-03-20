@@ -69,12 +69,17 @@ export function NewsletterSection({
       )}
       {...props}
     >
-      <div className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-neutral-900/80 backdrop-blur-xl supports-[backdrop-filter]:bg-neutral-900/70 px-4 py-10 sm:px-8 max-w-6xl mx-auto">
-        {backgroundEffect && <BackgroundEffect />}
-        <h2 className="mb-6 text-xl/[1.1] font-extrabold tracking-tight text-foreground md:text-2xl/[1.1]">
+      <div className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-neutral-900/80 backdrop-blur-xl supports-[backdrop-filter]:bg-neutral-900/70 px-6 py-20 sm:px-10 sm:py-24 max-w-6xl mx-auto">
+        {backgroundEffect && (
+          <>
+            <img src="/newsletter-bg.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+          </>
+        )}
+        <h2 className="relative z-10 mb-6 text-xl/[1.1] font-extrabold tracking-tight text-foreground md:text-2xl/[1.1]">
           {title}
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="relative z-10 space-y-4">
           <div className="space-y-2">
             <div className="inline-flex gap-2">
               <Input
