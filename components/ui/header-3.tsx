@@ -29,6 +29,14 @@ import {
     Link2,
     Inbox,
     KeyRound,
+    Fingerprint,
+    ScanLine,
+    ShieldCheck,
+    Puzzle,
+    Activity,
+    Server,
+    EyeOff,
+    Cable,
 } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import { track } from '@/lib/pulse';
@@ -64,6 +72,24 @@ const productFeatures: Record<string, FeatureLink[]> = {
         { title: 'Secure Sharing', href: '#sharing', icon: Link2, description: 'Links, QR codes & controls' },
         { title: 'File Requests', href: '#requests', icon: Inbox, description: 'Receive files securely' },
         { title: 'Zero-Knowledge', href: '#zero-knowledge', icon: KeyRound, description: 'Server can\'t read your files' },
+    ],
+    '/products/auth': [
+        { title: 'Double Hashing', href: '#double-hashing', icon: Lock, description: 'PBKDF2 + Argon2id' },
+        { title: 'Passkeys & 2FA', href: '#passkeys', icon: Fingerprint, description: 'WebAuthn, TOTP & recovery' },
+        { title: 'Unified Login', href: '#oauth', icon: ScanLine, description: 'OAuth 2.0 with PKCE' },
+        { title: 'Security Dashboard', href: '#security', icon: ShieldCheck, description: 'Audit log & device trust' },
+    ],
+    '/products/captcha': [
+        { title: 'Proof-of-Work', href: '#proof-of-work', icon: Activity, description: 'Invisible adaptive challenges' },
+        { title: 'Puzzle Challenge', href: '#puzzle', icon: Puzzle, description: 'Spatial verification' },
+        { title: 'Risk Scoring', href: '#risk-scoring', icon: ShieldCheck, description: '5-signal confidence score' },
+        { title: 'Stateless Architecture', href: '#stateless', icon: Server, description: 'HMAC-signed, no database' },
+    ],
+    '/products/relay': [
+        { title: 'Security Alerts', href: '#alerts', icon: Mail, description: 'Critical emails, fast delivery' },
+        { title: 'Authentication', href: '#authentication', icon: ShieldCheck, description: 'DKIM, SPF & DMARC' },
+        { title: 'No Tracking', href: '#privacy-design', icon: EyeOff, description: 'Zero pixels, zero profiling' },
+        { title: 'Integration', href: '#integration', icon: Cable, description: 'Standard SMTP, any language' },
     ],
 };
 

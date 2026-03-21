@@ -5,9 +5,9 @@ import { cipheraIcon } from '@/lib/images'
 
 export function AuthMockup() {
   return (
-    <div className="relative w-full max-w-[440px] mx-auto">
+    <div className="relative w-full max-w-[500px] mx-auto">
       {/* Card */}
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-8 py-6 shadow-2xl">
         {/* Header */}
         <div className="text-center mb-5">
           <h3 className="text-lg font-bold text-white">Create Ciphera ID</h3>
@@ -50,7 +50,7 @@ export function AuthMockup() {
               <div className="w-4 h-4 rounded border-2 border-white/20 bg-transparent" />
               <span className="text-xs text-white">I am human</span>
             </div>
-            <div className="flex items-center gap-1.5 border-l border-white/[0.08] pl-2">
+            <div className="flex items-center gap-1.5 border-l border-white/[0.08] pl-3 ml-1">
               <span className="text-[9px] text-neutral-500 leading-tight">Secured by</span>
               <img src={cipheraIcon.src} alt="Ciphera" className="w-5 h-5 object-contain" />
               <span className="text-[11px] font-semibold text-white">Ciphera</span>
