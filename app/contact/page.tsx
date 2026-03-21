@@ -16,7 +16,6 @@ import {
   GithubIcon,
   Captcha
 } from '@ciphera-net/ui'
-import Breadcrumbs from '../../components/Breadcrumbs'
 import { track } from '../../lib/pulse'
 
 // * Contact methods with response time SLAs
@@ -27,7 +26,6 @@ const contactMethods = [
     description: 'For general inquiries and support',
     value: 'hello@ciphera.net',
     href: 'mailto:hello@ciphera.net',
-    gradient: 'from-brand-orange to-brand-orange-hover',
     trackEvent: 'contact_email_hello_click' as const,
     responseTime: '24-48 hours',
   },
@@ -37,7 +35,6 @@ const contactMethods = [
     description: 'Report vulnerabilities responsibly',
     value: 'security@ciphera.net',
     href: 'mailto:security@ciphera.net',
-    gradient: 'from-red-600 to-red-800',
     trackEvent: 'contact_email_security_click' as const,
     responseTime: '4-8 hours',
   },
@@ -47,7 +44,6 @@ const contactMethods = [
     description: 'Partnership and enterprise inquiries',
     value: 'business@ciphera.net',
     href: 'mailto:business@ciphera.net',
-    gradient: 'from-blue-600 to-blue-800',
     trackEvent: 'contact_email_business_click' as const,
     responseTime: '1-2 business days',
   },
@@ -127,6 +123,7 @@ export default function ContactPage() {
     message: '',
   })
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null)
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
   
   // * Captcha state - matching auth implementation
   const [captchaId, setCaptchaId] = useState('')
@@ -155,6 +152,7 @@ export default function ContactPage() {
   }
 
   const handleFieldBlur = (field: string, value: string) => {
+    setTouchedFields({ ...touchedFields, [field]: true })
     const error = validateField(field, value)
     setFieldErrors({ ...fieldErrors, [field]: error })
   }
@@ -222,29 +220,23 @@ export default function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
       />
-      <Breadcrumbs items={[{ label: 'Contact Us' }]} />
       {/* * Hero Section */}
-      <section className="relative section-padding overflow-hidden">
-        {/* * Background */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/3 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
-        </div>
+      <section className="relative pt-16 pb-12 md:pt-24 md:pb-16 overflow-hidden">
 
-        <div className="section-container">
+        <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <span className="badge-primary mb-6 inline-flex">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
               Get in Touch
             </span>
-            <h1 className="heading-1 mb-6">
-              We're here to{' '}
-              <span className="gradient-text">help</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
+              We&apos;re here to{' '}
+              <span className="text-brand-orange">help</span>
             </h1>
             <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
               Have questions about our privacy tools? Want to report a security issue? 
@@ -255,7 +247,7 @@ export default function ContactPage() {
       </section>
 
       {/* * Contact Methods */}
-      <section className="section-container pb-16 md:pb-24">
+      <section className="max-w-6xl mx-auto px-6 pb-16 md:pb-24">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {contactMethods.map((method, index) => {
             const Icon = method.icon
@@ -266,12 +258,12 @@ export default function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group card card-hover p-6 text-center relative"
+                className="group rounded-xl border border-white/[0.08] bg-white/[0.04] p-6 text-center hover:bg-white/[0.06] transition-colors relative"
               >
-                <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${method.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="w-7 h-7 text-white" />
+                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
+                  <Icon className="w-7 h-7 text-brand-orange" />
                 </div>
-                <h3 className="heading-3 mb-1">
+                <h3 className="text-lg font-semibold text-white mb-1">
                   {method.title}
                 </h3>
                 <p className="text-sm text-neutral-400 mb-3">
@@ -312,14 +304,14 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="group card card-hover p-6 text-center"
+            className="group rounded-xl border border-white/[0.08] bg-white/[0.04] p-6 text-center hover:bg-white/[0.06] transition-colors"
           >
-            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
+              <svg className="w-7 h-7 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
             </div>
-            <h3 className="heading-3 mb-1">
+            <h3 className="text-lg font-semibold text-white mb-1">
               Phone
             </h3>
             <p className="text-sm text-neutral-400 mb-3">
@@ -388,15 +380,15 @@ export default function ContactPage() {
       </section>
 
       {/* * Common Questions */}
-      <section className="section-container pb-16">
+      <section className="max-w-6xl mx-auto px-6 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="card p-8 max-w-3xl mx-auto"
+          className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-8 max-w-3xl mx-auto"
         >
-          <h3 className="heading-3 mb-6 text-center">
+          <h3 className="text-lg font-semibold text-white mb-6 text-center">
             Before you contact us, you might find your answer here:
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -404,7 +396,7 @@ export default function ContactPage() {
               <a
                 key={index}
                 href={item.link}
-                className="flex items-center gap-3 p-4 rounded-xl hover:bg-neutral-800 transition-colors group"
+                className="flex items-center gap-3 p-4 rounded-xl hover:bg-white/[0.06] transition-colors group"
                 onClick={() => track('contact_common_question_click')}
               >
                 <CheckCircleIcon className="w-5 h-5 text-brand-orange shrink-0" />
@@ -419,8 +411,8 @@ export default function ContactPage() {
       </section>
 
       {/* * Contact Form Section */}
-      <section className="section-padding">
-        <div className="section-container">
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
             {/* * Left - Info */}
             <motion.div
@@ -429,8 +421,7 @@ export default function ContactPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="badge-neutral mb-6 inline-flex">Contact Form</span>
-              <h2 className="heading-2 mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Send us a message
               </h2>
               <p className="text-lg text-neutral-400 mb-8 leading-relaxed">
@@ -441,7 +432,9 @@ export default function ContactPage() {
               {/* * Office Info */}
               <div className="space-y-4">
                 {/* * Office Photo */}
-                <div className="rounded-2xl overflow-hidden border border-neutral-700 shadow-lg">
+                <div className="relative">
+                <div className="absolute -inset-4 bg-brand-orange/8 rounded-[2rem] blur-2xl" />
+                <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] shadow-lg">
                   <div className="relative aspect-video w-full bg-neutral-800">
                     <Image
                       src={officeHq}
@@ -467,7 +460,7 @@ export default function ContactPage() {
                       }}
                     />
                   </div>
-                  <div className="p-4 bg-neutral-800">
+                  <div className="p-4 bg-neutral-900/80">
                     <div className="flex items-start gap-3">
                       <GlobeIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
                       <div>
@@ -482,9 +475,10 @@ export default function ContactPage() {
                     </div>
                   </div>
                 </div>
+                </div>
 
                 {/* * Business hours */}
-                <div className="p-6 rounded-2xl bg-neutral-800 border border-neutral-700">
+                <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/10 from-brand-orange/30 to-brand-orange/20 flex items-center justify-center shrink-0">
                       <svg className="w-6 h-6 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -529,7 +523,7 @@ export default function ContactPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <form onSubmit={handleSubmit} className="card p-4 sm:p-6 md:p-8">
+              <form onSubmit={handleSubmit} className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-4 sm:p-6 md:p-8">
                 <div className="space-y-4 sm:space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     <div>
@@ -548,7 +542,7 @@ export default function ContactPage() {
                         onBlur={(e) => handleFieldBlur('name', e.target.value)}
                         placeholder="Your name"
                       />
-                      {fieldErrors.name && (
+                      {touchedFields.name && fieldErrors.name && (
                         <p className="text-sm text-red-400 mt-1">{fieldErrors.name}</p>
                       )}
                     </div>
@@ -568,7 +562,7 @@ export default function ContactPage() {
                         onBlur={(e) => handleFieldBlur('email', e.target.value)}
                         placeholder="you@example.com"
                       />
-                      {fieldErrors.email && (
+                      {touchedFields.email && fieldErrors.email && (
                         <p className="text-sm text-red-400 mt-1">{fieldErrors.email}</p>
                       )}
                     </div>
@@ -612,7 +606,7 @@ export default function ContactPage() {
                       className="w-full px-4 py-3 rounded-xl border border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange transition-all duration-200 resize-none"
                       placeholder="How can we help you?"
                     />
-                    {fieldErrors.message && (
+                    {touchedFields.message && fieldErrors.message && (
                       <p className="text-sm text-red-400 mt-1">{fieldErrors.message}</p>
                     )}
                   </div>
