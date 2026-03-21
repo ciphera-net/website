@@ -34,11 +34,11 @@ type LinkItem = {
 };
 
 const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string }> = {
-    '/products/pulse': { logo: '/pulse_icon_no_margins.png', name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
-    '/products/drop': { logo: '/drop_icon_no_margins.png', name: 'Drop' },
-    '/products/auth': { logo: '/auth_icon_no_margins.png', name: 'Ciphera Auth' },
-    '/products/captcha': { logo: '/captcha_icon_no_margins.png', name: 'Ciphera Captcha' },
-    '/products/relay': { logo: '/relay_icon_no_margins.png', name: 'Ciphera Relay' },
+    '/products/pulse': { logo: '/pulse_icon_no_margins.png?v=2', name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
+    '/products/drop': { logo: '/drop_icon_no_margins.png?v=2', name: 'Drop' },
+    '/products/auth': { logo: '/auth_icon_no_margins.png?v=2', name: 'Ciphera Auth' },
+    '/products/captcha': { logo: '/captcha_icon_no_margins.png?v=2', name: 'Ciphera Captcha' },
+    '/products/relay': { logo: '/relay_icon_no_margins.png?v=2', name: 'Ciphera Relay' },
 };
 
 export function Header() {
