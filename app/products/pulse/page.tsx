@@ -5,6 +5,7 @@ import { PulseMockup } from '@/components/ui/pulse-mockup'
 import { FunnelMockup } from '@/components/ui/funnel-mockup'
 import { PulseFeaturesCarousel } from '@/components/ui/pulse-features-carousel'
 import { EmailReportMockup } from '@/components/ui/email-report-mockup'
+import { ModularScriptMockup } from '@/components/ui/modular-script-mockup'
 import PulseFAQ from '@/components/PulseFAQ'
 import {
   Cookie,
@@ -375,80 +376,6 @@ export default function PulsePage() {
         </div>
       </section>
 
-      {/* What we track vs. what we don't */}
-      <section className="py-20 lg:py-32 bg-neutral-950 border-t border-white/[0.04]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
-              Privacy by architecture.
-            </h2>
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
-              Pulse is GDPR compliant not because of configuration toggles, but
-              because it&apos;s architecturally impossible for us to collect personal
-              data.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* What we track */}
-            <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-brand-orange/10 flex items-center justify-center">
-                  <Eye className="w-5 h-5 text-brand-orange" />
-                </div>
-                <h3 className="text-xl font-bold text-white">What we track</h3>
-              </div>
-              <ul className="space-y-4">
-                {[
-                  'Page views and unique visitors',
-                  'Referrer sources and UTM parameters',
-                  'Device type, browser, and OS',
-                  'Country-level geolocation',
-                  'Bounce rate and visit duration',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* What we don't */}
-            <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-neutral-800 flex items-center justify-center">
-                  <EyeSlash className="w-5 h-5 text-neutral-400" />
-                </div>
-                <h3 className="text-xl font-bold text-white">
-                  What we don&apos;t
-                </h3>
-              </div>
-              <ul className="space-y-4">
-                {[
-                  'No personal identification data',
-                  'No cross-site tracking',
-                  'No fingerprinting techniques',
-                  'No cookies — first or third-party',
-                  'No data sold to third parties',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-500"
-                  >
-                    <X className="w-5 h-5 text-neutral-600 shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Features — alternating blocks */}
       <section className="py-20 lg:py-32 bg-neutral-950 space-y-28">
         {/* Lightweight script — mockup left, text right */}
@@ -532,9 +459,190 @@ export default function PulsePage() {
           </div>
         </div>
 
-        {/* Swiss infrastructure — text left, visual right */}
+        {/* Modular script — text left, mockup right */}
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                Your script, your rules.
+              </h2>
+              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
+                Enable only what you need. Scroll depth, outbound links, file
+                downloads, 404 detection — each feature is a toggle. No bloat,
+                no unnecessary tracking. Configure visitor recognition and
+                privacy settings to match your requirements.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  'Modular feature toggles — only load what you use',
+                  'Frustration tracking for rage clicks and dead clicks',
+                  'Configurable visitor identity and session duration',
+                  'Framework-specific setup guides for 10+ platforms',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 text-neutral-400"
+                  >
+                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="relative flex items-center justify-center lg:justify-end">
+              <div className="relative">
+                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
+                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
+                  <img
+                    src="/pulse-showcase-bg.png"
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30" />
+                  <div className="relative w-full">
+                    <ModularScriptMockup />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      {/* Comparison — side by side cards */}
+      <section className="py-20 lg:py-32 bg-neutral-950 border-t border-white/[0.04]">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+              How Pulse compares.
+            </h2>
+            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+              Google Analytics is installed on over 28 million websites. Here&apos;s
+              why Pulse is the better choice for privacy-conscious teams.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* Pulse card — highlighted */}
+            <div className="rounded-xl border border-brand-orange/20 bg-neutral-900/80 p-8 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-orange" />
+              <div className="flex items-center gap-3 mb-8">
+                <img
+                  src="/pulse_icon_no_margins.png"
+                  alt="Pulse"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 rounded-lg object-contain"
+                />
+                <div>
+                  <h3 className="text-xl font-bold text-white">Pulse</h3>
+                  <p className="text-xs text-brand-orange">Privacy-first analytics</p>
+                </div>
+              </div>
+              <ul className="space-y-4">
+                {[
+                  'No cookies required',
+                  'GDPR compliant by default',
+                  'No consent banner needed',
+                  'Open source client',
+                  'Script under 2KB',
+                  'Swiss infrastructure',
+                  'No cross-site tracking',
+                  'Free tier available',
+                  'Real-time dashboard',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-center gap-3 text-neutral-300"
+                  >
+                    <Check className="w-5 h-5 text-brand-orange shrink-0" />
+                    <span className="text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Google Analytics card — muted */}
+            <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-8">
+              <div className="flex items-center gap-3 mb-8">
+                <img
+                  src="https://www.google.com/s2/favicons?domain=analytics.google.com&sz=64"
+                  alt="Google Analytics"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 rounded-lg bg-neutral-800 p-1.5"
+                />
+                <div>
+                  <h3 className="text-xl font-bold text-white">Google Analytics</h3>
+                  <p className="text-xs text-neutral-500">Traditional tracking</p>
+                </div>
+              </div>
+              <ul className="space-y-4">
+                {[
+                  { feature: 'Requires cookies', has: false },
+                  { feature: 'GDPR requires configuration', has: false },
+                  { feature: 'Consent banner required', has: false },
+                  { feature: 'Closed source', has: false },
+                  { feature: 'Script over 45KB', has: false },
+                  { feature: 'US infrastructure', has: false },
+                  { feature: 'Cross-site tracking', has: false },
+                  { feature: 'Free tier available', has: true },
+                  { feature: 'Real-time dashboard', has: true },
+                ].map((item) => (
+                  <li
+                    key={item.feature}
+                    className={`flex items-center gap-3 ${item.has ? 'text-neutral-400' : 'text-neutral-500'}`}
+                  >
+                    {item.has ? (
+                      <Check className="w-5 h-5 text-neutral-500 shrink-0" />
+                    ) : (
+                      <X className="w-5 h-5 text-neutral-600 shrink-0" />
+                    )}
+                    <span className="text-sm">{item.feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Swiss Privacy — photo left, text right */}
+      <section className="py-20 lg:py-32 bg-neutral-950">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="relative flex items-center justify-center lg:justify-start">
+              <div className="relative">
+                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
+                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
+                  <img
+                    src="/zurich.jpg"
+                    alt="Zurich, Switzerland"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
+                  {/* Info cards floating at bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 space-y-2.5">
+                    {[
+                      { icon: Globe, title: 'Data residency', desc: 'Switzerland (FADP protected)' },
+                      { icon: Timer, title: 'IP retention', desc: '0 seconds — discarded at edge' },
+                      { icon: ShieldCheck, title: 'Compliance', desc: 'GDPR, FADP, ePrivacy exempt' },
+                    ].map((item) => (
+                      <div key={item.title} className="flex items-center gap-3 rounded-xl bg-neutral-900/80 border border-white/[0.08] px-4 py-3 backdrop-blur-sm">
+                        <item.icon className="w-5 h-5 text-brand-orange shrink-0" />
+                        <div>
+                          <p className="text-xs font-semibold text-white">{item.title}</p>
+                          <p className="text-[11px] text-neutral-400">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
                 Swiss infrastructure. Swiss privacy laws.
@@ -551,6 +659,7 @@ export default function PulsePage() {
                   'Data never leaves Swiss jurisdiction',
                   'IP addresses discarded after geo lookup',
                   'Aggregated metrics only — no individual records',
+                  'No cookies, no fingerprinting, no personal data',
                   'No Data Processing Agreement required',
                 ].map((item) => (
                   <li
@@ -562,115 +671,6 @@ export default function PulsePage() {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            <div className="relative flex items-center justify-center lg:justify-end">
-              <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-8 w-full max-w-[480px] shadow-2xl">
-                <div className="space-y-5">
-                  {[
-                    {
-                      icon: Globe,
-                      title: 'Data residency',
-                      desc: 'Switzerland (FADP protected)',
-                    },
-                    {
-                      icon: Timer,
-                      title: 'IP retention',
-                      desc: '0 seconds — discarded at edge',
-                    },
-                    {
-                      icon: ShieldCheck,
-                      title: 'Compliance',
-                      desc: 'GDPR, FADP, ePrivacy exempt',
-                    },
-                    {
-                      icon: ChartLine,
-                      title: 'Data model',
-                      desc: 'Aggregated metrics, no user records',
-                    },
-                  ].map((item) => (
-                    <div key={item.title} className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-brand-orange/10 flex items-center justify-center shrink-0">
-                        <item.icon className="w-5 h-5 text-brand-orange" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-white">
-                          {item.title}
-                        </p>
-                        <p className="text-sm text-neutral-500">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Comparison table */}
-      <section className="py-20 lg:py-32 bg-neutral-950 border-t border-white/[0.04]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
-              How Pulse compares.
-            </h2>
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
-              Google Analytics is installed on over 28 million websites. Here&apos;s
-              why Pulse is the better choice for privacy-conscious teams.
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-8 max-w-3xl mx-auto shadow-2xl">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-neutral-800">
-                    <th className="text-left py-4 pr-4 font-bold text-white">
-                      Feature
-                    </th>
-                    <th className="text-center py-4 px-4 font-bold text-brand-orange">
-                      Pulse
-                    </th>
-                    <th className="text-center py-4 pl-4 font-bold text-neutral-500">
-                      Google Analytics
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    ['No cookies required', true, false],
-                    ['GDPR compliant by default', true, false],
-                    ['No consent banner needed', true, false],
-                    ['Open source client', true, false],
-                    ['Script under 5KB', true, false],
-                    ['Swiss infrastructure', true, false],
-                    ['No cross-site tracking', true, false],
-                    ['Free tier', true, true],
-                    ['Real-time dashboard', true, true],
-                  ].map(([feature, pulse, ga], index) => (
-                    <tr key={index} className="border-b border-neutral-800/50">
-                      <td className="py-4 pr-4 text-neutral-400 text-sm">
-                        {feature as string}
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        {pulse ? (
-                          <Check className="w-5 h-5 text-brand-orange mx-auto" />
-                        ) : (
-                          <X className="w-5 h-5 text-neutral-600 mx-auto" />
-                        )}
-                      </td>
-                      <td className="text-center py-4 pl-4">
-                        {ga ? (
-                          <Check className="w-5 h-5 text-neutral-500 mx-auto" />
-                        ) : (
-                          <X className="w-5 h-5 text-neutral-600 mx-auto" />
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
           </div>
         </div>

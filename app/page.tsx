@@ -1,6 +1,7 @@
 import Hero from '../components/Hero'
 import Ecosystem from '../components/Ecosystem'
 import ProductShowcase from '../components/ProductShowcase'
+import SwissPrivacy from '../components/SwissPrivacy'
 import EnhancedFAQ from '../components/EnhancedFAQ'
 import Newsletter from '../components/Newsletter'
 
@@ -61,6 +62,7 @@ export default function HomePage() {
       <Hero />
       <Ecosystem />
       <ProductShowcase />
+      <SwissPrivacy />
       <EnhancedFAQ />
       <Newsletter />
     </>
