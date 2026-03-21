@@ -92,27 +92,27 @@ export default function AboutPage() {
       />
       <Breadcrumbs items={[{ label: 'About Us' }]} />
       {/* * Hero Section */}
-      <section className="relative section-padding overflow-hidden">
+      <section className="relative py-16 md:py-24 overflow-hidden">
         {/* * Background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/3 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
           <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
         </div>
 
-        <div className="section-container">
+        <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <span className="badge-primary mb-6 inline-flex">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
               Our Story
             </span>
-            <h1 className="heading-1 mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
               Building the future of{' '}
-              <span className="gradient-text">privacy</span>
+              <span className="text-brand-orange">privacy</span>
             </h1>
             <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
               Ciphera is dedicated to creating <a href="/products" className="link">privacy-first infrastructure and applications</a> 
@@ -124,7 +124,7 @@ export default function AboutPage() {
       </section>
 
       {/* * Mission Section */}
-      <section className="section-container pb-16 md:pb-24">
+      <section className="max-w-6xl mx-auto px-6 pb-16 md:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -182,8 +182,8 @@ export default function AboutPage() {
       </section>
 
       {/* * Values Section */}
-      <section className="section-padding">
-        <div className="section-container">
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -191,8 +191,8 @@ export default function AboutPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <span className="badge-neutral mb-4 inline-flex">Our Values</span>
-            <h2 className="heading-2 mb-4">
+            <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] text-sm text-neutral-400 mb-4">Our Values</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               What we stand for
             </h2>
             <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
@@ -212,11 +212,11 @@ export default function AboutPage() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="group"
                 >
-                  <div className="h-full card card-hover p-6 lg:p-8">
+                  <div className="h-full rounded-xl border border-white/[0.08] bg-neutral-900/80 hover:bg-white/[0.06] transition-colors p-6 lg:p-8">
                     <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${value.gradient} flex items-center justify-center shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
                       <Icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="heading-3 mb-3">
+                    <h3 className="text-lg font-semibold text-white mb-3">
                       {value.title}
                     </h3>
                     <p className="text-neutral-400 leading-relaxed">
@@ -231,8 +231,8 @@ export default function AboutPage() {
       </section>
 
       {/* * Tech Stack Section */}
-      <section className="section-padding">
-        <div className="section-container">
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -240,8 +240,8 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="badge-primary mb-6 inline-flex">Technology</span>
-              <h2 className="heading-2 mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-6">Technology</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Built with modern, secure technologies
               </h2>
               <p className="text-lg text-neutral-400 leading-relaxed mb-8">
@@ -279,8 +279,8 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="card p-6 lg:p-8">
-                <h3 className="heading-3 mb-6">
+              <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-6 lg:p-8">
+                <h3 className="text-lg font-semibold text-white mb-6">
                   Architecture Overview
                 </h3>
                 <p className="text-neutral-400 leading-relaxed mb-6">
@@ -323,8 +323,8 @@ export default function AboutPage() {
       </section>
 
       {/* * Timeline Section */}
-      <section className="section-padding">
-        <div className="section-container">
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -332,8 +332,8 @@ export default function AboutPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <span className="badge-neutral mb-4 inline-flex">Our Journey</span>
-            <h2 className="heading-2 mb-4">
+            <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] text-sm text-neutral-400 mb-4">Our Journey</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Building privacy, one step at a time
             </h2>
           </motion.div>
@@ -371,8 +371,8 @@ export default function AboutPage() {
       </section>
 
       {/* * CTA Section */}
-      <section className="section-padding">
-        <div className="section-container">
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -380,7 +380,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center max-w-2xl mx-auto"
           >
-            <h2 className="heading-2 mb-6">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
               Experience Privacy-First Analytics
             </h2>
             <p className="text-lg text-neutral-400 mb-8">

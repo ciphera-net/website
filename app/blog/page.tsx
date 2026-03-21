@@ -45,11 +45,11 @@ export default function BlogPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
       {/* * Hero */}
-      <section className="section-padding pt-32">
-        <div className="section-container">
+      <section className="py-16 md:py-24 pt-32">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <span className="badge-primary mb-4 inline-flex">Blog</span>
-            <h1 className="heading-1 mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-4">Blog</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
               Privacy & Security Insights
             </h1>
             <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
@@ -60,8 +60,8 @@ export default function BlogPage() {
       </section>
 
       {/* * Search & Filter */}
-      <section className="section-padding !pt-0">
-        <div className="section-container">
+      <section className="py-16 md:py-24 !pt-0">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="max-w-6xl mx-auto space-y-5">
             {/* Search input */}
             <div className="relative max-w-md mx-auto">
@@ -113,8 +113,8 @@ export default function BlogPage() {
       </section>
 
       {/* * Blog Posts Grid */}
-      <section className="section-padding">
-        <div className="section-container">
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6">
           {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {filteredPosts.map((post) => (
@@ -133,7 +133,7 @@ export default function BlogPage() {
                   </div>
                   <div className="flex flex-col flex-1 p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="badge-neutral text-xs">{post.category}</span>
+                      <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] text-xs text-neutral-400">{post.category}</span>
                       <span className="text-xs text-neutral-400">{post.readTime}</span>
                     </div>
 
