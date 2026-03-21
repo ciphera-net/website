@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import { cipheraIcon, dropIcon } from '@/lib/images'
 
 const values = [
   {
@@ -165,7 +166,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/30 to-neutral-400/30 rounded-full blur-3xl" />
                 <div className="relative w-full h-full rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                   <Image
-                    src="/ciphera_icon.png"
+                    src={cipheraIcon}
                     alt="Ciphera - Privacy-first infrastructure logo"
                     width={120}
                     height={120}
@@ -297,7 +298,7 @@ export default function AboutPage() {
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                      <Image src="/drop_icon_no_margins.png" alt="Drop - Secure file sharing application icon" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain" />
+                      <Image src={dropIcon} alt="Drop - Secure file sharing application icon" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain" />
                     </div>
                     <div>
                       <div className="font-semibold text-white text-sm">Drop Backend</div>

@@ -4,6 +4,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { GithubIcon } from '@ciphera-net/ui';
 import Image from 'next/image';
+import { cipheraIcon } from '@/lib/images';
 
 interface FooterLink {
     title: string;
@@ -60,7 +61,7 @@ export function Footer() {
                 <AnimatedContainer className="space-y-4">
                     <a href="/" className="flex items-center gap-2">
                         <Image
-                            src="/ciphera_icon.png"
+                            src={cipheraIcon}
                             alt="Ciphera"
                             width={32}
                             height={32}

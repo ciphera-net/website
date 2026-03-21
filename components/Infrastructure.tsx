@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { UserIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
 import Image from 'next/image'
 import { SwissFlagIcon } from '@ciphera-net/ui'
+import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 // * Architecture nodes for the ecosystem diagram
 const services = [
@@ -11,7 +12,7 @@ const services = [
     id: 'pulse',
     name: 'Pulse',
     description: 'Privacy-first analytics',
-    icon: '/pulse_icon_no_margins.png',
+    icon: pulseIcon,
     isImage: true,
     iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'top',
@@ -20,7 +21,7 @@ const services = [
     id: 'drop',
     name: 'Drop',
     description: 'Secure file sharing',
-    icon: '/drop_icon_no_margins.png',
+    icon: dropIcon,
     isImage: true,
     iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'top-right',
@@ -29,7 +30,7 @@ const services = [
     id: 'auth',
     name: 'Ciphera Auth',
     description: 'Identity provider',
-    icon: '/auth_icon_no_margins.png',
+    icon: authIcon,
     isImage: true,
     iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'left',
@@ -38,7 +39,7 @@ const services = [
     id: 'captcha',
     name: 'Ciphera Captcha',
     description: 'Bot protection',
-    icon: '/captcha_icon_no_margins.png',
+    icon: captchaIcon,
     isImage: true,
     iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'right',
@@ -47,7 +48,7 @@ const services = [
     id: 'relay',
     name: 'Ciphera Relay',
     description: 'Email infrastructure',
-    icon: '/relay_icon_no_margins.png',
+    icon: relayIcon,
     isImage: true,
     iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'bottom',
@@ -71,7 +72,7 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
           <div className={`w-14 h-14 rounded-2xl ${service.iconBg} flex items-center justify-center shadow-lg p-2`}>
             {service.isImage ? (
               <Image 
-                src={service.icon as string} 
+                src={service.icon} 
                 alt={`${service.name} - ${service.description} logo`}
                 width={32} 
                 height={32}
@@ -282,7 +283,7 @@ export default function Infrastructure() {
                 <div className={`icon-container ${service.iconBg} mb-4 shadow-lg p-2`}>
                   {service.isImage ? (
               <Image 
-                src={service.icon as string} 
+                src={service.icon} 
                 alt={`${service.name} - ${service.description} logo`}
                 width={28} 
                 height={28}

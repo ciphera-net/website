@@ -5,6 +5,7 @@ import * as Color from "color-bits";
 import { motion } from "motion/react";
 import Link from "next/link";
 import Image from "next/image";
+import { cipheraIcon } from "@/lib/images";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { GithubIcon } from "@ciphera-net/ui";
@@ -331,7 +332,7 @@ export const Component = () => {
           <div className="flex flex-col items-start justify-start gap-y-4 max-w-xs mx-0">
             <Link href="/" className="hover:bg-accent rounded-md p-2 -ml-2 flex items-center gap-2 transition-colors">
               <Image
-                src="/ciphera_icon.png"
+                src={cipheraIcon}
                 alt="Ciphera"
                 width={36}
                 height={36}

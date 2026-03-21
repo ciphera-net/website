@@ -4,6 +4,7 @@ import {
   ShieldCheck,
   Check,
 } from '@phosphor-icons/react/dist/ssr'
+import { swissAlpsFlagPhoto } from '@/lib/images'
 
 export default function SwissPrivacy() {
   return (
@@ -15,7 +16,7 @@ export default function SwissPrivacy() {
               <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
               <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
                 <img
-                  src="/swiss-alps-flag.jpg"
+                  src={swissAlpsFlagPhoto.src}
                   alt="Swiss Alps with Swiss flag"
                   className="absolute inset-0 w-full h-full object-cover"
                 />

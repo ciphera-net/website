@@ -5,10 +5,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { UserIcon, LockIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
 import { track } from '../lib/pulse'
+import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 const products = [
   {
-    icon: '/pulse_icon_no_margins.png',
+    icon: pulseIcon,
     isImage: true,
     name: 'Pulse',
     tagline: 'Privacy-first analytics & replay',
@@ -19,7 +20,7 @@ const products = [
     available: true,
   },
   {
-    icon: '/drop_icon_no_margins.png',
+    icon: dropIcon,
     isImage: true,
     name: 'Drop',
     tagline: 'Secure file sharing',
@@ -30,7 +31,7 @@ const products = [
     available: true,
   },
   {
-    icon: '/auth_icon_no_margins.png',
+    icon: authIcon,
     isImage: true,
     name: 'Ciphera Auth',
     tagline: 'Identity provider',
@@ -41,7 +42,7 @@ const products = [
     available: true,
   },
   {
-    icon: '/captcha_icon_no_margins.png',
+    icon: captchaIcon,
     isImage: true,
     name: 'Ciphera Captcha',
     tagline: 'Bot protection',
@@ -52,7 +53,7 @@ const products = [
     available: true,
   },
   {
-    icon: '/relay_icon_no_margins.png',
+    icon: relayIcon,
     isImage: true,
     name: 'Ciphera Relay',
     tagline: 'Email infrastructure',
@@ -105,8 +106,8 @@ export default function Products() {
                     <div className="flex items-center gap-4">
                       <div className={`w-14 h-14 rounded-2xl ${product.iconBg} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 p-2`}>
                         {product.isImage ? (
-                          <Image 
-                            src={product.icon as string} 
+                          <Image
+                            src={product.icon}
                             alt={`${product.name} - ${product.tagline} icon`}
                             width={32} 
                             height={32}

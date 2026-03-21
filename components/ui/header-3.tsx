@@ -22,23 +22,24 @@ import {
     HelpCircle,
     Mail,
 } from 'lucide-react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { track } from '@/lib/pulse';
+import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon, cipheraIcon } from '@/lib/images';
 
 type LinkItem = {
     title: string;
     href: string;
     icon?: LucideIcon;
-    image?: string;
+    image?: StaticImageData;
     description?: string;
 };
 
-const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string }> = {
-    '/products/pulse': { logo: '/pulse_icon_no_margins.png?v=2', name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
-    '/products/drop': { logo: '/drop_icon_no_margins.png?v=2', name: 'Drop' },
-    '/products/auth': { logo: '/auth_icon_no_margins.png?v=2', name: 'Ciphera Auth' },
-    '/products/captcha': { logo: '/captcha_icon_no_margins.png?v=2', name: 'Ciphera Captcha' },
-    '/products/relay': { logo: '/relay_icon_no_margins.png?v=2', name: 'Ciphera Relay' },
+const productBranding: Record<string, { logo: StaticImageData; name: string; signIn?: string; signUp?: string }> = {
+    '/products/pulse': { logo: pulseIcon, name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
+    '/products/drop': { logo: dropIcon, name: 'Drop' },
+    '/products/auth': { logo: authIcon, name: 'Ciphera Auth' },
+    '/products/captcha': { logo: captchaIcon, name: 'Ciphera Captcha' },
+    '/products/relay': { logo: relayIcon, name: 'Ciphera Relay' },
 };
 
 export function Header() {
@@ -69,7 +70,7 @@ export function Header() {
                 <div className="flex items-center gap-5">
                     <a href={branding ? pathname : "/"} className="hover:bg-accent rounded-md p-2 flex items-center gap-2">
                         <Image
-                            src={branding?.logo || "/ciphera_icon.png"}
+                            src={branding?.logo || cipheraIcon}
                             alt={branding?.name || "Ciphera"}
                             width={36}
                             height={36}
@@ -277,31 +278,31 @@ const productLinks: LinkItem[] = [
         title: 'Pulse',
         href: '/products/pulse',
         description: 'Privacy-first web analytics',
-        image: '/pulse_icon_no_margins.png',
+        image: pulseIcon,
     },
     {
         title: 'Drop',
         href: '/products/drop',
         description: 'Encrypted file sharing',
-        image: '/drop_icon_no_margins.png',
+        image: dropIcon,
     },
     {
         title: 'Ciphera Auth',
         href: '/products/auth',
         description: 'Zero-knowledge identity provider',
-        image: '/auth_icon_no_margins.png',
+        image: authIcon,
     },
     {
         title: 'Ciphera Captcha',
         href: '/products/captcha',
         description: 'Privacy-respecting bot protection',
-        image: '/captcha_icon_no_margins.png',
+        image: captchaIcon,
     },
     {
         title: 'Ciphera Relay',
         href: '/products/relay',
         description: 'Secure email infrastructure',
-        image: '/relay_icon_no_margins.png',
+        image: relayIcon,
     },
 ];
 

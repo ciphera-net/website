@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { officeHq } from '@/lib/images'
 import { 
   Input, 
   Select, 
@@ -443,7 +444,7 @@ export default function ContactPage() {
                 <div className="rounded-2xl overflow-hidden border border-neutral-700 shadow-lg">
                   <div className="relative aspect-video w-full bg-neutral-800">
                     <Image
-                      src="/office-hq.jpeg"
+                      src={officeHq}
                       alt="Ciphera headquarters in Diegem, Belgium"
                       fill
                       className="object-cover"

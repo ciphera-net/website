@@ -8,6 +8,7 @@ import { DropMockup } from '@/components/ui/drop-mockup'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
 import { RelayMockup } from '@/components/ui/relay-mockup'
 import { PulseMockup } from '@/components/ui/pulse-mockup'
+import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon, pulseShowcaseBg, dropShowcaseBg, authShowcaseBg, captchaShowcaseBg, genA10 } from '@/lib/images'
 
 export default function ProductShowcase() {
   return (
@@ -22,7 +23,7 @@ export default function ProductShowcase() {
             </h2>
 
             <div className="flex items-center gap-3 mb-4">
-              <img src="/pulse_icon_no_margins.png" alt="Pulse" className="w-8 h-8 object-contain" />
+              <img src={pulseIcon.src} alt="Pulse" className="w-8 h-8 object-contain" />
               <span className="text-lg font-semibold text-white">Pulse</span>
             </div>
 
@@ -51,7 +52,7 @@ export default function ProductShowcase() {
               <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
               <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                 <img
-                  src="/pulse-showcase-bg.png"
+                  src={pulseShowcaseBg.src}
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -74,7 +75,7 @@ export default function ProductShowcase() {
               <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
               <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                 <img
-                  src="/drop-showcase-bg.png"
+                  src={dropShowcaseBg.src}
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -93,7 +94,7 @@ export default function ProductShowcase() {
             </h2>
 
             <div className="flex items-center gap-3 mb-4">
-              <img src="/drop_icon_no_margins.png" alt="Ciphera Drop" className="w-8 h-8 object-contain" />
+              <img src={dropIcon.src} alt="Ciphera Drop" className="w-8 h-8 object-contain" />
               <span className="text-lg font-semibold text-white">Drop</span>
             </div>
 
@@ -128,7 +129,7 @@ export default function ProductShowcase() {
             </h2>
 
             <div className="flex items-center gap-3 mb-4">
-              <img src="/auth_icon_no_margins.png" alt="Ciphera Auth" className="w-8 h-8 object-contain" />
+              <img src={authIcon.src} alt="Ciphera Auth" className="w-8 h-8 object-contain" />
               <span className="text-lg font-semibold text-white">Ciphera Auth</span>
             </div>
 
@@ -157,7 +158,7 @@ export default function ProductShowcase() {
               <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
               <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                 <img
-                  src="/auth-showcase-bg.png"
+                  src={authShowcaseBg.src}
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -179,7 +180,7 @@ export default function ProductShowcase() {
               <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
               <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                 <img
-                  src="/captcha-showcase-bg.png"
+                  src={captchaShowcaseBg.src}
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -198,7 +199,7 @@ export default function ProductShowcase() {
             </h2>
 
             <div className="flex items-center gap-3 mb-4">
-              <img src="/captcha_icon_no_margins.png" alt="Ciphera Captcha" className="w-8 h-8 object-contain" />
+              <img src={captchaIcon.src} alt="Ciphera Captcha" className="w-8 h-8 object-contain" />
               <span className="text-lg font-semibold text-white">Ciphera Captcha</span>
             </div>
 
@@ -232,7 +233,7 @@ export default function ProductShowcase() {
             </h2>
 
             <div className="flex items-center gap-3 mb-4">
-              <img src="/relay_icon_no_margins.png" alt="Ciphera Relay" className="w-8 h-8 object-contain" />
+              <img src={relayIcon.src} alt="Ciphera Relay" className="w-8 h-8 object-contain" />
               <span className="text-lg font-semibold text-white">Ciphera Relay</span>
             </div>
 
@@ -261,7 +262,7 @@ export default function ProductShowcase() {
               <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
               <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                 <img
-                  src="/gen-a-10.png"
+                  src={genA10.src}
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
                 />

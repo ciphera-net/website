@@ -7,6 +7,7 @@ import { PulseFeaturesCarousel } from '@/components/ui/pulse-features-carousel'
 import { EmailReportMockup } from '@/components/ui/email-report-mockup'
 import { ModularScriptMockup } from '@/components/ui/modular-script-mockup'
 import PulseFAQ from '@/components/PulseFAQ'
+import { pulseShowcaseBg, pulseIcon, zurichPhoto } from '@/lib/images'
 import {
   Cookie,
   ShieldCheck,
@@ -106,7 +107,7 @@ export default function PulsePage() {
       {/* Hero */}
       <section className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden">
         <img
-          src="/pulse-showcase-bg.png"
+          src={pulseShowcaseBg.src}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -222,7 +223,7 @@ export default function PulsePage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src="/pulse-showcase-bg.png"
+                    src={pulseShowcaseBg.src}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -246,7 +247,7 @@ export default function PulsePage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src="/pulse-showcase-bg.png"
+                    src={pulseShowcaseBg.src}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -309,7 +310,7 @@ export default function PulsePage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src="/pulse-showcase-bg.png"
+                    src={pulseShowcaseBg.src}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -333,7 +334,7 @@ export default function PulsePage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src="/pulse-showcase-bg.png"
+                    src={pulseShowcaseBg.src}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -495,7 +496,7 @@ export default function PulsePage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src="/pulse-showcase-bg.png"
+                    src={pulseShowcaseBg.src}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -530,7 +531,7 @@ export default function PulsePage() {
               <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-orange" />
               <div className="flex items-center gap-3 mb-8">
                 <img
-                  src="/pulse_icon_no_margins.png"
+                  src={pulseIcon.src}
                   alt="Pulse"
                   width={40}
                   height={40}
@@ -618,7 +619,7 @@ export default function PulsePage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
                   <img
-                    src="/zurich.jpg"
+                    src={zurichPhoto.src}
                     alt="Zurich, Switzerland"
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -684,7 +685,7 @@ export default function PulsePage() {
         <div className="container mx-auto px-6">
           <div className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-neutral-900/80 px-6 py-20 sm:px-10 sm:py-24 max-w-6xl mx-auto">
             <img
-              src="/pulse-showcase-bg.png"
+              src={pulseShowcaseBg.src}
               alt=""
               className="absolute inset-0 w-full h-full object-cover"
             />

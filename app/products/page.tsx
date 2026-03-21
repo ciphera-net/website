@@ -6,10 +6,11 @@ import Image from 'next/image'
 import { UserIcon, LockIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { track } from '../../lib/pulse'
+import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 const products = [
   {
-    icon: '/pulse_icon_no_margins.png',
+    icon: pulseIcon,
     isImage: true,
     name: 'Pulse',
     tagline: 'Privacy-first analytics & replay',
@@ -28,7 +29,7 @@ const products = [
     highlight: true,
   },
   {
-    icon: '/drop_icon_no_margins.png',
+    icon: dropIcon,
     isImage: true,
     name: 'Drop',
     tagline: 'Secure file sharing',
@@ -47,7 +48,7 @@ const products = [
     highlight: false,
   },
   {
-    icon: '/auth_icon_no_margins.png',
+    icon: authIcon,
     isImage: true,
     name: 'Ciphera Auth',
     tagline: 'Identity provider',
@@ -66,7 +67,7 @@ const products = [
     highlight: false,
   },
   {
-    icon: '/captcha_icon_no_margins.png',
+    icon: captchaIcon,
     isImage: true,
     name: 'Ciphera Captcha',
     tagline: 'Bot protection',
@@ -84,7 +85,7 @@ const products = [
     highlight: false,
   },
   {
-    icon: '/relay_icon_no_margins.png',
+    icon: relayIcon,
     isImage: true,
     name: 'Ciphera Relay',
     tagline: 'Email infrastructure',
@@ -229,7 +230,7 @@ export default function ProductsPage() {
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-16 h-16 rounded-2xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center shadow-lg p-3">
                     <Image
-                      src="/pulse_icon_no_margins.png"
+                      src={pulseIcon}
                       alt="Pulse - Privacy-first analytics and session replay logo"
                       width={40}
                       height={40}
@@ -272,7 +273,7 @@ export default function ProductsPage() {
                   <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/15 to-brand-orange-hover/15 rounded-3xl blur-2xl" />
                   <div className="relative w-full h-full rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center">
                     <Image
-                      src="/pulse_icon_no_margins.png"
+                      src={pulseIcon}
                       alt="Pulse - Privacy-first analytics and session replay platform"
                       width={200}
                       height={200}
@@ -323,7 +324,7 @@ export default function ProductsPage() {
                       <div className={`w-14 h-14 rounded-2xl ${product.iconBg} flex items-center justify-center shadow-lg p-2`}>
                         {product.isImage ? (
                           <Image 
-                            src={product.icon as string} 
+                            src={product.icon} 
                             alt={`${product.name} icon`}
                             width={32} 
                             height={32}

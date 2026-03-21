@@ -1,6 +1,7 @@
 'use client'
 
 import { Lock, Eye } from '@phosphor-icons/react'
+import { cipheraIcon } from '@/lib/images'
 
 export function AuthMockup() {
   return (
@@ -51,7 +52,7 @@ export function AuthMockup() {
             </div>
             <div className="flex items-center gap-1.5 border-l border-white/[0.08] pl-2">
               <span className="text-[9px] text-neutral-500 leading-tight">Secured by</span>
-              <img src="/ciphera_icon.png" alt="Ciphera" className="w-5 h-5 object-contain" />
+              <img src={cipheraIcon.src} alt="Ciphera" className="w-5 h-5 object-contain" />
               <span className="text-[11px] font-semibold text-white">Ciphera</span>
             </div>
           </div>
