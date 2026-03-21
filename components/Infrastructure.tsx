@@ -71,12 +71,13 @@ function ServiceNode({ service, delay }: { service: typeof services[0]; delay: n
         <div className="flex items-center gap-3">
           <div className={`w-14 h-14 rounded-2xl ${service.iconBg} flex items-center justify-center shadow-lg p-2`}>
             {service.isImage ? (
-              <Image 
-                src={service.icon} 
+              <Image
+                src={service.icon}
                 alt={`${service.name} - ${service.description} logo`}
-                width={32} 
+                width={32}
                 height={32}
                 className="w-full h-full object-contain"
+                unoptimized
               />
             ) : (
               <Icon className="w-7 h-7 text-brand-orange" />
@@ -282,12 +283,13 @@ export default function Infrastructure() {
               >
                 <div className={`icon-container ${service.iconBg} mb-4 shadow-lg p-2`}>
                   {service.isImage ? (
-              <Image 
-                src={service.icon} 
+              <Image
+                src={service.icon}
                 alt={`${service.name} - ${service.description} logo`}
-                width={28} 
+                width={28}
                 height={28}
                 className="w-full h-full object-contain"
+                unoptimized
               />
                   ) : (
                     <Icon className="w-6 h-6 text-brand-orange" />

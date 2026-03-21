@@ -337,6 +337,7 @@ export const Component = () => {
                 width={36}
                 height={36}
                 className="object-contain"
+                unoptimized
               />
               <span className="text-xl font-bold text-foreground tracking-tight">Ciphera</span>
             </Link>

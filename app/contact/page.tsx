@@ -448,6 +448,7 @@ export default function ContactPage() {
                       alt="Ciphera headquarters in Diegem, Belgium"
                       fill
                       className="object-cover"
+                      unoptimized
                       onError={(e) => {
                         // * Fallback to placeholder if image doesn't exist
                         const target = e.target as HTMLImageElement

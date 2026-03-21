@@ -109,9 +109,10 @@ export default function Products() {
                           <Image
                             src={product.icon}
                             alt={`${product.name} - ${product.tagline} icon`}
-                            width={32} 
+                            width={32}
                             height={32}
                             className="w-full h-full object-contain"
+                            unoptimized
                           />
                         ) : (
                           <Icon className="w-7 h-7 text-brand-orange" />

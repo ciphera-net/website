@@ -236,6 +236,7 @@ export default function ProductsPage() {
                       height={40}
                       loading="lazy"
                       className="w-full h-full object-contain"
+                      unoptimized
                     />
                   </div>
                   <div>
@@ -279,6 +280,7 @@ export default function ProductsPage() {
                       height={200}
                       loading="lazy"
                       className="w-48 h-48 object-contain opacity-80"
+                      unoptimized
                     />
                   </div>
                 </div>
@@ -323,12 +325,13 @@ export default function ProductsPage() {
                     <div className="flex items-center justify-between mb-6">
                       <div className={`w-14 h-14 rounded-2xl ${product.iconBg} flex items-center justify-center shadow-lg p-2`}>
                         {product.isImage ? (
-                          <Image 
-                            src={product.icon} 
+                          <Image
+                            src={product.icon}
                             alt={`${product.name} icon`}
-                            width={32} 
+                            width={32}
                             height={32}
                             className="w-full h-full object-contain"
+                            unoptimized
                           />
                         ) : (
                           <Icon className="w-7 h-7 text-brand-orange" />

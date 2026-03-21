@@ -172,6 +172,7 @@ export default function AboutPage() {
                     height={120}
                     loading="lazy"
                     className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain"
+                    unoptimized
                   />
                 </div>
               </div>
@@ -298,7 +299,7 @@ export default function AboutPage() {
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                      <Image src={dropIcon} alt="Drop - Secure file sharing application icon" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain" />
+                      <Image src={dropIcon} alt="Drop - Secure file sharing application icon" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain" unoptimized />
                     </div>
                     <div>
                       <div className="font-semibold text-white text-sm">Drop Backend</div>

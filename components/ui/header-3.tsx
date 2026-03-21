@@ -76,6 +76,7 @@ export function Header() {
                             height={36}
                             priority
                             className={cn("object-contain", branding ? "w-8 h-8" : "")}
+                            unoptimized
                         />
                         <span className="text-xl font-bold text-foreground tracking-tight">
                             {branding?.name || "Ciphera"}
@@ -259,7 +260,7 @@ function ListItem({
             <a href={href}>
                 <div className="flex aspect-square size-12 items-center justify-center rounded-md border border-white/[0.08] bg-white/[0.05] shadow-sm p-2">
                     {image ? (
-                        <Image src={image} alt={title} width={32} height={32} className="object-contain max-w-8 max-h-8" />
+                        <Image src={image} alt={title} width={32} height={32} className="object-contain max-w-8 max-h-8" unoptimized />
                     ) : Icon ? (
                         <Icon className="text-foreground size-5" />
                     ) : null}

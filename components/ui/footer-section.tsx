@@ -66,6 +66,7 @@ export function Footer() {
                             width={32}
                             height={32}
                             className="object-contain"
+                            unoptimized
                         />
                         <span className="text-lg font-bold text-foreground tracking-tight">
                             Ciphera

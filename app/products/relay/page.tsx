@@ -71,6 +71,7 @@ export default function CipheraRelayPage() {
                 width={56}
                 height={56}
                 className="w-full h-full object-contain"
+                unoptimized
               />
             </div>
             <span className="badge-primary mb-4 inline-flex">Email Infrastructure</span>

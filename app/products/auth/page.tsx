@@ -69,6 +69,7 @@ export default function CipheraAuthPage() {
                 width={64}
                 height={64}
                 className="w-full h-full object-contain"
+                unoptimized
               />
             </div>
             <span className="badge-primary mb-4 inline-flex">Identity Provider</span>
