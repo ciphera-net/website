@@ -178,8 +178,9 @@ export default function PulsePage() {
       </section>
 
 
-      {/* Dashboard showcase — text left, mockup right */}
-      <section className="py-20 lg:py-32 bg-neutral-950">
+      {/* Feature blocks — same spacing as landing page ProductShowcase */}
+      <section className="py-20 lg:py-32 bg-neutral-950 space-y-28">
+        {/* Dashboard showcase — text left, mockup right */}
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
@@ -236,10 +237,7 @@ export default function PulsePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Features carousel — mockup left, text right */}
-      <section className="py-20 lg:py-32 bg-neutral-950">
+        {/* Features carousel — mockup left, text right */}
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative flex items-center justify-center lg:justify-start">
@@ -271,10 +269,7 @@ export default function PulsePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Conversion Funnels — text left, mockup right */}
-      <section className="py-20 lg:py-32 bg-neutral-950">
+        {/* Conversion Funnels — text left, mockup right */}
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
@@ -323,10 +318,7 @@ export default function PulsePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Scheduled Reports — mockup left, text right */}
-      <section className="py-20 lg:py-32 bg-neutral-950">
+        {/* Scheduled Reports — mockup left, text right */}
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative flex items-center justify-center lg:justify-start">
@@ -375,10 +367,6 @@ export default function PulsePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Features — alternating blocks */}
-      <section className="py-20 lg:py-32 bg-neutral-950 space-y-28">
         {/* Lightweight script — mockup left, text right */}
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
