@@ -181,7 +181,7 @@ export default function PulsePage() {
       {/* Feature blocks — same spacing as landing page ProductShowcase */}
       <section className="py-20 lg:py-32 bg-neutral-950 space-y-28">
         {/* Dashboard showcase — text left, mockup right */}
-        <div className="container mx-auto px-6">
+        <div id="dashboard" className="container mx-auto px-6 scroll-mt-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
@@ -238,7 +238,7 @@ export default function PulsePage() {
           </div>
         </div>
         {/* Features carousel — mockup left, text right */}
-        <div className="container mx-auto px-6">
+        <div id="visitors" className="container mx-auto px-6 scroll-mt-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative flex items-center justify-center lg:justify-start">
               <div className="relative">
@@ -270,7 +270,7 @@ export default function PulsePage() {
           </div>
         </div>
         {/* Conversion Funnels — text left, mockup right */}
-        <div className="container mx-auto px-6">
+        <div id="funnels" className="container mx-auto px-6 scroll-mt-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
@@ -319,7 +319,7 @@ export default function PulsePage() {
           </div>
         </div>
         {/* Scheduled Reports — mockup left, text right */}
-        <div className="container mx-auto px-6">
+        <div id="reports" className="container mx-auto px-6 scroll-mt-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative flex items-center justify-center lg:justify-start">
               <div className="relative">
@@ -368,7 +368,7 @@ export default function PulsePage() {
           </div>
         </div>
         {/* Lightweight script — mockup left, text right */}
-        <div className="container mx-auto px-6">
+        <div id="script" className="container mx-auto px-6 scroll-mt-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative flex items-center justify-center lg:justify-start">
               <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-6 w-full max-w-[480px] shadow-2xl">
@@ -449,7 +449,7 @@ export default function PulsePage() {
         </div>
 
         {/* Modular script — text left, mockup right */}
-        <div className="container mx-auto px-6">
+        <div id="configuration" className="container mx-auto px-6 scroll-mt-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
@@ -501,7 +501,7 @@ export default function PulsePage() {
       </section>
 
       {/* Comparison — side by side cards */}
-      <section className="py-20 lg:py-32 bg-neutral-950 border-t border-white/[0.04]">
+      <section id="comparison" className="py-20 lg:py-32 bg-neutral-950 border-t border-white/[0.04] scroll-mt-28">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
@@ -599,7 +599,7 @@ export default function PulsePage() {
       </section>
 
       {/* Swiss Privacy — photo left, text right */}
-      <section className="py-20 lg:py-32 bg-neutral-950">
+      <section id="privacy" className="py-20 lg:py-32 bg-neutral-950 scroll-mt-28">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative flex items-center justify-center lg:justify-start">

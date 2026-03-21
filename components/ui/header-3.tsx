@@ -21,6 +21,10 @@ import {
     Leaf,
     HelpCircle,
     Mail,
+    BarChart3,
+    Eye,
+    Funnel,
+    Send,
 } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import { track } from '@/lib/pulse';
@@ -42,11 +46,23 @@ const productBranding: Record<string, { logo: StaticImageData; name: string; sig
     '/products/relay': { logo: relayIcon, name: 'Ciphera Relay' },
 };
 
+type FeatureLink = { title: string; href: string; icon: LucideIcon; description: string };
+
+const productFeatures: Record<string, FeatureLink[]> = {
+    '/products/pulse': [
+        { title: 'Dashboard', href: '#dashboard', icon: BarChart3, description: 'Real-time traffic overview' },
+        { title: 'Visitor Insights', href: '#visitors', icon: Eye, description: 'Browser, device & geo data' },
+        { title: 'Conversion Funnels', href: '#funnels', icon: Funnel, description: 'Multi-step drop-off analysis' },
+        { title: 'Email Reports', href: '#reports', icon: Send, description: 'Scheduled inbox summaries' },
+    ],
+};
+
 export function Header() {
     const [open, setOpen] = React.useState(false);
     const scrolled = useScroll(10);
     const pathname = usePathname();
     const branding = productBranding[pathname];
+    const features = productFeatures[pathname];
 
     React.useEffect(() => {
         if (open) {
@@ -84,8 +100,22 @@ export function Header() {
                     </a>
                     <NavigationMenu className="hidden md:flex">
                         <NavigationMenuList>
+                            {features && (
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger className="bg-transparent">Features</NavigationMenuTrigger>
+                                    <NavigationMenuContent className="bg-transparent p-1 pr-1.5">
+                                        <ul className="grid w-[32rem] grid-cols-2 gap-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
+                                            {features.map((item, i) => (
+                                                <li key={i}>
+                                                    <ListItem title={item.title} href={item.href} icon={item.icon} description={item.description} />
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+                            )}
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger className="bg-transparent">Products</NavigationMenuTrigger>
+                                <NavigationMenuTrigger className="bg-transparent">{features ? 'All Products' : 'Products'}</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5">
                                     <ul className="grid w-[32rem] grid-cols-2 gap-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
                                         {productLinks.map((item, i) => (
@@ -181,7 +211,15 @@ export function Header() {
             <MobileMenu open={open} className="flex flex-col justify-between gap-2 overflow-y-auto">
                 <NavigationMenu className="max-w-full">
                     <div className="flex w-full flex-col gap-y-2">
-                        <span className="text-sm">Products</span>
+                        {features && (
+                            <>
+                                <span className="text-sm">Features</span>
+                                {features.map((link) => (
+                                    <ListItem key={link.title} title={link.title} href={link.href} icon={link.icon} description={link.description} />
+                                ))}
+                            </>
+                        )}
+                        <span className="text-sm">{features ? 'All Products' : 'Products'}</span>
                         {productLinks.map((link) => (
                             <ListItem key={link.title} {...link} />
                         ))}
