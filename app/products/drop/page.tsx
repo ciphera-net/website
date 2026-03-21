@@ -1,33 +1,55 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
-import { CheckIcon, LockIcon, ArrowRightIcon } from '@ciphera-net/ui'
-import { dropIcon } from '@/lib/images'
-
-// * Icon aliases for consistent display
-const ShieldIcon = LockIcon
-const KeyIcon = LockIcon
-const ZapIcon = LockIcon
+import { DropMockup } from '@/components/ui/drop-mockup'
+import { ShareLinkMockup } from '@/components/ui/share-link-mockup'
+import { FileRequestMockup } from '@/components/ui/file-request-mockup'
+import { dropIcon, dropShowcaseBg, zurichPhoto } from '@/lib/images'
+import {
+  Lock,
+  ShieldCheck,
+  Eye,
+  EyeSlash,
+  Globe,
+  ArrowRight,
+  Check,
+  X,
+  GithubLogo,
+  Fire,
+  Key,
+  FileArrowUp,
+  Timer,
+} from '@phosphor-icons/react/dist/ssr'
+import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
   title: 'Drop - End-to-End Encrypted File Sharing',
-  description: 'Share files securely with client-side AES-256-GCM encryption. Zero-knowledge architecture means servers never see your data. Free, up to 5 GB per file.',
+  description:
+    'Share files securely with client-side AES-256-GCM encryption. Zero-knowledge architecture means servers never see your data. Free, up to 5 GB per file.',
   alternates: {
     canonical: 'https://ciphera.net/products/drop',
   },
   openGraph: {
     title: 'Drop - End-to-End Encrypted File Sharing',
-    description: 'Share files securely with client-side AES-256-GCM encryption. Zero-knowledge architecture means servers never see your data. Free, up to 5 GB per file.',
+    description:
+      'Share files securely with client-side AES-256-GCM encryption. Zero-knowledge architecture means servers never see your data. Free, up to 5 GB per file.',
     url: 'https://ciphera.net/products/drop',
     siteName: 'Ciphera',
-    images: [{ url: '/drop_icon_no_margins.png', width: 512, height: 512, alt: 'Drop - End-to-End Encrypted File Sharing' }],
+    images: [
+      {
+        url: '/drop_icon_no_margins.png',
+        width: 512,
+        height: 512,
+        alt: 'Drop - End-to-End Encrypted File Sharing',
+      },
+    ],
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Drop - End-to-End Encrypted File Sharing',
-    description: 'Share files securely with client-side AES-256-GCM encryption. Zero-knowledge architecture means servers never see your data.',
+    description:
+      'Share files securely with client-side AES-256-GCM encryption. Zero-knowledge architecture means servers never see your data.',
     images: ['/drop_icon_no_margins.png'],
   },
 }
@@ -37,19 +59,34 @@ const dropSchema = [
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'Drop',
-    description: 'End-to-end encrypted file sharing with zero-knowledge architecture. Share files securely with automatic expiration and password protection.',
+    description:
+      'End-to-end encrypted file sharing with zero-knowledge architecture. Share files securely with automatic expiration and password protection.',
     applicationCategory: 'SecurityApplication',
     operatingSystem: 'Web',
     url: 'https://drop.ciphera.net',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    provider: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+    provider: {
+      '@type': 'Organization',
+      name: 'Ciphera',
+      url: 'https://ciphera.net',
+    },
   },
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
-      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/products' },
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://ciphera.net',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Products',
+        item: 'https://ciphera.net/products',
+      },
       { '@type': 'ListItem', position: 3, name: 'Drop' },
     ],
   },
@@ -58,296 +95,552 @@ const dropSchema = [
 export default function DropPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dropSchema) }} />
-      {/* * Hero */}
-      <section className="section-padding pt-32">
-        <div className="section-container">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="w-20 h-20 rounded-3xl bg-neutral-800 ring-2 ring-brand-orange/40 flex items-center justify-center mx-auto mb-6 shadow-2xl p-3">
-              <Image
-                src={dropIcon}
-                alt="Drop"
-                width={64}
-                height={64}
-                className="w-full h-full object-contain"
-                unoptimized
-              />
-            </div>
-            <span className="badge-primary mb-4 inline-flex">Secure File Sharing</span>
-            <h1 className="heading-1 mb-6">
-              Drop
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(dropSchema) }}
+      />
+
+      {/* Hero */}
+      <section className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden">
+        <img
+          src={dropShowcaseBg.src}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-neutral-950 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6">
+          <div>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-[1.1] mb-6">
+              Share files without giving up your privacy.
             </h1>
-            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
-              Share files securely with end-to-end encryption and zero-knowledge architecture. 
-              Your files, your control, complete privacy.
+
+            <p className="text-xl text-neutral-300 mb-10 leading-relaxed max-w-xl">
+              End-to-end encrypted file sharing with zero-knowledge
+              architecture. Your files are encrypted on your device before
+              upload — we never see the contents.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://drop.ciphera.net" className="btn-primary">
-                Try Drop
-                <ArrowRightIcon className="w-4 h-4" />
-              </a>
-              <Link href="/contact" className="btn-secondary">
-                Contact Sales
-              </Link>
+
+            <div className="flex flex-row gap-3 flex-wrap mb-12">
+              <Button
+                size="lg"
+                className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white"
+                asChild
+              >
+                <a href="https://drop.ciphera.net">
+                  Try Drop Free <ArrowRight className="w-4 h-4" />
+                </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="ghost"
+                className="gap-2 text-neutral-300 hover:text-white"
+                asChild
+              >
+                <a
+                  href="https://github.com/ciphera-net/drop"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <GithubLogo className="w-4 h-4" /> View on GitHub
+                </a>
+              </Button>
+            </div>
+
+            {/* Trust badges */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-neutral-400">
+              <span className="flex items-center gap-2">
+                <Lock className="w-4 h-4 text-brand-orange" />
+                AES-256-GCM
+              </span>
+              <span className="text-neutral-700">|</span>
+              <span className="flex items-center gap-2">
+                <EyeSlash className="w-4 h-4 text-brand-orange" />
+                Zero-knowledge
+              </span>
+              <span className="text-neutral-700">|</span>
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-brand-orange" />
+                No account required
+              </span>
+              <span className="text-neutral-700">|</span>
+              <span className="flex items-center gap-2">
+                <FileArrowUp className="w-4 h-4 text-brand-orange" />
+                Up to 5 GB
+              </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* * What is Drop */}
-      <section className="section-padding">
-        <div className="section-container max-w-4xl mx-auto">
-          <h2 className="heading-2 mb-6">
-            What Is Drop?
-          </h2>
-          <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-            Ciphera Drop is an end-to-end encrypted file sharing service that uses AES-256-GCM client-side encryption to ensure files are encrypted in your browser before upload. Unlike traditional file sharing services such as Dropbox or Google Drive, Drop operates on a zero-knowledge architecture where the server never possesses decryption keys. The encryption key is embedded in the URL fragment (the part after the #), which browsers never send to servers in HTTP requests.
-          </p>
-          <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-            Drop is designed for anyone who needs to share files without trusting a third party with the contents. Whether you are sending sensitive legal documents, sharing medical records with a healthcare provider, transferring financial data to an accountant, or simply sending personal files you want to keep private, Drop ensures that only the intended recipient can access the file contents.
-          </p>
-          <p className="text-neutral-400 leading-relaxed">
-            Drop is completely free to use with no account required. Files up to 5GB are supported, with optional password protection and configurable expiration times. All data is stored on Swiss infrastructure protected by the Swiss Federal Act on Data Protection (FADP). The service is fully open source — both the client and server code are available on <a href="https://github.com/ciphera-net/drop" target="_blank" rel="noopener noreferrer" className="text-brand-orange hover:underline">GitHub</a> for independent security verification.
-          </p>
-        </div>
-      </section>
+      {/* Feature blocks */}
+      <section className="py-20 lg:py-32 bg-neutral-950 space-y-28">
+        {/* E2E Encryption — text left, mockup right */}
+        <div id="encryption" className="container mx-auto px-6 scroll-mt-28">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                Encrypted before it leaves your device.
+              </h2>
+              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
+                Drop uses AES-256-GCM encryption directly in your browser.
+                Files are encrypted before they ever leave your device, and
+                the encryption key is embedded in the URL fragment — the part
+                browsers never send to servers. Not even we can read your
+                files.
+              </p>
+              <ul className="space-y-3 mb-8">
+                {[
+                  'Client-side AES-256-GCM via Web Crypto API',
+                  'Encryption keys never touch our servers',
+                  'Automatic EXIF metadata stripping from images',
+                  'Optional password protection with PBKDF2',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 text-neutral-400"
+                  >
+                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                size="lg"
+                className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white"
+                asChild
+              >
+                <a href="https://drop.ciphera.net">
+                  Try it now <ArrowRight className="w-4 h-4" />
+                </a>
+              </Button>
+            </div>
 
-      {/* * Features */}
-      <section className="section-padding">
-        <div className="section-container">
-          <h2 className="heading-2 mb-12 text-center">
-            Enterprise-Grade File Security
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: LockIcon, title: 'End-to-End Encryption', description: 'Files are encrypted on your device before upload. Only recipients with the link can decrypt them.' },
-              { icon: KeyIcon, title: 'Zero-Knowledge Architecture', description: 'Encryption keys never touch our servers. We cannot access your files, ever.' },
-              { icon: ShieldIcon, title: 'Password Protection', description: 'Add an additional layer of security with optional password protection for shared files.' },
-              { icon: ZapIcon, title: 'Auto-Expiration', description: 'Set files to automatically expire after a time period or number of downloads.' },
-              { icon: CheckIcon, title: 'No Account Required', description: 'Share files instantly without creating an account. Just upload and share.' },
-              { icon: LockIcon, title: 'Swiss Data Protection', description: 'All data is stored in Switzerland under strict Swiss privacy laws.' },
-            ].map((feature) => (
-              <div key={feature.title} className="card p-6">
-                <feature.icon className="w-12 h-12 text-brand-orange mb-4" />
-                <h3 className="heading-3 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* * How It Works */}
-      <section className="section-padding">
-        <div className="section-container">
-          <h2 className="heading-2 mb-12 text-center">
-            How Drop Works
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                step: '1',
-                title: 'Upload Your File',
-                description: 'Select or drag & drop your file. Encryption happens automatically in your browser before upload.',
-              },
-              {
-                step: '2',
-                title: 'Get Secure Link',
-                description: 'Receive a unique link containing the encryption key. This link is the only way to access the file.',
-              },
-              {
-                step: '3',
-                title: 'Share Safely',
-                description: 'Share the link with your recipient. They can download and decrypt the file using the link.',
-              },
-            ].map((step) => (
-              <div key={step.step} className="card p-8 text-center">
-                <div className="w-12 h-12 rounded-full bg-brand-orange text-white font-bold text-xl flex items-center justify-center mx-auto mb-4">
-                  {step.step}
+            <div className="relative flex items-center justify-center lg:justify-end">
+              <div className="relative">
+                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
+                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
+                  <img
+                    src={dropShowcaseBg.src}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30" />
+                  <div className="relative">
+                    <DropMockup />
+                  </div>
                 </div>
-                <h3 className="heading-3 mb-3">
-                  {step.title}
-                </h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  {step.description}
-                </p>
               </div>
-            ))}
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* * Use Cases */}
-      <section className="section-padding">
-        <div className="section-container">
-          <h2 className="heading-2 mb-12 text-center">
-            Perfect For Any Sharing Need
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="card p-8">
-              <h3 className="heading-3 mb-4">
-                For Individuals
-              </h3>
+        {/* Share Link — mockup left, text right */}
+        <div id="sharing" className="container mx-auto px-6 scroll-mt-28">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="relative flex items-center justify-center lg:justify-start">
+              <div className="relative">
+                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
+                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
+                  <img
+                    src={dropShowcaseBg.src}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30" />
+                  <div className="relative">
+                    <ShareLinkMockup />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                One link. Full control.
+              </h2>
+              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
+                Upload a file and get a secure link with the decryption key
+                baked in. Set expiration times, download limits, and
+                burn-after-download — all enforced server-side. Share via
+                link, QR code, or your device&apos;s native share menu.
+              </p>
               <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-400">
-                    Share sensitive documents securely
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-400">
-                    Send large files without email limits
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-400">
-                    Temporary file sharing with auto-deletion
-                  </span>
-                </li>
+                {[
+                  'Configurable expiration (1 hour to 30 days)',
+                  'Download limits (10, 50, or unlimited)',
+                  'Burn after download — auto-deletes after first access',
+                  'QR code generation for easy mobile sharing',
+                  'Human-readable share links (e.g. correct-horse-battery)',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 text-neutral-400"
+                  >
+                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="card p-8">
-              <h3 className="heading-3 mb-4">
-                For Businesses
-              </h3>
+          </div>
+        </div>
+
+        {/* File Requests — text left, mockup right */}
+        <div id="requests" className="container mx-auto px-6 scroll-mt-28">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                Receive files securely.
+              </h2>
+              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
+                Need someone to send you a file? Create a request link and
+                share it. Files uploaded through the link are encrypted
+                client-side before transmission — the sender doesn&apos;t need
+                an account, and the data is protected end-to-end.
+              </p>
               <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-400">
-                    Comply with data protection regulations
+                {[
+                  'Create secure upload links for others',
+                  'Encrypted title and description (zero-knowledge)',
+                  'Set max uploads and expiration per request',
+                  'No account required for uploaders',
+                  'Perfect for collecting sensitive documents',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 text-neutral-400"
+                  >
+                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="relative flex items-center justify-center lg:justify-end">
+              <div className="relative">
+                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
+                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
+                  <img
+                    src={dropShowcaseBg.src}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30" />
+                  <div className="relative">
+                    <FileRequestMockup />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Zero-Knowledge — diagram left, text right */}
+        <div id="zero-knowledge" className="container mx-auto px-6 scroll-mt-28">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="relative flex items-center justify-center lg:justify-start">
+              <div className="relative">
+                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
+                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
+                  <img
+                    src={dropShowcaseBg.src}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30" />
+                  <div className="relative">
+              <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-6 w-full shadow-2xl">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                  <span className="text-[10px] text-neutral-500 ml-2 font-mono">
+                    How Drop works
                   </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-400">
-                    Share confidential documents with clients
+                </div>
+                <div className="space-y-3 font-mono text-[11px]">
+                  {/* Step 1 */}
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</div>
+                    <div>
+                      <p className="text-white font-medium">Your browser</p>
+                      <p className="text-neutral-500">key = crypto.getRandomValues(32)</p>
+                      <p className="text-neutral-500">encrypted = AES-256-GCM(file, key)</p>
+                    </div>
+                  </div>
+                  {/* Arrow */}
+                  <div className="flex items-center gap-3 pl-2">
+                    <div className="w-px h-4 bg-brand-orange/30 ml-2.5" />
+                    <span className="text-neutral-600 text-[10px]">encrypted blob uploaded via TLS 1.3</span>
+                  </div>
+                  {/* Step 2 */}
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-neutral-800 text-neutral-400 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</div>
+                    <div>
+                      <p className="text-white font-medium">Drop server</p>
+                      <p className="text-neutral-500">stores: encrypted_blob, iv, metadata</p>
+                      <p className="text-red-400/80">never receives: key, plaintext</p>
+                    </div>
+                  </div>
+                  {/* Arrow */}
+                  <div className="flex items-center gap-3 pl-2">
+                    <div className="w-px h-4 bg-brand-orange/30 ml-2.5" />
+                    <span className="text-neutral-600 text-[10px]">share link with key in URL fragment (#)</span>
+                  </div>
+                  {/* Step 3 */}
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</div>
+                    <div>
+                      <p className="text-white font-medium">Recipient&apos;s browser</p>
+                      <p className="text-neutral-500">key = URL.hash.split(&apos;#k=&apos;)[1]</p>
+                      <p className="text-neutral-500">file = AES-256-GCM.decrypt(blob, key)</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4 flex items-center justify-between text-[10px] text-neutral-500 border-t border-neutral-800 pt-3">
+                  <span>Keys never sent to server</span>
+                  <span className="flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    Zero-knowledge
                   </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span className="text-neutral-400">
-                    Control access with passwords and expiration
-                  </span>
-                </li>
+                </div>
+              </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                We can&apos;t read your files. By design.
+              </h2>
+              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
+                Drop&apos;s zero-knowledge architecture means the server only
+                ever sees encrypted blobs. The decryption key lives in the
+                URL fragment — the part after the # that browsers never send
+                to servers in HTTP requests. Even if our servers were
+                compromised, your files would remain unreadable.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  'Encryption key stays in the URL fragment (client-only)',
+                  'Server stores encrypted blobs — never plaintext',
+                  'Open source client and server for independent audits',
+                  'No server-side key escrow or recovery',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 text-neutral-400"
+                  >
+                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* * Technical Specifications */}
-      <section className="section-padding">
-        <div className="section-container max-w-4xl mx-auto">
-          <h2 className="heading-2 mb-8 text-center">
-            Technical Specifications
-          </h2>
-          <div className="card p-8">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <tbody className="divide-y divide-neutral-800">
-                  {[
-                    ['Encryption Algorithm', 'AES-256-GCM (Galois/Counter Mode)'],
-                    ['Key Generation', 'Web Crypto API — crypto.getRandomValues()'],
-                    ['Key Length', '256-bit (32 bytes)'],
-                    ['Encryption Location', 'Client-side only (browser)'],
-                    ['Maximum File Size', '5 GB per file'],
-                    ['Supported File Types', 'All file types (documents, images, videos, archives, etc.)'],
-                    ['Password Protection', 'Optional — PBKDF2 key derivation from password'],
-                    ['Link Expiration', 'Configurable (1 hour to 30 days, or manual deletion)'],
-                    ['Infrastructure', 'Swiss-hosted servers (FADP protected)'],
-                    ['Transport Security', 'TLS 1.3'],
-                    ['Source Code', 'Open source (AGPL-3.0) — client and server'],
-                    ['Account Required', 'No — anonymous file sharing by default'],
-                  ].map(([spec, value]) => (
-                    <tr key={spec}>
-                      <td className="py-3 pr-4 font-semibold text-white whitespace-nowrap">{spec}</td>
-                      <td className="py-3 text-neutral-400">{value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      {/* Comparison — side by side cards */}
+      <section id="comparison" className="py-20 lg:py-32 bg-neutral-950 border-t border-white/[0.04] scroll-mt-28">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+              How Drop compares.
+            </h2>
+            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+              Most file sharing services can read your files. Drop is
+              fundamentally different.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* Drop card — highlighted */}
+            <div className="rounded-xl border border-brand-orange/20 bg-neutral-900/80 p-8 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-orange" />
+              <div className="flex items-center gap-3 mb-8">
+                <img
+                  src={dropIcon.src}
+                  alt="Drop"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 rounded-lg object-contain"
+                />
+                <div>
+                  <h3 className="text-xl font-bold text-white">Drop</h3>
+                  <p className="text-xs text-brand-orange">Zero-knowledge file sharing</p>
+                </div>
+              </div>
+              <ul className="space-y-4">
+                {[
+                  'End-to-end encrypted',
+                  'Zero-knowledge — server can\'t read files',
+                  'No account required',
+                  'Open source (client + server)',
+                  'Burn after download',
+                  'Swiss infrastructure',
+                  'EXIF metadata stripping',
+                  'Free up to 5 GB',
+                  'Password protection',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-center gap-3 text-neutral-300"
+                  >
+                    <Check className="w-5 h-5 text-brand-orange shrink-0" />
+                    <span className="text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Traditional services card — muted */}
+            <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-8">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-lg bg-neutral-800 flex items-center justify-center">
+                  <Eye className="w-5 h-5 text-neutral-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Traditional Services</h3>
+                  <p className="text-xs text-neutral-500">Dropbox, WeTransfer, Google Drive</p>
+                </div>
+              </div>
+              <ul className="space-y-4">
+                {[
+                  { feature: 'Server-side encryption only', has: false },
+                  { feature: 'Provider can read your files', has: false },
+                  { feature: 'Account required', has: false },
+                  { feature: 'Closed source', has: false },
+                  { feature: 'No burn after download', has: false },
+                  { feature: 'US infrastructure (CLOUD Act)', has: false },
+                  { feature: 'Metadata retained', has: false },
+                  { feature: 'Free tiers available', has: true },
+                  { feature: 'Password protection', has: true },
+                ].map((item) => (
+                  <li
+                    key={item.feature}
+                    className={`flex items-center gap-3 ${item.has ? 'text-neutral-400' : 'text-neutral-500'}`}
+                  >
+                    {item.has ? (
+                      <Check className="w-5 h-5 text-neutral-500 shrink-0" />
+                    ) : (
+                      <X className="w-5 h-5 text-neutral-600 shrink-0" />
+                    )}
+                    <span className="text-sm">{item.feature}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* * Security Details */}
-      <section className="section-padding">
-        <div className="section-container">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="heading-2 mb-8 text-center">
-              Security You Can Trust
-            </h2>
-            <div className="card p-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="heading-3 mb-3">
-                    Encryption Standards
-                  </h3>
-                  <ul className="space-y-2 text-neutral-400">
-                    <li className="flex items-start gap-2">
-                      <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                      AES-256-GCM encryption
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                      Client-side encryption only
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                      Cryptographically secure key generation
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="heading-3 mb-3">
-                    Infrastructure
-                  </h3>
-                  <ul className="space-y-2 text-neutral-400">
-                    <li className="flex items-start gap-2">
-                      <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                      Swiss-hosted servers
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                      Automatic secure deletion
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                      Minimal metadata (file size, expiration only)
-                    </li>
-                  </ul>
+      {/* Swiss Privacy — photo left, text right */}
+      <section id="privacy" className="py-20 lg:py-32 bg-neutral-950 scroll-mt-28">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="relative flex items-center justify-center lg:justify-start">
+              <div className="relative">
+                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
+                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
+                  <img
+                    src={zurichPhoto.src}
+                    alt="Zurich, Switzerland"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 space-y-2.5">
+                    {[
+                      { icon: Globe, title: 'Data residency', desc: 'Switzerland (FADP protected)' },
+                      { icon: Timer, title: 'Data retention', desc: 'Auto-deleted on expiration' },
+                      { icon: ShieldCheck, title: 'Compliance', desc: 'GDPR, FADP, zero-knowledge' },
+                    ].map((item) => (
+                      <div key={item.title} className="flex items-center gap-3 rounded-xl bg-neutral-900/80 border border-white/[0.08] px-4 py-3 backdrop-blur-sm">
+                        <item.icon className="w-5 h-5 text-brand-orange shrink-0" />
+                        <div>
+                          <p className="text-xs font-semibold text-white">{item.title}</p>
+                          <p className="text-[11px] text-neutral-400">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
+
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                Swiss infrastructure. Swiss privacy laws.
+              </h2>
+              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
+                All encrypted files are stored on Swiss infrastructure,
+                protected by the Swiss Federal Act on Data Protection (FADP).
+                Combined with zero-knowledge encryption, your files are
+                protected by both mathematics and law.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  'Encrypted data stored in Swiss jurisdiction',
+                  'Automatic deletion when files expire',
+                  'Hourly cleanup of expired files from storage',
+                  'Minimal metadata — only file size and expiration',
+                  'No Data Processing Agreement required',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 text-neutral-400"
+                  >
+                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* * CTA */}
-      <section className="section-padding">
-        <div className="section-container">
-          <div className="w-full text-center bg-gradient-to-br from-brand-orange to-brand-orange-hover rounded-3xl px-6 sm:px-10 md:px-16 py-12 sm:py-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Start Sharing Securely Today
-            </h2>
-            <p className="text-lg text-white/90 mb-8">
-              No account needed. Just upload, encrypt, and share with complete privacy.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://drop.ciphera.net" className="btn-white">
-                Start Using Drop
-              </a>
-              <Link href="/contact" className="btn-white-outline">
-                Contact Sales
-              </Link>
+      {/* CTA */}
+      <section className="py-20 lg:py-32 bg-neutral-950">
+        <div className="container mx-auto px-6">
+          <div className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-neutral-900/80 px-6 py-20 sm:px-10 sm:py-24 max-w-6xl mx-auto">
+            <img
+              src={dropShowcaseBg.src}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+
+            <div className="relative z-10 text-center max-w-2xl mx-auto">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+                Start sharing securely.
+              </h2>
+              <p className="text-lg text-neutral-300 mb-10">
+                No account needed. Upload, encrypt, and share with complete
+                privacy in under 30 seconds.
+              </p>
+              <div className="flex flex-row gap-3 justify-center flex-wrap">
+                <Button
+                  size="lg"
+                  className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white"
+                  asChild
+                >
+                  <a href="https://drop.ciphera.net">
+                    Try Drop Free <ArrowRight className="w-4 h-4" />
+                  </a>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="gap-2 text-neutral-300 hover:text-white border border-white/10"
+                  asChild
+                >
+                  <Link href="/contact">Contact Sales</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>

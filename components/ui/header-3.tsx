@@ -25,6 +25,10 @@ import {
     Eye,
     Funnel,
     Send,
+    Lock,
+    Link2,
+    Inbox,
+    KeyRound,
 } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import { track } from '@/lib/pulse';
@@ -54,6 +58,12 @@ const productFeatures: Record<string, FeatureLink[]> = {
         { title: 'Visitor Insights', href: '#visitors', icon: Eye, description: 'Browser, device & geo data' },
         { title: 'Conversion Funnels', href: '#funnels', icon: Funnel, description: 'Multi-step drop-off analysis' },
         { title: 'Email Reports', href: '#reports', icon: Send, description: 'Scheduled inbox summaries' },
+    ],
+    '/products/drop': [
+        { title: 'Encryption', href: '#encryption', icon: Lock, description: 'Client-side AES-256-GCM' },
+        { title: 'Secure Sharing', href: '#sharing', icon: Link2, description: 'Links, QR codes & controls' },
+        { title: 'File Requests', href: '#requests', icon: Inbox, description: 'Receive files securely' },
+        { title: 'Zero-Knowledge', href: '#zero-knowledge', icon: KeyRound, description: 'Server can\'t read your files' },
     ],
 };
 
