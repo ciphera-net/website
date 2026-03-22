@@ -113,6 +113,72 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     return getRGBA(color);
   }, [color]);
 
+  const textMaskRef = useRef<Uint8Array | null>(null);
+  const colorCacheRef = useRef<string[]>([]);
+
+  const buildTextMask = useCallback(
+    (width: number, height: number, cols: number, rows: number, dpr: number) => {
+      const mask = new Uint8Array(cols * rows);
+      if (!text) {
+        textMaskRef.current = mask;
+        return;
+      }
+
+      const maskCanvas = document.createElement("canvas");
+      maskCanvas.width = width;
+      maskCanvas.height = height;
+      const maskCtx = maskCanvas.getContext("2d", { willReadFrequently: true });
+      if (!maskCtx) {
+        textMaskRef.current = mask;
+        return;
+      }
+
+      maskCtx.save();
+      maskCtx.scale(dpr, dpr);
+      maskCtx.fillStyle = "white";
+      maskCtx.font = `${fontWeight} ${fontSize}px "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+      maskCtx.textAlign = "center";
+      maskCtx.textBaseline = "middle";
+      maskCtx.fillText(text, width / (2 * dpr), height / (2 * dpr));
+      maskCtx.restore();
+
+      const fullImageData = maskCtx.getImageData(0, 0, width, height).data;
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const x = i * (squareSize + gridGap) * dpr;
+          const y = j * (squareSize + gridGap) * dpr;
+          const squareWidth = squareSize * dpr;
+          const squareHeight = squareSize * dpr;
+
+          let found = false;
+          for (let py = y; py < y + squareHeight && !found; py++) {
+            for (let px = x; px < x + squareWidth && !found; px++) {
+              if (fullImageData[(py * width + px) * 4] > 0) {
+                found = true;
+              }
+            }
+          }
+          mask[i * rows + j] = found ? 1 : 0;
+        }
+      }
+
+      textMaskRef.current = mask;
+    },
+    [text, fontSize, fontWeight, squareSize, gridGap],
+  );
+
+  const buildColorCache = useCallback(
+    (steps: number) => {
+      const cache: string[] = new Array(steps + 1);
+      for (let i = 0; i <= steps; i++) {
+        cache[i] = colorWithOpacity(memoizedColor, i / steps);
+      }
+      colorCacheRef.current = cache;
+    },
+    [memoizedColor],
+  );
+
   const drawGrid = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -125,51 +191,29 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     ) => {
       ctx.clearRect(0, 0, width, height);
 
-      const maskCanvas = document.createElement("canvas");
-      maskCanvas.width = width;
-      maskCanvas.height = height;
-      const maskCtx = maskCanvas.getContext("2d", { willReadFrequently: true });
-      if (!maskCtx) return;
-
-      if (text) {
-        maskCtx.save();
-        maskCtx.scale(dpr, dpr);
-        maskCtx.fillStyle = "white";
-        maskCtx.font = `${fontWeight} ${fontSize}px "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
-        maskCtx.textAlign = "center";
-        maskCtx.textBaseline = "middle";
-        maskCtx.fillText(text, width / (2 * dpr), height / (2 * dpr));
-        maskCtx.restore();
-      }
+      const mask = textMaskRef.current;
+      const colorCache = colorCacheRef.current;
+      const steps = colorCache.length - 1;
+      if (!mask || steps <= 0) return;
 
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
-          const x = i * (squareSize + gridGap) * dpr;
-          const y = j * (squareSize + gridGap) * dpr;
-          const squareWidth = squareSize * dpr;
-          const squareHeight = squareSize * dpr;
-
-          const maskData = maskCtx.getImageData(
-            x,
-            y,
-            squareWidth,
-            squareHeight,
-          ).data;
-          const hasText = maskData.some(
-            (value, index) => index % 4 === 0 && value > 0,
-          );
-
           const opacity = squares[i * rows + j];
-          const finalOpacity = hasText
+          const finalOpacity = mask[i * rows + j]
             ? Math.min(1, opacity * 3 + 0.4)
             : opacity;
 
-          ctx.fillStyle = colorWithOpacity(memoizedColor, finalOpacity);
-          ctx.fillRect(x, y, squareWidth, squareHeight);
+          ctx.fillStyle = colorCache[Math.round(finalOpacity * steps)];
+          ctx.fillRect(
+            i * (squareSize + gridGap) * dpr,
+            j * (squareSize + gridGap) * dpr,
+            squareSize * dpr,
+            squareSize * dpr,
+          );
         }
       }
     },
-    [memoizedColor, squareSize, gridGap, text, fontSize, fontWeight],
+    [squareSize, gridGap],
   );
 
   const setupCanvas = useCallback(
@@ -219,6 +263,8 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
       const newHeight = height || container.clientHeight;
       setCanvasSize({ width: newWidth, height: newHeight });
       gridParams = setupCanvas(canvas, newWidth, newHeight);
+      buildTextMask(canvas.width, canvas.height, gridParams.cols, gridParams.rows, gridParams.dpr);
+      buildColorCache(50);
     };
 
     updateCanvasSize();
@@ -276,7 +322,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
     };
-  }, [setupCanvas, updateSquares, drawGrid, width, height, isInView]);
+  }, [setupCanvas, updateSquares, drawGrid, buildTextMask, buildColorCache, width, height, isInView]);
 
   return (
     <div
