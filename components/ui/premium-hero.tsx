@@ -25,7 +25,7 @@ interface Beam {
 function createBeam(width: number, height: number, layer: number): Beam {
   const angle = -35 + Math.random() * 10;
   const baseSpeed = 0.2 + layer * 0.2;
-  const baseOpacity = 0.08 + layer * 0.05;
+  const baseOpacity = 0.03 + layer * 0.02;
   const baseWidth = 10 + layer * 5;
   return {
     x: Math.random() * width,
@@ -84,23 +84,19 @@ export const PremiumHero = () => {
     if (!ctx || !nCtx) return;
 
     const resizeCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
       const w = container.clientWidth;
       const h = container.clientHeight;
+      const scale = 0.5;
 
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
+      canvas.width = w * scale;
+      canvas.height = h * scale;
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
+      ctx.scale(scale, scale);
 
-      noiseCanvas.width = w * dpr;
-      noiseCanvas.height = h * dpr;
-      noiseCanvas.style.width = `${w}px`;
-      noiseCanvas.style.height = `${h}px`;
-      nCtx.setTransform(1, 0, 0, 1, 0, 0);
-      nCtx.scale(dpr, dpr);
+      noiseCanvas.width = 256;
+      noiseCanvas.height = 256;
 
       beamsRef.current = [];
       for (let layer = 1; layer <= LAYERS; layer++) {
@@ -114,7 +110,7 @@ export const PremiumHero = () => {
     window.addEventListener("resize", resizeCanvas);
 
     const generateNoise = () => {
-      const imgData = nCtx.createImageData(noiseCanvas.width, noiseCanvas.height);
+      const imgData = nCtx.createImageData(256, 256);
       for (let i = 0; i < imgData.data.length; i += 4) {
         const v = Math.random() * 255;
         imgData.data[i] = v;
@@ -124,6 +120,8 @@ export const PremiumHero = () => {
       }
       nCtx.putImageData(imgData, 0, 0);
     };
+
+    generateNoise();
 
     const drawBeam = (beam: Beam) => {
       ctx.save();
@@ -139,7 +137,6 @@ export const PremiumHero = () => {
       gradient.addColorStop(1, `rgba(253,94,15,0)`);
 
       ctx.fillStyle = gradient;
-      ctx.filter = `blur(${2 + beam.layer * 2}px)`;
       ctx.fillRect(-beam.width / 2, 0, beam.width, beam.length);
       ctx.restore();
     };
@@ -148,7 +145,7 @@ export const PremiumHero = () => {
       if (!canvas || !ctx) return;
 
       ctx.fillStyle = "#0A0A0A";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, container.clientWidth, container.clientHeight);
 
       beamsRef.current.forEach((beam) => {
         beam.y -= beam.speed * (beam.layer / LAYERS + 0.5);
@@ -160,7 +157,6 @@ export const PremiumHero = () => {
         drawBeam(beam);
       });
 
-      generateNoise();
       animationFrameRef.current = requestAnimationFrame(animate);
     };
     animate();
@@ -180,8 +176,8 @@ export const PremiumHero = () => {
 
   return (
     <div ref={containerRef} className="relative w-full h-[130vh] overflow-hidden -mt-[88px] pt-[88px]">
-      <canvas ref={noiseRef} className="absolute inset-0 z-0 pointer-events-none" />
-      <canvas ref={canvasRef} className="absolute inset-0 z-10" />
+      <canvas ref={noiseRef} className="absolute inset-0 z-0 pointer-events-none w-full h-full" />
+      <canvas ref={canvasRef} className="absolute inset-0 z-10" style={{ filter: "blur(3px)" }} />
       <div className="absolute bottom-0 left-0 right-0 h-[40vh] z-20 pointer-events-none" style={{ background: 'linear-gradient(to top, hsl(0 0% 4%) 0%, hsl(0 0% 4%) 15%, transparent 100%)' }} />
 
       <div className="relative z-20 flex h-screen w-full items-center justify-center px-6 text-center -mt-16">
