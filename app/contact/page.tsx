@@ -191,12 +191,23 @@ export default function ContactPage() {
     }
 
     setStatus('submitting')
-    
-    // * Simulated submission - connect to actual API endpoint in production
-    setTimeout(() => {
-      // * TODO: Connect to actual API - send formData, captchaId, captchaSolution, captchaToken
-      const success = Math.random() > 0.1 // * 90% success rate simulation
-      if (success) {
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_WEBSITE_API_URL}/api/v1/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          captcha_id: captchaId,
+          captcha_solution: captchaSolution,
+          captcha_token: captchaToken,
+        }),
+      })
+
+      if (response.ok) {
         setStatus('success')
         setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' })
         setCaptchaId('')
@@ -205,12 +216,18 @@ export default function ContactPage() {
         track('contact_form_submit_success')
         setTimeout(() => setStatus('idle'), 8000)
       } else {
+        const data = await response.json()
         setStatus('error')
-        setErrorMessage('Failed to send message. Please try again or email us directly.')
+        setErrorMessage(data.error || 'Failed to send message. Please try again.')
         track('contact_form_submit_error')
         setTimeout(() => setStatus('idle'), 5000)
       }
-    }, 1500)
+    } catch {
+      setStatus('error')
+      setErrorMessage('Network error. Please try again or email us directly.')
+      track('contact_form_submit_error')
+      setTimeout(() => setStatus('idle'), 5000)
+    }
   }
 
   return (
