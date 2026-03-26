@@ -185,7 +185,7 @@ export default function ContactPage() {
       return
     }
 
-    if (!captchaId || !captchaSolution) {
+    if (!captchaToken && (!captchaId || !captchaSolution)) {
       setErrorMessage('Please complete the captcha verification')
       return
     }
