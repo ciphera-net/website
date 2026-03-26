@@ -220,13 +220,13 @@ export default function ContactPage() {
         setStatus('error')
         setErrorMessage(data.error || 'Failed to send message. Please try again.')
         track('contact_form_submit_error')
-        setTimeout(() => setStatus('idle'), 5000)
+        setTimeout(() => { setStatus('idle'); setErrorMessage('') }, 5000)
       }
     } catch {
       setStatus('error')
       setErrorMessage('Network error. Please try again or email us directly.')
       track('contact_form_submit_error')
-      setTimeout(() => setStatus('idle'), 5000)
+      setTimeout(() => { setStatus('idle'); setErrorMessage('') }, 5000)
     }
   }
 
