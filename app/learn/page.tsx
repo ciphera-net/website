@@ -92,7 +92,7 @@ export default function LearnPage() {
                       : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
                   }`}
                 >
-                  {config && <Image src={config.icon} alt="" width={16} height={16} className="rounded-sm" unoptimized />}
+                  {config && <Image src={config.icon} alt="" width={16} height={16} unoptimized />}
                   {config?.label || key}
                 </button>
               )
@@ -115,7 +115,7 @@ export default function LearnPage() {
                 <div className="flex items-center gap-2 mb-3">
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
                     {PRODUCT_CONFIG[article.product] && (
-                      <Image src={PRODUCT_CONFIG[article.product].icon} alt="" width={14} height={14} className="rounded-sm" unoptimized />
+                      <Image src={PRODUCT_CONFIG[article.product].icon} alt="" width={14} height={14} unoptimized />
                     )}
                     {PRODUCT_CONFIG[article.product]?.label || article.product}
                   </span>

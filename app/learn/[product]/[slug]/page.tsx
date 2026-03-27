@@ -107,7 +107,7 @@ export default async function LearnArticlePage({ params }: Props) {
           <div className="flex items-center gap-2 mb-4">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
               {PRODUCT_ICONS[product] && (
-                <Image src={PRODUCT_ICONS[product]} alt="" width={14} height={14} className="rounded-sm" unoptimized />
+                <Image src={PRODUCT_ICONS[product]} alt="" width={14} height={14} unoptimized />
               )}
               {PRODUCT_LABELS[product] || product}
             </span>
