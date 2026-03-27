@@ -23,6 +23,30 @@ export const metadata: Metadata = {
   },
 }
 
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Learn - Web Performance & SEO Reference',
+    description: 'Reference guides for Lighthouse audits, web performance metrics, accessibility standards, and SEO best practices.',
+    url: 'https://ciphera.net/learn',
+    publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
+      { '@type': 'ListItem', position: 2, name: 'Learn' },
+    ],
+  },
+]
+
 export default function LearnLayout({ children }: { children: React.ReactNode }) {
-  return children
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      {children}
+    </>
+  )
 }
