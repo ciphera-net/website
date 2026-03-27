@@ -1,0 +1,42 @@
+---
+title: "Document Has a Main Landmark"
+description: "Ensure the page contains exactly one main landmark region."
+category: "accessibility"
+auditId: "landmark-one-main"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/landmark-one-main"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that your page contains exactly one `<main>` element or one element with `role="main"`. Pages with zero or multiple main landmarks fail this audit.
+
+## Why It Matters
+
+Screen reader users rely on landmarks to skip directly to the primary content. Without a main landmark, they must tab through the entire navigation and header on every page load. Multiple main landmarks create ambiguity about where the real content begins.
+
+## How to Fix It
+
+- **Add a single `<main>` element** wrapping your page's primary content. Place it as a direct child of `<body>` or inside a layout wrapper.
+- **Remove duplicate main landmarks.** If you have multiple `<main>` elements (common in SPA frameworks with nested layouts), consolidate them into one.
+- **Do not use `role="main"` when you can use `<main>`.** The native element is preferred and carries the role implicitly.
+
+```html
+<body>
+  <header>...</header>
+  <nav>...</nav>
+  <main>
+    <!-- Primary page content goes here -->
+  </main>
+  <footer>...</footer>
+</body>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: landmark-one-main](https://dequeuniversity.com/rules/axe/4.11/landmark-one-main)
+- Related: [/learn/pulse/use-landmarks](/learn/pulse/use-landmarks)

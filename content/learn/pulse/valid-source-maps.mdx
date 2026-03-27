@@ -1,0 +1,38 @@
+---
+title: "Page Has Valid Source Maps"
+description: "Verify that all JavaScript source maps are valid and correctly linked."
+category: "best-practices"
+auditId: "valid-source-maps"
+googleUrl: "https://developer.chrome.com/docs/devtools/javascript/source-maps/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every JavaScript file served with a `sourceMappingURL` comment actually points to a valid, parseable source map. It catches broken URLs, malformed JSON, and mismatched mappings.
+
+## Why It Matters
+
+Source maps let you debug minified production code by mapping it back to your original source. Broken source maps make production debugging nearly impossible and waste bandwidth if browsers download corrupted map files.
+
+## How to Fix It
+
+- **Verify `sourceMappingURL` comments** at the end of your bundled JS files point to correct, accessible URLs.
+- **Regenerate source maps** if they are malformed. Most bundlers produce valid maps by default:
+  ```js
+  // webpack.config.js
+  module.exports = {
+    devtool: 'source-map', // generates .map files
+  };
+  ```
+- **Ensure source maps are deployed** alongside your JavaScript files. If you host them on a different origin, configure CORS headers.
+- **Remove source map references in production** if you intentionally do not want to expose them. Either strip the `sourceMappingURL` comment or do not generate maps at all. Half-measures (comment present, file missing) trigger this audit.
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse best-practices score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome DevTools: Source Maps](https://developer.chrome.com/docs/devtools/javascript/source-maps/)
+- Related: [/learn/pulse/js-libraries](/learn/pulse/js-libraries)

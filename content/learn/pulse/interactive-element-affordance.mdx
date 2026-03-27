@@ -1,0 +1,38 @@
+---
+title: "Interactive Elements Indicate Purpose and State"
+description: "Ensure interactive elements visually communicate their function and current state."
+category: "accessibility"
+auditId: "interactive-element-affordance"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/accessibility/interactive-element-affordance/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This manual audit checks that interactive elements like buttons, links, and form controls are visually distinguishable from static content and clearly communicate their current state (hover, focus, active, disabled, selected).
+
+## Why It Matters
+
+Users with low vision or cognitive disabilities rely on visual cues to understand what they can interact with. If a button looks like plain text or a disabled field looks the same as an active one, users cannot navigate or complete tasks on your page.
+
+## How to Fix It
+
+- **Style interactive elements distinctly** from surrounding text. Use borders, backgrounds, underlines, or other visual indicators.
+- **Provide visible focus styles.** Never set `outline: none` without a custom replacement:
+  ```css
+  button:focus-visible {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+  }
+  ```
+- **Show state changes visually.** Disabled buttons should look muted. Selected tabs should look active. Hover states should differ from default states.
+- **Use cursor styles** that match element behavior: `pointer` for clickable elements, `not-allowed` for disabled ones.
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Interactive Element Affordance](https://developer.chrome.com/docs/lighthouse/accessibility/interactive-element-affordance/)
+- Related: [/learn/pulse/focusable-controls](/learn/pulse/focusable-controls)

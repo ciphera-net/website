@@ -1,0 +1,42 @@
+---
+title: "Visible Labels Match Accessible Names"
+description: "Ensure an element's visible text is included in its accessible name."
+category: "accessibility"
+auditId: "label-content-name-mismatch"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/label-content-name-mismatch"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the visible text of an interactive element is included in its accessible name. It fails when `aria-label` or `aria-labelledby` overrides the visible label with completely different text.
+
+## Why It Matters
+
+Voice control users activate elements by speaking their visible labels. If the accessible name does not contain the visible text, voice commands fail and the user cannot interact with the element. Sighted screen reader users also get confused when what they hear does not match what they see.
+
+## How to Fix It
+
+- **Start the accessible name with the visible text.** If you need to add extra context, append it after the visible label.
+- **Avoid overriding visible labels with `aria-label`** unless the accessible name begins with or contains the visible text.
+- **Use `aria-describedby` for supplemental context** instead of replacing the label entirely.
+
+```html
+<!-- Bad: visible text "Submit" not in aria-label -->
+<button aria-label="Send the contact form">Submit</button>
+
+<!-- Good: aria-label starts with visible text -->
+<button aria-label="Submit contact form">Submit</button>
+
+<!-- Best: no override needed -->
+<button>Submit contact form</button>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: label-content-name-mismatch](https://dequeuniversity.com/rules/axe/4.11/label-content-name-mismatch)
+- Related: [/learn/pulse/button-name](/learn/pulse/button-name)

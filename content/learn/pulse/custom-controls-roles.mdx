@@ -1,0 +1,37 @@
+---
+title: "Custom Controls Have ARIA Roles"
+description: "Ensure custom interactive controls have appropriate ARIA roles."
+category: "accessibility"
+auditId: "custom-controls-roles"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/accessibility/custom-control-roles/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This manual audit checks that custom interactive elements built from non-semantic HTML have an appropriate ARIA `role` attribute. A `<div>` that acts as a button needs `role="button"`; a custom dropdown needs `role="listbox"` or `role="combobox"`.
+
+## Why It Matters
+
+Without a role, assistive technologies announce custom controls as generic elements. A screen reader user hears "group" or "text" instead of "button" or "tab," making it impossible to understand what the element does or how to interact with it.
+
+## How to Fix It
+
+- **Add the correct ARIA role** to every custom interactive element:
+  ```html
+  <div role="button" tabindex="0">Save</div>
+  <div role="tab" tabindex="0" aria-selected="true">Settings</div>
+  <div role="switch" tabindex="0" aria-checked="false">Dark mode</div>
+  ```
+- **Use native HTML elements instead** whenever possible. A `<button>` has the button role built in with no extra work needed.
+- **Match roles to interaction patterns.** A toggle is `role="switch"`, a collapsible section trigger is a `<button>` with `aria-expanded`, and a tab interface uses `role="tablist"`, `role="tab"`, and `role="tabpanel"`.
+- **Include required ARIA states.** Many roles require specific attributes like `aria-checked`, `aria-selected`, or `aria-expanded` to fully communicate state.
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Custom Control Roles](https://developer.chrome.com/docs/lighthouse/accessibility/custom-control-roles/)
+- Related: [/learn/pulse/custom-controls-labels](/learn/pulse/custom-controls-labels)

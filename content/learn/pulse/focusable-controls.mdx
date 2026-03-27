@@ -1,0 +1,44 @@
+---
+title: "Interactive Controls Are Keyboard Focusable"
+description: "Ensure all interactive controls can receive keyboard focus."
+category: "accessibility"
+auditId: "focusable-controls"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/accessibility/focusable-controls/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This manual audit checks that every interactive element on your page (buttons, links, form fields, custom widgets) can be reached and operated using only a keyboard. Elements that respond to clicks but cannot be tabbed to fail this check.
+
+## Why It Matters
+
+Keyboard access is fundamental to web accessibility. Users who cannot use a mouse, including those using screen readers, switch devices, or voice control, depend entirely on keyboard navigation. An unfocusable control is an unusable control.
+
+## How to Fix It
+
+- **Use native interactive elements** like `<button>`, `<a>`, `<input>`, and `<select>` which are focusable by default.
+- **Add `tabindex="0"`** to custom interactive elements built with `<div>` or `<span>` so they enter the natural tab order.
+- **Never use `tabindex="-1"` on visible interactive elements** unless you manage focus programmatically.
+- **Add keyboard event handlers.** Custom controls need `onkeydown` or `onkeyup` handlers for Enter and Space keys, not just `onclick`.
+
+```html
+<!-- Bad: custom button not focusable -->
+<div class="btn" onclick="submit()">Submit</div>
+
+<!-- Good: native button -->
+<button onclick="submit()">Submit</button>
+
+<!-- Acceptable: custom element with tabindex and keyboard support -->
+<div role="button" tabindex="0" onclick="submit()"
+     onkeydown="if(event.key==='Enter') submit()">Submit</div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Focusable Controls](https://developer.chrome.com/docs/lighthouse/accessibility/focusable-controls/)
+- Related: [/learn/pulse/logical-tab-order](/learn/pulse/logical-tab-order)

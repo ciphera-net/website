@@ -1,0 +1,40 @@
+---
+title: "Page Has a Logical Tab Order"
+description: "Ensure the tab order follows the visual layout of the page."
+category: "accessibility"
+auditId: "logical-tab-order"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/accessibility/logical-tab-order/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This manual audit checks that pressing Tab moves focus through interactive elements in an order that matches the visual layout of the page. Focus should flow logically, typically left-to-right and top-to-bottom in LTR languages.
+
+## Why It Matters
+
+When tab order diverges from visual order, keyboard users lose their bearings. Focus jumps unpredictably across the page, making forms harder to complete and navigation confusing. This disproportionately affects users who cannot see the full page at once.
+
+## How to Fix It
+
+- **Match DOM order to visual order.** Rely on the natural document flow instead of using CSS to rearrange elements visually.
+- **Avoid positive `tabindex` values** like `tabindex="1"` or `tabindex="5"`. These override natural order and create maintenance nightmares. Use only `tabindex="0"` or `tabindex="-1"`.
+- **Be cautious with CSS flexbox/grid `order` property.** It changes visual position without changing DOM order, creating a mismatch.
+- **Test by tabbing through your page.** Press Tab repeatedly and verify focus moves in the order a user would expect.
+
+```css
+/* Risky: visual order differs from DOM order */
+.sidebar { order: 2; }
+.content { order: 1; }
+
+/* Better: rearrange the DOM to match visual intent */
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Logical Tab Order](https://developer.chrome.com/docs/lighthouse/accessibility/logical-tab-order/)
+- Related: [/learn/pulse/visual-order-follows-dom](/learn/pulse/visual-order-follows-dom)

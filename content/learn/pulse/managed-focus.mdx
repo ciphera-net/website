@@ -1,0 +1,38 @@
+---
+title: "Focus Is Directed to New Content"
+description: "Ensure focus moves to new content when it appears on the page."
+category: "accessibility"
+auditId: "managed-focus"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/accessibility/managed-focus/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This manual audit checks that when new content appears on the page (modals, expanded sections, route changes in SPAs), keyboard focus is moved to that content. Users should not have to tab through the entire page to find what just appeared.
+
+## Why It Matters
+
+Without managed focus, keyboard and screen reader users are left stranded when content changes. A modal opens but focus stays behind the overlay. A form submits and the success message appears above, but focus remains on the submit button. Users miss critical content and cannot proceed.
+
+## How to Fix It
+
+- **Move focus to modals when they open** and return it to the trigger element when they close:
+  ```js
+  function openModal() {
+    modal.showModal();
+    modal.querySelector('[autofocus]')?.focus();
+  }
+  ```
+- **Focus the main content region on SPA route changes.** After a client-side navigation, set focus to the new page heading or main container.
+- **Focus error messages and validation summaries** when a form submission fails, so users immediately hear what went wrong.
+- **Use `aria-live` regions** as an alternative for content updates that should not steal focus but still need to be announced.
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Managed Focus](https://developer.chrome.com/docs/lighthouse/accessibility/managed-focus/)
+- Related: [/learn/pulse/focus-traps](/learn/pulse/focus-traps)

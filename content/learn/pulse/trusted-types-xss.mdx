@@ -1,0 +1,41 @@
+---
+title: "Mitigate DOM-Based XSS with Trusted Types"
+description: "Enforce Trusted Types to prevent DOM-based cross-site scripting attacks."
+category: "best-practices"
+auditId: "trusted-types-xss"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/trusted-types-xss"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit checks whether your page enforces a Trusted Types policy via a `Content-Security-Policy` header. Trusted Types lock down dangerous DOM sink APIs like `innerHTML`, `document.write`, and `eval` so they only accept typed objects instead of raw strings.
+
+## Why It Matters
+
+DOM-based XSS is one of the most common web vulnerabilities. Without Trusted Types, any string can be passed into a dangerous sink, letting attackers inject and execute arbitrary scripts. Trusted Types eliminate this entire class of attack at the browser level.
+
+## How to Fix It
+
+- **Set a CSP header** that includes `require-trusted-types-for 'script'`:
+  ```
+  Content-Security-Policy: require-trusted-types-for 'script'
+  ```
+- **Create a Trusted Types policy** for any code that needs to set innerHTML or call other dangerous sinks:
+  ```js
+  const policy = trustedTypes.createPolicy('default', {
+    createHTML: (input) => DOMPurify.sanitize(input),
+  });
+  ```
+- **Refactor third-party scripts** that write raw strings into sinks. Wrap them in a policy or replace them with safer alternatives.
+- **Test in report-only mode first** by using `Content-Security-Policy-Report-Only` to catch violations without breaking your site.
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse best-practices score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Trusted Types API on MDN](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API)
+- [Chrome: Trusted Types](https://developer.chrome.com/docs/lighthouse/best-practices/trusted-types-xss)
+- Related: [/learn/pulse/csp-xss](/learn/pulse/csp-xss)

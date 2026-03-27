@@ -109,6 +109,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "accessibility"
   },
   {
+    "slug": "aria-allowed-role",
+    "product": "pulse",
+    "title": "ARIA Roles Used on Compatible Elements",
+    "description": "Ensure ARIA roles are only applied to elements that support them.",
+    "category": "accessibility"
+  },
+  {
     "slug": "aria-toggle-field-name",
     "product": "pulse",
     "title": "ARIA Toggle Fields Have Accessible Names",
@@ -135,6 +142,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "title": "aria-hidden Is Not on the Body",
     "description": "Ensure aria-hidden is not present on the document body.",
     "category": "accessibility"
+  },
+  {
+    "slug": "deprecations",
+    "product": "pulse",
+    "title": "Avoid Deprecated APIs",
+    "description": "Stop using deprecated web platform APIs before browsers remove them.",
+    "category": "best-practices"
   },
   {
     "slug": "total-byte-weight",
@@ -221,6 +235,20 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "performance"
   },
   {
+    "slug": "custom-controls-roles",
+    "product": "pulse",
+    "title": "Custom Controls Have ARIA Roles",
+    "description": "Ensure custom interactive controls have appropriate ARIA roles.",
+    "category": "accessibility"
+  },
+  {
+    "slug": "custom-controls-labels",
+    "product": "pulse",
+    "title": "Custom Controls Have Associated Labels",
+    "description": "Ensure custom interactive controls have accessible labels.",
+    "category": "accessibility"
+  },
+  {
     "slug": "dlitem",
     "product": "pulse",
     "title": "Definition Items Are Wrapped in dl Elements",
@@ -235,6 +263,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "accessibility"
   },
   {
+    "slug": "js-libraries",
+    "product": "pulse",
+    "title": "Detected JavaScript Libraries",
+    "description": "See which JavaScript libraries and frameworks are running on your page.",
+    "category": "best-practices"
+  },
+  {
     "slug": "aria-dialog-name",
     "product": "pulse",
     "title": "Dialog Elements Have Accessible Names",
@@ -247,6 +282,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "title": "Display Images with Correct Aspect Ratio",
     "description": "Ensure rendered images match their natural aspect ratio to prevent visual distortion.",
     "category": "best-practices"
+  },
+  {
+    "slug": "landmark-one-main",
+    "product": "pulse",
+    "title": "Document Has a Main Landmark",
+    "description": "Ensure the page contains exactly one main landmark region.",
+    "category": "accessibility"
   },
   {
     "slug": "meta-description",
@@ -319,6 +361,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "performance"
   },
   {
+    "slug": "managed-focus",
+    "product": "pulse",
+    "title": "Focus Is Directed to New Content",
+    "description": "Ensure focus moves to new content when it appears on the page.",
+    "category": "accessibility"
+  },
+  {
     "slug": "font-display-insight",
     "product": "pulse",
     "title": "Font Display",
@@ -382,6 +431,20 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "accessibility"
   },
   {
+    "slug": "use-landmarks",
+    "product": "pulse",
+    "title": "HTML5 Landmark Elements Improve Navigation",
+    "description": "Use landmark elements to define page regions for assistive technology.",
+    "category": "accessibility"
+  },
+  {
+    "slug": "identical-links-same-purpose",
+    "product": "pulse",
+    "title": "Identical Links Have the Same Purpose",
+    "description": "Ensure links with the same text all point to the same destination.",
+    "category": "accessibility"
+  },
+  {
     "slug": "image-alt",
     "product": "pulse",
     "title": "Image Elements Have Alt Attributes",
@@ -436,6 +499,20 @@ export const learnArticles: LearnArticleSummary[] = [
     "title": "Interaction to Next Paint (INP)",
     "description": "What INP measures, how Lighthouse scores it, and how to improve it.",
     "category": "performance"
+  },
+  {
+    "slug": "focusable-controls",
+    "product": "pulse",
+    "title": "Interactive Controls Are Keyboard Focusable",
+    "description": "Ensure all interactive controls can receive keyboard focus.",
+    "category": "accessibility"
+  },
+  {
+    "slug": "interactive-element-affordance",
+    "product": "pulse",
+    "title": "Interactive Elements Indicate Purpose and State",
+    "description": "Ensure interactive elements visually communicate their function and current state.",
+    "category": "accessibility"
   },
   {
     "slug": "bootup-time",
@@ -557,6 +634,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "best-practices"
   },
   {
+    "slug": "trusted-types-xss",
+    "product": "pulse",
+    "title": "Mitigate DOM-Based XSS with Trusted Types",
+    "description": "Enforce Trusted Types to prevent DOM-based cross-site scripting attacks.",
+    "category": "best-practices"
+  },
+  {
     "slug": "modern-http-insight",
     "product": "pulse",
     "title": "Modern HTTP",
@@ -569,6 +653,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "title": "Network Dependency Tree",
     "description": "Visualizes the critical request chain to identify resources that block page rendering.",
     "category": "performance"
+  },
+  {
+    "slug": "errors-in-console",
+    "product": "pulse",
+    "title": "No Browser Errors in the Console",
+    "description": "Ensure your page loads without logging errors to the browser console.",
+    "category": "best-practices"
   },
   {
     "slug": "aria-deprecated-role",
@@ -606,6 +697,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "accessibility"
   },
   {
+    "slug": "offscreen-content-hidden",
+    "product": "pulse",
+    "title": "Offscreen Content Is Hidden from Assistive Technology",
+    "description": "Ensure content moved offscreen is invisible to screen readers.",
+    "category": "accessibility"
+  },
+  {
     "slug": "dom-size-insight",
     "product": "pulse",
     "title": "Optimize DOM Size",
@@ -618,6 +716,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "title": "Optimize Viewport for Mobile",
     "description": "Checks whether your page has a properly configured viewport meta tag for mobile devices.",
     "category": "performance"
+  },
+  {
+    "slug": "logical-tab-order",
+    "product": "pulse",
+    "title": "Page Has a Logical Tab Order",
+    "description": "Ensure the tab order follows the visual layout of the page.",
+    "category": "accessibility"
   },
   {
     "slug": "bypass",
@@ -638,6 +743,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "product": "pulse",
     "title": "Page Has the HTML Doctype",
     "description": "Include a DOCTYPE declaration to prevent the browser from falling into quirks mode.",
+    "category": "best-practices"
+  },
+  {
+    "slug": "valid-source-maps",
+    "product": "pulse",
+    "title": "Page Has Valid Source Maps",
+    "description": "Verify that all JavaScript source maps are valid and correctly linked.",
     "category": "best-practices"
   },
   {
@@ -746,6 +858,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "seo"
   },
   {
+    "slug": "td-has-header",
+    "product": "pulse",
+    "title": "Table Cells Have Headers",
+    "description": "Ensure every non-empty table data cell has an associated header.",
+    "category": "accessibility"
+  },
+  {
     "slug": "td-headers-attr",
     "product": "pulse",
     "title": "Table Cells Reference Headers in Same Table",
@@ -757,6 +876,20 @@ export const learnArticles: LearnArticleSummary[] = [
     "product": "pulse",
     "title": "Table Headers Have Data Cells",
     "description": "Ensure every th element in a table has associated data cells.",
+    "category": "accessibility"
+  },
+  {
+    "slug": "table-duplicate-name",
+    "product": "pulse",
+    "title": "Tables Have Unique Summary and Caption",
+    "description": "Ensure tables do not have identical summary and caption attributes.",
+    "category": "accessibility"
+  },
+  {
+    "slug": "table-fake-caption",
+    "product": "pulse",
+    "title": "Tables Use Caption Instead of Colspan Cells",
+    "description": "Ensure tables use the caption element rather than cells spanning all columns as a title.",
     "category": "accessibility"
   },
   {
@@ -802,6 +935,13 @@ export const learnArticles: LearnArticleSummary[] = [
     "category": "performance"
   },
   {
+    "slug": "focus-traps",
+    "product": "pulse",
+    "title": "User Focus Is Not Trapped in a Region",
+    "description": "Ensure keyboard users can always move focus away from any element.",
+    "category": "accessibility"
+  },
+  {
     "slug": "user-timings",
     "product": "pulse",
     "title": "User Timing Marks and Measures",
@@ -827,6 +967,20 @@ export const learnArticles: LearnArticleSummary[] = [
     "product": "pulse",
     "title": "Viewport Does Not Disable Zoom",
     "description": "Ensure the viewport meta tag allows users to zoom in.",
+    "category": "accessibility"
+  },
+  {
+    "slug": "label-content-name-mismatch",
+    "product": "pulse",
+    "title": "Visible Labels Match Accessible Names",
+    "description": "Ensure an element's visible text is included in its accessible name.",
+    "category": "accessibility"
+  },
+  {
+    "slug": "visual-order-follows-dom",
+    "product": "pulse",
+    "title": "Visual Order Follows DOM Order",
+    "description": "Ensure the visual presentation order matches the DOM source order.",
     "category": "accessibility"
   }
 ]

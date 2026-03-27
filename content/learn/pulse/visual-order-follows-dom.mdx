@@ -1,0 +1,46 @@
+---
+title: "Visual Order Follows DOM Order"
+description: "Ensure the visual presentation order matches the DOM source order."
+category: "accessibility"
+auditId: "visual-order-follows-dom"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/accessibility/visual-order-follows-dom/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This manual audit checks that the order elements appear visually on screen matches the order they appear in the HTML source. CSS properties like `flexbox order`, `grid placement`, `position: absolute`, and `float` can create mismatches.
+
+## Why It Matters
+
+Screen readers and keyboard navigation follow DOM order, not visual order. When the two diverge, sighted keyboard users see focus jump erratically, and screen reader users hear content in a sequence that does not match the visual hierarchy.
+
+## How to Fix It
+
+- **Structure your HTML in the intended reading order.** Let the DOM be the source of truth for content sequence.
+- **Avoid the CSS `order` property** for reordering meaningful content. Reserve it for purely decorative rearrangements.
+- **Minimize use of `position: absolute`** for content that participates in the reading flow. Absolutely positioned elements remain in DOM order regardless of where they render.
+- **Test with CSS disabled.** If the page still reads logically without styles, your DOM order is correct.
+
+```html
+<!-- Bad: DOM order doesn't match visual order -->
+<div style="display: flex;">
+  <div style="order: 2;">First visually</div>
+  <div style="order: 1;">Second visually</div>
+</div>
+
+<!-- Good: DOM order matches visual order -->
+<div style="display: flex;">
+  <div>First visually</div>
+  <div>Second visually</div>
+</div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Visual Order Follows DOM](https://developer.chrome.com/docs/lighthouse/accessibility/visual-order-follows-dom/)
+- Related: [/learn/pulse/logical-tab-order](/learn/pulse/logical-tab-order)

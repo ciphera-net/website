@@ -1,0 +1,41 @@
+---
+title: "Identical Links Have the Same Purpose"
+description: "Ensure links with the same text all point to the same destination."
+category: "accessibility"
+auditId: "identical-links-same-purpose"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit flags links that share the same accessible name but navigate to different URLs. For example, two links both labeled "Read more" that go to different pages will trigger this audit.
+
+## Why It Matters
+
+Screen reader users often navigate by pulling up a list of all links on the page. When multiple links say "Read more" but lead to different destinations, there is no way to distinguish them without visiting each one. This creates a frustrating, time-consuming experience.
+
+## How to Fix It
+
+- **Make link text unique and descriptive.** Replace generic labels like "Read more" or "Click here" with text that describes the destination.
+- **Use `aria-label` or `aria-labelledby`** if you cannot change the visible text but need to differentiate links for assistive technology.
+- **Consolidate duplicate links** that point to the same destination into a single link where possible.
+
+```html
+<!-- Bad: identical text, different destinations -->
+<a href="/blog/post-1">Read more</a>
+<a href="/blog/post-2">Read more</a>
+
+<!-- Good: descriptive link text -->
+<a href="/blog/post-1">Read more about encryption</a>
+<a href="/blog/post-2">Read more about privacy</a>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: identical-links-same-purpose](https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose)
+- Related: [/learn/pulse/link-name](/learn/pulse/link-name)

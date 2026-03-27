@@ -1,0 +1,40 @@
+---
+title: "Detected JavaScript Libraries"
+description: "See which JavaScript libraries and frameworks are running on your page."
+category: "best-practices"
+auditId: "js-libraries"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/js-libraries/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit inventories all detectable JavaScript libraries and their versions running on your page. It identifies frameworks like React, Angular, Vue, jQuery, and other common libraries by their global signatures.
+
+## Why It Matters
+
+Knowing which libraries your page loads helps you catch outdated dependencies with known security vulnerabilities. It also reveals redundant libraries (e.g., loading both jQuery and a full framework) that bloat your bundle size unnecessarily.
+
+## How to Fix It
+
+- **Update outdated libraries** to the latest stable version. Cross-reference detected versions against known vulnerabilities in the [Snyk vulnerability database](https://snyk.io/vuln/) or npm audit.
+- **Remove unused libraries.** If a library appears in the detection list but your code does not actively use it, remove the import and its package.
+- **Avoid loading multiple libraries** that serve the same purpose. Pick one framework and remove the others.
+- **Use tree-shaking** to ensure your bundler only includes the parts of a library you actually use.
+
+```bash
+# Check for known vulnerabilities in your dependencies
+npm audit
+
+# Update a specific package
+npm update react
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse best-practices score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Detected JavaScript Libraries](https://developer.chrome.com/docs/lighthouse/best-practices/js-libraries/)
+- Related: [/learn/pulse/deprecations](/learn/pulse/deprecations)

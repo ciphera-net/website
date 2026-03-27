@@ -1,0 +1,40 @@
+---
+title: "Offscreen Content Is Hidden from Assistive Technology"
+description: "Ensure content moved offscreen is invisible to screen readers."
+category: "accessibility"
+auditId: "offscreen-content-hidden"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/accessibility/offscreen-content-hidden/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This manual audit checks that content positioned offscreen (via CSS transforms, negative margins, or absolute positioning) is also hidden from the accessibility tree. Visually hidden but semantically present content confuses screen reader users.
+
+## Why It Matters
+
+Screen readers read all content in the accessibility tree regardless of visual position. Offscreen content that remains accessible creates phantom elements that users hear but cannot see or interact with, leading to confusion about the page state and structure.
+
+## How to Fix It
+
+- **Use `display: none` or `visibility: hidden`** for content that should be completely hidden from all users, including screen readers.
+- **Use `aria-hidden="true"`** on offscreen containers that are not currently visible:
+  ```html
+  <div class="offscreen-panel" aria-hidden="true">
+    <!-- Hidden from screen readers -->
+  </div>
+  ```
+- **Use the `inert` attribute** on offscreen sections to disable them for both keyboard and assistive technology:
+  ```html
+  <div class="slide-out-menu" inert>...</div>
+  ```
+- **Toggle visibility when content comes onscreen.** Remove `aria-hidden` or `inert` when the panel, menu, or drawer becomes visible.
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Offscreen Content Hidden](https://developer.chrome.com/docs/lighthouse/accessibility/offscreen-content-hidden/)
+- Related: [/learn/pulse/aria-hidden-focus](/learn/pulse/aria-hidden-focus)

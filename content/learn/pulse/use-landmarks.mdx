@@ -1,0 +1,47 @@
+---
+title: "HTML5 Landmark Elements Improve Navigation"
+description: "Use landmark elements to define page regions for assistive technology."
+category: "accessibility"
+auditId: "use-landmarks"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/accessibility/use-landmarks/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This manual audit checks that your page uses HTML5 landmark elements (`<header>`, `<nav>`, `<main>`, `<aside>`, `<footer>`) to define distinct regions. Pages built entirely from `<div>` elements without landmarks fail this check.
+
+## Why It Matters
+
+Landmarks let screen reader users jump directly to the section they want. Without them, navigating a page means listening linearly from top to bottom. A well-landmarked page can be scanned in seconds instead of minutes.
+
+## How to Fix It
+
+- **Wrap your primary content in `<main>`.** Every page should have exactly one.
+- **Use `<header>` and `<footer>`** for site-wide banner and footer content.
+- **Use `<nav>`** for navigation blocks. Add `aria-label` to distinguish multiple nav regions:
+  ```html
+  <nav aria-label="Main navigation">...</nav>
+  <nav aria-label="Footer links">...</nav>
+  ```
+- **Use `<aside>`** for sidebar content that is related but not essential to the main content.
+- **Label repeated landmarks** with `aria-label` or `aria-labelledby` so screen readers can differentiate them.
+
+```html
+<body>
+  <header>...</header>
+  <nav aria-label="Main">...</nav>
+  <main>...</main>
+  <aside aria-label="Related articles">...</aside>
+  <footer>...</footer>
+</body>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Use Landmarks](https://developer.chrome.com/docs/lighthouse/accessibility/use-landmarks/)
+- Related: [/learn/pulse/landmark-one-main](/learn/pulse/landmark-one-main)

@@ -1,0 +1,42 @@
+---
+title: "Avoid Deprecated APIs"
+description: "Stop using deprecated web platform APIs before browsers remove them."
+category: "best-practices"
+auditId: "deprecations"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/deprecations/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit detects calls to web platform APIs that browsers have officially deprecated. These include methods like `document.write()`, `AppCache`, legacy `webkitURL`, and other APIs scheduled for removal.
+
+## Why It Matters
+
+Deprecated APIs can break at any time when browsers ship new versions. Relying on them creates ticking time bombs in your codebase that cause runtime errors for users with no warning.
+
+## How to Fix It
+
+- **Check the console warnings** Lighthouse reports and identify which deprecated APIs your page uses.
+- **Replace `document.write()`** with DOM manipulation methods like `document.createElement()` and `appendChild()`.
+- **Swap AppCache for Service Workers** if you are still using the Application Cache manifest.
+- **Update third-party libraries** that call deprecated APIs. Often the fix is simply upgrading to the latest version.
+
+```js
+// Bad: deprecated API
+document.write('<script src="analytics.js"><\/script>');
+
+// Good: modern alternative
+const script = document.createElement('script');
+script.src = 'analytics.js';
+document.head.appendChild(script);
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse best-practices score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Chrome: Avoid Deprecated APIs](https://developer.chrome.com/docs/lighthouse/best-practices/deprecations/)
+- Related: [/learn/pulse/errors-in-console](/learn/pulse/errors-in-console)
