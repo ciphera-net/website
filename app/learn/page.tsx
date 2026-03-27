@@ -2,15 +2,17 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import Image, { StaticImageData } from 'next/image'
 import { ArrowRightIcon } from '@ciphera-net/ui'
 import { learnArticles } from '@/lib/learn-articles.gen'
+import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
-const PRODUCT_LABELS: Record<string, string> = {
-  pulse: 'Pulse',
-  drop: 'Drop',
-  auth: 'Auth',
-  captcha: 'Captcha',
-  relay: 'Relay',
+const PRODUCT_CONFIG: Record<string, { label: string; icon: StaticImageData }> = {
+  pulse: { label: 'Pulse', icon: pulseIcon },
+  drop: { label: 'Drop', icon: dropIcon },
+  auth: { label: 'Auth', icon: authIcon },
+  captcha: { label: 'Captcha', icon: captchaIcon },
+  relay: { label: 'Relay', icon: relayIcon },
 }
 
 export default function LearnPage() {
@@ -18,29 +20,20 @@ export default function LearnPage() {
   const [activeProduct, setActiveProduct] = useState('All')
 
   // Derive available products from articles
-  const products = useMemo(() => {
-    const unique = Array.from(new Set(learnArticles.map((a) => a.product)))
-    return ['All', ...unique.map((p) => PRODUCT_LABELS[p] || p)]
-  }, [])
-
-  const productKeyMap = useMemo(() => {
-    const map: Record<string, string> = {}
-    for (const a of learnArticles) {
-      map[PRODUCT_LABELS[a.product] || a.product] = a.product
-    }
-    return map
+  const productKeys = useMemo(() => {
+    return Array.from(new Set(learnArticles.map((a) => a.product)))
   }, [])
 
   const filtered = useMemo(() => {
     return learnArticles.filter((article) => {
       const matchesProduct =
-        activeProduct === 'All' || article.product === productKeyMap[activeProduct]
+        activeProduct === 'All' || article.product === activeProduct
       const query = searchQuery.toLowerCase()
       const matchesSearch =
         !query || article.title.toLowerCase().includes(query) || article.description.toLowerCase().includes(query)
       return matchesProduct && matchesSearch
     })
-  }, [searchQuery, activeProduct, productKeyMap])
+  }, [searchQuery, activeProduct])
 
   return (
     <>
@@ -77,19 +70,33 @@ export default function LearnPage() {
 
           {/* Product pills */}
           <div className="flex flex-wrap justify-center gap-2 mb-12">
-            {products.map((p) => (
-              <button
-                key={p}
-                onClick={() => setActiveProduct(p)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  activeProduct === p
-                    ? 'bg-brand-orange text-white'
-                    : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
-                }`}
-              >
-                {p}
-              </button>
-            ))}
+            <button
+              onClick={() => setActiveProduct('All')}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                activeProduct === 'All'
+                  ? 'bg-brand-orange text-white'
+                  : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
+              }`}
+            >
+              All
+            </button>
+            {productKeys.map((key) => {
+              const config = PRODUCT_CONFIG[key]
+              return (
+                <button
+                  key={key}
+                  onClick={() => setActiveProduct(key)}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    activeProduct === key
+                      ? 'bg-brand-orange text-white'
+                      : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
+                  }`}
+                >
+                  {config && <Image src={config.icon} alt="" width={16} height={16} className="rounded-sm" unoptimized />}
+                  {config?.label || key}
+                </button>
+              )
+            })}
           </div>
 
           {/* Results count */}
@@ -106,8 +113,11 @@ export default function LearnPage() {
                 className="group flex flex-col p-5 rounded-2xl border border-neutral-800 bg-neutral-900 hover:border-brand-orange/50 transition-all duration-200"
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
-                    {PRODUCT_LABELS[article.product] || article.product}
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
+                    {PRODUCT_CONFIG[article.product] && (
+                      <Image src={PRODUCT_CONFIG[article.product].icon} alt="" width={14} height={14} className="rounded-sm" unoptimized />
+                    )}
+                    {PRODUCT_CONFIG[article.product]?.label || article.product}
                   </span>
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-neutral-700 bg-neutral-800 text-xs text-neutral-400">
                     {article.category}

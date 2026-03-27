@@ -3,8 +3,18 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
+import Image from 'next/image'
 import { ArrowLeftIcon } from '@ciphera-net/ui'
 import { getLearnArticle, getLearnArticles } from '@/lib/learn'
+import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
+
+const PRODUCT_ICONS: Record<string, typeof pulseIcon> = {
+  pulse: pulseIcon,
+  drop: dropIcon,
+  auth: authIcon,
+  captcha: captchaIcon,
+  relay: relayIcon,
+}
 
 interface Props {
   params: Promise<{ product: string; slug: string }>
@@ -95,7 +105,10 @@ export default async function LearnArticlePage({ params }: Props) {
 
           {/* Product + Category badges */}
           <div className="flex items-center gap-2 mb-4">
-            <span className="inline-flex items-center px-3 py-1 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
+              {PRODUCT_ICONS[product] && (
+                <Image src={PRODUCT_ICONS[product]} alt="" width={14} height={14} className="rounded-sm" unoptimized />
+              )}
               {PRODUCT_LABELS[product] || product}
             </span>
             <span className="inline-flex items-center px-3 py-1 rounded-full border border-neutral-700 bg-neutral-800 text-xs text-neutral-400">
