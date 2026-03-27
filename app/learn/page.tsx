@@ -52,10 +52,10 @@ export default function LearnPage() {
               Learn
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
-              Knowledge Base
+              Learn
             </h1>
             <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
-              Technical guides and reference documentation from Ciphera.
+              Guides, references, and technical deep-dives across Ciphera products.
             </p>
           </div>
         </div>

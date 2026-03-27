@@ -414,7 +414,7 @@ const resourcesLinks: LinkItem[] = [
     {
         title: 'Learn',
         href: '/learn',
-        description: 'Web performance & SEO reference',
+        description: 'Guides & references for Ciphera products',
         icon: BookOpen,
     },
     {
