@@ -19,10 +19,7 @@ export default function LearnPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeProduct, setActiveProduct] = useState('All')
 
-  // Derive available products from articles
-  const productKeys = useMemo(() => {
-    return Array.from(new Set(learnArticles.map((a) => a.product)))
-  }, [])
+  const productKeys = ['pulse', 'drop', 'auth', 'captcha', 'relay']
 
   const filtered = useMemo(() => {
     return learnArticles.filter((article) => {
