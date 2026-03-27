@@ -128,7 +128,7 @@ export default function PulsePage() {
             <div className="flex flex-row gap-3 flex-wrap mb-12">
               <Button
                 size="lg"
-                className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white"
+                className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white"
                 asChild
               >
                 <a href="https://pulse.ciphera.net">
@@ -210,7 +210,7 @@ export default function PulsePage() {
               </ul>
               <Button
                 size="lg"
-                className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white"
+                className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white"
                 asChild
               >
                 <a href="https://pulse.ciphera.net">
@@ -690,7 +690,7 @@ export default function PulsePage() {
               <div className="flex flex-row gap-3 justify-center flex-wrap">
                 <Button
                   size="lg"
-                  className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white"
+                  className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white"
                   asChild
                 >
                   <a href="https://pulse.ciphera.net">

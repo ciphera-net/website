@@ -100,7 +100,7 @@ export default function BlogPage() {
                   }}
                   className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200 ${
                     activeCategory === category
-                      ? 'bg-brand-orange text-white'
+                      ? 'bg-brand-orange-button text-white'
                       : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'
                   }`}
                 >

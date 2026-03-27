@@ -65,7 +65,7 @@
   /* * Primary button - Proton-style solid */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2;
-    @apply bg-brand-orange text-white font-semibold;
+    @apply bg-brand-orange-button text-white font-semibold;
     @apply px-6 py-3 sm:py-3.5 rounded-xl;
     @apply min-h-[44px] sm:min-h-[48px];
     @apply transition-all duration-200 ease-out;

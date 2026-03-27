@@ -210,7 +210,7 @@ export const PremiumHero = () => {
           </p>
 
           <div className="flex flex-row gap-3 flex-wrap justify-center">
-            <Button size="lg" className="gap-4 bg-brand-orange hover:bg-brand-orange-hover text-white" asChild>
+            <Button size="lg" className="gap-4 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
               <Link href="/products" onClick={() => track("cta_explore_products")}>
                 Explore Products <MoveRight className="w-4 h-4" />
               </Link>

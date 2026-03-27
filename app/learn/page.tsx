@@ -71,7 +71,7 @@ export default function LearnPage() {
               onClick={() => setActiveProduct('All')}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeProduct === 'All'
-                  ? 'bg-brand-orange text-white'
+                  ? 'bg-brand-orange-button text-white'
                   : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
               }`}
             >
@@ -85,7 +85,7 @@ export default function LearnPage() {
                   onClick={() => setActiveProduct(key)}
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
                     activeProduct === key
-                      ? 'bg-brand-orange text-white'
+                      ? 'bg-brand-orange-button text-white'
                       : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
                   }`}
                 >

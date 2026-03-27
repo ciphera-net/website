@@ -33,7 +33,7 @@ export default function ProductShowcase() {
             </p>
 
             <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white" asChild>
+              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
                 <Link href="/products/pulse">
                   Try Pulse <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -104,7 +104,7 @@ export default function ProductShowcase() {
             </p>
 
             <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white" asChild>
+              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
                 <Link href="/products/drop">
                   Try Drop <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -139,7 +139,7 @@ export default function ProductShowcase() {
             </p>
 
             <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white" asChild>
+              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
                 <Link href="/products/auth">
                   Get started <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -209,7 +209,7 @@ export default function ProductShowcase() {
             </p>
 
             <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white" asChild>
+              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
                 <Link href="/products/captcha">
                   Get started <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -243,7 +243,7 @@ export default function ProductShowcase() {
             </p>
 
             <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white" asChild>
+              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
                 <Link href="/products/relay">
                   Learn more <ArrowRight className="w-4 h-4" />
                 </Link>
