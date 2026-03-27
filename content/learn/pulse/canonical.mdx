@@ -1,0 +1,50 @@
+---
+title: "Document Has a Valid rel=canonical"
+description: "Set a canonical URL to prevent duplicate content issues and consolidate ranking signals."
+category: "seo"
+auditId: "canonical"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/seo/canonical/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the page includes a valid `<link rel="canonical">` tag pointing to the preferred URL for the content. It fails when the tag is missing, the URL is malformed, or it points to an unreachable page.
+
+## Why It Matters
+
+Without a canonical URL, search engines may treat query-string variants, trailing-slash differences, or HTTP/HTTPS versions as separate pages. This splits ranking signals across duplicates and can result in the wrong version appearing in search results.
+
+## How to Fix It
+
+- **Add a canonical tag to every page.** Place it in the `<head>`, pointing to the preferred URL:
+
+  ```html
+  <link rel="canonical" href="https://example.com/blog/my-post" />
+  ```
+
+- **Use absolute URLs.** Always include the protocol and domain. Relative URLs are technically valid but error-prone.
+
+- **Self-reference on unique pages.** Even pages without duplicates should include a self-referencing canonical to protect against query-string variants like `?utm_source=...`.
+
+- **In Next.js, use the metadata API:**
+
+  ```tsx
+  export const metadata = {
+    alternates: {
+      canonical: "https://example.com/blog/my-post",
+    },
+  };
+  ```
+
+- **Ensure consistency.** The canonical URL should match the URL you submit in your sitemap and the URL used in internal links. Conflicting signals confuse search engines.
+
+## How Pulse Tracks This
+
+Pulse checks for the presence and validity of the `rel=canonical` tag on every audited page. Missing or broken canonicals are flagged in the SEO audit results so you can fix them before indexing is affected.
+
+## Resources
+
+- [Chrome DevTools: canonical audit](https://developer.chrome.com/docs/lighthouse/seo/canonical/)
+- [Google: Consolidate duplicate URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)
+- Related: [/learn/pulse/hreflang](/learn/pulse/hreflang)

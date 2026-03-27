@@ -1,0 +1,47 @@
+---
+title: "lang Attributes Have Valid Values"
+description: "Ensure all elements with a lang attribute use valid BCP 47 tags."
+category: "accessibility"
+auditId: "valid-lang"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/valid-lang"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every element on the page with a `lang` attribute uses a valid BCP 47 language tag. This applies to any element, not just `<html>`. You use `lang` on individual elements to mark sections of content in a different language.
+
+## Why It Matters
+
+When you mark a paragraph or span as a different language, screen readers switch pronunciation engines for that section. An invalid `lang` value prevents the switch, causing foreign-language content to be read with the wrong pronunciation rules.
+
+## How to Fix It
+
+- **Verify every `lang` attribute** on the page, not just the one on `<html>`. Search your templates for `lang=` to find them all.
+- **Use correct BCP 47 subtags.** For example, `lang="fr"` for French, `lang="de"` for German. Do not use full language names or ISO 639-2 three-letter codes.
+- **Remove `lang` attributes with empty values.** An empty `lang=""` is invalid and will trigger this audit.
+
+```html
+<!-- Bad: invalid lang on a blockquote -->
+<blockquote lang="french">
+  Ceci n'est pas une pipe.
+</blockquote>
+
+<!-- Good: valid BCP 47 subtag -->
+<blockquote lang="fr">
+  Ceci n'est pas une pipe.
+</blockquote>
+
+<!-- Marking inline language changes -->
+<p>The German word <span lang="de">Datenschutz</span> means data protection.</p>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: valid-lang](https://dequeuniversity.com/rules/axe/4.11/valid-lang)
+- [WCAG 2.1 Success Criterion 3.1.2 - Language of Parts](https://www.w3.org/WAI/WCAG21/Understanding/language-of-parts.html)
+- Related: [/learn/pulse/html-lang-valid](/learn/pulse/html-lang-valid)

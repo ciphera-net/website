@@ -1,0 +1,39 @@
+---
+title: "Reduce Unused CSS"
+description: "Remove CSS rules that are never applied to reduce render-blocking payload and speed up first paint."
+category: "performance"
+auditId: "unused-css-rules"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse analyzes the CSS loaded during page render and identifies stylesheets (or portions of stylesheets) whose rules are never matched against any element in the DOM. It reports the potential byte savings per file. Large amounts of unused CSS indicate that the page is downloading styles it does not need.
+
+## Why It Matters
+
+CSS is render-blocking. The browser must download and parse every linked stylesheet before it can paint the first frame. When a large percentage of those rules are never used on the current page, you are forcing users to wait for bytes that contribute nothing to the visual result. On pages that import a full design-system stylesheet but only use a fraction of it, the waste can reach hundreds of kilobytes.
+
+## How to Fix It
+
+- **Purge unused CSS at build time.** Tools like PurgeCSS, Tailwind's built-in content scanning, or `lightningcss` can tree-shake CSS by scanning your templates and removing selectors that never appear. Configure the content paths correctly so dynamic classes are not accidentally removed.
+
+- **Split CSS per route or component.** Use CSS Modules, scoped styles, or framework-level code splitting so each page only loads the styles it actually needs. Next.js and Vite handle this automatically for CSS Modules and component-scoped imports.
+
+- **Lazy-load non-critical stylesheets.** If a stylesheet is only needed for below-the-fold content or an interactive widget, load it with `media="print" onload="this.media='all'"` or insert it via JavaScript after the initial paint.
+
+- **Audit third-party CSS.** Libraries like Bootstrap or Material UI ship thousands of selectors. If you only use a handful of components, import only those components or switch to a utility-first approach.
+
+- **Use Chrome DevTools Coverage tab.** Open DevTools, go to the Coverage panel, reload the page, and inspect the red (unused) versus blue (used) ratio per stylesheet. This tells you exactly which files to target.
+
+## How Pulse Tracks This
+
+Pulse records the unused-css-rules audit on every Lighthouse run and tracks the total unused bytes over time. You can spot regressions when a new dependency or page change introduces a large stylesheet that goes mostly unused.
+
+## Resources
+
+- [Reduce Unused CSS - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules/)
+- [PurgeCSS documentation](https://purgecss.com/)
+- Related: [Minify CSS](/learn/pulse/unminified-css)
+- Related: [Reduce Unused JavaScript](/learn/pulse/unused-javascript)

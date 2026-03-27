@@ -1,0 +1,57 @@
+---
+title: "HTML Element Has a lang Attribute"
+description: "Ensure the html element has a lang attribute."
+category: "accessibility"
+auditId: "html-has-lang"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/html-has-lang"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the `<html>` element includes a `lang` attribute. This attribute declares the primary language of the page content.
+
+## Why It Matters
+
+Screen readers use the `lang` attribute to load the correct pronunciation engine. Without it, a screen reader may mispronounce every word on the page, making content incomprehensible. Search engines also rely on it for language detection.
+
+## How to Fix It
+
+- **Add a `lang` attribute to your `<html>` element** with a valid BCP 47 language tag.
+- **Use the correct subtag for your content.** For English, use `en`. For British English specifically, use `en-GB`. For Dutch, use `nl`.
+- **In Next.js**, set the locale in your `next.config.js` or add `lang` to the `<html>` element in your root layout.
+
+```html
+<!-- Bad: no lang attribute -->
+<html>
+  <head>...</head>
+  <body>...</body>
+</html>
+
+<!-- Good: lang declared -->
+<html lang="en">
+  <head>...</head>
+  <body>...</body>
+</html>
+```
+
+```tsx
+// Next.js App Router: app/layout.tsx
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: html-has-lang](https://dequeuniversity.com/rules/axe/4.11/html-has-lang)
+- [WCAG 2.1 Success Criterion 3.1.1 - Language of Page](https://www.w3.org/WAI/WCAG21/Understanding/language-of-page.html)
+- Related: [/learn/pulse/html-lang-valid](/learn/pulse/html-lang-valid)

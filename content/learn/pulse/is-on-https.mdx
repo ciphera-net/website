@@ -1,0 +1,46 @@
+---
+title: "Uses HTTPS"
+description: "Serve your site over HTTPS to protect user data and meet modern browser requirements."
+category: "best-practices"
+auditId: "is-on-https"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/pwa/is-on-https/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every resource on the page is served over HTTPS. It fails when any request — including images, scripts, stylesheets, or API calls — is loaded over plain HTTP.
+
+## Why It Matters
+
+HTTP traffic is unencrypted and can be intercepted or modified by anyone on the network. Browsers now mark HTTP pages as "Not Secure", which erodes user trust. Many modern APIs (geolocation, service workers, camera access) are blocked entirely on non-HTTPS origins. Google also uses HTTPS as a ranking signal.
+
+## How to Fix It
+
+- **Obtain a TLS certificate.** Use a free certificate from Let's Encrypt or your hosting provider's built-in SSL. Most platforms like Vercel, Netlify, and Dokploy handle this automatically.
+
+- **Update all resource URLs to HTTPS.** Search your codebase for `http://` references in image sources, script tags, stylesheet links, and API endpoints. Replace them with `https://`:
+
+  ```html
+  <!-- Bad -->
+  <img src="http://cdn.example.com/logo.png" />
+
+  <!-- Good -->
+  <img src="https://cdn.example.com/logo.png" />
+  ```
+
+- **Use protocol-relative URLs sparingly.** While `//cdn.example.com/file.js` works, explicit `https://` is safer and more predictable.
+
+- **Set up HTTP-to-HTTPS redirects.** Ensure all HTTP requests are redirected to HTTPS at the server level. See the [redirects-http](/learn/pulse/redirects-http) audit for details.
+
+- **Check third-party embeds.** Widgets, fonts, and analytics scripts loaded from external domains must also support HTTPS.
+
+## How Pulse Tracks This
+
+Pulse flags any insecure resource requests detected during the Lighthouse audit. You can monitor HTTPS compliance across all your pages and catch mixed-content issues as they appear.
+
+## Resources
+
+- [Chrome DevTools: is-on-https audit](https://developer.chrome.com/docs/lighthouse/pwa/is-on-https/)
+- [MDN: Mixed content](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content)
+- Related: [/learn/pulse/redirects-http](/learn/pulse/redirects-http)

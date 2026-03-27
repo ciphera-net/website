@@ -1,0 +1,33 @@
+---
+title: "Document Request Latency"
+description: "Checks how long the server takes to respond with the main HTML document and flags slow responses."
+category: "performance"
+auditId: "document-latency-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/document-latency"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit measures the time between the browser requesting your HTML document and receiving the first byte of the response (Time to First Byte). It flags pages where the server response time exceeds 600 ms, indicating that backend processing or network conditions are delaying everything downstream.
+
+## Why It Matters
+
+The document request is the very first step of every page load. Every millisecond the server spends generating HTML is a millisecond added to First Contentful Paint, Largest Contentful Paint, and every other metric that follows. A slow TTFB puts a hard floor under your performance scores that no amount of frontend optimization can fix.
+
+## How to Fix It
+
+- Enable server-side caching for pages that do not change per request. Use full-page caching, edge caching via a CDN, or stale-while-revalidate patterns to serve pre-built responses.
+- Optimize slow database queries that block HTML generation. Add indexes, reduce joins, or move expensive queries to background jobs and cache the results.
+- Use HTTP/2 or HTTP/3 to reduce connection overhead. Ensure your server and CDN negotiate the highest protocol version the client supports.
+- Move your origin server or edge nodes closer to your audience. If most of your visitors are in Europe, a US-only origin adds 100+ ms of round-trip latency.
+- Profile your server-side rendering pipeline. In Next.js, check for blocking data fetches in `getServerSideProps` or server components that could be parallelized or statically generated.
+
+## How Pulse Tracks This
+
+Pulse records TTFB for every Lighthouse run and plots it on your Performance timeline. A sustained increase in document latency triggers an alert so you can investigate backend regressions before they impact users.
+
+## Resources
+
+- [Chrome Docs: Document Latency Insight](https://developer.chrome.com/docs/performance/insights/document-latency)
+- [web.dev: Optimize TTFB](https://web.dev/articles/optimize-ttfb)

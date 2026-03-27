@@ -1,0 +1,33 @@
+---
+title: "Use Efficient Cache Lifetimes"
+description: "Checks whether your static assets use long cache lifetimes so repeat visitors load pages faster."
+category: "performance"
+auditId: "cache-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/cache"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit flags static resources (scripts, stylesheets, images, fonts) served with short or missing `Cache-Control` headers. Lighthouse considers a cache lifetime of less than 30 days to be inefficient for assets that rarely change.
+
+## Why It Matters
+
+Every time a returning visitor loads your page, their browser re-downloads resources that could have been served from disk cache. Short cache lifetimes waste bandwidth, increase server load, and slow down repeat page views. For content-heavy sites the difference between a cached and uncached load can be several seconds.
+
+## How to Fix It
+
+- Set `Cache-Control: public, max-age=31536000, immutable` on fingerprinted assets (files whose URL changes on every deploy, such as `app.a1b2c3.js`).
+- Use `max-age=86400` or longer for assets that change occasionally but are not fingerprinted, like favicons or Open Graph images.
+- Add `must-revalidate` when you need the browser to check freshness after the max-age window expires rather than serving stale content indefinitely.
+- Avoid `no-cache` or `no-store` on static assets. Reserve those directives for HTML documents or API responses where freshness is critical.
+- If you use a CDN, verify that your origin cache headers are not being overridden by the CDN's default TTL settings.
+
+## How Pulse Tracks This
+
+Pulse runs Lighthouse audits on every monitored page and surfaces the cache-lifetime score in your Performance dashboard. When the score drops, Pulse flags the specific resources with short TTLs so you can fix them before your next deploy.
+
+## Resources
+
+- [Chrome Docs: Cache Insight](https://developer.chrome.com/docs/performance/insights/cache)
+- [MDN: Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control)

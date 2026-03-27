@@ -1,0 +1,33 @@
+---
+title: "Optimize DOM Size"
+description: "Flags pages with an excessively large DOM tree that slows rendering, layout calculations, and memory usage."
+category: "performance"
+auditId: "dom-size-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/dom-size"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit counts the total number of DOM elements on the page and flags it when the count exceeds 1,500 nodes. It also reports the maximum DOM depth and the element with the most children, helping you locate the most bloated subtrees.
+
+## Why It Matters
+
+A large DOM tree makes every browser operation more expensive. Style recalculations, layout passes, and paint operations all scale with the number of nodes. JavaScript queries like `querySelectorAll` slow down, garbage collection takes longer, and memory usage climbs. On low-end mobile devices, an oversized DOM can turn a fast site into an unusable one.
+
+## How to Fix It
+
+- Lazy-render off-screen content. Use virtualized lists (e.g., `react-window` or `@tanstack/virtual`) for long scrollable sections instead of rendering thousands of rows into the DOM at once.
+- Remove hidden elements. If you toggle visibility with CSS `display: none`, those nodes still exist in the DOM. Conditionally render them in your framework instead.
+- Flatten deeply nested markup. Replace `div > div > div` wrapper chains with semantic elements and CSS Grid or Flexbox layouts that need fewer containers.
+- Paginate or infinite-scroll data-heavy pages so only a screenful of content is in the DOM at any time.
+- Audit third-party widgets. Chat plugins, analytics overlays, and embedded iframes often inject hundreds of nodes you never see.
+
+## How Pulse Tracks This
+
+Pulse records DOM element count, max depth, and max children per Lighthouse run. The DOM Size card on your Performance dashboard shows the trend over time and highlights pages that have crossed the recommended threshold.
+
+## Resources
+
+- [Chrome Docs: DOM Size Insight](https://developer.chrome.com/docs/performance/insights/dom-size)
+- [web.dev: DOM Size](https://web.dev/articles/dom-size-and-interactivity)

@@ -1,0 +1,49 @@
+---
+title: "Links Are Distinguishable Without Color"
+description: "Ensure links within text blocks are identifiable by more than color alone."
+category: "accessibility"
+auditId: "link-in-text-block"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/link-in-text-block"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that links inside blocks of text are visually distinguishable from surrounding non-link text by something other than color alone. The link must either have a non-color indicator (such as an underline) or meet a 3:1 contrast ratio against the surrounding text while also providing a non-color indicator on hover and focus.
+
+## Why It Matters
+
+Users with color vision deficiencies cannot rely on color differences to identify links. If a link looks identical to body text except for hue, those users will not know it is interactive.
+
+## How to Fix It
+
+- **Add an underline to links.** This is the simplest and most universally understood approach.
+- **Use `text-decoration: underline`** on all inline links by default. If you remove it for stylistic reasons, provide an alternative like a border-bottom or distinct font weight.
+- **Ensure 3:1 contrast between link text and surrounding text** if you rely on a non-underline approach. The link must still show a non-color indicator on `:hover` and `:focus`.
+
+```css
+/* Good: underline makes links obvious */
+p a {
+  text-decoration: underline;
+}
+
+/* Acceptable: visible on hover/focus, 3:1 contrast with body text */
+p a {
+  text-decoration: none;
+  font-weight: 600;
+}
+p a:hover,
+p a:focus {
+  text-decoration: underline;
+}
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: link-in-text-block](https://dequeuniversity.com/rules/axe/4.11/link-in-text-block)
+- [WCAG 2.1 Success Criterion 1.4.1 - Use of Color](https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html)
+- Related: [/learn/pulse/color-contrast](/learn/pulse/color-contrast)

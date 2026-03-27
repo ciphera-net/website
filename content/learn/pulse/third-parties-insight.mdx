@@ -1,0 +1,34 @@
+---
+title: "Third-Party Impact"
+description: "Measures the performance cost of third-party scripts loaded on your page."
+category: "performance"
+auditId: "third-parties-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/third-parties"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit identifies all third-party resources loaded on your page and reports their total transfer size, main-thread blocking time, and number of requests. It groups resources by provider (Google Analytics, Facebook Pixel, Intercom, etc.) so you can see the cost of each integration at a glance.
+
+## Why It Matters
+
+Third-party scripts are the leading cause of performance regressions on otherwise well-optimized sites. A single chat widget can add 200 KB of JavaScript and 500 ms of main-thread blocking time. These scripts compete with your own code for bandwidth, CPU, and memory, and you have no control over when their authors push slow updates.
+
+## How to Fix It
+
+- Audit every third-party script and remove any that are not actively providing business value. That A/B testing tool nobody configures or the heatmap script nobody checks is pure overhead.
+- Load non-critical third-party scripts with `async` or `defer` and place them after your own critical resources. Better yet, use `requestIdleCallback` to defer their initialization until after the page is interactive.
+- Self-host third-party resources where possible (fonts, analytics libraries). This eliminates extra DNS lookups and gives you control over caching and compression.
+- Use a facade pattern for heavy widgets. Load a lightweight placeholder (a static image of the chat button, for example) and only initialize the full third-party script when the user interacts with it.
+- Set a Content Security Policy that restricts which third-party origins can load scripts. This prevents tag managers from silently adding new performance-draining scripts.
+
+## How Pulse Tracks This
+
+Pulse runs the third-party audit on every monitored page and displays a breakdown by provider showing transfer size, blocking time, and request count. When a third party's cost increases between runs, Pulse flags the regression.
+
+## Resources
+
+- [Chrome Docs: Third Parties Insight](https://developer.chrome.com/docs/performance/insights/third-parties)
+- [web.dev: Third-party JavaScript performance](https://web.dev/articles/optimizing-content-efficiency-loading-third-party-javascript)
+- Related: [/learn/pulse/total-blocking-time](/learn/pulse/total-blocking-time)

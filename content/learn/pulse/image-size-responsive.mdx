@@ -1,0 +1,53 @@
+---
+title: "Serve Images with Appropriate Resolution"
+description: "Deliver images sized for the user's viewport to avoid wasting bandwidth on oversized files."
+category: "best-practices"
+auditId: "image-size-responsive"
+googleUrl: "https://web.dev/articles/serve-responsive-images"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit checks whether images are served at a resolution appropriate for their rendered size on screen. It flags images whose natural dimensions are significantly larger than their display size, which wastes bandwidth and slows page load.
+
+## Why It Matters
+
+Serving a 4000x3000 image in a 400x300 container wastes over 90% of the downloaded bytes. On mobile connections, this dramatically increases load time and data usage. Properly sized images improve performance, reduce hosting costs, and deliver a faster experience — especially for users on slower networks.
+
+## How to Fix It
+
+- **Use the `srcset` attribute.** Provide multiple image sizes and let the browser choose the best one:
+
+  ```html
+  <img
+    src="photo-800.jpg"
+    srcset="photo-400.jpg 400w, photo-800.jpg 800w, photo-1200.jpg 1200w"
+    sizes="(max-width: 600px) 400px, (max-width: 1000px) 800px, 1200px"
+    alt="Description"
+  />
+  ```
+
+- **Use Next.js Image component.** It handles responsive sizing, format conversion, and lazy loading automatically:
+
+  ```tsx
+  import Image from "next/image";
+
+  <Image src="/photo.jpg" width={800} height={600} alt="Description" />
+  ```
+
+- **Generate multiple sizes at build time.** Use an image processing tool or CDN that generates variants on the fly. Services like Cloudflare Images, imgix, or Vercel's built-in image optimizer handle this automatically.
+
+- **Set appropriate `sizes`.** The `sizes` attribute tells the browser how wide the image will be rendered. Without it, the browser assumes the image is full viewport width and downloads the largest variant.
+
+- **Use modern formats.** Combine responsive sizing with modern formats like WebP or AVIF for even greater savings. Most image CDNs can serve the best format via content negotiation.
+
+## How Pulse Tracks This
+
+Pulse flags images that are significantly oversized for their rendered dimensions. The audit results show the actual vs. expected size so you can generate appropriately sized variants.
+
+## Resources
+
+- [web.dev: Serve responsive images](https://web.dev/articles/serve-responsive-images)
+- [MDN: Responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+- Related: [/learn/pulse/image-aspect-ratio](/learn/pulse/image-aspect-ratio)

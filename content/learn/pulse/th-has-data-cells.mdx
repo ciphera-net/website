@@ -1,0 +1,59 @@
+---
+title: "Table Headers Have Data Cells"
+description: "Ensure every th element in a table has associated data cells."
+category: "accessibility"
+auditId: "th-has-data-cells"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/th-has-data-cells"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every `<th>` element in a table has at least one associated `<td>` data cell. A table header that labels nothing is structurally broken and creates confusing announcements for assistive technologies.
+
+## Why It Matters
+
+Screen readers use `<th>` elements to provide context when navigating table cells. An orphaned header with no data cells misleads users into thinking content exists in a column or row that is actually empty or nonexistent.
+
+## How to Fix It
+
+- **Remove empty or unused `<th>` elements.** If a column or row no longer exists, delete its header.
+- **Check for colspan/rowspan mismatches.** A `<th>` may appear orphaned if spanning attributes push data cells out of alignment.
+- **Ensure `<th>` elements use `scope`** to clarify whether they label a row or column, which helps assistive technologies associate headers with the correct cells.
+
+```html
+<!-- Bad: "Notes" header has no data cells in its column -->
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td>Alice</td>
+    <td>alice@example.com</td>
+  </tr>
+</table>
+
+<!-- Good: every header has a data cell -->
+<table>
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">Email</th>
+  </tr>
+  <tr>
+    <td>Alice</td>
+    <td>alice@example.com</td>
+  </tr>
+</table>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: th-has-data-cells](https://dequeuniversity.com/rules/axe/4.11/th-has-data-cells)
+- [MDN: th element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/th)
+- Related: [/learn/pulse/td-headers-attr](/learn/pulse/td-headers-attr)

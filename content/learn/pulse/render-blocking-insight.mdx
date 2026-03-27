@@ -1,0 +1,35 @@
+---
+title: "Render Blocking Requests"
+description: "Identifies CSS and JavaScript resources that block the browser from rendering the page."
+category: "performance"
+auditId: "render-blocking-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/render-blocking"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit flags external stylesheets and synchronous scripts in the `<head>` that prevent the browser from rendering any content until they finish downloading and executing. These render-blocking resources directly delay First Contentful Paint and Largest Contentful Paint.
+
+## Why It Matters
+
+The browser will not paint a single pixel until all render-blocking CSS is downloaded, parsed, and applied, and all synchronous scripts in the head are executed. On a page with three external stylesheets and two blocking scripts, the browser queues five requests before it can show anything. Remove the blocking resources and the page appears instantly even if the total byte count stays the same.
+
+## How to Fix It
+
+- Add `async` or `defer` to `<script>` tags that do not need to execute before first paint. `defer` preserves execution order; `async` does not.
+- Inline critical CSS (the styles needed for above-the-fold content) directly in the `<head>` and load the full stylesheet asynchronously with `<link rel="preload" as="style" onload="this.rel='stylesheet'">`.
+- Split your CSS into critical and non-critical bundles. Load the non-critical bundle with `media="print" onload="this.media='all'"` to defer it without FOUC.
+- Move third-party scripts (analytics, tag managers, chat widgets) below the fold or load them with `async` so they do not compete with your own critical resources.
+- Use the Coverage tab in Chrome DevTools to find unused CSS and JS in your blocking resources. Extract only what is needed for the initial render.
+
+## How Pulse Tracks This
+
+Pulse identifies render-blocking resources on every Lighthouse run and reports the estimated time savings from deferring them. The Render Blocking card shows each blocking URL with its byte size and potential milliseconds saved.
+
+## Resources
+
+- [Chrome Docs: Render Blocking Insight](https://developer.chrome.com/docs/performance/insights/render-blocking)
+- [web.dev: Eliminate render-blocking resources](https://web.dev/articles/render-blocking-resources)
+- Related: [/learn/pulse/network-dependency-tree-insight](/learn/pulse/network-dependency-tree-insight)
+- Related: [/learn/pulse/first-contentful-paint](/learn/pulse/first-contentful-paint)

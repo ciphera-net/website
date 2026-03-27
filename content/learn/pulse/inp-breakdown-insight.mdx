@@ -1,0 +1,35 @@
+---
+title: "INP Breakdown"
+description: "Breaks down the phases of Interaction to Next Paint to show where interaction delays originate."
+category: "performance"
+auditId: "inp-breakdown-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/inp-breakdown"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit decomposes Interaction to Next Paint into its three phases: input delay (time waiting for the main thread to become free), processing time (time spent in event handlers), and presentation delay (time from handler completion to the next frame being painted). It shows which phase dominates so you know where to focus.
+
+## Why It Matters
+
+INP is a Core Web Vital that measures how responsive your page feels to user interactions. A slow INP means clicks, taps, and key presses feel laggy. Without a breakdown, you might optimize the wrong phase. If input delay is the bottleneck, you need to reduce long tasks. If processing time is the problem, your event handlers need optimization. The breakdown tells you exactly where to look.
+
+## How to Fix It
+
+- **High input delay**: Break up long tasks with `scheduler.yield()` or `setTimeout` so the main thread can process user input between chunks of work. Defer non-critical JavaScript with `requestIdleCallback`.
+- **High processing time**: Profile your event handlers in DevTools. Move heavy computation off the main thread with Web Workers or optimize algorithms that run on every interaction.
+- **High presentation delay**: Reduce the cost of rendering updates. Minimize DOM mutations triggered by event handlers, avoid forced reflows, and use CSS `content-visibility: auto` for off-screen content.
+- Avoid attaching expensive listeners to high-frequency events like `scroll` or `pointermove`. Use passive event listeners and debounce or throttle where appropriate.
+- Audit third-party scripts that register their own event listeners and compete for main-thread time during interactions.
+
+## How Pulse Tracks This
+
+Pulse captures the INP breakdown from every Lighthouse run and displays the three phases in a stacked chart. When any phase regresses, Pulse highlights it so you can trace the cause back to a specific deploy.
+
+## Resources
+
+- [Chrome Docs: INP Breakdown Insight](https://developer.chrome.com/docs/performance/insights/inp-breakdown)
+- [web.dev: Optimize INP](https://web.dev/articles/optimize-inp)
+- Related: [/learn/pulse/interaction-to-next-paint](/learn/pulse/interaction-to-next-paint)
+- Related: [/learn/pulse/forced-reflow-insight](/learn/pulse/forced-reflow-insight)

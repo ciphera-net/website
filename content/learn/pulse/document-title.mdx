@@ -1,0 +1,51 @@
+---
+title: "Document Has a Title Element"
+description: "Ensure the HTML document has a non-empty title element."
+category: "accessibility"
+auditId: "document-title"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/document-title"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the HTML document has a `<title>` element in the `<head>` with non-empty text content. The title is the first thing screen readers announce when a page loads and appears in browser tabs, bookmarks, and search results.
+
+## Why It Matters
+
+The document title is a screen reader user's primary orientation cue. Without it, users don't know which page they've landed on. It also affects SEO and is required by WCAG 2.4.2 (Level A).
+
+## How to Fix It
+
+- **Add a unique, descriptive `<title>`** to every page. It should identify both the page and the site.
+- **In Next.js**, use the `metadata` export or `<Head>` component to set the title per page.
+- **Follow a consistent pattern** like "Page Name | Site Name" or "Page Name - Site Name".
+- **Don't use placeholder titles** like "Untitled" or "Home" without context.
+
+```html
+<!-- Bad: missing or empty title -->
+<head>
+  <title></title>
+</head>
+
+<!-- Good: descriptive title -->
+<head>
+  <title>Dashboard - Ciphera Pulse</title>
+</head>
+```
+
+```tsx
+// Next.js App Router
+export const metadata = {
+  title: "Dashboard - Ciphera Pulse",
+};
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: document-title](https://dequeuniversity.com/rules/axe/4.11/document-title)
+- [WCAG 2.4.2: Page Titled](https://www.w3.org/WAI/WCAG21/Understanding/page-titled.html)

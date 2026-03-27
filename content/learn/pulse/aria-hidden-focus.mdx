@@ -1,0 +1,43 @@
+---
+title: "Hidden Elements Don't Contain Focusable Content"
+description: "Ensure aria-hidden elements don't contain focusable interactive content."
+category: "accessibility"
+auditId: "aria-hidden-focus"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-hidden-focus"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that elements with `aria-hidden="true"` do not contain focusable children such as links, buttons, or form inputs. When a focusable element is inside a hidden container, keyboard users can tab to it, but screen readers cannot announce it.
+
+## Why It Matters
+
+This creates a disorienting experience. Keyboard focus lands on an element that screen readers say doesn't exist. The user has no idea what they've focused on and cannot make an informed decision about interacting with it.
+
+## How to Fix It
+
+- **Add `tabindex="-1"`** to all focusable elements inside `aria-hidden` containers so they are removed from the tab order.
+- **Use `inert`** on the container instead of `aria-hidden`. The `inert` attribute both hides content from assistive tech and removes it from the tab order.
+- **Move focusable elements outside** the `aria-hidden` container if they need to remain interactive.
+
+```html
+<!-- Bad: focusable link inside aria-hidden -->
+<div aria-hidden="true">
+  <a href="/settings">Settings</a>
+</div>
+
+<!-- Good: use inert to handle both concerns -->
+<div inert>
+  <a href="/settings">Settings</a>
+</div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-hidden-focus](https://dequeuniversity.com/rules/axe/4.11/aria-hidden-focus)
+- Related: [/learn/pulse/aria-hidden-body](/learn/pulse/aria-hidden-body)

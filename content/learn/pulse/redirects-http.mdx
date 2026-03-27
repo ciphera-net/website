@@ -1,0 +1,51 @@
+---
+title: "Redirects HTTP Traffic to HTTPS"
+description: "Automatically redirect all HTTP requests to HTTPS to ensure encrypted connections."
+category: "best-practices"
+auditId: "redirects-http"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/pwa/redirects-http/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that when a user visits the HTTP version of your site, they are automatically redirected to the HTTPS version. It fails when the HTTP URL does not redirect or redirects to another HTTP URL.
+
+## Why It Matters
+
+Users who type your domain without `https://` or follow old links will land on the insecure HTTP version. Without a redirect, their connection is unencrypted, exposing them to man-in-the-middle attacks. A proper redirect ensures every visitor gets the secure version regardless of how they arrived.
+
+## How to Fix It
+
+- **Configure a server-level redirect.** In Nginx, add a redirect block:
+
+  ```nginx
+  server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$host$request_uri;
+  }
+  ```
+
+- **Use platform-level settings.** Most hosting platforms (Vercel, Netlify, Dokploy) offer a toggle to force HTTPS. Enable it in your project settings rather than handling it in application code.
+
+- **Add HSTS headers.** Once HTTPS redirects are working, add the `Strict-Transport-Security` header to instruct browsers to always use HTTPS for future visits. See the [has-hsts](/learn/pulse/has-hsts) audit.
+
+- **Test both www and non-www variants.** Make sure all four combinations redirect properly: `http://example.com`, `http://www.example.com`, `https://www.example.com` should all reach `https://example.com` (or your preferred canonical).
+
+- **Verify with curl:**
+
+  ```bash
+  curl -I http://example.com
+  # Should return 301 with Location: https://example.com/
+  ```
+
+## How Pulse Tracks This
+
+Pulse checks whether the HTTP version of each audited URL correctly redirects to HTTPS. Failed redirects are flagged in the best-practices audit results.
+
+## Resources
+
+- [Chrome DevTools: redirects-http audit](https://developer.chrome.com/docs/lighthouse/pwa/redirects-http/)
+- Related: [/learn/pulse/is-on-https](/learn/pulse/is-on-https)
+- Related: [/learn/pulse/has-hsts](/learn/pulse/has-hsts)

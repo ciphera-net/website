@@ -1,0 +1,45 @@
+---
+title: "Background and Foreground Colors Have Sufficient Contrast"
+description: "Ensure text has enough contrast against its background to be readable."
+category: "accessibility"
+auditId: "color-contrast"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/color-contrast"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the contrast ratio between foreground text and its background color meets WCAG 2.1 AA minimums. Normal text (below 18pt or 14pt bold) requires at least 4.5:1. Large text (18pt+ or 14pt+ bold) requires at least 3:1.
+
+## Why It Matters
+
+Low-contrast text is difficult or impossible to read for users with low vision, color blindness, or anyone viewing a screen in bright sunlight. Sufficient contrast is one of the most impactful accessibility improvements you can make.
+
+## How to Fix It
+
+- **Check each failing element** in your Pulse report and note the current contrast ratio.
+- **Darken the text or lighten the background** (or vice versa) until you reach the required ratio. Use a tool like the Chrome DevTools color picker, which shows contrast ratios inline.
+- **Avoid light gray text on white backgrounds.** A common offender is `#999` on `#fff` (2.85:1). Switch to `#595959` or darker for 4.5:1.
+- **Test with transparency and gradients.** Text over images or gradient backgrounds must meet the ratio at every point where text overlaps.
+
+```css
+/* Bad: 2.85:1 ratio */
+.muted {
+  color: #999999;
+}
+
+/* Good: 7:1 ratio */
+.muted {
+  color: #595959;
+}
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: color-contrast](https://dequeuniversity.com/rules/axe/4.11/color-contrast)
+- [WCAG 2.1 Success Criterion 1.4.3 - Contrast (Minimum)](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
+- Related: [/learn/pulse/link-in-text-block](/learn/pulse/link-in-text-block)

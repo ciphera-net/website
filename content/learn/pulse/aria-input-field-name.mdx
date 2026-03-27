@@ -1,0 +1,44 @@
+---
+title: "ARIA Input Fields Have Accessible Names"
+description: "Ensure every ARIA input field has a discernible accessible name."
+category: "accessibility"
+auditId: "aria-input-field-name"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-input-field-name"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that elements with ARIA input roles -- such as `combobox`, `listbox`, `searchbox`, `slider`, and `spinbutton` -- have accessible names. Without a name, assistive technologies cannot identify the input's purpose.
+
+## Why It Matters
+
+An unnamed input field forces screen reader users to guess what data they should enter. This is especially problematic for custom widgets where native HTML labeling doesn't automatically apply.
+
+## How to Fix It
+
+- **Use `aria-label`** for a concise programmatic label when no visible label exists.
+- **Use `aria-labelledby`** to reference an existing visible label element.
+- **Prefer native HTML** where possible. A `<select>` with a `<label>` is always better than a custom `role="listbox"`.
+
+```html
+<!-- Bad: no accessible name -->
+<div role="searchbox" contenteditable="true"></div>
+
+<!-- Good: aria-label provides context -->
+<div role="searchbox" contenteditable="true" aria-label="Search articles"></div>
+
+<!-- Good: aria-labelledby references visible text -->
+<span id="qty-label">Quantity</span>
+<div role="spinbutton" aria-labelledby="qty-label" aria-valuenow="1"></div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-input-field-name](https://dequeuniversity.com/rules/axe/4.11/aria-input-field-name)
+- Related: [/learn/pulse/label](/learn/pulse/label)
+- Related: [/learn/pulse/select-name](/learn/pulse/select-name)

@@ -1,0 +1,44 @@
+---
+title: "No Element Has tabindex Greater Than Zero"
+description: "Ensure no element uses a positive tabindex value."
+category: "accessibility"
+auditId: "tabindex"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/tabindex"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that no element on the page has a `tabindex` attribute with a value greater than zero. A positive tabindex forces the element to the front of the tab order, overriding the natural document flow.
+
+## Why It Matters
+
+Positive tabindex values create an unpredictable and fragile tab order. Keyboard users expect to tab through the page in the visual order they see. When elements jump out of sequence, navigation becomes confusing and maintenance becomes a nightmare.
+
+## How to Fix It
+
+- **Remove or replace positive tabindex values.** Set them to `0` (adds to natural tab order) or `-1` (programmatically focusable but not in tab order).
+- **Rely on DOM order.** Place interactive elements in the HTML in the order you want users to reach them. This is the most robust approach.
+- **Use `tabindex="0"`** only when you need a non-interactive element (like a `<div>`) to be focusable. Prefer native interactive elements (`<button>`, `<a>`, `<input>`) instead.
+
+```html
+<!-- Bad: forces this div to be tabbed first -->
+<div tabindex="5">Settings panel</div>
+<button>Save</button>
+
+<!-- Good: natural DOM order controls tab sequence -->
+<button>Save</button>
+<div tabindex="0" role="region" aria-label="Settings">
+  Settings panel
+</div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: tabindex](https://dequeuniversity.com/rules/axe/4.11/tabindex)
+- [MDN: tabindex](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex)
+- Related: [/learn/pulse/accesskeys](/learn/pulse/accesskeys)

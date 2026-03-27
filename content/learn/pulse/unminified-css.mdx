@@ -1,0 +1,39 @@
+---
+title: "Minify CSS"
+description: "Remove unnecessary characters from CSS files to reduce network payload and speed up page load."
+category: "performance"
+auditId: "unminified-css"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/unminified-css/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse flags any CSS file that could be reduced in size by removing whitespace, comments, and redundant syntax. It compares the original transfer size against the minified output and reports the potential byte savings per file. If total savings exceed a threshold, the audit fails.
+
+## Why It Matters
+
+Every kilobyte of unminified CSS adds to download time and delays rendering. CSS is render-blocking by default — the browser cannot paint anything until it has parsed all linked stylesheets. Shipping whitespace, comments, and formatting characters in production means users wait longer for the first meaningful frame, especially on slow mobile connections where bandwidth is measured in kilobits.
+
+## How to Fix It
+
+- **Use a CSS minifier in your build pipeline.** Tools like `cssnano`, `lightningcss`, or the built-in minification in esbuild and Webpack's `css-minimizer-webpack-plugin` strip comments, collapse whitespace, and shorten values automatically.
+
+- **Enable minification in your framework.** Next.js, Vite, and most modern frameworks minify CSS in production builds by default. Verify your build config has not disabled this. Run a production build and inspect the output.
+
+- **Compress at the server level too.** Minification reduces the raw file size, but always pair it with Brotli or gzip compression on your server or CDN. The two techniques complement each other — minification removes redundant characters, compression removes redundant byte patterns.
+
+- **Audit third-party stylesheets.** If you load CSS from a CDN or library that ships unminified files, switch to the `.min.css` variant or self-host a minified copy.
+
+- **Remove inline `<style>` bloat.** Large inline style blocks are also flagged. Extract them into external files that your build tool can minify and cache separately.
+
+## How Pulse Tracks This
+
+Pulse runs Lighthouse audits on your pages and records whether the unminified-css audit passes or fails on each run. Your dashboard surfaces byte-saving opportunities over time, so you can catch regressions when a new deploy accidentally ships unminified stylesheets.
+
+## Resources
+
+- [Minify CSS - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/unminified-css/)
+- [cssnano documentation](https://cssnano.github.io/cssnano/)
+- Related: [Reduce Unused CSS](/learn/pulse/unused-css-rules)
+- Related: [Minify JavaScript](/learn/pulse/unminified-javascript)

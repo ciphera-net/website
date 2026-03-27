@@ -1,0 +1,33 @@
+---
+title: "Modern HTTP"
+description: "Checks whether your server uses HTTP/2 or HTTP/3 to deliver resources efficiently."
+category: "performance"
+auditId: "modern-http-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/modern-http"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that your page's resources are served over HTTP/2 or HTTP/3 rather than HTTP/1.1. It flags resources still delivered over HTTP/1.1, which lacks multiplexing, header compression, and server push capabilities.
+
+## Why It Matters
+
+HTTP/1.1 limits browsers to six concurrent connections per origin. On a modern web page with dozens of resources, this creates a bottleneck where requests queue up waiting for a connection to become free. HTTP/2 multiplexes all requests over a single connection, and HTTP/3 (over QUIC) eliminates head-of-line blocking at the transport layer. Upgrading removes an artificial ceiling on your page load performance.
+
+## How to Fix It
+
+- Ensure your web server (Nginx, Apache, Caddy) or hosting platform has HTTP/2 enabled. Most modern servers support it out of the box with TLS, but it may need explicit configuration.
+- Verify your CDN serves HTTP/2 or HTTP/3. Major CDNs like Cloudflare, Fastly, and AWS CloudFront enable HTTP/2 by default and offer HTTP/3 as an opt-in.
+- Check third-party resources. If your analytics, font CDN, or ad scripts are served over HTTP/1.1, contact the provider or consider self-hosting those assets.
+- Enable HTTP/3 (QUIC) on your server or CDN if available. HTTP/3 is particularly beneficial for users on unstable mobile connections where packet loss causes HTTP/2 to stall.
+- Remove HTTP/1.1-era optimizations like domain sharding, sprite sheets, and CSS concatenation. These workarounds hurt performance under HTTP/2.
+
+## How Pulse Tracks This
+
+Pulse checks the protocol version of every resource loaded during its Lighthouse audits and flags any still served over HTTP/1.1. The Modern HTTP card lists the affected URLs by origin so you can prioritize server upgrades.
+
+## Resources
+
+- [Chrome Docs: Modern HTTP Insight](https://developer.chrome.com/docs/performance/insights/modern-http)
+- [MDN: HTTP/2](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP#http2)

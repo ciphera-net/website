@@ -1,0 +1,48 @@
+---
+title: "Document Has a Meta Description"
+description: "Add a concise meta description to improve how your page appears in search results."
+category: "seo"
+auditId: "meta-description"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/seo/meta-description/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the page includes a `<meta name="description">` tag in the `<head>` with non-empty content. It fails when the tag is missing or its `content` attribute is empty.
+
+## Why It Matters
+
+The meta description often appears as the snippet below your page title in search results. A well-written description increases click-through rates by telling users exactly what they will find on the page. Without one, search engines generate their own snippet — which may not represent your page accurately.
+
+## How to Fix It
+
+- **Add a meta description tag.** Place it in your page's `<head>`:
+
+  ```html
+  <meta name="description" content="Send files securely with end-to-end encryption. No account required." />
+  ```
+
+- **Keep it between 120-160 characters.** Shorter descriptions may look thin in search results. Longer ones get truncated. Aim for one to two clear sentences.
+
+- **Make each page's description unique.** Duplicate descriptions across pages dilute their effectiveness. Write a description that specifically matches the content of each page.
+
+- **In Next.js, use the metadata API:**
+
+  ```tsx
+  export const metadata = {
+    description: "Send files securely with end-to-end encryption. No account required.",
+  };
+  ```
+
+- **Include relevant keywords naturally.** Search engines bold matching query terms in the snippet. Do not keyword-stuff — write for humans first.
+
+## How Pulse Tracks This
+
+Pulse checks for the presence and content of your meta description tag on every audit. Missing or empty descriptions are flagged in the SEO audit results, and you can track improvements over time.
+
+## Resources
+
+- [Chrome DevTools: meta-description audit](https://developer.chrome.com/docs/lighthouse/seo/meta-description/)
+- [Google: Control your snippets in search results](https://developers.google.com/search/docs/appearance/snippet)
+- Related: [/learn/pulse/canonical](/learn/pulse/canonical)

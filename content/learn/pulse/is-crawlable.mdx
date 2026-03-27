@@ -1,0 +1,50 @@
+---
+title: "Page Isn't Blocked from Indexing"
+description: "Ensure search engines can crawl and index your page by removing blocking directives."
+category: "seo"
+auditId: "is-crawlable"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/seo/is-crawlable/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that your page is not blocked from search engine indexing. It fails when a `noindex` directive is found in the page's `<meta>` robots tag or in the `X-Robots-Tag` HTTP response header.
+
+## Why It Matters
+
+If search engines cannot index your page, it will never appear in search results — no matter how good your content is. Accidentally blocking a page from indexing is one of the most common and damaging SEO mistakes, because it is entirely invisible to visitors.
+
+## How to Fix It
+
+- **Check your meta robots tag.** Remove or update any `<meta name="robots" content="noindex">` tag in your page's `<head>`. If you need `nofollow` but not `noindex`, set them separately.
+
+- **Check your HTTP response headers.** Look for an `X-Robots-Tag: noindex` header in your server configuration. In Nginx:
+
+  ```nginx
+  # Remove this line if it exists
+  add_header X-Robots-Tag "noindex";
+  ```
+
+- **Review your robots.txt.** While this audit focuses on `noindex`, a `Disallow` rule in `robots.txt` can also prevent crawling. Make sure important pages are not blocked there.
+
+- **Check framework-level defaults.** Some frameworks like Next.js allow setting `noindex` in metadata config. Verify your layout or page-level metadata does not include it:
+
+  ```tsx
+  // Ensure this is NOT set on pages you want indexed
+  export const metadata = {
+    robots: { index: true, follow: true },
+  };
+  ```
+
+- **Test with a URL inspection tool.** After deploying changes, use Google Search Console's URL Inspection tool to confirm the page is indexable.
+
+## How Pulse Tracks This
+
+Pulse runs Lighthouse SEO audits on your pages and flags any that contain `noindex` directives. You can track the crawlability status of every monitored URL over time from your dashboard.
+
+## Resources
+
+- [Chrome DevTools: is-crawlable audit](https://developer.chrome.com/docs/lighthouse/seo/is-crawlable/)
+- [Google: Robots meta tag reference](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag)
+- Related: [/learn/pulse/robots-txt](/learn/pulse/robots-txt)

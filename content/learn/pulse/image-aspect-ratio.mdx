@@ -1,0 +1,56 @@
+---
+title: "Display Images with Correct Aspect Ratio"
+description: "Ensure rendered images match their natural aspect ratio to prevent visual distortion."
+category: "best-practices"
+auditId: "image-aspect-ratio"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/image-aspect-ratio/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit compares each image's rendered aspect ratio to its natural (intrinsic) aspect ratio. It fails when the difference is significant enough to cause visible stretching or squishing.
+
+## Why It Matters
+
+Distorted images look unprofessional and damage user trust. They are especially jarring on product pages, portfolios, and marketing sites where visual quality matters. Aspect ratio mismatches also contribute to layout shift when images load with unexpected dimensions.
+
+## How to Fix It
+
+- **Set explicit width and height attributes.** This lets the browser reserve the correct space before the image loads:
+
+  ```html
+  <img src="photo.jpg" width="800" height="600" alt="Description" />
+  ```
+
+- **Use `object-fit` in CSS.** If your layout requires images to fill a specific container, use `object-fit` to prevent distortion:
+
+  ```css
+  img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover; /* Crops to fit, no distortion */
+  }
+  ```
+
+- **Avoid stretching with CSS alone.** Setting both `width: 100%` and a fixed `height` without `object-fit` will distort the image. Use only one dimension and let the other scale naturally, or use `object-fit`.
+
+- **Match container and image ratios.** If you know your images are 16:9, make your container 16:9 using the `aspect-ratio` CSS property:
+
+  ```css
+  .image-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+  ```
+
+- **Check CMS-uploaded images.** Content authors may upload images with unexpected dimensions. Add validation or use `object-fit: cover` as a safety net.
+
+## How Pulse Tracks This
+
+Pulse checks every image on the page for aspect ratio mismatches during Lighthouse audits. Distorted images are listed with their rendered and natural dimensions so you can fix the sizing.
+
+## Resources
+
+- [Chrome DevTools: image-aspect-ratio audit](https://developer.chrome.com/docs/lighthouse/best-practices/image-aspect-ratio/)
+- Related: [/learn/pulse/image-size-responsive](/learn/pulse/image-size-responsive)

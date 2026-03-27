@@ -1,0 +1,39 @@
+---
+title: "Back/Forward Cache Restoration"
+description: "Ensure your pages are eligible for the browser's back/forward cache to enable instant navigation."
+category: "performance"
+auditId: "bf-cache"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/bf-cache/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse tests whether the page is eligible for the browser's back/forward cache (bfcache). When a user navigates away and then hits the back or forward button, bfcache-eligible pages are restored instantly from a frozen in-memory snapshot instead of being re-fetched and re-rendered. The audit reports any issues — such as `unload` event listeners, `Cache-Control: no-store`, or active WebSocket connections — that prevent bfcache eligibility.
+
+## Why It Matters
+
+Back and forward navigations account for a significant share of all page loads. When bfcache works, these navigations are effectively instant — zero network requests, zero rendering time. When it does not, the browser must perform a full page load, which can take several seconds. Enabling bfcache dramatically improves perceived performance for one of the most common navigation patterns, and it positively impacts Core Web Vitals measured in the field.
+
+## How to Fix It
+
+- **Remove `unload` event listeners.** The `unload` event is the most common bfcache blocker. Replace it with `pagehide` or the `visibilitychange` event, which are compatible with bfcache.
+
+- **Avoid `Cache-Control: no-store` on the HTML document.** This header tells the browser not to cache the response at all, which also prevents bfcache. Use `no-cache` instead if you need revalidation, or remove the header from HTML responses entirely.
+
+- **Close or handle open connections.** Active WebSocket or WebRTC connections prevent bfcache. Close them in the `pagehide` event and re-establish them in `pageshow` when the page is restored.
+
+- **Test with the bfcache tester.** In Chrome DevTools, open the Application panel and navigate to "Back/forward cache." Click "Test back/forward cache" to see exactly which issues are blocking eligibility for your page.
+
+- **Listen for `pageshow` to handle restoration.** When a page is restored from bfcache, the `pageshow` event fires with `persisted: true`. Use this to refresh stale data, re-establish connections, or update timestamps.
+
+## How Pulse Tracks This
+
+Pulse records the bf-cache audit result on each Lighthouse run. Your dashboard shows which pages are bfcache-eligible and which are blocked, along with the specific reasons. You can track eligibility over time to ensure new code changes do not accidentally break bfcache.
+
+## Resources
+
+- [Back/Forward Cache - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)
+- [web.dev: bfcache](https://web.dev/articles/bfcache)
+- Related: [Reduce Server Response Time (TTFB)](/learn/pulse/server-response-time)
+- Related: [Avoid Multiple Page Redirects](/learn/pulse/redirects)

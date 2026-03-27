@@ -1,0 +1,46 @@
+---
+title: "Links Have Descriptive Text"
+description: "Use meaningful anchor text so users and search engines understand where each link leads."
+category: "seo"
+auditId: "link-text"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/seo/link-text/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit flags links that use generic text such as "click here", "learn more", or "read more" without additional context. Search engines rely on anchor text to understand the content of the linked page.
+
+## Why It Matters
+
+Descriptive link text helps search engines understand the relationship between pages on your site, which improves how they rank and display your content. It also makes your site more accessible — screen reader users often navigate by scanning a list of links, and generic text provides no useful context.
+
+## How to Fix It
+
+- **Replace generic anchor text with specific descriptions.** Instead of "click here", describe the destination:
+
+  ```html
+  <!-- Bad -->
+  <a href="/pricing">Click here</a>
+
+  <!-- Good -->
+  <a href="/pricing">View pricing plans</a>
+  ```
+
+- **Make the link text meaningful on its own.** A user scanning only the links on a page should understand where each one goes without reading the surrounding paragraph.
+
+- **Keep it concise.** Aim for 2-6 words that describe the linked page. Avoid stuffing entire sentences into anchor text.
+
+- **Avoid using raw URLs as link text.** `https://example.com/docs/api` is not helpful to users or search engines. Use a human-readable label instead.
+
+- **Check dynamically generated links.** CMS-generated "Read more" links on blog listings are a common source of this issue. Override the default text with the post title or a summary.
+
+## How Pulse Tracks This
+
+Pulse evaluates the anchor text of all links on your page during each Lighthouse audit. Links with generic or empty text are flagged so you can update them and improve both SEO and accessibility.
+
+## Resources
+
+- [Chrome DevTools: link-text audit](https://developer.chrome.com/docs/lighthouse/seo/link-text/)
+- [Google: Link best practices](https://developers.google.com/search/docs/crawling-indexing/links-crawlable)
+- Related: [/learn/pulse/meta-description](/learn/pulse/meta-description)

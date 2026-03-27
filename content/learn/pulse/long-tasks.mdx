@@ -1,0 +1,39 @@
+---
+title: "Avoid Long Main-Thread Tasks"
+description: "Break up tasks longer than 50 ms so the browser can respond to user input without delay."
+category: "performance"
+auditId: "long-tasks"
+googleUrl: "https://web.dev/articles/optimize-long-tasks"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse identifies individual main-thread tasks that run longer than 50 ms during page load. Any task exceeding this threshold is classified as a "long task" because it blocks the browser from responding to user input, processing animations, or performing other critical work for the duration of the task. The audit lists the longest tasks and their source scripts.
+
+## Why It Matters
+
+The browser's main thread operates as a single-threaded queue. When a task runs for 200 ms, nothing else can happen during those 200 ms — taps are ignored, animations freeze, and scrolling stops. Users perceive delays over 100 ms as sluggish and delays over 300 ms as broken. Long tasks are the primary cause of poor Interaction to Next Paint (INP) scores and directly contribute to Total Blocking Time (TBT).
+
+## How to Fix It
+
+- **Break large functions into smaller chunks.** Use `scheduler.yield()` (or `setTimeout(0)` as a fallback) to voluntarily return control to the browser between chunks of work. This lets the browser process pending user events between each chunk.
+
+- **Use `requestIdleCallback` for non-urgent work.** Tasks like pre-fetching data, logging analytics, or updating non-visible UI can be deferred to idle periods when the main thread has no higher-priority work.
+
+- **Move computation to Web Workers.** Sorting large datasets, running encryption, or processing images should happen off the main thread entirely. Workers run in parallel and cannot block user input.
+
+- **Optimize hot code paths.** Profile with Chrome DevTools Performance panel to find the exact functions causing long tasks. Look for inefficient loops, excessive DOM reads, unnecessary object cloning, or synchronous API calls.
+
+- **Lazy-load expensive initializations.** If a library or component requires a long setup phase, defer its initialization until the user actually needs it — for example, initializing a chart library only when the chart scrolls into view.
+
+## How Pulse Tracks This
+
+Pulse records long-task data from each Lighthouse run and tracks the count and duration of long tasks over time. Your dashboard highlights which deploys introduced new long tasks, making it easy to correlate code changes with responsiveness regressions.
+
+## Resources
+
+- [Optimize Long Tasks - web.dev](https://web.dev/articles/optimize-long-tasks)
+- [MDN: Long Tasks API](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceLongTaskTiming)
+- Related: [JavaScript Execution Time](/learn/pulse/bootup-time)
+- Related: [Minimize Main-Thread Work](/learn/pulse/mainthread-work-breakdown)

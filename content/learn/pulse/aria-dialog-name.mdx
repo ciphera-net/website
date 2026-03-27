@@ -1,0 +1,45 @@
+---
+title: "Dialog Elements Have Accessible Names"
+description: "Ensure elements with role=dialog or role=alertdialog have accessible names."
+category: "accessibility"
+auditId: "aria-dialog-name"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-dialog-name"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that elements with `role="dialog"` or `role="alertdialog"` have an accessible name. The name tells screen reader users what the dialog is about when it opens.
+
+## Why It Matters
+
+When a dialog opens without a name, screen reader users hear "dialog" with no context. They don't know if it's a confirmation prompt, a settings panel, or an error message until they explore its contents manually.
+
+## How to Fix It
+
+- **Use `aria-labelledby`** to point to the dialog's visible heading. This is the preferred approach since it keeps the label in sync with what sighted users see.
+- **Use `aria-label`** when the dialog has no visible heading.
+- **Every dialog needs a heading.** If your dialog doesn't have one, add one -- it helps all users, not just screen reader users.
+
+```html
+<!-- Good: aria-labelledby references the heading -->
+<div role="dialog" aria-labelledby="dialog-title">
+  <h2 id="dialog-title">Confirm deletion</h2>
+  <p>This action cannot be undone.</p>
+</div>
+
+<!-- Also valid: aria-label when no heading exists -->
+<div role="alertdialog" aria-label="Session expired">
+  <p>Your session has expired. Please log in again.</p>
+</div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-dialog-name](https://dequeuniversity.com/rules/axe/4.11/aria-dialog-name)
+- [WAI-ARIA: dialog role](https://www.w3.org/TR/wai-aria-1.2/#dialog)
+- Related: [/learn/pulse/aria-command-name](/learn/pulse/aria-command-name)

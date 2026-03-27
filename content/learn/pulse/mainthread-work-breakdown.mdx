@@ -1,0 +1,39 @@
+---
+title: "Minimize Main-Thread Work"
+description: "Reduce the total amount of work the browser's main thread performs during page load to improve responsiveness."
+category: "performance"
+auditId: "mainthread-work-breakdown"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse profiles the main thread during page load and categorizes all activity — script evaluation, style and layout calculations, rendering, painting, garbage collection, and other tasks. It reports the total time and a per-category breakdown. The audit flags when total main-thread work exceeds approximately 4 seconds.
+
+## Why It Matters
+
+The browser's main thread handles everything the user can see and interact with: DOM updates, event handlers, layout, paint, and compositing. When the main thread is saturated with work during load, the page feels frozen. Buttons do not respond, scrolling stutters, and animations drop frames. Reducing main-thread work is the most direct path to a page that feels instant.
+
+## How to Fix It
+
+- **Reduce JavaScript execution.** JS evaluation is typically the largest category. Ship smaller bundles, code-split by route, and defer non-critical scripts. See the bootup-time audit for specific techniques.
+
+- **Simplify style calculations.** Reduce the number and complexity of CSS selectors. Avoid deeply nested rules and universal selectors that force the browser to evaluate every element. Use CSS containment (`contain: layout style`) on isolated components.
+
+- **Minimize layout thrashing.** Avoid reading layout properties (like `offsetHeight`) and then immediately writing to the DOM in a loop. Batch reads and writes separately. Use `requestAnimationFrame` for DOM mutations that trigger layout.
+
+- **Offload work to Web Workers.** Data parsing, sorting, encryption, and other CPU-intensive tasks can run in a worker thread without blocking rendering or input handling.
+
+- **Reduce third-party script impact.** Third-party code often contributes significant main-thread time through style recalculations, DOM mutations, and long-running callbacks. Lazy-load non-essential third-party scripts and remove those you no longer need.
+
+## How Pulse Tracks This
+
+Pulse captures the full main-thread work breakdown on every Lighthouse run. Your dashboard shows the category-level split over time, so you can identify whether a regression is caused by script evaluation, style recalculation, layout, or another category.
+
+## Resources
+
+- [Minimize Main-Thread Work - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/)
+- [web.dev: Optimize long tasks](https://web.dev/articles/optimize-long-tasks)
+- Related: [JavaScript Execution Time](/learn/pulse/bootup-time)
+- Related: [Avoid Long Main-Thread Tasks](/learn/pulse/long-tasks)

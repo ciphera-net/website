@@ -1,0 +1,48 @@
+---
+title: "Touch Targets Have Sufficient Size"
+description: "Ensure interactive elements are large enough to tap accurately."
+category: "accessibility"
+auditId: "target-size"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/target-size"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that interactive elements (buttons, links, form controls) have a minimum touch target size of 24x24 CSS pixels, with sufficient spacing from adjacent targets. WCAG 2.2 Level AA requires this minimum; the enhanced criterion recommends 44x44 pixels.
+
+## Why It Matters
+
+Small touch targets are difficult to activate for users with motor impairments, limited dexterity, or anyone using a mobile device. Undersized targets lead to misclicks, frustration, and effectively block access to functionality.
+
+## How to Fix It
+
+- **Set minimum dimensions of 24x24px** on all interactive elements. Use padding to increase the tappable area without changing the visual size.
+- **Add spacing between adjacent targets.** Even if each target is 24px, placing them edge-to-edge causes mis-taps. Aim for at least 8px gap.
+- **Use padding, not just width/height.** Inline links in text can use padding to expand the tap area without affecting layout.
+
+```css
+/* Ensure buttons meet minimum target size */
+button, a, input, select {
+  min-width: 24px;
+  min-height: 24px;
+}
+
+/* Better: aim for 44px for comfortable tapping */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 16px;
+}
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: target-size](https://dequeuniversity.com/rules/axe/4.11/target-size)
+- [WCAG 2.2 Success Criterion 2.5.8 - Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+- Related: [/learn/pulse/meta-viewport](/learn/pulse/meta-viewport)

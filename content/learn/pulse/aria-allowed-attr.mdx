@@ -1,0 +1,41 @@
+---
+title: "ARIA Attributes Match Their Roles"
+description: "Ensure every ARIA attribute is allowed on the element's role."
+category: "accessibility"
+auditId: "aria-allowed-attr"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-allowed-attr"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every ARIA attribute on an element is permitted for that element's role. Each ARIA role defines a specific set of supported attributes. Using an attribute outside that set creates conflicting semantics that assistive technologies cannot resolve.
+
+## Why It Matters
+
+When you apply an unsupported ARIA attribute to a role, screen readers may ignore the attribute entirely or misinterpret the element's purpose. This breaks the accessibility contract between your markup and the user's assistive technology.
+
+## How to Fix It
+
+- **Check the WAI-ARIA spec** for the role in question and confirm which `aria-*` attributes it supports.
+- **Remove unsupported attributes.** If an element with `role="heading"` has `aria-checked`, remove `aria-checked` since headings don't support checked states.
+- **Switch to the correct role** if the attribute is intentional. For example, if you need `aria-checked`, the element likely needs `role="checkbox"` or `role="switch"`.
+- **Use native HTML elements** where possible. A native `<input type="checkbox">` communicates checked state without any ARIA.
+
+```html
+<!-- Bad: aria-checked is not allowed on role="heading" -->
+<div role="heading" aria-level="2" aria-checked="true">Title</div>
+
+<!-- Good: remove the unsupported attribute -->
+<div role="heading" aria-level="2">Title</div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-allowed-attr](https://dequeuniversity.com/rules/axe/4.11/aria-allowed-attr)
+- [WAI-ARIA Roles and Attributes](https://www.w3.org/TR/wai-aria-1.2/#roles)
+- Related: [/learn/pulse/aria-valid-attr](/learn/pulse/aria-valid-attr)

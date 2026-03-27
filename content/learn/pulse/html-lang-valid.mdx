@@ -1,0 +1,46 @@
+---
+title: "HTML lang Attribute Is Valid"
+description: "Ensure the html lang attribute uses a valid BCP 47 language tag."
+category: "accessibility"
+auditId: "html-lang-valid"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/html-lang-valid"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the `lang` attribute on the `<html>` element contains a valid BCP 47 language tag. An invalid tag (such as a misspelling or made-up code) is treated the same as having no `lang` attribute at all.
+
+## Why It Matters
+
+Screen readers depend on a valid language tag to select the correct speech synthesizer and pronunciation rules. An invalid tag causes fallback behavior that may mispronounce content or switch to a wrong language entirely.
+
+## How to Fix It
+
+- **Use a recognized BCP 47 primary language subtag.** Common values: `en`, `nl`, `de`, `fr`, `es`, `ja`, `zh`.
+- **Check for typos.** `lang="en"` is valid. `lang="english"` or `lang="eng"` is not.
+- **Include region subtags only when needed.** `lang="en-US"` and `lang="en-GB"` are both valid, but `lang="en"` is sufficient in most cases.
+
+```html
+<!-- Bad: invalid language tag -->
+<html lang="english">
+
+<!-- Bad: empty value -->
+<html lang="">
+
+<!-- Good: valid BCP 47 tag -->
+<html lang="en">
+
+<!-- Good: valid with region -->
+<html lang="nl-NL">
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: html-lang-valid](https://dequeuniversity.com/rules/axe/4.11/html-lang-valid)
+- [IANA Language Subtag Registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)
+- Related: [/learn/pulse/html-has-lang](/learn/pulse/html-has-lang)

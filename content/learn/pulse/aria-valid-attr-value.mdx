@@ -1,0 +1,46 @@
+---
+title: "ARIA Attributes Have Valid Values"
+description: "Ensure every ARIA attribute has a valid value for its type."
+category: "accessibility"
+auditId: "aria-valid-attr-value"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr-value"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that all ARIA attributes contain values appropriate for their type. Boolean attributes must be `"true"` or `"false"`, ID references must point to existing elements, and token attributes must use values from their defined list.
+
+## Why It Matters
+
+An invalid attribute value is often worse than a missing attribute. A screen reader may interpret a malformed value unpredictably, announcing incorrect states or relationships that mislead users.
+
+## How to Fix It
+
+- **Use correct boolean values.** ARIA booleans must be the strings `"true"` or `"false"`, not `"yes"`, `"no"`, or empty strings.
+- **Verify ID references exist.** Attributes like `aria-labelledby` and `aria-describedby` must reference IDs that actually exist in the DOM.
+- **Use valid token values.** For example, `aria-sort` only accepts `"ascending"`, `"descending"`, `"none"`, or `"other"`.
+
+```html
+<!-- Bad: invalid boolean value -->
+<button aria-pressed="yes">Bold</button>
+
+<!-- Good: valid boolean value -->
+<button aria-pressed="true">Bold</button>
+
+<!-- Bad: aria-labelledby points to nonexistent ID -->
+<input aria-labelledby="missing-id" />
+
+<!-- Good: reference exists in the DOM -->
+<label id="email-label">Email</label>
+<input aria-labelledby="email-label" />
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-valid-attr-value](https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr-value)
+- Related: [/learn/pulse/aria-valid-attr](/learn/pulse/aria-valid-attr)

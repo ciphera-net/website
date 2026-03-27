@@ -1,0 +1,39 @@
+---
+title: "Reduce Unused JavaScript"
+description: "Remove JavaScript that is downloaded but never executed to cut load time and reduce main-thread work."
+category: "performance"
+auditId: "unused-javascript"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse uses code coverage data to identify JavaScript files where a significant portion of the downloaded bytes are never executed during page load. It reports the unused bytes per script and the total potential savings. The audit targets both first-party bundles and third-party scripts.
+
+## Why It Matters
+
+Unused JavaScript is doubly expensive. The browser must download it over the network and then parse and compile it on the main thread — even if the code never runs. On mobile devices with limited CPU and bandwidth, shipping 200 KB of unused JS can delay interactivity by over a second. Every unused byte also costs real money in bandwidth for both you and your users.
+
+## How to Fix It
+
+- **Code-split by route.** Use dynamic `import()` so each page only loads the JavaScript it needs. Frameworks like Next.js, Remix, and Vite handle route-based splitting automatically. Verify it is working by checking the network panel for per-page chunks.
+
+- **Tree-shake your bundles.** Ensure your bundler is configured for tree shaking (Webpack production mode, Rollup, or esbuild). Use ES module imports (`import { x } from 'lib'`) instead of CommonJS (`require`) so the bundler can eliminate dead exports.
+
+- **Lazy-load heavy features.** Components like rich text editors, charts, or maps that are not visible on initial load should be imported dynamically. In React, use `React.lazy()` with `Suspense`. Load them on user interaction or when they scroll into view.
+
+- **Audit third-party scripts.** Tag managers, analytics, and social widgets often ship large bundles. Defer or lazy-load them. Remove scripts you no longer use. Use Lighthouse's "Third-Party Summary" to quantify their cost.
+
+- **Inspect with the Coverage panel.** Open Chrome DevTools, navigate to the Coverage tab, reload the page, and sort by unused bytes. This reveals exactly which files are the worst offenders and helps you prioritize.
+
+## How Pulse Tracks This
+
+Pulse captures the unused-javascript audit result on every Lighthouse run and charts the unused byte total over time. When a deploy introduces a new dependency or removes code splitting, the trend line flags the regression immediately.
+
+## Resources
+
+- [Reduce Unused JavaScript - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/)
+- [web.dev: Remove unused code](https://web.dev/articles/remove-unused-code)
+- Related: [Reduce Unused CSS](/learn/pulse/unused-css-rules)
+- Related: [JavaScript Execution Time](/learn/pulse/bootup-time)

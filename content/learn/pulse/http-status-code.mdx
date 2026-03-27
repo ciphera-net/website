@@ -1,0 +1,44 @@
+---
+title: "Page Has Successful HTTP Status Code"
+description: "Verify your page returns a 2xx HTTP status code so search engines can index it."
+category: "seo"
+auditId: "http-status-code"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/seo/http-status-code/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit confirms that the page responds with a successful HTTP status code (200-299). Pages that return 4xx or 5xx status codes signal errors to search engines, which prevents them from being indexed.
+
+## Why It Matters
+
+Search engines treat non-2xx responses as errors. A page returning a 404 or 500 status code will be dropped from the index over time, cutting off all organic traffic. Intermittent server errors can also erode your site's crawl budget as search engines learn to deprioritize unreliable URLs.
+
+## How to Fix It
+
+- **Check your server logs.** Identify whether the error is a client-side issue (4xx) or server-side issue (5xx). Common culprstates include misconfigured redirects, missing routes, and database timeouts.
+
+- **Fix broken routes.** Ensure every page you want indexed has a matching route in your application. In Next.js, confirm the file exists under `app/` or `pages/`:
+
+  ```
+  app/
+    pricing/
+      page.tsx    # Serves /pricing with a 200
+  ```
+
+- **Handle soft 404s.** Some frameworks return a 200 status code for pages that display "not found" content. Configure your app to return a proper `404` status for missing content so search engines do not index empty pages.
+
+- **Set up monitoring for 5xx errors.** Use uptime monitoring to catch server errors before they affect indexing. Investigate database connections, memory limits, and deployment failures.
+
+- **Verify after deployment.** Use `curl -I https://yoursite.com/page` to confirm the status code after each deploy.
+
+## How Pulse Tracks This
+
+Pulse records the HTTP status code for every audited page. If a page starts returning non-2xx responses, you will see the SEO score drop and can investigate directly from the audit detail view.
+
+## Resources
+
+- [Chrome DevTools: http-status-code audit](https://developer.chrome.com/docs/lighthouse/seo/http-status-code/)
+- [MDN: HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+- Related: [/learn/pulse/is-crawlable](/learn/pulse/is-crawlable)

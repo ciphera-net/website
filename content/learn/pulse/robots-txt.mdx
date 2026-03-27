@@ -1,0 +1,47 @@
+---
+title: "robots.txt Is Valid"
+description: "Ensure your robots.txt file is correctly formatted so search engines can parse your crawl directives."
+category: "seo"
+auditId: "robots-txt"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit validates that your `robots.txt` file exists at the site root and is syntactically correct. It fails when the file contains malformed directives, invalid characters, or unreachable URLs that prevent search engine crawlers from parsing it.
+
+## Why It Matters
+
+A broken `robots.txt` file can cause search engines to either ignore all your crawl rules or, worse, treat the entire site as disallowed. This leads to pages being unnecessarily crawled (wasting crawl budget) or critical pages being accidentally blocked from indexing.
+
+## How to Fix It
+
+- **Validate the syntax.** Each directive must be on its own line. Use the format `User-agent:`, `Allow:`, `Disallow:`, and `Sitemap:` with correct casing:
+
+  ```txt
+  User-agent: *
+  Allow: /
+  Disallow: /api/
+  Disallow: /admin/
+
+  Sitemap: https://yoursite.com/sitemap.xml
+  ```
+
+- **Serve it at the correct path.** The file must be accessible at `https://yoursite.com/robots.txt`. In Next.js, place it in the `public/` directory or generate it via a route handler.
+
+- **Return a 200 status code.** If `robots.txt` returns a 4xx or 5xx, crawlers may treat the entire site as blocked. Verify with `curl -I https://yoursite.com/robots.txt`.
+
+- **Avoid wildcard mistakes.** Be careful with `Disallow: /` — this blocks the entire site. Only block paths you genuinely do not want indexed.
+
+- **Test with Google Search Console.** Use the robots.txt Tester tool to check how Googlebot interprets your file before deploying changes.
+
+## How Pulse Tracks This
+
+Pulse validates your `robots.txt` as part of every SEO audit run. If the file becomes invalid or unreachable, the audit will flag it so you can correct the issue before it impacts crawling.
+
+## Resources
+
+- [Chrome DevTools: invalid-robots-txt audit](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)
+- [Google: robots.txt specifications](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt)
+- Related: [/learn/pulse/is-crawlable](/learn/pulse/is-crawlable)

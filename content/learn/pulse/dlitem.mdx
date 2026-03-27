@@ -1,0 +1,46 @@
+---
+title: "Definition Items Are Wrapped in dl Elements"
+description: "Ensure dt and dd elements are contained within a dl."
+category: "accessibility"
+auditId: "dlitem"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/dlitem"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every `<dt>` (definition term) and `<dd>` (definition description) element is a direct child of a `<dl>` element or a `<div>` that is a direct child of a `<dl>`. Orphaned `<dt>` or `<dd>` elements outside a definition list have no semantic meaning.
+
+## Why It Matters
+
+Without a parent `<dl>`, screen readers cannot identify `<dt>` and `<dd>` elements as part of a term-definition relationship. Users who rely on assistive technology lose the structured pairing between terms and their descriptions.
+
+## How to Fix It
+
+- **Wrap orphaned `<dt>` and `<dd>` elements** in a `<dl>`.
+- **Check for nesting errors.** A common mistake is placing `<dt>`/`<dd>` inside a `<ul>` or `<ol>` instead of a `<dl>`.
+- **If you don't need definition semantics**, use a different element such as a heading and paragraph pair.
+
+```html
+<!-- Bad: dt/dd without a dl parent -->
+<div>
+  <dt>AES-256</dt>
+  <dd>A symmetric encryption algorithm.</dd>
+</div>
+
+<!-- Good: wrapped in dl -->
+<dl>
+  <dt>AES-256</dt>
+  <dd>A symmetric encryption algorithm.</dd>
+</dl>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: dlitem](https://dequeuniversity.com/rules/axe/4.11/dlitem)
+- [MDN: dt element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dt)
+- Related: [/learn/pulse/definition-list](/learn/pulse/definition-list)

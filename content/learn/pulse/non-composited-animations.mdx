@@ -1,0 +1,39 @@
+---
+title: "Avoid Non-Composited Animations"
+description: "Use compositor-friendly CSS properties for animations to prevent jank and keep frame rates smooth."
+category: "performance"
+auditId: "non-composited-animations"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/non-composited-animations/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse identifies CSS animations that animate properties the browser cannot handle on the compositor thread. Properties like `top`, `left`, `width`, `height`, `margin`, and `padding` force the browser to recalculate layout or repaint on every frame. The audit lists each non-composited animation and the element it affects.
+
+## Why It Matters
+
+The browser's compositor thread can animate `transform` and `opacity` independently of the main thread at 60 fps — even when the main thread is busy with JavaScript. When you animate layout-triggering properties instead, every frame requires layout recalculation and repaint on the main thread. If the main thread is already occupied, frames are dropped, and the animation stutters visibly. On low-powered devices, non-composited animations can drop to single-digit frame rates.
+
+## How to Fix It
+
+- **Replace position animations with `transform: translate()`.** Instead of animating `top` or `left`, use `transform: translateX()` and `translateY()`. Transforms are handled entirely by the compositor and do not trigger layout.
+
+- **Replace size animations with `transform: scale()`.** Instead of animating `width` or `height`, use `transform: scale()`. If the element needs to occupy different space in the layout, animate `transform` for the visual effect and update the layout property in a single step at the end.
+
+- **Use `opacity` for fade effects.** Opacity is compositor-friendly. Avoid animating `visibility`, `background-color`, or `box-shadow` when a simple fade achieves the same effect.
+
+- **Add `will-change` sparingly.** Apply `will-change: transform` or `will-change: opacity` to elements you plan to animate. This hints the browser to promote the element to its own compositor layer. Remove the hint when the animation is complete to free GPU memory.
+
+- **Test in DevTools.** Open the Rendering panel in Chrome DevTools and enable "Paint flashing" and "Layer borders." Green flashes indicate repaints. If your animated element is causing green flashes, it is not composited.
+
+## How Pulse Tracks This
+
+Pulse records the non-composited-animations audit on each Lighthouse run. Your dashboard flags pages with jank-prone animations and tracks whether fixes stick across deploys, so you can ensure smooth frame rates remain consistent.
+
+## Resources
+
+- [Avoid Non-Composited Animations - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/non-composited-animations/)
+- [web.dev: Animations guide](https://web.dev/articles/animations-guide)
+- Related: [Minimize Main-Thread Work](/learn/pulse/mainthread-work-breakdown)
+- Related: [Avoid Large Layout Shifts](/learn/pulse/layout-shifts)

@@ -1,0 +1,48 @@
+---
+title: "Document Has a Valid hreflang"
+description: "Use correct hreflang annotations to serve the right language version to users in different regions."
+category: "seo"
+auditId: "hreflang"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/seo/hreflang/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit validates that your `hreflang` annotations use correct language codes and point to reachable URLs. It fails when `hreflang` values contain invalid language or region codes, or when the linked alternate pages do not reciprocate the annotation.
+
+## Why It Matters
+
+If you serve content in multiple languages or target different regions, `hreflang` tells search engines which version to show each user. Invalid annotations can cause search engines to show the wrong language version, leading to a poor user experience and reduced rankings in regional search results.
+
+## How to Fix It
+
+- **Use valid ISO 639-1 language codes** and optional ISO 3166-1 region codes. The format is `language` or `language-region`:
+
+  ```html
+  <link rel="alternate" hreflang="en" href="https://example.com/" />
+  <link rel="alternate" hreflang="nl" href="https://example.com/nl/" />
+  <link rel="alternate" hreflang="en-GB" href="https://example.com/en-gb/" />
+  ```
+
+- **Always include an `x-default` annotation.** This tells search engines which page to show when no language matches:
+
+  ```html
+  <link rel="alternate" hreflang="x-default" href="https://example.com/" />
+  ```
+
+- **Ensure bidirectional references.** Every page listed in a set of `hreflang` annotations must reference all other pages in the set, including itself.
+
+- **Use absolute URLs.** Relative paths are not valid in `hreflang` annotations. Always use the full URL including protocol and domain.
+
+- **Validate with Search Console.** Check the International Targeting report for `hreflang` errors after deployment.
+
+## How Pulse Tracks This
+
+Pulse validates `hreflang` annotations on every audited page, checking for correct syntax and valid language codes. Invalid annotations are surfaced in the SEO audit details.
+
+## Resources
+
+- [Chrome DevTools: hreflang audit](https://developer.chrome.com/docs/lighthouse/seo/hreflang/)
+- [Google: Tell Google about localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)
+- Related: [/learn/pulse/canonical](/learn/pulse/canonical)

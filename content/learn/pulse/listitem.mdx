@@ -1,0 +1,46 @@
+---
+title: "List Items Are in Proper Parent Elements"
+description: "Ensure li elements are contained within ul, ol, or menu."
+category: "accessibility"
+auditId: "listitem"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/listitem"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every `<li>` element has a `<ul>`, `<ol>`, or `<menu>` as its direct parent. An `<li>` outside a proper list parent loses its semantic meaning.
+
+## Why It Matters
+
+Screen readers rely on the parent list element to announce list context, including the total number of items and the current position. Orphaned `<li>` elements are either announced incorrectly or ignored, removing structure that users depend on.
+
+## How to Fix It
+
+- **Wrap orphaned `<li>` elements** in a `<ul>` or `<ol>`.
+- **Check for intermediate wrappers.** A `<div>` between the `<ul>` and `<li>` breaks the parent-child relationship. Remove the wrapper or restructure your markup.
+- **If you don't need list semantics**, replace the `<li>` with a `<div>` or other appropriate element.
+
+```html
+<!-- Bad: li inside a div, not a list -->
+<div>
+  <li>Dashboard</li>
+  <li>Settings</li>
+</div>
+
+<!-- Good: li elements inside ul -->
+<ul>
+  <li>Dashboard</li>
+  <li>Settings</li>
+</ul>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: listitem](https://dequeuniversity.com/rules/axe/4.11/listitem)
+- [MDN: li element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/li)
+- Related: [/learn/pulse/list](/learn/pulse/list)

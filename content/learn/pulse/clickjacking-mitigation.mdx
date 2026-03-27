@@ -1,0 +1,56 @@
+---
+title: "Mitigate Clickjacking with XFO or CSP"
+description: "Prevent your page from being embedded in malicious iframes by setting X-Frame-Options or CSP frame-ancestors."
+category: "best-practices"
+auditId: "clickjacking-mitigation"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/clickjacking-mitigation"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that your page is protected against clickjacking by checking for an `X-Frame-Options` header or a `Content-Security-Policy` header with a `frame-ancestors` directive. It fails when neither is present.
+
+## Why It Matters
+
+Clickjacking attacks embed your page in a transparent iframe on a malicious site, tricking users into clicking buttons they cannot see. This can lead to unauthorized actions — changing account settings, initiating transfers, or granting permissions — without the user's knowledge. Financial and authentication pages are especially high-value targets.
+
+## How to Fix It
+
+- **Set the X-Frame-Options header.** Use `DENY` to block all framing, or `SAMEORIGIN` to allow framing only by your own site:
+
+  ```
+  X-Frame-Options: DENY
+  ```
+
+- **Or use the CSP frame-ancestors directive.** This is the modern replacement and offers more granular control:
+
+  ```
+  Content-Security-Policy: frame-ancestors 'self'
+  ```
+
+- **In Nginx:**
+
+  ```nginx
+  add_header X-Frame-Options "DENY" always;
+  # Or using CSP:
+  add_header Content-Security-Policy "frame-ancestors 'self'" always;
+  ```
+
+- **Allow specific origins when needed.** If your page is embedded in a trusted partner's site, use `frame-ancestors` with explicit origins:
+
+  ```
+  Content-Security-Policy: frame-ancestors 'self' https://trusted-partner.com
+  ```
+
+- **Prefer `frame-ancestors` over `X-Frame-Options`.** XFO does not support multiple origins and is considered legacy. CSP `frame-ancestors` is more flexible and takes precedence when both are present.
+
+## How Pulse Tracks This
+
+Pulse checks every audited page for clickjacking protection headers. Pages missing both `X-Frame-Options` and CSP `frame-ancestors` are flagged so you can add the appropriate header.
+
+## Resources
+
+- [Chrome DevTools: clickjacking-mitigation audit](https://developer.chrome.com/docs/lighthouse/best-practices/clickjacking-mitigation)
+- [MDN: X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)
+- Related: [/learn/pulse/csp-xss](/learn/pulse/csp-xss)

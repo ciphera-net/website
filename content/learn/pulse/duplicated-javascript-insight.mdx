@@ -1,0 +1,33 @@
+---
+title: "Duplicated JavaScript"
+description: "Detects JavaScript modules that are included more than once in your bundles, wasting bytes and parse time."
+category: "performance"
+auditId: "duplicated-javascript-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/duplicated-javascript"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit analyzes your JavaScript bundles and flags modules that appear in more than one chunk. Duplication typically happens when different parts of your dependency tree pull in separate copies of the same library at different versions, or when your bundler splits code without deduplicating shared modules.
+
+## Why It Matters
+
+Duplicated JavaScript means users download, parse, and execute the same code multiple times. This inflates bundle sizes, extends Total Blocking Time, and wastes memory. On slow connections or low-end devices, the penalty compounds quickly. Removing duplicates is often the single highest-impact optimization you can make on a JS-heavy site.
+
+## How to Fix It
+
+- Run `npm ls <package>` to find multiple installed versions of the same dependency. Use `npm dedupe` or add `overrides` (npm) / `resolutions` (Yarn) in `package.json` to force a single version.
+- Configure your bundler to deduplicate shared modules. In Webpack, enable `optimization.splitChunks` with a shared `cacheGroups` config. In Vite/Rollup, use `manualChunks` to colocate common dependencies.
+- Replace large utility libraries with smaller alternatives. If you only use `lodash.debounce`, install the standalone package instead of bundling all of Lodash twice.
+- Audit dynamic imports to ensure they do not re-bundle dependencies that are already in the main chunk. Use a bundle analyzer (e.g., `@next/bundle-analyzer` or `rollup-plugin-visualizer`) to spot duplication visually.
+- Pin transitive dependency versions in your lockfile to prevent multiple copies from sneaking in after updates.
+
+## How Pulse Tracks This
+
+Pulse runs Lighthouse on every monitored page and reports duplicated modules with their byte cost. The Duplicated JavaScript card shows which libraries are doubled so you can prioritize the largest savings first.
+
+## Resources
+
+- [Chrome Docs: Duplicated JavaScript Insight](https://developer.chrome.com/docs/performance/insights/duplicated-javascript)
+- Related: [/learn/pulse/legacy-javascript-insight](/learn/pulse/legacy-javascript-insight)

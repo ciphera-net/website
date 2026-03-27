@@ -1,0 +1,34 @@
+---
+title: "Font Display"
+description: "Checks whether custom fonts use font-display to avoid invisible text during loading."
+category: "performance"
+auditId: "font-display-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/font-display"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit flags `@font-face` declarations that do not include a `font-display` descriptor. Without it, browsers may hide text entirely (FOIT - Flash of Invisible Text) until the custom font finishes downloading, leaving users staring at a blank page.
+
+## Why It Matters
+
+Web fonts are render-blocking by default in many browsers. If a font file takes two or three seconds to download on a slow connection, visitors see no text at all during that window. This directly hurts First Contentful Paint, Largest Contentful Paint, and the perceived speed of your site. A single `font-display` declaration prevents this.
+
+## How to Fix It
+
+- Add `font-display: swap` to every `@font-face` rule. This tells the browser to show fallback text immediately and swap in the custom font once it loads.
+- Use `font-display: optional` for non-critical fonts (decorative headings, icon fonts). The browser uses the custom font only if it arrives within a very short window, eliminating layout shifts entirely.
+- Preload your most important font files with `<link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/main.woff2">` so they start downloading before CSS is parsed.
+- Self-host fonts instead of loading from third-party CDNs. This removes a DNS lookup and connection setup, often shaving 100-300 ms off font load time.
+- Subset your font files to include only the character sets you actually use. Tools like `glyphhanger` or `fonttools` can reduce file sizes by 60-80%.
+
+## How Pulse Tracks This
+
+Pulse runs Lighthouse on your monitored pages and flags any font-face declarations missing `font-display`. The Font Display card lists the offending fonts by URL so you can fix them directly.
+
+## Resources
+
+- [Chrome Docs: Font Display Insight](https://developer.chrome.com/docs/performance/insights/font-display)
+- [MDN: font-display](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display)
+- Related: [/learn/pulse/cls-culprits-insight](/learn/pulse/cls-culprits-insight)

@@ -1,0 +1,40 @@
+---
+title: "ARIA Attributes Match Element Roles"
+description: "Ensure ARIA attributes are conditionally valid for the element's role."
+category: "accessibility"
+auditId: "aria-conditional-attr"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-conditional-attr"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that ARIA attributes are only used when their conditions are met for the given role. Some attributes are only valid on certain roles when specific conditions apply -- for example, `aria-expanded` is conditionally allowed on some roles but not others.
+
+## Why It Matters
+
+Conditionally invalid ARIA attributes send confusing signals to assistive technologies. A screen reader might announce a state that the element cannot logically have, misleading users about how the interface works.
+
+## How to Fix It
+
+- **Review the element's role** and check which ARIA attributes are conditionally supported.
+- **Remove attributes that don't apply** to the current role or element type.
+- **Use the correct role** if the attribute is intentional. Match the role to the behavior you want to communicate.
+- **Test with a screen reader** to verify the element announces correctly after your fix.
+
+```html
+<!-- Bad: aria-expanded may not be valid on this role -->
+<div role="separator" aria-expanded="true">...</div>
+
+<!-- Good: use a role that supports expansion -->
+<div role="button" aria-expanded="true">Toggle section</div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-conditional-attr](https://dequeuniversity.com/rules/axe/4.11/aria-conditional-attr)
+- Related: [/learn/pulse/aria-allowed-attr](/learn/pulse/aria-allowed-attr)

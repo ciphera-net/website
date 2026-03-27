@@ -1,0 +1,39 @@
+---
+title: "ARIA Progressbar Elements Have Accessible Names"
+description: "Ensure elements with role=progressbar have accessible names."
+category: "accessibility"
+auditId: "aria-progressbar-name"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-progressbar-name"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that elements with `role="progressbar"` have an accessible name. Progress bars indicate the completion status of a task, and the name tells users which task is being tracked.
+
+## Why It Matters
+
+A screen reader announcing "progressbar 45 percent" without a label leaves the user guessing. Is it a file upload, a page load, or a form submission? The name provides that critical context.
+
+## How to Fix It
+
+- **Use `aria-label`** to describe the operation the progress bar tracks.
+- **Use `aria-labelledby`** to reference a visible heading or label.
+- **Use the native `<progress>` element** with a `<label>` when possible.
+
+```html
+<!-- Bad: unnamed progress bar -->
+<div role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- Good: descriptive aria-label -->
+<div role="progressbar" aria-label="File upload progress" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-progressbar-name](https://dequeuniversity.com/rules/axe/4.11/aria-progressbar-name)
+- Related: [/learn/pulse/aria-meter-name](/learn/pulse/aria-meter-name)

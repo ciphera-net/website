@@ -1,0 +1,39 @@
+---
+title: "Avoid Large Layout Shifts"
+description: "Prevent unexpected content movement to improve visual stability and Cumulative Layout Shift (CLS)."
+category: "performance"
+auditId: "layout-shifts"
+googleUrl: "https://web.dev/articles/cls#what_is_cls"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse identifies individual layout shift events that occur during page load and reports them with their shift scores and the elements involved. A layout shift happens when a visible element changes position from one rendered frame to the next without being triggered by user interaction. The audit highlights the largest shift events so you can pinpoint the exact elements and moments causing instability.
+
+## Why It Matters
+
+Layout shifts are one of the most frustrating user experiences on the web. Text jumps while you are reading it, a button moves just as you tap it, or a form field scrolls out of view. These shifts cause mis-clicks, lost reading positions, and a general feeling that the page is unreliable. Cumulative Layout Shift (CLS) is a Core Web Vital, and large layout shifts directly hurt your score, your search ranking, and your users' trust.
+
+## How to Fix It
+
+- **Set explicit dimensions on images and videos.** Always include `width` and `height` attributes on `<img>` and `<video>` elements, or use CSS `aspect-ratio`. This lets the browser reserve the correct space before the media loads.
+
+- **Reserve space for dynamic content.** Ads, embeds, cookie banners, and dynamically injected elements should have a fixed-size container. Use `min-height` on containers where content loads asynchronously.
+
+- **Avoid inserting content above existing content.** Never inject a banner, notification bar, or consent dialog above the fold after the page has rendered. If you must show a banner, use a fixed/sticky position or load it before the initial paint.
+
+- **Use CSS `contain: layout` on isolated components.** This tells the browser that layout changes inside the element will not affect elements outside it, limiting the blast radius of any shifts.
+
+- **Preload web fonts and use `font-display: optional` or `swap`.** Font loading without `font-display` causes invisible text followed by a layout shift when the font arrives. Preload critical fonts and choose a `font-display` strategy that minimizes text reflow.
+
+## How Pulse Tracks This
+
+Pulse captures individual layout shift events from each Lighthouse run and tracks both the largest single shift and the cumulative shift score over time. Your dashboard highlights which elements contribute the most to CLS, so you can prioritize fixes with the highest impact.
+
+## Resources
+
+- [Cumulative Layout Shift - web.dev](https://web.dev/articles/cls)
+- [Optimize CLS - web.dev](https://web.dev/articles/optimize-cls)
+- Related: [Image Elements Need Explicit Width and Height](/learn/pulse/unsized-images)
+- Related: [Avoid Non-Composited Animations](/learn/pulse/non-composited-animations)

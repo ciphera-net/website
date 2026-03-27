@@ -1,0 +1,34 @@
+---
+title: "Layout Shift Culprits"
+description: "Identifies the DOM elements responsible for unexpected layout shifts during page load."
+category: "performance"
+auditId: "cls-culprits-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/cls-culprit"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit pinpoints the specific elements that cause the largest Cumulative Layout Shift (CLS) contributions. Rather than giving you a single score, it shows which nodes moved, how far they shifted, and when the shift occurred during the page lifecycle.
+
+## Why It Matters
+
+Layout shifts are jarring. A user reaches for a button and it jumps away because an ad slot, image, or late-loading font resized something above it. High CLS drives up rage clicks, lowers conversion rates, and hurts your Core Web Vitals ranking in Google Search.
+
+## How to Fix It
+
+- Reserve explicit dimensions on images and videos with `width` and `height` attributes or CSS `aspect-ratio` so the browser allocates space before the asset loads.
+- Avoid injecting content above the fold after the initial render. If you must insert banners or consent notices, use a fixed or sticky position so they do not push content down.
+- Set `font-display: optional` or `font-display: swap` and preload critical fonts to prevent the font-swap layout shift.
+- Use CSS `contain: layout` on containers that change size dynamically, such as carousels or expandable sections, to prevent their resizing from affecting siblings.
+- Audit third-party embeds (ads, social widgets, chat bubbles) and wrap them in containers with a minimum height matching their rendered size.
+
+## How Pulse Tracks This
+
+Pulse runs Lighthouse on each monitored page and records every layout shift cluster. The CLS Culprits panel lists the guilty elements by selector so you can jump straight to the code that needs fixing.
+
+## Resources
+
+- [Chrome Docs: CLS Culprit Insight](https://developer.chrome.com/docs/performance/insights/cls-culprit)
+- [web.dev: Optimize CLS](https://web.dev/articles/optimize-cls)
+- Related: [/learn/pulse/cumulative-layout-shift](/learn/pulse/cumulative-layout-shift)

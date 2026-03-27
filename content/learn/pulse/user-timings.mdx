@@ -1,0 +1,39 @@
+---
+title: "User Timing Marks and Measures"
+description: "Use the User Timing API to instrument custom performance milestones and measure what matters to your app."
+category: "performance"
+auditId: "user-timings"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/user-timings/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse detects calls to `performance.mark()` and `performance.measure()` in your page and lists them in the audit results. This is an informational audit — it does not pass or fail. Instead, it surfaces the custom timing data you have instrumented so you can verify your marks are firing and review their durations alongside standard Lighthouse metrics.
+
+## Why It Matters
+
+Standard metrics like LCP and TBT tell you about generic milestones, but every application has unique moments that matter — when the search results render, when the video player is ready, or when a critical API response arrives. The User Timing API lets you define and measure these moments precisely. Without custom instrumentation, you are guessing which parts of your code are slow. With it, you have hard numbers tied to the exact operations that affect your users.
+
+## How to Fix It
+
+- **Add marks at key milestones.** Call `performance.mark('search-results-rendered')` at the exact moment a critical UI update completes. Place marks at the start and end of operations you want to measure.
+
+- **Create measures between marks.** Use `performance.measure('search-duration', 'search-start', 'search-results-rendered')` to calculate the elapsed time between two marks. This gives you a named duration you can track.
+
+- **Keep naming conventions consistent.** Use a prefix like `app:` or your feature name so marks are easy to filter in DevTools and analytics. For example, `app:hero-visible`, `app:data-fetched`.
+
+- **Send measures to your analytics.** Use `PerformanceObserver` to listen for `measure` entries and forward them to your analytics pipeline. This turns lab instrumentation into real-user monitoring data.
+
+- **Clean up in production.** Remove or gate verbose debug marks behind a feature flag. A handful of meaningful measures is more useful than hundreds of noisy marks.
+
+## How Pulse Tracks This
+
+Pulse surfaces User Timing marks and measures captured during each Lighthouse run. You can see your custom milestones alongside standard performance metrics, making it easy to correlate application-specific events with overall page performance trends.
+
+## Resources
+
+- [User Timing Marks and Measures - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/user-timings/)
+- [MDN: User Timing API](https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/User_timing)
+- Related: [JavaScript Execution Time](/learn/pulse/bootup-time)
+- Related: [Minimize Main-Thread Work](/learn/pulse/mainthread-work-breakdown)

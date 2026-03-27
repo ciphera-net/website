@@ -1,0 +1,39 @@
+---
+title: "Avoid Enormous Network Payloads"
+description: "Keep total page weight low to ensure fast load times on all connection speeds."
+category: "performance"
+auditId: "total-byte-weight"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse sums the transfer size of every resource the page requests — HTML, CSS, JavaScript, images, fonts, media, and third-party assets. It flags the audit when the total exceeds roughly 5,000 KB. The report lists the largest individual resources so you know where to focus.
+
+## Why It Matters
+
+Large page payloads hit users on slow or metered connections hardest. A 10 MB page on a 3G connection can take over 30 seconds to fully load. Even on fast connections, more bytes mean more memory consumption, longer parse times, and higher data costs. Keeping total byte weight low is one of the simplest ways to guarantee a baseline level of performance for every visitor.
+
+## How to Fix It
+
+- **Compress images aggressively.** Images are typically the largest portion of page weight. Convert to WebP or AVIF, resize to the maximum display dimensions, and use responsive `srcset` attributes so mobile devices do not download desktop-sized images.
+
+- **Minify and compress text assets.** Minify CSS, JavaScript, and HTML. Serve all text resources with Brotli compression (or gzip as a fallback). This alone can reduce text-based payloads by 70-90%.
+
+- **Remove unused code and assets.** Audit your bundles for dead JavaScript and CSS. Remove fonts you do not use, drop unused icon sets, and eliminate duplicate libraries.
+
+- **Lazy-load below-the-fold content.** Images, videos, and heavy components that are not visible on initial load should use native `loading="lazy"` or Intersection Observer. This shifts their cost from page load to scroll time.
+
+- **Set a performance budget.** Define a maximum page weight (e.g., 1,500 KB) and enforce it in your CI pipeline. Tools like `bundlesize` or Lighthouse CI can fail builds that exceed the budget.
+
+## How Pulse Tracks This
+
+Pulse records the total byte weight on every Lighthouse run and trends it over time. You can see how page weight evolves across deploys and catch bloat before it reaches production by comparing runs on staging versus main.
+
+## Resources
+
+- [Avoid Enormous Network Payloads - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/)
+- [web.dev: Performance budgets 101](https://web.dev/articles/performance-budgets-101)
+- Related: [Reduce Unused JavaScript](/learn/pulse/unused-javascript)
+- Related: [Reduce Unused CSS](/learn/pulse/unused-css-rules)

@@ -1,0 +1,34 @@
+---
+title: "Forced Reflow"
+description: "Detects JavaScript that forces the browser to recalculate layout synchronously, causing jank and long tasks."
+category: "performance"
+auditId: "forced-reflow-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/forced-reflow"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit identifies JavaScript code that reads layout properties (like `offsetHeight`, `getBoundingClientRect`, or `scrollTop`) after modifying the DOM, forcing the browser to perform a synchronous layout recalculation. These forced reflows block the main thread and create long tasks that degrade interactivity.
+
+## Why It Matters
+
+Forced reflows are one of the most common causes of runtime jank. When JavaScript writes to the DOM and then immediately reads a layout property, the browser must stop everything, recalculate styles, and compute layout before it can return the value. In a loop, this turns a 1 ms operation into a 100 ms freeze. Users feel it as stuttering scroll, unresponsive buttons, and poor Interaction to Next Paint scores.
+
+## How to Fix It
+
+- Batch DOM reads and writes. Read all the layout properties you need first, then make all your DOM changes. Never interleave reads and writes in the same function.
+- Use `requestAnimationFrame` to defer DOM writes to the next frame, ensuring reads from the current frame do not trigger a forced layout.
+- Replace layout-triggering property reads with the `ResizeObserver` or `IntersectionObserver` APIs, which report dimensions asynchronously without forcing reflow.
+- Avoid reading `offsetWidth`, `offsetHeight`, `clientWidth`, `scrollTop`, or calling `getComputedStyle()` inside tight loops or scroll handlers.
+- Use CSS transforms and opacity for animations instead of properties that trigger layout (width, height, top, left).
+
+## How Pulse Tracks This
+
+Pulse captures forced reflow events as part of its Lighthouse audit trace. The Forced Reflow card highlights the scripts and call stacks responsible, so you can go straight to the offending code.
+
+## Resources
+
+- [Chrome Docs: Forced Reflow Insight](https://developer.chrome.com/docs/performance/insights/forced-reflow)
+- [web.dev: Avoid large, complex layouts and layout thrashing](https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing)
+- Related: [/learn/pulse/inp-breakdown-insight](/learn/pulse/inp-breakdown-insight)

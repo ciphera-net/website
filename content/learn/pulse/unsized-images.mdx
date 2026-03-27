@@ -1,0 +1,39 @@
+---
+title: "Image Elements Need Explicit Width and Height"
+description: "Set width and height attributes on images to prevent layout shifts when images load."
+category: "performance"
+auditId: "unsized-images"
+googleUrl: "https://web.dev/articles/optimize-cls#images_without_dimensions"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse flags `<img>` elements that do not have explicit `width` and `height` attributes (or equivalent CSS aspect-ratio styling). Without these dimensions, the browser cannot reserve the correct amount of space for the image before it loads, which causes the surrounding content to shift when the image finally renders.
+
+## Why It Matters
+
+Unsized images are one of the most common causes of Cumulative Layout Shift (CLS). When the browser encounters an image without dimensions, it initially renders the element at 0x0 pixels. Once the image downloads and the browser learns its intrinsic size, everything below the image jumps downward. This shift is jarring for users — they lose their reading position, mis-tap buttons, or accidentally click the wrong link. High CLS directly hurts your Core Web Vitals score.
+
+## How to Fix It
+
+- **Add `width` and `height` attributes to every `<img>`.** Set them to the image's intrinsic dimensions (e.g., `<img src="photo.jpg" width="800" height="600">`). The browser uses these to calculate the aspect ratio and reserve space before the image loads.
+
+- **Use CSS `aspect-ratio` as an alternative.** If you style images with `width: 100%`, add `aspect-ratio: 16 / 9` (or the correct ratio) in CSS. This achieves the same space reservation without hardcoded pixel values.
+
+- **Handle responsive images correctly.** When using `srcset` and `sizes`, still include `width` and `height` on the `<img>` element. The browser uses the ratio, not the absolute values, to reserve space.
+
+- **Fix CMS and dynamic content.** If images come from a CMS or API, ensure the backend returns image dimensions alongside the URL. Store dimensions at upload time so the frontend always has them available.
+
+- **Use framework-provided components.** Next.js `<Image>`, Nuxt `<NuxtImg>`, and similar components enforce dimensions or aspect ratios automatically. Use them instead of raw `<img>` tags.
+
+## How Pulse Tracks This
+
+Pulse records the unsized-images audit on each Lighthouse run and tracks the count of offending images over time. Your dashboard highlights pages with unsized images so you can fix the most impactful CLS sources first.
+
+## Resources
+
+- [Optimize CLS: Images without dimensions - web.dev](https://web.dev/articles/optimize-cls#images_without_dimensions)
+- [Setting height and width on images is important again](https://www.smashingmagazine.com/2020/03/setting-height-width-images-important-again/)
+- Related: [Avoid Large Layout Shifts](/learn/pulse/layout-shifts)
+- Related: [Back/Forward Cache Restoration](/learn/pulse/bf-cache)

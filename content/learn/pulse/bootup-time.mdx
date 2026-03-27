@@ -1,0 +1,39 @@
+---
+title: "JavaScript Execution Time"
+description: "Reduce the time the browser spends parsing, compiling, and executing JavaScript to improve responsiveness."
+category: "performance"
+auditId: "bootup-time"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/bootup-time/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse measures the total CPU time spent on JavaScript evaluation during page load — including parsing, compiling, and executing every script. It breaks down the time per script URL and flags the audit when total JS execution exceeds approximately 3.5 seconds. Scripts with the highest individual times are listed so you can target the worst offenders.
+
+## Why It Matters
+
+JavaScript execution is the single largest contributor to main-thread blocking during page load. While images download passively, every byte of JS demands active CPU work. On mid-range mobile devices, a 1 MB bundle can take 2-4 seconds just to parse and compile — before a single line of your application logic runs. During that time, the page is unresponsive to taps, scrolls, and keyboard input.
+
+## How to Fix It
+
+- **Ship less JavaScript.** Audit your bundles with `source-map-explorer` or `webpack-bundle-analyzer`. Remove unused dependencies, replace heavy libraries with lighter alternatives, and delete dead code paths.
+
+- **Code-split by route and component.** Only load the JS required for the current view. Use dynamic `import()` for routes, modals, and below-the-fold features. Defer everything that is not needed for the first meaningful paint.
+
+- **Defer third-party scripts.** Analytics, ads, and chat widgets often account for a large share of execution time. Load them after the page is interactive using `defer`, `async`, or programmatic injection on idle.
+
+- **Use Web Workers for heavy computation.** Move data processing, encryption, or complex calculations off the main thread entirely. The main thread stays free for rendering and input handling.
+
+- **Minimize polyfills.** If you still ship polyfills for modern APIs, use differential serving to send them only to browsers that need them. Modern browsers should get the smallest possible bundle.
+
+## How Pulse Tracks This
+
+Pulse records the bootup-time audit on each Lighthouse run and tracks total JS execution time over time. The dashboard highlights which deploys caused execution time to spike, helping you catch regressions from new dependencies or removed code splitting.
+
+## Resources
+
+- [JavaScript Execution Time - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/bootup-time/)
+- [web.dev: Reduce JavaScript payloads with code splitting](https://web.dev/articles/reduce-javascript-payloads-with-code-splitting)
+- Related: [Minimize Main-Thread Work](/learn/pulse/mainthread-work-breakdown)
+- Related: [Avoid Long Main-Thread Tasks](/learn/pulse/long-tasks)

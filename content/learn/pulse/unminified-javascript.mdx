@@ -1,0 +1,39 @@
+---
+title: "Minify JavaScript"
+description: "Remove unnecessary characters from JavaScript files to reduce transfer size and improve load performance."
+category: "performance"
+auditId: "unminified-javascript"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse flags JavaScript files that contain whitespace, comments, or verbose syntax that a minifier could remove. It estimates the byte savings per file and fails the audit when the total potential savings are significant. The check applies to both external scripts and large inline `<script>` blocks.
+
+## Why It Matters
+
+JavaScript is the most expensive resource a browser downloads. Unlike images, every byte of JS must be downloaded, parsed, compiled, and executed. Shipping unminified code inflates all four costs. On mid-range mobile devices, the extra parse and compile time alone can delay interactivity by hundreds of milliseconds — time your users spend staring at a frozen screen.
+
+## How to Fix It
+
+- **Enable minification in your bundler.** Terser (Webpack default), esbuild, and SWC all minify JS in production mode. Confirm your build command uses the production flag — `NODE_ENV=production` for Webpack, or the equivalent in your tool.
+
+- **Check framework defaults.** Next.js, Vite, and Remix minify automatically on `build`. If you ejected or customized the config, verify the minification step is still present.
+
+- **Minify third-party scripts.** If you self-host vendor libraries, always use the `.min.js` variant. If you inline third-party snippets (analytics, chat), run them through a minifier before pasting.
+
+- **Pair with compression.** Minification and Brotli/gzip work on different levels. Minification removes syntactic waste; compression removes byte-pattern redundancy. Use both for maximum savings.
+
+- **Audit source maps in production.** Source maps should not be served to end users. They do not add to transfer size if not requested, but misconfigured servers sometimes inline them, bloating the bundle.
+
+## How Pulse Tracks This
+
+Pulse captures the unminified-javascript audit result on every Lighthouse run. The dashboard highlights byte-saving opportunities across your pages and alerts you when a deploy introduces unminified bundles that were previously clean.
+
+## Resources
+
+- [Minify JavaScript - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/)
+- [Terser documentation](https://terser.org/)
+- Related: [Minify CSS](/learn/pulse/unminified-css)
+- Related: [Reduce Unused JavaScript](/learn/pulse/unused-javascript)

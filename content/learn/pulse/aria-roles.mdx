@@ -1,0 +1,42 @@
+---
+title: "ARIA Role Values Are Valid"
+description: "Ensure all role attribute values are valid WAI-ARIA roles."
+category: "accessibility"
+auditId: "aria-roles"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-roles"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every `role` attribute uses a valid value from the WAI-ARIA specification. Typos, made-up roles, and abstract roles (like `widget` or `roletype`) all trigger this audit.
+
+## Why It Matters
+
+An invalid role is ignored by assistive technologies entirely. The element falls back to its implicit role or none at all, which means the semantics you intended are never communicated to screen reader users.
+
+## How to Fix It
+
+- **Fix typos.** Common mistakes include `role="buton"` instead of `role="button"` or `role="naviagtion"` instead of `role="navigation"`.
+- **Don't use abstract roles.** Roles like `widget`, `landmark`, and `roletype` are base types in the spec and cannot be used directly in markup.
+- **Use only documented roles** from the [WAI-ARIA role list](https://www.w3.org/TR/wai-aria-1.2/#role_definitions).
+
+```html
+<!-- Bad: typo in role value -->
+<nav role="naviagtion">...</nav>
+
+<!-- Good: correct role value -->
+<nav role="navigation">...</nav>
+
+<!-- Better: use native HTML and skip the role entirely -->
+<nav>...</nav>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-roles](https://dequeuniversity.com/rules/axe/4.11/aria-roles)
+- Related: [/learn/pulse/aria-deprecated-role](/learn/pulse/aria-deprecated-role)

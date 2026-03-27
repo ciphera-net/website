@@ -1,0 +1,50 @@
+---
+title: "Ensure Proper Origin Isolation with COOP"
+description: "Set the Cross-Origin-Opener-Policy header to isolate your browsing context from cross-origin windows."
+category: "best-practices"
+auditId: "origin-isolation"
+googleUrl: "https://web.dev/articles/why-coop-coep#coop"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that your page sends a `Cross-Origin-Opener-Policy` (COOP) header. COOP controls whether your page shares a browsing context group with cross-origin windows opened via `window.open()` or pages that opened your page.
+
+## Why It Matters
+
+Without COOP, a malicious page opened alongside yours can obtain a reference to your window object and exploit side-channel attacks like Spectre. COOP isolates your browsing context, preventing cross-origin pages from interacting with your window. This is also a prerequisite for enabling `SharedArrayBuffer` and high-resolution timers.
+
+## How to Fix It
+
+- **Add the COOP header to your server response.** The strictest and recommended value is `same-origin`:
+
+  ```
+  Cross-Origin-Opener-Policy: same-origin
+  ```
+
+- **In Nginx:**
+
+  ```nginx
+  add_header Cross-Origin-Opener-Policy "same-origin" always;
+  ```
+
+- **Use `same-origin-allow-popups` if needed.** If your site opens third-party popups (OAuth flows, payment windows) that need to communicate back via `postMessage`, use this relaxed value:
+
+  ```
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  ```
+
+- **Pair with COEP for full isolation.** To enable `SharedArrayBuffer`, you also need `Cross-Origin-Embedder-Policy: require-corp`. Only add COEP if all your cross-origin resources (images, scripts, iframes) include appropriate CORS headers.
+
+- **Test thoroughly.** COOP can break OAuth popups and third-party integrations. Deploy with `Cross-Origin-Opener-Policy-Report-Only` first and monitor reports before enforcing.
+
+## How Pulse Tracks This
+
+Pulse checks the COOP header on every audited page. Missing or misconfigured headers are flagged in the best-practices audit results with guidance on the appropriate policy value.
+
+## Resources
+
+- [web.dev: Why you need COOP and COEP](https://web.dev/articles/why-coop-coep#coop)
+- [MDN: Cross-Origin-Opener-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy)
+- Related: [/learn/pulse/csp-xss](/learn/pulse/csp-xss)

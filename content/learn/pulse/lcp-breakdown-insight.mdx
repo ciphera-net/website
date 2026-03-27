@@ -1,0 +1,35 @@
+---
+title: "LCP Breakdown"
+description: "Decomposes Largest Contentful Paint into sub-parts to pinpoint the slowest phase of your LCP element's load."
+category: "performance"
+auditId: "lcp-breakdown-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/lcp-breakdown"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit splits Largest Contentful Paint into four phases: Time to First Byte (server response), resource load delay (time between TTFB and when the LCP resource starts downloading), resource load time (how long the LCP resource takes to download), and element render delay (time from download completion to the element being painted). It reports the duration of each phase.
+
+## Why It Matters
+
+LCP is a Core Web Vital. A slow LCP means your most important visible content takes too long to appear. Optimizing LCP without knowing which phase is the bottleneck leads to wasted effort. If resource load delay is the problem, preloading helps. If TTFB is the issue, no amount of image compression will fix it.
+
+## How to Fix It
+
+- **High TTFB**: Optimize your server response time. Use edge caching, static generation, or a CDN closer to your users. See the document latency insight for details.
+- **High resource load delay**: The browser discovered the LCP resource too late. Add a `<link rel="preload">` for the LCP image or ensure it is referenced directly in the HTML rather than loaded via CSS or JavaScript.
+- **High resource load time**: Compress and resize the LCP resource. Serve modern formats (WebP/AVIF), use responsive images, and ensure your CDN delivers with HTTP/2 or HTTP/3 multiplexing.
+- **High element render delay**: Render-blocking CSS or JavaScript is delaying paint. Inline critical CSS, defer non-critical scripts, and remove any `display: none` toggling on the LCP element.
+- Always set `fetchpriority="high"` on the LCP image to tell the browser to prioritize it over other resources.
+
+## How Pulse Tracks This
+
+Pulse records each LCP sub-part on every Lighthouse run and displays them as a waterfall in your Performance dashboard. When any phase regresses, the breakdown chart shows exactly which step slowed down.
+
+## Resources
+
+- [Chrome Docs: LCP Breakdown Insight](https://developer.chrome.com/docs/performance/insights/lcp-breakdown)
+- [web.dev: Optimize LCP](https://web.dev/articles/optimize-lcp)
+- Related: [/learn/pulse/largest-contentful-paint](/learn/pulse/largest-contentful-paint)
+- Related: [/learn/pulse/lcp-discovery-insight](/learn/pulse/lcp-discovery-insight)

@@ -1,0 +1,48 @@
+---
+title: "Definition Lists Are Properly Structured"
+description: "Ensure dl elements contain only dt, dd, div, template, or script groups."
+category: "accessibility"
+auditId: "definition-list"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/definition-list"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that `<dl>` elements only contain properly ordered `<dt>` and `<dd>` elements (optionally wrapped in `<div>` groups), plus `<template>` or `<script>` elements. Any other direct children make the definition list invalid.
+
+## Why It Matters
+
+Screen readers announce definition lists with specific semantics, pairing terms with their definitions. Invalid child elements break this pairing and cause assistive technologies to misrepresent or skip content entirely.
+
+## How to Fix It
+
+- **Remove invalid children** from `<dl>`. Only `<dt>`, `<dd>`, `<div>`, `<template>`, and `<script>` are permitted as direct children.
+- **Wrap term-definition pairs in `<div>`** if you need a styling container. This is valid HTML and preserves semantics.
+- **Move non-definition content outside the `<dl>`.** Paragraphs, headings, or other elements do not belong inside a definition list.
+
+```html
+<!-- Bad: p element is not a valid dl child -->
+<dl>
+  <p>Glossary of terms</p>
+  <dt>Encryption</dt>
+  <dd>The process of encoding data.</dd>
+</dl>
+
+<!-- Good: heading moved outside -->
+<p>Glossary of terms</p>
+<dl>
+  <dt>Encryption</dt>
+  <dd>The process of encoding data.</dd>
+</dl>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: definition-list](https://dequeuniversity.com/rules/axe/4.11/definition-list)
+- [MDN: dl element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dl)
+- Related: [/learn/pulse/dlitem](/learn/pulse/dlitem)

@@ -1,0 +1,43 @@
+---
+title: "Accesskey Values Are Unique"
+description: "Ensure no two elements share the same accesskey value."
+category: "accessibility"
+auditId: "accesskeys"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/accesskeys"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every `accesskey` attribute value on the page is unique. When multiple elements share the same accesskey, the browser cannot determine which element should receive focus, making the shortcut unreliable.
+
+## Why It Matters
+
+Duplicate accesskeys create unpredictable keyboard navigation. Users who rely on keyboard shortcuts to interact with your page will be sent to the wrong element or receive no response at all, breaking their workflow.
+
+## How to Fix It
+
+- **Audit all `accesskey` attributes** on the page. Search your codebase for `accesskey=` and list every value in use.
+- **Remove duplicates.** Assign a unique key to each element or remove the accesskey from less critical elements.
+- **Avoid conflicting with browser or OS shortcuts.** Keys like `s`, `f`, and `e` are commonly reserved. Test across browsers.
+- **Consider removing accesskeys entirely.** They are difficult to maintain and often conflict with assistive technology shortcuts. Landmark navigation and skip links are usually better alternatives.
+
+```html
+<!-- Bad: duplicate accesskey -->
+<button accesskey="s">Save</button>
+<a href="/search" accesskey="s">Search</a>
+
+<!-- Good: unique values -->
+<button accesskey="s">Save</button>
+<a href="/search" accesskey="q">Search</a>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: accesskeys](https://dequeuniversity.com/rules/axe/4.11/accesskeys)
+- [MDN: accesskey global attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/accesskey)
+- Related: [/learn/pulse/bypass](/learn/pulse/bypass)

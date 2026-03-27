@@ -1,0 +1,39 @@
+---
+title: "Avoid Multiple Page Redirects"
+description: "Eliminate unnecessary redirects to reduce time to first byte and speed up page load."
+category: "performance"
+auditId: "redirects"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/redirects/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse detects redirect chains in the navigation path — when the initial URL redirects to a second URL, which may redirect to a third, and so on before the final document is served. The audit reports each redirect in the chain and the time added by the extra round trips. A single redirect is common (e.g., HTTP to HTTPS), but chains of two or more are flagged as a performance issue.
+
+## Why It Matters
+
+Every redirect adds a full network round trip before the browser can even begin downloading the page. On a mobile connection with 200 ms latency, a chain of three redirects adds 600 ms or more of dead time before the first byte of HTML arrives. During this time, the user sees nothing — no content, no loading indicator, no progress. Redirect chains are pure wasted latency that directly inflate Time to First Byte (TTFB) and every downstream metric.
+
+## How to Fix It
+
+- **Link directly to the final URL.** Audit your internal links, navigation menus, and sitemap to ensure they point to the canonical destination. Replace `http://example.com` with `https://www.example.com` (or whichever variant is canonical) in your markup.
+
+- **Eliminate chained redirects at the server.** If `/old` redirects to `/middle` which redirects to `/new`, update the rule so `/old` redirects directly to `/new`. Flatten every chain to a single hop.
+
+- **Consolidate HTTP-to-HTTPS and www/non-www redirects.** Handle both in a single redirect rule rather than chaining them. For example, redirect `http://example.com` directly to `https://www.example.com` instead of going through `https://example.com` first.
+
+- **Audit third-party redirects.** Ad links, analytics redirects, and URL shorteners in your critical path add hops you cannot control. Remove intermediaries from the navigation path wherever possible.
+
+- **Use HSTS preload.** Register your domain for HSTS preloading so browsers skip the HTTP-to-HTTPS redirect entirely for repeat visitors. This eliminates the most common single redirect.
+
+## How Pulse Tracks This
+
+Pulse records the redirects audit on every Lighthouse run, capturing the number of redirects and the time they add. Your dashboard trends redirect latency over time and alerts you when a new deploy introduces additional hops in the navigation chain.
+
+## Resources
+
+- [Avoid Multiple Page Redirects - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/redirects/)
+- [HSTS Preload List](https://hstspreload.org/)
+- Related: [Reduce Server Response Time (TTFB)](/learn/pulse/server-response-time)
+- Related: [Back/Forward Cache Restoration](/learn/pulse/bf-cache)

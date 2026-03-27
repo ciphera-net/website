@@ -1,0 +1,48 @@
+---
+title: "Form Elements Have Associated Labels"
+description: "Ensure every form element has an associated label."
+category: "accessibility"
+auditId: "label"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/label"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every form control -- `<input>`, `<select>`, `<textarea>` -- has an associated label. Labels can be provided via `<label>` with a `for` attribute, wrapping the input inside a `<label>`, `aria-label`, or `aria-labelledby`.
+
+## Why It Matters
+
+Unlabeled form fields are the most common accessibility barrier on the web. Screen reader users cannot determine what information to enter, and the clickable area for mouse users is reduced since they cannot click the label to focus the input.
+
+## How to Fix It
+
+- **Use `<label>` with a matching `for`/`id` pair.** This is the most robust and widely supported approach.
+- **Wrap the input inside the `<label>`** if you want to avoid managing IDs.
+- **Use `aria-label`** only when a visible label is not part of the design.
+- **Use `placeholder` as a supplement, not a replacement.** Placeholder text disappears on input and is not reliably announced as a label.
+
+```html
+<!-- Bad: no label -->
+<input type="email" id="email" />
+
+<!-- Good: explicit label -->
+<label for="email">Email address</label>
+<input type="email" id="email" />
+
+<!-- Good: wrapping label -->
+<label>
+  Email address
+  <input type="email" />
+</label>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: label](https://dequeuniversity.com/rules/axe/4.11/label)
+- Related: [/learn/pulse/select-name](/learn/pulse/select-name)
+- Related: [/learn/pulse/form-field-multiple-labels](/learn/pulse/form-field-multiple-labels)

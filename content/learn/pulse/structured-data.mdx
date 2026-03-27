@@ -1,0 +1,55 @@
+---
+title: "Structured Data Is Valid"
+description: "Add valid structured data to help search engines understand your content and enable rich results."
+category: "seo"
+auditId: "structured-data"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/seo/structured-data/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit flags structured data (JSON-LD, Microdata, or RDFa) that contains syntax errors or violates schema.org specifications. It checks that the structured data on your page can be parsed without errors.
+
+## Why It Matters
+
+Valid structured data enables rich results in search — star ratings, FAQ dropdowns, product prices, and breadcrumbs. Invalid markup is silently ignored by search engines, which means you lose these enhanced listings. Rich results consistently drive higher click-through rates compared to plain blue links.
+
+## How to Fix It
+
+- **Use JSON-LD format.** Google recommends JSON-LD over Microdata or RDFa. Place it in a `<script>` tag in the `<head>` or `<body>`:
+
+  ```html
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+      "@type": "Question",
+      "name": "What is end-to-end encryption?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "End-to-end encryption ensures only the sender and recipient can read the data."
+      }
+    }]
+  }
+  </script>
+  ```
+
+- **Validate with Google's Rich Results Test.** Paste your URL or code snippet at [search.google.com/test/rich-results](https://search.google.com/test/rich-results) to check for errors.
+
+- **Include all required properties.** Each schema type has required and recommended fields. Check [schema.org](https://schema.org) for the full specification of the type you are using.
+
+- **Keep structured data consistent with visible content.** Google penalizes pages where the structured data does not match what users see on the page.
+
+- **Test after every deploy.** Structured data is easy to break during refactors. Add validation to your CI pipeline or monitor it via Pulse.
+
+## How Pulse Tracks This
+
+Pulse validates structured data on every audited page, catching syntax errors and schema violations. You can monitor structured data health across all your pages from the dashboard.
+
+## Resources
+
+- [Chrome DevTools: structured-data audit](https://developer.chrome.com/docs/lighthouse/seo/structured-data/)
+- [Google: Structured data guidelines](https://developers.google.com/search/docs/appearance/structured-data/sd-policies)
+- Related: [/learn/pulse/meta-description](/learn/pulse/meta-description)

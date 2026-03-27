@@ -1,0 +1,45 @@
+---
+title: "ARIA Attributes Are Valid and Not Misspelled"
+description: "Ensure all aria-* attributes are valid and correctly spelled."
+category: "accessibility"
+auditId: "aria-valid-attr"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every `aria-*` attribute in your markup is a real ARIA attribute defined in the WAI-ARIA specification. Misspelled or invented attributes are flagged.
+
+## Why It Matters
+
+A misspelled ARIA attribute is silently ignored by browsers and assistive technologies. You think you've added accessibility support, but screen reader users get nothing. These are easy bugs to introduce and hard to catch without automated testing.
+
+## How to Fix It
+
+- **Check spelling carefully.** Common typos include `aria-labelled-by` (should be `aria-labelledby`), `aria-role` (not a real attribute -- use the `role` attribute), and `aria-description` vs `aria-describedby`.
+- **Remove invented attributes.** Custom `aria-*` attributes are not recognized by any assistive technology.
+- **Use editor autocompletion** or a linter like `eslint-plugin-jsx-a11y` to catch these at development time.
+
+```html
+<!-- Bad: misspelled attribute -->
+<input aria-labelled-by="name-label" />
+
+<!-- Good: correct attribute name -->
+<input aria-labelledby="name-label" />
+
+<!-- Bad: invented attribute -->
+<div aria-tooltip="Help text">...</div>
+
+<!-- Good: use a real attribute -->
+<div aria-describedby="help-text">...</div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-valid-attr](https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr)
+- Related: [/learn/pulse/aria-valid-attr-value](/learn/pulse/aria-valid-attr-value)

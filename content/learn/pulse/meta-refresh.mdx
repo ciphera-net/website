@@ -1,0 +1,40 @@
+---
+title: "No Meta Refresh Redirect"
+description: "Ensure the page does not use a timed meta refresh redirect."
+category: "accessibility"
+auditId: "meta-refresh"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/meta-refresh"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the page does not contain a `<meta http-equiv="refresh">` tag with a time delay. Timed refreshes automatically reload or redirect the page, taking control away from the user.
+
+## Why It Matters
+
+Automatic redirects disorient users, especially those using screen readers or who need extra time to read content. The page refresh resets focus position and can cause users to lose their place entirely. It also makes the back button unreliable.
+
+## How to Fix It
+
+- **Remove the meta refresh tag** and use a server-side redirect (HTTP 301 or 302) instead. This is instant and does not disrupt the user.
+- **If you must redirect on the client**, use JavaScript with a clear notification so users understand what is happening and can cancel if needed.
+- **Never use timed refreshes for content updates.** Use AJAX or WebSocket connections to update content in place without reloading.
+
+```html
+<!-- Bad: auto-redirect after 5 seconds -->
+<meta http-equiv="refresh" content="5;url=https://example.com/new-page" />
+
+<!-- Good: server-side redirect (in your server config) -->
+<!-- HTTP 301 Moved Permanently -->
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: meta-refresh](https://dequeuniversity.com/rules/axe/4.11/meta-refresh)
+- [WCAG 2.1 Success Criterion 2.2.1 - Timing Adjustable](https://www.w3.org/WAI/WCAG21/Understanding/timing-adjustable.html)
+- Related: [/learn/pulse/meta-viewport](/learn/pulse/meta-viewport)

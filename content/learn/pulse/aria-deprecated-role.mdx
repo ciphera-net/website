@@ -1,0 +1,39 @@
+---
+title: "No Deprecated ARIA Roles"
+description: "Ensure elements don't use ARIA roles that have been deprecated."
+category: "accessibility"
+auditId: "aria-deprecated-role"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-deprecated-role"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit flags elements that use ARIA roles which have been deprecated in the WAI-ARIA specification. Deprecated roles are no longer recommended and may lose assistive technology support at any time.
+
+## Why It Matters
+
+Assistive technologies gradually drop support for deprecated roles. Continuing to use them means your interface will silently break for screen reader users as browsers and AT vendors update their implementations.
+
+## How to Fix It
+
+- **Replace deprecated roles with their modern equivalents.** For example, `role="directory"` is deprecated -- use `role="list"` instead.
+- **Use native HTML elements** wherever possible. Native semantics are always more reliable than ARIA overlays.
+- **Check the WAI-ARIA changelog** when upgrading to identify any newly deprecated roles.
+
+```html
+<!-- Bad: deprecated role -->
+<div role="directory">...</div>
+
+<!-- Good: use the modern equivalent -->
+<ul role="list">...</ul>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-deprecated-role](https://dequeuniversity.com/rules/axe/4.11/aria-deprecated-role)
+- Related: [/learn/pulse/aria-roles](/learn/pulse/aria-roles)

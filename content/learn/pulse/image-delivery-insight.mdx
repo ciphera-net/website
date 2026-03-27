@@ -1,0 +1,34 @@
+---
+title: "Improve Image Delivery"
+description: "Flags images that use outdated formats, are not properly sized, or lack compression."
+category: "performance"
+auditId: "image-delivery-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/image-delivery"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit evaluates your images for three things: format efficiency (are you using modern formats like WebP or AVIF?), sizing accuracy (are you serving images larger than their display dimensions?), and compression level (could the file be smaller without visible quality loss?). It estimates the total bytes you could save by fixing each issue.
+
+## Why It Matters
+
+Images are typically the largest payload on any web page. Serving a 2 MB PNG when a 200 KB WebP would look identical wastes bandwidth, slows Largest Contentful Paint, and burns through mobile data plans. On image-heavy pages, optimizing delivery can cut total page weight by 50% or more.
+
+## How to Fix It
+
+- Serve images in WebP or AVIF format. Use your CDN's automatic format negotiation or the `<picture>` element with multiple `<source>` tags to serve the best format each browser supports.
+- Generate responsive image sizes with `srcset` and `sizes` attributes. Never serve a 3000 px-wide hero image to a 375 px mobile screen.
+- Compress images aggressively. Use tools like `sharp`, `squoosh`, or your build pipeline's image loader to target a quality setting of 75-85 for photographs.
+- Lazy-load below-the-fold images with `loading="lazy"` so they do not compete with critical resources during initial page load.
+- Set explicit `width` and `height` attributes on every `<img>` tag to prevent layout shifts while the image loads.
+
+## How Pulse Tracks This
+
+Pulse runs Lighthouse image audits on every monitored page and reports potential byte savings per image. The Image Delivery card ranks your images by wasted bytes so you can prioritize the biggest wins.
+
+## Resources
+
+- [Chrome Docs: Image Delivery Insight](https://developer.chrome.com/docs/performance/insights/image-delivery)
+- [web.dev: Use WebP images](https://web.dev/articles/serve-images-webp)
+- Related: [/learn/pulse/lcp-breakdown-insight](/learn/pulse/lcp-breakdown-insight)

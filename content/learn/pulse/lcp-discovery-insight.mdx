@@ -1,0 +1,35 @@
+---
+title: "LCP Request Discovery"
+description: "Checks whether the browser can discover the LCP resource early enough to start downloading it without delay."
+category: "performance"
+auditId: "lcp-discovery-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/lcp-discovery"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit examines how the browser discovers the Largest Contentful Paint resource. It flags cases where the LCP image or resource is not directly referenced in the initial HTML, meaning the browser cannot find it until after CSS or JavaScript has been parsed and executed. Late discovery adds unnecessary delay to LCP.
+
+## Why It Matters
+
+The browser can only download a resource once it knows the resource exists. If your LCP image is set via a CSS `background-image`, loaded dynamically with JavaScript, or hidden behind a client-side rendering step, the browser has to wait for those intermediate steps before it even starts the download. This delay can easily add 500 ms or more to your LCP time.
+
+## How to Fix It
+
+- Reference the LCP image directly in the HTML with an `<img>` tag rather than via CSS `background-image` or JavaScript. The browser's preload scanner can discover `<img>` tags before CSS and JS have finished parsing.
+- Add `<link rel="preload" as="image" href="/hero.webp">` in the `<head>` if the LCP resource cannot be an `<img>` tag (e.g., it is a CSS background or loaded by a framework).
+- Avoid lazy-loading the LCP image. Remove `loading="lazy"` from the image that is above the fold and likely to be the LCP element.
+- Set `fetchpriority="high"` on the LCP image to ensure the browser prioritizes it over other concurrent downloads.
+- If your page is server-side rendered, ensure the LCP image URL is present in the initial HTML response rather than being injected by client-side hydration.
+
+## How Pulse Tracks This
+
+Pulse analyzes the Lighthouse trace to detect late-discovered LCP resources and surfaces the discovery chain in your Performance dashboard. If the LCP resource is not in the initial HTML, Pulse flags it with the estimated time penalty.
+
+## Resources
+
+- [Chrome Docs: LCP Discovery Insight](https://developer.chrome.com/docs/performance/insights/lcp-discovery)
+- [web.dev: Optimize LCP](https://web.dev/articles/optimize-lcp)
+- Related: [/learn/pulse/lcp-breakdown-insight](/learn/pulse/lcp-breakdown-insight)
+- Related: [/learn/pulse/largest-contentful-paint](/learn/pulse/largest-contentful-paint)

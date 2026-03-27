@@ -1,0 +1,45 @@
+---
+title: "Object Elements Have Alternate Text"
+description: "Ensure object elements have text alternatives for accessibility."
+category: "accessibility"
+auditId: "object-alt"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/object-alt"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that `<object>` elements have accessible names via `aria-label`, `aria-labelledby`, the `title` attribute, or inner text content that serves as fallback.
+
+## Why It Matters
+
+The `<object>` element embeds external resources like PDFs, Flash content, or other media. Without a text alternative, screen reader users have no way to understand what the embedded content is or what purpose it serves.
+
+## How to Fix It
+
+- **Add `aria-label`** to describe the embedded content.
+- **Add fallback text** inside the `<object>` tags. This text is displayed when the object cannot load and is used as the accessible name.
+- **Use `aria-labelledby`** to reference a visible heading that describes the content.
+- **Consider replacing `<object>`** with more accessible alternatives like `<iframe>` with a `title` or native HTML content.
+
+```html
+<!-- Bad: no text alternative -->
+<object data="/report.pdf" type="application/pdf"></object>
+
+<!-- Good: fallback text inside the element -->
+<object data="/report.pdf" type="application/pdf">
+  Monthly analytics report (PDF)
+</object>
+
+<!-- Good: aria-label -->
+<object data="/report.pdf" type="application/pdf" aria-label="Monthly analytics report"></object>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: object-alt](https://dequeuniversity.com/rules/axe/4.11/object-alt)
+- Related: [/learn/pulse/image-alt](/learn/pulse/image-alt)

@@ -1,0 +1,44 @@
+---
+title: "Headings Appear in Sequential Order"
+description: "Ensure heading levels do not skip (e.g., h1 to h3)."
+category: "accessibility"
+auditId: "heading-order"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/heading-order"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that heading elements (`h1` through `h6`) follow a sequentially descending order without skipping levels. An `h2` should follow an `h1`, an `h3` should follow an `h2`, and so on. You can step back up (e.g., from `h3` to `h2`) when starting a new section.
+
+## Why It Matters
+
+Screen reader users navigate pages by jumping between headings. Skipped levels (e.g., jumping from `h1` to `h4`) make users think they missed content and break the document outline they depend on to understand page structure.
+
+## How to Fix It
+
+- **Map out your heading hierarchy** before building the page. Start with a single `h1`, then nest `h2` sections beneath it.
+- **Never choose heading levels for font size.** Use CSS to style headings. Pick the level that reflects the document structure.
+- **Fix skipped levels.** If you have an `h1` followed by an `h3`, either insert an `h2` or promote the `h3` to `h2`.
+
+```html
+<!-- Bad: skips from h1 to h3 -->
+<h1>Dashboard</h1>
+<h3>Recent Activity</h3>
+
+<!-- Good: sequential order -->
+<h1>Dashboard</h1>
+<h2>Recent Activity</h2>
+<h3>Today</h3>
+<h3>Yesterday</h3>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: heading-order](https://dequeuniversity.com/rules/axe/4.11/heading-order)
+- [WCAG 2.1 Success Criterion 1.3.1 - Info and Relationships](https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html)
+- Related: [/learn/pulse/bypass](/learn/pulse/bypass)

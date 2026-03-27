@@ -1,0 +1,34 @@
+---
+title: "Network Dependency Tree"
+description: "Visualizes the critical request chain to identify resources that block page rendering."
+category: "performance"
+auditId: "network-dependency-tree-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/network-dependency-tree"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit maps out the dependency tree of network requests, showing which resources must be loaded sequentially because each one depends on the previous. A deep chain like HTML -> CSS -> @import -> Font means the browser cannot start downloading the font until it has fetched and parsed three prior resources. The audit reports chain depth and total latency.
+
+## Why It Matters
+
+Every link in a dependency chain adds a network round trip. A chain four levels deep on a connection with 100 ms latency adds at least 400 ms before the final resource even starts downloading. These chains are the hidden reason pages feel slow even when individual files are small. Flattening the tree lets the browser discover and fetch resources in parallel.
+
+## How to Fix It
+
+- Eliminate CSS `@import` rules. Use a single concatenated stylesheet or let your bundler merge them at build time. Each `@import` adds a sequential hop the browser cannot parallelize.
+- Inline critical CSS in the `<head>` so the browser does not need to wait for an external stylesheet before rendering above-the-fold content.
+- Preload deep-chain resources with `<link rel="preload">`. If a font is three hops deep, preloading it moves discovery to the first hop.
+- Avoid loading JavaScript that dynamically inserts other `<script>` or `<link>` tags. Each dynamic insertion extends the dependency chain.
+- Use `modulepreload` for ES module scripts that import other modules, so the browser can fetch the entire module graph in parallel.
+
+## How Pulse Tracks This
+
+Pulse extracts the critical request chain from every Lighthouse run and displays it as a waterfall. When chains grow deeper after a deploy, Pulse flags the new dependencies so you can address them before they impact users.
+
+## Resources
+
+- [Chrome Docs: Network Dependency Tree Insight](https://developer.chrome.com/docs/performance/insights/network-dependency-tree)
+- [web.dev: Critical rendering path](https://web.dev/articles/critical-rendering-path)
+- Related: [/learn/pulse/render-blocking-insight](/learn/pulse/render-blocking-insight)

@@ -1,0 +1,45 @@
+---
+title: "Frames Have a Title"
+description: "Ensure iframe and frame elements have a descriptive title attribute."
+category: "accessibility"
+auditId: "frame-title"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/frame-title"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that every `<iframe>` and `<frame>` element has a non-empty `title` attribute. The title describes the frame's content to assistive technology users.
+
+## Why It Matters
+
+Screen readers present frames as navigable landmarks. Without a title, users hear "frame" with no description and must enter the frame to discover its contents. For pages with multiple iframes, this makes navigation tedious.
+
+## How to Fix It
+
+- **Add a descriptive `title` attribute** to every `<iframe>`. Describe what the frame contains, not its technical details.
+- **Use unique titles** when multiple iframes exist on the same page.
+- **For decorative or hidden iframes** (like tracking pixels), add `aria-hidden="true"` and `tabindex="-1"`.
+
+```html
+<!-- Bad: no title -->
+<iframe src="https://www.youtube.com/embed/abc123"></iframe>
+
+<!-- Good: descriptive title -->
+<iframe
+  src="https://www.youtube.com/embed/abc123"
+  title="Product demo video"
+></iframe>
+
+<!-- Hidden tracking iframe -->
+<iframe src="/pixel" aria-hidden="true" tabindex="-1" title="Analytics"></iframe>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: frame-title](https://dequeuniversity.com/rules/axe/4.11/frame-title)
+- Related: [/learn/pulse/document-title](/learn/pulse/document-title)

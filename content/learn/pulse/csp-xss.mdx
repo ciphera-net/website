@@ -1,0 +1,50 @@
+---
+title: "Ensure CSP Is Effective Against XSS Attacks"
+description: "Deploy a Content Security Policy that blocks inline scripts and untrusted sources to prevent XSS."
+category: "best-practices"
+auditId: "csp-xss"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/csp-xss/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit evaluates your Content Security Policy (CSP) header for effectiveness against cross-site scripting (XSS). It checks whether the policy allows `unsafe-inline`, `unsafe-eval`, or overly broad source wildcards that weaken XSS protection.
+
+## Why It Matters
+
+XSS is one of the most common web vulnerabilities. A strong CSP acts as a last line of defense — even if an attacker finds an injection point, the browser will refuse to execute unauthorized scripts. A weak or missing CSP leaves your users exposed to data theft, session hijacking, and malicious redirects.
+
+## How to Fix It
+
+- **Set a strict CSP header.** Use `nonce-based` or `hash-based` script allowlisting instead of `unsafe-inline`:
+
+  ```
+  Content-Security-Policy: default-src 'self'; script-src 'nonce-{random}' 'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';
+  ```
+
+- **Generate a unique nonce per request.** Add the nonce to every `<script>` tag:
+
+  ```html
+  <script nonce="abc123">/* your code */</script>
+  ```
+
+- **Avoid `unsafe-eval`.** If your code uses `eval()`, `new Function()`, or `setTimeout` with strings, refactor to remove these patterns. They open the door to script injection.
+
+- **Start with report-only mode.** Deploy with `Content-Security-Policy-Report-Only` first to catch violations without breaking your site:
+
+  ```
+  Content-Security-Policy-Report-Only: default-src 'self'; report-uri /csp-report
+  ```
+
+- **Remove overly broad wildcards.** Directives like `script-src *` or `script-src https:` allow scripts from any origin. Restrict to specific trusted domains.
+
+## How Pulse Tracks This
+
+Pulse evaluates the CSP header of every audited page and flags policies that are missing, too permissive, or rely on `unsafe-inline`/`unsafe-eval`. You can track CSP improvements over time from the dashboard.
+
+## Resources
+
+- [Chrome DevTools: csp-xss audit](https://developer.chrome.com/docs/lighthouse/best-practices/csp-xss/)
+- [MDN: Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
+- Related: [/learn/pulse/is-on-https](/learn/pulse/is-on-https)

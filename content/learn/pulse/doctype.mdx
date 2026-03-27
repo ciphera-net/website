@@ -1,0 +1,49 @@
+---
+title: "Page Has the HTML Doctype"
+description: "Include a DOCTYPE declaration to prevent the browser from falling into quirks mode."
+category: "best-practices"
+auditId: "doctype"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/doctype/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the page begins with a `<!DOCTYPE html>` declaration. It fails when the doctype is missing, malformed, or uses a legacy doctype format.
+
+## Why It Matters
+
+Without a valid doctype, browsers render the page in "quirks mode" — a legacy compatibility mode that changes how CSS box model, table layouts, and many other features behave. This leads to inconsistent rendering across browsers and makes bugs extremely difficult to diagnose. Every modern web page should use standards mode.
+
+## How to Fix It
+
+- **Add `<!DOCTYPE html>` as the very first line of your HTML.** Nothing should come before it — not even whitespace or comments:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      ...
+    </head>
+    <body>
+      ...
+    </body>
+  </html>
+  ```
+
+- **Use the HTML5 doctype.** Do not use legacy doctypes like `<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">`. The simple `<!DOCTYPE html>` is all you need.
+
+- **Check for server-side injection.** Some server configurations inject content (error messages, debug output) before the doctype. Ensure no output is sent before the HTML document begins.
+
+- **Frameworks handle this automatically.** If you use Next.js, React, or similar frameworks, the doctype is included by default. If this audit fails, check whether a custom `_document` or server middleware is interfering with the output.
+
+## How Pulse Tracks This
+
+Pulse verifies the doctype declaration on every audited page. Missing or invalid doctypes are flagged in the best-practices audit with a clear indication of what was found vs. what was expected.
+
+## Resources
+
+- [Chrome DevTools: doctype audit](https://developer.chrome.com/docs/lighthouse/best-practices/doctype/)
+- [MDN: DOCTYPE](https://developer.mozilla.org/en-US/docs/Glossary/Doctype)
+- Related: [/learn/pulse/charset](/learn/pulse/charset)

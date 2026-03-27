@@ -1,0 +1,46 @@
+---
+title: "Avoid Requesting Notification Permission on Page Load"
+description: "Do not prompt users for notification permission until they express interest in receiving updates."
+category: "best-practices"
+auditId: "notification-on-start"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/notification-on-start/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit detects calls to `Notification.requestPermission()` that execute during page load, before any user interaction. It also catches third-party push notification scripts that trigger the permission prompt immediately.
+
+## Why It Matters
+
+An unsolicited notification prompt is one of the most disliked patterns on the web. Users who have not yet engaged with your site have no reason to allow notifications, and most will deny or dismiss the prompt. Browsers are increasingly aggressive about suppressing repeated permission requests from sites that get high denial rates.
+
+## How to Fix It
+
+- **Wait for a meaningful user action.** Request permission only after the user clicks a "Subscribe to updates" button or enables notifications in their settings:
+
+  ```tsx
+  async function handleSubscribe() {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      // Register push subscription
+    }
+  }
+
+  <button onClick={handleSubscribe}>Enable notifications</button>
+  ```
+
+- **Use a soft prompt first.** Show a custom in-app banner or tooltip explaining the benefit of notifications. Only call `Notification.requestPermission()` after the user clicks "Yes" on your soft prompt.
+
+- **Remove auto-triggering scripts.** Check for third-party push notification SDKs (OneSignal, Firebase Cloud Messaging) that may be configured to prompt on page load. Disable their auto-prompt setting.
+
+- **Respect the user's choice.** If a user dismisses or denies the prompt, do not ask again in the same session. Store the denial state and wait for a new session or explicit opt-in.
+
+## How Pulse Tracks This
+
+Pulse flags any notification permission requests that occur during page load. This is reported in the best-practices audit so you can defer the prompt to a user-initiated flow.
+
+## Resources
+
+- [Chrome DevTools: notification-on-start audit](https://developer.chrome.com/docs/lighthouse/best-practices/notification-on-start/)
+- Related: [/learn/pulse/geolocation-on-start](/learn/pulse/geolocation-on-start)

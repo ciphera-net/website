@@ -1,0 +1,52 @@
+---
+title: "Properly Defines Charset"
+description: "Declare a character encoding early in your HTML to ensure text renders correctly."
+category: "best-practices"
+auditId: "charset"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/charset/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that the page declares a character encoding using either a `<meta charset>` tag in the first 1024 bytes of the HTML or a `Content-Type` HTTP header with a `charset` parameter. It fails when neither is present or the declaration appears too late in the document.
+
+## Why It Matters
+
+Without an explicit charset declaration, browsers must guess the encoding — and they often guess wrong. This causes garbled text, broken special characters, and potential security vulnerabilities. Some encoding-sniffing attacks exploit the absence of a charset to inject malicious content that is interpreted differently by the browser.
+
+## How to Fix It
+
+- **Add a meta charset tag as the first element in `<head>`.** It must appear within the first 1024 bytes of the document:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <!-- Other tags follow -->
+    </head>
+  </html>
+  ```
+
+- **Use UTF-8.** It is the universal standard and supports all languages and symbols. Do not use legacy encodings like `ISO-8859-1` or `Windows-1252` unless you have a specific reason.
+
+- **Alternatively, set it via HTTP header.** Your server can declare the charset in the `Content-Type` header:
+
+  ```
+  Content-Type: text/html; charset=UTF-8
+  ```
+
+- **Place the meta tag before the `<title>`.** If the charset declaration comes after the title, the browser may already have started parsing text with the wrong encoding, causing the title to display incorrectly.
+
+- **Check framework defaults.** Next.js and most modern frameworks include `<meta charset="UTF-8" />` by default. If this audit fails, verify that a custom document template has not removed or reordered the tag.
+
+## How Pulse Tracks This
+
+Pulse checks for a valid charset declaration on every audited page. Pages with a missing or late charset are flagged in the best-practices audit results.
+
+## Resources
+
+- [Chrome DevTools: charset audit](https://developer.chrome.com/docs/lighthouse/best-practices/charset/)
+- [MDN: Character encoding](https://developer.mozilla.org/en-US/docs/Glossary/Character_encoding)
+- Related: [/learn/pulse/doctype](/learn/pulse/doctype)

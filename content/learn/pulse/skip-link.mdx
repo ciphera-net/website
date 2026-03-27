@@ -1,0 +1,54 @@
+---
+title: "Skip Links Are Focusable"
+description: "Ensure skip navigation links are focusable and become visible on focus."
+category: "accessibility"
+auditId: "skip-link"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/skip-link"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that skip links (links that let users bypass repetitive navigation) are focusable and their target exists in the page. A skip link typically reads "Skip to main content" and jumps keyboard focus past the header and navigation.
+
+## Why It Matters
+
+Keyboard users must tab through every navigation link on every page load without a skip link. For sites with extensive headers, this means dozens of tab presses before reaching the main content. Skip links are required by WCAG 2.4.1 (Level A).
+
+## How to Fix It
+
+- **Add a skip link as the first focusable element** in the document, before the main navigation.
+- **Make the target `id` match** the skip link's `href`. If the link points to `#main-content`, an element with `id="main-content"` must exist.
+- **Don't hide it with `display: none`** -- use CSS to position it off-screen and bring it into view on focus.
+- **Ensure the target is focusable.** Add `tabindex="-1"` to the target element if it's not natively focusable.
+
+```html
+<!-- Skip link (visible on focus) -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<nav><!-- site navigation --></nav>
+
+<main id="main-content" tabindex="-1">
+  <!-- page content -->
+</main>
+```
+
+```css
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  position: static;
+  left: auto;
+}
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: skip-link](https://dequeuniversity.com/rules/axe/4.11/skip-link)
+- [WCAG 2.4.1: Bypass Blocks](https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html)

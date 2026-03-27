@@ -1,0 +1,46 @@
+---
+title: "Use a Strong HSTS Policy"
+description: "Enable HTTP Strict Transport Security to force browsers to always connect over HTTPS."
+category: "best-practices"
+auditId: "has-hsts"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/has-hsts"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that your server sends a `Strict-Transport-Security` response header with a sufficiently long `max-age` value. It flags missing headers, short max-age values, and the absence of `includeSubDomains` or `preload` directives.
+
+## Why It Matters
+
+Even with HTTPS redirects in place, the first HTTP request is still vulnerable to interception before the redirect occurs. HSTS tells the browser to skip HTTP entirely and connect directly over HTTPS for all future visits. Without it, users are exposed to SSL-stripping attacks on public networks.
+
+## How to Fix It
+
+- **Add the HSTS header to your server response.** Set `max-age` to at least one year (31536000 seconds):
+
+  ```
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  ```
+
+- **In Nginx:**
+
+  ```nginx
+  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+  ```
+
+- **Include subdomains.** Add `includeSubDomains` to protect all subdomains — not just the main domain. Make sure all subdomains support HTTPS before enabling this.
+
+- **Submit to the HSTS preload list.** Visit [hstspreload.org](https://hstspreload.org) to submit your domain. Once preloaded, browsers will never make an HTTP request to your domain — even on the very first visit.
+
+- **Start with a short max-age.** If you are enabling HSTS for the first time, start with `max-age=300` (5 minutes) to test, then increase to the full year once confirmed.
+
+## How Pulse Tracks This
+
+Pulse checks the `Strict-Transport-Security` header on every audited page. Missing or weak HSTS policies are flagged with specific recommendations for improvement.
+
+## Resources
+
+- [Chrome DevTools: has-hsts audit](https://developer.chrome.com/docs/lighthouse/best-practices/has-hsts)
+- [MDN: Strict-Transport-Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security)
+- Related: [/learn/pulse/redirects-http](/learn/pulse/redirects-http)

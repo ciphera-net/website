@@ -1,0 +1,43 @@
+---
+title: "No Form Fields Have Multiple Labels"
+description: "Ensure form fields are not associated with more than one label element."
+category: "accessibility"
+auditId: "form-field-multiple-labels"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/form-field-multiple-labels"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that no form field has multiple `<label>` elements pointing to it. When two or more labels reference the same input via `for`/`id`, assistive technologies may only announce one of them or behave unpredictably.
+
+## Why It Matters
+
+Multiple labels cause inconsistent behavior across screen readers. Some announce only the first label, others concatenate them. This creates a confusing experience where different users hear different things for the same input.
+
+## How to Fix It
+
+- **Keep one label per input.** Remove duplicate `<label>` elements that point to the same `id`.
+- **Use `aria-describedby`** for supplementary text like hints or error messages instead of a second label.
+- **Wrap the input inside a single `<label>`** if you want to avoid managing `for`/`id` pairs.
+
+```html
+<!-- Bad: two labels for one input -->
+<label for="email">Email</label>
+<label for="email">Your email address</label>
+<input id="email" type="email" />
+
+<!-- Good: one label plus a description -->
+<label for="email">Email</label>
+<span id="email-hint">We'll never share your email.</span>
+<input id="email" type="email" aria-describedby="email-hint" />
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: form-field-multiple-labels](https://dequeuniversity.com/rules/axe/4.11/form-field-multiple-labels)
+- Related: [/learn/pulse/label](/learn/pulse/label)

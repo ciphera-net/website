@@ -1,0 +1,58 @@
+---
+title: "Allow Users to Paste into Input Fields"
+description: "Do not block paste on input fields — it harms usability, accessibility, and security."
+category: "best-practices"
+auditId: "paste-preventing-inputs"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit detects input fields that prevent the paste event using JavaScript (`event.preventDefault()` on the `paste` event). It flags any `<input>` or `<textarea>` element where pasting is blocked.
+
+## Why It Matters
+
+Blocking paste forces users to manually type passwords, email addresses, and other data — which is slower, more error-prone, and frustrating. It actively undermines password managers, which generate and paste strong unique passwords. Users with motor disabilities may rely on paste as their primary input method. There is no legitimate security benefit to blocking paste.
+
+## How to Fix It
+
+- **Remove paste-prevention event handlers.** Search your codebase for `onpaste` handlers or `paste` event listeners that call `preventDefault()`:
+
+  ```js
+  // Remove this
+  input.addEventListener("paste", (e) => {
+    e.preventDefault();
+  });
+  ```
+
+- **Check for inline event handlers in HTML:**
+
+  ```html
+  <!-- Remove the onpaste attribute -->
+  <input type="password" onpaste="return false" />
+
+  <!-- Fixed -->
+  <input type="password" />
+  ```
+
+- **Audit third-party form libraries.** Some form validation or input masking libraries block paste by default. Check their configuration for a `preventPaste` or similar option and disable it.
+
+- **If you need to validate pasted content, do so without blocking.** You can listen to the `paste` event, read the pasted text, and validate it — but still allow the paste to complete:
+
+  ```js
+  input.addEventListener("paste", (e) => {
+    setTimeout(() => {
+      validateInput(input.value);
+    }, 0);
+  });
+  ```
+
+## How Pulse Tracks This
+
+Pulse detects paste-blocking behavior on input fields during Lighthouse audits. Affected inputs are listed in the audit results so you can remove the restriction.
+
+## Resources
+
+- [Chrome DevTools: paste-preventing-inputs audit](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/)
+- Related: [/learn/pulse/csp-xss](/learn/pulse/csp-xss)

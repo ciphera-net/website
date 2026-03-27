@@ -1,0 +1,33 @@
+---
+title: "Optimize Viewport for Mobile"
+description: "Checks whether your page has a properly configured viewport meta tag for mobile devices."
+category: "performance"
+auditId: "viewport-insight"
+googleUrl: "https://developer.chrome.com/docs/performance/insights/viewport"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that your page includes a `<meta name="viewport">` tag with `width=device-width` and an appropriate `initial-scale` value. It flags pages that are missing the tag entirely, use a fixed width, or disable user scaling.
+
+## Why It Matters
+
+Without a proper viewport meta tag, mobile browsers render your page at a desktop width (typically 980 px) and then scale it down to fit the screen. Text becomes unreadable, buttons become untappable, and users must pinch-zoom to interact with anything. This fails Google's mobile-friendly test and hurts your search ranking. It also skews your Core Web Vitals because layout and paint metrics are calculated on an incorrectly sized viewport.
+
+## How to Fix It
+
+- Add `<meta name="viewport" content="width=device-width, initial-scale=1">` to the `<head>` of every page. In Next.js, this is handled automatically, but verify it is present if you use a custom `_document` or `<head>`.
+- Do not set `maximum-scale=1` or `user-scalable=no`. These prevent users from zooming in, which is an accessibility violation and flagged by Lighthouse as a separate issue.
+- Avoid using fixed pixel widths for `width` in the viewport tag (e.g., `width=1024`). Always use `device-width` to let the page adapt to the actual screen size.
+- Ensure your CSS uses responsive units (`rem`, `%`, `vw`) and media queries rather than fixed pixel layouts that break on narrow screens.
+- Test your viewport configuration across multiple device sizes using Chrome DevTools' device mode or a real device lab.
+
+## How Pulse Tracks This
+
+Pulse checks for a valid viewport meta tag on every Lighthouse run. If the tag is missing or misconfigured, the Viewport card flags the issue with the exact problem detected so you can fix it in one edit.
+
+## Resources
+
+- [Chrome Docs: Viewport Insight](https://developer.chrome.com/docs/performance/insights/viewport)
+- [MDN: Viewport meta tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag)

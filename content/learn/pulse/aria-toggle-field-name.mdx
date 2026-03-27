@@ -1,0 +1,40 @@
+---
+title: "ARIA Toggle Fields Have Accessible Names"
+description: "Ensure ARIA toggle fields like checkboxes and switches have accessible names."
+category: "accessibility"
+auditId: "aria-toggle-field-name"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/aria-toggle-field-name"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that elements with toggle roles -- `checkbox`, `menuitemcheckbox`, `menuitemradio`, `radio`, and `switch` -- have accessible names. Toggle fields represent on/off or selected/unselected states, and the name tells users what they are toggling.
+
+## Why It Matters
+
+A toggle without a name announces its state ("checked" or "not checked") but not its purpose. Users cannot make informed decisions about whether to activate an unlabeled toggle.
+
+## How to Fix It
+
+- **Add visible text content** inside the toggle element.
+- **Use `aria-label`** for icon-only toggles.
+- **Use `aria-labelledby`** to reference a nearby visible label.
+- **Prefer native `<input type="checkbox">`** with a `<label>` element for automatic naming.
+
+```html
+<!-- Bad: no accessible name -->
+<div role="switch" aria-checked="false"></div>
+
+<!-- Good: aria-label provides the name -->
+<div role="switch" aria-checked="false" aria-label="Dark mode"></div>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: aria-toggle-field-name](https://dequeuniversity.com/rules/axe/4.11/aria-toggle-field-name)
+- Related: [/learn/pulse/aria-input-field-name](/learn/pulse/aria-input-field-name)

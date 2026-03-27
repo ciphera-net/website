@@ -1,0 +1,39 @@
+---
+title: "Reduce Server Response Time (TTFB)"
+description: "Minimize Time to First Byte so the browser can start rendering the page sooner."
+category: "performance"
+auditId: "server-response-time"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+Lighthouse measures the time between the browser's request for the HTML document and the arrival of the first byte of the response — known as Time to First Byte (TTFB). The audit flags when TTFB exceeds 600 ms. This time includes DNS lookup, TCP/TLS connection, server processing, and the network transit of the first response byte back to the browser.
+
+## Why It Matters
+
+TTFB is the starting point for every other performance metric. The browser cannot parse HTML, discover subresources, or render a single pixel until the first byte arrives. A slow TTFB pushes FCP, LCP, and all downstream metrics later by the same amount. While client-side optimizations can improve what happens after the HTML arrives, they cannot compensate for a server that takes two seconds to respond.
+
+## How to Fix It
+
+- **Use a CDN for the HTML document.** Serve your pages from edge locations close to your users. CDNs can cache static and even dynamic HTML at the edge, cutting round-trip latency from hundreds of milliseconds to single digits.
+
+- **Optimize server-side processing.** Profile your backend to find slow database queries, inefficient API calls, or blocking I/O. Add database indexes, cache frequently accessed data in Redis or an in-memory store, and parallelize independent operations.
+
+- **Enable HTTP/2 or HTTP/3.** Modern protocols reduce connection setup time. HTTP/3 (QUIC) eliminates the TCP handshake entirely, saving a full round trip on the first connection.
+
+- **Implement stale-while-revalidate caching.** Serve a cached response immediately while revalidating in the background. This gives users an instant TTFB for repeat visits while keeping content fresh.
+
+- **Reduce redirect chains.** Each redirect adds a full round trip before the final document is requested. Eliminate unnecessary redirects to get to the final HTML document faster.
+
+## How Pulse Tracks This
+
+Pulse records the server-response-time audit on every Lighthouse run and charts TTFB over time. Your dashboard shows how server performance evolves across deploys and environments, making it easy to spot backend regressions before they impact users.
+
+## Resources
+
+- [Reduce Server Response Time (TTFB) - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/)
+- [web.dev: Optimize TTFB](https://web.dev/articles/optimize-ttfb)
+- Related: [Avoid Multiple Page Redirects](/learn/pulse/redirects)
+- Related: [Back/Forward Cache Restoration](/learn/pulse/bf-cache)

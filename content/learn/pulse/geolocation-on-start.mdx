@@ -1,0 +1,50 @@
+---
+title: "Avoid Requesting Geolocation on Page Load"
+description: "Do not request geolocation permission automatically — wait until the user takes a relevant action."
+category: "best-practices"
+auditId: "geolocation-on-start"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/best-practices/geolocation-on-start/"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit detects calls to `navigator.geolocation.getCurrentPosition()` or `navigator.geolocation.watchPosition()` that execute during page load, before any user interaction.
+
+## Why It Matters
+
+Requesting geolocation on page load triggers a browser permission prompt immediately, which feels intrusive and confusing — the user has no context for why the site needs their location. Most users will deny the request, and some browsers remember the denial, making it harder to ask again later when the user actually needs location features.
+
+## How to Fix It
+
+- **Defer the request to a user action.** Only request geolocation when the user clicks a "Find nearby" button or interacts with a location-dependent feature:
+
+  ```tsx
+  function handleFindNearby() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // Use position.coords
+      },
+      (error) => {
+        // Handle denial gracefully
+      }
+    );
+  }
+
+  <button onClick={handleFindNearby}>Find nearby locations</button>
+  ```
+
+- **Explain why before asking.** Show a brief message explaining what the location will be used for before triggering the browser prompt. This increases the acceptance rate.
+
+- **Provide a fallback.** Always offer a manual alternative — like typing a city or postal code — for users who decline the permission.
+
+- **Audit third-party scripts.** Some analytics or ad scripts request geolocation on load. Review your third-party dependencies and remove or defer any that trigger this.
+
+## How Pulse Tracks This
+
+Pulse detects geolocation API calls during page load as part of the Lighthouse best-practices audit. Pages that request geolocation too early are flagged so you can move the call to a user-initiated action.
+
+## Resources
+
+- [Chrome DevTools: geolocation-on-start audit](https://developer.chrome.com/docs/lighthouse/best-practices/geolocation-on-start/)
+- Related: [/learn/pulse/notification-on-start](/learn/pulse/notification-on-start)

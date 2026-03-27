@@ -1,0 +1,46 @@
+---
+title: "Lists Contain Only Proper Elements"
+description: "Ensure ul and ol elements only contain li, script, or template children."
+category: "accessibility"
+auditId: "list"
+googleUrl: "https://dequeuniversity.com/rules/axe/4.11/list"
+date: "2026-03-27"
+---
+
+## What This Audit Checks
+
+This audit verifies that `<ul>` and `<ol>` elements only contain `<li>`, `<script>`, or `<template>` elements as direct children. Any other element as a direct child of a list breaks the expected structure.
+
+## Why It Matters
+
+Screen readers announce lists with item counts and let users navigate item by item. Invalid children disrupt this behavior, causing assistive technologies to miscount items or skip content, which confuses users.
+
+## How to Fix It
+
+- **Wrap non-`<li>` children in `<li>` elements.** If you placed a `<div>` or `<a>` directly inside a `<ul>`, wrap it in an `<li>`.
+- **Move non-list content outside the list.** Headings, paragraphs, and other block elements do not belong as direct children of `<ul>` or `<ol>`.
+- **Check component boundaries.** In frameworks like React, a wrapper component might inject an extra `<div>` between the `<ul>` and `<li>`. Flatten the structure or use fragments.
+
+```html
+<!-- Bad: div is not a valid direct child of ul -->
+<ul>
+  <div><a href="/settings">Settings</a></div>
+  <div><a href="/account">Account</a></div>
+</ul>
+
+<!-- Good: links wrapped in li elements -->
+<ul>
+  <li><a href="/settings">Settings</a></li>
+  <li><a href="/account">Account</a></li>
+</ul>
+```
+
+## How Pulse Tracks This
+
+Pulse flags this audit in your Lighthouse accessibility score. When the audit fails, Pulse shows which elements triggered it so you can fix them directly.
+
+## Resources
+
+- [Deque: list](https://dequeuniversity.com/rules/axe/4.11/list)
+- [MDN: ul element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul)
+- Related: [/learn/pulse/listitem](/learn/pulse/listitem)
