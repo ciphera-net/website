@@ -45,10 +45,10 @@ export default function LearnPage() {
               Learn
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
-              Learn
+              Guides, References & Deep-Dives
             </h1>
             <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
-              Guides, references, and technical deep-dives across Ciphera products.
+              Technical documentation and reference articles across Ciphera products.
             </p>
           </div>
         </div>
