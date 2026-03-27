@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild": "npm run generate:learn",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "generate:learn": "npx tsx scripts/generate-learn-articles.ts"
   },
   "dependencies": {
     "@ciphera-net/ui": "^0.3.4",
