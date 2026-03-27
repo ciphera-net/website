@@ -7,28 +7,28 @@ import { ArrowLeftIcon } from '@ciphera-net/ui'
 import { getLearnArticle, getLearnArticles } from '@/lib/learn'
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: Promise<{ product: string; slug: string }>
 }
 
 export async function generateStaticParams() {
-  return getLearnArticles().map((a) => ({ slug: a.slug }))
+  return getLearnArticles().map((a) => ({ product: a.product, slug: a.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const article = getLearnArticle(slug)
+  const { product, slug } = await params
+  const article = getLearnArticle(product, slug)
   if (!article) return {}
 
   return {
     title: article.title,
     description: article.description,
-    alternates: { canonical: `https://ciphera.net/learn/${article.slug}` },
+    alternates: { canonical: `https://ciphera.net/learn/${product}/${article.slug}` },
     openGraph: {
       title: article.title,
       description: article.description,
-      url: `https://ciphera.net/learn/${article.slug}`,
+      url: `https://ciphera.net/learn/${product}/${article.slug}`,
       siteName: 'Ciphera',
-      images: [{ url: `/learn/og/${article.category}.png`, width: 1200, height: 630, alt: article.title }],
+      images: [{ url: `/learn/og/${product}.png`, width: 1200, height: 630, alt: article.title }],
       locale: 'en_US',
       type: 'article',
     },
@@ -36,21 +36,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       title: article.title,
       description: article.description,
-      images: [`/learn/og/${article.category}.png`],
+      images: [`/learn/og/${product}.png`],
     },
   }
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  performance: 'Performance',
-  accessibility: 'Accessibility',
-  'best-practices': 'Best Practices',
-  seo: 'SEO',
+const PRODUCT_LABELS: Record<string, string> = {
+  pulse: 'Pulse',
+  drop: 'Drop',
+  auth: 'Auth',
+  captcha: 'Captcha',
+  relay: 'Relay',
 }
 
 export default async function LearnArticlePage({ params }: Props) {
-  const { slug } = await params
-  const article = getLearnArticle(slug)
+  const { product, slug } = await params
+  const article = getLearnArticle(product, slug)
   if (!article) notFound()
 
   const schema = [
@@ -63,7 +64,7 @@ export default async function LearnArticlePage({ params }: Props) {
       dateModified: article.date,
       author: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
       publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
-      url: `https://ciphera.net/learn/${article.slug}`,
+      url: `https://ciphera.net/learn/${product}/${article.slug}`,
     },
     {
       '@context': 'https://schema.org',
@@ -71,7 +72,8 @@ export default async function LearnArticlePage({ params }: Props) {
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
         { '@type': 'ListItem', position: 2, name: 'Learn', item: 'https://ciphera.net/learn' },
-        { '@type': 'ListItem', position: 3, name: article.title },
+        { '@type': 'ListItem', position: 3, name: PRODUCT_LABELS[product] || product, item: `https://ciphera.net/learn?product=${product}` },
+        { '@type': 'ListItem', position: 4, name: article.title },
       ],
     },
   ]
@@ -91,10 +93,15 @@ export default async function LearnArticlePage({ params }: Props) {
             Back to Learn
           </Link>
 
-          {/* Category badge */}
-          <span className="inline-flex items-center px-3 py-1 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange mb-4">
-            {CATEGORY_LABELS[article.category] || article.category}
-          </span>
+          {/* Product + Category badges */}
+          <div className="flex items-center gap-2 mb-4">
+            <span className="inline-flex items-center px-3 py-1 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
+              {PRODUCT_LABELS[product] || product}
+            </span>
+            <span className="inline-flex items-center px-3 py-1 rounded-full border border-neutral-700 bg-neutral-800 text-xs text-neutral-400">
+              {article.category}
+            </span>
+          </div>
 
           <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-8">
             {article.title}

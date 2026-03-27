@@ -108,7 +108,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Dynamically add published learn articles
   const learnPages: MetadataRoute.Sitemap = getLearnArticles().map((article) => ({
-    url: `${baseUrl}/learn/${article.slug}`,
+    url: `${baseUrl}/learn/${article.product}/${article.slug}`,
     lastModified: article.date,
   }))
 

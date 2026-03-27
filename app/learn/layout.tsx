@@ -1,14 +1,14 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Learn - Web Performance & SEO Reference',
-  description: 'Reference guides for Lighthouse audits, web performance metrics, accessibility standards, and SEO best practices. Understand what PageSpeed Insights measures and how to improve your scores.',
+  title: 'Learn - Knowledge Base',
+  description: 'Technical guides and reference documentation from Ciphera. Web performance, security, encryption, analytics, and more.',
   alternates: {
     canonical: 'https://ciphera.net/learn',
   },
   openGraph: {
-    title: 'Learn - Web Performance & SEO Reference',
-    description: 'Reference guides for Lighthouse audits, web performance metrics, accessibility standards, and SEO best practices.',
+    title: 'Learn - Knowledge Base',
+    description: 'Technical guides and reference documentation from Ciphera.',
     url: 'https://ciphera.net/learn',
     siteName: 'Ciphera',
     images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: 'Ciphera Learn' }],
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Learn - Web Performance & SEO Reference',
-    description: 'Reference guides for Lighthouse audits, web performance metrics, accessibility standards, and SEO best practices.',
+    title: 'Learn - Knowledge Base',
+    description: 'Technical guides and reference documentation from Ciphera.',
     images: ['/ciphera_logo_no_margins.png'],
   },
 }
@@ -27,8 +27,8 @@ const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Learn - Web Performance & SEO Reference',
-    description: 'Reference guides for Lighthouse audits, web performance metrics, accessibility standards, and SEO best practices.',
+    name: 'Learn - Knowledge Base',
+    description: 'Technical guides and reference documentation from Ciphera.',
     url: 'https://ciphera.net/learn',
     publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
   },

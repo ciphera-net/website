@@ -5,36 +5,42 @@ import Link from 'next/link'
 import { ArrowRightIcon } from '@ciphera-net/ui'
 import { learnArticles } from '@/lib/learn-articles.gen'
 
-const CATEGORY_LABELS: Record<string, string> = {
-  performance: 'Performance',
-  accessibility: 'Accessibility',
-  'best-practices': 'Best Practices',
-  seo: 'SEO',
-}
-
-const categories = ['All', 'Performance', 'Accessibility', 'Best Practices', 'SEO']
-
-const categoryKeyMap: Record<string, string> = {
-  Performance: 'performance',
-  Accessibility: 'accessibility',
-  'Best Practices': 'best-practices',
-  SEO: 'seo',
+const PRODUCT_LABELS: Record<string, string> = {
+  pulse: 'Pulse',
+  drop: 'Drop',
+  auth: 'Auth',
+  captcha: 'Captcha',
+  relay: 'Relay',
 }
 
 export default function LearnPage() {
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeCategory, setActiveCategory] = useState('All')
+  const [activeProduct, setActiveProduct] = useState('All')
+
+  // Derive available products from articles
+  const products = useMemo(() => {
+    const unique = Array.from(new Set(learnArticles.map((a) => a.product)))
+    return ['All', ...unique.map((p) => PRODUCT_LABELS[p] || p)]
+  }, [])
+
+  const productKeyMap = useMemo(() => {
+    const map: Record<string, string> = {}
+    for (const a of learnArticles) {
+      map[PRODUCT_LABELS[a.product] || a.product] = a.product
+    }
+    return map
+  }, [])
 
   const filtered = useMemo(() => {
     return learnArticles.filter((article) => {
-      const matchesCategory =
-        activeCategory === 'All' || article.category === categoryKeyMap[activeCategory]
+      const matchesProduct =
+        activeProduct === 'All' || article.product === productKeyMap[activeProduct]
       const query = searchQuery.toLowerCase()
       const matchesSearch =
         !query || article.title.toLowerCase().includes(query) || article.description.toLowerCase().includes(query)
-      return matchesCategory && matchesSearch
+      return matchesProduct && matchesSearch
     })
-  }, [searchQuery, activeCategory])
+  }, [searchQuery, activeProduct, productKeyMap])
 
   return (
     <>
@@ -46,10 +52,10 @@ export default function LearnPage() {
               Learn
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
-              Web Performance & SEO Reference
+              Knowledge Base
             </h1>
             <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
-              Understand what Lighthouse measures, why it matters, and how to improve your scores.
+              Technical guides and reference documentation from Ciphera.
             </p>
           </div>
         </div>
@@ -62,26 +68,26 @@ export default function LearnPage() {
           <div className="max-w-md mx-auto mb-8">
             <input
               type="text"
-              placeholder="Search audits..."
+              placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-neutral-800 text-white placeholder:text-neutral-500 focus:outline-none focus:border-brand-orange/50 transition-colors"
             />
           </div>
 
-          {/* Category pills */}
+          {/* Product pills */}
           <div className="flex flex-wrap justify-center gap-2 mb-12">
-            {categories.map((cat) => (
+            {products.map((p) => (
               <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
+                key={p}
+                onClick={() => setActiveProduct(p)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  activeCategory === cat
+                  activeProduct === p
                     ? 'bg-brand-orange text-white'
                     : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
                 }`}
               >
-                {cat}
+                {p}
               </button>
             ))}
           </div>
@@ -95,13 +101,18 @@ export default function LearnPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((article) => (
               <Link
-                key={article.slug}
-                href={`/learn/${article.slug}`}
+                key={`${article.product}/${article.slug}`}
+                href={`/learn/${article.product}/${article.slug}`}
                 className="group flex flex-col p-5 rounded-2xl border border-neutral-800 bg-neutral-900 hover:border-brand-orange/50 transition-all duration-200"
               >
-                <span className="inline-flex self-start items-center px-2.5 py-0.5 rounded-full border border-neutral-700 bg-neutral-800 text-xs text-neutral-400 mb-3">
-                  {CATEGORY_LABELS[article.category] || article.category}
-                </span>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
+                    {PRODUCT_LABELS[article.product] || article.product}
+                  </span>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-neutral-700 bg-neutral-800 text-xs text-neutral-400">
+                    {article.category}
+                  </span>
+                </div>
                 <h2 className="text-base font-semibold text-white mb-2 group-hover:text-brand-orange transition-colors line-clamp-2">
                   {article.title}
                 </h2>
