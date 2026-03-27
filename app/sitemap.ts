@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { getLearnArticles } from '@/lib/learn'
 
 /**
  * Sitemap for ciphera.net
@@ -91,6 +92,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/blog`,
       lastModified: '2026-03-16',
     },
+
+    // Learn index
+    {
+      url: `${baseUrl}/learn`,
+      lastModified: '2026-03-27',
+    },
   ]
 
   // Dynamically add published blog posts
@@ -99,5 +106,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: post.lastModified,
   }))
 
-  return [...staticPages, ...blogPages]
+  // Dynamically add published learn articles
+  const learnPages: MetadataRoute.Sitemap = getLearnArticles().map((article) => ({
+    url: `${baseUrl}/learn/${article.slug}`,
+    lastModified: article.date,
+  }))
+
+  return [...staticPages, ...blogPages, ...learnPages]
 }
