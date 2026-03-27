@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
 import { ArrowLeftIcon } from '@ciphera-net/ui'
 import { getLearnArticle, getLearnArticles } from '@/lib/learn'
 
@@ -52,11 +53,6 @@ export default async function LearnArticlePage({ params }: Props) {
   const article = getLearnArticle(slug)
   if (!article) notFound()
 
-  const allArticles = getLearnArticles()
-  const related = allArticles
-    .filter((a) => a.category === article.category && a.slug !== article.slug)
-    .slice(0, 5)
-
   const schema = [
     {
       '@context': 'https://schema.org',
@@ -106,27 +102,8 @@ export default async function LearnArticlePage({ params }: Props) {
 
           {/* MDX content */}
           <div className="prose prose-invert prose-neutral max-w-none prose-headings:text-white prose-a:text-brand-orange prose-a:no-underline hover:prose-a:underline prose-strong:text-white prose-code:text-brand-orange prose-code:bg-neutral-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none">
-            <MDXRemote source={article.content} />
+            <MDXRemote source={article.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </div>
-
-          {/* Related Audits */}
-          {related.length > 0 && (
-            <section className="mt-16 pt-12 border-t border-neutral-800">
-              <h2 className="text-xl font-bold text-white mb-6">Related Audits</h2>
-              <ul className="space-y-3">
-                {related.map((r) => (
-                  <li key={r.slug}>
-                    <Link
-                      href={`/learn/${r.slug}`}
-                      className="text-neutral-400 hover:text-brand-orange transition-colors"
-                    >
-                      {r.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
         </div>
       </article>
     </>
