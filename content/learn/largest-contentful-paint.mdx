@@ -1,0 +1,58 @@
+---
+title: "Largest Contentful Paint (LCP)"
+description: "What LCP measures, how Lighthouse scores it, and how to improve it."
+category: "performance"
+auditId: "largest-contentful-paint"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+date: "2026-03-27"
+---
+
+## What LCP Measures
+
+Largest Contentful Paint marks the point in the page load timeline when the largest content element visible in the viewport finishes rendering. This is typically a hero image, heading block, or video poster. LCP is a Core Web Vital and the strongest signal of perceived load speed — it tells you when the "main content" of the page is actually visible to the user.
+
+## How Lighthouse Scores It
+
+Lighthouse simulates page load on a throttled connection and identifies the largest image or text block rendered within the viewport. The raw LCP time is scored on a 0-100 scale using a log-normal distribution calibrated against HTTP Archive data.
+
+| Rating | Mobile | Desktop |
+|--------|--------|---------|
+| Good (green) | 0 - 2.5 s | 0 - 1.2 s |
+| Needs Improvement (orange) | 2.5 - 4.0 s | 1.2 - 2.4 s |
+| Poor (red) | > 4.0 s | > 2.4 s |
+
+LCP carries 25% of the overall Lighthouse performance score, making it the single most impactful metric. Improving LCP almost always yields a visible jump in your total score.
+
+### The Four Subparts of LCP
+
+LCP time is the sum of four sequential phases. Optimizing means attacking each one:
+
+1. **Time to First Byte (TTFB)** — server processing and network latency before the first byte of HTML arrives.
+2. **Resource load delay** — time between TTFB and the browser starting to fetch the LCP resource (image, font, etc.).
+3. **Resource load time** — how long the LCP resource takes to download.
+4. **Element render delay** — time between the resource finishing download and the element actually painting on screen.
+
+## How to Improve It
+
+- **Optimize images with modern formats.** Serve hero images in WebP or AVIF. Use `srcset` and `sizes` attributes so the browser downloads the smallest adequate file for each viewport.
+
+- **Preload the LCP image.** Add `<link rel="preload" as="image" href="...">` in the `<head>` so the browser fetches the LCP resource as early as possible instead of discovering it only after parsing CSS or JS.
+
+- **Reduce TTFB.** Deploy a CDN, enable server-side caching, and use streaming or edge-rendered HTML. Every millisecond of server delay pushes LCP later.
+
+- **Never lazy-load above-the-fold images.** The `loading="lazy"` attribute defers fetching until the image nears the viewport during scroll. For images already in the initial viewport, this adds unnecessary delay. Remove `loading="lazy"` from your LCP element.
+
+- **Minimize render-blocking resources.** Inline critical CSS, defer non-essential JavaScript, and avoid chains of redirects. The faster the browser can build the render tree, the sooner the LCP element paints.
+
+- **Use a CDN for static assets.** Serving images and fonts from edge nodes near your users dramatically cuts resource load time, the third LCP subpart.
+
+## How Pulse Tracks This
+
+Pulse captures LCP on every scheduled Lighthouse audit and plots it on your PageSpeed timeline. You can set threshold alerts so you are notified instantly when LCP regresses past your target, and drill into individual audit runs to see which element was identified as the LCP candidate.
+
+## Resources
+
+- [Largest Contentful Paint - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)
+- [web.dev: Optimize LCP](https://web.dev/articles/optimize-lcp)
+- Related: [First Contentful Paint (FCP)](/learn/first-contentful-paint)
+- Related: [Cumulative Layout Shift (CLS)](/learn/cumulative-layout-shift)

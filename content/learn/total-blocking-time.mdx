@@ -1,0 +1,51 @@
+---
+title: "Total Blocking Time (TBT)"
+description: "What TBT measures, how Lighthouse scores it, and how to improve it."
+category: "performance"
+auditId: "total-blocking-time"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
+date: "2026-03-27"
+---
+
+## What TBT Measures
+
+Total Blocking Time quantifies how long the main thread was blocked between First Contentful Paint (FCP) and Time to Interactive (TTI). During this window, any task that runs longer than 50 ms is considered a "long task." The blocking time of each long task is the portion that exceeds 50 ms. TBT is the sum of all those excess portions.
+
+For example, a 120 ms task contributes 70 ms of blocking time. A 40 ms task contributes nothing. TBT directly reflects how responsive your page feels to user input during load — a high TBT means taps, clicks, and key presses may go unacknowledged for hundreds of milliseconds.
+
+## How Lighthouse Scores It
+
+Lighthouse traces main-thread activity during simulated page load, identifies every long task between FCP and TTI, sums their blocking portions, and maps the result to a 0-100 score using a log-normal distribution.
+
+| Rating | Mobile | Desktop |
+|--------|--------|---------|
+| Good (green) | 0 - 200 ms | 0 - 150 ms |
+| Needs Improvement (orange) | 200 - 600 ms | 150 - 350 ms |
+| Poor (red) | > 600 ms | > 350 ms |
+
+TBT carries 30% of the overall Lighthouse performance score — the highest weight of any single metric. It is also the lab-based proxy for the field metric Interaction to Next Paint (INP), so improving TBT typically improves real-user responsiveness too.
+
+## How to Improve It
+
+- **Reduce JavaScript execution time.** Audit your bundles for unused code. Tree-shake aggressively, remove polyfills you no longer need, and replace heavy libraries with lighter alternatives (for example, `date-fns` instead of `moment`).
+
+- **Code-split aggressively.** Use dynamic `import()` so only the JavaScript required for the current route is loaded during initial page load. Frameworks like Next.js support route-based code splitting out of the box.
+
+- **Defer non-critical JS.** Add `defer` or `async` to script tags that are not needed for above-the-fold rendering. Move analytics, chat widgets, and other non-essential scripts after the page becomes interactive.
+
+- **Minimize main-thread work.** Offload expensive computation to Web Workers. Break monolithic functions into smaller chunks using `requestIdleCallback` or `scheduler.yield()` so the browser can process user input between chunks.
+
+- **Reduce third-party impact.** Third-party scripts (ads, tag managers, social embeds) are a leading cause of long tasks. Load them lazily, sandbox them in iframes, or remove those that do not justify their cost. Use Lighthouse's "Third-Party Summary" audit to identify the worst offenders.
+
+- **Optimize CSS selectors and recalculation.** Deeply nested or universal selectors force expensive style recalculations that block the main thread. Keep selectors flat and scope styles to components.
+
+## How Pulse Tracks This
+
+Pulse records TBT alongside every Lighthouse audit in its PageSpeed feature. Your dashboard shows TBT trends over time, flags runs that cross your configured threshold, and lets you compare mobile versus desktop blocking time to pinpoint where interactivity bottlenecks are worst.
+
+## Resources
+
+- [Total Blocking Time - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/)
+- [web.dev: Are long JavaScript tasks delaying your TTI?](https://web.dev/articles/long-tasks-devtools)
+- Related: [First Contentful Paint (FCP)](/learn/first-contentful-paint)
+- Related: [Largest Contentful Paint (LCP)](/learn/largest-contentful-paint)

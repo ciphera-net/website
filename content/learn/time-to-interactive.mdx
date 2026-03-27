@@ -1,0 +1,63 @@
+---
+title: "Time to Interactive (TTI)"
+description: "What TTI measures, how Lighthouse scores it, and how to improve it."
+category: "performance"
+auditId: "interactive"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/interactive/"
+date: "2026-03-27"
+---
+
+## What TTI Measures
+
+Time to Interactive measures how long it takes for the page to become fully interactive. A page is considered fully interactive when useful content is displayed, event handlers are registered for most visible elements, and the page responds to user interactions within 50 ms. TTI pinpoints the moment the main thread has been idle long enough that the user can reliably expect instant feedback from taps and clicks.
+
+> **Deprecation notice:** TTI is being phased out in favor of Total Blocking Time (TBT) for lab measurement and Interaction to Next Paint (INP) for field measurement. Lighthouse still reports TTI but has reduced its scoring weight.
+
+## How Lighthouse Scores It
+
+Lighthouse identifies TTI by finding a quiet window: a period of at least five seconds where no long tasks (tasks exceeding 50 ms) are running and no more than two in-flight network requests remain. TTI is then backdated to the last long task before that quiet window.
+
+| Rating | Mobile | Desktop |
+|--------|--------|---------|
+| Good (green) | ≤ 3.8 s | ≤ 2.5 s |
+| Needs Improvement (orange) | 3.8 – 7.3 s | 2.5 – 4.5 s |
+| Poor (red) | > 7.3 s | > 4.5 s |
+
+TTI currently carries a 10% weight in the Lighthouse performance score, down from 15% in earlier versions. Because the metric requires a five-second quiet window, even a single stray long task late in page load can dramatically push TTI higher.
+
+## How to Improve It
+
+Getting to interactive faster means shipping less JavaScript and executing it more efficiently:
+
+- **Defer or remove unnecessary JavaScript.** Audit your bundles with Lighthouse's "Remove unused JavaScript" and "Reduce JavaScript execution time" audits. Every kilobyte of JavaScript the browser must parse delays the quiet window TTI depends on.
+
+- **Code-split aggressively.** Use dynamic `import()` to load route-specific code on demand rather than bundling your entire application into a single file. Frameworks like Next.js do this automatically for page-level chunks.
+
+```js
+const Settings = dynamic(() => import("@/components/Settings"), {
+  loading: () => <Skeleton />,
+});
+```
+
+- **Preconnect to required origins.** Add `<link rel="preconnect">` for third-party domains your page depends on (API servers, font CDNs, analytics endpoints). Establishing connections early removes network latency from the critical path.
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://api.example.com" />
+```
+
+- **Minify and compress code.** Enable Brotli compression on your server, minify all JavaScript and CSS, and remove source maps from production builds. Smaller payloads parse faster.
+
+- **Preload key requests.** Use `<link rel="preload">` for critical scripts, fonts, and stylesheets that appear deep in the dependency chain. This tells the browser to fetch them early instead of discovering them late during parsing.
+
+- **Reduce the impact of third-party code.** Load third-party scripts (chat widgets, tag managers, social embeds) with `async` or `defer`, or lazy-load them after the page becomes interactive. Third-party scripts are one of the most common causes of delayed TTI because they inject long tasks the page has no control over.
+
+## How Pulse Tracks This
+
+Pulse records TTI alongside all other Lighthouse metrics during each scheduled PageSpeed audit. The trend graph on your dashboard makes it straightforward to correlate TTI regressions with specific deployments, even as the metric's scoring weight decreases over time.
+
+## Resources
+
+- [Time to Interactive - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/interactive/)
+- Related: [Interaction to Next Paint (INP)](/learn/interaction-to-next-paint)
+- Related: [Speed Index (SI)](/learn/speed-index)

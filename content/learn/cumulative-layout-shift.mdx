@@ -1,0 +1,51 @@
+---
+title: "Cumulative Layout Shift (CLS)"
+description: "What CLS measures, how Lighthouse scores it, and how to improve it."
+category: "performance"
+auditId: "cumulative-layout-shift"
+googleUrl: "https://web.dev/articles/cls"
+date: "2026-03-27"
+---
+
+## What CLS Measures
+
+Cumulative Layout Shift quantifies how much the visible content of a page moves around unexpectedly during its lifetime. Unlike the other Core Web Vitals, CLS is not measured in seconds or milliseconds — it is a unitless score. Every time a visible element shifts position without being triggered by user interaction, the browser records a layout shift. Each shift is scored by multiplying the **impact fraction** (how much of the viewport was affected) by the **distance fraction** (how far the element moved). CLS is the sum of the largest burst of layout shift scores within any 5-second window.
+
+A CLS of 0 means nothing moved unexpectedly. A CLS above 0.25 means the page is visually unstable and users are likely to misclick, lose their reading position, or perceive the site as broken.
+
+## How Lighthouse Scores It
+
+Lighthouse loads the page, observes all layout shifts that occur without user input, and calculates CLS using the session window approach. The raw value is mapped to a 0-100 score via a log-normal distribution.
+
+| Rating | Mobile | Desktop |
+|--------|--------|---------|
+| Good (green) | 0 - 0.1 | 0 - 0.1 |
+| Needs Improvement (orange) | 0.1 - 0.25 | 0.1 - 0.25 |
+| Poor (red) | > 0.25 | > 0.25 |
+
+CLS thresholds are identical for mobile and desktop. The metric contributes 25% to the overall Lighthouse performance score, reflecting how heavily Google weighs visual stability as part of user experience.
+
+## How to Improve It
+
+- **Always set explicit dimensions on images and videos.** Include `width` and `height` attributes (or use CSS `aspect-ratio`) so the browser reserves the correct space before the asset loads. Without dimensions, the element starts at zero height and pushes content down once it renders.
+
+- **Never insert content above existing content.** Banners, cookie notices, and dynamically injected ads that appear above the fold push everything below them downward. Place dynamic content in reserved slots or append it below the viewport.
+
+- **Use CSS `contain: layout` or `content-visibility`.** These properties tell the browser that an element's internals will not affect the rest of the page layout, preventing off-screen content from triggering shifts when it loads.
+
+- **Prefer `transform` animations over layout-triggering properties.** Animating `top`, `left`, `width`, or `margin` causes layout recalculations and can generate shift scores. Use CSS `transform: translate()` or `transform: scale()` instead — these run on the compositor thread and never trigger layout shifts.
+
+- **Preload web fonts and use `font-display: optional`.** When a web font loads late and swaps with a fallback that has different metrics, all text reflows. Preloading the font file and setting `font-display: optional` prevents the swap entirely — the browser uses the font only if it arrives in time, otherwise it sticks with the fallback for that page load.
+
+- **Reserve space for dynamic embeds.** Third-party embeds (maps, social posts, ad slots) often load asynchronously and expand from zero height. Wrap them in a container with a fixed `min-height` matching the embed's expected dimensions.
+
+## How Pulse Tracks This
+
+Pulse captures CLS on every Lighthouse audit run and surfaces the value in your PageSpeed timeline. Because CLS can vary between runs depending on ad and image load timing, Pulse shows the trend across multiple audits so you can identify persistent instability rather than reacting to one-off spikes.
+
+## Resources
+
+- [Cumulative Layout Shift - web.dev](https://web.dev/articles/cls)
+- [Optimize CLS - web.dev](https://web.dev/articles/optimize-cls)
+- Related: [Largest Contentful Paint (LCP)](/learn/largest-contentful-paint)
+- Related: [First Contentful Paint (FCP)](/learn/first-contentful-paint)

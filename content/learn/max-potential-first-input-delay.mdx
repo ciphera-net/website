@@ -1,0 +1,69 @@
+---
+title: "Max Potential First Input Delay (Max Potential FID)"
+description: "What Max Potential FID measures, how Lighthouse scores it, and how to improve it."
+category: "performance"
+auditId: "max-potential-fid"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-max-potential-fid/"
+date: "2026-03-27"
+---
+
+## What Max Potential FID Measures
+
+Max Potential First Input Delay measures the worst-case first input delay a user could experience on your page. It reports the duration of the longest task that runs during page load. If a user happens to interact at the exact moment that longest task is executing, they would experience a delay equal to the remaining duration of that task before the browser can begin processing their input.
+
+> **Deprecation notice:** First Input Delay has been replaced by Interaction to Next Paint (INP) as a Core Web Vital. Lighthouse still reports Max Potential FID as a diagnostic metric, but it is no longer factored into the performance score.
+
+## How Lighthouse Scores It
+
+Lighthouse identifies every long task (any task exceeding 50 ms) that runs between navigation start and the page becoming fully interactive. Max Potential FID equals the duration of the single longest task found. The logic is simple: if the longest task is 280 ms, a user who taps at the start of that task could wait up to 280 ms before the browser responds.
+
+| Rating | Mobile | Desktop |
+|--------|--------|---------|
+| Good (green) | ≤ 130 ms | ≤ 100 ms |
+| Needs Improvement (orange) | 130 – 250 ms | 100 – 200 ms |
+| Poor (red) | > 250 ms | > 200 ms |
+
+Because Max Potential FID is no longer scored, it does not affect your Lighthouse performance number. However, it remains a useful diagnostic signal. A high value tells you there is at least one blocking task during load that could frustrate users who interact early.
+
+## How to Improve It
+
+Reducing Max Potential FID means eliminating or shortening the longest task on the main thread during page load:
+
+- **Break up long tasks.** Identify the longest task in the Chrome DevTools Performance panel and split it into smaller units of work. Use `scheduler.yield()` to return control to the browser between chunks, ensuring no single task exceeds 50 ms.
+
+```js
+async function initApp() {
+  await initRouter();
+  await scheduler.yield();
+  await hydrateComponents();
+  await scheduler.yield();
+  await registerServiceWorker();
+}
+```
+
+- **Optimize JavaScript execution.** Reduce the cost of parsing and evaluating scripts by removing dead code, tree-shaking unused exports, and minifying bundles. Smaller scripts produce shorter tasks.
+
+- **Use Web Workers for heavy computation.** Move CPU-intensive operations like data parsing, image processing, or cryptographic hashing off the main thread entirely. Web Workers run in a separate thread and cannot block user input.
+
+```js
+const worker = new Worker("/workers/parse.js");
+worker.postMessage(rawData);
+worker.onmessage = (e) => render(e.data);
+```
+
+- **Implement code splitting.** Load only the JavaScript needed for the initial view. Defer secondary features — modals, settings panels, below-the-fold widgets — behind dynamic `import()` calls so their code does not contribute to load-time tasks.
+
+- **Reduce third-party script impact.** Audit third-party tags with Lighthouse's "Reduce the impact of third-party code" diagnostic. Delay non-essential third-party scripts until after the page is interactive, or load them in a Web Worker using libraries like Partytown.
+
+- **Leverage `requestIdleCallback` for non-urgent work.** Schedule initialization tasks that are not time-sensitive — such as prefetching future routes or warming caches — inside `requestIdleCallback` so they only run when the browser is idle.
+
+## How Pulse Tracks This
+
+Pulse records Max Potential FID as part of every Lighthouse audit it runs against your sites. While the metric no longer impacts your overall score, Pulse surfaces it in the PageSpeed detail view so you can track whether your longest task is shrinking over time and catch regressions before they affect real-user responsiveness.
+
+## Resources
+
+- [Max Potential First Input Delay - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-max-potential-fid/)
+- [Optimize First Input Delay - web.dev](https://web.dev/articles/optimize-fid)
+- Related: [Interaction to Next Paint (INP)](/learn/interaction-to-next-paint)
+- Related: [Time to Interactive (TTI)](/learn/time-to-interactive)

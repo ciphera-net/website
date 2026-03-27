@@ -1,0 +1,66 @@
+---
+title: "Interaction to Next Paint (INP)"
+description: "What INP measures, how Lighthouse scores it, and how to improve it."
+category: "performance"
+auditId: "interaction-to-next-paint"
+googleUrl: "https://web.dev/articles/inp"
+date: "2026-03-27"
+---
+
+## What INP Measures
+
+Interaction to Next Paint measures your page's overall responsiveness to user input. It observes every click, tap, and keyboard interaction throughout the entire lifecycle of a page visit and reports the worst (or near-worst) interaction latency. Unlike its predecessor First Input Delay, which only captured the delay of the first interaction, INP reflects how responsive the page feels across all interactions. INP replaced FID as a Core Web Vital in March 2024.
+
+## How Lighthouse Scores It
+
+Every interaction tracked by INP consists of three phases:
+
+1. **Input delay** — the time between the user's action and the browser starting to run event handlers. This grows when the main thread is already busy with other work.
+2. **Processing time** — the total duration of all event handler callbacks (e.g., `pointerdown`, `pointerup`, `click`) that fire in response to the interaction.
+3. **Presentation delay** — the time from when event handlers finish to when the browser paints the next frame reflecting the visual result.
+
+The sum of these three phases is the interaction's latency. INP selects the worst interaction (with a small allowance for outliers on pages with many interactions) as the final reported value.
+
+| Rating | Mobile | Desktop |
+|--------|--------|---------|
+| Good (green) | ≤ 200 ms | ≤ 200 ms |
+| Needs Improvement (orange) | 200 – 500 ms | 200 – 500 ms |
+| Poor (red) | > 500 ms | > 500 ms |
+
+INP thresholds are identical on mobile and desktop. Because INP is a field metric measured in real-user monitoring data, Lighthouse reports it when available through the Chrome User Experience Report (CrUX). Lab-based proxies like Total Blocking Time help predict INP in synthetic tests.
+
+## How to Improve It
+
+Responsiveness comes down to keeping the main thread available when the user interacts. Apply these techniques:
+
+- **Break up long tasks.** Any task exceeding 50 ms blocks the main thread and delays input processing. Use `scheduler.yield()` or a manual `yield()` pattern to split heavy work into smaller chunks that let the browser process pending interactions between them.
+
+```js
+async function processItems(items) {
+  for (const item of items) {
+    doWork(item);
+    await scheduler.yield();
+  }
+}
+```
+
+- **Reduce input delay by minimizing main-thread work.** Defer non-essential JavaScript, lazy-load below-the-fold components, and move heavy computation to Web Workers. The less the main thread is doing when the user taps, the faster the handler starts.
+
+- **Use `requestAnimationFrame` for visual updates.** Batch DOM reads and writes inside `requestAnimationFrame` callbacks to avoid triggering synchronous layout recalculations during event handlers. This shortens processing time.
+
+- **Avoid layout thrashing.** Reading layout properties (like `offsetHeight`) and then immediately writing to the DOM forces the browser to recalculate layout synchronously. Separate reads from writes, or use libraries like `fastdom` to schedule them efficiently.
+
+- **Keep DOM size small.** A large DOM tree makes style recalculation and layout more expensive after every interaction. Aim to keep total DOM elements under 1,500 and nesting depth under 32 levels.
+
+- **Optimize event handlers.** Remove unnecessary event listeners, debounce high-frequency input events like `scroll` and `pointermove`, and avoid complex synchronous logic inside handlers.
+
+## How Pulse Tracks This
+
+Pulse captures INP through its PageSpeed monitoring feature, running Lighthouse audits on a schedule and recording the lab-based responsiveness proxies alongside any available CrUX field data. Your dashboard surfaces INP trends over time, alerting you when interaction latency drifts past the 200 ms threshold.
+
+## Resources
+
+- [Interaction to Next Paint (INP) - web.dev](https://web.dev/articles/inp)
+- [Optimize INP - web.dev](https://web.dev/articles/optimize-inp)
+- Related: [Max Potential First Input Delay](/learn/max-potential-first-input-delay)
+- Related: [Time to Interactive (TTI)](/learn/time-to-interactive)

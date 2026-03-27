@@ -1,0 +1,49 @@
+---
+title: "First Contentful Paint (FCP)"
+description: "What FCP measures, how Lighthouse scores it, and how to improve it."
+category: "performance"
+auditId: "first-contentful-paint"
+googleUrl: "https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/"
+date: "2026-03-27"
+---
+
+## What FCP Measures
+
+First Contentful Paint marks the time from when the page starts loading to when any part of the page's content is rendered on screen. "Content" means text, images (including background images), `<svg>` elements, or non-white `<canvas>` elements. This is the first moment a user can start consuming the page, making it a critical perception-of-speed metric.
+
+## How Lighthouse Scores It
+
+Lighthouse measures FCP by loading your page in a simulated environment and recording the timestamp of the first contentful paint event. The raw timing is then mapped to a score between 0 and 100 using a log-normal distribution derived from real-world performance data in the HTTP Archive.
+
+| Rating | Mobile | Desktop |
+|--------|--------|---------|
+| Good (green) | 0 - 1.8 s | 0 - 0.9 s |
+| Needs Improvement (orange) | 1.8 - 3.0 s | 0.9 - 1.6 s |
+| Poor (red) | > 3.0 s | > 1.6 s |
+
+FCP contributes 10% to the overall Lighthouse performance score. While its individual weight is modest, a slow FCP often signals deeper issues — render-blocking resources, slow server response, or bloated CSS — that drag down other metrics too.
+
+## How to Improve It
+
+- **Eliminate render-blocking resources.** Move non-critical CSS into asynchronous loads and defer JavaScript that isn't needed for the initial paint. Use `<link rel="preload">` for critical assets.
+
+- **Minify and compress CSS.** Strip unused rules with tools like PurgeCSS, minify the remainder, and serve it with Brotli or gzip compression. Smaller stylesheets parse faster.
+
+- **Preconnect to required origins.** Add `<link rel="preconnect">` for third-party domains your page depends on (fonts, CDNs, analytics endpoints). This eliminates DNS lookup and TLS handshake time from the critical path.
+
+- **Reduce server response time (TTFB).** Use server-side caching, a CDN, or edge rendering to keep Time to First Byte under 200 ms. FCP cannot fire until the first byte of HTML arrives.
+
+- **Avoid enormous network payloads.** Large HTML documents, inline data URIs, and oversized CSS files all delay the first paint. Keep the critical-path payload lean — aim for under 150 KB of compressed resources before FCP fires.
+
+- **Use `font-display: swap` or `optional`.** Custom web fonts can block text rendering. Setting `font-display` ensures the browser shows fallback text immediately instead of an invisible flash.
+
+## How Pulse Tracks This
+
+Pulse runs scheduled Lighthouse audits against your sites and records the FCP value for every run. You can view FCP trends over time in the PageSpeed section of your dashboard, spot regressions the moment they appear, and compare mobile versus desktop scores side by side.
+
+## Resources
+
+- [First Contentful Paint - Chrome Developers](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)
+- [web.dev: First Contentful Paint](https://web.dev/articles/fcp)
+- Related: [Largest Contentful Paint (LCP)](/learn/largest-contentful-paint)
+- Related: [Total Blocking Time (TBT)](/learn/total-blocking-time)
