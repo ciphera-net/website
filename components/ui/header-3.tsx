@@ -37,6 +37,7 @@ import {
     Server,
     EyeOff,
     Cable,
+    BookOpen,
 } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import { track } from '@/lib/pulse';
@@ -409,6 +410,12 @@ const resourcesLinks: LinkItem[] = [
         href: '/blog',
         description: 'Privacy & security insights',
         icon: Leaf,
+    },
+    {
+        title: 'Learn',
+        href: '/learn',
+        description: 'Web performance & SEO reference',
+        icon: BookOpen,
     },
     {
         title: 'Contact',
