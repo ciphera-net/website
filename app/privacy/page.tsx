@@ -255,7 +255,7 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li>We do <strong>not</strong> use tracking cookies of any kind</li>
-                  <li>We do <strong>not</strong> use browser fingerprinting or device fingerprinting</li>
+                  <li>We do <strong>not</strong> use browser fingerprinting or cross-site device tracking</li>
                   <li>We do <strong>not</strong> engage in cross-site tracking or retargeting</li>
                   <li>We do <strong>not</strong> sell, trade, rent, or share your personal data with third parties for advertising or marketing purposes</li>
                   <li>We do <strong>not</strong> use third-party analytics services (Google Analytics, Meta Pixel, etc.)</li>
