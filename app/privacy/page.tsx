@@ -497,22 +497,28 @@ export default function PrivacyPolicyPage() {
                     </thead>
                     <tbody>
                       <tr className="border-b border-neutral-800">
-                        <td className="py-2 pr-4 font-medium">Swiss hosting provider</td>
-                        <td className="py-2 pr-4">Infrastructure and data storage</td>
+                        <td className="py-2 pr-4 font-medium">Exoscale</td>
+                        <td className="py-2 pr-4">Compute and object storage</td>
                         <td className="py-2 pr-4">Encrypted data at rest</td>
                         <td className="py-2">Switzerland</td>
                       </tr>
                       <tr className="border-b border-neutral-800">
-                        <td className="py-2 pr-4 font-medium">DNS &amp; CDN provider</td>
-                        <td className="py-2 pr-4">Content delivery, DDoS protection</td>
+                        <td className="py-2 pr-4 font-medium">Bunny</td>
+                        <td className="py-2 pr-4">CDN, DNS, DDoS protection, edge routing</td>
                         <td className="py-2 pr-4">IP addresses (transient)</td>
                         <td className="py-2">Global (edge network)</td>
                       </tr>
-                      <tr>
+                      <tr className="border-b border-neutral-800">
                         <td className="py-2 pr-4 font-medium">GitHub</td>
-                        <td className="py-2 pr-4">Open-source code hosting</td>
-                        <td className="py-2 pr-4">Source code (public repositories only)</td>
+                        <td className="py-2 pr-4">Source code hosting</td>
+                        <td className="py-2 pr-4">Source code</td>
                         <td className="py-2">United States</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4 font-medium">Mollie</td>
+                        <td className="py-2 pr-4">Payment processing</td>
+                        <td className="py-2 pr-4">Billing and subscription data</td>
+                        <td className="py-2">Netherlands</td>
                       </tr>
                     </tbody>
                   </table>
