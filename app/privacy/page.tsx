@@ -217,9 +217,10 @@ export default function PrivacyPolicyPage() {
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li><strong>Challenge responses</strong> — Your interaction with the CAPTCHA challenge, used solely to verify you are human.</li>
                   <li><strong>Verification tokens</strong> — Short-lived tokens that confirm successful CAPTCHA completion, automatically expired after use.</li>
+                  <li><strong>Behavioral insights</strong> — Mouse movement patterns, keystroke timing, scroll behavior, and touch input, collected solely to distinguish automated traffic from human visitors. This data is processed in-memory only, is never written to persistent storage, is automatically discarded within 15 minutes, and is not linked to user accounts.</li>
                 </ul>
                 <p className="text-neutral-400 leading-relaxed mt-2">
-                  Unlike third-party CAPTCHA services, Ciphera Captcha does not collect behavioral biometrics, does not track mouse movements across pages, does not set persistent cookies, and does not share data with advertising networks.
+                  Unlike third-party CAPTCHA services, Ciphera Captcha does not track users across pages or websites, does not set persistent cookies, and does not share data with advertising networks.
                 </p>
                 <p className="text-neutral-400 leading-relaxed mt-2">
                   <strong>Legal basis:</strong> Legitimate interest (abuse prevention, service security).

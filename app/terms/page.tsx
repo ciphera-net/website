@@ -233,7 +233,8 @@ export default function TermsOfServicePage() {
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li>Captcha verifies that interactions originate from humans, not automated systems.</li>
-                  <li>Captcha does not collect behavioral biometrics, does not track users across sites, and does not use persistent cookies.</li>
+                  <li>Captcha collects behavioral insights (mouse movement patterns, keystroke timing, scroll behavior, touch input) solely for bot detection. This data is processed in-memory only, never written to persistent storage, automatically discarded within 15 minutes, and not linked to user accounts.</li>
+                  <li>Captcha does not track users across pages or websites and does not use persistent cookies.</li>
                   <li>Verification tokens are short-lived and automatically expired after use.</li>
                 </ul>
 
