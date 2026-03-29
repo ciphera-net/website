@@ -276,10 +276,10 @@ export default function PrivacyPolicyPage() {
                   IP addresses are inherently part of internet communications and are temporarily processed by our servers during request handling. Our policy regarding IP addresses is:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400 mt-3">
-                  <li><strong>No permanent IP logging</strong> — We do not maintain permanent logs of user IP addresses.</li>
-                  <li><strong>Temporary processing</strong> — IP addresses may be temporarily held in server memory during active connections for rate limiting and abuse prevention. They are not written to persistent storage.</li>
+                  <li><strong>No IP address storage</strong> — We do not store raw IP addresses in any database. All IP addresses are cryptographically hashed using HMAC-SHA256 with user-specific salts before any persistence. The original IP address is irreversibly discarded and cannot be recovered — not by us, not by anyone.</li>
+                  <li><strong>Temporary processing</strong> — IP addresses may be temporarily held in server memory during active connections for rate limiting and abuse prevention. They are not written to persistent storage in their original form.</li>
                   <li><strong>Pulse analytics</strong> — IP addresses are used solely to derive country-level location data, then immediately discarded. The IP address itself is never stored.</li>
-                  <li><strong>Abuse prevention</strong> — In cases of active abuse (such as DDoS attacks, brute-force login attempts, or spam), IP addresses involved may be temporarily retained for up to 30 days to enforce rate limits and blocks.</li>
+                  <li><strong>Security audit logs</strong> — Security events (logins, password changes, 2FA changes) are logged with a cryptographic hash of the IP address, not the IP itself. This allows detection of patterns (e.g., same device logging in repeatedly) without storing personally identifiable information. Audit logs are retained for 90 days, then archived for up to 1 year before permanent deletion.</li>
                   <li><strong>Server logs</strong> — Operational server logs that may contain IP addresses are automatically purged after 30 days.</li>
                 </ul>
               </section>
@@ -427,6 +427,11 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2 pr-4">Newsletter subscriptions</td>
                         <td className="py-2 pr-4">Until unsubscribe</td>
                         <td className="py-2">Consent</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4">Security audit logs (hashed IPs only)</td>
+                        <td className="py-2 pr-4">90 days active + 1 year archive</td>
+                        <td className="py-2">Legitimate interest</td>
                       </tr>
                       <tr className="border-b border-neutral-800">
                         <td className="py-2 pr-4">Server logs</td>
