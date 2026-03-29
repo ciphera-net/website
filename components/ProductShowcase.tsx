@@ -204,7 +204,7 @@ export default function ProductShowcase() {
             </div>
 
             <p className="text-lg text-neutral-400 leading-relaxed mb-8 max-w-lg">
-              Privacy-first bot protection for any website. No tracking, no fingerprinting, no third-party cookies.
+              Privacy-first bot protection for any website. No cross-site tracking, no cookies, no third-party data collection.
               Verifies humans in under 50ms while keeping their data private.
             </p>
 

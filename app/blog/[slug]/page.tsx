@@ -3774,7 +3774,7 @@ const blogPosts: Record<string, { title: string; description: string; content: s
 
       <!-- [PERSONAL EXPERIENCE] -->
       <blockquote style="border-left: 4px solid #FD5E0F; padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(253, 94, 15, 0.05); border-radius: 0 8px 8px 0;">
-        <strong>Our approach:</strong> When we built bot protection for Ciphera's internal services, we followed these same principles: no cookies, no behavioral fingerprinting, no cross-site tracking, no data leaving our infrastructure. It's a design philosophy, not just a compliance checkbox. The <a href="https://ciphera.net/blog/why-privacy-cant-be-an-afterthought">difference between real privacy engineering and privacy washing</a> starts with decisions like which CAPTCHA service you deploy.
+        <strong>Our approach:</strong> When we built bot protection for Ciphera's internal services, we followed these same principles: no cookies, no cross-site tracking, no persistent data collection, no data leaving our infrastructure. It's a design philosophy, not just a compliance checkbox. The <a href="https://ciphera.net/blog/why-privacy-cant-be-an-afterthought">difference between real privacy engineering and privacy washing</a> starts with decisions like which CAPTCHA service you deploy.
       </blockquote>
 
       <h2>Frequently Asked Questions</h2>

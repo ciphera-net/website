@@ -22,14 +22,14 @@ import { Button } from '@/components/ui/button'
 export const metadata: Metadata = {
   title: 'Ciphera Captcha - Privacy-First Bot Protection',
   description:
-    'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No tracking, no fingerprinting, fully stateless.',
+    'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking, fully stateless.',
   alternates: {
     canonical: 'https://ciphera.net/products/captcha',
   },
   openGraph: {
     title: 'Ciphera Captcha - Privacy-First Bot Protection',
     description:
-      'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No tracking, no fingerprinting.',
+      'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking.',
     url: 'https://ciphera.net/products/captcha',
     siteName: 'Ciphera',
     images: [

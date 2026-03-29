@@ -92,7 +92,7 @@ export default function TermsOfServicePage() {
                   <li><strong>Drop:</strong> End-to-end encrypted file sharing. Files are encrypted client-side before upload, and Ciphera has no ability to access file contents.</li>
                   <li><strong>Pulse:</strong> Privacy-respecting website analytics that operates without cookies, fingerprinting, or personal data collection.</li>
                   <li><strong>Ciphera Auth:</strong> Secure identity and authentication provider with zero-knowledge password handling.</li>
-                  <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection that does not rely on behavioral tracking or third-party data collection.</li>
+                  <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
                   <li><strong>Ciphera Relay:</strong> Secure transactional email infrastructure for delivering encrypted communications.</li>
                 </ul>
                 <p className="text-neutral-400 leading-relaxed mt-3">

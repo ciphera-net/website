@@ -74,7 +74,7 @@ export function CaptchaMockup() {
         </div>
 
         <div className="flex items-center justify-between text-[10px] text-neutral-500 pt-1">
-          <span>No tracking. No fingerprinting.</span>
+          <span>No cookies. No cross-site tracking.</span>
           <span className="flex items-center gap-1">
             <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
             All systems operational
