@@ -197,7 +197,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Country-level location</strong> — Determined from the IP address, which is then immediately discarded. We do not store IP addresses.</li>
                 </ul>
                 <p className="text-neutral-400 leading-relaxed mt-2">
-                  Pulse does not use cookies, does not use browser fingerprinting, does not track users across websites, and does not collect any personally identifiable information. Pulse is fully GDPR-compliant and does not require a cookie consent banner.
+                  Pulse does not use cookies, does not use browser fingerprinting, does not track users across websites, and does not collect personally identifiable information by default. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. Pulse is fully GDPR-compliant and does not require a cookie consent banner.
                 </p>
                 <p className="text-neutral-400 leading-relaxed mt-2">
                   When website owners use Pulse on their websites, Ciphera B.V. acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
