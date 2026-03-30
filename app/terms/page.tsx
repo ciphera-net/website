@@ -152,7 +152,7 @@ export default function TermsOfServicePage() {
                   <li>Use the Services to engage in or promote any illegal activity under applicable local, national, or international law</li>
                 </ul>
                 <p className="text-neutral-400 leading-relaxed mt-4">
-                  We reserve the right to investigate potential violations and to suspend or terminate accounts that violate these Terms, with or without notice. In cases involving illegal activity, we may report violations to the appropriate authorities as required by law.
+                  We reserve the right to act on reported violations and to suspend or terminate accounts that violate these Terms, with or without notice. Due to our zero-knowledge architecture, we cannot inspect encrypted file contents — but we can disable access to reported links and suspend accounts. In cases involving illegal activity, we may report violations to the appropriate authorities as required by law.
                 </p>
                 <p className="text-neutral-400 leading-relaxed mt-3">
                   If you believe your account was suspended in error, you may contact us at{' '}
