@@ -110,7 +110,7 @@ export default function TermsOfServicePage() {
                   4.1. Account Creation
                 </h3>
                 <p className="text-neutral-400 leading-relaxed">
-                  Some Services require a Ciphera account. When creating an account, you must provide accurate and complete information. You are responsible for keeping this information up to date. Providing false or misleading information may result in account suspension.
+                  Some Services require a Ciphera account. When creating an account, you must provide a working email address for verification and account recovery. We recommend using a privacy-focused email provider. Display names are optional and may be pseudonymous.
                 </p>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-4">
