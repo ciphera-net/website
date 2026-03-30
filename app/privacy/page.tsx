@@ -171,8 +171,8 @@ export default function PrivacyPolicyPage() {
                   When you create a Ciphera account, we collect:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li><strong>Email address</strong> — Used for account identification, verification, security notifications, and password recovery.</li>
-                  <li><strong>Username</strong> — Chosen by you, used for display and identification purposes.</li>
+                  <li><strong>Email address</strong> — Used for account identification, verification, security notifications, and password recovery. Encrypted at rest using AES-256-GCM. Lookups use an irreversible cryptographic hash — your email address is never stored in readable form.</li>
+                  <li><strong>Display name</strong> — Chosen by you, used for display and identification purposes. Encrypted at rest using AES-256-GCM.</li>
                   <li><strong>Password</strong> — Double-hashed for maximum security. Your password is first hashed client-side using PBKDF2 (with 600,000 iterations) before transmission, then hashed again server-side using Argon2id. We never receive, transmit, or store your plaintext password.</li>
                   <li><strong>Session metadata</strong> — Login timestamps, device type, and browser information for active session management.</li>
                   <li><strong>Account verification data</strong> — CAPTCHA responses during registration, processed by our privacy-first Ciphera Captcha service (not Google reCAPTCHA or any third-party provider).</li>
@@ -347,6 +347,14 @@ export default function PrivacyPolicyPage() {
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li><strong>Double hashing:</strong> Passwords are hashed client-side with PBKDF2 (600,000 iterations) before transmission, then hashed again server-side with Argon2id</li>
                   <li><strong>No plaintext transmission:</strong> Your actual password never leaves your device</li>
+                </ul>
+
+                <h3 className="text-lg font-semibold text-white mb-2 mt-4">
+                  Account Data Encryption
+                </h3>
+                <ul className="list-disc pl-6 space-y-2 text-neutral-400">
+                  <li><strong>At-rest encryption:</strong> Email addresses, display names, and two-factor authentication secrets are encrypted using AES-256-GCM before storage. A database breach cannot expose personal information.</li>
+                  <li><strong>Hash-based lookups:</strong> Email lookups use an irreversible HMAC-SHA256 hash. Your email is never stored in readable form — only an encrypted version and a keyed hash exist in the database.</li>
                 </ul>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-4">
