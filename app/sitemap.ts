@@ -44,10 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: '2026-02-28',
     },
     {
-      url: `${baseUrl}/products`,
-      lastModified: '2026-03-02',
-    },
-    {
       url: `${baseUrl}/about`,
       lastModified: '2026-03-02',
     },

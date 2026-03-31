@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Privacy-First Products & Applications',
     description: 'Explore Ciphera\'s privacy-first product suite: Drop for encrypted file sharing, Pulse for cookie-free analytics, Auth, Captcha, and Relay infrastructure.',
-    url: 'https://ciphera.net/products',
+    url: 'https://ciphera.net',
     siteName: 'Ciphera',
     images: [
       {
@@ -26,9 +26,7 @@ export const metadata: Metadata = {
     description: 'Explore Ciphera\'s privacy-first product suite: Drop, Pulse, Auth, Captcha, and Relay.',
     images: ['/ciphera_logo_no_margins.png'],
   },
-  alternates: {
-    canonical: 'https://ciphera.net/products',
-  },
+  alternates: {},
 }
 
 export default function ProductsLayout({

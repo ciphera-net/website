@@ -52,7 +52,7 @@ const contactMethods = [
 // * Common contact reasons with helpful links
 const commonQuestions = [
   { question: 'How does encryption work?', link: '/#faq' },
-  { question: 'Pricing information', link: '/products' },
+  { question: 'Pricing information', link: '/pricing' },
   { question: 'Technical documentation', link: '#' },
   { question: 'Report a bug', link: 'https://github.com/ciphera-net' },
 ]

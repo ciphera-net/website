@@ -115,7 +115,7 @@ export default function AboutPage() {
               <span className="text-brand-orange">privacy</span>
             </h1>
             <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
-              Ciphera is dedicated to creating <a href="/products" className="link">privacy-first infrastructure and applications</a> 
+              Ciphera is dedicated to creating privacy-first infrastructure and applications 
               that put users in control of their data. We believe <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="link">encryption should be the default</a>, 
               not an add-on.
             </p>
@@ -392,8 +392,8 @@ export default function AboutPage() {
                 Try Pulse Free
                 <ArrowRightIcon className="w-4 h-4" />
               </Link>
-              <Link href="/products" className="btn-secondary">
-                Explore Products
+              <Link href="/products/drop" className="btn-secondary">
+                Explore Drop
               </Link>
             </div>
           </motion.div>

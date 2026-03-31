@@ -56,10 +56,10 @@ export default function NotFound() {
                 About
               </Link>
               <Link
-                href="/products"
+                href="/products/pulse"
                 className="text-sm text-neutral-400 hover:text-brand-orange hover:text-brand-orange transition-colors"
               >
-                Products
+                Pulse
               </Link>
               <Link
                 href="/contact"
