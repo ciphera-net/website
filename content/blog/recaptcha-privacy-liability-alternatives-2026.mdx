@@ -35,7 +35,9 @@ reCAPTCHA collects device fingerprints, mouse movements, keystrokes, and cross-s
 
 According to analyses by [GDPRregister.eu](https://www.gdprregister.eu/gdpr/google-recaptcha-cookies/) and [Prosopo](https://prosopo.io/blog/how-does-captcha-collect-user-data/), reCAPTCHA v3 collects: IP addresses, mouse movements, click patterns, keystroke timing, scroll behavior, screen resolution, installed plugins, operating system details, browser window screenshots, language settings, referrer URLs, and cross-site Google cookies. All of this runs silently in the background across your entire site — not just on the pages where you think you need bot protection.
 
-That's a data minimization problem under GDPR Article 5(1)(c). You're collecting behavioral fingerprints on every visitor to detect bots, but the data goes to Google's servers and gets processed alongside their broader advertising infrastructure. Most site operators don't even know this is happening. They installed reCAPTCHA to block spam on a contact form and ended up collecting keystroke timing data from every page view.| Data Type | reCAPTCHA v3 | hCaptcha | Turnstile | Friendly Captcha |
+That's a data minimization problem under GDPR Article 5(1)(c). You're collecting behavioral fingerprints on every visitor to detect bots, but the data goes to Google's servers and gets processed alongside their broader advertising infrastructure. Most site operators don't even know this is happening. They installed reCAPTCHA to block spam on a contact form and ended up collecting keystroke timing data from every page view.
+
+| Data Type | reCAPTCHA v3 | hCaptcha | Turnstile | Friendly Captcha |
 |---|---|---|---|---|
 | IP address | Collects | Collects | Limited | Limited |
 | Persistent cookies | Collects | None | None | None |
@@ -103,7 +105,9 @@ hCaptcha positions itself as the "largest independent CAPTCHA" service, [claimin
 
 If GDPR compliance is your top priority, Friendly Captcha is the strictest option. It's EU-hosted, uses proof-of-work cryptographic puzzles instead of behavioral tracking, sets zero cookies, collects zero personal data, and is fully invisible to users. The trade-off is cost: the free tier is limited to 1,000 requests per month, with paid plans starting at €39/month. For businesses where a GDPR fine would cost far more, that's a reasonable trade.
 
-<BlogImage src="/blog/images/unsplash-1550751827-4bd374c3f58b.jpg" alt="Abstract cybersecurity visualization with network connections and shield icons representing privacy-first bot protection alternatives" />| Metric | reCAPTCHA | Turnstile | hCaptcha | Friendly Captcha |
+<BlogImage src="/blog/images/unsplash-1550751827-4bd374c3f58b.jpg" alt="Abstract cybersecurity visualization with network connections and shield icons representing privacy-first bot protection alternatives" />
+
+| Metric | reCAPTCHA | Turnstile | hCaptcha | Friendly Captcha |
 |---|---|---|---|---|
 | GDPR compliance | 2/5 | 4/5 | 3/5 | 5/5 |
 | Performance | 2/5 | 5/5 | 3/5 | 4/5 |
