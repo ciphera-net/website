@@ -50,13 +50,6 @@ const contactMethods = [
 ]
 
 // * Common contact reasons with helpful links
-const commonQuestions = [
-  { question: 'How does encryption work?', link: '/#faq' },
-  { question: 'Pricing information', link: '/pricing' },
-  { question: 'Technical documentation', link: '#' },
-  { question: 'Report a bug', link: 'https://github.com/ciphera-net' },
-]
-
 const subjects = [
   'General Inquiry',
   'Security Issue',
@@ -392,37 +385,6 @@ export default function ContactPage() {
               <MailIcon className="w-5 h-5" />
               Email Us
             </a>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* * Common Questions */}
-      <section className="max-w-6xl mx-auto px-6 pb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-8 max-w-3xl mx-auto"
-        >
-          <h3 className="text-lg font-semibold text-white mb-6 text-center">
-            Before you contact us, you might find your answer here:
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {commonQuestions.map((item, index) => (
-              <a
-                key={index}
-                href={item.link}
-                className="flex items-center gap-3 p-4 rounded-xl hover:bg-white/[0.06] transition-colors group"
-                onClick={() => track('contact_common_question_click')}
-              >
-                <CheckCircleIcon className="w-5 h-5 text-brand-orange shrink-0" />
-                <span className="text-neutral-300 group-hover:text-brand-orange transition-colors">
-                  {item.question}
-                </span>
-                <ArrowRightIcon className="w-4 h-4 text-neutral-400 ml-auto group-hover:translate-x-1 transition-transform" />
-              </a>
-            ))}
           </div>
         </motion.div>
       </section>
