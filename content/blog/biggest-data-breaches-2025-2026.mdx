@@ -1,0 +1,172 @@
+---
+title: "Biggest Data Breaches of 2025-2026"
+description: "Analysis of the largest data breaches of 2025-2026 affecting 280M+ people. IBM reports the average breach costs $4.44M globally, $10.22M in the U.S."
+category: Security
+date: "2026-02-05"
+dateModified: "2026-03-07"
+readTime: "12 min read"
+image: "/blog/og/biggest-data-breaches-2025-2026.png"
+faqs:
+  - question: "What was the biggest data breach of 2025?"
+    answer: "Change Healthcare affected 192.7 million people, making it the largest healthcare breach in U.S. history. In Europe, Free's breach exposed 19.2 million French customers. By raw record count, the Mars Hydro IoT exposure leaked 2.7 billion records — though these were device logs rather than personal identifiers."
+  - question: "How much does a data breach cost on average?"
+    answer: "The global average is $4.44 million per breach in 2025, according to IBM. U.S. breaches average $10.22 million — a new record. Healthcare leads at $7.42 million per incident. These figures include detection, response, notification, and lost business costs."
+  - question: "Does encryption actually reduce data breach costs?"
+    answer: "Yes. IBM's 2025 report found that extensive data encryption reduced breach costs by $208,000 per incident. More importantly, if attackers steal encrypted data they can't decrypt, the breach may not qualify as a \"personal data breach\" under GDPR — potentially avoiding regulatory fines entirely."
+  - question: "What percentage of data breaches involve human error?"
+    answer: "The Verizon 2025 DBIR found that 60% of breaches involved the human element — credential misuse, phishing, social engineering, or configuration errors. The two largest breaches of 2025 (Change Healthcare and PowerSchool) both resulted from stolen credentials used on portals without multi-factor authentication."
+  - question: "Should companies pay ransomware demands?"
+    answer: "The data says no. Ransomware payment rates hit an all-time low of 28% in 2025 (Chainalysis, 2026). PowerSchool paid $2.85 million and was re-extorted anyway. Median payments surged 368% to $59,556 — paying emboldens attackers without guaranteeing data deletion."
+---
+
+2025 set a record nobody wanted. The Identity Theft Resource Center tracked [3,322 data compromises](https://www.idtheftcenter.org/post/2025-annual-data-breach-report-record-number-compromises/) in the United States alone — a 79% jump over five years. Across the Atlantic, European data protection authorities logged 443 breach notifications per day, a 22% increase year-over-year ([DLA Piper](https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026), 2026). The [IBM Cost of a Data Breach Report 2025](https://www.ibm.com/reports/data-breach) puts the global average at $4.44 million per incident, with U.S. breaches hitting a record $10.22 million.
+
+Behind every number is a company that got something wrong. A missing MFA setting. An unprotected database. A call center employee who trusted the wrong caller. This article breaks down the six biggest breaches from 2025 and early 2026 — three from North America, three from Europe — and extracts the lessons that matter for anyone who handles sensitive data.
+
+<BlogImage src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop&q=80" alt="Glowing blue digital circuit board pattern representing cybersecurity and data breach protection" />
+
+<BlogBlockquote variant="tldr">The U.S. saw a record 3,322 data compromises in 2025, while Europe averaged 443 breach notifications daily ([ITRC](https://www.idtheftcenter.org/post/2025-annual-data-breach-report-record-number-compromises/), [DLA Piper](https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026)). The two largest breaches — Change Healthcare and PowerSchool — both happened because of missing multi-factor authentication. Encryption reduces breach costs by $208,000 per incident. The pattern is clear: most breaches are preventable with basic security hygiene.</BlogBlockquote>
+
+## How Bad Were Data Breaches in 2025?
+
+The [Verizon 2025 DBIR](https://www.verizon.com/business/resources/reports/dbir/) analyzed 22,052 security incidents and confirmed 12,195 data breaches across 139 countries — a sharp increase from the prior year. In the U.S., the ITRC counted 3,322 compromises, up 5% from 2024 and nearly double the 2020 figure. Europe wasn't spared. Breach notifications hit record volume across the continent, with the Netherlands reporting 33,471 and Germany logging 27,829.
+
+<BlogAreaChart
+  title="U.S. Data Compromises (2020-2025)"
+  source="Source: Identity Theft Resource Center, 2026"
+  xKey="year"
+  yKey="value"
+  data={[
+    { year: "2020", value: 1862 },
+    { year: "2021", value: 1862 },
+    { year: "2022", value: 1802 },
+    { year: "2023", value: 3202 },
+    { year: "2024", value: 3152 },
+    { year: "2025", value: 3322 },
+  ]}
+/>
+
+How are attackers getting in? The Verizon DBIR breaks it down: credential abuse leads at 22%, followed by vulnerability exploitation at 20% and phishing at 16%. Ransomware was present in 44% of breaches, up 37% year-over-year. Perhaps most telling: 60% of all breaches involved the human element — credentials being reused, employees clicking phishing links, systems left misconfigured. Third-party involvement in breaches doubled to 30%.
+
+## Which 6 Breaches Defined 2025-2026?
+
+<BlogImage src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop&q=80" alt="Rows of illuminated servers in a modern data center facility where sensitive data is stored" />
+
+### 1. Change Healthcare (United States) — 192.7 Million People
+
+The largest healthcare data breach in U.S. history. In February 2024, the BlackCat/ALPHV ransomware group used compromised credentials to access a Citrix remote access portal at Change Healthcare, a subsidiary of UnitedHealth Group. The portal **lacked multi-factor authentication**. Attackers had nine days of dwell time before detection.
+
+The fallout was staggering: 192.7 million people affected (more than half the U.S. population), medical records and Social Security numbers exposed, $22 million paid in ransom, and over [$3.1 billion in response costs](https://techcrunch.com/2025/01/24/unitedhealth-confirms-190-million-americans-affected-by-change-healthcare-data-breach/) for UnitedHealth. The breach disrupted healthcare claims processing across the country for weeks. All because one remote access portal didn't have MFA turned on.
+
+### 2. Free (France) — 19.2 Million Customers
+
+France's second-largest ISP disclosed in October 2024 that an attacker using the handle "drussellx" had exfiltrated data on [19.2 million customers](https://www.bitdefender.com/en-us/blog/hotforsecurity/french-isp-free-confirms-data-breach-after-hacker-puts-customer-data-up-for-auction), including 5.1 million bank account numbers (IBANs). The data — names, phone numbers, emails, postal addresses, and dates of birth — was put up for auction on the dark web. The attacker gained access through a compromised internal management tool. For a country with 68 million people, this breach touched nearly a third of the population.
+
+### 3. PowerSchool (United States) — 71.5 Million Students and Teachers
+
+A 19-year-old hacker used a compromised credential to access PowerSchool's support portal, which — like Change Healthcare — **had no MFA**. The result: personal data on [62 million students and 9.5 million teachers](https://techcrunch.com/2025/03/10/what-powerschool-isnt-saying-about-its-massive-student-data-breach/) stolen, including Social Security numbers and medical alert information. PowerSchool paid $2.85 million in ransom. The attackers took the money and then re-extorted the schools anyway. The perpetrator was arrested, pled guilty, and faces nine or more years in prison — but the data was already gone.
+
+### 4. Odido (Netherlands) — 6.2 Million Customers
+
+In February 2026, the ShinyHunters group breached Dutch telecom carrier Odido, accessing data on [6.2 million customers](https://www.securityweek.com/dutch-carrier-odido-discloses-data-breach-impacting-6-million/) — roughly one-third of the Netherlands' population. Names, addresses, phone numbers, dates of birth, IBANs, and identity document details were compromised. ShinyHunters demanded over EUR 1 million in ransom. Odido refused to pay — a decision increasingly supported by the data. According to [Chainalysis](https://www.chainalysis.com/blog/crypto-ransomware-2026/) (2026), the ransomware payment rate has dropped to an all-time low of 28%.
+
+### 5. Yale New Haven Health (United States) — 5.6 Million People
+
+A network intrusion in March 2025 at Yale New Haven Health exposed records on [5.6 million individuals](https://www.healthcaredive.com/news/yale-new-haven-health-data-breach-5-6-million/746236/). The compromised data included names, Social Security numbers, medical record numbers, and demographic information. Insufficient network segmentation allowed the attacker to move laterally to patient data stores. The health system agreed to an $18 million settlement and now faces 18 consolidated class-action lawsuits.
+
+### 6. Vodafone Germany — EUR 45 Million GDPR Fine
+
+Sometimes the breach isn't a single spectacular hack. Germany's federal data protection authority (BfDI) fined Vodafone [EUR 45 million](https://www.bfdi.bund.de/SharedDocs/Pressemitteilungen/EN/2025/06_Geldbu%C3%9Fe-Vodafone.html) in June 2025 for systemic failures: EUR 15 million for inadequate oversight of partner sales agents who committed fraud using customer data, and EUR 30 million for weak authentication systems that allowed eSIM hijacking and unauthorized identity verification. It's a reminder that breaches aren't always external — sometimes the threat is inside the supply chain.
+
+## What Do These Breaches Have in Common?
+
+The [Verizon 2025 DBIR](https://www.verizon.com/business/resources/reports/dbir/) found that 60% of data breaches involved the human element — credentials being stolen, phishing links being clicked, or systems being left misconfigured. The six breaches above fit this pattern precisely. Strip away the technical details and three failure modes repeat themselves.
+
+<BlogBarChart
+  title="Initial Attack Vectors in 2025"
+  source="Source: Verizon 2025 Data Breach Investigations Report"
+  data={[
+    { label: "Credential Abuse", value: 22 },
+    { label: "Vuln Exploitation", value: 20 },
+    { label: "Phishing", value: 16 },
+    { label: "Other", value: 42 },
+  ]}
+/>
+
+**Missing multi-factor authentication.** Change Healthcare and PowerSchool — the two single biggest breaches — both happened because a critical login portal didn't require MFA. Attackers used stolen credentials and walked right in. MFA wouldn't have made these systems impenetrable, but it would have blocked the specific attack path that actually worked.
+
+**Third-party and supply chain weakness.** Vodafone's fine came from rogue partner sales agents. Air France-KLM was breached through a Salesforce CRM compromise. The same ShinyHunters campaign that hit Odido also targeted 40+ other companies through shared platforms. When a third party has access to your data, their security posture becomes your security posture. The Verizon DBIR found third-party involvement in breaches doubled to 30% in 2025.
+
+**Misconfigured or unprotected infrastructure.** The Mars Hydro IoT breach exposed 2.7 billion records from a database that required no authentication at all. Free's management tool was compromised. These weren't sophisticated zero-day exploits. They were open doors.
+
+## How Much Does a Data Breach Actually Cost?
+
+The [IBM Cost of a Data Breach Report 2025](https://www.ibm.com/reports/data-breach) puts the global average at $4.44 million. But that average hides massive variation. U.S. breaches cost $10.22 million on average — a new record. Healthcare breaches average $7.42 million. Financial services: $6.08 million. The mean time to identify and contain a breach is 241 days — over eight months of exposure before the damage is even stopped.
+
+<BlogImage src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&h=630&fit=crop&q=80" alt="Green cascading digital code on a dark screen representing data being exposed in a cyber breach" />
+
+But here's what's more useful than the headline number: what actually reduces costs when a breach happens.
+
+<BlogBarChart
+  title="What Reduces Data Breach Costs?"
+  source="Source: IBM Cost of a Data Breach Report, 2025"
+  data={[
+    { label: "AI & Automation", value: 1900 },
+    { label: "Internal Detection", value: 900 },
+    { label: "Data Encryption", value: 208 },
+  ]}
+/>
+
+Organizations with extensive AI and automation saved $1.9 million per breach compared to those without. Internal detection (catching the breach yourself rather than learning about it from attackers or a third party) saved $900,000. And data encryption — the simplest of these measures — saved $208,000 per incident. These aren't theoretical projections. They're measured outcomes across 604 organizations in IBM's study.
+
+<BlogBlockquote>**The ransom paradox:** Ransomware payment rates dropped to an all-time low of 28% in 2025, while median payments surged 368% to $59,556 ([Chainalysis](https://www.chainalysis.com/blog/crypto-ransomware-2026/), 2026). PowerSchool paid $2.85 million and got re-extorted. The lesson is clear: paying doesn't work. Invest in prevention and encryption instead.</BlogBlockquote>
+
+## How Can You Protect Your Data?
+
+IBM's data shows organizations with encryption saved $208,000 per breach ([IBM](https://www.ibm.com/reports/data-breach), 2025). But encryption is just one layer. Looking at the six breaches above, a handful of measures would have prevented or significantly reduced the damage from most of them.
+
+<BlogImage src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=630&fit=crop&q=80" alt="A golden padlock resting on a computer keyboard symbolizing data encryption and digital security" />
+
+**Enable multi-factor authentication everywhere.** This is the single highest-impact action you can take. Change Healthcare and PowerSchool — breaches affecting over 264 million people combined — both would have been blocked by MFA on their remote access portals. If a system accepts a password, it should require a second factor. No exceptions for "internal" tools.
+
+**Encrypt data before it leaves your device.** Server-side encryption protects against physical disk theft but not against compromised servers, stolen credentials, or insider threats. [Zero-knowledge encryption](https://ciphera.net/products/drop) — where data is encrypted on the client before it reaches the server — means that even a full server breach yields nothing but ciphertext. This is how [Ciphera Drop](https://drop.ciphera.net) works: AES-256-GCM encryption happens in your browser, and the server never has the decryption key.
+
+**Audit your third-party vendors.** With 30% of breaches now involving third parties (Verizon DBIR), your security posture includes every vendor with access to your data. Ask for SOC 2 reports. Check where their data is hosted. Understand what happens to your data when it reaches their systems. The Qantas breach started at a Manila call center — not at Qantas.
+
+**Minimize what you collect.** You can't breach data you don't have. [Privacy-first analytics](https://ciphera.net/products/pulse) tools like Pulse prove you can get actionable insights without collecting personal data. Every field in your database that contains PII is a liability. Collect what you need, delete what you don't, and encrypt what remains.
+
+<BlogBlockquote>**How Ciphera approaches this:** We built our entire platform around the principle that we shouldn't be able to access your data even if we wanted to. Ciphera Drop encrypts files client-side with AES-256-GCM before upload. Pulse collects zero personal data. Our servers are [hosted in Switzerland](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy) under the FADP. Even in a worst-case server compromise, attackers would find only encrypted blobs and aggregate analytics — no personal data, no keys, nothing useful.</BlogBlockquote>
+
+## Frequently Asked Questions
+
+### What was the biggest data breach of 2025?
+
+Change Healthcare affected 192.7 million people, making it the largest healthcare breach in U.S. history ([TechCrunch](https://techcrunch.com/2025/01/24/unitedhealth-confirms-190-million-americans-affected-by-change-healthcare-data-breach/)). In Europe, Free's breach exposed 19.2 million French customers. By raw record count, the Mars Hydro IoT exposure leaked 2.7 billion records — though these were device logs rather than personal identifiers.
+
+### How much does a data breach cost on average?
+
+The global average is $4.44 million per breach in 2025, according to [IBM](https://www.ibm.com/reports/data-breach). U.S. breaches average $10.22 million — a new record. Healthcare leads at $7.42 million per incident. These figures include detection, response, notification, and lost business costs. Smaller breaches affecting fewer than 50,000 records average around $2.8 million.
+
+### Does encryption actually reduce data breach costs?
+
+Yes. IBM's 2025 report found that extensive data encryption reduced breach costs by $208,000 per incident. More importantly, if attackers steal encrypted data they can't decrypt, the breach may not qualify as a "personal data breach" under GDPR — potentially avoiding regulatory fines entirely. Zero-knowledge encryption, where the server never holds keys, provides the strongest protection.
+
+### What percentage of data breaches involve human error?
+
+The [Verizon 2025 DBIR](https://www.verizon.com/business/resources/reports/dbir/) found that 60% of breaches involved the human element — credential misuse, phishing, social engineering, or configuration errors. The two largest breaches of 2025 (Change Healthcare and PowerSchool) both resulted from stolen credentials used on portals without multi-factor authentication enabled.
+
+### Should companies pay ransomware demands?
+
+The data says no. Ransomware payment rates hit an all-time low of 28% in 2025 ([Chainalysis](https://www.chainalysis.com/blog/crypto-ransomware-2026/), 2026), and for good reason. PowerSchool paid $2.85 million and was re-extorted anyway. Median payments surged 368% to $59,556 — paying emboldens attackers without guaranteeing data deletion. Invest that money in MFA, encryption, and incident response instead.
+
+## The Pattern Is Clear
+
+Every major breach of 2025-2026 traces back to something preventable. Missing MFA. Unaudited third-party access. Unprotected databases. Weak authentication. These aren't sophisticated nation-state attacks exploiting unknown vulnerabilities. They're basic security failures at massive scale.
+
+- **Enable MFA** on every system that accepts a password — especially remote access portals
+- **Encrypt data client-side** so that even a full server compromise yields nothing useful
+- **Audit third-party vendors** because 30% of breaches now come through the supply chain
+- **Minimize data collection** — you can't breach what you don't store
+- **Don't pay ransoms** — the 28% payment rate and re-extortion cases prove it doesn't work
+
+The cost of prevention is a fraction of the cost of response. A $4.44 million average breach cost makes $208,000 worth of encryption look like the best investment you'll ever make. If you're looking for a starting point, [encrypt your file sharing with Drop](https://drop.ciphera.net) and replace invasive analytics with [Pulse](https://pulse.ciphera.net). Your data — and your users' data — deserves better than an open door.
