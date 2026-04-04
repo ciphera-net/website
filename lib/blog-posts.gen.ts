@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "ai-assistant-data-collection-chatgpt-gemini-meta",
+    "title": "Your AI Assistant Is Training on Your Data — Here's What ChatGPT, Gemini, and Meta AI Actually Collect",
+    "description": "ChatGPT has 900M weekly users. Most don't know their conversations train the model by default. Here's what each AI assistant collects — and how to stop it.",
+    "category": "Privacy",
+    "date": "2026-04-05",
+    "dateModified": "2026-04-05",
+    "readTime": "7 min read",
+    "image": "/blog/og/ai-assistant-data-collection-chatgpt-gemini-meta.png"
+  },
+  {
     "slug": "eu-us-data-privacy-framework-executive-order",
     "title": "The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem",
     "description": "The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.",

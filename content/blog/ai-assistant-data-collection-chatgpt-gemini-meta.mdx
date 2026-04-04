@@ -1,0 +1,116 @@
+---
+title: "Your AI Assistant Is Training on Your Data — Here's What ChatGPT, Gemini, and Meta AI Actually Collect"
+description: "ChatGPT has 900M weekly users. Most don't know their conversations train the model by default. Here's what each AI assistant collects — and how to stop it."
+category: Privacy
+date: "2026-04-05"
+dateModified: "2026-04-05"
+readTime: "7 min read"
+image: "/blog/og/ai-assistant-data-collection-chatgpt-gemini-meta.png"
+faqs:
+  - question: "Does ChatGPT store my conversations permanently?"
+    answer: "Active conversations are stored indefinitely by default. Deleted chats are purged within 30 days. Temporary Chat mode prevents storage entirely. Unless you disable 'Improve the model for everyone' in Settings > Data Controls, your conversations also train OpenAI's models."
+  - question: "Can my employer see what I type into Copilot?"
+    answer: "For Microsoft 365 Copilot (enterprise), conversation data is discoverable through Microsoft Purview and subject to your organization's retention policies. Consumer Copilot data is anonymized but may be used for training. Your employer can't see consumer Copilot usage directly, but enterprise usage is logged."
+  - question: "Is there an AI assistant that doesn't train on my data?"
+    answer: "Apple Intelligence processes data on-device or via Private Cloud Compute with ephemeral processing — no training on user data. For maximum control, local alternatives like Ollama (163K+ GitHub stars) and LM Studio run entirely on your hardware with zero data leaving your device."
+---
+
+In early 2023, Samsung engineers pasted proprietary chip test sequences and source code directly into ChatGPT. Within weeks, Samsung [banned all generative AI tools](https://mashable.com/article/samsung-chatgpt-leak-details) company-wide. They weren't overreacting — [27% of organizations](https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2025/m04/cisco-2025-data-privacy-benchmark-study-privacy-landscape-grows-increasingly-complex-in-the-age-of-ai.html) have now banned GenAI applications entirely ([Cisco](https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2025/m04/cisco-2025-data-privacy-benchmark-study-privacy-landscape-grows-increasingly-complex-in-the-age-of-ai.html), 2025). The scale of exposure is staggering. ChatGPT now has 900 million weekly active users ([TechCrunch](https://techcrunch.com/2026/02/27/chatgpt-reaches-900m-weekly-active-users/), Feb 2026). Google Gemini passed 750 million monthly users ([TechCrunch](https://techcrunch.com/2026/02/04/googles-gemini-app-has-surpassed-750m-monthly-active-users/), Feb 2026). Meta AI crossed 1 billion monthly users ([CNBC](https://www.cnbc.com/2025/05/28/zuckerberg-meta-ai-one-billion-monthly-users.html), May 2025). And 38% of employees share sensitive work data with AI tools without employer permission ([Protecto](https://www.protecto.ai/blog/ai-data-privacy-statistics-trends/), 2025).
+
+<BlogImage src="/blog/images/pexels-8386440.jpg" alt="A laptop screen glowing in a dim room showing an AI chatbot interface with a conversation about sensitive business data" />
+
+<BlogBlockquote variant="tldr">
+
+Most AI assistants train on your conversations by default. ChatGPT, Gemini, Meta AI, and Copilot all use consumer data for model improvement — only Apple Intelligence doesn't. With 38% of employees sharing sensitive data with AI tools without permission ([Protecto](https://www.protecto.ai/blog/ai-data-privacy-statistics-trends/), 2025), your private conversations are likely already in a training dataset. Opt-out settings exist but are buried. Local alternatives like Ollama keep data on your device entirely.
+
+</BlogBlockquote>
+
+## What Does Each AI Assistant Actually Collect?
+
+Every major AI assistant except Apple Intelligence trains on consumer conversations by default. Privacy Watchdog scored OpenAI just 48 out of 100 — a Grade D — noting that OpenAI *can* build strong privacy protections but only extends them to enterprise customers ([Privacy Watchdog](https://terms.law/Privacy-Watchdog/ai-services/openai/), Jan 2026). The consumer experience is a different story entirely.
+
+Here's how the five biggest AI assistants compare on data collection and training:
+
+| Provider | Trains on Your Data? | Opt-Out? | Retention |
+|---|---|---|---|
+| ChatGPT | Yes (default) | Yes (buried in settings) | Indefinite (active), 30 days (deleted) |
+| Google Gemini | Yes (default) | Yes | Up to 3 years |
+| Meta AI | Yes + ad targeting | EU only | Not specified |
+| Microsoft Copilot | Yes (consumer) | Yes | 18 months |
+| Apple Intelligence | No | N/A | Ephemeral |
+
+The pattern is consistent. Enterprise customers at OpenAI, Microsoft, and Google all get contractual guarantees that their data won't train models. Free and consumer users get opt-out toggles buried in settings submenus most people never find.
+
+Meta takes it further. Meta AI conversations don't just train models — they feed ad personalization for over 1 billion users since December 2025 ([TechCrunch](https://techcrunch.com/2025/10/01/meta-plans-to-sell-targeted-ads-based-on-data-in-your-ai-chats/), 2025). There's no full opt-out for US users. EU residents can object under GDPR, but Americans get no equivalent right. This is the [same two-tier pattern Meta uses with Instagram encryption](/blog/instagram-drops-end-to-end-encryption) — promise privacy, deliver it selectively.
+
+### GitHub Copilot Changes the Code Privacy Equation
+
+Developers aren't exempt from this trend. Starting April 24, 2026, GitHub Copilot will train on code from Free, Pro, and Pro+ users by default ([GitHub Blog](https://github.blog/news-insights/company-news/updates-to-github-copilot-interaction-data-usage-policy/), Mar 2026). Business and Enterprise tiers are excluded. If you write code on a free plan, your snippets, function signatures, and comments become training material.
+
+<BlogBlockquote>
+
+**Our take:** The divide is clear and intentional. Companies that pay enterprise rates get privacy by contract. Everyone else gets privacy by obscure toggle — if they even know it exists. This isn't a bug. It's a business model where consumer data subsidizes enterprise privacy guarantees.
+
+</BlogBlockquote>
+
+## Why Should You Care About AI Training Data?
+
+The risks aren't theoretical. Italy fined OpenAI EUR 15 million in December 2024 — the first GenAI GDPR fine in the EU ([The Hacker News](https://thehackernews.com/2024/12/italy-fines-openai-15-million-for.html), Dec 2024). The violations included no legal basis for training on personal data, failure to report a data breach, and inadequate age verification. Regulators are catching up. But the damage often happens before enforcement arrives.
+
+<BlogImage src="/blog/images/pexels-5473955.jpg" alt="A visualization of data flowing from a user's chat messages into a large neural network, representing AI model training on personal conversations" />
+
+Samsung's 2023 incident remains the clearest cautionary tale. Engineers pasted chip test sequences, proprietary source code, and internal meeting transcripts into ChatGPT on three separate occasions within a single month. Samsung's response was immediate: a company-wide ban on all generative AI tools.
+
+They're far from alone in this anxiety. 64% of professionals worry about inadvertently sharing sensitive data with AI, and roughly half admit to inputting personal or non-public company data into AI tools ([Cisco](https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2025/m04/cisco-2025-data-privacy-benchmark-study-privacy-landscape-grows-increasingly-complex-in-the-age-of-ai.html), 2025). What happens when your confidential business strategy ends up in a training set that millions of other users can probe?
+
+### Voice Assistants Set the Precedent
+
+AI chatbots aren't the first to collect data this way. Apple paid $95 million in January 2025 to settle claims that Siri recorded private conversations without proper wake-word activation. Amazon was fined $25 million by the FTC and DOJ in 2023 for Alexa recording children without parental consent.
+
+The pattern is the same: collect first, apologize later. Voice assistants proved the model works — companies absorb the fines and keep the data. Now AI chatbots operate at a far larger scale. Your uploaded files, images, and documents all become training data unless you actively opt out. For a broader look at where privacy erosion is heading, see our [2026 privacy statistics roundup](/blog/privacy-statistics-2026).
+
+## How Does the Two-Tiered Privacy Problem Work?
+
+Geography determines your privacy rights more than any settings toggle. Google's "Personal Intelligence" feature reads Gmail, Chat, and Meet content — enabled by default in the US, disabled by default in the EU, UK, and Japan. Meta AI ad targeting is active globally but blocked in the EU, UK, and South Korea under GDPR enforcement ([TechCrunch](https://techcrunch.com/2025/10/01/meta-plans-to-sell-targeted-ads-based-on-data-in-your-ai-chats/), 2025). Your location decides your default level of protection.
+
+The consumer concern is overwhelming. 67% of consumers are worried about how AI uses their data, and 81% say AI-driven data harvesting compromises their online security ([ExpressVPN](https://www.expressvpn.com/blog/digital-privacy-us-attitudes-survey-2025/), 2025). These aren't fringe privacy advocates. This is the mainstream population telling pollsters they feel unsafe.
+
+### Enterprise vs. Consumer: A Deliberate Gap
+
+OpenAI's enterprise tier explicitly promises that customer data won't train models. Microsoft makes the same guarantee for Microsoft 365 Copilot. Google Workspace customers get equivalent protections. But the free versions of ChatGPT, Gemini, and Copilot all train on user input by default.
+
+So who actually gets privacy? People who can afford it. If you're on a free tier or a personal subscription, you're the product — your conversations improve the model that enterprise customers use without contributing their own data. Isn't that exactly the dynamic we've been warning about for a decade?
+
+This is the broader pattern across Big Tech. The same companies that sell privacy to enterprises strip it from consumers. For more on this structural divide, read [why European businesses should use European software](/blog/why-european-businesses-should-use-european-software). The EU's regulatory framework at least forces a baseline. The US doesn't have one.
+
+<BlogBlockquote>
+
+**Our take:** The two-tiered model isn't accidental. It's the natural outcome of a business where consumer data is the raw material and enterprise contracts are the finished product. You can opt out of training in every major AI assistant — but the fact that you have to opt out, rather than opt in, tells you everything about whose interests come first.
+
+</BlogBlockquote>
+
+## What Can You Actually Do to Protect Your Data?
+
+You don't have to accept the defaults. 27% of organizations have banned GenAI outright ([Cisco](https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2025/m04/cisco-2025-data-privacy-benchmark-study-privacy-landscape-grows-increasingly-complex-in-the-age-of-ai.html), 2025), but individual users have practical steps that don't require a total ban. Here's what works right now.
+
+<BlogImage src="/blog/images/pexels-546819.jpg" alt="A person using a laptop with a locally running open-source AI model interface, representing privacy-preserving alternatives to cloud AI assistants" />
+
+### Opt Out of Training Everywhere
+
+Start with the settings. In ChatGPT, go to Settings, then Data Controls, and disable "Improve the model for everyone." For Gemini, turn off Gemini Apps Activity in your Google account. GitHub Copilot users should visit github.com/settings/copilot/features before April 24, 2026 to opt out before the new training default kicks in.
+
+Meta AI is harder. EU and UK residents can file a GDPR objection. US users have no full opt-out — Meta's terms allow training on your conversations and using them for ad targeting with no equivalent mechanism to refuse.
+
+### Use Ephemeral Modes and Local Alternatives
+
+When you do use cloud AI, enable Temporary Chat in ChatGPT or equivalent ephemeral modes. These prevent conversation storage and training. Never paste proprietary code, credentials, personal data, or client information into any cloud AI — even with training disabled, the data still hits the provider's servers.
+
+For maximum control, run models locally. Ollama has over 163,000 GitHub stars and supports dozens of open-source models. LM Studio and llama.cpp offer similar local-only operation. Zero data leaves your device. No opt-out toggles needed because there's nothing to opt out of.
+
+### Choose Providers That Can't Access Your Data
+
+Apple Intelligence is the only major provider that doesn't train on user data by design. Processing happens on-device or through ephemeral Private Cloud Compute — Apple's servers process the request and discard it immediately. No training. No retention.
+
+For file sharing and storage, zero-knowledge encryption prevents provider access entirely. To understand how this architecture works, see our [zero-knowledge encryption guide](/blog/zero-knowledge-encryption-guide). Ciphera doesn't use AI to read your data — because we can't. Zero-knowledge encryption means we couldn't access your files even if we wanted to, and no AI model ever will.
+
+The [EU-US Data Privacy Framework](/blog/eu-us-data-privacy-framework-executive-order) adds another layer of uncertainty for cross-border data. Understanding where your data flows matters as much as understanding who trains on it. Privacy isn't just a setting you toggle — it's an architecture decision. For more on building that foundation, read [why privacy can't be an afterthought](/blog/why-privacy-cant-be-an-afterthought).
