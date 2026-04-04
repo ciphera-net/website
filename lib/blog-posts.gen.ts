@@ -24,6 +24,16 @@ export const blogPosts: BlogPostSummary[] = [
     "image": "/blog/og/ai-assistant-data-collection-chatgpt-gemini-meta.png"
   },
   {
+    "slug": "data-brokers-10000-data-points-how-to-delete",
+    "title": "Data Brokers Have 10,000 Data Points on You — Here's How to Delete Them",
+    "description": "Acxiom holds data on 2.5 billion people with 10,000+ attributes each. Data broker breaches cost $20.8 billion. Here's how to fight back under GDPR.",
+    "category": "Privacy",
+    "date": "2026-04-05",
+    "dateModified": "2026-04-05",
+    "readTime": "7 min read",
+    "image": "/blog/og/data-brokers-10000-data-points-how-to-delete.png"
+  },
+  {
     "slug": "eu-us-data-privacy-framework-executive-order",
     "title": "The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem",
     "description": "The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.",
