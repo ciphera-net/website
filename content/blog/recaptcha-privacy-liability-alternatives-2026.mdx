@@ -33,26 +33,7 @@ reCAPTCHA collects device fingerprints, mouse movements, keystrokes, and cross-s
 
 According to analyses by [GDPRregister.eu](https://www.gdprregister.eu/gdpr/google-recaptcha-cookies/) and [Prosopo](https://prosopo.io/blog/how-does-captcha-collect-user-data/), reCAPTCHA v3 collects: IP addresses, mouse movements, click patterns, keystroke timing, scroll behavior, screen resolution, installed plugins, operating system details, browser window screenshots, language settings, referrer URLs, and cross-site Google cookies. All of this runs silently in the background across your entire site — not just on the pages where you think you need bot protection.
 
-That's a data minimization problem under GDPR Article 5(1)(c). You're collecting behavioral fingerprints on every visitor to detect bots, but the data goes to Google's servers and gets processed alongside their broader advertising infrastructure. Most site operators don't even know this is happening. They installed reCAPTCHA to block spam on a contact form and ended up collecting keystroke timing data from every page view.
-
-<BlogComparisonMatrix
-  title="Data Collection: reCAPTCHA vs Privacy Alternatives"
-  columns={["reCAPTCHA v3", "hCaptcha", "Turnstile", "Friendly"]}
-  columnColors={["#ef4444", "#f59e0b", "#3b82f6", "#22c55e"]}
-  rows={[
-    { label: "IP address", values: ["Collects", "Collects", "Limited", "Limited"] },
-    { label: "Persistent cookies", values: ["Collects", "None", "None", "None"] },
-    { label: "Cross-site tracking", values: ["Collects", "None", "None", "None"] },
-    { label: "Behavioral fingerprinting", values: ["Collects", "Limited", "None", "None"] },
-    { label: "Device fingerprinting", values: ["Collects", "Limited", "None", "None"] },
-    { label: "Browser screenshots", values: ["Collects", "None", "None", "None"] },
-    { label: "Data sent to US servers", values: ["Collects", "Collects", "None", "None"] },
-    { label: "Runs across entire site", values: ["Collects", "None", "None", "None"] },
-    { label: "Requires cookie consent", values: ["Yes", "Limited", "No", "No"] }
-  ]}
-/>
-
-| Data Type | reCAPTCHA v3 | hCaptcha | Turnstile | Friendly Captcha |
+That's a data minimization problem under GDPR Article 5(1)(c). You're collecting behavioral fingerprints on every visitor to detect bots, but the data goes to Google's servers and gets processed alongside their broader advertising infrastructure. Most site operators don't even know this is happening. They installed reCAPTCHA to block spam on a contact form and ended up collecting keystroke timing data from every page view.| Data Type | reCAPTCHA v3 | hCaptcha | Turnstile | Friendly Captcha |
 |---|---|---|---|---|
 | IP address | Collects | Collects | Limited | Limited |
 | Persistent cookies | Collects | None | None | None |
@@ -84,24 +65,7 @@ Google's April 2, 2026 transition from data controller to data processor for reC
 
 ## Is reCAPTCHA Even Effective Against Modern Bots?
 
-In September 2024, researchers at [ETH Zurich demonstrated their AI model could solve Google reCAPTCHAv2 with 100% accuracy](https://arxiv.org/abs/2409.08831) — using a modified YOLO model trained on 14,000 labeled images. The previous best was 68-71%. Meanwhile, automated bot traffic surpassed human traffic for the first time in 2024, with bots accounting for [51% of all web traffic](https://cpl.thalesgroup.com/about-us/newsroom/2025-imperva-bad-bot-report-ai-internet-traffic) (Imperva Bad Bot Report, 2025). So reCAPTCHA's privacy cost keeps growing while its security benefit keeps shrinking. That's a bad trade.
-
-<BlogAreaChart
-  title="Bot Traffic Overtook Human Traffic in 2024"
-  source="Imperva Bad Bot Reports 2020-2025 (Thales Group)"
-  xKey="year"
-  yKey="value"
-  data={[
-    { year: "2019", bots: 37.2, humans: 62.8 },
-    { year: "2020", bots: 40.8, humans: 59.2 },
-    { year: "2021", bots: 42.3, humans: 57.7 },
-    { year: "2022", bots: 47.4, humans: 52.6 },
-    { year: "2023", bots: 49.6, humans: 50.4 },
-    { year: "2024", bots: 51.0, humans: 49.0 }
-  ]}
-/>
-
-The ETH Zurich researchers made another telling discovery. They found reCAPTCHAv2 is "heavily based on cookie and browser history data" for determining if a user is human. Meaning the privacy-invasive data collection isn't just a side effect — it's the core mechanism. And that mechanism failed against a model trained on 14,000 images. reCAPTCHA's approach to bot detection fundamentally depends on surveillance. When that surveillance can be spoofed, you're left with all the privacy cost and none of the security benefit.
+In September 2024, researchers at [ETH Zurich demonstrated their AI model could solve Google reCAPTCHAv2 with 100% accuracy](https://arxiv.org/abs/2409.08831) — using a modified YOLO model trained on 14,000 labeled images. The previous best was 68-71%. Meanwhile, automated bot traffic surpassed human traffic for the first time in 2024, with bots accounting for [51% of all web traffic](https://cpl.thalesgroup.com/about-us/newsroom/2025-imperva-bad-bot-report-ai-internet-traffic) (Imperva Bad Bot Report, 2025). So reCAPTCHA's privacy cost keeps growing while its security benefit keeps shrinking. That's a bad trade.The ETH Zurich researchers made another telling discovery. They found reCAPTCHAv2 is "heavily based on cookie and browser history data" for determining if a user is human. Meaning the privacy-invasive data collection isn't just a side effect — it's the core mechanism. And that mechanism failed against a model trained on 14,000 images. reCAPTCHA's approach to bot detection fundamentally depends on surveillance. When that surveillance can be spoofed, you're left with all the privacy cost and none of the security benefit.
 
 <BlogBlockquote>
 **Our take:** The bot traffic chart tells a story most CAPTCHA vendors won't. Bots now outnumber humans on the web, and the most advanced bots defeat reCAPTCHA at 100% accuracy. The only visitors reCAPTCHA reliably catches are impatient humans who misclick an image tile. That's not security — it's friction.
@@ -111,19 +75,7 @@ Bad bots specifically account for 37% of all web traffic in 2024 — up from 32%
 
 ## What Does reCAPTCHA Cost Your Website?
 
-Independent testing by [OOPSpam](https://www.oopspam.com/blog/recaptcha-performance-analyses) measured reCAPTCHA's performance impact using Google Lighthouse: page load time jumped from 285ms to 1.56 seconds — a 447% increase. Compressed data went from 35.6KB to 565KB (1,487% increase). Network requests more than doubled from 5 to 13. That's the tax you pay for a service that AI bots now bypass.
-
-<BlogLollipopChart
-  title="reCAPTCHA Performance Tax"
-  source="OOPSpam reCAPTCHA Performance Analysis (Google Lighthouse testing)"
-  data={[
-    { label: "Load time (285ms → 1.56s)", value: 447 },
-    { label: "Data transfer (35.6KB → 565KB)", value: 1487 },
-    { label: "Requests (5 → 13)", value: 160 }
-  ]}
-/>
-
-<BlogImage src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&q=80" alt="Dashboard showing website performance metrics and analytics, illustrating the measurable impact of third-party scripts on page load speed" />
+Independent testing by [OOPSpam](https://www.oopspam.com/blog/recaptcha-performance-analyses) measured reCAPTCHA's performance impact using Google Lighthouse: page load time jumped from 285ms to 1.56 seconds — a 447% increase. Compressed data went from 35.6KB to 565KB (1,487% increase). Network requests more than doubled from 5 to 13. That's the tax you pay for a service that AI bots now bypass.<BlogImage src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&q=80" alt="Dashboard showing website performance metrics and analytics, illustrating the measurable impact of third-party scripts on page load speed" />
 
 Performance aside, CAPTCHAs actively hurt conversions. Research from [Baymard Institute](https://baymard.com/blog/captchas-in-checkout) found an 8% failure rate on first attempts, jumping to 29.45% with case-sensitive CAPTCHAs. Separately, a Stanford study found CAPTCHAs can [reduce form conversions by up to 40%](https://www.peakhour.io/blog/the-negative-impact-of-captchas-on-ecommerce-conversions/), and Forrester reported 19% of consumers abandoned a website entirely because of a CAPTCHA. For e-commerce sites, that's revenue walking out the door.
 
@@ -145,21 +97,7 @@ hCaptcha positions itself as the "largest independent CAPTCHA" service, [claimin
 
 If GDPR compliance is your top priority, Friendly Captcha is the strictest option. It's EU-hosted, uses proof-of-work cryptographic puzzles instead of behavioral tracking, sets zero cookies, collects zero personal data, and is fully invisible to users. The trade-off is cost: the free tier is limited to 1,000 requests per month, with paid plans starting at €39/month. For businesses where a GDPR fine would cost far more, that's a reasonable trade.
 
-<BlogImage src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop&q=80" alt="Abstract cybersecurity visualization with network connections and shield icons representing privacy-first bot protection alternatives" />
-
-<BlogRadarChart
-  title="CAPTCHA Alternatives Scorecard"
-  source="Aggregated from Cloudflare Docs, hCaptcha Docs, Friendly Captcha Docs, OOPSpam performance data, Google reCAPTCHA Enterprise pricing (2025-2026)"
-  axes={["GDPR compliance", "Performance", "User experience", "Cost (free tier)", "Bot detection"]}
-  series={[
-    { label: "reCAPTCHA", values: [2, 2, 3, 3, 4] },
-    { label: "Turnstile", values: [4, 5, 5, 5, 4] },
-    { label: "hCaptcha", values: [3, 3, 2, 4, 4] },
-    { label: "Friendly Captcha", values: [5, 4, 4, 2, 3] }
-  ]}
-/>
-
-| Metric | reCAPTCHA | Turnstile | hCaptcha | Friendly Captcha |
+<BlogImage src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop&q=80" alt="Abstract cybersecurity visualization with network connections and shield icons representing privacy-first bot protection alternatives" />| Metric | reCAPTCHA | Turnstile | hCaptcha | Friendly Captcha |
 |---|---|---|---|---|
 | GDPR compliance | 2/5 | 4/5 | 3/5 | 5/5 |
 | Performance | 2/5 | 5/5 | 3/5 | 4/5 |

@@ -43,20 +43,7 @@ One common confusion worth clearing up. Zero-knowledge encryption is not the sam
 
 The average data breach costs $4.44 million globally and $10.22 million in the United States ([IBM Cost of a Data Breach Report](https://www.ibm.com/reports/data-breach), 2025). If your cloud provider holds your encryption keys, a breach of their systems exposes your data — regardless of whether "encryption" appears on their features page. Server-side encryption protects against physical disk theft. It doesn't protect against the vendor itself, government subpoenas, insider threats, or breaches of the key management infrastructure.
 
-The Dropbox Sign breach of April 2024 demonstrated this precisely. Dropbox uses server-side AES-256 encryption — but because Dropbox holds the keys, the breach exposed API keys, OAuth tokens, and user data. The encryption existed, but the company holding the keys got compromised. With zero-knowledge encryption, the same breach yields nothing but unreadable ciphertext. For a detailed breakdown of recent incidents, see our analysis of the [biggest data breaches of 2025-2026](https://ciphera.net/blog/biggest-data-breaches-2025-2026).
-
-<BlogBarChart
-  title="Who Can Read Your Files?"
-  source="Ciphera analysis based on Thales 2026 and IBM 2025"
-  data={[
-    { label: "No Encryption", value: 100 },
-    { label: "Server-Side AES", value: 70 },
-    { label: "Server + HSM", value: 35 },
-    { label: "Client-Side ZKE", value: 2 }
-  ]}
-/>
-
-67% of organizations that experienced cloud attacks in 2025 identified credential theft as the primary attack vector ([Thales](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/), 2026). Stolen credentials give attackers access to everything the vendor's encryption was supposed to protect. ZKE makes credential theft irrelevant to your data — even with full server access, there are no keys to find.
+The Dropbox Sign breach of April 2024 demonstrated this precisely. Dropbox uses server-side AES-256 encryption — but because Dropbox holds the keys, the breach exposed API keys, OAuth tokens, and user data. The encryption existed, but the company holding the keys got compromised. With zero-knowledge encryption, the same breach yields nothing but unreadable ciphertext. For a detailed breakdown of recent incidents, see our analysis of the [biggest data breaches of 2025-2026](https://ciphera.net/blog/biggest-data-breaches-2025-2026).67% of organizations that experienced cloud attacks in 2025 identified credential theft as the primary attack vector ([Thales](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/), 2026). Stolen credentials give attackers access to everything the vendor's encryption was supposed to protect. ZKE makes credential theft irrelevant to your data — even with full server access, there are no keys to find.
 
 ## How Does ZKE Work in Plain English?
 
@@ -108,21 +95,7 @@ On regulation: GDPR, the Swiss FADP, and emerging U.S. state privacy laws (20 st
 
 On breach liability: when your cloud provider suffers a breach and they held the encryption keys, your data is exposed and you share liability. With ZKE, the same breach yields only ciphertext. Your exposure drops to near zero.
 
-On post-quantum: 60% of organizations are already evaluating post-quantum cryptography solutions, with 63% citing future encryption compromise as their top quantum risk ([Thales](https://cpl.thalesgroup.com/about-us/newsroom/2025-thales-data-threat-report-reveals-nearly-70-percent-of-organizations-identify-ais-fast-moving-ecosystem-as-top-genai-related-security-risk), 2025). ZKE's client-side architecture makes algorithm upgrades possible without re-engineering the entire system — the encryption happens in the client, so upgrading the cipher is a client update, not a server migration.
-
-<BlogBarChart
-  title="Zero-Knowledge Encryption Market Growth"
-  source="Grand View Research, 2025 | CAGR: 22.1%"
-  data={[
-    { label: "2024", value: 1.28 },
-    { label: "2025", value: 1.56 },
-    { label: "2027", value: 2.33 },
-    { label: "2030", value: 4.32 },
-    { label: "2033", value: 7.59 }
-  ]}
-/>
-
-The [Swiss FADP and neutrality](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy) add another layer. US-hosted services can be compelled under the CLOUD Act to hand over data stored anywhere globally. Swiss-hosted ZKE services are outside that jurisdiction entirely — and even if they were compelled, there's no plaintext to hand over.
+On post-quantum: 60% of organizations are already evaluating post-quantum cryptography solutions, with 63% citing future encryption compromise as their top quantum risk ([Thales](https://cpl.thalesgroup.com/about-us/newsroom/2025-thales-data-threat-report-reveals-nearly-70-percent-of-organizations-identify-ais-fast-moving-ecosystem-as-top-genai-related-security-risk), 2025). ZKE's client-side architecture makes algorithm upgrades possible without re-engineering the entire system — the encryption happens in the client, so upgrading the cipher is a client update, not a server migration.The [Swiss FADP and neutrality](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy) add another layer. US-hosted services can be compelled under the CLOUD Act to hand over data stored anywhere globally. Swiss-hosted ZKE services are outside that jurisdiction entirely — and even if they were compelled, there's no plaintext to hand over.
 
 ## ZKE in Practice: Drop, Auth, and Your Business
 

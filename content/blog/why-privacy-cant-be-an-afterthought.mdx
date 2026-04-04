@@ -25,20 +25,7 @@ Every major tech company says it cares about privacy. Google's homepage says "ke
 
 In September 2025, Google had an extraordinary month. France's CNIL fined the company [EUR 325 million](https://www.cnil.fr/en/cookies-and-advertisements-inserted-between-emails-google-fined-325-million-euros-cnil) for inserting ads disguised as emails in Gmail without consent and placing cookies without valid permission — affecting 74 million accounts. That same month, a US federal jury [ordered Google to pay $425.7 million](https://www.axios.com/2025/09/04/google-privacy-lawsuit-pay-425-million-jury-rules) after finding the company continued collecting user data through third-party app partnerships even when 98 million users had explicitly disabled the "Web & App Activity" setting. Users toggled the switch to "off." Google kept collecting anyway. For eight years.
 
-Google wasn't the only one. In January 2025, Apple agreed to pay [$95 million](https://www.npr.org/2025/01/03/g-s1-40940/apple-settle-lawsuit-siri-privacy) to settle allegations that Siri was recording conversations even without the "Hey, Siri" trigger — and that those recordings were shared with advertisers. Plaintiffs reported seeing targeted ads for products they'd only mentioned out loud near their Apple devices. This from a company that runs billion-dollar ad campaigns about privacy being a human right.
-
-<BlogBarChart
-  title="Privacy Washing: The Claim vs. The Reality"
-  source="Sources: Axios, CNIL, NPR, Meta/DPC — 2023-2025 enforcement actions"
-  data={[
-    { label: "Meta — EU data transfers", value: 1200 },
-    { label: "Google — tracking despite opt-out", value: 425.7 },
-    { label: "Google — Gmail cookies", value: 325 },
-    { label: "Apple — Siri recordings", value: 95 },
-  ]}
-/>
-
-| Company | The Claim | The Reality | Fine |
+Google wasn't the only one. In January 2025, Apple agreed to pay [$95 million](https://www.npr.org/2025/01/03/g-s1-40940/apple-settle-lawsuit-siri-privacy) to settle allegations that Siri was recording conversations even without the "Hey, Siri" trigger — and that those recordings were shared with advertisers. Plaintiffs reported seeing targeted ads for products they'd only mentioned out loud near their Apple devices. This from a company that runs billion-dollar ad campaigns about privacy being a human right.| Company | The Claim | The Reality | Fine |
 |---|---|---|---|
 | Google | Users can disable Web & App Activity | Kept collecting via third-party apps for 8 years | $425.7M |
 | Google | Proper cookie consent in Gmail | Ads disguised as emails, cookies without consent | EUR 325M |
@@ -68,26 +55,7 @@ The [Linux Foundation's 2025 survey](https://canonical.com/blog/state-of-global-
 
 Think about Apple's Siri recording scandal. It happened because nobody outside Apple could inspect what Siri was doing. The code was closed. The behavior was hidden. Users had to trust Apple's marketing — and that trust was betrayed. With open-source software, the recording behavior would have been discovered in the code before it ever shipped. That's not hypothetical. It's how open-source security works in practice: thousands of eyes catching what internal teams miss or ignore.
 
-Every Ciphera product is open source. Not "source available." Not "shared source under a restrictive license." Genuinely open source on GitHub. [Ciphera Drop](https://github.com/ciphera-net/drop). [Pulse](https://github.com/ciphera-net/pulse). The authentication service. The UI library. If we claimed zero-knowledge encryption but actually decrypted files server-side, anyone could read the code and call us out. That's the point. Open source doesn't ask you to trust us. It invites you to verify us.
-
-<BlogBarChart
-  title="Data Collection: Big Tech vs. Privacy-First"
-  source="Sources: Security.org data collection ratings, product documentation"
-  data={[
-    { label: "Google Search", value: 100 },
-    { label: "Gmail", value: 90 },
-    { label: "Google Drive", value: 80 },
-    { label: "Google Analytics", value: 95 },
-    { label: "WhatsApp", value: 75 },
-    { label: "DuckDuckGo", value: 5 },
-    { label: "ProtonMail", value: 3 },
-    { label: "Ciphera Drop", value: 1 },
-    { label: "Ciphera Pulse", value: 1 },
-    { label: "Signal", value: 1 },
-  ]}
-/>
-
-An [Android device with Chrome communicates location data back to Google 340 times per 24-hour period](https://www.security.org/resources/data-tech-companies-have/) — 14 times per hour (Security.org / Vanderbilt University). Background data collection is double that of active usage. Google earns Security.org's worst possible rating for data collection: an "F." The bars in the chart above aren't proportional for readability, but the gap is real: services built on surveillance collect hundreds of data points per user per day. Privacy-first alternatives collect close to zero.
+Every Ciphera product is open source. Not "source available." Not "shared source under a restrictive license." Genuinely open source on GitHub. [Ciphera Drop](https://github.com/ciphera-net/drop). [Pulse](https://github.com/ciphera-net/pulse). The authentication service. The UI library. If we claimed zero-knowledge encryption but actually decrypted files server-side, anyone could read the code and call us out. That's the point. Open source doesn't ask you to trust us. It invites you to verify us.An [Android device with Chrome communicates location data back to Google 340 times per 24-hour period](https://www.security.org/resources/data-tech-companies-have/) — 14 times per hour (Security.org / Vanderbilt University). Background data collection is double that of active usage. Google earns Security.org's worst possible rating for data collection: an "F." The bars in the chart above aren't proportional for readability, but the gap is real: services built on surveillance collect hundreds of data points per user per day. Privacy-first alternatives collect close to zero.
 
 ## How Ciphera's Architecture Makes Privacy Washing Impossible
 
@@ -109,24 +77,7 @@ An [Android device with Chrome communicates location data back to Google 340 tim
 
 ## The Privacy Market Is Growing — Here's Why
 
-The privacy-enhancing technologies market stood at [$3.1-5.0 billion in 2025](https://www.grandviewresearch.com/industry-analysis/privacy-enhancing-technologies-market-report) and is projected to reach $12-40 billion by 2030, growing at 19-26% CAGR (Grand View Research). People aren't just expressing concern in surveys. They're switching. Signal reached #1 in app stores across Finland, Belgium, Italy, and the Netherlands in 2025, with [Dutch downloads surging 958%](https://techcrunch.com/2025/03/02/signal-is-the-number-one-downloaded-app-in-the-netherlands-but-why/) in three months. Proton grew from a 10,000-person crowdfunding campaign to [100 million accounts](https://proton.me/blog/proton-100-million-accounts). DuckDuckGo handles 98.8 million searches daily.
-
-<BlogAreaChart
-  title="Privacy-Enhancing Tech Market Growth"
-  source="Sources: Grand View Research, Mordor Intelligence — Privacy-Enhancing Technologies market"
-  xKey="year"
-  yKey="value"
-  yFormat="${value}B"
-  data={[
-    { year: "2018", value: 0.5 },
-    { year: "2020", value: 1.2 },
-    { year: "2022", value: 2.0 },
-    { year: "2025", value: 4.0 },
-    { year: "2030", value: 12.0 },
-  ]}
-/>
-
-An [ExpressVPN survey](https://www.expressvpn.com/blog/digital-privacy-us-attitudes-survey-2025/) (2025) found that 21% of Americans would pay for a social media platform that doesn't use their data to train AI, with another 50% saying they'd consider it depending on features and pricing. That's 71% of Americans open to paying for privacy. The demand isn't theoretical. People are tired of being the product, and they're putting their money where their frustration is.
+The privacy-enhancing technologies market stood at [$3.1-5.0 billion in 2025](https://www.grandviewresearch.com/industry-analysis/privacy-enhancing-technologies-market-report) and is projected to reach $12-40 billion by 2030, growing at 19-26% CAGR (Grand View Research). People aren't just expressing concern in surveys. They're switching. Signal reached #1 in app stores across Finland, Belgium, Italy, and the Netherlands in 2025, with [Dutch downloads surging 958%](https://techcrunch.com/2025/03/02/signal-is-the-number-one-downloaded-app-in-the-netherlands-but-why/) in three months. Proton grew from a 10,000-person crowdfunding campaign to [100 million accounts](https://proton.me/blog/proton-100-million-accounts). DuckDuckGo handles 98.8 million searches daily.An [ExpressVPN survey](https://www.expressvpn.com/blog/digital-privacy-us-attitudes-survey-2025/) (2025) found that 21% of Americans would pay for a social media platform that doesn't use their data to train AI, with another 50% saying they'd consider it depending on features and pricing. That's 71% of Americans open to paying for privacy. The demand isn't theoretical. People are tired of being the product, and they're putting their money where their frustration is.
 
 ## Frequently Asked Questions
 

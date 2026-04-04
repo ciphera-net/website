@@ -35,11 +35,7 @@ A joint Deloitte and Google study tracking 37 brand websites across 30 million s
 
 So why don't more teams monitor their CDN? Partly because CDN dashboards live in a separate tab from analytics. You check BunnyCDN's control panel in one window, your analytics tool in another, and try to manually correlate traffic spikes with cache performance. It doesn't scale. Slow degradation slips through the cracks.
 
-The broader observability market reflects this gap. Monitoring tools and platforms are projected to reach $34.1 billion in 2026 ([Mordor Intelligence](https://www.mordorintelligence.com/industry-reports/observability-market)), and AI monitoring adoption among platform users grew from 42% to 54% in a single year ([IBM](https://www.ibm.com/think/insights/observability-trends), 2025). CDN performance data is part of this shift. Teams that track infrastructure metrics alongside user analytics make faster decisions about caching and capacity.
-
-<BlogLollipopChart title="How Page Load Time Impacts Bounce Rate" source="Google, 2018" data={[{"label":"1s → 3s","value":32},{"label":"1s → 5s","value":90},{"label":"1s → 6s","value":106},{"label":"1s → 10s","value":123}]} />
-
-The cost of ignoring CDN performance isn't just slower pages. When load time jumps from 1 to 5 seconds, bounce probability increases 90%. From 1 to 10 seconds, it climbs 123% ([Google](https://business.google.com/ca-en/think/marketing-strategies/mobile-page-speed-new-industry-benchmarks/), 2018). And if your CDN goes down entirely? Unplanned IT downtime costs an average of $14,056 per minute ([Gartner/Ponemon via Atlassian](https://www.atlassian.com/incident-management/kpis/cost-of-downtime)).
+The broader observability market reflects this gap. Monitoring tools and platforms are projected to reach $34.1 billion in 2026 ([Mordor Intelligence](https://www.mordorintelligence.com/industry-reports/observability-market)), and AI monitoring adoption among platform users grew from 42% to 54% in a single year ([IBM](https://www.ibm.com/think/insights/observability-trends), 2025). CDN performance data is part of this shift. Teams that track infrastructure metrics alongside user analytics make faster decisions about caching and capacity.The cost of ignoring CDN performance isn't just slower pages. When load time jumps from 1 to 5 seconds, bounce probability increases 90%. From 1 to 10 seconds, it climbs 123% ([Google](https://business.google.com/ca-en/think/marketing-strategies/mobile-page-speed-new-industry-benchmarks/), 2018). And if your CDN goes down entirely? Unplanned IT downtime costs an average of $14,056 per minute ([Gartner/Ponemon via Atlassian](https://www.atlassian.com/incident-management/kpis/cost-of-downtime)).
 
 CDN monitoring gives you early warning signals. A dropping cache hit ratio, rising origin response times, a spike in 5xx errors — catch these patterns before they reach your users. The question isn't whether your CDN needs monitoring. It's how fast you'll spot the problem when something breaks.
 
@@ -53,11 +49,7 @@ CDN monitoring gives you early warning signals. A dropping cache hit ratio, risi
 
 **Requests** counts individual HTTP requests your CDN handles. Cross-reference this with bandwidth: if requests spike but bandwidth stays flat, you're serving many small files. The inverse means large assets dominate delivery.
 
-**Cache Hit Rate** is the single most important metric. It shows what percentage of requests are served from CDN edge nodes versus fetched from your origin server. Below 90%? Your origin is handling work the CDN should cover.
-
-<BlogBarChart title="Cache Hit Ratio: Performance Benchmarks" source="Cloudflare / Adobe AEM, 2025" data={[{"label":"95%+: Excellent — optimal caching, minimal origin load","value":95},{"label":"90–95%: Good — meets Adobe AEM best practices","value":92},{"label":"80–90%: Fair — review your cache headers","value":85},{"label":"Under 80%: Poor — heavy origin load","value":75}]} />
-
-**Origin Response Time** tracks how fast your origin server responds when the CDN can't serve from cache. Rising origin times often indicate database bottlenecks, overloaded app servers, or misconfigured cache headers. This is your earliest warning signal for backend trouble.
+**Cache Hit Rate** is the single most important metric. It shows what percentage of requests are served from CDN edge nodes versus fetched from your origin server. Below 90%? Your origin is handling work the CDN should cover.**Origin Response Time** tracks how fast your origin server responds when the CDN can't serve from cache. Rising origin times often indicate database bottlenecks, overloaded app servers, or misconfigured cache headers. This is your earliest warning signal for backend trouble.
 
 **Errors** breaks down HTTP error codes — 3xx redirects, 4xx client errors, 5xx server errors — over time. A jump in 5xx means your origin is failing. A 4xx spike after a deployment? Likely broken links or missing assets.
 
@@ -103,11 +95,7 @@ Everything updates when you switch date ranges — today, 7 days, 28 days, or 30
 
 ## How Much Is CDN Speed Worth to Your Business?
 
-The Deloitte study didn't just measure retail. It tracked speed improvements across multiple verticals, with no UX changes during the measurement period — only speed ([web.dev](https://web.dev/case-studies/milliseconds-make-millions), 2020). The results were consistent everywhere.
-
-<BlogBarChart title="Revenue Impact of 0.1s Speed Improvement" source="Deloitte/Google — 37 brands, 30M+ sessions, 2020" data={[{"label":"Luxury (cart adds)","value":40.1},{"label":"Lead Gen (forms)","value":21.6},{"label":"Travel (bookings)","value":10.1},{"label":"Retail (order value)","value":9.2},{"label":"Retail (conversions)","value":8.4}]} />
-
-A 0.1-second improvement lifted luxury brand product-to-cart rates by 40.1%. Lead generation sites saw form submissions jump 21.6%. Travel bookings climbed 10.1%. Even modest retail improvements delivered 8.4% more conversions and 9.2% higher average order values.
+The Deloitte study didn't just measure retail. It tracked speed improvements across multiple verticals, with no UX changes during the measurement period — only speed ([web.dev](https://web.dev/case-studies/milliseconds-make-millions), 2020). The results were consistent everywhere.A 0.1-second improvement lifted luxury brand product-to-cart rates by 40.1%. Lead generation sites saw form submissions jump 21.6%. Travel bookings climbed 10.1%. Even modest retail improvements delivered 8.4% more conversions and 9.2% higher average order values.
 
 These aren't projections from a whitepaper. Deloitte measured actual transactions across a 30-day window on live websites. No A/B tests. No design changes. Just speed — the kind that comes from keeping your CDN configured correctly and catching regressions before they compound.
 

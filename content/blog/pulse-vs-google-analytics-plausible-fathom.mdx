@@ -31,43 +31,13 @@ So what's the alternative? Privacy-first analytics tools promise accurate data w
 
 A [2025 SealMetrics study](https://docs.sealmetrics.com/blog/cookie-banner-ghosting-data-loss/) found that cookie-based analytics loses 80-90% of total visitor data in European markets. The loss happens in three stages: 40-60% of visitors never interact with the consent banner at all (they "ghost" it), another 25-35% actively click reject, and only 10-20% actually accept cookies and get tracked. In Germany, the worst case, fewer than 10% of visitors are tracked.
 
-That's not a minor gap in your data. It's a chasm. You're making product decisions based on the behavior of the 10-20% of visitors who happened to click "Accept." Are those visitors representative of your entire audience? Almost certainly not. Cookie acceptors tend to be less privacy-conscious, less technical, and less likely to use ad blockers — which means your analytics paints a systematically skewed picture.
-
-<BlogBarChart
-  title="Where Your Analytics Data Disappears"
-  source="Source: SealMetrics, 2025"
-  data={[
-    { label: "All Visitors", value: 100 },
-    { label: "After banner ghosting (~50% remain)", value: 50 },
-    { label: "After rejection (~20% remain)", value: 20 },
-    { label: "Actually tracked", value: 15 },
-  ]}
-/>
-
-The picture looks different in the United States, where cookie acceptance rates exceed 80% ([CookieYes](https://www.cookieyes.com/blog/cookie-consent-trends/), 2026). But if you serve any European traffic — and most websites do — the data loss is severe. Privacy-first analytics tools sidestep this problem entirely by not using cookies in the first place. Every visitor gets counted, regardless of whether they interact with a banner.
+That's not a minor gap in your data. It's a chasm. You're making product decisions based on the behavior of the 10-20% of visitors who happened to click "Accept." Are those visitors representative of your entire audience? Almost certainly not. Cookie acceptors tend to be less privacy-conscious, less technical, and less likely to use ad blockers — which means your analytics paints a systematically skewed picture.The picture looks different in the United States, where cookie acceptance rates exceed 80% ([CookieYes](https://www.cookieyes.com/blog/cookie-consent-trends/), 2026). But if you serve any European traffic — and most websites do — the data loss is severe. Privacy-first analytics tools sidestep this problem entirely by not using cookies in the first place. Every visitor gets counted, regardless of whether they interact with a banner.
 
 ## Privacy Compliance: Who Passes the GDPR Test?
 
 EU regulators issued [EUR 1.2 billion in GDPR fines in 2025](https://www.bitdefender.com/en-us/blog/hotforsecurity/europe-tech-sector-eu1-2-billion-fines-gdpr-2025), with cumulative fines since 2018 exceeding EUR 7.1 billion ([DLA Piper](https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026)). Google was directly targeted: France's CNIL imposed a EUR 325 million fine in September 2025 for displaying Gmail ads without proper consent, and the Cologne District Court confirmed that standard Google Analytics usage violates GDPR. These aren't hypothetical risks. They're active enforcement actions against the analytics tool installed on over 28 million websites.
 
-So how do the four tools compare on privacy compliance? The differences are stark.
-
-<BlogComparisonMatrix
-  title="Privacy Compliance at a Glance"
-  source="Source: Compiled from official documentation, 2026"
-  columns={["Pulse", "GA", "Plausible", "Fathom"]}
-  columnColors={["#FD5E0F", "#737373", "#737373", "#737373"]}
-  rows={[
-    { label: "Cookie-free", values: ["yes", "no", "yes", "yes"] },
-    { label: "No consent banner", values: ["yes", "no", "yes", "yes"] },
-    { label: "Open source", values: ["yes", "no", "yes", "no"] },
-    { label: "EU data residency", values: ["yes", "no", "yes", "yes"] },
-    { label: "No data sampling", values: ["yes", "no", "yes", "yes"] },
-    { label: "Self-hostable", values: ["no", "no", "yes", "no"] },
-  ]}
-/>
-
-| Feature | Pulse | Google Analytics | Plausible | Fathom |
+So how do the four tools compare on privacy compliance? The differences are stark.| Feature | Pulse | Google Analytics | Plausible | Fathom |
 |---|---|---|---|---|
 | Cookie-free | Yes | No | Yes | Yes |
 | No consent banner | Yes | No | Yes | Yes |
@@ -85,20 +55,7 @@ With [172 countries now having data privacy laws](https://papers.ssrn.com/sol3/p
 
 ## How Does Script Size Affect Page Speed?
 
-Plausible's tracking script weighs less than 1 KB ([Plausible.io](https://plausible.io/lightweight-web-analytics), 2025). Google Analytics' combined gtag.js and analytics tag totals approximately 175 KB ([Analytics Toolkit](https://blog.analytics-toolkit.com/2023/a-lightweight-google-analytics-4-integration/)). That's a 175x difference. Pulse comes in under 2 KB gzipped, and Fathom sits at roughly 2 KB. Does it matter? Absolutely — especially on mobile connections where every kilobyte counts toward your Core Web Vitals scores.
-
-<BlogBarChart
-  title="Analytics Script Size Comparison"
-  source="Source: Plausible.io, Analytics Toolkit, 2025"
-  data={[
-    { label: "Google Analytics", value: 175 },
-    { label: "Fathom", value: 2 },
-    { label: "Pulse", value: 1.8 },
-    { label: "Plausible", value: 0.8 },
-  ]}
-/>
-
-A lighter analytics script isn't just about speed. It's about trust. According to the [Thales 2025 Digital Trust Index](https://cpl.thalesgroup.com/digital-trust-index), 82% of internet users are highly concerned about how their data is collected, and 74% want stronger control over their online privacy. Our [25 privacy statistics for 2026](https://ciphera.net/blog/privacy-statistics-2026) show this concern is only accelerating. A bloated tracking script that sets cookies and phones home to Google's servers sends a clear signal to privacy-conscious visitors: you don't respect their boundaries.
+Plausible's tracking script weighs less than 1 KB ([Plausible.io](https://plausible.io/lightweight-web-analytics), 2025). Google Analytics' combined gtag.js and analytics tag totals approximately 175 KB ([Analytics Toolkit](https://blog.analytics-toolkit.com/2023/a-lightweight-google-analytics-4-integration/)). That's a 175x difference. Pulse comes in under 2 KB gzipped, and Fathom sits at roughly 2 KB. Does it matter? Absolutely — especially on mobile connections where every kilobyte counts toward your Core Web Vitals scores.A lighter analytics script isn't just about speed. It's about trust. According to the [Thales 2025 Digital Trust Index](https://cpl.thalesgroup.com/digital-trust-index), 82% of internet users are highly concerned about how their data is collected, and 74% want stronger control over their online privacy. Our [25 privacy statistics for 2026](https://ciphera.net/blog/privacy-statistics-2026) show this concern is only accelerating. A bloated tracking script that sets cookies and phones home to Google's servers sends a clear signal to privacy-conscious visitors: you don't respect their boundaries.
 
 Here's the practical impact. A 175 KB script on a 3G mobile connection adds roughly 1.5 seconds to your page load. That's time spent downloading code whose sole purpose is surveillance. Pulse and Plausible both load in under 50 milliseconds on the same connection. For sites where every millisecond of Largest Contentful Paint matters — and Google's ranking algorithm says it should — privacy-first analytics is a performance win, not a compromise.
 
@@ -131,20 +88,7 @@ What you won't get from any privacy-first tool: individual user journeys, sessio
 
 ## Pricing and the True Cost of "Free" Analytics
 
-Google Analytics is free. But is it actually free? If you serve EU users, you need a consent management platform (CMP) to comply with GDPR's cookie consent requirements. CMPs like Cookiebot, OneTrust, or CookieYes cost $100-500 per month depending on traffic. Add legal review time for your privacy policy, DPA negotiations, and the ongoing risk of regulatory fines, and "free" starts looking expensive.
-
-<BlogBarChart
-  title="Monthly Cost at 100K Pageviews"
-  source="Source: Official pricing pages, 2026"
-  data={[
-    { label: "Pulse", value: 0 },
-    { label: "GA", value: 0 },
-    { label: "Plausible", value: 19 },
-    { label: "Fathom", value: 14 },
-  ]}
-/>
-
-| Tool | Monthly Cost at 100K Pageviews | Notes |
+Google Analytics is free. But is it actually free? If you serve EU users, you need a consent management platform (CMP) to comply with GDPR's cookie consent requirements. CMPs like Cookiebot, OneTrust, or CookieYes cost $100-500 per month depending on traffic. Add legal review time for your privacy policy, DPA negotiations, and the ongoing risk of regulatory fines, and "free" starts looking expensive.| Tool | Monthly Cost at 100K Pageviews | Notes |
 |---|---|---|
 | Pulse | $0 (free tier) | No CMP, DPA, or consent banner required |
 | Google Analytics | $0* | *Plus $100-500/mo for consent management (CMP) |

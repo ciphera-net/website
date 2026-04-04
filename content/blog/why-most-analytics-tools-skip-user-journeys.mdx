@@ -69,11 +69,7 @@ So GA4 technically has the feature — buried three clicks deep, behind a config
 
 ## The Two-Tool Tax: What This Gap Actually Costs
 
-Because privacy analytics tools don't include journey visualization, teams that need this data end up running two tools. A privacy-first analytics platform for compliant pageview tracking, plus a behavior analytics tool for flow and session data. The costs stack up quickly.
-
-<BlogBarChart title="Monthly Cost: Analytics + User Journey Insights" source="Official pricing pages, compiled March 2026" data={[{"label":"Fathom + FullStory","value":214},{"label":"GA4 + Heap","value":208},{"label":"Plausible + Hotjar","value":108},{"label":"Matomo + Plugin","value":31},{"label":"Pulse","value":15}]} />
-
-The cheapest two-tool combination with real flow visualization is Matomo Cloud plus the paid Users Flow plugin at around $31/month. But Matomo's [Users Flow plugin costs EUR 94-282/year](https://plugins.matomo.org/UsersFlow) depending on team size, on top of hosting. And self-hosted Matomo means managing your own infrastructure. The most common pairing — Plausible at $9/month plus Hotjar Business at $99/month — costs $108/month for what should be a single dashboard.
+Because privacy analytics tools don't include journey visualization, teams that need this data end up running two tools. A privacy-first analytics platform for compliant pageview tracking, plus a behavior analytics tool for flow and session data. The costs stack up quickly.The cheapest two-tool combination with real flow visualization is Matomo Cloud plus the paid Users Flow plugin at around $31/month. But Matomo's [Users Flow plugin costs EUR 94-282/year](https://plugins.matomo.org/UsersFlow) depending on team size, on top of hosting. And self-hosted Matomo means managing your own infrastructure. The most common pairing — Plausible at $9/month plus Hotjar Business at $99/month — costs $108/month for what should be a single dashboard.
 
 That's the two-tool tax. You pay twice because your analytics platform decided user journeys weren't worth building.
 
@@ -101,11 +97,7 @@ The frontend renders this data as an interactive Sankey diagram using D3's Sanke
 
 ## The Privacy Analytics Feature Gap
 
-Here's the landscape today. We looked at seven analytics tools and compared their support for privacy compliance, user journey visualization, and setup complexity. Only one checks every box.
-
-<BlogComparisonMatrix title="The Privacy Analytics Feature Gap" columns={["Cookie-Free", "User Journeys", "Easy Setup", "Score"]} columnColors={["#22c55e", "#22c55e", "#22c55e", "#a3a3a3"]} rows={[{"label":"Plausible","values":["Yes","No","Yes","2/3"]},{"label":"Fathom","values":["Yes","No","Yes","2/3"]},{"label":"Simple Analytics","values":["Yes","No","Yes","2/3"]},{"label":"Matomo","values":["Yes (configurable)","$ (paid plugin)","No (self-host)","1.5/3"]},{"label":"Google Analytics 4","values":["No","~ (complex)","No","0.5/3"]},{"label":"PostHog","values":["Yes","Yes","No (event setup)","2/3"]},{"label":"Pulse","values":["Yes","Yes","Yes","3/3"]}]} />
-
-PostHog comes closest — it's cookieless, open-source, and has excellent path visualization. But it's a product analytics platform, not a web analytics tool. You need to instrument custom events, manage a data pipeline, and accept a fundamentally different mental model (product events vs. pageviews). For a marketing team that just wants to see how visitors flow through their site, that's overkill. For an analytics-curious founder who installed a script tag in five minutes, it's a non-starter.
+Here's the landscape today. We looked at seven analytics tools and compared their support for privacy compliance, user journey visualization, and setup complexity. Only one checks every box.PostHog comes closest — it's cookieless, open-source, and has excellent path visualization. But it's a product analytics platform, not a web analytics tool. You need to instrument custom events, manage a data pipeline, and accept a fundamentally different mental model (product events vs. pageviews). For a marketing team that just wants to see how visitors flow through their site, that's overkill. For an analytics-curious founder who installed a script tag in five minutes, it's a non-starter.
 
 ## What Can You Actually Do With Journey Data?
 

@@ -2,24 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
-import {
-  BlogBarChart,
-  BlogAreaChart,
-  BlogLineChart,
-  BlogLollipopChart,
-  BlogComparisonMatrix,
-  BlogRadarChart,
-} from '@/components/blog/charts'
 import { BlogImage } from '@/components/blog/blog-image'
 import { BlogBlockquote } from '@/components/blog/blog-blockquote'
 
 const mdxComponents = {
-  BlogBarChart,
-  BlogAreaChart,
-  BlogLineChart,
-  BlogLollipopChart,
-  BlogComparisonMatrix,
-  BlogRadarChart,
   BlogImage,
   BlogBlockquote,
 }
