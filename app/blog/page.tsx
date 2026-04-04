@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { ArrowRightIcon } from '@ciphera-net/ui'
-import { blogPosts } from '../../lib/blog-posts'
+import { blogPosts } from '../../lib/blog-posts.gen'
 import { track } from '../../lib/pulse'
 
 const blogSchema = [
@@ -125,7 +125,7 @@ export default function BlogPage() {
                 >
                   <div className="aspect-video w-full overflow-hidden">
                     <img
-                      src={`/blog/og/${post.slug}.png`}
+                      src={post.image}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"

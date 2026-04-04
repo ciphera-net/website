@@ -14,20 +14,32 @@ export default function TableOfContents({ content }: { content: string }) {
   const [activeId, setActiveId] = useState<string>('')
 
   useEffect(() => {
-    // Parse h2 tags from HTML content
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(content, 'text/html')
-    const h2s = doc.querySelectorAll('h2')
+    // Parse headings from MDX/markdown (## Heading) or HTML (<h2>) content
     const items: TocItem[] = []
+    const mdxHeadings = content.match(/^##\s+(.+)$/gm)
 
-    h2s.forEach((h2, i) => {
-      const text = h2.textContent?.trim() || ''
-      const id = text
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '')
-      items.push({ id, text })
-    })
+    if (mdxHeadings && mdxHeadings.length > 0) {
+      mdxHeadings.forEach((line) => {
+        const text = line.replace(/^##\s+/, '').trim()
+        const id = text
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '')
+        items.push({ id, text })
+      })
+    } else {
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(content, 'text/html')
+      const h2s = doc.querySelectorAll('h2')
+      h2s.forEach((h2) => {
+        const text = h2.textContent?.trim() || ''
+        const id = text
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '')
+        items.push({ id, text })
+      })
+    }
 
     setHeadings(items)
 

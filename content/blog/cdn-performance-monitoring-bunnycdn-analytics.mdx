@@ -1,0 +1,127 @@
+---
+title: "How to Monitor BunnyCDN Performance Without Google Analytics"
+description: "A 0.1s speed improvement lifts retail conversions 8.4%. Track BunnyCDN bandwidth, cache ratios, and traffic maps in a privacy-first analytics dashboard."
+category: Tutorial
+date: "2026-03-14"
+dateModified: "2026-03-14"
+readTime: "9 min read"
+image: "/blog/og/cdn-performance-monitoring-bunnycdn-analytics.png"
+faqs:
+  - question: "What cache hit ratio should I aim for on BunnyCDN?"
+    answer: "A well-configured CDN should hit 95% or above according to Cloudflare. Anything below 90% means too many requests reach your origin server, adding latency and cost. Adobe AEM documentation confirms 90% as the minimum acceptable threshold for production workloads."
+  - question: "Does connecting BunnyCDN to Pulse share my data with third parties?"
+    answer: "No. Pulse encrypts your BunnyCDN API key at rest on Swiss infrastructure and uses it exclusively for read-only statistics. No CDN data is shared with third parties, no cookies are set, and you can disconnect the integration at any time from your site settings."
+  - question: "How often does Pulse sync BunnyCDN data?"
+    answer: "Pulse syncs BunnyCDN statistics automatically in the background, pulling daily metrics including bandwidth, requests, cache hits, errors, and per-datacenter traffic distribution. Historical data syncs in 38-day chunks to stay within BunnyCDN's 40-day API window limit."
+  - question: "Can I monitor multiple BunnyCDN pull zones in Pulse?"
+    answer: "Each site in Pulse connects to one BunnyCDN pull zone. If you run multiple pull zones for different domains, add each domain as a separate site in Pulse and connect its corresponding pull zone in that site's integration settings."
+  - question: "Is BunnyCDN a good choice for privacy-conscious websites?"
+    answer: "BunnyCDN is a European company based in Slovenia with pricing starting at $0.01/GB and 119+ PoPs across 70+ countries. Combined with Pulse's cookie-free analytics and Swiss data residency, you get complete CDN monitoring without any visitor tracking or consent requirements."
+---
+
+Most teams treat their CDN as a "set it and forget it" layer. You configure BunnyCDN, point your DNS, and move on. But a CDN that isn't monitored is a CDN that's silently degrading. Cache hit ratios drift. Origin servers slow down. Geographic traffic patterns shift. You won't notice until users start bouncing.
+
+According to [Precedence Research](https://www.precedenceresearch.com/content-delivery-network-market) (2025), the global CDN market reached $32.7 billion — projected to hit $164 billion by 2035. CDNs are infrastructure that matters more every year. Yet [Google's own data](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/page-load-time-statistics/) shows 53% of mobile users abandon sites taking longer than 3 seconds to load. If your CDN underperforms, you're losing visitors before your page even renders.
+
+This guide walks you through connecting BunnyCDN to [Pulse](https://pulse.ciphera.net) — a privacy-first analytics platform — so you can track bandwidth, cache performance, origin response times, and per-datacenter traffic distribution from one dashboard. No cookies. No Google. No third-party data sharing.
+
+<BlogImage src="https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Close-up of blue-lit server storage drives with network cables in a data center rack" />
+
+<BlogBlockquote variant="tldr">BunnyCDN runs 119+ PoPs across 70+ countries, but without active monitoring, cache misses and origin slowdowns go unnoticed. Pulse's BunnyCDN integration tracks bandwidth, cache hit rates, error breakdowns, and geographic traffic — all stored on Swiss infrastructure with zero cookies. A 0.1-second speed improvement drives 8.4% more retail conversions ([Deloitte/Google](https://web.dev/case-studies/milliseconds-make-millions), 2020).</BlogBlockquote>
+
+## Why Should You Monitor Your CDN Performance?
+
+A joint Deloitte and Google study tracking 37 brand websites across 30 million sessions found that a 0.1-second improvement in mobile load times increased retail conversions by 8.4% and travel conversions by 10.1% ([web.dev](https://web.dev/case-studies/milliseconds-make-millions), 2020). That's measured revenue impact from milliseconds of difference — not theory.
+
+So why don't more teams monitor their CDN? Partly because CDN dashboards live in a separate tab from analytics. You check BunnyCDN's control panel in one window, your analytics tool in another, and try to manually correlate traffic spikes with cache performance. It doesn't scale. Slow degradation slips through the cracks.
+
+The broader observability market reflects this gap. Monitoring tools and platforms are projected to reach $34.1 billion in 2026 ([Mordor Intelligence](https://www.mordorintelligence.com/industry-reports/observability-market)), and AI monitoring adoption among platform users grew from 42% to 54% in a single year ([IBM](https://www.ibm.com/think/insights/observability-trends), 2025). CDN performance data is part of this shift. Teams that track infrastructure metrics alongside user analytics make faster decisions about caching and capacity.
+
+<BlogLollipopChart title="How Page Load Time Impacts Bounce Rate" source="Google, 2018" data={[{"label":"1s → 3s","value":32},{"label":"1s → 5s","value":90},{"label":"1s → 6s","value":106},{"label":"1s → 10s","value":123}]} />
+
+The cost of ignoring CDN performance isn't just slower pages. When load time jumps from 1 to 5 seconds, bounce probability increases 90%. From 1 to 10 seconds, it climbs 123% ([Google](https://business.google.com/ca-en/think/marketing-strategies/mobile-page-speed-new-industry-benchmarks/), 2018). And if your CDN goes down entirely? Unplanned IT downtime costs an average of $14,056 per minute ([Gartner/Ponemon via Atlassian](https://www.atlassian.com/incident-management/kpis/cost-of-downtime)).
+
+CDN monitoring gives you early warning signals. A dropping cache hit ratio, rising origin response times, a spike in 5xx errors — catch these patterns before they reach your users. The question isn't whether your CDN needs monitoring. It's how fast you'll spot the problem when something breaks.
+
+## What CDN Metrics Actually Matter?
+
+[Cloudflare](https://www.cloudflare.com/learning/cdn/what-is-a-cache-hit-ratio/) recommends targeting a cache hit ratio above 95%, and [Adobe's CDN best practices](https://experienceleague.adobe.com/en/docs/experience-manager-learn/cloud-service/caching/cdn-cache-hit-ratio-analysis) flag anything below 90% as concerning. But cache ratio alone doesn't paint the full picture. Here are the five metrics worth watching — and what each one tells you.
+
+<BlogImage src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop&q=80" alt="Dark server room with orange fiber optic cables and green status LEDs glowing across multiple network racks" />
+
+**Bandwidth** measures total data served through your CDN edge nodes. A sudden spike might mean a traffic surge — or a misconfigured asset served uncompressed. A steady climb confirms content is reaching users efficiently.
+
+**Requests** counts individual HTTP requests your CDN handles. Cross-reference this with bandwidth: if requests spike but bandwidth stays flat, you're serving many small files. The inverse means large assets dominate delivery.
+
+**Cache Hit Rate** is the single most important metric. It shows what percentage of requests are served from CDN edge nodes versus fetched from your origin server. Below 90%? Your origin is handling work the CDN should cover.
+
+<BlogBarChart title="Cache Hit Ratio: Performance Benchmarks" source="Cloudflare / Adobe AEM, 2025" data={[{"label":"95%+: Excellent — optimal caching, minimal origin load","value":95},{"label":"90–95%: Good — meets Adobe AEM best practices","value":92},{"label":"80–90%: Fair — review your cache headers","value":85},{"label":"Under 80%: Poor — heavy origin load","value":75}]} />
+
+**Origin Response Time** tracks how fast your origin server responds when the CDN can't serve from cache. Rising origin times often indicate database bottlenecks, overloaded app servers, or misconfigured cache headers. This is your earliest warning signal for backend trouble.
+
+**Errors** breaks down HTTP error codes — 3xx redirects, 4xx client errors, 5xx server errors — over time. A jump in 5xx means your origin is failing. A 4xx spike after a deployment? Likely broken links or missing assets.
+
+According to Cloudflare and Adobe AEM documentation, a well-performing CDN should maintain a cache hit ratio above 95%, with anything below 90% indicating significant cache inefficiency that forces unnecessary origin requests and degrades page load times for end users.
+
+## How to Connect BunnyCDN to Pulse
+
+[BunnyCDN](https://bunny.net) serves over 1.5 million websites with 119+ Points of Presence across 70+ countries, and pricing starts at $0.01/GB ([bunny.net](https://bunny.net/pricing/cdn/)). Connecting it to Pulse takes about two minutes. You'll need your BunnyCDN API key from your bunny.net account dashboard.
+
+**Step 1:** Open your site in Pulse and go to **Settings → Integrations**.
+
+**Step 2:** In the BunnyCDN section, paste your API key. Pulse encrypts this key at rest and uses it only for read-only statistics. It never modifies your CDN configuration.
+
+**Step 3:** Click **Fetch Pull Zones**. Pulse calls the BunnyCDN API to list your available pull zones. Select the one that serves your site's assets.
+
+**Step 4:** Hit **Connect**. Pulse starts syncing historical data in 38-day chunks (BunnyCDN's API caps requests at a 40-day window).
+
+<BlogImage src="https://images.pexels.com/photos/4716292/pexels-photo-4716292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Blue Ethernet cables neatly connected to a network patch panel inside a server rack" />
+
+That's it. A new **CDN** tab appears in your site navigation. Pulse syncs daily statistics in the background — no cron jobs, no webhooks, no manual CSV exports.
+
+<BlogBlockquote>**Implementation note:** BunnyCDN's datacenter codes don't follow ISO country standards. US states like "IL" (Illinois) and Canadian provinces like "ON" (Ontario) use the same two-letter format as country codes. Pulse normalizes these automatically, so your traffic distribution map shows accurate geographic data — Chicago maps to the United States, not Israel.</BlogBlockquote>
+
+## What Does the CDN Dashboard Show You?
+
+Sites that load in under 5 seconds see 70% longer average sessions and 35% lower bounce rates compared to slower sites ([Google](https://business.google.com/ca-en/think/marketing-strategies/mobile-page-speed-new-industry-benchmarks/), 2018). Pulse's CDN dashboard helps you stay on that side of the line. Here's what you get once BunnyCDN is connected.
+
+Five overview cards sit at the top: **Bandwidth**, **Requests**, **Cache Hit Rate**, **Origin Response**, and **Errors**. Each shows the current period's total alongside a percentage change versus the previous period. Green means improvement. Red means something needs your attention. For origin response and errors, the colors invert — a decrease is the good outcome.
+
+Below the cards, you get three detailed views. The **Bandwidth Chart** is an area chart showing total bandwidth versus cached bandwidth over time. The gap between these two lines represents origin bandwidth — traffic the CDN couldn't serve from cache. If that gap is growing, your cache headers need attention.
+
+<BlogBlockquote>**Our finding:** The gap between total and cached bandwidth on Pulse's chart is the fastest way to spot cache misconfigurations. When the two lines diverge, check your Cache-Control headers — you're likely missing max-age directives on static assets or accidentally marking dynamic pages as uncacheable.</BlogBlockquote>
+
+**Requests and Errors** sit side by side as bar charts. The requests chart shows daily volume trends. The errors chart stacks 3xx redirects, 4xx client errors, and 5xx server errors so you can spot patterns instantly. A 5xx spike right after a deployment? Roll it back.
+
+<BlogImage src="https://images.pexels.com/photos/4597280/pexels-photo-4597280.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Data center aisle with a mobile monitoring workstation positioned between tall server racks" />
+
+The **Traffic Distribution** view is the most distinctive part. A dotted world map plots every BunnyCDN datacenter serving your traffic, with dots sized by bandwidth. Below the map, a grid lists each datacenter with its country flag, city name, bandwidth served, and percentage of total traffic.
+
+Why does this matter? Consider a concrete scenario. Your analytics shows 40% of visitors coming from Germany, but the traffic map reveals most requests are served from London and Paris. German users are hitting edge nodes further away, adding latency. The fix might be as simple as adjusting your pull zone's datacenter routing priorities.
+
+Everything updates when you switch date ranges — today, 7 days, 28 days, or 30 days. No separate CDN dashboard login. Your CDN metrics live right next to your pageviews, referrers, and visitor data in Pulse.
+
+## How Much Is CDN Speed Worth to Your Business?
+
+The Deloitte study didn't just measure retail. It tracked speed improvements across multiple verticals, with no UX changes during the measurement period — only speed ([web.dev](https://web.dev/case-studies/milliseconds-make-millions), 2020). The results were consistent everywhere.
+
+<BlogBarChart title="Revenue Impact of 0.1s Speed Improvement" source="Deloitte/Google — 37 brands, 30M+ sessions, 2020" data={[{"label":"Luxury (cart adds)","value":40.1},{"label":"Lead Gen (forms)","value":21.6},{"label":"Travel (bookings)","value":10.1},{"label":"Retail (order value)","value":9.2},{"label":"Retail (conversions)","value":8.4}]} />
+
+A 0.1-second improvement lifted luxury brand product-to-cart rates by 40.1%. Lead generation sites saw form submissions jump 21.6%. Travel bookings climbed 10.1%. Even modest retail improvements delivered 8.4% more conversions and 9.2% higher average order values.
+
+These aren't projections from a whitepaper. Deloitte measured actual transactions across a 30-day window on live websites. No A/B tests. No design changes. Just speed — the kind that comes from keeping your CDN configured correctly and catching regressions before they compound.
+
+The connection to CDN monitoring is direct. If your cache hit ratio drops from 97% to 85%, your origin handles roughly four times more requests. Origin response times climb. Page load times increase. And conversions fall along the same curve shown above.
+
+Monitoring isn't overhead — it's insurance for the revenue your fast site already generates. With BunnyCDN pricing starting at $0.01/GB and Pulse's [free tier](https://pulse.ciphera.net/pricing), the cost of not monitoring is far higher than setting it up.
+
+## Key Takeaways
+
+- **CDN performance isn't "set and forget"** — cache ratios degrade, origin servers slow down, and traffic patterns shift without warning
+- **Target a 95%+ cache hit ratio** — anything below 90% means your origin is handling unnecessary load (Cloudflare/Adobe)
+- **Milliseconds equal money** — a 0.1-second improvement drives 8.4% more retail conversions and 10.1% more travel bookings
+- **Watch origin response time** — it's your earliest warning signal for backend issues hiding behind CDN cache
+- **Geographic distribution reveals mismatches** — Pulse's traffic map shows where your CDN serves versus where your users are
+- **Your API key stays encrypted** — stored on [Swiss infrastructure](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy), read-only access, no visitor tracking
+
+Want to see how Pulse compares to other analytics platforms? Read our [side-by-side comparison of Pulse, Google Analytics, Plausible, and Fathom](https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom).

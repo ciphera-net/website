@@ -1,4 +1,4 @@
-import { blogPosts } from '../../lib/blog-posts'
+import { blogPosts } from '../../lib/blog-posts.gen'
 
 function escapeXml(str: string): string {
   return str

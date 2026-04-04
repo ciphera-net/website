@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { getLearnArticles } from '@/lib/learn'
+import { getBlogPosts } from '@/lib/blog'
 
 /**
  * Sitemap for ciphera.net
@@ -9,30 +10,8 @@ import { getLearnArticles } from '@/lib/learn'
  * - Use real lastmod dates (file modification or content publish date), not build time
  * - Do not include priority or changeFrequency (ignored by Google and Bing)
  * - Do not include blog posts until they have substantive content (avoid thin-content indexing)
- * - Keep blog post dates in sync with the blogPosts data in app/blog/page.tsx
+ * - Blog post dates are read from MDX frontmatter via getBlogPosts()
  */
-
-// Blog posts with real content ready for indexing.
-// Only add a post here once it has substantive body content (not placeholder text).
-// The date should reflect the actual publication or last-edit date.
-const publishedBlogPosts: { slug: string; lastModified: string }[] = [
-  { slug: 'why-privacy-cant-be-an-afterthought', lastModified: '2026-01-15' },
-  { slug: 'why-swiss-infrastructure-matters-for-data-privacy', lastModified: '2026-01-27' },
-  { slug: 'biggest-data-breaches-2025-2026', lastModified: '2026-02-05' },
-  { slug: 'pulse-vs-google-analytics-plausible-fathom', lastModified: '2026-02-14' },
-  { slug: 'drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing', lastModified: '2026-02-21' },
-  { slug: 'privacy-statistics-2026', lastModified: '2026-02-28' },
-  { slug: 'open-source-privacy-tools-2026', lastModified: '2026-03-02' },
-  { slug: 'passkeys-vs-passwords-2026', lastModified: '2026-03-06' },
-  { slug: 'recaptcha-privacy-liability-alternatives-2026', lastModified: '2026-03-09' },
-  { slug: 'eu-ai-act-compliance-guide-2026', lastModified: '2026-03-07' },
-  { slug: 'zero-knowledge-encryption-guide', lastModified: '2026-03-10' },
-  { slug: 'data-privacy-audit-guide-startups', lastModified: '2026-03-12' },
-  { slug: 'cdn-performance-monitoring-bunnycdn-analytics', lastModified: '2026-03-14' },
-  { slug: 'why-most-analytics-tools-skip-user-journeys', lastModified: '2026-03-15' },
-  { slug: 'google-search-console-privacy-first-analytics', lastModified: '2026-03-15' },
-  { slug: 'why-we-chose-bunnycdn', lastModified: '2026-03-16' },
-]
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://ciphera.net'
@@ -97,9 +76,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   // Dynamically add published blog posts
-  const blogPages: MetadataRoute.Sitemap = publishedBlogPosts.map((post) => ({
+  const blogPages: MetadataRoute.Sitemap = getBlogPosts().map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.lastModified,
+    lastModified: post.dateModified,
   }))
 
   // Dynamically add published learn articles

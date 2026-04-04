@@ -45,6 +45,25 @@
     --popover-foreground: 0 0% 98%;
     --card: 0 0% 9%;
     --card-foreground: 0 0% 98%;
+
+    /* * Chart tokens — synced with Pulse */
+    --chart-1: #FD5E0F;
+    --chart-2: #60a5fa;
+    --chart-3: #4ade80;
+    --chart-4: #c084fc;
+    --chart-5: #fbbf24;
+    --chart-grid: #262626;
+    --chart-axis: #737373;
+    --chart-background: #0a0a0a;
+    --chart-foreground: #404040;
+    --chart-foreground-muted: #a3a3a3;
+    --chart-line-primary: #FD5E0F;
+    --chart-line-secondary: #737373;
+    --chart-crosshair: #404040;
+    --chart-label: #a3a3a3;
+    --chart-marker-background: #262626;
+    --chart-marker-border: #404040;
+    --chart-marker-foreground: #fafafa;
   }
 
   * {
