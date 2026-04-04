@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "uk-age-verification-apple-iphone",
+    "title": "Apple's UK Age Verification Sets a Dangerous Precedent for Device-Level Identity Checks",
+    "description": "VPN sign-ups surged 1,800% after UK age checks launched. Apple's voluntary device-level verification turns phones into identity checkpoints — here's why that matters.",
+    "category": "Privacy",
+    "date": "2026-04-04",
+    "dateModified": "2026-04-04",
+    "readTime": "7 min read",
+    "image": "/blog/og/uk-age-verification-apple-iphone.png"
+  },
+  {
     "slug": "why-we-chose-bunnycdn",
     "title": "Why We Chose BunnyCDN as Ciphera's CDN",
     "description": "97% of EU cloud infra is US-controlled. Here's why we picked an EU-native CDN with 119+ PoPs, $0.01/GB pricing, and GDPR baked in — not bolted on.",
