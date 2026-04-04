@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "instagram-drops-end-to-end-encryption",
+    "title": "Meta Promised Encryption for Everyone — Then Took It Away from 2 Billion Instagram Users",
+    "description": "Meta is removing E2EE from Instagram DMs on May 8, 2026 — 11 days before the Take It Down Act kicks in. Here's what 2B users lose.",
+    "category": "Privacy",
+    "date": "2026-04-04",
+    "dateModified": "2026-04-04",
+    "readTime": "7 min read",
+    "image": "/blog/og/instagram-drops-end-to-end-encryption.png"
+  },
+  {
     "slug": "uk-age-verification-apple-iphone",
     "title": "Apple's UK Age Verification Sets a Dangerous Precedent for Device-Level Identity Checks",
     "description": "VPN sign-ups surged 1,800% after UK age checks launched. Apple's voluntary device-level verification turns phones into identity checkpoints — here's why that matters.",
