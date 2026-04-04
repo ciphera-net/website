@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChevronDownIcon } from '@ciphera-net/ui'
 
 interface TocItem {
@@ -12,6 +12,7 @@ export default function TableOfContents({ content }: { content: string }) {
   const [headings, setHeadings] = useState<TocItem[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [activeId, setActiveId] = useState<string>('')
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Parse headings from MDX/markdown (## Heading) or HTML (<h2>) content
@@ -81,17 +82,24 @@ export default function TableOfContents({ content }: { content: string }) {
     <nav className="mb-10 rounded-2xl border border-neutral-800 bg-neutral-900">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full px-6 py-4 text-left rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 focus:ring-offset-neutral-900"
+        className="flex items-center justify-between w-full px-6 py-4 text-left rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900"
       >
         <span className="text-sm font-semibold text-white">
           Table of Contents
         </span>
         <ChevronDownIcon
-          className={`w-4 h-4 text-neutral-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-neutral-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
-      {isOpen && (
+      <div
+        ref={contentRef}
+        className="overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out"
+        style={{
+          maxHeight: isOpen ? `${contentRef.current?.scrollHeight ?? 1000}px` : '0px',
+          opacity: isOpen ? 1 : 0,
+        }}
+      >
         <ol className="px-6 pt-2 pb-5 space-y-1.5">
           {headings.map((heading, i) => (
             <li key={heading.id}>
@@ -109,7 +117,7 @@ export default function TableOfContents({ content }: { content: string }) {
             </li>
           ))}
         </ol>
-      )}
+      </div>
     </nav>
   )
 }

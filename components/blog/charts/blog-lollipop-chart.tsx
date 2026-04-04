@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { scaleBand, scaleLinear } from '@visx/scale'
 import { GridColumns } from '@visx/grid'
-import { ParentSize } from '@visx/responsive'
 import { chartCssVars, chartColors } from './chart-css-vars'
+import { useChartSize } from './use-chart-size'
 
 interface BlogLollipopChartProps {
   title: string
@@ -145,6 +145,7 @@ export function BlogLollipopChart({
   aspectRatio = '3 / 2',
 }: BlogLollipopChartProps) {
   const [animated, setAnimated] = useState(false)
+  const { containerRef, width, height } = useChartSize(aspectRatio)
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setAnimated(true))
@@ -155,21 +156,17 @@ export function BlogLollipopChart({
 
   return (
     <figure className="my-10">
-      <div style={{ aspectRatio, width: '100%' }}>
-        <ParentSize>
-          {({ width, height }) =>
-            width > 0 && height > 0 ? (
-              <LollipopInner
-                width={width}
-                height={height}
-                data={data}
-                title={title}
-                valueFormat={valueFormat}
-                animated={animated}
-              />
-            ) : null
-          }
-        </ParentSize>
+      <div ref={containerRef} style={{ width: '100%' }}>
+        {width > 0 && height > 0 && (
+          <LollipopInner
+            width={width}
+            height={height}
+            data={data}
+            title={title}
+            valueFormat={valueFormat}
+            animated={animated}
+          />
+        )}
       </div>
       {source && (
         <figcaption className="mt-2 text-center text-xs text-neutral-500">

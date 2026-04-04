@@ -6,8 +6,8 @@ import { GridRows } from '@visx/grid'
 import { AreaClosed, LinePath } from '@visx/shape'
 import { LinearGradient } from '@visx/gradient'
 import { curveMonotoneX } from '@visx/curve'
-import { ParentSize } from '@visx/responsive'
 import { chartCssVars } from './chart-css-vars'
+import { useChartSize } from './use-chart-size'
 
 interface BlogAreaChartProps {
   title: string
@@ -179,6 +179,7 @@ export function BlogAreaChart({
   aspectRatio = '3 / 2',
 }: BlogAreaChartProps) {
   const [animated, setAnimated] = useState(false)
+  const { containerRef, width, height } = useChartSize(aspectRatio)
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setAnimated(true))
@@ -189,23 +190,19 @@ export function BlogAreaChart({
 
   return (
     <figure className="my-10">
-      <div style={{ aspectRatio, width: '100%' }}>
-        <ParentSize>
-          {({ width, height }) =>
-            width > 0 && height > 0 ? (
-              <AreaChartInner
-                width={width}
-                height={height}
-                data={data}
-                xKey={xKey}
-                yKey={yKey}
-                yFormat={yFormat}
-                title={title}
-                animated={animated}
-              />
-            ) : null
-          }
-        </ParentSize>
+      <div ref={containerRef} style={{ width: '100%' }}>
+        {width > 0 && height > 0 && (
+          <AreaChartInner
+            width={width}
+            height={height}
+            data={data}
+            xKey={xKey}
+            yKey={yKey}
+            yFormat={yFormat}
+            title={title}
+            animated={animated}
+          />
+        )}
       </div>
       {source && (
         <figcaption className="mt-2 text-center text-xs text-neutral-500">

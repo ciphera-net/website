@@ -13,8 +13,7 @@ export function BlogImage({
         src={src}
         alt={alt}
         loading="lazy"
-        className="w-full rounded-xl"
-        style={{ aspectRatio: '1200 / 630' }}
+        className="w-full rounded-xl object-cover"
       />
       {caption && (
         <figcaption className="mt-3 text-center text-sm text-neutral-400">

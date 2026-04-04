@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { scaleBand, scaleLinear } from '@visx/scale'
 import { GridRows, GridColumns } from '@visx/grid'
-import { ParentSize } from '@visx/responsive'
 import { chartCssVars, chartColors } from './chart-css-vars'
+import { useChartSize } from './use-chart-size'
 
 interface BlogBarChartProps {
   title: string
@@ -226,6 +226,7 @@ export function BlogBarChart({
   aspectRatio = '3 / 2',
 }: BlogBarChartProps) {
   const [animated, setAnimated] = useState(false)
+  const { containerRef, width, height } = useChartSize(aspectRatio)
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setAnimated(true))
@@ -236,32 +237,28 @@ export function BlogBarChart({
 
   return (
     <figure className="my-10">
-      <div style={{ aspectRatio, width: '100%' }}>
-        <ParentSize>
-          {({ width, height }) =>
-            width > 0 && height > 0 ? (
-              orientation === 'horizontal' ? (
-                <HorizontalBarChart
-                  width={width}
-                  height={height}
-                  data={data}
-                  title={title}
-                  valueFormat={valueFormat}
-                  animated={animated}
-                />
-              ) : (
-                <VerticalBarChart
-                  width={width}
-                  height={height}
-                  data={data}
-                  title={title}
-                  valueFormat={valueFormat}
-                  animated={animated}
-                />
-              )
-            ) : null
-          }
-        </ParentSize>
+      <div ref={containerRef} style={{ width: '100%' }}>
+        {width > 0 && height > 0 && (
+          orientation === 'horizontal' ? (
+            <HorizontalBarChart
+              width={width}
+              height={height}
+              data={data}
+              title={title}
+              valueFormat={valueFormat}
+              animated={animated}
+            />
+          ) : (
+            <VerticalBarChart
+              width={width}
+              height={height}
+              data={data}
+              title={title}
+              valueFormat={valueFormat}
+              animated={animated}
+            />
+          )
+        )}
       </div>
       {source && (
         <figcaption className="mt-2 text-center text-xs text-neutral-500">

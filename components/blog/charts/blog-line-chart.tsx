@@ -5,8 +5,8 @@ import { scaleLinear, scalePoint } from '@visx/scale'
 import { GridRows } from '@visx/grid'
 import { LinePath } from '@visx/shape'
 import { curveMonotoneX } from '@visx/curve'
-import { ParentSize } from '@visx/responsive'
 import { chartCssVars, chartColors } from './chart-css-vars'
+import { useChartSize } from './use-chart-size'
 
 interface BlogLineChartProps {
   title: string
@@ -168,6 +168,7 @@ export function BlogLineChart({
   aspectRatio = '3 / 2',
 }: BlogLineChartProps) {
   const [animated, setAnimated] = useState(false)
+  const { containerRef, width, height } = useChartSize(aspectRatio)
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setAnimated(true))
@@ -178,23 +179,19 @@ export function BlogLineChart({
 
   return (
     <figure className="my-10">
-      <div style={{ aspectRatio, width: '100%' }}>
-        <ParentSize>
-          {({ width, height }) =>
-            width > 0 && height > 0 ? (
-              <LineChartInner
-                width={width}
-                height={height}
-                data={data}
-                xKey={xKey}
-                lines={lines}
-                yFormat={yFormat}
-                title={title}
-                animated={animated}
-              />
-            ) : null
-          }
-        </ParentSize>
+      <div ref={containerRef} style={{ width: '100%' }}>
+        {width > 0 && height > 0 && (
+          <LineChartInner
+            width={width}
+            height={height}
+            data={data}
+            xKey={xKey}
+            lines={lines}
+            yFormat={yFormat}
+            title={title}
+            animated={animated}
+          />
+        )}
       </div>
       <div className="mt-3 flex flex-wrap items-center justify-center gap-4">
         {lines.map((line, i) => (

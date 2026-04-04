@@ -1,7 +1,7 @@
 'use client'
 
-import { ParentSize } from '@visx/responsive'
 import { chartCssVars, chartColors } from './chart-css-vars'
+import { useChartSize } from './use-chart-size'
 
 interface BlogRadarChartProps {
   title: string
@@ -159,25 +159,23 @@ export function BlogRadarChart({
   maxValue = 10,
   aspectRatio = '1 / 1',
 }: BlogRadarChartProps) {
+  const { containerRef, width, height } = useChartSize(aspectRatio)
+
   if (!axes || axes.length < 3 || !series || series.length === 0) return null
 
   return (
     <figure className="my-10">
-      <div style={{ aspectRatio, width: '100%' }}>
-        <ParentSize>
-          {({ width, height }) =>
-            width > 0 && height > 0 ? (
-              <RadarInner
-                width={width}
-                height={height}
-                axes={axes}
-                series={series}
-                maxValue={maxValue}
-                title={title}
-              />
-            ) : null
-          }
-        </ParentSize>
+      <div ref={containerRef} style={{ width: '100%' }}>
+        {width > 0 && height > 0 && (
+          <RadarInner
+            width={width}
+            height={height}
+            axes={axes}
+            series={series}
+            maxValue={maxValue}
+            title={title}
+          />
+        )}
       </div>
       <div className="mt-3 flex flex-wrap items-center justify-center gap-4">
         {series.map((s, i) => (
