@@ -2,33 +2,12 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeftIcon } from '@ciphera-net/ui'
 import { notFound } from 'next/navigation'
-import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { getBlogPost, getBlogPosts } from '@/lib/blog'
-import {
-  BlogBarChart,
-  BlogAreaChart,
-  BlogLineChart,
-  BlogLollipopChart,
-  BlogComparisonMatrix,
-  BlogRadarChart,
-} from '@/components/blog/charts'
-import { BlogImage } from '@/components/blog/blog-image'
-import { BlogBlockquote } from '@/components/blog/blog-blockquote'
+import { BlogMDXRenderer } from '@/components/blog/blog-mdx-renderer'
 import TableOfContents from '../../../components/TableOfContents'
 import RelatedPosts from '../../../components/RelatedPosts'
 import ReadingProgress from '../../../components/ReadingProgress'
-
-const mdxComponents = {
-  BlogBarChart,
-  BlogAreaChart,
-  BlogLineChart,
-  BlogLollipopChart,
-  BlogComparisonMatrix,
-  BlogRadarChart,
-  BlogImage,
-  BlogBlockquote,
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -65,6 +44,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound()
 
   const allPosts = getBlogPosts()
+  const { serialize } = await import('next-mdx-remote/serialize')
+  const mdxSource = await serialize(post.content, {
+    mdxOptions: { remarkPlugins: [remarkGfm] },
+  })
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -146,13 +129,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <TableOfContents content={post.content} />
 
-          <div className="prose prose-invert max-w-none">
-            <MDXRemote
-              source={post.content}
-              options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
-              components={mdxComponents}
-            />
-          </div>
+          <BlogMDXRenderer compiledSource={mdxSource.compiledSource} scope={mdxSource.scope ?? {}} frontmatter={mdxSource.frontmatter ?? {}} />
 
           <RelatedPosts currentSlug={slug} currentCategory={post.category} allPosts={allPosts} />
 
