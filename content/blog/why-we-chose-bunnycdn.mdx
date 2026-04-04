@@ -23,7 +23,11 @@ That's why we chose [BunnyCDN](https://bunny.net?ref=00y9gyb6dz). Here's the ful
 
 <BlogImage src="/bunnycdn_53a0dec5c9.png" alt="Bunny.net official logo — an orange geometric origami-style rabbit representing the BunnyCDN content delivery network" />
 
-<BlogBlockquote variant="tldr">We chose BunnyCDN because it's EU-headquartered (Slovenia), GDPR-native with ISO 27001 and SOC 2 Type II certifications, 88% cheaper than AWS CloudFront at $0.01/GB ([Backblaze](https://www.backblaze.com/blog/aws-cloudfront-vs-bunny-net-how-do-the-cdns-compare/), 2025), and delivers ~25ms global latency across 119+ edge locations. Privacy baked in — not bolted on.</BlogBlockquote>
+<BlogBlockquote variant="tldr">
+
+We chose BunnyCDN because it's EU-headquartered (Slovenia), GDPR-native with ISO 27001 and SOC 2 Type II certifications, 88% cheaper than AWS CloudFront at $0.01/GB ([Backblaze](https://www.backblaze.com/blog/aws-cloudfront-vs-bunny-net-how-do-the-cdns-compare/), 2025), and delivers ~25ms global latency across 119+ edge locations. Privacy baked in — not bolted on.
+
+</BlogBlockquote>
 
 ## What Does a Privacy-First Platform Actually Need From a CDN?
 
@@ -40,7 +44,11 @@ Here's what our CDN checklist looked like:
 
 Most major CDNs failed at least two of these. Cloudflare is US-headquartered and routes through US infrastructure by default. AWS CloudFront is a subsidiary of the world's largest surveillance-adjacent cloud provider. Fastly is publicly traded in the US with data processing governed by US law. Are they fast? Absolutely. But for a privacy platform, jurisdiction and data handling aren't negotiable.
 
-<BlogBlockquote>**Our take:** GDPR compliance isn't a feature you bolt onto a US-headquartered service. It's a property of where a company is incorporated, where its data flows, and which courts have jurisdiction over it. That distinction matters more than any checkbox on a compliance page.</BlogBlockquote>
+<BlogBlockquote>
+
+**Our take:** GDPR compliance isn't a feature you bolt onto a US-headquartered service. It's a property of where a company is incorporated, where its data flows, and which courts have jurisdiction over it. That distinction matters more than any checkbox on a compliance page.
+
+</BlogBlockquote>
 
 ## Why Did BunnyCDN Stand Out?
 
@@ -68,7 +76,11 @@ BunnyCDN's [Bunny Optimizer](https://bunny.net/optimizer/) adds another layer of
 
 The [global CDN market](https://www.precedenceresearch.com/content-delivery-network-market) is valued at $32.70 billion in 2025 and projected to hit $38.75 billion by 2026 (Precedence Research). But most CDN architectures assume they'll inspect, transform, or cache readable content. Ciphera's model is different. Every file uploaded through [Drop](https://drop.ciphera.net) is encrypted with AES-256-GCM in the user's browser before it ever hits our servers. The CDN never sees plaintext. It caches and delivers opaque encrypted blobs.
 
-<BlogBlockquote>**How it works:** The browser encrypts the file → uploads to our backend → backend stores the blob in S3-compatible storage → BunnyCDN sits in front as a pull zone → recipients download the encrypted blob from the nearest edge node → their browser decrypts it locally. BunnyCDN never needs to read the file. It just moves encrypted bytes closer to the user.</BlogBlockquote>
+<BlogBlockquote>
+
+**How it works:** The browser encrypts the file → uploads to our backend → backend stores the blob in S3-compatible storage → BunnyCDN sits in front as a pull zone → recipients download the encrypted blob from the nearest edge node → their browser decrypts it locally. BunnyCDN never needs to read the file. It just moves encrypted bytes closer to the user.
+
+</BlogBlockquote>
 
 This architecture means BunnyCDN's caching works perfectly — encrypted blobs are static, immutable files with unique URLs. Cache hit ratios stay high. Edge delivery stays fast. And because the CDN can't read the content, there's zero risk of accidental data exposure at the edge. Even if an attacker compromised a BunnyCDN edge node, they'd only find encrypted noise.
 

@@ -26,7 +26,9 @@ That's a problem. Because reCAPTCHA collects far more than most site operators r
 This article breaks down what reCAPTCHA actually collects, why the April 2026 transition increases your liability, why bots now bypass it anyway, and which alternatives actually protect both your users and your business.
 
 <BlogBlockquote variant="tldr">
+
 reCAPTCHA collects device fingerprints, mouse movements, keystrokes, and cross-site Google cookies — all while running silently in the background. Google's April 2, 2026 processor switch makes site operators the sole data controller for this collection. With €7.1 billion in cumulative GDPR fines (DLA Piper, 2026) and ETH Zurich proving AI defeats reCAPTCHA at 100% accuracy, the privacy cost no longer justifies the security benefit. Cloudflare Turnstile, hCaptcha, and Friendly Captcha offer stronger privacy with less overhead.
+
 </BlogBlockquote>
 
 ## What Data Does reCAPTCHA Actually Collect?
@@ -68,14 +70,18 @@ Google's April 2, 2026 transition from data controller to data processor for reC
 In September 2024, researchers at [ETH Zurich demonstrated their AI model could solve Google reCAPTCHAv2 with 100% accuracy](https://arxiv.org/abs/2409.08831) — using a modified YOLO model trained on 14,000 labeled images. The previous best was 68-71%. Meanwhile, automated bot traffic surpassed human traffic for the first time in 2024, with bots accounting for [51% of all web traffic](https://cpl.thalesgroup.com/about-us/newsroom/2025-imperva-bad-bot-report-ai-internet-traffic) (Imperva Bad Bot Report, 2025). So reCAPTCHA's privacy cost keeps growing while its security benefit keeps shrinking. That's a bad trade.The ETH Zurich researchers made another telling discovery. They found reCAPTCHAv2 is "heavily based on cookie and browser history data" for determining if a user is human. Meaning the privacy-invasive data collection isn't just a side effect — it's the core mechanism. And that mechanism failed against a model trained on 14,000 images. reCAPTCHA's approach to bot detection fundamentally depends on surveillance. When that surveillance can be spoofed, you're left with all the privacy cost and none of the security benefit.
 
 <BlogBlockquote>
+
 **Our take:** The bot traffic chart tells a story most CAPTCHA vendors won't. Bots now outnumber humans on the web, and the most advanced bots defeat reCAPTCHA at 100% accuracy. The only visitors reCAPTCHA reliably catches are impatient humans who misclick an image tile. That's not security — it's friction.
+
 </BlogBlockquote>
 
 Bad bots specifically account for 37% of all web traffic in 2024 — up from 32% in 2023, marking the sixth consecutive year of growth ([Imperva](https://cpl.thalesgroup.com/about-us/newsroom/2025-imperva-bad-bot-report-ai-internet-traffic), 2025). Meanwhile, Imperva blocked 13 trillion bad bot requests that year. The scale of the problem keeps growing, and traditional CAPTCHAs aren't keeping pace with AI-powered bots.
 
 ## What Does reCAPTCHA Cost Your Website?
 
-Independent testing by [OOPSpam](https://www.oopspam.com/blog/recaptcha-performance-analyses) measured reCAPTCHA's performance impact using Google Lighthouse: page load time jumped from 285ms to 1.56 seconds — a 447% increase. Compressed data went from 35.6KB to 565KB (1,487% increase). Network requests more than doubled from 5 to 13. That's the tax you pay for a service that AI bots now bypass.<BlogImage src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&q=80" alt="Dashboard showing website performance metrics and analytics, illustrating the measurable impact of third-party scripts on page load speed" />
+Independent testing by [OOPSpam](https://www.oopspam.com/blog/recaptcha-performance-analyses) measured reCAPTCHA's performance impact using Google Lighthouse: page load time jumped from 285ms to 1.56 seconds — a 447% increase. Compressed data went from 35.6KB to 565KB (1,487% increase). Network requests more than doubled from 5 to 13. That's the tax you pay for a service that AI bots now bypass.
+
+<BlogImage src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&q=80" alt="Dashboard showing website performance metrics and analytics, illustrating the measurable impact of third-party scripts on page load speed" />
 
 Performance aside, CAPTCHAs actively hurt conversions. Research from [Baymard Institute](https://baymard.com/blog/captchas-in-checkout) found an 8% failure rate on first attempts, jumping to 29.45% with case-sensitive CAPTCHAs. Separately, a Stanford study found CAPTCHAs can [reduce form conversions by up to 40%](https://www.peakhour.io/blog/the-negative-impact-of-captchas-on-ecommerce-conversions/), and Forrester reported 19% of consumers abandoned a website entirely because of a CAPTCHA. For e-commerce sites, that's revenue walking out the door.
 
@@ -125,7 +131,9 @@ Here's a practical migration path:
 **Step 4: Clean up your consent infrastructure.** If you added a cookie consent banner specifically for reCAPTCHA, you might not need it anymore. Turnstile and Friendly Captcha don't set cookies and don't require consent banners. That's one less piece of friction between your visitor and your content.
 
 <BlogBlockquote>
+
 **Our approach:** When we built bot protection for Ciphera's internal services, we followed these same principles: no cookies, no cross-site tracking, no persistent data collection, no data leaving our infrastructure. It's a design philosophy, not just a compliance checkbox. The [difference between real privacy engineering and privacy washing](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought) starts with decisions like which CAPTCHA service you deploy.
+
 </BlogBlockquote>
 
 ## Frequently Asked Questions

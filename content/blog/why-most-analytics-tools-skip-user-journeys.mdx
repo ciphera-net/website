@@ -25,7 +25,11 @@ We built user journey visualization into [Pulse](https://pulse.ciphera.net) beca
 
 <BlogImage src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop&q=80" alt="Web analytics dashboard displaying colorful performance graphs, session data, and traffic visualizations" />
 
-<BlogBlockquote variant="tldr">Privacy analytics tools like Plausible, Fathom, and Simple Analytics don't offer user journey visualization — leaving a $4.96B gap (Fortune Business Insights, 2025). Most site owners end up running two separate tools at $108-214/month to see how visitors navigate. Pulse includes Sankey-diagram flow visualization natively, built on aggregated session data with zero cookies.</BlogBlockquote>
+<BlogBlockquote variant="tldr">
+
+Privacy analytics tools like Plausible, Fathom, and Simple Analytics don't offer user journey visualization — leaving a $4.96B gap (Fortune Business Insights, 2025). Most site owners end up running two separate tools at $108-214/month to see how visitors navigate. Pulse includes Sankey-diagram flow visualization natively, built on aggregated session data with zero cookies.
+
+</BlogBlockquote>
 
 ## What Do User Journeys Actually Show You?
 
@@ -55,7 +59,11 @@ Pageview counts are cheap to store. A single counter increments. But journey dat
 
 A pageview table is trivial to render. A Sankey diagram isn't. It requires a graph layout algorithm (D3-Sankey), dynamic SVG rendering, node merging for high-cardinality paths, interactive filtering, and responsive sizing. Most small analytics teams don't have frontend capacity for this kind of visualization work. So the feature keeps getting deferred.
 
-<BlogBlockquote>**The real gap:** Privacy analytics tools chose minimalism as a philosophy, not just a privacy requirement. You can track page-to-page flows without identifying individual users — you just need to aggregate session data. The privacy constraint doesn't prevent journey visualization. The product philosophy does.</BlogBlockquote>
+<BlogBlockquote>
+
+**The real gap:** Privacy analytics tools chose minimalism as a philosophy, not just a privacy requirement. You can track page-to-page flows without identifying individual users — you just need to aggregate session data. The privacy constraint doesn't prevent journey visualization. The product philosophy does.
+
+</BlogBlockquote>
 
 ## Doesn't Google Analytics Already Have This?
 
@@ -73,7 +81,11 @@ Because privacy analytics tools don't include journey visualization, teams that 
 
 That's the two-tool tax. You pay twice because your analytics platform decided user journeys weren't worth building.
 
-<BlogBlockquote>**The hidden cost isn't just dollars.** Running two analytics tools means two scripts loading on your site, two dashboards to check, two mental models to maintain, and two vendors with access to your traffic data. That fragmentation adds cognitive overhead to every product decision you make.</BlogBlockquote>
+<BlogBlockquote>
+
+**The hidden cost isn't just dollars.** Running two analytics tools means two scripts loading on your site, two dashboards to check, two mental models to maintain, and two vendors with access to your traffic data. That fragmentation adds cognitive overhead to every product decision you make.
+
+</BlogBlockquote>
 
 ## How Pulse Built User Journeys Without Compromising Privacy
 
@@ -93,7 +105,11 @@ The frontend renders this data as an interactive Sankey diagram using D3's Sanke
 
 <BlogImage src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=1200&q=80" alt="Abstract network of connected translucent nodes on a dark background representing data flow paths" />
 
-<BlogBlockquote>**What we found building this:** The hardest part wasn't privacy — it was performance. Processing 340,000 pageview events into aggregated transitions every hour, across thousands of sites, required a worker pool with distributed locking to prevent duplicate aggregation. The privacy constraints (no individual tracking, no cookies) actually simplified the data model. Aggregation is both the privacy mechanism and the performance optimization.</BlogBlockquote>
+<BlogBlockquote>
+
+**What we found building this:** The hardest part wasn't privacy — it was performance. Processing 340,000 pageview events into aggregated transitions every hour, across thousands of sites, required a worker pool with distributed locking to prevent duplicate aggregation. The privacy constraints (no individual tracking, no cookies) actually simplified the data model. Aggregation is both the privacy mechanism and the performance optimization.
+
+</BlogBlockquote>
 
 ## The Privacy Analytics Feature Gap
 

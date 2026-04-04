@@ -27,7 +27,11 @@ This guide walks you through connecting BunnyCDN to [Pulse](https://pulse.cipher
 
 <BlogImage src="https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Close-up of blue-lit server storage drives with network cables in a data center rack" />
 
-<BlogBlockquote variant="tldr">BunnyCDN runs 119+ PoPs across 70+ countries, but without active monitoring, cache misses and origin slowdowns go unnoticed. Pulse's BunnyCDN integration tracks bandwidth, cache hit rates, error breakdowns, and geographic traffic — all stored on Swiss infrastructure with zero cookies. A 0.1-second speed improvement drives 8.4% more retail conversions ([Deloitte/Google](https://web.dev/case-studies/milliseconds-make-millions), 2020).</BlogBlockquote>
+<BlogBlockquote variant="tldr">
+
+BunnyCDN runs 119+ PoPs across 70+ countries, but without active monitoring, cache misses and origin slowdowns go unnoticed. Pulse's BunnyCDN integration tracks bandwidth, cache hit rates, error breakdowns, and geographic traffic — all stored on Swiss infrastructure with zero cookies. A 0.1-second speed improvement drives 8.4% more retail conversions ([Deloitte/Google](https://web.dev/case-studies/milliseconds-make-millions), 2020).
+
+</BlogBlockquote>
 
 ## Why Should You Monitor Your CDN Performance?
 
@@ -71,7 +75,11 @@ According to Cloudflare and Adobe AEM documentation, a well-performing CDN shoul
 
 That's it. A new **CDN** tab appears in your site navigation. Pulse syncs daily statistics in the background — no cron jobs, no webhooks, no manual CSV exports.
 
-<BlogBlockquote>**Implementation note:** BunnyCDN's datacenter codes don't follow ISO country standards. US states like "IL" (Illinois) and Canadian provinces like "ON" (Ontario) use the same two-letter format as country codes. Pulse normalizes these automatically, so your traffic distribution map shows accurate geographic data — Chicago maps to the United States, not Israel.</BlogBlockquote>
+<BlogBlockquote>
+
+**Implementation note:** BunnyCDN's datacenter codes don't follow ISO country standards. US states like "IL" (Illinois) and Canadian provinces like "ON" (Ontario) use the same two-letter format as country codes. Pulse normalizes these automatically, so your traffic distribution map shows accurate geographic data — Chicago maps to the United States, not Israel.
+
+</BlogBlockquote>
 
 ## What Does the CDN Dashboard Show You?
 
@@ -81,7 +89,11 @@ Five overview cards sit at the top: **Bandwidth**, **Requests**, **Cache Hit Rat
 
 Below the cards, you get three detailed views. The **Bandwidth Chart** is an area chart showing total bandwidth versus cached bandwidth over time. The gap between these two lines represents origin bandwidth — traffic the CDN couldn't serve from cache. If that gap is growing, your cache headers need attention.
 
-<BlogBlockquote>**Our finding:** The gap between total and cached bandwidth on Pulse's chart is the fastest way to spot cache misconfigurations. When the two lines diverge, check your Cache-Control headers — you're likely missing max-age directives on static assets or accidentally marking dynamic pages as uncacheable.</BlogBlockquote>
+<BlogBlockquote>
+
+**Our finding:** The gap between total and cached bandwidth on Pulse's chart is the fastest way to spot cache misconfigurations. When the two lines diverge, check your Cache-Control headers — you're likely missing max-age directives on static assets or accidentally marking dynamic pages as uncacheable.
+
+</BlogBlockquote>
 
 **Requests and Errors** sit side by side as bar charts. The requests chart shows daily volume trends. The errors chart stacks 3xx redirects, 4xx client errors, and 5xx server errors so you can spot patterns instantly. A 5xx spike right after a deployment? Roll it back.
 

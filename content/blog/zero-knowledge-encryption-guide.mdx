@@ -26,7 +26,9 @@ But what is zero-knowledge encryption, actually? Not the marketing version. Not 
 <BlogImage src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop&q=80" alt="A modern data center corridor with illuminated server racks representing cloud data storage and encryption infrastructure" />
 
 <BlogBlockquote variant="tldr">
+
 Zero-knowledge encryption means the service storing your data can't read it — not by policy, but by architecture. Data is encrypted on your device before upload. The server only ever sees ciphertext. 47% of sensitive cloud data remains unencrypted globally ([Thales](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/), 2026). ZKE closes that gap completely.
+
 </BlogBlockquote>
 
 ## What Does "Zero-Knowledge" Actually Mean?
@@ -71,7 +73,9 @@ No encryption system protects against everything. ZKE has real boundaries, and u
 **Weak passwords.** When you use password-based key derivation (PBKDF2, Argon2id), the encryption key is only as strong as your password. A four-character password produces a guessable key. PBKDF2's intentionally slow iterations help — but a weak password is still a weak password.
 
 <BlogBlockquote>
+
 **Our take:** We include these limitations because honesty builds trust. ZKE is one layer in a security strategy — not a silver bullet. For the full picture of what privacy engineering looks like, read [why privacy can't be an afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought).
+
 </BlogBlockquote>
 
 ## How Do You Tell If a Product Is Actually Zero-Knowledge?
@@ -84,7 +88,9 @@ No encryption system protects against everything. ZKE has real boundaries, and u
 4. **Are the client applications closed-source?** You can't verify that encryption happens client-side if you can't inspect the code. Open-source clients let anyone audit the encryption implementation.
 
 <BlogBlockquote>
+
 **How we built Drop:** We designed [Ciphera Drop](https://drop.ciphera.net) so that even Ciphera staff cannot access your files. There's no admin panel for file contents, no support override, no key escrow. If you lose your link and password, the file is permanently inaccessible to everyone — including us. That's not a bug. That's the guarantee. Drop is open source — you can [verify every claim in the code](https://github.com/ciphera-net/drop).
+
 </BlogBlockquote>
 
 ## Why Is ZKE Becoming the Standard?
