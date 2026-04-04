@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "eu-us-data-privacy-framework-executive-order",
+    "title": "The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem",
+    "description": "The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.",
+    "category": "Privacy",
+    "date": "2026-04-04",
+    "dateModified": "2026-04-04",
+    "readTime": "7 min read",
+    "image": "/blog/og/eu-us-data-privacy-framework-executive-order.png"
+  },
+  {
     "slug": "instagram-drops-end-to-end-encryption",
     "title": "Meta Promised Encryption for Everyone — Then Took It Away from 2 Billion Instagram Users",
     "description": "Meta is removing E2EE from Instagram DMs on May 8, 2026 — 11 days before the Take It Down Act kicks in. Here's what 2B users lose.",
