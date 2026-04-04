@@ -44,6 +44,16 @@ export const blogPosts: BlogPostSummary[] = [
     "image": "/blog/og/uk-age-verification-apple-iphone.png"
   },
   {
+    "slug": "why-european-businesses-should-use-european-software",
+    "title": "Why European Businesses Should Stop Defaulting to American Software",
+    "description": "US firms account for 83% of all GDPR fines. European governments are switching to sovereign software — here's why your business should too.",
+    "category": "Privacy",
+    "date": "2026-04-04",
+    "dateModified": "2026-04-04",
+    "readTime": "7 min read",
+    "image": "/blog/og/why-european-businesses-should-use-european-software.png"
+  },
+  {
     "slug": "why-we-chose-bunnycdn",
     "title": "Why We Chose BunnyCDN as Ciphera's CDN",
     "description": "97% of EU cloud infra is US-controlled. Here's why we picked an EU-native CDN with 119+ PoPs, $0.01/GB pricing, and GDPR baked in — not bolted on.",
