@@ -3,7 +3,6 @@
 
 // Product icons
 export { default as pulseIcon } from '@/public/pulse_icon_no_margins.png'
-export { default as dropIcon } from '@/public/drop_icon_no_margins.png'
 export { default as authIcon } from '@/public/auth_icon_no_margins.png'
 export { default as captchaIcon } from '@/public/captcha_icon_no_margins.png'
 export { default as relayIcon } from '@/public/relay_icon_no_margins.png'
@@ -12,7 +11,6 @@ export { default as cipheraLogo } from '@/public/ciphera_logo_no_margins.png'
 
 // Showcase backgrounds
 export { default as pulseShowcaseBg } from '@/public/pulse-showcase-bg.png'
-export { default as dropShowcaseBg } from '@/public/drop-showcase-bg.png'
 export { default as authShowcaseBg } from '@/public/auth-showcase-bg.png'
 export { default as captchaShowcaseBg } from '@/public/captcha-showcase-bg.png'
 

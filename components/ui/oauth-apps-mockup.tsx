@@ -1,6 +1,6 @@
 'use client'
 
-import { dropIcon, pulseIcon } from '@/lib/images'
+import { relayIcon, pulseIcon } from '@/lib/images'
 
 export function OAuthAppsMockup() {
   return (
@@ -14,13 +14,13 @@ export function OAuthAppsMockup() {
 
         {/* App cards grid */}
         <div className="flex flex-wrap justify-center gap-3">
-          {/* Drop */}
+          {/* Relay */}
           <div className="flex flex-col items-center p-5 rounded-2xl bg-neutral-800/50 border border-neutral-700/50 hover:border-neutral-600 w-[130px] transition-all">
             <div className="w-12 h-12 mb-3 flex items-center justify-center bg-neutral-800 rounded-xl">
-              <img src={dropIcon.src} alt="Drop" className="w-7 h-7 object-contain" />
+              <img src={relayIcon.src} alt="Relay" className="w-7 h-7 object-contain" />
             </div>
-            <span className="text-sm font-bold text-white mb-0.5">Drop</span>
-            <span className="text-[10px] text-neutral-400 text-center">Secure file sharing</span>
+            <span className="text-sm font-bold text-white mb-0.5">Relay</span>
+            <span className="text-[10px] text-neutral-400 text-center">Email infrastructure</span>
           </div>
 
           {/* Pulse */}

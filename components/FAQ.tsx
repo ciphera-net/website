@@ -11,10 +11,6 @@ const faqs = [
     answer: 'Zero-knowledge encryption means your data is encrypted on your device before it reaches our servers. We cannot decrypt or access your files, even if we wanted to. Only you hold the encryption keys, ensuring complete privacy.',
   },
   {
-    question: 'Is Drop free to use?',
-    answer: 'Yes, Drop is completely free with secure file sharing up to 5GB per file. No credit card required, no hidden fees. Simply upload your encrypted files and share securely.',
-  },
-  {
     question: 'How secure is end-to-end encryption?',
     answer: 'End-to-end encryption uses AES-256-GCM, the same military-grade encryption used by governments worldwide. Your files are encrypted before leaving your device, making interception impossible without your private keys.',
   },
@@ -25,10 +21,6 @@ const faqs = [
   {
     question: 'Is Ciphera GDPR compliant?',
     answer: 'Yes. Ciphera is built with privacy-by-design principles and is fully GDPR compliant. We collect minimal data, encrypt everything, and you maintain full control over your information.',
-  },
-  {
-    question: 'What file types can I share securely?',
-    answer: 'You can securely share any file type with Drop: documents, images, videos, archives, and more. All files are encrypted regardless of format, with support for files up to 5GB.',
   },
 ]
 

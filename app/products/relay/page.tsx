@@ -186,7 +186,6 @@ export default function CipheraRelayPage() {
                 {[
                   'Verification emails and password resets',
                   'Suspicious login alerts and account lockout notices',
-                  'File download and upload notifications (Drop)',
                   'Billing alerts and uptime reports (Pulse)',
                 ].map((item) => (
                   <li
@@ -363,7 +362,6 @@ export default function CipheraRelayPage() {
                           {'\n'}
                           <span className="text-neutral-500"># Per-service sender domains</span>{'\n'}
                           <span className="text-neutral-600"># Auth  → noreply@auth.ciphera.net</span>{'\n'}
-                          <span className="text-neutral-600"># Drop  → noreply@drop.ciphera.net</span>{'\n'}
                           <span className="text-neutral-600"># Pulse → noreply@pulse.ciphera.net</span>
                         </code>
                       </pre>

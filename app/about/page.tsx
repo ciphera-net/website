@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import { cipheraIcon, dropIcon } from '@/lib/images'
+import { cipheraIcon, pulseIcon } from '@/lib/images'
 
 const values = [
   {
@@ -45,7 +45,6 @@ const techStack = [
 
 const timeline = [
   { year: '2024', event: 'Ciphera founded with a mission to build privacy-first infrastructure' },
-  { year: '2024', event: 'Drop launched—secure, encrypted file sharing for everyone' },
   { year: '2025', event: 'Ciphera Auth, Captcha, and Relay services deployed' },
   { year: '2026', event: 'Continuing to expand the privacy ecosystem' },
 ]
@@ -116,7 +115,7 @@ export default function AboutPage() {
             </h1>
             <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
               Ciphera is dedicated to creating privacy-first infrastructure and applications 
-              that put users in control of their data. We believe <a href="https://drop.ciphera.net" target="_blank" rel="noopener noreferrer" className="link">encryption should be the default</a>, 
+              that put users in control of their data. We believe encryption should be the default, 
               not an add-on.
             </p>
           </motion.div>
@@ -299,11 +298,11 @@ export default function AboutPage() {
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                      <Image src={dropIcon} alt="Drop - Secure file sharing application icon" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain" unoptimized />
+                      <Image src={pulseIcon} alt="Pulse - Privacy-first analytics icon" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain" unoptimized />
                     </div>
                     <div>
-                      <div className="font-semibold text-white text-sm">Drop Backend</div>
-                      <div className="text-xs text-neutral-500">Application logic</div>
+                      <div className="font-semibold text-white text-sm">Pulse Backend</div>
+                      <div className="text-xs text-neutral-500">Analytics engine</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
@@ -392,8 +391,8 @@ export default function AboutPage() {
                 Try Pulse Free
                 <ArrowRightIcon className="w-4 h-4" />
               </Link>
-              <Link href="/products/drop" className="btn-secondary">
-                Explore Drop
+              <Link href="/products" className="btn-secondary">
+                View All Products
               </Link>
             </div>
           </motion.div>

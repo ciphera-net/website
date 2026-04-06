@@ -5,11 +5,10 @@ import Link from 'next/link'
 import Image, { StaticImageData } from 'next/image'
 import { ArrowRightIcon } from '@ciphera-net/ui'
 import { learnArticles } from '@/lib/learn-articles.gen'
-import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
+import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 const PRODUCT_CONFIG: Record<string, { label: string; icon: StaticImageData }> = {
   pulse: { label: 'Pulse', icon: pulseIcon },
-  drop: { label: 'Drop', icon: dropIcon },
   auth: { label: 'Auth', icon: authIcon },
   captcha: { label: 'Captcha', icon: captchaIcon },
   relay: { label: 'Relay', icon: relayIcon },
@@ -19,7 +18,7 @@ export default function LearnPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeProduct, setActiveProduct] = useState('All')
 
-  const productKeys = ['pulse', 'drop', 'auth', 'captcha', 'relay']
+  const productKeys = ['pulse', 'auth', 'captcha', 'relay']
 
   const filtered = useMemo(() => {
     return learnArticles.filter((article) => {

@@ -26,9 +26,6 @@ import {
     Funnel,
     Send,
     Lock,
-    Link2,
-    Inbox,
-    KeyRound,
     Fingerprint,
     ScanLine,
     ShieldCheck,
@@ -41,7 +38,7 @@ import {
 } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import { track } from '@/lib/pulse';
-import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon, cipheraIcon } from '@/lib/images';
+import { pulseIcon, authIcon, captchaIcon, relayIcon, cipheraIcon } from '@/lib/images';
 
 type LinkItem = {
     title: string;
@@ -53,7 +50,6 @@ type LinkItem = {
 
 const productBranding: Record<string, { logo: StaticImageData; name: string; signIn?: string; signUp?: string }> = {
     '/products/pulse': { logo: pulseIcon, name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
-    '/products/drop': { logo: dropIcon, name: 'Drop' },
     '/products/auth': { logo: authIcon, name: 'Ciphera Auth' },
     '/products/captcha': { logo: captchaIcon, name: 'Ciphera Captcha' },
     '/products/relay': { logo: relayIcon, name: 'Ciphera Relay' },
@@ -67,12 +63,6 @@ const productFeatures: Record<string, FeatureLink[]> = {
         { title: 'Visitor Insights', href: '#visitors', icon: Eye, description: 'Browser, device & geo data' },
         { title: 'Conversion Funnels', href: '#funnels', icon: Funnel, description: 'Multi-step drop-off analysis' },
         { title: 'Email Reports', href: '#reports', icon: Send, description: 'Scheduled inbox summaries' },
-    ],
-    '/products/drop': [
-        { title: 'Encryption', href: '#encryption', icon: Lock, description: 'Client-side AES-256-GCM' },
-        { title: 'Secure Sharing', href: '#sharing', icon: Link2, description: 'Links, QR codes & controls' },
-        { title: 'File Requests', href: '#requests', icon: Inbox, description: 'Receive files securely' },
-        { title: 'Zero-Knowledge', href: '#zero-knowledge', icon: KeyRound, description: 'Server can\'t read your files' },
     ],
     '/products/auth': [
         { title: 'Double Hashing', href: '#double-hashing', icon: Lock, description: 'PBKDF2 + Argon2id' },
@@ -355,12 +345,6 @@ const productLinks: LinkItem[] = [
         href: '/products/pulse',
         description: 'Privacy-first web analytics',
         image: pulseIcon,
-    },
-    {
-        title: 'Drop',
-        href: '/products/drop',
-        description: 'Encrypted file sharing',
-        image: dropIcon,
     },
     {
         title: 'Ciphera Auth',

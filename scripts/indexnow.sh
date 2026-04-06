@@ -25,7 +25,6 @@ else
     "https://ciphera.net/contact"
 
     # Product pages
-    "https://ciphera.net/products/drop"
     "https://ciphera.net/products/pulse"
     "https://ciphera.net/products/auth"
     "https://ciphera.net/products/captcha"
@@ -41,7 +40,6 @@ else
     "https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy"
     "https://ciphera.net/blog/biggest-data-breaches-2025-2026"
     "https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom"
-    "https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing"
     "https://ciphera.net/blog/privacy-statistics-2026"
     "https://ciphera.net/blog/open-source-privacy-tools-2026"
   )

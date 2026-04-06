@@ -340,7 +340,7 @@ export default function CipheraAuthPage() {
                 One account, all services.
               </h2>
               <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Log in once and access every Ciphera service — Drop, Pulse,
+                Log in once and access every Ciphera service — Pulse, Relay,
                 and more. Built on OAuth 2.0 with mandatory PKCE, so
                 authorization codes can&apos;t be intercepted. Tokens are
                 verified locally by each service using a shared secret — no

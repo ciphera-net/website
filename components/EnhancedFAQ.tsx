@@ -16,16 +16,8 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
       answer: "Zero-knowledge encryption means your data is encrypted on your device before it reaches our servers. We cannot decrypt or access your files, even if we wanted to. Only you hold the encryption keys, ensuring complete privacy.",
     },
     {
-      question: "Is Drop free to use?",
-      answer: "Yes, Drop is completely free with secure file sharing up to 5GB per file. No credit card required, no hidden fees. Simply upload your encrypted files and share securely.",
-    },
-    {
       question: "Is Ciphera GDPR compliant?",
       answer: "Yes. Ciphera is built with privacy-by-design principles and is fully GDPR compliant. We collect minimal data, encrypt everything, and you maintain full control over your information.",
-    },
-    {
-      question: "Do I need an account to use Drop?",
-      answer: "No. You can upload and share encrypted files without creating an account. However, a free Ciphera ID gives you access to additional features like download tracking, higher file size limits, and file management across all Ciphera services.",
     },
     {
       question: "How is Ciphera different from Google Drive or Dropbox?",
@@ -55,22 +47,6 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
   ],
   features: [
-    {
-      question: "What file types can I share securely?",
-      answer: "You can securely share any file type with Drop: documents, images, videos, archives, and more. All files are encrypted regardless of format, with support for files up to 5GB.",
-    },
-    {
-      question: "Can I set expiration dates on shared files?",
-      answer: "Yes! Drop supports expiring links, allowing you to set custom expiration dates for shared files. Files automatically become inaccessible after the expiration time.",
-    },
-    {
-      question: "Do you support password-protected shares?",
-      answer: "Yes. You can add an additional layer of security by password-protecting your file shares. Recipients must enter the correct password to access the encrypted file.",
-    },
-    {
-      question: "What is burn-after-download?",
-      answer: "Burn-after-download automatically deletes a shared file from our servers after it has been downloaded once. This ensures sensitive files don't linger online and gives you full control over the lifecycle of your shared data.",
-    },
     {
       question: "Does Pulse use cookies to track visitors?",
       answer: "No. Pulse is our privacy-first analytics tool that works without cookies, fingerprinting, or any form of personal data collection. It gives you meaningful insights like page views, referrers, and visitor counts while being fully GDPR compliant out of the box.",

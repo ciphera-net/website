@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { UserIcon, LockIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
 import { track } from '../lib/pulse'
-import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
+import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 const products = [
   {
@@ -16,17 +16,6 @@ const products = [
     description: 'Real-time user insights and session replay without compromising user privacy. Visualize user journeys and debug issues instantly.',
     features: ['Session replay', 'Geographic heatmaps', 'Real-time traffic monitoring', 'Privacy-preserving data collection'],
     link: '/products/pulse',
-    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
-    available: true,
-  },
-  {
-    icon: dropIcon,
-    isImage: true,
-    name: 'Drop',
-    tagline: 'Secure file sharing',
-    description: 'Share files securely with end-to-end encryption. Your files are encrypted before they leave your device.',
-    features: ['AES-256-GCM encryption', 'Zero-knowledge storage', 'Password protection', 'Expiring links'],
-    link: '/products/drop',
     iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     available: true,
   },

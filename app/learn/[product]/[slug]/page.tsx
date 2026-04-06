@@ -6,11 +6,10 @@ import remarkGfm from 'remark-gfm'
 import Image from 'next/image'
 import { ArrowLeftIcon } from '@ciphera-net/ui'
 import { getLearnArticle, getLearnArticles } from '@/lib/learn'
-import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
+import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 const PRODUCT_ICONS: Record<string, typeof pulseIcon> = {
   pulse: pulseIcon,
-  drop: dropIcon,
   auth: authIcon,
   captcha: captchaIcon,
   relay: relayIcon,
@@ -53,7 +52,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const PRODUCT_LABELS: Record<string, string> = {
   pulse: 'Pulse',
-  drop: 'Drop',
   auth: 'Auth',
   captcha: 'Captcha',
   relay: 'Relay',

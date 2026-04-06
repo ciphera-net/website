@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { UserIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
 import Image from 'next/image'
 import { SwissFlagIcon } from '@ciphera-net/ui'
-import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
+import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 // * Architecture nodes for the ecosystem diagram
 const services = [
@@ -16,15 +16,6 @@ const services = [
     isImage: true,
     iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     position: 'top',
-  },
-  {
-    id: 'drop',
-    name: 'Drop',
-    description: 'Secure file sharing',
-    icon: dropIcon,
-    isImage: true,
-    iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
-    position: 'top-right',
   },
   {
     id: 'auth',
@@ -142,7 +133,7 @@ export default function Infrastructure() {
                 </marker>
               </defs>
 
-              {/* * Drop -> Auth */}
+              {/* * Pulse -> Auth */}
               <motion.path
                 d="M 160 100 Q 100 100 100 160"
                 stroke="url(#lineGradientInfra)"
@@ -155,7 +146,7 @@ export default function Infrastructure() {
                 transition={{ duration: 1, delay: 0.5 }}
               />
 
-              {/* * Drop -> Captcha */}
+              {/* * Pulse -> Captcha */}
               <motion.path
                 d="M 240 100 Q 300 100 300 160"
                 stroke="url(#lineGradientInfra)"
@@ -209,7 +200,7 @@ export default function Infrastructure() {
             </div>
 
             {/* * Service nodes positioned around */}
-            {/* * Top - Drop */}
+            {/* * Top - Pulse */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2">
               <ServiceNode service={services[0]} delay={0.1} />
                   </div>
@@ -269,7 +260,7 @@ export default function Infrastructure() {
             </div>
 
         {/* * Service details grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
           {services.map((service, index) => {
             const Icon = service.icon as unknown as React.ComponentType<{ className?: string }>
             return (
@@ -302,7 +293,6 @@ export default function Infrastructure() {
                   {service.description}
                 </p>
                 <p className="text-sm text-neutral-400">
-                  {service.id === 'drop' && 'End-to-end encrypted file sharing with zero-knowledge architecture.'}
                   {service.id === 'pulse' && 'Real-time analytics and session replay without compromising user privacy.'}
                   {service.id === 'auth' && 'Secure identity management with JWT tokens and double-hashed passwords.'}
                   {service.id === 'relay' && 'Secure email infrastructure for verification and notifications.'}

@@ -52,7 +52,7 @@ export function EmailReportMockup() {
             <div className="space-y-0.5">
               {[
                 { page: '/', views: 100 },
-                { page: '/products/drop', views: 96 },
+                { page: '/products/pulse', views: 96 },
                 { page: '/pricing', views: 42 },
               ].map((row) => (
                 <div key={row.page}>

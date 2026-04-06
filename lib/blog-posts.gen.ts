@@ -184,16 +184,6 @@ export const blogPosts: BlogPostSummary[] = [
     "image": "/blog/og/privacy-statistics-2026.png"
   },
   {
-    "slug": "drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing",
-    "title": "Encrypted File Sharing: 7 Services Compared",
-    "description": "82% of breaches involve cloud data. We compare 7 file sharing services on encryption, privacy, jurisdiction, and cost — only 3 use zero-knowledge encryption.",
-    "category": "Comparison",
-    "date": "2026-02-21",
-    "dateModified": "2026-03-07",
-    "readTime": "12 min read",
-    "image": "/blog/og/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing.png"
-  },
-  {
     "slug": "pulse-vs-google-analytics-plausible-fathom",
     "title": "Pulse vs GA vs Plausible vs Fathom (2026)",
     "description": "Side-by-side comparison of Pulse, Google Analytics, Plausible, and Fathom on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.",

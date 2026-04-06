@@ -32,10 +32,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Product detail pages
     {
-      url: `${baseUrl}/products/drop`,
-      lastModified: '2026-03-02',
-    },
-    {
       url: `${baseUrl}/products/pulse`,
       lastModified: '2026-03-02',
     },

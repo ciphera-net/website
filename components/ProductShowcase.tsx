@@ -4,11 +4,10 @@ import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { AuthMockup } from '@/components/ui/auth-mockup'
-import { DropMockup } from '@/components/ui/drop-mockup'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
 import { RelayMockup } from '@/components/ui/relay-mockup'
 import { PulseMockup } from '@/components/ui/pulse-mockup'
-import { pulseIcon, dropIcon, authIcon, captchaIcon, relayIcon, pulseShowcaseBg, dropShowcaseBg, authShowcaseBg, captchaShowcaseBg, genA10 } from '@/lib/images'
+import { pulseIcon, authIcon, captchaIcon, relayIcon, pulseShowcaseBg, authShowcaseBg, captchaShowcaseBg, genA10 } from '@/lib/images'
 
 export default function ProductShowcase() {
   return (
@@ -61,59 +60,6 @@ export default function ProductShowcase() {
                   <PulseMockup />
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-6">
-        {/* Drop block — mockup left, text right */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left — mockup */}
-          <div className="relative flex items-center justify-center lg:justify-start">
-            <div className="relative">
-              <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-              <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                <img
-                  src={dropShowcaseBg.src}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/30" />
-                <div className="relative">
-                  <DropMockup />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right — text */}
-          <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              Share files without giving up your privacy.
-            </h2>
-
-            <div className="flex items-center gap-3 mb-4">
-              <img src={dropIcon.src} alt="Ciphera Drop" className="w-8 h-8 object-contain" />
-              <span className="text-lg font-semibold text-white">Drop</span>
-            </div>
-
-            <p className="text-lg text-neutral-400 leading-relaxed mb-8 max-w-lg">
-              End-to-end encrypted file sharing with expiring links, download limits, and burn-after-download.
-              Your files are encrypted on your device before upload — we never see the contents.
-            </p>
-
-            <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
-                <Link href="/products/drop">
-                  Try Drop <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="ghost" className="gap-2 text-neutral-300 hover:text-white" asChild>
-                <Link href="/products/drop">
-                  Explore Drop <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
             </div>
           </div>
         </div>
