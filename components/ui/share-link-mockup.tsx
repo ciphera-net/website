@@ -18,7 +18,7 @@ export function ShareLinkMockup() {
         <div className="flex items-center p-3 bg-neutral-900 border border-neutral-800 rounded-xl">
           <div className="flex-1 min-w-0 mr-3">
             <p className="text-xs text-neutral-300 truncate">
-              https://drop.ciphera.net/s/correct-horse-battery#k=...
+              https://ciphera.net/s/correct-horse-battery#k=...
             </p>
           </div>
           <button className="flex-shrink-0 p-1.5 bg-brand-orange text-white rounded-lg cursor-default">
