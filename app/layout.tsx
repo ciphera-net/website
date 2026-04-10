@@ -101,6 +101,30 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        {/*
+          * Honeypot link — invisible to real users (positioned off-screen,
+          * aria-hidden, untabbable, no pointer events). Link-walking crawlers
+          * that follow every anchor in the DOM will hit /sys/ping, which fires
+          * a pageview through the Pulse tracking script and triggers a
+          * Cerberus honeypot_path rule that instant-quarantines the session.
+          * Real users cannot see this, tab onto it, or accidentally click it.
+        */}
+        <a
+          href="/sys/ping"
+          aria-hidden="true"
+          tabIndex={-1}
+          rel="nofollow"
+          style={{
+            position: 'absolute',
+            left: '-9999px',
+            width: '1px',
+            height: '1px',
+            overflow: 'hidden',
+            pointerEvents: 'none',
+          }}
+        >
+          .
+        </a>
       </body>
     </html>
   )
