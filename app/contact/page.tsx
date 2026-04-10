@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { officeHq } from '@/lib/images'
@@ -123,6 +123,18 @@ export default function ContactPage() {
   const [captchaSolution, setCaptchaSolution] = useState('')
   const [captchaToken, setCaptchaToken] = useState('')
 
+  // * Honeypot ref — real users never touch this hidden field. Bots that
+  // * auto-fill every input will populate it; the backend rejects any non-empty
+  // * value. Using a ref instead of controlled state catches both onChange-aware
+  // * automation (which triggers React updates) and dumb automation that sets
+  // * input.value directly (which would not update React state).
+  const honeypotRef = useRef<HTMLInputElement>(null)
+
+  // * Page load timestamp — captured exactly once on mount. Sent with the form
+  // * submission so the backend can reject implausibly fast submissions (<2s).
+  // * Client-controlled so spoofable, but adds one more bar bots have to clear.
+  const [pageLoadedAt] = useState<number>(() => Date.now())
+
   const MESSAGE_MAX_LENGTH = 1000
 
   // * Real-time field validation
@@ -197,6 +209,10 @@ export default function ContactPage() {
           captcha_id: captchaId,
           captcha_solution: captchaSolution,
           captcha_token: captchaToken,
+          // * Honeypot — real users never populate this, bots auto-fill it
+          website: honeypotRef.current?.value || '',
+          // * Page dwell timestamp — backend rejects submissions faster than 2s
+          page_loaded_at: pageLoadedAt,
         }),
       })
 
@@ -503,6 +519,22 @@ export default function ContactPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <form onSubmit={handleSubmit} className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-4 sm:p-6 md:p-8">
+                {/*
+                  * Honeypot field — invisible to humans (off-screen, aria-hidden,
+                  * untabbable, no autocomplete) but present in the DOM so
+                  * auto-fill bots will populate it. A non-empty value on submit
+                  * identifies the submission as automated and the backend drops it.
+                  */}
+                <input
+                  ref={honeypotRef}
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  defaultValue=""
+                  style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }}
+                />
                 <div className="space-y-4 sm:space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     <div>
