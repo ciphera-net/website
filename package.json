@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prebuild": "npm run generate:learn && npm run generate:blog",
+    "validate:env": "node scripts/validate-env.mjs",
+    "prebuild": "npm run validate:env && npm run generate:learn && npm run generate:blog",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
