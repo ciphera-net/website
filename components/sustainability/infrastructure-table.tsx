@@ -12,7 +12,7 @@ interface InfrastructureTableProps {
 export function InfrastructureTable({ inventory }: InfrastructureTableProps) {
   return (
     <section id="infrastructure" className="py-20 lg:py-32 bg-neutral-950">
-      <div className="container mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-6">
         <div className="mb-16">
           <InfrastructureMap inventory={inventory} />
         </div>

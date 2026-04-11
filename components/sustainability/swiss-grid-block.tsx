@@ -9,7 +9,7 @@ import { swissAlpsFlagPhoto } from '@/lib/images'
 export function SwissGridBlock() {
   return (
     <section className="py-20 lg:py-32 bg-neutral-950">
-      <div className="container mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — framed photo with floating info cards */}
           <div className="relative flex items-center justify-center lg:justify-start">
