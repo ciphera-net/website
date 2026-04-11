@@ -2,6 +2,8 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // * Standalone output for Docker image builds (small runtime, no node_modules at runtime)
+  output: 'standalone',
   // * Privacy-first: Disable analytics and telemetry
   productionBrowserSourceMaps: false,
   // * Image optimization
