@@ -17,9 +17,7 @@ export { default as captchaShowcaseBg } from '@/public/captcha-showcase-bg.png'
 // Stock photos
 export { default as zurichPhoto } from '@/public/zurich.jpg'
 export { default as swissAlpsFlagPhoto } from '@/public/swiss-alps-flag.jpg'
-// Sustainability hero — currently a placeholder pointing at the existing
-// swiss-alps-flag.jpg. Replace public/sustainability-hero.jpg with the
-// intended Alpine dam photograph whenever it's ready; no code change needed.
+// Sustainability hero — Unsplash photo (x8ZStukS2PM, green plant).
 export { default as sustainabilityHeroBg } from '@/public/sustainability-hero.jpg'
 
 // Other
