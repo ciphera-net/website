@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import '../styles/globals.css'
+import { env } from '@/lib/env'
 // import HeroBackground from '../components/HeroBackground'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -80,9 +81,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakartaSans.variable} dark`} suppressHydrationWarning>
       <head>
-        {/* DNS prefetch for analytics - uses env vars at build time, falls back to production */}
-        <link rel="dns-prefetch" href={new URL(process.env.NEXT_PUBLIC_PULSE_SCRIPT_URL || 'https://pulse.ciphera.net/script.js').origin} />
-        <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_PULSE_API_URL || 'https://pulse-api.ciphera.net'} />
+        {/* DNS prefetch for analytics — sourced from the Zod-validated env schema,
+            which provides a prod default so this never renders an invalid URL. */}
+        <link rel="dns-prefetch" href={new URL(env.NEXT_PUBLIC_PULSE_SCRIPT_URL).origin} />
+        <link rel="dns-prefetch" href={env.NEXT_PUBLIC_PULSE_API_URL} />
         <link rel="alternate" type="application/rss+xml" title="Ciphera Blog" href="/feed.xml" />
       </head>
       <body className="relative antialiased min-h-screen flex flex-col bg-neutral-950 text-neutral-50">

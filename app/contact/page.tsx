@@ -17,6 +17,7 @@ import {
   Captcha
 } from '@ciphera-net/ui'
 import { track } from '../../lib/pulse'
+import { env } from '@/lib/env'
 
 // * Contact methods with response time SLAs
 const contactMethods = [
@@ -198,7 +199,7 @@ export default function ContactPage() {
     setStatus('submitting')
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_WEBSITE_API_URL}/api/v1/contact`, {
+      const response = await fetch(`${env.NEXT_PUBLIC_WEBSITE_API_URL}/api/v1/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -631,7 +632,7 @@ export default function ContactPage() {
                         setCaptchaToken(token || '')
                         track('contact_captcha_verified')
                       }}
-                      apiUrl={process.env.NEXT_PUBLIC_CAPTCHA_API_URL}
+                      apiUrl={env.NEXT_PUBLIC_CAPTCHA_API_URL}
                       action="contact"
                     />
                   </div>
