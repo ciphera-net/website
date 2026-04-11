@@ -373,6 +373,12 @@ const companyLinks: LinkItem[] = [
         description: 'Our mission for a more private internet',
         icon: Users,
     },
+    {
+        title: 'Sustainability',
+        href: '/sustainability',
+        description: '100% renewable Swiss hosting — see the real numbers',
+        icon: Leaf,
+    },
 ];
 
 const companyLinks2: LinkItem[] = [
