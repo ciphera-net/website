@@ -27,6 +27,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: '2026-03-02',
     },
     {
+      url: `${baseUrl}/sustainability`,
+      lastModified: '2026-04-11',
+    },
+    {
       url: `${baseUrl}/contact`,
       lastModified: '2026-02-28',
     },
