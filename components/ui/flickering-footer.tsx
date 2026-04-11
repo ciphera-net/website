@@ -62,6 +62,7 @@ const footerLinks = [
       { id: 6, title: "About", url: "/about" },
       { id: 7, title: "Contact", url: "/contact" },
       { id: 8, title: "Blog", url: "/blog" },
+      { id: 12, title: "Sustainability", url: "/sustainability" },
     ],
   },
   {
