@@ -57,6 +57,15 @@ jobs:
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
           secret-files: |
             npmrc=/tmp/npmrc
+          # NEXT_PUBLIC_* values are inlined into the client JS bundle at build time.
+          # They MUST be passed here — Dokploy runtime env vars don't affect the client.
+          # These are public URLs (they end up in the browser either way), so hardcoding
+          # them in the workflow is safe and keeps config in one place.
+          build-args: |
+            NEXT_PUBLIC_CAPTCHA_API_URL=https://captcha.ciphera.net/api/v1
+            NEXT_PUBLIC_PULSE_SCRIPT_URL=https://pulse.ciphera.net/script.js
+            NEXT_PUBLIC_PULSE_API_URL=https://pulse-api.ciphera.net
+            NEXT_PUBLIC_WEBSITE_API_URL=https://api.ciphera.net
 
       - name: Trigger Dokploy redeploy
         if: github.ref == 'refs/heads/main'

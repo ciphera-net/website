@@ -15,7 +15,20 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# NEXT_PUBLIC_* values must be present at build time — Next.js inlines them
+# into the client bundle during `next build`. Runtime env vars in Dokploy have
+# no effect on the client bundle, so we pass them as Docker build args here.
+ARG NEXT_PUBLIC_CAPTCHA_API_URL
+ARG NEXT_PUBLIC_PULSE_SCRIPT_URL
+ARG NEXT_PUBLIC_PULSE_API_URL
+ARG NEXT_PUBLIC_WEBSITE_API_URL
+ENV NEXT_PUBLIC_CAPTCHA_API_URL=${NEXT_PUBLIC_CAPTCHA_API_URL}
+ENV NEXT_PUBLIC_PULSE_SCRIPT_URL=${NEXT_PUBLIC_PULSE_SCRIPT_URL}
+ENV NEXT_PUBLIC_PULSE_API_URL=${NEXT_PUBLIC_PULSE_API_URL}
+ENV NEXT_PUBLIC_WEBSITE_API_URL=${NEXT_PUBLIC_WEBSITE_API_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
+
 # prebuild runs scripts/generate-learn-articles.ts + generate-blog-posts.ts via tsx,
 # then next build
 RUN npm run build
