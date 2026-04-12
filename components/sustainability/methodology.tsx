@@ -18,18 +18,8 @@ export function Methodology({ report }: MethodologyProps) {
       body: (
         <>
           <p className="text-neutral-400 leading-relaxed mb-3">
-            Numbers come directly from the Exoscale APIv2{' '}
-            <code className="text-xs bg-white/5 px-1.5 py-0.5 rounded">
-              /v2/env-impact/{report.period.label.toLowerCase().replace(' ', '-')}
-            </code>{' '}
-            endpoint, accessed via a dedicated read-only API key scoped to the
-            Exoscale organization service only — no compute, storage, or IAM
-            access. Every request is HMAC-signed, logged, and cached for 24
-            hours.
-          </p>
-          <p className="text-neutral-400 leading-relaxed">
-            If the Exoscale API is unavailable, we fall back to numbers
-            computed from our published instance inventory using{' '}
+            Numbers come directly from our hosting provider&apos;s LCA
+            measurement API, which implements the{' '}
             <a
               href="https://boavizta.org"
               className="text-brand-orange hover:underline"
@@ -38,11 +28,17 @@ export function Methodology({ report }: MethodologyProps) {
             >
               Boavizta
             </a>{' '}
+            life-cycle assessment framework. Every request is HMAC-signed,
+            logged, and cached for 24 hours.
+          </p>
+          <p className="text-neutral-400 leading-relaxed">
+            If the measurement API is unavailable, we fall back to numbers
+            computed from our published instance inventory using Boavizta&apos;s
             open emissions factors. The source badge at the top of this page
             tells you which path served the current numbers — currently:{' '}
             <strong className="text-white">
               {report.source === 'exoscale-api'
-                ? 'Exoscale API'
+                ? 'Live measurement API'
                 : 'Computed fallback'}
             </strong>
             .
@@ -75,13 +71,14 @@ export function Methodology({ report }: MethodologyProps) {
       title: 'Refresh cadence',
       body: (
         <p className="text-neutral-400 leading-relaxed">
-          This page is regenerated every 24 hours. Exoscale&apos;s environmental
-          API itself recomputes roughly monthly, so the reporting period may lag
-          3–5 days behind the current date. The badge at the top always shows the
-          month the numbers cover. The Exoscale env-impact API is in public{' '}
-          <span className="text-brand-orange">BETA</span> — if the schema changes
-          or the endpoint is retired, we&apos;ll automatically switch to the
-          fallback path without breaking the page.
+          This page is regenerated every 24 hours. Our provider&apos;s
+          environmental API itself recomputes roughly monthly, so the reporting
+          period may lag 3–5 days behind the current date. The badge at the top
+          always shows the month the numbers cover. Our provider&apos;s
+          environmental API is in public{' '}
+          <span className="text-brand-orange">BETA</span> — if the schema
+          changes or the endpoint is retired, we&apos;ll automatically switch
+          to the fallback path without breaking the page.
         </p>
       ),
     },

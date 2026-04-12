@@ -9,8 +9,8 @@ export interface SourceBadgeProps {
 
 /**
  * Small pill shown near the hero that tells readers which data path served
- * the current report. Transparent about fallback state — when the Exoscale
- * API is unavailable, this badge shows "Computed from inventory" in amber.
+ * the current report. Transparent about fallback state — when the upstream
+ * measurement API is unavailable, this badge shows "Approximated" in amber.
  */
 export function SourceBadge({ source, periodLabel, className }: SourceBadgeProps) {
   const isLive = source === 'exoscale-api'
@@ -30,8 +30,8 @@ export function SourceBadge({ source, periodLabel, className }: SourceBadgeProps
         <CircleNotch className="h-4 w-4" />
       )}
       {isLive
-        ? `Live from Exoscale · ${periodLabel}`
-        : `Computed from inventory · Exoscale API unavailable`}
+        ? `Live data · ${periodLabel}`
+        : `Approximated · Measurement API unavailable`}
     </span>
   )
 }
