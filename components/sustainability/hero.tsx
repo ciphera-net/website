@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { track } from '@/lib/pulse'
+import { sustainabilityHeroBg } from '@/lib/images'
 import type { ImpactReport } from './types'
 import { CountUpNumber } from './count-up-number'
 import { SourceBadge } from './source-badge'
@@ -118,8 +119,10 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
     const animate = () => {
       if (!canvas || !ctx) return
 
-      ctx.fillStyle = '#0A0A0A'
-      ctx.fillRect(0, 0, container.clientWidth, container.clientHeight)
+      // * Transparent clear so the Swiss mountain photo behind the canvas
+      // * shows through. The dark "background" color is provided by the
+      // * overlay div layer, not by the canvas fill.
+      ctx.clearRect(0, 0, container.clientWidth, container.clientHeight)
 
       beamsRef.current.forEach((beam) => {
         beam.y -= beam.speed * (beam.layer / LAYERS + 0.5)
@@ -161,13 +164,26 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
       ref={containerRef}
       className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden"
     >
+      {/* * Layer 0 — full-bleed Swiss mountain photograph */}
+      <img
+        src={sustainabilityHeroBg.src}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 z-0 w-full h-full object-cover"
+      />
+      {/* * Layer 1 — dark overlay to bring the photo down to a readable
+        * contrast level for the white text and the count-up number */}
+      <div className="absolute inset-0 z-[1] bg-neutral-950/75" />
+      {/* * Layer 2 — canvas beams (transparent clear so the photo shows
+        * through between and around the beams) */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-[2]"
         style={{ filter: 'blur(3px)' }}
       />
+      {/* * Layer 3 — bottom fade so the hero blends into the next section */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-[40vh] z-0 pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 h-[40vh] z-[3] pointer-events-none"
         style={{
           background:
             'linear-gradient(to top, hsl(0 0% 4%) 0%, hsl(0 0% 4%) 15%, transparent 100%)',

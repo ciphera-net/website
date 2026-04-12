@@ -17,7 +17,9 @@ export { default as captchaShowcaseBg } from '@/public/captcha-showcase-bg.png'
 // Stock photos
 export { default as zurichPhoto } from '@/public/zurich.jpg'
 export { default as swissAlpsFlagPhoto } from '@/public/swiss-alps-flag.jpg'
-// Sustainability hero — Unsplash photo (x8ZStukS2PM, green plant).
+// Sustainability hero — Unsplash snowy mountain range (8KyG68ZqbyI).
+// Used full-bleed behind the hero canvas beams and as ambient texture
+// (heavy dark overlay) behind the commitments quote block.
 export { default as sustainabilityHeroBg } from '@/public/sustainability-hero.jpg'
 
 // Other
