@@ -90,7 +90,7 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
             <div className="mb-8">
               <div className="mb-3 flex items-center justify-between text-sm">
                 <span className="text-neutral-400">Total GWP</span>
-                <span className="font-mono text-white tabular-nums">
+                <span className="text-white tabular-nums">
                   {total.toFixed(3)} kg CO₂-Eq
                 </span>
               </div>
@@ -125,7 +125,7 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
                       {phase.name}
                     </span>
                   </div>
-                  <div className="font-mono text-lg font-bold text-white tabular-nums">
+                  <div className="text-lg font-bold text-white tabular-nums">
                     {(phase.amount * 1000).toFixed(0)} g
                   </div>
                   <div className="text-[11px] text-neutral-500">{phase.label}</div>

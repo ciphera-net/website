@@ -65,7 +65,7 @@ export function InfrastructureMap({ inventory }: InfrastructureMapProps) {
           y={90}
           textAnchor="middle"
           className="fill-neutral-500"
-          style={{ fontSize: 14, fontFamily: 'inherit' }}
+          style={{ fontSize: 14, fontFamily: 'var(--font-plus-jakarta-sans), system-ui, sans-serif' }}
         >
           CH-DK-2 · Zurich
         </text>
@@ -95,7 +95,7 @@ export function InfrastructureMap({ inventory }: InfrastructureMapProps) {
                 y={pos.y + 48}
                 textAnchor="middle"
                 className="fill-neutral-300"
-                style={{ fontSize: 12, fontFamily: 'inherit', fontWeight: 500 }}
+                style={{ fontSize: 12, fontFamily: 'var(--font-plus-jakarta-sans), system-ui, sans-serif', fontWeight: 500 }}
               >
                 {inst.instance}
               </text>
@@ -109,7 +109,7 @@ export function InfrastructureMap({ inventory }: InfrastructureMapProps) {
           y={90}
           textAnchor="middle"
           className="fill-neutral-500"
-          style={{ fontSize: 14, fontFamily: 'inherit' }}
+          style={{ fontSize: 14, fontFamily: 'var(--font-plus-jakarta-sans), system-ui, sans-serif' }}
         >
           CH-GVA-2 · Geneva
         </text>

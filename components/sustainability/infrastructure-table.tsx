@@ -48,7 +48,7 @@ export function InfrastructureTable({ inventory }: InfrastructureTableProps) {
                       (i % 2 === 0 ? 'bg-transparent' : 'bg-white/[0.015]')
                     }
                   >
-                    <td className="py-4 px-4 font-mono text-white">{inst.instance}</td>
+                    <td className="py-4 px-4 text-white font-medium">{inst.instance}</td>
                     <td className="py-4 px-4 text-neutral-300">{inst.type}</td>
                     <td className="py-4 px-4 text-neutral-300 tabular-nums">{inst.vcpu}</td>
                     <td className="py-4 px-4 text-neutral-300 tabular-nums">
