@@ -1,5 +1,5 @@
 import { Leaf, Atom, Sparkle, Check } from '@phosphor-icons/react/dist/ssr'
-import { swissAlpsFlagPhoto } from '@/lib/images'
+import { swissGridBuildingsPhoto } from '@/lib/images'
 
 /**
  * Section 3 — Swiss grid advantage. Clones the SwissPrivacy homepage
@@ -17,8 +17,8 @@ export function SwissGridBlock() {
               <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
               <div className="relative w-full max-w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
                 <img
-                  src={swissAlpsFlagPhoto.src}
-                  alt="Swiss Alps with Swiss flag"
+                  src={swissGridBuildingsPhoto.src}
+                  alt="Swiss government buildings flying Swiss flags"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />

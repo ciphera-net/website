@@ -17,6 +17,9 @@ export { default as captchaShowcaseBg } from '@/public/captcha-showcase-bg.png'
 // Stock photos
 export { default as zurichPhoto } from '@/public/zurich.jpg'
 export { default as swissAlpsFlagPhoto } from '@/public/swiss-alps-flag.jpg'
+// Swiss government buildings with flags — Unsplash HM2u6gti_ic.
+// Used on the sustainability page's "cleanest grid in Europe" block.
+export { default as swissGridBuildingsPhoto } from '@/public/swiss-grid-buildings.jpg'
 // Sustainability hero — Unsplash snowy mountain range (8KyG68ZqbyI).
 // Used full-bleed behind the hero canvas beams and as ambient texture
 // (heavy dark overlay) behind the commitments quote block.
