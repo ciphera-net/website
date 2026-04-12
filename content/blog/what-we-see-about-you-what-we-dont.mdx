@@ -10,7 +10,7 @@ faqs:
   - question: "Can Ciphera read my email address?"
     answer: "Your email address is stored in a client-encrypted vault that Ciphera operators cannot decrypt. When we send you a transactional email, our notification service briefly decrypts your address in process memory to compose the SMTP message. The plaintext exists for milliseconds, is never logged, and is garbage-collected after the send completes. At rest, your email is AES-256-GCM encrypted."
   - question: "What happens to my data if I delete my Ciphera account?"
-    answer: "Your encrypted vault (containing email and profile data) is permanently deleted. Your SRP verifier and blind index are removed. All refresh tokens are revoked. Notification metadata in the email_log table (template name, delivery status — not your email address or message body) is not currently cascaded on deletion. We're adding this."
+    answer: "Your encrypted vault (containing email and profile data) is permanently deleted. Your SRP verifier and blind index are removed. All refresh tokens are revoked. Notification metadata in the email_log table (template name, delivery status — not your email address or message body) is automatically cascaded and deleted along with your account. Device-tracking hashes and audit log entries are bounded by their retention periods."
   - question: "Does Ciphera use Google Analytics or set cookies?"
     answer: "No. The Ciphera website uses only Pulse, our own privacy-first analytics platform. Pulse sets zero cookies, stores no raw IP addresses, and generates daily-rotating session identifiers. No Google Analytics, Meta Pixel, Hotjar, or third-party tracking scripts are loaded on any Ciphera property."
   - question: "What could Ciphera produce if served with a legal data request?"
@@ -55,8 +55,8 @@ Here's the honest list. Every item is something at least one Ciphera system has 
 | **Your email address** (encrypted at rest) | In our notification service database | Until you delete your account | Stored as AES-256-GCM with an operator-held key, so we can send you future emails without asking you to re-enter it. |
 | **Your email address** (blind index) | In the auth database | Until you delete your account | A PBKDF2-derived hash computed on your device for login lookups. Irreversible — we can check "does this hash exist?" but cannot reverse it to an email. |
 | **Your account UUID** | Always | Lifetime of account | We need an identifier to route authenticated requests. The UUID contains no personal information. |
-| **Notification metadata** | After every transactional email | Indefinitely (known gap — see below) | Template name, service origin, delivery status, timestamp. We do NOT store the destination address or message body. |
-| **Raw IP address and User-Agent** | When you log in | Stored in refresh token and known-device tables | Used for new-device security alerts. The audit log stores only a hashed IP (irreversible HMAC) and a display hint like "Chrome on macOS" — but the device-tracking tables store raw values. |
+| **Notification metadata** | After every transactional email | 90 days, auto-purged | Template name, service origin, delivery status, timestamp. We do NOT store the destination address or message body. Cascades to deletion on account removal. |
+| **Hashed IP and device display hint** | When you log in | Bounded by token expiry (30 days for refresh tokens) | Used for new-device security alerts. IPs are stored as user-specific HMAC hashes (irreversible). User-Agents are parsed to display hints like "Chrome on macOS" before storage — raw User-Agent strings never exist in the database. Applies consistently across audit log, refresh tokens, and known-device tables. |
 | **Pageview events** (Pulse-tracked sites) | When you visit a site using Pulse | 12 months default, then auto-purged | Page path, referrer, country, device type, browser, OS, UTM params — with a daily-rotating session ID. Raw IP is discarded immediately after hash computation. |
 | **Subscription metadata** | For the duration of your subscription | Lifetime of account | Plan name, billing status, dates. Card details are handled by Mollie — we never see card numbers. |
 | **Aggregated daily statistics** (Pulse) | After daily rollup | Indefinite | Total pageviews, visitor counts, bounce rates, durations — per site, per day. No individual-level data. |
@@ -92,7 +92,7 @@ The raw IP address is extracted from the request, used to compute the session ha
 
 Site owners using Pulse see only aggregates: top pages, referrer trends, device categories, engagement percentiles. There is no dashboard view that shows "visitor X visited pages A, B, C." That view doesn't exist because the data model makes it impossible to construct.
 
-Pulse also respects the Do Not Track (DNT) browser signal. If your browser has DNT enabled, Pulse does not track.
+Pulse also respects the Do Not Track (DNT) and Global Privacy Control (GPC) browser signals. If your browser sends either signal, Pulse does not track. GPC is legally binding under California's CCPA and recognized by multiple EU regulators.
 
 ### Your cookies on ciphera.net
 
@@ -120,19 +120,15 @@ Is this zero-knowledge in the strict cryptographic sense? No. We do see your ema
 
 ## The Gaps We're Closing
 
-Honesty means naming the things we haven't fixed yet. Here are the known gaps in our privacy architecture, and our plans to close them:
-
-**Notification metadata log has no automatic retention.** The email_log table — which stores only metadata, not addresses or bodies — accumulates rows indefinitely. When a user deletes their account, these rows aren't automatically removed. We're adding a retention policy and cascade deletion.
-
-**Device-tracking tables store raw IP and User-Agent.** The security audit log properly hashes IPs and replaces user-agents with display hints. But the refresh token and known-device tables store raw values for device-tracking alerts. We're evaluating whether to hash these too, balancing security alerting accuracy against data minimization.
+Honesty means naming the things we haven't fixed yet. Here are the remaining gaps in our privacy architecture, and our plans to close them:
 
 **Single-operator access model.** One SSH key from one IP address currently controls access to the entire fleet. There is no role-based access control, and no centralized audit log for operator actions on production systems. We're implementing operator separation with access logging.
 
-**Pulse doesn't respect Global Privacy Control (GPC).** The tracking script respects Do Not Track (DNT) but doesn't check for the newer GPC signal. We're adding GPC support.
-
-**Database backups live in the same cloud account as production.** If the cloud account were compromised, backups would be too. We're adding off-account backup replication.
+**Database backups live in the same cloud account as production.** If the cloud account were compromised, backups would be too. We're adding off-account backup replication and client-side encryption.
 
 These gaps exist because we prioritized getting the core architecture right (SRP-6a, encrypted vaults, daily-rotating hashes, self-hosted email) before building the operational tooling around it. The architecture prevents data exposure; the gaps are about operational hygiene. Both matter, and we're closing the second.
+
+*Last updated: 12-04-2026 — we closed three gaps since this post was first published (notification metadata retention, device-tracking column clarity, GPC support). The remaining two are in active development.*
 
 ## How You Verify Us
 
