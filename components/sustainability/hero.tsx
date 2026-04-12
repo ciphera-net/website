@@ -1,9 +1,9 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
-import { sustainabilityHeroBg } from '@/lib/images'
 import { track } from '@/lib/pulse'
 import type { ImpactReport } from './types'
 import { CountUpNumber } from './count-up-number'
@@ -13,15 +13,134 @@ interface SustainabilityHeroProps {
   report: ImpactReport
 }
 
+interface Beam {
+  x: number
+  y: number
+  width: number
+  length: number
+  angle: number
+  speed: number
+  opacity: number
+  pulse: number
+  pulseSpeed: number
+  layer: number
+}
+
+function createBeam(width: number, height: number, layer: number): Beam {
+  const angle = -35 + Math.random() * 10
+  const baseSpeed = 0.2 + layer * 0.2
+  const baseOpacity = 0.03 + layer * 0.02
+  const baseWidth = 10 + layer * 5
+  return {
+    x: Math.random() * width,
+    y: Math.random() * height,
+    width: baseWidth,
+    length: height * 2.5,
+    angle,
+    speed: baseSpeed + Math.random() * 0.2,
+    opacity: baseOpacity + Math.random() * 0.1,
+    pulse: Math.random() * Math.PI * 2,
+    pulseSpeed: 0.01 + Math.random() * 0.015,
+    layer,
+  }
+}
+
 /**
- * Section 1 — Full-bleed Alpine dam photograph with a count-up CO2e number
- * and two CTAs. Mirrors the Pulse product page hero pattern exactly.
+ * Section 1 — Full-bleed animated canvas beam hero with a count-up CO2e
+ * number and two CTAs. Adapted from PremiumHero — same brand-orange beam
+ * gradient, no logo carousel (homepage only), no noise canvas (kept the
+ * signal cleaner for a numbers-focused page).
  *
  * The hero number is formatted based on magnitude: under 1 kg shows grams,
  * 1-999 kg shows kg, over 1000 kg shows tonnes. Reformats as CountUpNumber
  * animates.
  */
 export function SustainabilityHero({ report }: SustainabilityHeroProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const beamsRef = useRef<Beam[]>([])
+  const animationFrameRef = useRef<number>(0)
+
+  const LAYERS = 3
+  const BEAMS_PER_LAYER = 8
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const container = containerRef.current
+    if (!canvas || !container) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const resizeCanvas = () => {
+      const w = container.clientWidth
+      const h = container.clientHeight
+      const scale = 0.5
+
+      canvas.width = w * scale
+      canvas.height = h * scale
+      canvas.style.width = `${w}px`
+      canvas.style.height = `${h}px`
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      ctx.scale(scale, scale)
+
+      beamsRef.current = []
+      for (let layer = 1; layer <= LAYERS; layer++) {
+        for (let i = 0; i < BEAMS_PER_LAYER; i++) {
+          beamsRef.current.push(createBeam(w, h, layer))
+        }
+      }
+    }
+
+    resizeCanvas()
+    window.addEventListener('resize', resizeCanvas)
+
+    const drawBeam = (beam: Beam) => {
+      ctx.save()
+      ctx.translate(beam.x, beam.y)
+      ctx.rotate((beam.angle * Math.PI) / 180)
+
+      const pulsingOpacity = Math.min(
+        1,
+        beam.opacity * (0.8 + Math.sin(beam.pulse) * 0.4),
+      )
+      const gradient = ctx.createLinearGradient(0, 0, 0, beam.length)
+      gradient.addColorStop(0, `rgba(253,94,15,0)`)
+      gradient.addColorStop(0.2, `rgba(253,94,15,${pulsingOpacity * 0.5})`)
+      gradient.addColorStop(0.5, `rgba(253,94,15,${pulsingOpacity})`)
+      gradient.addColorStop(0.8, `rgba(253,94,15,${pulsingOpacity * 0.5})`)
+      gradient.addColorStop(1, `rgba(253,94,15,0)`)
+
+      ctx.fillStyle = gradient
+      ctx.fillRect(-beam.width / 2, 0, beam.width, beam.length)
+      ctx.restore()
+    }
+
+    const animate = () => {
+      if (!canvas || !ctx) return
+
+      ctx.fillStyle = '#0A0A0A'
+      ctx.fillRect(0, 0, container.clientWidth, container.clientHeight)
+
+      beamsRef.current.forEach((beam) => {
+        beam.y -= beam.speed * (beam.layer / LAYERS + 0.5)
+        beam.pulse += beam.pulseSpeed
+        if (beam.y + beam.length < -50) {
+          beam.y = container.clientHeight + 50
+          beam.x = Math.random() * container.clientWidth
+        }
+        drawBeam(beam)
+      })
+
+      animationFrameRef.current = requestAnimationFrame(animate)
+    }
+    animate()
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas)
+      cancelAnimationFrame(animationFrameRef.current)
+    }
+  }, [])
+
   const co2eKg = report.totals.co2e.amount
   // * Pick a display unit and convert the amount accordingly
   let displayAmount = co2eKg
@@ -38,14 +157,22 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
   }
 
   return (
-    <section className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden">
-      <img
-        src={sustainabilityHeroBg.src}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover"
+    <section
+      ref={containerRef}
+      className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden"
+    >
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-0"
+        style={{ filter: 'blur(3px)' }}
       />
-      <div className="absolute inset-0 bg-black/60" />
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-neutral-950 to-transparent" />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-[40vh] z-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(to top, hsl(0 0% 4%) 0%, hsl(0 0% 4%) 15%, transparent 100%)',
+        }}
+      />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
         <SourceBadge
@@ -100,10 +227,10 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
             asChild
           >
             <Link
-              href="#infrastructure"
-              onClick={() => track('sustainability_hero_infrastructure_click')}
+              href="#footprint"
+              onClick={() => track('sustainability_hero_footprint_click')}
             >
-              View our infrastructure
+              View our footprint
             </Link>
           </Button>
         </div>
