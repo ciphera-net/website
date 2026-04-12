@@ -1,0 +1,149 @@
+---
+title: "What We See About You, What We Don't, and Why It Matters"
+description: "Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't."
+category: Privacy
+date: "2026-04-12"
+dateModified: "2026-04-12"
+readTime: "10 min read"
+image: "/blog/og/what-we-see-about-you-what-we-dont.png"
+faqs:
+  - question: "Can Ciphera read my email address?"
+    answer: "Your email address is stored in a client-encrypted vault that Ciphera operators cannot decrypt. When we send you a transactional email, our notification service briefly decrypts your address in process memory to compose the SMTP message. The plaintext exists for milliseconds, is never logged, and is garbage-collected after the send completes. At rest, your email is AES-256-GCM encrypted."
+  - question: "What happens to my data if I delete my Ciphera account?"
+    answer: "Your encrypted vault (containing email and profile data) is permanently deleted. Your SRP verifier and blind index are removed. All refresh tokens are revoked. Notification metadata in the email_log table (template name, delivery status — not your email address or message body) is not currently cascaded on deletion. We're adding this."
+  - question: "Does Ciphera use Google Analytics or set cookies?"
+    answer: "No. The Ciphera website uses only Pulse, our own privacy-first analytics platform. Pulse sets zero cookies, stores no raw IP addresses, and generates daily-rotating session identifiers. No Google Analytics, Meta Pixel, Hotjar, or third-party tracking scripts are loaded on any Ciphera property."
+  - question: "What could Ciphera produce if served with a legal data request?"
+    answer: "Account UUID, creation and login timestamps, subscription status, encrypted vault (which we cannot decrypt without the user's password), SRP verifier (cryptographically useless without the original password), raw IP addresses from device-tracking tables, hashed IPs from audit logs, notification metadata (template types and delivery status, not email addresses or message bodies), and database backups up to 12 months old containing the same encrypted data."
+  - question: "Does Pulse track individual visitors across visits?"
+    answer: "No. Pulse generates a new session identifier each day using a one-way hash of IP address, user-agent, domain, and date. The same visitor on consecutive days receives different session IDs with no link between them. There are no cookies, no localStorage tokens, and no persistent visitor identifier. Raw IP addresses are discarded immediately after the hash computation."
+---
+
+Most privacy companies ask you to trust them. Ciphera is built so you don't have to.
+
+That sentence is easy to write and impossible to prove — unless you open the architecture. This post is a transparency accounting: not a privacy policy written by lawyers, but an engineer's breakdown of exactly what our systems see about you, what they don't, and the architectural reasons for both.
+
+We're publishing this because the privacy industry has a credibility problem. Too many companies say "we don't sell your data" while quietly logging everything you do. [27% of organizations](https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2025/m04/cisco-2025-data-privacy-benchmark-study-privacy-landscape-grows-increasingly-complex-in-the-age-of-ai.html) have now banned generative AI tools entirely ([Cisco](https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2025/m04/cisco-2025-data-privacy-benchmark-study-privacy-landscape-grows-increasingly-complex-in-the-age-of-ai.html), 2025) — not because the technology is broken, but because they couldn't verify the privacy claims. We'd rather you verify ours. Here's everything.
+
+<BlogBlockquote variant="tldr">
+
+Ciphera uses SRP-6a authentication — your password never reaches our servers in any form. Email addresses are stored in a client-encrypted vault that operators cannot decrypt. Pulse analytics uses daily-rotating session hashes with no cookies and no persistent visitor tracking. Transactional emails are composed in memory, sent through self-hosted infrastructure, and forgotten — we log only delivery metadata, never the message body or destination address.
+
+</BlogBlockquote>
+
+<BlogImage src="/blog/images/pexels-1893229.jpg" alt="Rain droplets on glass obscuring a blurred figure behind it, representing the boundary between what is visible and what remains private" />
+
+## Why "We Promise Not to Look" Isn't Good Enough
+
+Every privacy-focused company makes a version of the same claim: *we protect your data*. But there are two structurally different kinds of claim, and they aren't equally trustworthy.
+
+**Class 1: "We promise not to look."** This is what most companies offer. They have full technical access to your data but commit, via policy and terms of service, not to misuse it. The weakness: policies change, employees make mistakes, acquisitions happen, and subpoenas arrive. A promise not to look is only as strong as the weakest person who has access.
+
+**Class 2: "We can't look — even if we wanted to."** This is what [Signal](https://signal.org/bigbrother/), [Proton](https://proton.me/blog/is-protonmail-secure), and [Bitwarden](https://bitwarden.com/help/what-encryption-is-used/) offer. The architecture eliminates certain categories of access entirely. If an insider goes rogue, if a government demands data, if an acquisition transfers ownership — the architecture prevents exposure because the capability to access doesn't exist.
+
+Ciphera is a Class 2 company. Not because we're more virtuous, but because we believe the engineering cost of eliminating access is worth more than the operational convenience of having it. When we can't see your data, we don't have to ask you to trust that we won't.
+
+The rest of this post is the specific accounting of where we've achieved that structural inaccessibility — and where we haven't yet.
+
+## What We See About You
+
+Here's the honest list. Every item is something at least one Ciphera system has access to at some point during your usage.
+
+| What we see | When | How long | Why |
+|---|---|---|---|
+| **Your email address** (plaintext, briefly) | When we send you a transactional email | Milliseconds — in our notification service's process memory during SMTP composition, then garbage-collected | SMTP requires a plaintext destination address. There is no workaround. |
+| **Your email address** (encrypted at rest) | In our notification service database | Until you delete your account | Stored as AES-256-GCM with an operator-held key, so we can send you future emails without asking you to re-enter it. |
+| **Your email address** (blind index) | In the auth database | Until you delete your account | A PBKDF2-derived hash computed on your device for login lookups. Irreversible — we can check "does this hash exist?" but cannot reverse it to an email. |
+| **Your account UUID** | Always | Lifetime of account | We need an identifier to route authenticated requests. The UUID contains no personal information. |
+| **Notification metadata** | After every transactional email | Indefinitely (known gap — see below) | Template name, service origin, delivery status, timestamp. We do NOT store the destination address or message body. |
+| **Raw IP address and User-Agent** | When you log in | Stored in refresh token and known-device tables | Used for new-device security alerts. The audit log stores only a hashed IP (irreversible HMAC) and a display hint like "Chrome on macOS" — but the device-tracking tables store raw values. |
+| **Pageview events** (Pulse-tracked sites) | When you visit a site using Pulse | 12 months default, then auto-purged | Page path, referrer, country, device type, browser, OS, UTM params — with a daily-rotating session ID. Raw IP is discarded immediately after hash computation. |
+| **Subscription metadata** | For the duration of your subscription | Lifetime of account | Plan name, billing status, dates. Card details are handled by Mollie — we never see card numbers. |
+| **Aggregated daily statistics** (Pulse) | After daily rollup | Indefinite | Total pageviews, visitor counts, bounce rates, durations — per site, per day. No individual-level data. |
+| **Observability data** | During your interactions with Ciphera services | Prometheus metrics: 15 days. Logs: 30 days. Traces: 14 days. | Request method, path, status code, and response time — but NOT request bodies, NOT email addresses, NOT passwords. Traefik access logs are disabled fleet-wide. |
+
+We're not listing these to minimize them. We're listing them so you can audit exactly what exists.
+
+## What We Don't See — And the Architecture That Prevents It
+
+<BlogImage src="/blog/images/pexels-4597280.jpg" alt="Server racks in a dark data centre, representing the self-hosted infrastructure that protects user data" />
+
+### Your password
+
+Ciphera's authentication uses the [SRP-6a](https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol) (Secure Remote Password) protocol. When you sign up, your browser derives a mathematical verifier from your password using PBKDF2 with 210,000 iterations, then completes an SRP handshake with the server. The server stores the verifier and salt, and uses them to verify your future login proofs — but the plaintext password, a hash of the password, or any reversible derivation never touches Ciphera infrastructure.
+
+If we get breached, the attacker gets verifiers. Verifiers cannot be reversed to passwords. If we get subpoenaed for your password, we can't comply — not because we chose not to, but because we don't have it.
+
+This isn't how we launched. Our auth database migrations tell the story: migration 039 added the zero-knowledge columns (encrypted vault, email blind index, SRP verifier), and migration 045 dropped the legacy columns (email, display name, password hash). The old plaintext columns are gone — not deprecated, not soft-deleted, but `DROP COLUMN`.
+
+### Your name and profile data
+
+Everything you'd recognize as "your profile" — name, display name, email — lives inside an `encrypted_vault` field in the auth database. This vault is encrypted on your device using a key derived from your password via PBKDF2 with 1,000,000 iterations. The server stores the encrypted blob and cannot decrypt it. When you log in, your browser decrypts the vault locally and shows you your own data.
+
+A Ciphera operator with full database access sees: a UUID, a blind index, an SRP verifier, and a blob of encrypted bytes. No name. No email. No profile.
+
+### Your browsing behavior on Pulse-tracked sites
+
+[Pulse](/blog/pulse-vs-google-analytics-plausible-fathom) collects pageview events, but with a privacy model designed so individual visitors cannot be identified or tracked across sessions.
+
+The session identifier is computed server-side: a SHA-256 hash of an HMAC daily salt, the site domain, the visitor's IP address, and their user-agent string. It rotates at midnight UTC. The same visitor on Monday and Tuesday produces two completely unlinked session hashes. There is no cookie, no localStorage token, no client-side visitor ID.
+
+The raw IP address is extracted from the request, used to compute the session hash and an optional country lookup, then actively deleted from the request context. It never reaches the database. The raw User-Agent string was dropped in a database migration whose comment reads: *"Storing the raw UA string serves no analytical purpose and contradicts the privacy policy."*
+
+Site owners using Pulse see only aggregates: top pages, referrer trends, device categories, engagement percentiles. There is no dashboard view that shows "visitor X visited pages A, B, C." That view doesn't exist because the data model makes it impossible to construct.
+
+Pulse also respects the Do Not Track (DNT) browser signal. If your browser has DNT enabled, Pulse does not track.
+
+### Your cookies on ciphera.net
+
+There aren't any. Our marketing site sets zero cookies. No session cookie, no consent cookie, no preference cookie. The only scripts loaded are Pulse (our own analytics) and fonts bundled at build time.
+
+No Google Analytics. No Meta Pixel. No Facebook SDK. No Hotjar. No Intercom. No session replay. Our [privacy policy](/privacy) says this, and the code confirms it.
+
+## The Email Paradox: How We Contact You Without Building a Profile
+
+<BlogImage src="/blog/images/pexels-10834122.jpg" alt="A sealed wax envelope beside a handwritten letter, symbolising messages delivered without being read" />
+
+Here's the question most readers are forming: *if you can't see my email, how do you email me?*
+
+Honest answer: we can, briefly.
+
+When you create a Ciphera account, your browser encrypts your email address using P-256 ECDH (Elliptic Curve Diffie-Hellman) with our notification service's public key and sends the encrypted blob over the wire. Our notification service — which we built internally because every third-party provider ([SendGrid](https://sendgrid.com), [Mailgun](https://www.mailgun.com), [Twilio](https://www.twilio.com)) would require us to hand over readable email addresses and message contents to their infrastructure — decrypts the blob and stores it encrypted at rest using AES-256-GCM.
+
+When we need to send you something — a password reset, a verification code, a security alert — the service decrypts your email in process memory, composes the message from a template, hands it to our self-hosted [Stalwart](https://stalw.art) SMTP server over TLS 1.3, and returns. The plaintext email address exists in process memory for milliseconds. It is never written to disk and never logged.
+
+What we log after sending: which template was used (e.g., "password_reset"), which service triggered it (e.g., "auth"), whether it succeeded, and a timestamp. That's it. Our email log has no column for the recipient address and no column for the message body. We can tell you "a password reset email was sent for user UUID abc123 at 14:32" but not where it went or what it said.
+
+The emails themselves contain no tracking pixels, no open-rate beacons, no click-tracking redirects. Links pass through unmodified. We have no mechanism to know whether you opened the email, clicked the link, or deleted it unread.
+
+Is this zero-knowledge in the strict cryptographic sense? No. We do see your email address, briefly, in memory. But we don't build a profile from it, we don't persist it in any log, we don't track what you do with it after delivery, and we don't share it with any third party. All email infrastructure is self-hosted in Switzerland — no US cloud providers, no third-party email APIs, no subprocessor chain.
+
+## The Gaps We're Closing
+
+Honesty means naming the things we haven't fixed yet. Here are the known gaps in our privacy architecture, and our plans to close them:
+
+**Notification metadata log has no automatic retention.** The email_log table — which stores only metadata, not addresses or bodies — accumulates rows indefinitely. When a user deletes their account, these rows aren't automatically removed. We're adding a retention policy and cascade deletion.
+
+**Device-tracking tables store raw IP and User-Agent.** The security audit log properly hashes IPs and replaces user-agents with display hints. But the refresh token and known-device tables store raw values for device-tracking alerts. We're evaluating whether to hash these too, balancing security alerting accuracy against data minimization.
+
+**Single-operator access model.** One SSH key from one IP address currently controls access to the entire fleet. There is no role-based access control, and no centralized audit log for operator actions on production systems. We're implementing operator separation with access logging.
+
+**Pulse doesn't respect Global Privacy Control (GPC).** The tracking script respects Do Not Track (DNT) but doesn't check for the newer GPC signal. We're adding GPC support.
+
+**Database backups live in the same cloud account as production.** If the Exoscale account were compromised, backups would be too. We're adding off-account backup replication.
+
+These gaps exist because we prioritized getting the core architecture right (SRP-6a, encrypted vaults, daily-rotating hashes, self-hosted email) before building the operational tooling around it. The architecture prevents data exposure; the gaps are about operational hygiene. Both matter, and we're closing the second.
+
+## How You Verify Us
+
+We've told you what we see and don't see. Here's how to check.
+
+**Read the architecture guide.** Our [zero-knowledge encryption guide](/blog/zero-knowledge-encryption-guide) explains the cryptographic principles behind client-side encryption and SRP-6a in detail.
+
+**Understand our infrastructure choices.** We've written about [why Swiss infrastructure matters for data privacy](/blog/why-swiss-infrastructure-matters-for-data-privacy) and [why European businesses should use European software](/blog/why-european-businesses-should-use-european-software). All production systems run on Exoscale in Switzerland. No US cloud services touch user data.
+
+**Ask us directly.** If you have questions about a specific data flow this post doesn't cover, reach out at hello@ciphera.net. We'd rather answer a hard question honestly than have you wonder.
+
+**What's coming next.** We're working toward a formal transparency report modeled on [Signal's](https://signal.org/bigbrother/) and [Proton's](https://proton.me/legal/transparency) annual reports, an external security audit, and a public bug bounty program. When those are ready, you'll read about them here.
+
+The principle behind everything described in this post is simple: if a privacy promise can be broken by a bad actor inside the company, a subpoena, an acquisition, or a breach, it isn't really a privacy promise — it's a marketing promise. The engineering challenge we've set ourselves is to make sure that when those things happen to us, your data remains inaccessible. We haven't finished. But we've built the foundation, and now you know exactly what's on it.
