@@ -2,16 +2,17 @@ import { fetchImpactReport } from '@/lib/api/sustainability'
 import type { ImpactReport } from '@/components/sustainability/types'
 import { STATIC_INVENTORY } from '@/components/sustainability/inventory'
 import { SustainabilityHero } from '@/components/sustainability/hero'
-import { MetricsStrip } from '@/components/sustainability/metrics-strip'
+import { FootprintBento } from '@/components/sustainability/footprint-bento'
 import { SwissGridBlock } from '@/components/sustainability/swiss-grid-block'
-import { InfrastructureTable } from '@/components/sustainability/infrastructure-table'
+import { SmallByDesign } from '@/components/sustainability/small-by-design'
 import { LifecycleBreakdown } from '@/components/sustainability/lifecycle-breakdown'
 import { Methodology } from '@/components/sustainability/methodology'
 import { Commitments } from '@/components/sustainability/commitments'
 import { SustainabilityCTA } from '@/components/sustainability/sustainability-cta'
 
 // * Regenerate the page once per day. The backend has its own 24h cache
-// * so Exoscale is hit at most once per day in the happy path.
+// * so the upstream measurement API is hit at most once per day in the
+// * happy path.
 export const revalidate = 86400
 
 /**
@@ -59,6 +60,55 @@ function emergencyFallback(): ImpactReport {
         'Backend unreachable — using emergency snapshot',
       ],
     },
+    indicators: [
+      {
+        key: 'GWP',
+        label: 'Climate change',
+        description:
+          'Global impact due to greenhouse-gas emissions.',
+        amount: total,
+        unit: 'kg CO2-Eq',
+      },
+      {
+        key: 'WU',
+        label: 'Water use',
+        description:
+          'Freshwater consumption from lakes, rivers, or groundwater.',
+        amount: total * 0.064,
+        unit: 'm3 world eq. deprived',
+      },
+      {
+        key: 'ADPf',
+        label: 'Fossil depletion',
+        description:
+          'Decreased availability of fossil resources for future generations.',
+        amount: total * 12.5,
+        unit: 'MJ, net calorific value',
+      },
+      {
+        key: 'ADPe',
+        label: 'Mineral depletion',
+        description:
+          'Decreased availability of mineral and metal resources.',
+        amount: total * 2.7e-6,
+        unit: 'kg Sb-Eq',
+      },
+      {
+        key: 'ODP',
+        label: 'Ozone depletion',
+        description: 'Stratospheric ozone layer damage.',
+        amount: total * 0.0025,
+        unit: 'kg CFC-11-Eq',
+      },
+      {
+        key: 'IR',
+        label: 'Ionising radiation',
+        description:
+          'Human health impact from ionising radiation exposure.',
+        amount: total * 0.049,
+        unit: 'kBq U235-Eq',
+      },
+    ],
   }
 }
 
@@ -68,9 +118,9 @@ export default async function SustainabilityPage() {
   return (
     <>
       <SustainabilityHero report={report} />
-      <MetricsStrip report={report} />
+      <FootprintBento report={report} />
       <SwissGridBlock />
-      <InfrastructureTable inventory={report.inventory} />
+      <SmallByDesign report={report} />
       <LifecycleBreakdown report={report} />
       <Methodology report={report} />
       <Commitments />
