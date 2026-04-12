@@ -53,6 +53,14 @@ export interface Methodology {
   excludes: string[]
 }
 
+export interface Indicator {
+  key: 'GWP' | 'WU' | 'ADPf' | 'ADPe' | 'ODP' | 'IR'
+  label: string
+  description: string
+  amount: number
+  unit: string
+}
+
 export interface ImpactReport {
   period: Period
   source: ReportSource
@@ -62,4 +70,5 @@ export interface ImpactReport {
   inventory: InventoryItem[]
   lifecycle: LifecyclePhases
   methodology: Methodology
+  indicators: Indicator[]
 }
