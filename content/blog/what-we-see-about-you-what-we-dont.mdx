@@ -57,10 +57,11 @@ Here's the honest list. Every item is something at least one Ciphera system has 
 | **Your account UUID** | Always | Lifetime of account | We need an identifier to route authenticated requests. The UUID contains no personal information. |
 | **Notification metadata** | After every transactional email | 90 days, auto-purged | Template name, service origin, delivery status, timestamp. We do NOT store the destination address or message body. Cascades to deletion on account removal. |
 | **Hashed IP and device display hint** | When you log in | Bounded by token expiry (30 days for refresh tokens) | Used for new-device security alerts. IPs are stored as user-specific HMAC hashes (irreversible). User-Agents are parsed to display hints like "Chrome on macOS" before storage — raw User-Agent strings never exist in the database. Applies consistently across audit log, refresh tokens, and known-device tables. |
-| **Pageview events** (Pulse-tracked sites) | When you visit a site using Pulse | 12 months default, then auto-purged | Page path, referrer, country, device type, browser, OS, UTM params — with a daily-rotating session ID. Raw IP is discarded immediately after hash computation. |
+| **Pageview events** (Pulse-tracked sites) | When you visit a site using Pulse | **6 months default** for new sites (site owners can opt up), then auto-purged | Page path, referrer, **country-level location only** by default (site owners can opt up to region/city), device type, browser, OS, UTM params — with a daily-rotating session ID. Raw IP is discarded immediately after hash computation. |
 | **Subscription metadata** | For the duration of your subscription | Lifetime of account | Plan name, billing status, dates. Card details are handled by Mollie — we never see card numbers. |
 | **Aggregated daily statistics** (Pulse) | After daily rollup | Indefinite | Total pageviews, visitor counts, bounce rates, durations — per site, per day. No individual-level data. |
-| **Observability data** | During your interactions with Ciphera services | Prometheus metrics: 15 days. Logs: 30 days. Traces: 14 days. | Request method, path, status code, and response time — but NOT request bodies, NOT email addresses, NOT passwords. Traefik access logs are disabled fleet-wide. |
+| **Observability data** | During your interactions with Ciphera services | Prometheus metrics: 15 days. Logs: 30 days. Traces: 14 days. Audit log (security events): 180 days. | Request method, path, status code, and response time — but NOT request bodies, NOT email addresses, NOT passwords. Traefik access logs are disabled fleet-wide. Application logs are scrubbed of known PII patterns (emails, IPs, JWTs) before reaching our log aggregator. |
+| **Operator activity logs** | Every SSH login, Docker command, database query, or access to sensitive files | 30 days (auditd logs via Loki) | Every command a Ciphera operator runs on production infrastructure is recorded in an audit trail forwarded to our observability stack. If we — or anyone with access — touch production, it leaves a trace. |
 
 We're not listing these to minimize them. We're listing them so you can audit exactly what exists.
 
@@ -94,6 +95,8 @@ Site owners using Pulse see only aggregates: top pages, referrer trends, device 
 
 Pulse also respects the Do Not Track (DNT) and Global Privacy Control (GPC) browser signals. If your browser sends either signal, Pulse does not track. GPC is legally binding under California's CCPA and recognized by multiple EU regulators.
 
+New Pulse sites start with privacy-first defaults: country-level geographic collection only (no region/city), and 6-month data retention (shorter than the 12 months we previously defaulted to). Site owners can opt up if they need more, but the default is the least-invasive choice.
+
 ### Your cookies on ciphera.net
 
 There aren't any. Our marketing site sets zero cookies. No session cookie, no consent cookie, no preference cookie. The only scripts loaded are Pulse (our own analytics) and fonts bundled at build time.
@@ -110,7 +113,7 @@ Honest answer: we can, briefly.
 
 When you create a Ciphera account, your browser encrypts your email address using P-256 ECDH (Elliptic Curve Diffie-Hellman) with our notification service's public key and sends the encrypted blob over the wire. Our notification service — which we built internally because every third-party provider ([SendGrid](https://sendgrid.com), [Mailgun](https://www.mailgun.com), [Twilio](https://www.twilio.com)) would require us to hand over readable email addresses and message contents to their infrastructure — decrypts the blob and stores it encrypted at rest using AES-256-GCM.
 
-When we need to send you something — a password reset, a verification code, a security alert — the service decrypts your email in process memory, composes the message from a template, hands it to our self-hosted [Stalwart](https://stalw.art) SMTP server over TLS 1.3, and returns. The plaintext email address exists in process memory for milliseconds. It is never written to disk and never logged.
+When we need to send you something — a password reset, a verification code, a security alert — the service decrypts your email in process memory, composes the message from a template, hands it to our self-hosted [Stalwart](https://stalw.art) SMTP server over TLS 1.3, and returns. The plaintext email address exists in process memory for milliseconds — as an explicitly-zeroed byte slice that gets overwritten with zero bytes immediately after the SMTP send completes. It is never written to disk and never logged. (Go's runtime can still hold short-lived string copies internally, but the underlying buffer we control is zeroed deterministically — reducing the plaintext residence window to the minimum technically achievable.)
 
 What we log after sending: which template was used (e.g., "password_reset"), which service triggered it (e.g., "auth"), whether it succeeded, and a timestamp. That's it. Our email log has no column for the recipient address and no column for the message body. We can tell you "a password reset email was sent for user UUID abc123 at 14:32" but not where it went or what it said.
 
@@ -122,13 +125,13 @@ Is this zero-knowledge in the strict cryptographic sense? No. We do see your ema
 
 Honesty means naming the things we haven't fixed yet. Here are the remaining gaps in our privacy architecture, and our plans to close them:
 
-**Single-operator access model.** One SSH key from one IP address currently controls access to the entire fleet. There is no role-based access control, and no centralized audit log for operator actions on production systems. We're implementing operator separation with access logging.
+**Single-operator access model.** One SSH key from one IP address currently controls access to the entire fleet. Every operator command is now recorded in an audit log (SSH authentications, Docker invocations, database queries, access to sensitive files) forwarded to our observability stack with 30-day retention. The missing piece is role-based access control — multiple operator accounts with scoped permissions. That's in active development.
 
-**Database backups live in the same cloud account as production.** If the cloud account were compromised, backups would be too. We're adding off-account backup replication and client-side encryption.
+**Database backups live in the same cloud account as production.** If the cloud account were compromised, backups would be too — though they're encrypted at rest with AES-256. We're adding off-account backup replication and client-side encryption with independent credentials.
 
 These gaps exist because we prioritized getting the core architecture right (SRP-6a, encrypted vaults, daily-rotating hashes, self-hosted email) before building the operational tooling around it. The architecture prevents data exposure; the gaps are about operational hygiene. Both matter, and we're closing the second.
 
-*Last updated: 12-04-2026 — we closed three gaps since this post was first published (notification metadata retention, device-tracking column clarity, GPC support). The remaining two are in active development.*
+*Last updated: 12-04-2026 — Phase 2 of our privacy hardening is now live. Changes since this post was first published: added 180-day retention on the auth audit log, added server-side HMAC pepper to blind indexes to prevent email enumeration, added rate limiting and timing normalization to the SRP init endpoint, refactored outbound email handling to explicitly zero plaintext memory after SMTP send, reduced Pulse default geographic collection to country-level and default retention to 6 months, added PII redaction middleware to all backend services, installed operator audit logging (auditd) on every production VM with centralized Loki forwarding. Two gaps remain (operator RBAC, off-account backup replication) — both in active development.*
 
 ## How You Verify Us
 
