@@ -1,4 +1,5 @@
 import { Factory, Truck, Lightning, Recycle } from '@phosphor-icons/react/dist/ssr'
+import { ProgressRadial } from '@/components/ui/progress-radial'
 import type { ImpactReport } from './types'
 
 interface LifecycleBreakdownProps {
@@ -6,15 +7,15 @@ interface LifecycleBreakdownProps {
 }
 
 /**
- * Section 5 — Per-product breakdown showing the four Boavizta lifecycle
- * phases as a stacked bar + 4 phase tiles. This is the "we count the whole
- * lifecycle, not just the plug" section — the Boavizta differentiator.
+ * Section 5 — Four radial progress rings showing each Boavizta lifecycle
+ * phase (manufacturing, transport, use, end-of-life) as a percentage of
+ * the total GWP. This is the "we count the whole lifecycle, not just the
+ * plug" section — the Boavizta differentiator.
  */
 export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
   const { manufacturing, transport, use, endOfLife } = report.lifecycle
   const total =
     manufacturing.amount + transport.amount + use.amount + endOfLife.amount
-
   // * Avoid divide-by-zero in the unlikely event that the API returns 0s
   const safeTotal = total > 0 ? total : 1
 
@@ -24,36 +25,32 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
       icon: Factory,
       amount: manufacturing.amount,
       pct: (manufacturing.amount / safeTotal) * 100,
-      color: 'bg-neutral-700',
-      label: 'Embodied in hardware',
+      isUse: false,
     },
     {
       name: 'Transport',
       icon: Truck,
       amount: transport.amount,
       pct: (transport.amount / safeTotal) * 100,
-      color: 'bg-neutral-600',
-      label: 'Factory to datacenter',
+      isUse: false,
     },
     {
       name: 'Use',
       icon: Lightning,
       amount: use.amount,
       pct: (use.amount / safeTotal) * 100,
-      color: 'bg-brand-orange',
-      label: 'The plug (grid electricity)',
+      isUse: true,
     },
     {
       name: 'End of life',
       icon: Recycle,
       amount: endOfLife.amount,
       pct: (endOfLife.amount / safeTotal) * 100,
-      color: 'bg-neutral-500',
-      label: 'Decommissioning + recycling',
+      isUse: false,
     },
   ]
 
-  const useOnlyPct = phases.find((p) => p.name === 'Use')?.pct ?? 0
+  const useOnlyPct = phases.find((p) => p.isUse)?.pct ?? 0
   const hiddenPct = 100 - useOnlyPct
 
   return (
@@ -72,8 +69,8 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
             </p>
             <p className="text-lg text-neutral-400 leading-relaxed mb-4">
               Every server is manufactured, shipped, used for years, then
-              decommissioned. Each step has its own carbon cost. Exoscale uses
-              the Boavizta life-cycle assessment framework, which tracks all four
+              decommissioned. Each step has its own carbon cost. We use the
+              Boavizta life-cycle assessment framework, which tracks all four
               phases — so we can show you the whole picture.
             </p>
             <p className="text-lg text-neutral-400 leading-relaxed">
@@ -84,54 +81,44 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
             </p>
           </div>
 
-          {/* Right — stacked bar + 4 tiles */}
-          <div>
-            {/* Stacked bar */}
-            <div className="mb-8">
-              <div className="mb-3 flex items-center justify-between text-sm">
-                <span className="text-neutral-400">Total GWP</span>
-                <span className="text-white tabular-nums">
-                  {total.toFixed(3)} kg CO₂-Eq
-                </span>
-              </div>
-              <div className="h-12 w-full flex rounded-lg overflow-hidden border border-white/[0.08]">
-                {phases.map((phase) => (
-                  <div
-                    key={phase.name}
-                    className={phase.color}
-                    style={{ width: `${phase.pct}%` }}
-                    title={`${phase.name}: ${phase.pct.toFixed(1)}%`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* 4 phase tiles */}
-            <div className="grid grid-cols-2 gap-3">
-              {phases.map((phase) => (
-                <div
-                  key={phase.name}
-                  className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-4 backdrop-blur-sm"
+          {/* Right — 4 radial rings */}
+          <div className="grid grid-cols-2 gap-6">
+            {phases.map((phase) => (
+              <div
+                key={phase.name}
+                className="rounded-2xl border border-white/[0.08] bg-neutral-900/80 p-6 backdrop-blur-sm flex flex-col items-center"
+              >
+                <ProgressRadial
+                  value={phase.pct}
+                  size={140}
+                  strokeWidth={10}
+                  indicatorClassName={
+                    phase.isUse ? 'text-brand-orange' : 'text-neutral-500'
+                  }
+                  trackClassName="text-white/[0.05]"
                 >
-                  <div className="mb-2 flex items-center gap-2">
+                  <div className="flex flex-col items-center">
                     <phase.icon
                       weight="duotone"
                       className={
-                        'w-4 h-4 ' +
-                        (phase.name === 'Use' ? 'text-brand-orange' : 'text-neutral-400')
+                        'mb-1 h-5 w-5 ' +
+                        (phase.isUse ? 'text-brand-orange' : 'text-neutral-400')
                       }
                     />
-                    <span className="text-xs font-medium text-neutral-400">
-                      {phase.name}
+                    <span className="text-2xl font-bold text-white tabular-nums">
+                      {phase.pct.toFixed(0)}
+                      <span className="text-sm text-neutral-500">%</span>
                     </span>
                   </div>
-                  <div className="text-lg font-bold text-white tabular-nums">
-                    {(phase.amount * 1000).toFixed(0)} g
+                </ProgressRadial>
+                <div className="mt-4 text-center">
+                  <div className="text-sm font-medium text-white">{phase.name}</div>
+                  <div className="text-xs text-neutral-500 tabular-nums">
+                    {(phase.amount * 1000).toFixed(0)} g CO₂e
                   </div>
-                  <div className="text-[11px] text-neutral-500">{phase.label}</div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
