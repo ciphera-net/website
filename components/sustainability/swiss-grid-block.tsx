@@ -63,7 +63,7 @@ export function SwissGridBlock() {
               {[
                 '60% hydro, 30% nuclear, 10% other renewables',
                 '~12 gCO₂e/kWh (vs EU ~400, US ~650)',
-                'Exoscale CH-DK-2 & CH-GVA-2: 100% renewable contracts',
+                'Zurich & Geneva datacenters: 100% renewable contracts',
                 'Zero natural gas peaker plants on the Swiss grid',
                 'Source: Swiss Federal Office of Energy (BFE), annualized 2025',
               ].map((item) => (
