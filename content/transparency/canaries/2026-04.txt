@@ -1,0 +1,46 @@
+CIPHERA WARRANT CANARY
+======================
+
+Period: April 2026
+Published: 13-04-2026 (DD-MM-YYYY)
+Next update: on or before 05-05-2026
+Company: Ciphera (Belgian company, jurisdiction: Belgium / European Union)
+
+As of the date above, Ciphera:
+
+  1. Has NOT received any National Security Letter, secret warrant, or
+     equivalent gag-ordered legal process from any government agency.
+  2. Has NOT received any request or order compelling disclosure of
+     cryptographic keys, decrypted user data, or plaintext user secrets.
+  3. Has NOT been compelled to install, modify, or weaken any security
+     mechanism, backdoor, or interception capability.
+  4. Has NOT received any order to modify source code or binaries in a
+     manner hostile to user security.
+  5. Has NOT handed over bulk user data to any third party absent specific,
+     legally-valid, narrowly-scoped process that Ciphera may lawfully
+     disclose.
+
+Proof of non-backdating (headlines from 13-04-2026):
+
+  - [BBC]: Orbán era swept away by Péter Magyar's Hungary election landslide
+    https://www.bbc.com/news/articles/cd9vg782kx7o
+
+  - [NPR]: How a $75 billion windfall from Congress has insulated ICE
+    https://www.npr.org/2026/04/13/nx-s1-5771608/immigration-congress-75-billion
+
+  - [RTÉ]: 'Quite some time' before fuel supply returns to normal
+    https://www.rte.ie/news/ireland/2026/0413/1567897-fuel-protests-ireland/
+
+  - [Tagesschau]: Warum die US-Seeblockade an der Straße von Hormus nicht
+    ohne Risiko ist
+    https://www.tagesschau.de/ausland/asien/seeblockade-persischer-golf-strasse-hormus-usa-iran-100.html
+
+This canary is signed with GPG key
+94E796164FF853902D89E46173011BE3BD5174AE, whose public key is published at
+https://ciphera.net/transparency/canary-pubkey.asc.
+
+Verify:
+    gpg --import canary-pubkey.asc
+    gpg --verify canary-2026-04.txt.asc canary-2026-04.txt
+
+-- Usman Baig, founder, Ciphera
