@@ -70,6 +70,7 @@ const footerLinks = [
     links: [
       { id: 9, title: "Privacy Policy", url: "/privacy" },
       { id: 10, title: "Terms of Service", url: "/terms" },
+      { id: 13, title: "Transparency", url: "/transparency" },
       { id: 11, title: "GitHub", url: "https://github.com/ciphera-net" },
     ],
   },
