@@ -5,12 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prebuild": "npm run generate:learn && npm run generate:blog",
+    "prebuild": "npm run generate:learn && npm run generate:blog && npm run sync:transparency",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "generate:learn": "npx tsx scripts/generate-learn-articles.ts",
-    "generate:blog": "npx tsx scripts/generate-blog-posts.ts"
+    "generate:blog": "npx tsx scripts/generate-blog-posts.ts",
+    "sync:transparency": "npx tsx scripts/sync-transparency.ts"
   },
   "dependencies": {
     "@ciphera-net/ui": "^0.5.4",
