@@ -83,7 +83,7 @@ jobs:
           proxy: teleport.ciphera.net:443
           token: ci-deploy
           app: dokploy-public
-          listen: "127.0.0.1:9090"
+          listen: "tcp://127.0.0.1:9090"
 
       - name: Trigger Dokploy redeploy
         if: github.ref == 'refs/heads/main'
