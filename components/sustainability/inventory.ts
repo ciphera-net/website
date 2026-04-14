@@ -1,7 +1,7 @@
 import type { InventoryItem } from './types'
 
 /**
- * Static 7-instance inventory — the TypeScript twin of the Go
+ * Static 9-instance inventory — the TypeScript twin of the Go
  * StaticInventory() function in website-backend. Both lists are
  * hand-maintained and must stay in sync. This file is the fallback
  * rendering source for the infrastructure table in case the backend
@@ -51,7 +51,7 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     vcpu: 2,
     ramGb: 4,
     zone: 'CH-DK-2',
-    purpose: 'Observability: LGTM stack + Gatus status page',
+    purpose: 'Observability: LGTM stack + Uptime Kuma status page',
   },
   {
     instance: 'registry-ops',
@@ -62,11 +62,27 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     purpose: 'Self-hosted Docker registry',
   },
   {
-    instance: 'envoy-ops',
+    instance: 'envoy-ops-new',
     type: 'Standard-Small',
     vcpu: 2,
     ramGb: 2,
-    zone: 'CH-GVA-2',
+    zone: 'CH-DK-2',
     purpose: 'Privacy-preserving notification service (Envoy)',
+  },
+  {
+    instance: 'gateway-ops',
+    type: 'Standard-Small',
+    vcpu: 2,
+    ramGb: 2,
+    zone: 'CH-DK-2',
+    purpose: 'Teleport proxy (SSH + audit)',
+  },
+  {
+    instance: 'vault-ops',
+    type: 'Standard-Small',
+    vcpu: 2,
+    ramGb: 2,
+    zone: 'CH-DK-2',
+    purpose: 'HashiCorp Vault (Transit + Raft)',
   },
 ]
