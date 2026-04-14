@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,6 +68,23 @@ jobs:
             NEXT_PUBLIC_PULSE_API_URL=https://pulse-api.ciphera.net
             NEXT_PUBLIC_WEBSITE_API_URL=https://api.ciphera.net
 
+      - name: Install Teleport
+        if: github.ref == 'refs/heads/main'
+        uses: teleport-actions/setup@v1
+        with:
+          version: auto
+          proxy: teleport.ciphera.net:443
+
+      - name: Teleport tunnel to Dokploy
+        if: github.ref == 'refs/heads/main'
+        id: tunnel
+        uses: teleport-actions/application-tunnel@v1
+        with:
+          proxy: teleport.ciphera.net:443
+          token: ci-deploy
+          app: dokploy-public
+          port: 9090
+
       - name: Trigger Dokploy redeploy
         if: github.ref == 'refs/heads/main'
         run: |
@@ -74,4 +92,4 @@ jobs:
             -H "x-api-key: ${{ secrets.DOKPLOY_PUBLIC_OPS_API_KEY }}" \
             -H "Content-Type: application/json" \
             -d "{\"applicationId\":\"${{ secrets.DOKPLOY_CIPHERA_FRONTEND_APP_ID }}\"}" \
-            https://public.ops.ciphera.net/api/application.deploy
+            http://localhost:9090/api/application.deploy
