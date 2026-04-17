@@ -6,7 +6,7 @@ Ciphera provides end-to-end encrypted services including file sharing, website a
 ## Products
 - [Drop](https://ciphera.net/products/drop): End-to-end encrypted file sharing with zero-knowledge architecture. Free, up to 5GB per file. Client-side AES-256-GCM encryption.
 - [Pulse](https://ciphera.net/products/pulse): Privacy-first website analytics without cookies, fingerprinting, or personal data collection. GDPR compliant by architecture. Under 2KB tracking script.
-- [Ciphera Auth](https://ciphera.net/products/auth): Secure identity and authentication provider with double-hashed passwords (PBKDF2 + Argon2id).
+- [Ciphera ID](https://ciphera.net/products/id): Secure identity and authentication provider with double-hashed passwords (PBKDF2 + Argon2id).
 - [Ciphera Captcha](https://ciphera.net/products/captcha): Privacy-first bot protection that works without tracking users.
 - [Ciphera Relay](https://ciphera.net/products/relay): Secure transactional email infrastructure with DKIM, SPF, and DMARC.
 
