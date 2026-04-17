@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "darksword-iphone-exploit-how-to-protect-yourself",
+    "title": "DarkSword iPhone Exploit: 221 Million iOS Devices at Risk and How to Protect Yours",
+    "description": "DarkSword chains six iOS flaws — three of them zero-days — to take over iPhones from a single malicious link. Here's how to check exposure and lock it down.",
+    "category": "Security",
+    "date": "2026-04-15",
+    "dateModified": "2026-04-15",
+    "readTime": "8 min read",
+    "image": "/blog/og/darksword-iphone-exploit-how-to-protect-yourself.png"
+  },
+  {
     "slug": "bot-account-farming-defense-zero-knowledge-auth",
     "title": "How We Stopped a Bot Account Farming Attack With Zero-Knowledge Auth",
     "description": "Fake account creation is the #1 attack type, accounting for 46% of all fraud. Here's how Ciphera built an 11-layer defense stack that's compatible with zero-knowledge encryption — and stopped an automated attack in 48 hours.",
@@ -29,7 +39,7 @@ export const blogPosts: BlogPostSummary[] = [
     "description": "Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.",
     "category": "Privacy",
     "date": "2026-04-12",
-    "dateModified": "2026-04-12",
+    "dateModified": "2026-04-16",
     "readTime": "10 min read",
     "image": "/blog/og/what-we-see-about-you-what-we-dont.png"
   },
