@@ -26,7 +26,7 @@ else
 
     # Product pages
     "https://ciphera.net/products/pulse"
-    "https://ciphera.net/products/auth"
+    "https://ciphera.net/products/id"
     "https://ciphera.net/products/captcha"
     "https://ciphera.net/products/relay"
 
