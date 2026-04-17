@@ -18,7 +18,7 @@ export function EmailAuthMockup() {
         <div className="flex items-center justify-between p-3 bg-neutral-900 border border-neutral-800 rounded-xl">
           <div className="flex items-center gap-2 min-w-0">
             <span className="text-[10px] text-neutral-400 flex-shrink-0">From:</span>
-            <span className="text-xs font-medium text-white truncate">noreply@auth.ciphera.net</span>
+            <span className="text-xs font-medium text-white truncate">noreply@id.ciphera.net</span>
           </div>
           <span className="flex-shrink-0 ml-3 px-2.5 py-1 text-[10px] font-medium text-emerald-400 bg-emerald-500/10 rounded-xl">
             Authenticated
@@ -31,7 +31,7 @@ export function EmailAuthMockup() {
           <div className="space-y-2">
             {[
               { protocol: 'TLS 1.3', description: 'Encrypted in transit' },
-              { protocol: 'DKIM', description: 'Signed by auth.ciphera.net' },
+              { protocol: 'DKIM', description: 'Signed by id.ciphera.net' },
               { protocol: 'SPF', description: 'Authorized sender IP' },
               { protocol: 'DMARC', description: 'Policy: reject (strict)' },
             ].map((item) => (

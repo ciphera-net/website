@@ -22,11 +22,11 @@ const products = [
   {
     icon: authIcon,
     isImage: true,
-    name: 'Ciphera Auth',
+    name: 'Ciphera ID',
     tagline: 'Identity provider',
     description: 'Secure authentication for the Ciphera ecosystem with OAuth2, JWT, and advanced security features.',
     features: ['Double-hashed passwords', 'Two-factor auth', 'Account lockout', 'Session management'],
-    link: '/products/auth',
+    link: '/products/id',
     iconBg: 'bg-neutral-800 ring-2 ring-brand-orange/40',
     available: true,
   },

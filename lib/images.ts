@@ -3,7 +3,7 @@
 
 // Product icons
 export { default as pulseIcon } from '@/public/pulse_icon_no_margins.png'
-export { default as authIcon } from '@/public/auth_icon_no_margins.png'
+export { default as authIcon } from '@/public/id_icon_no_margins.png'
 export { default as captchaIcon } from '@/public/captcha_icon_no_margins.png'
 export { default as relayIcon } from '@/public/relay_icon_no_margins.png'
 export { default as cipheraIcon } from '@/public/ciphera_icon.png'

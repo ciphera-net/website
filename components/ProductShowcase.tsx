@@ -75,8 +75,8 @@ export default function ProductShowcase() {
             </h2>
 
             <div className="flex items-center gap-3 mb-4">
-              <img src={authIcon.src} alt="Ciphera Auth" className="w-8 h-8 object-contain" />
-              <span className="text-lg font-semibold text-white">Ciphera Auth</span>
+              <img src={authIcon.src} alt="Ciphera ID" className="w-8 h-8 object-contain" />
+              <span className="text-lg font-semibold text-white">Ciphera ID</span>
             </div>
 
             <p className="text-lg text-neutral-400 leading-relaxed mb-8 max-w-lg">
@@ -86,12 +86,12 @@ export default function ProductShowcase() {
 
             <div className="flex flex-row gap-3 flex-wrap">
               <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
-                <Link href="/products/auth">
+                <Link href="/products/id">
                   Get started <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
               <Button size="lg" variant="ghost" className="gap-2 text-neutral-300 hover:text-white" asChild>
-                <Link href="/products/auth">
+                <Link href="/products/id">
                   Explore Auth <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>

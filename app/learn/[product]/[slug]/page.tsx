@@ -10,7 +10,7 @@ import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 const PRODUCT_ICONS: Record<string, typeof pulseIcon> = {
   pulse: pulseIcon,
-  auth: authIcon,
+  id: authIcon,
   captcha: captchaIcon,
   relay: relayIcon,
 }
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const PRODUCT_LABELS: Record<string, string> = {
   pulse: 'Pulse',
-  auth: 'Auth',
+  id: 'ID',
   captcha: 'Captcha',
   relay: 'Relay',
 }

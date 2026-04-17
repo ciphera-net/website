@@ -40,8 +40,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: '2026-03-02',
     },
     {
-      url: `${baseUrl}/products/auth`,
-      lastModified: '2026-03-02',
+      url: `${baseUrl}/products/id`,
+      lastModified: '2026-04-17',
     },
     {
       url: `${baseUrl}/products/captcha`,

@@ -60,7 +60,7 @@ export default function TermsOfServicePage() {
                   1. Acceptance of Terms
                 </h2>
                 <p className="text-neutral-400 leading-relaxed">
-                  By accessing or using any Ciphera service — including Drop, Pulse, Ciphera Auth, Ciphera Captcha, Ciphera Relay, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera B.V., a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
+                  By accessing or using any Ciphera service — including Drop, Pulse, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera B.V., a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
                 </p>
                 <p className="text-neutral-400 leading-relaxed mt-3">
                   If you do not agree to these Terms, you must not access or use the Services. If you are accepting these Terms on behalf of an organization, you represent and warrant that you have the authority to bind that organization.
@@ -91,7 +91,7 @@ export default function TermsOfServicePage() {
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400 mt-3">
                   <li><strong>Drop:</strong> End-to-end encrypted file sharing. Files are encrypted client-side before upload, and Ciphera has no ability to access file contents.</li>
                   <li><strong>Pulse:</strong> Privacy-respecting website analytics that operates without cookies, fingerprinting, or personal data collection.</li>
-                  <li><strong>Ciphera Auth:</strong> Secure identity and authentication provider with zero-knowledge password handling.</li>
+                  <li><strong>Ciphera ID:</strong> Secure identity and authentication provider with zero-knowledge password handling.</li>
                   <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
                   <li><strong>Ciphera Relay:</strong> Secure transactional email infrastructure for delivering encrypted communications.</li>
                 </ul>
@@ -220,7 +220,7 @@ export default function TermsOfServicePage() {
                 </ul>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-6">
-                  7.3. Ciphera Auth (Identity Provider)
+                  7.3. Ciphera ID (Identity Provider)
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li>Auth provides centralized authentication across Ciphera services using JWT-based sessions.</li>

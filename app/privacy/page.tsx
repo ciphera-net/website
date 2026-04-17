@@ -165,7 +165,7 @@ export default function PrivacyPolicyPage() {
 
                 {/* 4.3 Auth */}
                 <h3 className="text-xl font-semibold text-white mb-3 mt-8">
-                  4.3. Ciphera Auth (Identity Provider)
+                  4.3. Ciphera ID (Identity Provider)
                 </h3>
                 <p className="text-neutral-400 leading-relaxed mb-2">
                   When you create a Ciphera account, we collect:

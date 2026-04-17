@@ -45,7 +45,7 @@ const techStack = [
 
 const timeline = [
   { year: '2024', event: 'Ciphera founded with a mission to build privacy-first infrastructure' },
-  { year: '2025', event: 'Ciphera Auth, Captcha, and Relay services deployed' },
+  { year: '2025', event: 'Ciphera ID, Captcha, and Relay services deployed' },
   { year: '2026', event: 'Continuing to expand the privacy ecosystem' },
 ]
 
@@ -292,7 +292,7 @@ export default function AboutPage() {
                       <LockIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold text-white text-sm">Ciphera Auth</div>
+                      <div className="font-semibold text-white text-sm">Ciphera ID</div>
                       <div className="text-xs text-neutral-500">Identity management</div>
                     </div>
                   </div>

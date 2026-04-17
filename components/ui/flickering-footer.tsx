@@ -51,7 +51,7 @@ const footerLinks = [
     title: "Products",
     links: [
       { id: 1, title: "Pulse", url: "/products/pulse" },
-      { id: 2, title: "Ciphera Auth", url: "/products/auth" },
+      { id: 2, title: "Ciphera ID", url: "/products/id" },
       { id: 3, title: "Ciphera Captcha", url: "/products/captcha" },
       { id: 4, title: "Ciphera Relay", url: "/products/relay" },
     ],

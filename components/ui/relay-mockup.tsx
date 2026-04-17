@@ -16,7 +16,7 @@ export function RelayMockup() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
                 <span className="text-xs text-white font-medium">Ciphera</span>
-                <span className="text-[10px] text-brand-orange">{'<noreply@auth.ciphera.net>'}</span>
+                <span className="text-[10px] text-brand-orange">{'<noreply@id.ciphera.net>'}</span>
               </div>
             </div>
             <span className="text-[10px] text-neutral-500">Mar 9</span>

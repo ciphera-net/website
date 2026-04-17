@@ -19,7 +19,7 @@ const services = [
   },
   {
     id: 'auth',
-    name: 'Ciphera Auth',
+    name: 'Ciphera ID',
     description: 'Identity provider',
     icon: authIcon,
     isImage: true,

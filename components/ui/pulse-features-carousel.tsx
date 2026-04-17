@@ -116,7 +116,7 @@ function BarRow({
 function PagesCard() {
   const data = [
     { label: '/', value: 142 },
-    { label: '/products/auth', value: 68 },
+    { label: '/products/id', value: 68 },
     { label: '/pricing', value: 31 },
     { label: '/blog', value: 24 },
     { label: '/about', value: 12 },

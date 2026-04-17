@@ -358,10 +358,10 @@ export default function CipheraRelayPage() {
                           <span className="text-amber-300">authnoreply</span>{'\n'}
                           <span className="text-purple-400">SMTP_FROM</span>
                           <span className="text-neutral-500">=</span>
-                          <span className="text-amber-300">noreply@auth.ciphera.net</span>{'\n'}
+                          <span className="text-amber-300">noreply@id.ciphera.net</span>{'\n'}
                           {'\n'}
                           <span className="text-neutral-500"># Per-service sender domains</span>{'\n'}
-                          <span className="text-neutral-600"># Auth  → noreply@auth.ciphera.net</span>{'\n'}
+                          <span className="text-neutral-600"># Auth  → noreply@id.ciphera.net</span>{'\n'}
                           <span className="text-neutral-600"># Pulse → noreply@pulse.ciphera.net</span>
                         </code>
                       </pre>

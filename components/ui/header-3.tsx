@@ -50,7 +50,7 @@ type LinkItem = {
 
 const productBranding: Record<string, { logo: StaticImageData; name: string; signIn?: string; signUp?: string }> = {
     '/products/pulse': { logo: pulseIcon, name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
-    '/products/auth': { logo: authIcon, name: 'Ciphera Auth' },
+    '/products/id': { logo: authIcon, name: 'Ciphera ID' },
     '/products/captcha': { logo: captchaIcon, name: 'Ciphera Captcha' },
     '/products/relay': { logo: relayIcon, name: 'Ciphera Relay' },
 };
@@ -64,7 +64,7 @@ const productFeatures: Record<string, FeatureLink[]> = {
         { title: 'Conversion Funnels', href: '#funnels', icon: Funnel, description: 'Multi-step drop-off analysis' },
         { title: 'Email Reports', href: '#reports', icon: Send, description: 'Scheduled inbox summaries' },
     ],
-    '/products/auth': [
+    '/products/id': [
         { title: 'Double Hashing', href: '#double-hashing', icon: Lock, description: 'PBKDF2 + Argon2id' },
         { title: 'Passkeys & 2FA', href: '#passkeys', icon: Fingerprint, description: 'WebAuthn, TOTP & recovery' },
         { title: 'Unified Login', href: '#oauth', icon: ScanLine, description: 'OAuth 2.0 with PKCE' },
@@ -216,10 +216,10 @@ export function Header() {
                 </div>
                 <div className="hidden items-center gap-2 md:flex">
                     <Button variant="outline" asChild>
-                        <a href={branding?.signIn || "https://auth.ciphera.net"} onClick={() => track('header_sign_in')}>Sign In</a>
+                        <a href={branding?.signIn || "https://id.ciphera.net"} onClick={() => track('header_sign_in')}>Sign In</a>
                     </Button>
                     <Button asChild>
-                        <a href={branding?.signUp || "https://auth.ciphera.net/signup"} onClick={() => track('header_cta_get_started')}>Get Started</a>
+                        <a href={branding?.signUp || "https://id.ciphera.net/signup"} onClick={() => track('header_cta_get_started')}>Get Started</a>
                     </Button>
                 </div>
                 <div className="flex items-center gap-2 md:hidden">
@@ -265,12 +265,12 @@ export function Header() {
                 </NavigationMenu>
                 <div className="flex flex-col gap-2">
                     <Button variant="outline" className="w-full bg-transparent" asChild>
-                        <a href={branding?.signIn || "https://auth.ciphera.net"} onClick={() => track('header_sign_in_mobile')}>
+                        <a href={branding?.signIn || "https://id.ciphera.net"} onClick={() => track('header_sign_in_mobile')}>
                             Sign In
                         </a>
                     </Button>
                     <Button className="w-full" asChild>
-                        <a href={branding?.signUp || "https://auth.ciphera.net/signup"} onClick={() => track('header_cta_get_started_mobile')}>
+                        <a href={branding?.signUp || "https://id.ciphera.net/signup"} onClick={() => track('header_cta_get_started_mobile')}>
                             Get Started
                         </a>
                     </Button>
@@ -347,8 +347,8 @@ const productLinks: LinkItem[] = [
         image: pulseIcon,
     },
     {
-        title: 'Ciphera Auth',
-        href: '/products/auth',
+        title: 'Ciphera ID',
+        href: '/products/id',
         description: 'Zero-knowledge identity provider',
         image: authIcon,
     },

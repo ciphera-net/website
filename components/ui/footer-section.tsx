@@ -23,7 +23,7 @@ const footerLinks: FooterSection[] = [
         label: 'Products',
         links: [
             { title: 'Pulse', href: '/products/pulse' },
-            { title: 'Ciphera Auth', href: '/products/auth' },
+            { title: 'Ciphera ID', href: '/products/id' },
             { title: 'Ciphera Captcha', href: '/products/captcha' },
             { title: 'Ciphera Relay', href: '/products/relay' },
         ],

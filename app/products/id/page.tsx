@@ -18,24 +18,24 @@ import {
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
-  title: 'Ciphera Auth - Secure Identity Provider',
+  title: 'Ciphera ID - Secure Identity Provider',
   description:
     'Enterprise-grade authentication with double-hashed passwords (PBKDF2 + Argon2id), passkeys, 2FA, and OAuth 2.0 with PKCE. The identity layer behind Ciphera.',
   alternates: {
-    canonical: 'https://ciphera.net/products/auth',
+    canonical: 'https://ciphera.net/products/id',
   },
   openGraph: {
-    title: 'Ciphera Auth - Secure Identity Provider',
+    title: 'Ciphera ID - Secure Identity Provider',
     description:
       'Enterprise-grade authentication with double-hashed passwords (PBKDF2 + Argon2id), passkeys, 2FA, and OAuth 2.0 with PKCE.',
-    url: 'https://ciphera.net/products/auth',
+    url: 'https://ciphera.net/products/id',
     siteName: 'Ciphera',
     images: [
       {
-        url: '/auth_icon_no_margins.png',
+        url: '/id_icon_no_margins.png',
         width: 512,
         height: 512,
-        alt: 'Ciphera Auth - Secure Identity Provider',
+        alt: 'Ciphera ID - Secure Identity Provider',
       },
     ],
     locale: 'en_US',
@@ -43,23 +43,23 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ciphera Auth - Secure Identity Provider',
+    title: 'Ciphera ID - Secure Identity Provider',
     description:
       'Enterprise-grade authentication with double-hashed passwords, passkeys, and OAuth 2.0 with PKCE.',
-    images: ['/auth_icon_no_margins.png'],
+    images: ['/id_icon_no_margins.png'],
   },
 }
 
-const authSchema = [
+const idSchema = [
   {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Ciphera Auth',
+    name: 'Ciphera ID',
     description:
       'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles. Secure identity management with double-hashed passwords and two-factor authentication.',
     applicationCategory: 'SecurityApplication',
     operatingSystem: 'Web',
-    url: 'https://ciphera.net/products/auth',
+    url: 'https://ciphera.net/products/id',
     provider: {
       '@type': 'Organization',
       name: 'Ciphera',
@@ -82,17 +82,17 @@ const authSchema = [
         name: 'Products',
         item: 'https://ciphera.net/products',
       },
-      { '@type': 'ListItem', position: 3, name: 'Ciphera Auth' },
+      { '@type': 'ListItem', position: 3, name: 'Ciphera ID' },
     ],
   },
 ]
 
-export default function CipheraAuthPage() {
+export default function CipheraIDPage() {
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(authSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(idSchema) }}
       />
 
       {/* Hero */}
@@ -442,11 +442,11 @@ export default function CipheraAuthPage() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
-              How Ciphera Auth compares.
+              How Ciphera ID compares.
             </h2>
             <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
               Most auth providers are SaaS platforms that store your users&apos;
-              credentials on their infrastructure. Ciphera Auth is different.
+              credentials on their infrastructure. Ciphera ID is different.
             </p>
           </div>
 
@@ -457,13 +457,13 @@ export default function CipheraAuthPage() {
               <div className="flex items-center gap-3 mb-8">
                 <img
                   src={authIcon.src}
-                  alt="Ciphera Auth"
+                  alt="Ciphera ID"
                   width={40}
                   height={40}
                   className="w-10 h-10 rounded-lg object-contain"
                 />
                 <div>
-                  <h3 className="text-xl font-bold text-white">Ciphera Auth</h3>
+                  <h3 className="text-xl font-bold text-white">Ciphera ID</h3>
                   <p className="text-xs text-brand-orange">Self-hosted identity provider</p>
                 </div>
               </div>
@@ -609,10 +609,10 @@ export default function CipheraAuthPage() {
 
             <div className="relative z-10 text-center max-w-2xl mx-auto">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Interested in Ciphera Auth?
+                Interested in Ciphera ID?
               </h2>
               <p className="text-lg text-neutral-300 mb-10">
-                Ciphera Auth is currently an internal service powering the
+                Ciphera ID is currently an internal service powering the
                 Ciphera ecosystem. Reach out if you&apos;re interested in
                 the technology for your platform.
               </p>

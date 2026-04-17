@@ -9,7 +9,7 @@ import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 const PRODUCT_CONFIG: Record<string, { label: string; icon: StaticImageData }> = {
   pulse: { label: 'Pulse', icon: pulseIcon },
-  auth: { label: 'Auth', icon: authIcon },
+  id: { label: 'ID', icon: authIcon },
   captcha: { label: 'Captcha', icon: captchaIcon },
   relay: { label: 'Relay', icon: relayIcon },
 }
@@ -18,7 +18,7 @@ export default function LearnPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeProduct, setActiveProduct] = useState('All')
 
-  const productKeys = ['pulse', 'auth', 'captcha', 'relay']
+  const productKeys = ['pulse', 'id', 'captcha', 'relay']
 
   const filtered = useMemo(() => {
     return learnArticles.filter((article) => {
