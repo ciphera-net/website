@@ -14,6 +14,26 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "basic-fit-data-breach-1-million-members",
+    "title": "What Happened in the Basic-Fit Data Breach — and Why Your IBAN Makes It Dangerous",
+    "description": "Basic-Fit's April 2026 breach exposed IBANs, addresses, and birth dates for 1 million gym members across 6 EU countries. Here's what was stolen and what to do now.",
+    "category": "Security",
+    "date": "2026-04-21",
+    "dateModified": "2026-04-21",
+    "readTime": "10 min read",
+    "image": "/blog/og/basic-fit-data-breach-1-million-members.png"
+  },
+  {
+    "slug": "vercel-data-breach-2026",
+    "title": "How the Vercel Data Breach Happened — And What It Means for Every Developer",
+    "description": "Vercel confirmed a supply chain breach exposing customer environment variables and 580 employee records. Here's the full 5-step attack chain and what to do now.",
+    "category": "Security",
+    "date": "2026-04-21",
+    "dateModified": "2026-04-21",
+    "readTime": "11 min read",
+    "image": "/blog/og/vercel-data-breach-2026.png"
+  },
+  {
     "slug": "darksword-iphone-exploit-how-to-protect-yourself",
     "title": "DarkSword iPhone Exploit: 221 Million iOS Devices at Risk and How to Protect Yours",
     "description": "DarkSword chains six iOS flaws — three of them zero-days — to take over iPhones from a single malicious link. Here's how to check exposure and lock it down.",
