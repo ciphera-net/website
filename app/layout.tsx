@@ -109,14 +109,13 @@ export default async function RootLayout({
         <Script
           defer
           data-domain="ciphera.net"
-          data-api="https://pulse-api.ciphera.net"
-          src="https://pulse.ciphera.net/script.js"
+          src="https://js.ciphera.net/script.js"
           integrity={sri['script.js']}
           crossOrigin={sri['script.js'] ? 'anonymous' : undefined}
         />
         <Script
           defer
-          src="https://pulse.ciphera.net/script.frustration.js"
+          src="https://js.ciphera.net/script.frustration.js"
           integrity={sri['script.frustration.js']}
           crossOrigin={sri['script.frustration.js'] ? 'anonymous' : undefined}
         />

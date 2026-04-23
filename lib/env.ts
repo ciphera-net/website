@@ -49,7 +49,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PULSE_SCRIPT_URL: z
       .string()
       .url()
-      .default('https://pulse.ciphera.net/script.js'),
+      .default('https://js.ciphera.net/script.js'),
 
     /** Pulse analytics API URL. Same dns-prefetch story as above. */
     NEXT_PUBLIC_PULSE_API_URL: z
