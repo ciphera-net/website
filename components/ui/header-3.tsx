@@ -215,17 +215,6 @@ export function Header() {
                     </NavigationMenu>
                 </div>
                 <div className="hidden items-center gap-2 md:flex">
-                    <a href="https://status.ciphera.net" target="_blank" rel="noopener noreferrer" className="mr-1">
-                        <iframe
-                            src="https://status.ciphera.net/embed-badges/live-status?align=start&background-dark=00000000&text-dark=ffffff"
-                            width={190}
-                            height={30}
-                            loading="lazy"
-                            frameBorder={0}
-                            scrolling="no"
-                            className="pointer-events-none"
-                        />
-                    </a>
                     <Button variant="outline" asChild>
                         <a href={branding?.signIn || "https://id.ciphera.net"} onClick={() => track('header_sign_in')}>Sign In</a>
                     </Button>
