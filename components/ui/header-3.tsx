@@ -36,7 +36,7 @@ import {
     Cable,
     BookOpen,
 } from 'lucide-react';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { track } from '@/lib/pulse';
 import { pulseIcon, authIcon, captchaIcon, relayIcon, cipheraIcon } from '@/lib/images';
 
@@ -44,11 +44,11 @@ type LinkItem = {
     title: string;
     href: string;
     icon?: LucideIcon;
-    image?: StaticImageData;
+    image?: string;
     description?: string;
 };
 
-const productBranding: Record<string, { logo: StaticImageData; name: string; signIn?: string; signUp?: string }> = {
+const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string }> = {
     '/products/pulse': { logo: pulseIcon, name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
     '/products/id': { logo: authIcon, name: 'Ciphera ID' },
     '/products/captcha': { logo: captchaIcon, name: 'Ciphera Captcha' },

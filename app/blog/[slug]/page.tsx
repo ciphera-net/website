@@ -8,6 +8,7 @@ import { BlogMDXRenderer } from '@/components/blog/blog-mdx-renderer'
 import TableOfContents from '../../../components/TableOfContents'
 import RelatedPosts from '../../../components/RelatedPosts'
 import ReadingProgress from '../../../components/ReadingProgress'
+import { cdnUrl } from '@/lib/cdn'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -54,7 +55,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description,
-    image: 'https://ciphera.net/ciphera_logo_no_margins.png',
+    image: cdnUrl('/ciphera_logo_no_margins.png'),
     datePublished: post.date,
     dateModified: post.dateModified,
     wordCount: post.content.split(/\s+/).length,
@@ -66,7 +67,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       url: 'https://ciphera.net',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+        url: cdnUrl('/ciphera_logo_no_margins.png'),
       },
     },
     publisher: {
@@ -76,7 +77,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       url: 'https://ciphera.net',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+        url: cdnUrl('/ciphera_logo_no_margins.png'),
       },
     },
     mainEntityOfPage: {

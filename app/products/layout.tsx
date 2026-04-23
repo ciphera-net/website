@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Privacy-First Products & Applications',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: '/ciphera_logo_no_margins.png',
+        url: cdnUrl('/ciphera_logo_no_margins.png'),
         width: 1200,
         height: 630,
         alt: 'Ciphera Products - Privacy-First Applications',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Privacy-First Products & Applications',
     description: 'Explore Ciphera\'s privacy-first product suite: Pulse, Auth, Captcha, and Relay.',
-    images: ['/ciphera_logo_no_margins.png'],
+    images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
   alternates: {},
 }

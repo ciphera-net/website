@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo, type CSSProperties } from 'react'
+import { cdnUrl } from '@/lib/cdn'
 import { createMap } from 'svg-dotted-map'
 import {
   Files,
@@ -292,12 +293,12 @@ function LocationsCard() {
 // ─── Card 4: Technology ──────────────────────────────────────────────────────
 
 const BROWSER_ICONS: Record<string, string> = {
-  Chrome: '/icons/browsers/chrome.svg',
-  Safari: '/icons/browsers/safari.svg',
-  Firefox: '/icons/browsers/firefox.svg',
-  Edge: '/icons/browsers/edge.svg',
-  Arc: '/icons/browsers/arc.png',
-  Opera: '/icons/browsers/opera.svg',
+  Chrome: cdnUrl('/icons/browsers/chrome.svg'),
+  Safari: cdnUrl('/icons/browsers/safari.svg'),
+  Firefox: cdnUrl('/icons/browsers/firefox.svg'),
+  Edge: cdnUrl('/icons/browsers/edge.svg'),
+  Arc: cdnUrl('/icons/browsers/arc.png'),
+  Opera: cdnUrl('/icons/browsers/opera.svg'),
 }
 
 function TechnologyCard() {

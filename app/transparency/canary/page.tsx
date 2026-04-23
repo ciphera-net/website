@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getCurrentCanary } from '@/lib/transparency'
+import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Warrant Canary — Ciphera',
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: '/ciphera_logo_no_margins.png',
+        url: cdnUrl('/ciphera_logo_no_margins.png'),
         width: 1200,
         height: 630,
         alt: 'Ciphera Warrant Canary',

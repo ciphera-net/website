@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'About Us - Building Privacy-First Infrastructure',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: '/ciphera_logo_no_margins.png',
+        url: cdnUrl('/ciphera_logo_no_margins.png'),
         width: 1200,
         height: 630,
         alt: 'Ciphera - Building Privacy-First Infrastructure',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'About Us - Building Privacy-First Infrastructure',
     description: 'Ciphera is a Belgian privacy company building zero-knowledge infrastructure. Learn about our mission, values, and technology.',
-    images: ['/ciphera_logo_no_margins.png'],
+    images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
   alternates: {
     canonical: 'https://ciphera.net/about',

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Learn - Learn',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     description: 'Guides, references, and technical deep-dives across Ciphera products.',
     url: 'https://ciphera.net/learn',
     siteName: 'Ciphera',
-    images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: 'Ciphera Learn' }],
+    images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera Learn' }],
     locale: 'en_US',
     type: 'website',
   },
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Learn - Learn',
     description: 'Guides, references, and technical deep-dives across Ciphera products.',
-    images: ['/ciphera_logo_no_margins.png'],
+    images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
 }
 

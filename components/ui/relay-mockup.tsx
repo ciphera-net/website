@@ -33,7 +33,7 @@ export function RelayMockup() {
         <div className="rounded-lg border border-neutral-800 bg-neutral-950/50 p-5 space-y-4">
           {/* Logo + brand */}
           <div className="flex items-center gap-2.5 justify-center pb-2">
-            <img src={cipheraIcon.src} alt="Ciphera" className="w-6 h-6 object-contain" />
+            <img src={cipheraIcon} alt="Ciphera" className="w-6 h-6 object-contain" />
             <span className="text-sm font-bold text-white">Ciphera</span>
           </div>
 

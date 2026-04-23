@@ -52,7 +52,7 @@ export function AuthMockup() {
             </div>
             <div className="flex items-center gap-1.5 border-l border-white/[0.08] pl-3 ml-1">
               <span className="text-[9px] text-neutral-500 leading-tight">Secured by</span>
-              <img src={cipheraIcon.src} alt="Ciphera" className="w-5 h-5 object-contain" />
+              <img src={cipheraIcon} alt="Ciphera" className="w-5 h-5 object-contain" />
               <span className="text-[11px] font-semibold text-white">Ciphera</span>
             </div>
           </div>

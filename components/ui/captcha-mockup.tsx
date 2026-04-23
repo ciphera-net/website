@@ -17,7 +17,7 @@ export function CaptchaMockup() {
               <span className="text-[9px] text-neutral-500 leading-tight">Secured by</span>
               <span className="text-sm font-bold text-white leading-tight">Ciphera</span>
             </div>
-            <img src={cipheraIcon.src} alt="Ciphera" className="w-8 h-8 object-contain" />
+            <img src={cipheraIcon} alt="Ciphera" className="w-8 h-8 object-contain" />
           </div>
         </div>
 

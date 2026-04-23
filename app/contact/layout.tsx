@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Contact Us - Get in Touch',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: '/ciphera_logo_no_margins.png',
+        url: cdnUrl('/ciphera_logo_no_margins.png'),
         width: 1200,
         height: 630,
         alt: 'Contact Ciphera',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Contact Us - Get in Touch',
     description: 'Contact Ciphera for general inquiries, security reports, or business partnerships.',
-    images: ['/ciphera_logo_no_margins.png'],
+    images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
   alternates: {
     canonical: 'https://ciphera.net/contact',

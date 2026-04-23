@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { cipheraIcon, pulseIcon } from '@/lib/images'
+import { cdnUrl } from '@/lib/cdn'
 
 const values = [
   {
@@ -58,7 +59,7 @@ const organizationSchema = {
   url: 'https://ciphera.net',
   logo: {
     '@type': 'ImageObject',
-    url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+    url: cdnUrl('/ciphera_logo_no_margins.png'),
   },
   description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
   foundingDate: '2024-01-01',

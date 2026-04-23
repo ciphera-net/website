@@ -73,7 +73,7 @@ export function NewsletterSection({
       <div className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-neutral-900/80 backdrop-blur-xl supports-[backdrop-filter]:bg-neutral-900/70 px-6 py-20 sm:px-10 sm:py-24 max-w-6xl mx-auto">
         {backgroundEffect && (
           <>
-            <img src={newsletterBg.src} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <img src={newsletterBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/40" />
           </>
         )}

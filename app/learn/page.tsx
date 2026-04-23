@@ -2,12 +2,12 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import Image, { StaticImageData } from 'next/image'
+import Image from 'next/image'
 import { ArrowRightIcon } from '@ciphera-net/ui'
 import { learnArticles } from '@/lib/learn-articles.gen'
 import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
-const PRODUCT_CONFIG: Record<string, { label: string; icon: StaticImageData }> = {
+const PRODUCT_CONFIG: Record<string, { label: string; icon: string }> = {
   pulse: { label: 'Pulse', icon: pulseIcon },
   id: { label: 'ID', icon: authIcon },
   captcha: { label: 'Captcha', icon: captchaIcon },

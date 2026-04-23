@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { getCurrentReport, listReports } from '@/lib/transparency'
+import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Transparency Report — Ciphera',
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: '/ciphera_logo_no_margins.png',
+        url: cdnUrl('/ciphera_logo_no_margins.png'),
         width: 1200,
         height: 630,
         alt: 'Ciphera Transparency Report',

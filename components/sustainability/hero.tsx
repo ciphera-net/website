@@ -44,7 +44,7 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
     <section className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden">
       {/* * Layer 0 — full-bleed Swiss mountain photograph */}
       <img
-        src={sustainabilityHeroBg.src}
+        src={sustainabilityHeroBg}
         alt=""
         aria-hidden="true"
         className="absolute inset-0 z-0 w-full h-full object-cover"

@@ -17,7 +17,7 @@ export function SwissGridBlock() {
               <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
               <div className="relative w-[560px] max-w-full h-[600px] rounded-3xl overflow-hidden">
                 <img
-                  src={swissGridBuildingsPhoto.src}
+                  src={swissGridBuildingsPhoto}
                   alt="Swiss government buildings flying Swiss flags"
                   className="absolute inset-0 w-full h-full object-cover"
                 />

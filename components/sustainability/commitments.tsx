@@ -31,7 +31,7 @@ export function Commitments() {
             {/* * Ambient mountain photo — heavily dark-overlaid so it reads
               * as texture, not a distinct image */}
             <img
-              src={sustainabilityHeroBg.src}
+              src={sustainabilityHeroBg}
               alt=""
               aria-hidden="true"
               className="absolute inset-0 w-full h-full object-cover"

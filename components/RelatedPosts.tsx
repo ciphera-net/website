@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRightIcon } from '@ciphera-net/ui'
+import { cdnUrl } from '@/lib/cdn'
 
 interface BlogPostMeta {
   slug: string
@@ -44,7 +45,7 @@ export default function RelatedPosts({
           >
             <div className="aspect-video w-full overflow-hidden">
               <img
-                src={`/blog/og/${post.slug}.png`}
+                src={cdnUrl(`/blog/og/${post.slug}.png`)}
                 alt={post.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"

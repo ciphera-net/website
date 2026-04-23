@@ -5,6 +5,7 @@ import { Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import '../styles/globals.css'
 import { env } from '@/lib/env'
+import { cdnUrl } from '@/lib/cdn'
 // import HeroBackground from '../components/HeroBackground'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
     description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Built for privacy.',
     images: [
       {
-        url: '/og-homepage.png',
+        url: cdnUrl('/og-homepage.png'),
         width: 1200,
         height: 630,
         alt: 'Ciphera - Built for privacy',
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
     site: '@CipheraNET',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
     description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Built for privacy.',
-    images: ['/og-homepage.png'],
+    images: [cdnUrl('/og-homepage.png')],
   },
   alternates: {
     canonical: 'https://ciphera.net',

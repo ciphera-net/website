@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
     url: 'https://ciphera.net/privacy',
     siteName: 'Ciphera',
-    images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: 'Ciphera Privacy Policy' }],
+    images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera Privacy Policy' }],
     locale: 'en_US',
     type: 'website',
   },

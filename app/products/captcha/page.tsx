@@ -4,6 +4,7 @@ import { CaptchaMockup } from '@/components/ui/captcha-mockup'
 import { PuzzleMockup } from '@/components/ui/puzzle-mockup'
 import { RiskScoreMockup } from '@/components/ui/risk-score-mockup'
 import { captchaIcon, captchaShowcaseBg, zurichPhoto } from '@/lib/images'
+import { cdnUrl } from '@/lib/cdn'
 import {
   ShieldCheck,
   Lightning,
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: '/captcha_icon_no_margins.png',
+        url: cdnUrl('/captcha_icon_no_margins.png'),
         width: 512,
         height: 512,
         alt: 'Ciphera Captcha - Privacy-First Bot Protection',
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     title: 'Ciphera Captcha - Privacy-First Bot Protection',
     description:
       'Adaptive proof-of-work, puzzle challenges, and 5-signal risk scoring. No tracking, fully stateless.',
-    images: ['/captcha_icon_no_margins.png'],
+    images: [cdnUrl('/captcha_icon_no_margins.png')],
   },
 }
 
@@ -100,7 +101,7 @@ export default function CipheraCaptchaPage() {
       {/* Hero */}
       <section className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden">
         <img
-          src={captchaShowcaseBg.src}
+          src={captchaShowcaseBg}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -205,7 +206,7 @@ export default function CipheraCaptchaPage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src={captchaShowcaseBg.src}
+                    src={captchaShowcaseBg}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -227,7 +228,7 @@ export default function CipheraCaptchaPage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src={captchaShowcaseBg.src}
+                    src={captchaShowcaseBg}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -308,7 +309,7 @@ export default function CipheraCaptchaPage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src={captchaShowcaseBg.src}
+                    src={captchaShowcaseBg}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -330,7 +331,7 @@ export default function CipheraCaptchaPage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
                   <img
-                    src={captchaShowcaseBg.src}
+                    src={captchaShowcaseBg}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -443,7 +444,7 @@ export default function CipheraCaptchaPage() {
               <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-orange" />
               <div className="flex items-center gap-3 mb-8">
                 <img
-                  src={captchaIcon.src}
+                  src={captchaIcon}
                   alt="Ciphera Captcha"
                   width={40}
                   height={40}
@@ -527,7 +528,7 @@ export default function CipheraCaptchaPage() {
                 <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
                 <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
                   <img
-                    src={zurichPhoto.src}
+                    src={zurichPhoto}
                     alt="Zurich, Switzerland"
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -589,7 +590,7 @@ export default function CipheraCaptchaPage() {
         <div className="container mx-auto px-6">
           <div className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-neutral-900/80 px-6 py-20 sm:px-10 sm:py-24 max-w-6xl mx-auto">
             <img
-              src={captchaShowcaseBg.src}
+              src={captchaShowcaseBg}
               alt=""
               className="absolute inset-0 w-full h-full object-cover"
             />

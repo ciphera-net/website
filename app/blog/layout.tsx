@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Blog - Privacy & Security Insights',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     description: 'Privacy and security insights from the Ciphera team. Data breach analysis, encryption guides, tool comparisons, and privacy statistics backed by sourced data.',
     url: 'https://ciphera.net/blog',
     siteName: 'Ciphera',
-    images: [{ url: '/ciphera_logo_no_margins.png', width: 1200, height: 630, alt: 'Ciphera Blog' }],
+    images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera Blog' }],
     locale: 'en_US',
     type: 'website',
   },
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Blog - Privacy & Security Insights',
     description: 'Privacy and security insights from the Ciphera team. Data breach analysis, encryption guides, and privacy statistics.',
-    images: ['/ciphera_logo_no_margins.png'],
+    images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
 }
 

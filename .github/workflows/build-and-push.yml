@@ -67,6 +67,7 @@ jobs:
             NEXT_PUBLIC_PULSE_SCRIPT_URL=https://pulse.ciphera.net/script.js
             NEXT_PUBLIC_PULSE_API_URL=https://pulse-api.ciphera.net
             NEXT_PUBLIC_WEBSITE_API_URL=https://api.ciphera.net
+            NEXT_PUBLIC_CDN_URL=https://cdn.ciphera.net/website
 
       - name: Install Teleport
         if: github.ref == 'refs/heads/main'
