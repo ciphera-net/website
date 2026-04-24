@@ -3,11 +3,11 @@ import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Privacy-First Products & Applications',
-  description: 'Explore Ciphera\'s privacy-first product suite: Pulse for cookie-free analytics, Auth, Captcha, and Relay infrastructure.',
+  description: 'Explore Ciphera\'s privacy-first product suite: Pulse for cookie-free analytics, ID, Captcha, and Relay infrastructure.',
   keywords: ['ciphera products', 'pulse analytics', 'privacy analytics', 'privacy tools', 'GDPR compliant tools', 'end-to-end encryption'],
   openGraph: {
     title: 'Privacy-First Products & Applications',
-    description: 'Explore Ciphera\'s privacy-first product suite: Pulse for cookie-free analytics, Auth, Captcha, and Relay infrastructure.',
+    description: 'Explore Ciphera\'s privacy-first product suite: Pulse for cookie-free analytics, ID, Captcha, and Relay infrastructure.',
     url: 'https://ciphera.net',
     siteName: 'Ciphera',
     images: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Privacy-First Products & Applications',
-    description: 'Explore Ciphera\'s privacy-first product suite: Pulse, Auth, Captcha, and Relay.',
+    description: 'Explore Ciphera\'s privacy-first product suite: Pulse, ID, Captcha, and Relay.',
     images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
   alternates: {},

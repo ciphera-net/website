@@ -92,7 +92,7 @@ export default function ProductShowcase() {
               </Button>
               <Button size="lg" variant="ghost" className="gap-2 text-neutral-300 hover:text-white" asChild>
                 <Link href="/products/id">
-                  Explore Auth <ArrowRight className="w-4 h-4" />
+                  Explore ID <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
             </div>

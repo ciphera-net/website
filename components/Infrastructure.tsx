@@ -18,7 +18,7 @@ const services = [
     position: 'top',
   },
   {
-    id: 'auth',
+    id: 'id',
     name: 'Ciphera ID',
     description: 'Identity provider',
     icon: authIcon,
@@ -294,7 +294,7 @@ export default function Infrastructure() {
                 </p>
                 <p className="text-sm text-neutral-400">
                   {service.id === 'pulse' && 'Real-time analytics and session replay without compromising user privacy.'}
-                  {service.id === 'auth' && 'Secure identity management with JWT tokens and double-hashed passwords.'}
+                  {service.id === 'id' && 'Secure identity management with JWT tokens and double-hashed passwords.'}
                   {service.id === 'relay' && 'Secure email infrastructure for verification and notifications.'}
                   {service.id === 'captcha' && 'Proof-of-Work challenges and visual captchas for bot protection.'}
                 </p>

@@ -27,7 +27,7 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     vcpu: 2,
     ramGb: 4,
     zone: 'CH-DK-2',
-    purpose: 'Auth + Captcha + SSH bastion',
+    purpose: 'ID + Captcha + SSH bastion',
   },
   {
     instance: 'pulse-ops',

@@ -36,7 +36,7 @@ export function SmallByDesign({ report }: SmallByDesignProps) {
             </div>
             <p className="text-sm text-neutral-400">Virtual machines</p>
             <p className="mt-2 text-xs text-neutral-500">
-              Entire Ciphera fleet — auth, analytics, website, observability, email
+              Entire Ciphera fleet — identity, analytics, website, observability, email
             </p>
           </div>
 
