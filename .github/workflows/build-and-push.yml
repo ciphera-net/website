@@ -53,6 +53,7 @@ jobs:
           token: ci-deploy
           app: vault
           listen: "tcp://127.0.0.1:8200"
+          diag-port: 57001
 
       - name: Read build config from Vault
         id: vault-config
@@ -117,6 +118,7 @@ jobs:
           token: ci-deploy
           app: dokploy-public
           listen: "tcp://127.0.0.1:9090"
+          diag-port: 57002
 
       - name: Trigger Dokploy redeploy
         if: github.ref == 'refs/heads/main'
