@@ -23,14 +23,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Write .npmrc for GitHub Packages auth
-        run: |
-          {
-            echo "@ciphera-net:registry=https://npm.pkg.github.com/"
-            echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PACKAGES_READ_TOKEN }}"
-            echo "legacy-peer-deps=true"
-          } > /tmp/npmrc
-
       - name: Log in to Ciphera registry
         uses: docker/login-action@v3
         with:
@@ -47,6 +39,51 @@ jobs:
             type=sha,prefix=sha-,format=short
             type=raw,value=latest,enable={{is_default_branch}}
 
+      - name: Install Teleport
+        uses: teleport-actions/setup@v1
+        with:
+          version: "18.7.2"
+          proxy: teleport.ciphera.net:443
+
+      - name: Teleport tunnel to Vault
+        id: vault-tunnel
+        uses: teleport-actions/application-tunnel@v1
+        with:
+          proxy: teleport.ciphera.net:443
+          token: ci-deploy
+          app: vault
+          listen: "tcp://127.0.0.1:8200"
+
+      - name: Read build config from Vault
+        id: vault-config
+        run: |
+          VAULT_ADDR=http://127.0.0.1:8200
+          TOKEN=$(curl -sf -X POST "${VAULT_ADDR}/v1/auth/approle/login" \
+            -d "{\"role_id\":\"${{ secrets.VAULT_CI_ROLE_ID }}\",\"secret_id\":\"${{ secrets.VAULT_CI_SECRET_ID }}\"}" \
+            | jq -r '.auth.client_token')
+          CONFIG=$(curl -sf -H "X-Vault-Token: ${TOKEN}" \
+            "${VAULT_ADDR}/v1/kv/data/ciphera-frontend/config" \
+            | jq -r '.data.data')
+          NPM_TOKEN=$(curl -sf -H "X-Vault-Token: ${TOKEN}" \
+            "${VAULT_ADDR}/v1/kv/data/shared/github-npm-token" \
+            | jq -r '.data.data.value')
+          {
+            echo "NEXT_PUBLIC_CAPTCHA_API_URL=$(echo "$CONFIG" | jq -r '.next_public_captcha_api_url')"
+            echo "NEXT_PUBLIC_PULSE_SCRIPT_URL=$(echo "$CONFIG" | jq -r '.next_public_pulse_script_url')"
+            echo "NEXT_PUBLIC_PULSE_API_URL=$(echo "$CONFIG" | jq -r '.next_public_pulse_api_url')"
+            echo "NEXT_PUBLIC_WEBSITE_API_URL=$(echo "$CONFIG" | jq -r '.next_public_website_api_url')"
+            echo "NEXT_PUBLIC_CDN_URL=$(echo "$CONFIG" | jq -r '.next_public_cdn_url')"
+            echo "NPM_AUTH_TOKEN=${NPM_TOKEN}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Write .npmrc from Vault token
+        run: |
+          {
+            echo "@ciphera-net:registry=https://npm.pkg.github.com/"
+            echo "//npm.pkg.github.com/:_authToken=${{ steps.vault-config.outputs.NPM_AUTH_TOKEN }}"
+            echo "legacy-peer-deps=true"
+          } > /tmp/npmrc
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -58,23 +95,12 @@ jobs:
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
           secret-files: |
             npmrc=/tmp/npmrc
-          # NEXT_PUBLIC_* values are inlined into the client JS bundle at build time.
-          # They MUST be passed here — Dokploy runtime env vars don't affect the client.
-          # These are public URLs (they end up in the browser either way), so hardcoding
-          # them in the workflow is safe and keeps config in one place.
           build-args: |
-            NEXT_PUBLIC_CAPTCHA_API_URL=https://captcha.ciphera.net/api/v1
-            NEXT_PUBLIC_PULSE_SCRIPT_URL=https://pulse.ciphera.net/script.js
-            NEXT_PUBLIC_PULSE_API_URL=https://pulse-api.ciphera.net
-            NEXT_PUBLIC_WEBSITE_API_URL=https://api.ciphera.net
-            NEXT_PUBLIC_CDN_URL=https://cdn.ciphera.net/website
-
-      - name: Install Teleport
-        if: github.ref == 'refs/heads/main'
-        uses: teleport-actions/setup@v1
-        with:
-          version: "18.7.2"
-          proxy: teleport.ciphera.net:443
+            NEXT_PUBLIC_CAPTCHA_API_URL=${{ steps.vault-config.outputs.NEXT_PUBLIC_CAPTCHA_API_URL }}
+            NEXT_PUBLIC_PULSE_SCRIPT_URL=${{ steps.vault-config.outputs.NEXT_PUBLIC_PULSE_SCRIPT_URL }}
+            NEXT_PUBLIC_PULSE_API_URL=${{ steps.vault-config.outputs.NEXT_PUBLIC_PULSE_API_URL }}
+            NEXT_PUBLIC_WEBSITE_API_URL=${{ steps.vault-config.outputs.NEXT_PUBLIC_WEBSITE_API_URL }}
+            NEXT_PUBLIC_CDN_URL=${{ steps.vault-config.outputs.NEXT_PUBLIC_CDN_URL }}
 
       - name: Teleport tunnel to Dokploy
         if: github.ref == 'refs/heads/main'
