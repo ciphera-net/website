@@ -102,6 +102,12 @@ jobs:
             NEXT_PUBLIC_WEBSITE_API_URL=${{ steps.vault-config.outputs.NEXT_PUBLIC_WEBSITE_API_URL }}
             NEXT_PUBLIC_CDN_URL=${{ steps.vault-config.outputs.NEXT_PUBLIC_CDN_URL }}
 
+      - name: Stop Vault tunnel
+        if: github.ref == 'refs/heads/main'
+        run: |
+          kill ${{ steps.vault-tunnel.outputs.tbot-pid }} 2>/dev/null || true
+          sleep 1
+
       - name: Teleport tunnel to Dokploy
         if: github.ref == 'refs/heads/main'
         id: tunnel
