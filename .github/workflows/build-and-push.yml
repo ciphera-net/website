@@ -121,6 +121,7 @@ jobs:
       - name: Trigger Dokploy redeploy
         if: github.ref == 'refs/heads/main'
         run: |
+          sleep 3
           curl -fsS -X POST \
             -H "x-api-key: ${{ secrets.DOKPLOY_PUBLIC_OPS_API_KEY }}" \
             -H "Content-Type: application/json" \
