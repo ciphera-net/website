@@ -54,7 +54,7 @@ export default async function WarrantCanaryPage() {
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Warrant canary</h1>
           <p className="text-neutral-400 mb-2">
-            Current period: <strong className="text-white">{canary.period}</strong>. Published{' '}
+            Current period: <strong className="text-white">{canary.periodLabel}</strong>. Published{' '}
             {canary.publishedEuropean}. Next update on or before {canary.nextUpdateEuropean}.
           </p>
           <p className="text-neutral-400 mb-8 text-sm">

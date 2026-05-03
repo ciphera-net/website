@@ -8,6 +8,7 @@ const REPORT_DIR = path.join(CONTENT_ROOT, 'reports')
 
 export interface Canary {
   period: string
+  periodLabel: string
   text: string
   publishedEuropean: string
   publishedISO: string
@@ -54,9 +55,12 @@ export async function getCurrentCanary(): Promise<Canary> {
 
   const publishedEuropean = parseCanaryField(text, 'Published')
   const nextUpdateEuropean = parseCanaryField(text, 'Next update')
+  const periodMatch = text.match(/^Period:\s*(.+)/im)
+  const periodLabel = periodMatch ? periodMatch[1].trim() : period
 
   return {
     period,
+    periodLabel,
     text,
     publishedEuropean,
     publishedISO: europeanToISO(publishedEuropean),
