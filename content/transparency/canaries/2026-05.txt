@@ -1,0 +1,45 @@
+CIPHERA WARRANT CANARY
+======================
+
+Period: May 2026
+Published: 03-05-2026 (DD-MM-YYYY)
+Next update: on or before 05-06-2026
+Company: Ciphera (Belgian company, jurisdiction: Belgium / European Union)
+
+As of the date above, Ciphera:
+
+  1. Has NOT received any National Security Letter, secret warrant, or
+     equivalent gag-ordered legal process from any government agency.
+  2. Has NOT received any request or order compelling disclosure of
+     cryptographic keys, decrypted user data, or plaintext user secrets.
+  3. Has NOT been compelled to install, modify, or weaken any security
+     mechanism, backdoor, or interception capability.
+  4. Has NOT received any order to modify source code or binaries in a
+     manner hostile to user security.
+  5. Has NOT handed over bulk user data to any third party absent specific,
+     legally-valid, narrowly-scoped process that Ciphera may lawfully
+     disclose.
+
+Proof of non-backdating (headlines from 03-05-2026):
+
+  - [BBC]: Germany troop cuts send wrong signal to Russia, say two top US Republicans
+    https://www.bbc.com/news/articles/cewpx5yvwyxo
+
+  - [NPR]: He recorded his quest for tariff refunds. It shows why billions may never get repaid
+    https://www.npr.org/2026/05/03/nx-s1-5805045/tariff-refunds-small-business
+
+  - [RTÉ]: US warns troop numbers in Germany to be cut 'way down'
+    https://www.rte.ie/news/world/2026/0503/1571505-us-germany-troops/
+
+  - [France 24]: Italian media reports US top diplomat Rubio to meet Pope Leo
+    https://www.france24.com/en/italian-media-reports-us-top-diplomat-rubio-to-meet-pope-leo
+
+This canary is signed with GPG key
+94E796164FF853902D89E46173011BE3BD5174AE, whose public key is published at
+https://ciphera.net/transparency/canary-pubkey.asc.
+
+Verify:
+    gpg --import canary-pubkey.asc
+    gpg --verify canary-2026-05.txt.asc canary-2026-05.txt
+
+-- Usman Baig, founder, Ciphera
