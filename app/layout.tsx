@@ -74,28 +74,12 @@ export const viewport: Viewport = {
   themeColor: '#FD5E0F',
 }
 
-// * Fetch the Pulse Subresource Integrity manifest at render time. Revalidated
-// * hourly so a pulse-frontend deploy that changes script.js propagates here
-// * without requiring a full ciphera-website rebuild. If the fetch fails,
-// * React silently omits the `integrity` attribute (the script still loads,
-// * just without SRI enforcement — fail-open for availability).
-async function getPulseSri(): Promise<Record<string, string>> {
-  try {
-    const origin = new URL(env.NEXT_PUBLIC_PULSE_SCRIPT_URL).origin
-    const res = await fetch(`${origin}/script-sri.json`, { next: { revalidate: 3600 } })
-    if (!res.ok) return {}
-    return (await res.json()) as Record<string, string>
-  } catch {
-    return {}
-  }
-}
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const sri = await getPulseSri()
   return (
     <html lang="en" className={`${plusJakartaSans.variable} dark`} suppressHydrationWarning>
       <head>
@@ -110,14 +94,10 @@ export default async function RootLayout({
           defer
           data-domain="ciphera.net"
           src="https://js.ciphera.net/script.js"
-          integrity={sri['script.js']}
-          crossOrigin={sri['script.js'] ? 'anonymous' : undefined}
         />
         <Script
           defer
           src="https://js.ciphera.net/script.frustration.js"
-          integrity={sri['script.frustration.js']}
-          crossOrigin={sri['script.frustration.js'] ? 'anonymous' : undefined}
         />
         <Header />
         <main className="flex-1">
