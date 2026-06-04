@@ -1,0 +1,45 @@
+CIPHERA WARRANT CANARY
+======================
+
+Period: June 2026
+Published: 04-06-2026 (DD-MM-YYYY)
+Next update: on or before 05-07-2026
+Company: Ciphera (Belgian company, jurisdiction: Belgium / European Union)
+
+As of the date above, Ciphera:
+
+  1. Has NOT received any National Security Letter, secret warrant, or
+     equivalent gag-ordered legal process from any government agency.
+  2. Has NOT received any request or order compelling disclosure of
+     cryptographic keys, decrypted user data, or plaintext user secrets.
+  3. Has NOT been compelled to install, modify, or weaken any security
+     mechanism, backdoor, or interception capability.
+  4. Has NOT received any order to modify source code or binaries in a
+     manner hostile to user security.
+  5. Has NOT handed over bulk user data to any third party absent specific,
+     legally-valid, narrowly-scoped process that Ciphera may lawfully
+     disclose.
+
+Proof of non-backdating (headlines from 04-06-2026):
+
+  - [BBC]: Israel and Lebanon agree to implement ceasefire if Hezbollah stops attacks
+    https://www.bbc.com/news/articles/c5y01pdqvkgo
+
+  - [NPR]: More than 1 in 3 World Cup matches face dangerous heat risk, NPR analysis finds
+    https://www.npr.org/2026/06/04/nx-s1-5742519/world-cup-fifa-hot-weather-risk-climate-miami
+
+  - [RTÉ]: Lebanon reports Israeli strikes after truce announcement
+    https://www.rte.ie/news/middle-east/2026/0604/1576682-middle-east-lebanon-israel/
+
+  - [France 24]: Russia ramps up pressure on Armenia ahead of Sunday's crucial election
+    https://www.france24.com/en/europe/20260604-russia-ramps-pressure-on-armenia-ahead-of-sunday-s-crucial-election
+
+This canary is signed with GPG key
+94E796164FF853902D89E46173011BE3BD5174AE, whose public key is published at
+https://ciphera.net/transparency/canary-pubkey.asc.
+
+Verify:
+    gpg --import canary-pubkey.asc
+    gpg --verify canary-2026-06.txt.asc canary-2026-06.txt
+
+-- Usman Baig, founder, Ciphera
