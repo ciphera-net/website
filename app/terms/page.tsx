@@ -25,7 +25,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-03-06',
+  dateModified: '2026-06-18',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -50,7 +50,7 @@ export default function TermsOfServicePage() {
               Terms of Service
             </h1>
             <p className="text-neutral-400 mb-12">
-              Last updated: March 6, 2026
+              Last updated: June 18, 2026
             </p>
 
             <div className="prose prose-invert max-w-none space-y-10">
@@ -189,7 +189,7 @@ export default function TermsOfServicePage() {
                   <li><strong>No data recovery:</strong> Encryption keys are generated in your browser and are never transmitted to our servers. If you lose access to a shared link, encryption key, or your account password, the associated data <strong>cannot be recovered</strong> by Ciphera or anyone else.</li>
                   <li><strong>No content inspection:</strong> We cannot view, read, or analyze the contents of encrypted files stored on our servers. Content moderation of encrypted data is technically impossible in a zero-knowledge system.</li>
                   <li><strong>Your responsibility:</strong> You are solely responsible for maintaining access to your encryption keys, shared links, and account credentials. We strongly recommend keeping backups of critical links and passwords in a secure location.</li>
-                  <li><strong>Password limitations:</strong> Due to our double-hashing architecture (client-side PBKDF2 followed by server-side Argon2id), we have no ability to reset or recover your password. Password recovery requires a previously configured recovery email address.</li>
+                  <li><strong>Password limitations:</strong> Because we use the OPAQUE protocol, your password never reaches our servers, and we store no password, password hash, or verifier. We therefore cannot reset or recover your password. Account recovery requires the 24-word recovery phrase shown to you when you created your account. If you lose both your password and your recovery phrase, your account cannot be recovered. Email-based password reset is not available by design.</li>
                 </ul>
               </section>
 

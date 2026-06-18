@@ -4,7 +4,7 @@ import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated March 6, 2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated June 18, 2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -25,7 +25,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-03-06',
+  dateModified: '2026-06-18',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-neutral-400 mb-12">
-              Last updated: March 6, 2026
+              Last updated: June 18, 2026
             </p>
 
             <div className="prose prose-invert max-w-none space-y-10">
@@ -172,9 +172,9 @@ export default function PrivacyPolicyPage() {
                   When you create a Ciphera account, we collect:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li><strong>Email address</strong> — Used for account identification, verification, security notifications, and password recovery. Encrypted at rest using AES-256-GCM. Lookups use an irreversible cryptographic hash — your email address is never stored in readable form.</li>
-                  <li><strong>Display name</strong> — Chosen by you, used for display and identification purposes. Encrypted at rest using AES-256-GCM.</li>
-                  <li><strong>Password</strong> — Double-hashed for maximum security. Your password is first hashed client-side using PBKDF2 (with 600,000 iterations) before transmission, then hashed again server-side using Argon2id. We never receive, transmit, or store your plaintext password.</li>
+                  <li><strong>Email address</strong> — Used for account identification, verification, and security notifications. Your email is never stored on our servers in readable form: it is kept only inside your client-encrypted account vault, which we cannot decrypt. To sign you in, we match your account using a blind index — an irreversible keyed hash derived from your email on your device and hashed again on our servers — so we can find your account without ever holding your address.</li>
+                  <li><strong>Display name</strong> — Chosen by you, used for display and identification purposes. Like your email, it is stored only inside your client-encrypted account vault and never held on our servers in readable form.</li>
+                  <li><strong>Password</strong> — Your password never leaves your device. We use OPAQUE (RFC 9807), a password-authenticated key exchange: your password is strengthened on your device using Argon2id and proven to our servers without ever being sent. We store only an opaque credential record that cannot be reversed into your password — no password, no password hash, and no password-equivalent verifier. We cannot see, recover, or reset your password.</li>
                   <li><strong>Session metadata</strong> — Login timestamps, device type, and browser information for active session management.</li>
                   <li><strong>Account verification data</strong> — CAPTCHA responses during registration, processed by our privacy-first Ciphera Captcha service (not Google reCAPTCHA or any third-party provider).</li>
                 </ul>
@@ -277,11 +277,11 @@ export default function PrivacyPolicyPage() {
                   IP addresses are inherently part of internet communications and are temporarily processed by our servers during request handling. Our policy regarding IP addresses is:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400 mt-3">
-                  <li><strong>No IP address storage</strong> — We do not store raw IP addresses in any database. All IP addresses are cryptographically hashed using HMAC-SHA256 with user-specific salts before any persistence. The original IP address is irreversibly discarded and cannot be recovered — not by us, not by anyone.</li>
+                  <li><strong>No IP address storage</strong> — We do not store raw IP addresses in any database. All IP addresses are cryptographically hashed using HMAC-SHA256 before any persistence: for events tied to a signed-in account the hash is salted with a user-specific value, and for pre-authentication events (such as failed logins) it uses a server-side key. The original IP address is irreversibly discarded and cannot be recovered — not by us, not by anyone.</li>
                   <li><strong>Temporary processing</strong> — IP addresses may be temporarily held in server memory during active connections for rate limiting and abuse prevention. They are not written to persistent storage in their original form.</li>
                   <li><strong>Pulse analytics</strong> — IP addresses are used solely to derive country-level location data, then immediately discarded. The IP address itself is never stored.</li>
-                  <li><strong>Security audit logs</strong> — Security events (logins, password changes, 2FA changes) are logged with a cryptographic hash of the IP address, not the IP itself. This allows detection of patterns (e.g., same device logging in repeatedly) without storing personally identifiable information. Audit logs are retained for 90 days, then archived for up to 1 year before permanent deletion.</li>
-                  <li><strong>Server logs</strong> — Operational server logs that may contain IP addresses are automatically purged after 30 days.</li>
+                  <li><strong>Security audit logs</strong> — Security events (logins, password changes, 2FA changes) are logged with a cryptographic hash of the IP address, not the IP itself. This allows detection of patterns (e.g., same device logging in repeatedly) without storing personally identifiable information. Audit logs are retained for up to 180 days, then permanently deleted.</li>
+                  <li><strong>Server logs</strong> — Operational server logs that may contain IP addresses are access-controlled and retained only as long as necessary for security and operational purposes.</li>
                 </ul>
               </section>
 
@@ -291,7 +291,7 @@ export default function PrivacyPolicyPage() {
                   7. Cookies &amp; Local Storage
                 </h2>
                 <p className="text-neutral-400 leading-relaxed mb-3">
-                  We use the absolute minimum of browser storage necessary to operate our services:
+                  The Ciphera marketing site (ciphera.net) sets no cookies or browser storage of its own. Our authenticated applications — Ciphera ID (id.ciphera.net) and Ciphera Pulse — use the minimum browser storage needed to keep you signed in, remember your interface preferences, and run features you ask for:
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-neutral-400 mt-2">
@@ -304,23 +304,86 @@ export default function PrivacyPolicyPage() {
                       </tr>
                     </thead>
                     <tbody>
+                      <tr>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-white">Authentication</td>
+                      </tr>
                       <tr className="border-b border-neutral-800">
-                        <td className="py-2 pr-4 font-mono text-xs">theme</td>
+                        <td className="py-2 pr-4 font-mono text-xs">access_token</td>
+                        <td className="py-2 pr-4">HTTP-only cookie</td>
+                        <td className="py-2 pr-4">Keeps you signed in</td>
+                        <td className="py-2">15 minutes</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4 font-mono text-xs">refresh_token</td>
+                        <td className="py-2 pr-4">HTTP-only cookie</td>
+                        <td className="py-2 pr-4">Renews your session without re-entering your password</td>
+                        <td className="py-2">30 days</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4 font-mono text-xs">csrf_token</td>
+                        <td className="py-2 pr-4">Cookie (app-readable)</td>
+                        <td className="py-2 pr-4">Protects against cross-site request forgery</td>
+                        <td className="py-2">30 days</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4 font-mono text-xs">ciphera_pii</td>
+                        <td className="py-2 pr-4">Cookie (across ciphera.net)</td>
+                        <td className="py-2 pr-4">Carries your decrypted name and email between Ciphera apps after login, so they display without our servers storing them</td>
+                        <td className="py-2">Cleared on logout</td>
+                      </tr>
+                      <tr>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-white">Your profile</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4 font-mono text-xs">user</td>
+                        <td className="py-2 pr-4">Local / session storage</td>
+                        <td className="py-2 pr-4">Holds your decrypted name and email so the app can display them (your account on our servers holds neither)</td>
+                        <td className="py-2">Until logout / tab close</td>
+                      </tr>
+                      <tr>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-white">Interface &amp; login</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4">Sidebar, dashboard &amp; dismissed-prompt settings</td>
                         <td className="py-2 pr-4">Local storage</td>
-                        <td className="py-2 pr-4">Stores your light/dark mode preference</td>
+                        <td className="py-2 pr-4">Remember your layout and which prompts you have dismissed</td>
                         <td className="py-2">Persistent</td>
                       </tr>
                       <tr className="border-b border-neutral-800">
-                        <td className="py-2 pr-4 font-mono text-xs">session</td>
-                        <td className="py-2 pr-4">HTTP-only cookie</td>
-                        <td className="py-2 pr-4">Maintains your login session (authenticated services only)</td>
-                        <td className="py-2">Session / 30 days</td>
+                        <td className="py-2 pr-4 font-mono text-xs">oauth_state, oauth_code_verifier</td>
+                        <td className="py-2 pr-4">Local storage</td>
+                        <td className="py-2 pr-4">Secure the login redirect (PKCE)</td>
+                        <td className="py-2">Cleared after login</td>
+                      </tr>
+                      <tr>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-white">Analytics (on websites that use Pulse)</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_ignore</td>
+                        <td className="py-2 pr-4">Local storage</td>
+                        <td className="py-2 pr-4">Lets a site owner exclude their own visits</td>
+                        <td className="py-2">Until turned off</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4 font-mono text-xs">ciphera_last_pv</td>
+                        <td className="py-2 pr-4">Session storage</td>
+                        <td className="py-2 pr-4">Prevents counting a page refresh twice</td>
+                        <td className="py-2">Tab session</td>
+                      </tr>
+                      <tr>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-white">Support chat</td>
+                      </tr>
+                      <tr className="border-b border-neutral-800">
+                        <td className="py-2 pr-4 font-mono text-xs">cw_*</td>
+                        <td className="py-2 pr-4">Local storage</td>
+                        <td className="py-2 pr-4">Keeps your support-chat session and recent messages while you use our help widget</td>
+                        <td className="py-2">Persistent</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <p className="text-neutral-400 leading-relaxed mt-4">
-                  We do not use advertising cookies, tracking cookies, or third-party cookies. No cookie consent banner is required under GDPR because we only use strictly necessary cookies (Article 5(3) of the ePrivacy Directive).
+                  We do not use advertising cookies or cross-site tracking cookies, and we do not share your data with advertisers. Because we use only storage that is strictly necessary to provide the services you request, no cookie consent banner is required under Article 5(3) of the ePrivacy Directive.
                 </p>
               </section>
 
@@ -346,23 +409,25 @@ export default function PrivacyPolicyPage() {
                   Password Security
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li><strong>Double hashing:</strong> Passwords are hashed client-side with PBKDF2 (600,000 iterations) before transmission, then hashed again server-side with Argon2id</li>
-                  <li><strong>No plaintext transmission:</strong> Your actual password never leaves your device</li>
+                  <li><strong>Zero-knowledge authentication (OPAQUE):</strong> We use the OPAQUE protocol (RFC 9807), an asymmetric password-authenticated key exchange. Your password is stretched on your device with Argon2id and is never transmitted to our servers. Signing in proves knowledge of your password cryptographically, without sending it.</li>
+                  <li><strong>What we store:</strong> Only an OPAQUE credential record that cannot be reversed into your password. We hold no password, no password hash, and no password-equivalent verifier.</li>
+                  <li><strong>No password reset:</strong> Because we never hold your password, we cannot reset it. Account recovery requires the 24-word recovery phrase shown to you when you created your account. If you lose both your password and your recovery phrase, your account data cannot be recovered — by us or anyone else.</li>
                 </ul>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-4">
                   Account Data Encryption
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li><strong>At-rest encryption:</strong> Email addresses, display names, and two-factor authentication secrets are encrypted using AES-256-GCM before storage. A database breach cannot expose personal information.</li>
-                  <li><strong>Hash-based lookups:</strong> Email lookups use an irreversible HMAC-SHA256 hash. Your email is never stored in readable form — only an encrypted version and a keyed hash exist in the database.</li>
+                  <li><strong>Stored in your vault, not on our servers:</strong> Your email address and display name are never stored on our servers in readable form. They live only inside your account vault, which is encrypted on your device under a key we never hold. Two-factor authentication secrets, which our servers need in order to verify your codes, are encrypted at rest using AES-256-GCM.</li>
+                  <li><strong>Blind-index lookups:</strong> To find your account at sign-in, we use a blind index — an irreversible keyed hash of your email, computed on your device and hashed again on our servers. Your email is never stored in readable form.</li>
+                  <li><strong>What a database breach would expose:</strong> Only encrypted vaults, keyed hashes, and your OPAQUE credential record — no plaintext email or display name, no password, and nothing that can be reversed into them.</li>
                 </ul>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-4">
                   Transport Security
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li><strong>TLS 1.3:</strong> All connections to our services use TLS 1.3 encryption</li>
+                  <li><strong>TLS encryption:</strong> All connections to our services are encrypted in transit using TLS</li>
                   <li><strong>HSTS:</strong> HTTP Strict Transport Security is enforced with a minimum 1-year max-age</li>
                   <li><strong>Security headers:</strong> X-Content-Type-Options, X-Frame-Options (DENY), Referrer-Policy (strict-origin-when-cross-origin), and Content Security Policy are enforced on all pages</li>
                 </ul>
@@ -371,7 +436,7 @@ export default function PrivacyPolicyPage() {
                   Infrastructure Security
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li>Data at rest is stored on encrypted volumes</li>
+                  <li>Backups are encrypted at rest using AES-256 server-side encryption together with client-side encryption; your account data and files are protected by client-side encryption, so they remain unreadable to us regardless of the underlying storage</li>
                   <li>Access to production systems requires multi-factor authentication</li>
                   <li>We follow the principle of least privilege for all internal access</li>
                   <li>Regular security reviews and dependency audits are performed</li>
