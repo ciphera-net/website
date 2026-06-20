@@ -25,7 +25,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-06-20',
+  dateModified: '2026-06-21',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -50,7 +50,7 @@ export default function TermsOfServicePage() {
               Terms of Service
             </h1>
             <p className="text-neutral-400 mb-12">
-              Last updated: June 20, 2026
+              Last updated: June 21, 2026
             </p>
 
             <div className="prose prose-invert max-w-none space-y-10">
@@ -61,7 +61,7 @@ export default function TermsOfServicePage() {
                   1. Acceptance of Terms
                 </h2>
                 <p className="text-neutral-400 leading-relaxed">
-                  By accessing or using any Ciphera service — including Drop, Pulse, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera B.V., a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
+                  By accessing or using any Ciphera service — including Pulse, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera B.V., a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
                 </p>
                 <p className="text-neutral-400 leading-relaxed mt-3">
                   If you do not agree to these Terms, you must not access or use the Services. If you are accepting these Terms on behalf of an organization, you represent and warrant that you have the authority to bind that organization.
@@ -90,7 +90,6 @@ export default function TermsOfServicePage() {
                   Ciphera provides privacy-first infrastructure and applications designed with zero-knowledge architecture:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400 mt-3">
-                  <li><strong>Drop:</strong> End-to-end encrypted file sharing. Files are encrypted client-side before upload, and Ciphera has no ability to access file contents.</li>
                   <li><strong>Pulse:</strong> Privacy-respecting website analytics that operates without cookies, fingerprinting, or personal data collection.</li>
                   <li><strong>Ciphera ID:</strong> Secure identity and authentication provider with zero-knowledge password handling.</li>
                   <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
@@ -178,9 +177,9 @@ export default function TermsOfServicePage() {
                   Our Services use client-side encryption and zero-knowledge architecture. This has important implications that you must understand:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li><strong>No data recovery:</strong> Encryption keys are generated in your browser and are never transmitted to our servers. If you lose access to a shared link, encryption key, or your account password, the associated data <strong>cannot be recovered</strong> by Ciphera or anyone else.</li>
+                  <li><strong>No data recovery:</strong> Your account is protected by zero-knowledge encryption: encryption keys are derived on your device and never transmitted to our servers. If you lose your account password and your recovery phrase, your encrypted account data <strong>cannot be recovered</strong> by Ciphera or anyone else.</li>
                   <li><strong>No content inspection:</strong> We cannot view, read, or analyze the contents of encrypted files stored on our servers. Content moderation of encrypted data is technically impossible in a zero-knowledge system.</li>
-                  <li><strong>Your responsibility:</strong> You are solely responsible for maintaining access to your encryption keys, shared links, and account credentials. We strongly recommend keeping backups of critical links and passwords in a secure location.</li>
+                  <li><strong>Your responsibility:</strong> You are solely responsible for maintaining access to your account credentials and recovery phrase. We strongly recommend keeping your recovery phrase and password in a secure location.</li>
                   <li><strong>Password limitations:</strong> Because we use the OPAQUE protocol, your password never reaches our servers, and we store no password, password hash, or verifier. We therefore cannot reset or recover your password. Account recovery requires the 24-word recovery phrase shown to you when you created your account. If you lose both your password and your recovery phrase, your account cannot be recovered. Email-based password reset is not available by design.</li>
                 </ul>
               </section>
@@ -192,18 +191,7 @@ export default function TermsOfServicePage() {
                 </h2>
 
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  7.1. Drop (File Sharing)
-                </h3>
-                <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li>Files are encrypted client-side and stored on our servers in encrypted form. Ciphera cannot access file contents.</li>
-                  <li>Files are subject to the expiration settings you configure at the time of upload (ranging from 1 hour to 30 days). Once expired, files are permanently and irreversibly deleted from our servers.</li>
-                  <li>You are responsible for the content you upload and share. You represent that you have the legal right to share any files you upload.</li>
-                  <li>We may impose reasonable file size limits and storage quotas to ensure fair use of the platform.</li>
-                  <li>Drop may be used without an account. Anonymous uploads are treated as guest sessions with no persistent identity.</li>
-                </ul>
-
-                <h3 className="text-lg font-semibold text-white mb-2 mt-6">
-                  7.2. Pulse (Analytics)
+                  7.1. Pulse (Analytics)
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li>Pulse collects only aggregated, anonymous data. No personally identifiable information is collected from website visitors.</li>
@@ -213,7 +201,7 @@ export default function TermsOfServicePage() {
                 </ul>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-6">
-                  7.3. Ciphera ID (Identity Provider)
+                  7.2. Ciphera ID (Identity Provider)
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li>Auth provides centralized authentication across Ciphera services using JWT-based sessions.</li>
@@ -222,7 +210,7 @@ export default function TermsOfServicePage() {
                 </ul>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-6">
-                  7.4. Ciphera Captcha (Bot Protection)
+                  7.3. Ciphera Captcha (Bot Protection)
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li>Captcha verifies that interactions originate from humans, not automated systems.</li>
@@ -232,7 +220,7 @@ export default function TermsOfServicePage() {
                 </ul>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-6">
-                  7.5. Ciphera Relay (Email Infrastructure)
+                  7.4. Ciphera Relay (Email Infrastructure)
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
                   <li>Relay handles transactional emails (account verification, security alerts, password resets) for Ciphera services.</li>
@@ -348,7 +336,7 @@ export default function TermsOfServicePage() {
                     <strong>Liability cap:</strong> Ciphera&apos;s total aggregate liability for all claims arising from or related to these Terms or the Services shall not exceed the greater of: (a) the total amount you paid to Ciphera in the twelve (12) months immediately preceding the event giving rise to the claim, or (b) one hundred euros (€100).
                   </li>
                   <li>
-                    <strong>Encryption limitation:</strong> You acknowledge that Ciphera cannot be held liable for data loss resulting from lost encryption keys, expired shared links, or the inability to decrypt data due to the inherent nature of zero-knowledge encryption.
+                    <strong>Encryption limitation:</strong> You acknowledge that Ciphera cannot be held liable for data loss resulting from a lost account password, a lost recovery phrase, or the inability to decrypt data due to the inherent nature of zero-knowledge encryption.
                   </li>
                 </ul>
                 <p className="text-neutral-400 leading-relaxed mt-3">
@@ -390,7 +378,7 @@ export default function TermsOfServicePage() {
                   <a href="mailto:hello@ciphera.net" className="text-brand-orange hover:underline">hello@ciphera.net</a>.
                   Upon account deletion, your personal data will be removed in accordance with our{' '}
                   <Link href="/privacy" className="text-brand-orange hover:underline">Privacy Policy</Link>.
-                  Encrypted files associated with your account will be permanently deleted.
+                  Account deletion is immediate and irreversible.
                 </p>
 
                 <h3 className="text-lg font-semibold text-white mb-2 mt-4">

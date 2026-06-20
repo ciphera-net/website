@@ -4,7 +4,7 @@ import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated June 20, 2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated June 21, 2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -25,7 +25,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-06-20',
+  dateModified: '2026-06-21',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-neutral-400 mb-12">
-              Last updated: June 20, 2026
+              Last updated: June 21, 2026
             </p>
 
             <div className="prose prose-invert max-w-none space-y-10">
@@ -144,29 +144,9 @@ export default function PrivacyPolicyPage() {
                   <strong>Legal basis:</strong> Legitimate interest (analytics), consent (contact form, newsletter).
                 </p>
 
-                {/* 4.2 Drop */}
+                {/* 4.2 Ciphera ID */}
                 <h3 className="text-xl font-semibold text-white mb-3 mt-8">
-                  4.2. Ciphera Drop (Encrypted File Sharing)
-                </h3>
-                <p className="text-neutral-400 leading-relaxed mb-2">
-                  Drop uses client-side encryption. All files are encrypted in your browser before upload. We collect:
-                </p>
-                <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li><strong>Encrypted file data</strong> — Stored on our servers in encrypted form. We have no technical ability to decrypt, view, or access the contents of your files.</li>
-                  <li><strong>File metadata</strong> — File size, upload timestamp, and expiration settings. File names are encrypted and not visible to us.</li>
-                  <li><strong>Download counts</strong> — Number of times a file has been accessed, if download limits are configured by the uploader.</li>
-                  <li><strong>Password protection status</strong> — Whether a file is password-protected (the password itself is never stored in plaintext).</li>
-                </ul>
-                <p className="text-neutral-400 leading-relaxed mt-2">
-                  No account is required to use Drop. No personal information is collected from uploaders or recipients unless they choose to create an account.
-                </p>
-                <p className="text-neutral-400 leading-relaxed mt-2">
-                  <strong>Legal basis:</strong> Contract performance (providing the file sharing service).
-                </p>
-
-                {/* 4.3 Auth */}
-                <h3 className="text-xl font-semibold text-white mb-3 mt-8">
-                  4.3. Ciphera ID (Identity Provider)
+                  4.2. Ciphera ID (Identity Provider)
                 </h3>
                 <p className="text-neutral-400 leading-relaxed mb-2">
                   When you create a Ciphera account, we collect:
@@ -184,7 +164,7 @@ export default function PrivacyPolicyPage() {
 
                 {/* 4.4 Pulse */}
                 <h3 className="text-xl font-semibold text-white mb-3 mt-8">
-                  4.4. Ciphera Pulse (Privacy-First Analytics)
+                  4.3. Ciphera Pulse (Privacy-First Analytics)
                 </h3>
                 <p className="text-neutral-400 leading-relaxed mb-2">
                   Pulse is our self-hosted analytics platform, designed as a privacy-first alternative to Google Analytics. For websites using Pulse, we collect:
@@ -210,7 +190,7 @@ export default function PrivacyPolicyPage() {
 
                 {/* 4.5 Captcha */}
                 <h3 className="text-xl font-semibold text-white mb-3 mt-8">
-                  4.5. Ciphera Captcha (Bot Protection)
+                  4.4. Ciphera Captcha (Bot Protection)
                 </h3>
                 <p className="text-neutral-400 leading-relaxed mb-2">
                   Our CAPTCHA service protects Ciphera services from automated abuse. We collect:
@@ -229,7 +209,7 @@ export default function PrivacyPolicyPage() {
 
                 {/* 4.6 Relay */}
                 <h3 className="text-xl font-semibold text-white mb-3 mt-8">
-                  4.6. Ciphera Relay (Email Infrastructure)
+                  4.5. Ciphera Relay (Email Infrastructure)
                 </h3>
                 <p className="text-neutral-400 leading-relaxed mb-2">
                   Relay handles transactional emails (account verification, security notifications, password resets) for Ciphera services. We collect:
@@ -473,11 +453,6 @@ export default function PrivacyPolicyPage() {
                     </thead>
                     <tbody>
                       <tr className="border-b border-neutral-800">
-                        <td className="py-2 pr-4">Encrypted files (Drop)</td>
-                        <td className="py-2 pr-4">Until expiration (user-configured, 1 hour to 30 days)</td>
-                        <td className="py-2">User choice</td>
-                      </tr>
-                      <tr className="border-b border-neutral-800">
                         <td className="py-2 pr-4">Account data</td>
                         <td className="py-2 pr-4">While the account is active; deleted immediately and irreversibly on a verified deletion request</td>
                         <td className="py-2">Contract</td>
@@ -537,7 +512,7 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <ul className="list-disc pl-6 space-y-3 text-neutral-400">
                   <li>
-                    <strong>Contract performance (Article 6(1)(b)):</strong> Processing necessary to provide the services you requested — account management, file sharing, session management, and transactional emails.
+                    <strong>Contract performance (Article 6(1)(b)):</strong> Processing necessary to provide the services you requested — account management, session management, and transactional emails.
                   </li>
                   <li>
                     <strong>Legitimate interest (Article 6(1)(f)):</strong> Processing necessary for our legitimate interests, where those interests are not overridden by your rights — anonymous website analytics, abuse prevention, rate limiting, and service security. We conduct balancing tests for each legitimate interest processing activity.
