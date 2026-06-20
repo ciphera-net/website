@@ -479,7 +479,7 @@ export default function PrivacyPolicyPage() {
                       </tr>
                       <tr className="border-b border-neutral-800">
                         <td className="py-2 pr-4">Account data</td>
-                        <td className="py-2 pr-4">While account is active + 30 days after deletion request</td>
+                        <td className="py-2 pr-4">While the account is active; deleted immediately and irreversibly on a verified deletion request</td>
                         <td className="py-2">Contract</td>
                       </tr>
                       <tr className="border-b border-neutral-800">
@@ -494,7 +494,7 @@ export default function PrivacyPolicyPage() {
                       </tr>
                       <tr className="border-b border-neutral-800">
                         <td className="py-2 pr-4">Contact form messages</td>
-                        <td className="py-2 pr-4">12 months</td>
+                        <td className="py-2 pr-4">Not stored — forwarded to our team inbox</td>
                         <td className="py-2">Consent</td>
                       </tr>
                       <tr className="border-b border-neutral-800">
@@ -504,12 +504,12 @@ export default function PrivacyPolicyPage() {
                       </tr>
                       <tr className="border-b border-neutral-800">
                         <td className="py-2 pr-4">Security audit logs (hashed IPs only)</td>
-                        <td className="py-2 pr-4">90 days active + 1 year archive</td>
+                        <td className="py-2 pr-4">Up to 180 days, then permanently deleted</td>
                         <td className="py-2">Legitimate interest</td>
                       </tr>
                       <tr className="border-b border-neutral-800">
                         <td className="py-2 pr-4">Server logs</td>
-                        <td className="py-2 pr-4">30 days (automatic purge)</td>
+                        <td className="py-2 pr-4">Retained only as long as necessary for security and operational purposes</td>
                         <td className="py-2">Legitimate interest</td>
                       </tr>
                       <tr className="border-b border-neutral-800">
@@ -735,7 +735,7 @@ export default function PrivacyPolicyPage() {
                     <strong>Right to Rectification (Article 16):</strong> You have the right to request correction of inaccurate personal data and completion of incomplete data.
                   </li>
                   <li>
-                    <strong>Right to Erasure (Article 17):</strong> You have the right to request deletion of your personal data. Account data will be deleted within 30 days of a verified request. Note that encrypted files cannot be individually identified as belonging to a specific user.
+                    <strong>Right to Erasure (Article 17):</strong> You have the right to request deletion of your personal data. Account data is deleted immediately and irreversibly upon a verified request; because our authentication is zero-knowledge, deletion cannot be undone and your encrypted account data cannot be recovered afterwards.
                   </li>
                   <li>
                     <strong>Right to Restriction of Processing (Article 18):</strong> You have the right to request restriction of processing in certain circumstances, such as when you contest the accuracy of data.
