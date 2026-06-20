@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
                   1. Our Commitment to Privacy
                 </h2>
                 <p className="text-neutral-400 leading-relaxed">
-                  Ciphera is built on the principle that privacy is a fundamental right, not a feature. Every product we build uses zero-knowledge architecture: we cannot access your data even if we wanted to. We collect the absolute minimum data necessary to operate our services, we never sell or share your data with advertisers, and we give you full control over your information.
+                  Ciphera is built on the principle that privacy is a fundamental right, not a feature. Your account is protected by zero-knowledge encryption: your password and account vault are encrypted on your device under keys we never hold, so we cannot read that data even if compelled to. For services where zero-knowledge encryption does not apply — such as our privacy-first analytics, support, and billing — we minimize what we collect by design. We collect the absolute minimum data necessary to operate our services, we never sell or share your data with advertisers, and we give you full control over your information.
                 </p>
                 <p className="text-neutral-400 leading-relaxed mt-3">
                   This policy explains in detail what data we collect, why we collect it, how we protect it, and what rights you have. It should be read alongside our{' '}
@@ -104,7 +104,7 @@ export default function PrivacyPolicyPage() {
                     De Kleetlaan 2<br />
                     1831 Diegem, Belgium<br />
                     Email: <a href="mailto:privacy@ciphera.net" className="text-brand-orange hover:underline">privacy@ciphera.net</a><br />
-                    Phone: <a href="tel:+32078480710" className="text-brand-orange hover:underline">+32 078 480 710</a>
+                    Phone: <a href="tel:+3278480710" className="text-brand-orange hover:underline">+32 78 48 07 10</a>
                   </p>
                 </div>
                 <p className="text-neutral-400 leading-relaxed mt-3">
@@ -178,7 +178,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Country-level location</strong> — Determined from the IP address, which is then immediately discarded. We do not store IP addresses.</li>
                 </ul>
                 <p className="text-neutral-400 leading-relaxed mt-2">
-                  Pulse does not use cookies, does not use browser fingerprinting, does not track users across websites, and does not collect personally identifiable information by default. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. Pulse is fully GDPR-compliant and does not require a cookie consent banner.
+                  Pulse does not use cookies, does not use browser fingerprinting, does not track users across websites, and does not collect personally identifiable information by default. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
                 </p>
                 <p className="text-neutral-400 leading-relaxed mt-2">
                   When website owners use Pulse on their websites, Ciphera B.V. acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
@@ -786,7 +786,7 @@ export default function PrivacyPolicyPage() {
                     </li>
                     <li>
                       <strong className="text-white">Phone:</strong>{' '}
-                      <a href="tel:+32078480710" className="text-brand-orange hover:underline">+32 078 480 710</a>
+                      <a href="tel:+3278480710" className="text-brand-orange hover:underline">+32 78 48 07 10</a>
                     </li>
                     <li>
                       <strong className="text-white">Address:</strong>{' '}

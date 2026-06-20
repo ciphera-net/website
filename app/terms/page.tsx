@@ -204,7 +204,7 @@ export default function TermsOfServicePage() {
                   7.2. Ciphera ID (Identity Provider)
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-                  <li>Auth provides centralized authentication across Ciphera services using JWT-based sessions.</li>
+                  <li>Ciphera ID provides centralized authentication across Ciphera services using JWT-based sessions.</li>
                   <li>Access tokens expire after a short period and refresh tokens after a reasonable period, as specified in our technical documentation. You may be required to re-authenticate after token expiry.</li>
                   <li>We implement bot protection during account creation using our own Ciphera Captcha — not third-party services like Google reCAPTCHA.</li>
                 </ul>
@@ -517,7 +517,7 @@ export default function TermsOfServicePage() {
                     </li>
                     <li>
                       <strong className="text-white">Phone:</strong>{' '}
-                      <a href="tel:+32078480710" className="text-brand-orange hover:underline">+32 078 480 710</a>
+                      <a href="tel:+3278480710" className="text-brand-orange hover:underline">+32 78 48 07 10</a>
                     </li>
                     <li>
                       <strong className="text-white">Address:</strong>{' '}
