@@ -4,7 +4,7 @@ import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated June 18, 2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated June 20, 2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -25,7 +25,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-06-18',
+  dateModified: '2026-06-20',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-neutral-400 mb-12">
-              Last updated: June 18, 2026
+              Last updated: June 20, 2026
             </p>
 
             <div className="prose prose-invert max-w-none space-y-10">
@@ -634,13 +634,11 @@ export default function PrivacyPolicyPage() {
                   13. Open Source &amp; Transparency
                 </h2>
                 <p className="text-neutral-400 leading-relaxed">
-                  We believe transparency is essential to trust. Several of our products are open source, allowing independent verification of our privacy claims:
+                  We believe transparency is essential to trust. The following are open source, allowing independent verification of our privacy claims:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400 mt-3">
-                  <li><strong>Drop</strong> — The frontend application is open source, so anyone can verify that encryption happens client-side before data leaves your device.</li>
-                  <li><strong>Pulse</strong> — The frontend is open source, enabling independent audit of our analytics approach.</li>
-                  <li><strong>Ciphera UI</strong> — Our shared component library is open source.</li>
-                  <li><strong>This website</strong> — The marketing website source code is publicly available.</li>
+                  <li><strong>Pulse</strong> — Our privacy-first analytics platform is open source (AGPL-3.0), enabling independent audit of our analytics approach.</li>
+                  <li><strong>This website</strong> — The source code for this website is publicly available.</li>
                 </ul>
                 <p className="text-neutral-400 leading-relaxed mt-3">
                   Our open-source repositories are available at{' '}

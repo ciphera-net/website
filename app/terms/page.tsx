@@ -25,7 +25,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-06-18',
+  dateModified: '2026-06-20',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -50,7 +50,7 @@ export default function TermsOfServicePage() {
               Terms of Service
             </h1>
             <p className="text-neutral-400 mb-12">
-              Last updated: June 18, 2026
+              Last updated: June 20, 2026
             </p>
 
             <div className="prose prose-invert max-w-none space-y-10">
@@ -121,14 +121,6 @@ export default function TermsOfServicePage() {
                   You are solely responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You must notify us immediately at{' '}
                   <a href="mailto:security@ciphera.net" className="text-brand-orange hover:underline">security@ciphera.net</a>{' '}
                   if you suspect unauthorized access to your account. Ciphera is not liable for any loss resulting from unauthorized use of your account credentials.
-                </p>
-
-                <h3 className="text-lg font-semibold text-white mb-2 mt-4">
-                  4.3. Inactive Accounts
-                </h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  Free accounts that remain inactive for twelve (12) or more consecutive months may be suspended and eventually deleted. Activity is defined as any login to your account via web, desktop, or mobile applications. Before deletion, we will send advance notice to your registered email address at 30, 15, and 7 days prior. If you are unable to access your account due to exceptional circumstances, contact us at{' '}
-                  <a href="mailto:hello@ciphera.net" className="text-brand-orange hover:underline">hello@ciphera.net</a>.
                 </p>
               </section>
 
@@ -410,7 +402,6 @@ export default function TermsOfServicePage() {
                 <ul className="list-disc pl-6 space-y-2 text-neutral-400 mt-2">
                   <li>You violate these Terms or our Acceptable Use policy</li>
                   <li>We are required to do so by law or a valid legal order</li>
-                  <li>Your account has been inactive for 12+ consecutive months (free accounts only, with prior notice)</li>
                   <li>Continuing to provide the Services to you would pose a security risk to other users or our infrastructure</li>
                 </ul>
                 <p className="text-neutral-400 leading-relaxed mt-3">
