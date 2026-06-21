@@ -59,7 +59,7 @@ export default function ClosingCta() {
                 alt="Ciphera ID sign-in form"
                 width={496}
                 height={536}
-                className="w-[64%] border border-border shadow-xl shadow-black/60"
+                className="w-[64%] border border-border"
               />
             </div>
           </div>
