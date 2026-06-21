@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Plus } from 'lucide-react';
+import { Plus } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
 
 interface FAQItem {
@@ -52,7 +51,7 @@ export const FAQ = ({
 
 const FAQHeader = ({ title, subtitle }: { title: string; subtitle: string }) => (
   <div className="relative z-10 flex flex-col items-center justify-center">
-    <span className="mb-8 bg-gradient-to-r from-primary to-primary/60 bg-clip-text font-medium text-transparent">
+    <span className="mb-8 font-mono text-xs text-muted-foreground">
       {subtitle}
     </span>
     <h2 className="mb-8 text-5xl font-bold">{title}</h2>
@@ -66,24 +65,13 @@ const FAQTabs = ({ categories, selected, setSelected }: { categories: Record<str
         key={key}
         onClick={() => setSelected(key)}
         className={cn(
-          "relative overflow-hidden whitespace-nowrap rounded-md border px-3 py-1.5 text-sm font-medium transition-colors duration-500",
+          "relative whitespace-nowrap border px-3 py-1.5 text-sm font-medium transition-colors duration-150 motion-reduce:transition-none",
           selected === key
-            ? "border-primary text-background"
+            ? "border-primary bg-primary text-primary-foreground"
             : "border-border bg-transparent text-muted-foreground hover:text-foreground"
         )}
       >
-        <span className="relative z-10">{label}</span>
-        <AnimatePresence>
-          {selected === key && (
-            <motion.span
-              initial={{ y: "100%" }}
-              animate={{ y: "0%" }}
-              exit={{ y: "100%" }}
-              transition={{ duration: 0.5, ease: "backIn" }}
-              className="absolute inset-0 z-0 bg-gradient-to-r from-primary to-primary/80"
-            />
-          )}
-        </AnimatePresence>
+        {label}
       </button>
     ))}
   </div>
@@ -91,27 +79,19 @@ const FAQTabs = ({ categories, selected, setSelected }: { categories: Record<str
 
 const FAQList = ({ faqData, selected }: { faqData: Record<string, FAQItem[]>; selected: string }) => (
   <div className="mx-auto mt-12 max-w-3xl">
-    <AnimatePresence mode="wait">
-      {Object.entries(faqData).map(([category, questions]) => {
-        if (selected === category) {
-          return (
-            <motion.div
-              key={category}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, ease: "backIn" }}
-              className="space-y-4"
-            >
-              {questions.map((faq, index) => (
-                <FAQItemComponent key={index} {...faq} />
-              ))}
-            </motion.div>
-          );
-        }
-        return null;
-      })}
-    </AnimatePresence>
+    {Object.entries(faqData).map(([category, questions]) => (
+      <div
+        key={category}
+        className={cn(
+          "space-y-4 transition-opacity duration-300 motion-reduce:transition-none",
+          selected === category ? "block opacity-100" : "hidden opacity-0"
+        )}
+      >
+        {questions.map((faq, index) => (
+          <FAQItemComponent key={index} {...faq} />
+        ))}
+      </div>
+    ))}
   </div>
 );
 
@@ -119,10 +99,9 @@ const FAQItemComponent = ({ question, answer }: FAQItem) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.div
-      animate={isOpen ? "open" : "closed"}
+    <div
       className={cn(
-        "rounded-xl border transition-colors",
+        "border transition-colors duration-150 motion-reduce:transition-none",
         isOpen ? "bg-muted/50" : "bg-card"
       )}
     >
@@ -132,38 +111,32 @@ const FAQItemComponent = ({ question, answer }: FAQItem) => {
       >
         <span
           className={cn(
-            "text-lg font-medium transition-colors",
+            "text-lg font-medium transition-colors duration-150 motion-reduce:transition-none",
             isOpen ? "text-foreground" : "text-muted-foreground"
           )}
         >
           {question}
         </span>
-        <motion.span
-          variants={{
-            open: { rotate: "45deg" },
-            closed: { rotate: "0deg" },
-          }}
-          transition={{ duration: 0.2 }}
+        <span
+          className="transition-transform duration-200 motion-reduce:transition-none"
+          style={{ transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}
         >
           <Plus
             className={cn(
-              "h-5 w-5 transition-colors",
+              "h-5 w-5 transition-colors duration-150 motion-reduce:transition-none",
               isOpen ? "text-foreground" : "text-muted-foreground"
             )}
           />
-        </motion.span>
+        </span>
       </button>
-      <motion.div
-        initial={false}
-        animate={{
-          height: isOpen ? "auto" : "0px",
-          marginBottom: isOpen ? "16px" : "0px"
-        }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="overflow-hidden px-4"
+      <div
+        className="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none px-4"
+        style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
       >
-        <p className="text-muted-foreground">{answer}</p>
-      </motion.div>
-    </motion.div>
+        <div className="overflow-hidden">
+          <p className="pb-4 text-muted-foreground">{answer}</p>
+        </div>
+      </div>
+    </div>
   );
 };

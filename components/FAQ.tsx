@@ -1,8 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { PlusIcon, EASE_APPLE, DURATION_BASE, DURATION_FAST } from '@ciphera-net/facet'
+import { PlusIcon } from '@ciphera-net/facet'
 import { cn } from '@/lib/utils'
 
 interface FAQItem {
@@ -104,11 +103,7 @@ const NUMBERED = GROUPS.map((group) => ({
 export default function FAQ() {
   const [activeGroup, setActiveGroup] = useState(NUMBERED[0].label)
   const [openId, setOpenId] = useState<string | null>(null)
-  const prefersReduced = useReducedMotion()
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
-
-  const duration = prefersReduced ? 0 : DURATION_BASE
-  const fastTransition = prefersReduced ? '0ms' : `${DURATION_FAST * 1000}ms`
 
   function selectGroup(label: string) {
     setActiveGroup(label)
@@ -164,10 +159,9 @@ export default function FAQ() {
                   onClick={() => selectGroup(g.label)}
                   onKeyDown={(e) => handleTabKeyDown(e, i)}
                   className={cn(
-                    'flex items-baseline justify-between gap-3 py-1.5 text-left font-mono text-xs transition-colors',
+                    'flex items-baseline justify-between gap-3 py-1.5 text-left font-mono text-xs transition-colors duration-150 motion-reduce:transition-none',
                     isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
                   )}
-                  style={{ transitionDuration: fastTransition }}
                 >
                   {g.label}
                   <span className="tabular-nums text-muted-foreground">
@@ -195,8 +189,7 @@ export default function FAQ() {
                       aria-expanded={isOpen}
                       aria-controls={answerId}
                       onClick={() => setOpenId(isOpen ? null : item.n)}
-                      className="flex w-full items-center gap-5 px-5 py-4 text-left transition-colors hover:bg-accent"
-                      style={{ transitionDuration: fastTransition }}
+                      className="flex w-full items-center gap-5 px-5 py-4 text-left transition-colors duration-150 motion-reduce:transition-none hover:bg-accent"
                     >
                       <span className="font-mono text-xs tabular-nums text-muted-foreground">
                         {item.n}
@@ -204,31 +197,24 @@ export default function FAQ() {
                       <span className="flex-1 text-sm font-medium text-foreground">{item.q}</span>
                       <PlusIcon
                         aria-hidden="true"
-                        className="h-4 w-4 shrink-0 text-muted-foreground transition-transform"
+                        className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 motion-reduce:transition-none"
                         style={{
-                          transitionDuration: prefersReduced ? '0ms' : `${DURATION_BASE * 1000}ms`,
                           transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
                         }}
                       />
                     </button>
 
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          id={answerId}
-                          key="answer"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration, ease: EASE_APPLE }}
-                          style={{ overflow: 'hidden' }}
-                        >
-                          <p className="px-5 pb-5 pl-[60px] text-sm leading-relaxed text-muted-foreground">
-                            {item.a}
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    <div
+                      id={answerId}
+                      className="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none"
+                      style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="px-5 pb-5 pl-[60px] text-sm leading-relaxed text-muted-foreground">
+                          {item.a}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )
             })}
