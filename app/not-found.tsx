@@ -9,28 +9,22 @@ export const metadata = {
 
 export default function NotFound() {
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden relative py-12 sm:py-16">
-      {/* * Background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 left-1/4 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-60" />
-        <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] bg-neutral-400/10 rounded-full blur-[128px] opacity-40" />
-      </div>
-
+    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center py-12 sm:py-16">
       <div className="section-container w-full">
         <div className="max-w-2xl mx-auto text-center px-4">
           {/* * 404 Number */}
           <div className="mb-8">
-            <h1 className="text-8xl sm:text-9xl md:text-[12rem] font-bold text-white leading-none">
+            <h1 className="font-display text-8xl sm:text-9xl md:text-[12rem] font-bold text-muted-foreground leading-none">
               <span className="gradient-text">404</span>
             </h1>
           </div>
 
           {/* * Message */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
             Page Not Found
           </h2>
-          <p className="text-lg sm:text-xl text-neutral-400 mb-8 max-w-xl mx-auto leading-relaxed">
-            The page you're looking for doesn't exist or has been moved. 
+          <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
+            The page you're looking for doesn't exist or has been moved.
             Let's get you back on track.
           </p>
 
@@ -44,26 +38,26 @@ export default function NotFound() {
           </div>
 
           {/* * Helpful Links */}
-          <div className="border-t border-neutral-800 pt-8">
-            <p className="text-sm text-neutral-400 mb-4">
+          <div className="border-t border-border pt-8">
+            <p className="text-sm text-muted-foreground mb-4">
               You might be looking for:
             </p>
             <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               <Link
                 href="/about"
-                className="text-sm text-neutral-400 hover:text-brand-orange hover:text-brand-orange transition-colors"
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 About
               </Link>
               <Link
                 href="/products/pulse"
-                className="text-sm text-neutral-400 hover:text-brand-orange hover:text-brand-orange transition-colors"
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 Pulse
               </Link>
               <Link
                 href="/contact"
-                className="text-sm text-neutral-400 hover:text-brand-orange hover:text-brand-orange transition-colors"
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 Contact
               </Link>

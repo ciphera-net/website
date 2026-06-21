@@ -91,7 +91,7 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href={env.NEXT_PUBLIC_PULSE_API_URL} />
         <link rel="alternate" type="application/rss+xml" title="Ciphera Blog" href="/feed.xml" />
       </head>
-      <body className="relative antialiased min-h-screen flex flex-col bg-neutral-950 text-neutral-50">
+      <body className="relative antialiased min-h-screen flex flex-col bg-background text-foreground">
         <Script
           defer
           data-domain="ciphera.net"
