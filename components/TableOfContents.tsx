@@ -79,16 +79,16 @@ export default function TableOfContents({ content }: { content: string }) {
   if (headings.length < 3) return null
 
   return (
-    <nav className="mb-10 rounded-2xl border border-neutral-800 bg-neutral-900">
+    <nav className="mb-10 border border-border bg-card">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full px-6 py-4 text-left rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900"
+        className="flex items-center justify-between w-full px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
-        <span className="text-sm font-semibold text-white">
+        <span className="text-sm font-semibold text-foreground">
           Table of Contents
         </span>
         <ChevronDownIcon
-          className={`w-4 h-4 text-neutral-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -108,8 +108,8 @@ export default function TableOfContents({ content }: { content: string }) {
                 onClick={() => setActiveId(heading.id)}
                 className={`block text-sm py-1 transition-colors duration-200 ${
                   activeId === heading.id
-                    ? 'text-brand-orange font-medium'
-                    : 'text-neutral-400 hover:text-brand-orange'
+                    ? 'text-primary font-medium'
+                    : 'text-muted-foreground hover:text-primary'
                 }`}
               >
                 {i + 1}. {heading.text}

@@ -32,8 +32,8 @@ export default function RelatedPosts({
   if (related.length === 0) return null
 
   return (
-    <section className="mt-16 pt-12 border-t border-neutral-800">
-      <h2 className="text-2xl font-bold text-white mb-8">
+    <section className="mt-16 pt-12 border-t border-border">
+      <h2 className="text-2xl font-bold font-display text-foreground mb-8">
         Related Articles
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -41,27 +41,27 @@ export default function RelatedPosts({
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="group flex flex-col rounded-2xl border border-neutral-800 bg-neutral-900 overflow-hidden hover:border-brand-orange/50 transition-all duration-200 hover:shadow-lg"
+            className="group flex flex-col border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-200"
           >
             <div className="aspect-video w-full overflow-hidden">
               <img
                 src={cdnUrl(`/blog/og/${post.slug}.png`)}
                 alt={post.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover"
                 loading="lazy"
               />
             </div>
             <div className="flex flex-col flex-1 p-5">
               <div className="flex items-center gap-3 mb-3">
                 <span className="badge-neutral text-xs">{post.category}</span>
-                <span className="text-xs text-neutral-400">
+                <span className="text-xs text-muted-foreground">
                   {post.readTime}
                 </span>
               </div>
-              <h3 className="text-base font-semibold text-white mb-2 group-hover:text-brand-orange transition-colors line-clamp-2">
+              <h3 className="text-base font-semibold font-display text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
                 {post.title}
               </h3>
-              <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-brand-orange group-hover:gap-2 transition-all">
+              <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-all">
                 Read more
                 <ArrowRightIcon className="w-3.5 h-3.5" />
               </span>

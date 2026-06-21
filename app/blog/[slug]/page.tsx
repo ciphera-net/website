@@ -105,7 +105,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="section-container max-w-4xl">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-neutral-400 hover:text-brand-orange transition-colors mb-8"
+            className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline mb-8"
           >
             <ArrowLeftIcon className="w-4 h-4" />
             Back to Blog
@@ -113,9 +113,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className="flex items-center gap-3 mb-6 text-sm flex-wrap">
             <span className="badge-neutral">{post.category}</span>
-            <span className="text-neutral-400">By Ciphera Team</span>
-            <span className="text-neutral-400">{post.readTime}</span>
-            <span className="text-neutral-400">
+            <span className="text-muted-foreground">By Ciphera Team</span>
+            <span className="text-muted-foreground">{post.readTime}</span>
+            <span className="text-muted-foreground">
               {new Date(post.date).toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
@@ -124,7 +124,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold font-display text-foreground mb-12">
             {post.title}
           </h1>
 
@@ -134,10 +134,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <RelatedPosts currentSlug={slug} currentCategory={post.category} allPosts={allPosts} />
 
-          <div className="mt-12 pt-12 border-t border-neutral-800">
+          <div className="mt-12 pt-12 border-t border-border">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-brand-orange hover:underline"
+              className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
             >
               <ArrowLeftIcon className="w-4 h-4" />
               Back to all posts
