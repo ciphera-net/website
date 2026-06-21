@@ -40,7 +40,7 @@ export default function SwissPrivacy() {
                 src={cdnUrl('/swiss-alps-flag.jpg')}
                 alt="Swiss Alps with Swiss flag"
                 fill
-                className="object-cover"
+                className="object-cover grayscale"
                 sizes="(min-width: 1024px) 50vw, 100vw"
               />
             </div>
@@ -64,13 +64,13 @@ export default function SwissPrivacy() {
             </p>
 
             <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Swiss infrastructure. Swiss privacy laws.
+              Swiss data residency. FADP + GDPR.
             </h2>
 
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
               Every Ciphera service runs on Swiss infrastructure, protected by the Swiss Federal Act
-              on Data Protection (FADP). Your files, your analytics, your credentials — everything
-              stays in Switzerland. No exceptions.
+              on Data Protection (FADP) and the GDPR. Your files, your analytics, your credentials —
+              stored and processed in Switzerland.
             </p>
 
             <ul className="mt-8 space-y-3.5">
