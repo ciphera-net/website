@@ -3,7 +3,7 @@
 export function PuzzleMockup() {
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl space-y-3">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-5 space-y-3">
         {/* Header */}
         <div className="space-y-0.5">
           <h3 className="text-sm font-medium text-white">Verify you&apos;re human</h3>
@@ -110,7 +110,7 @@ export function PuzzleMockup() {
           {/* Track fill */}
           <div className="absolute left-0 top-0 bottom-0 w-[15%] rounded-xl bg-brand-orange/10" />
           {/* Drag handle */}
-          <div className="relative z-10 ml-1 w-7 h-7 rounded-lg bg-brand-orange flex items-center justify-center shadow-md shadow-brand-orange/20">
+          <div className="relative z-10 ml-1 w-7 h-7 rounded-lg bg-brand-orange flex items-center justify-center">
             <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>

@@ -3,7 +3,7 @@
 export function PulseMockup() {
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-5 py-4 shadow-2xl space-y-3">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-5 py-4 space-y-3">
         {/* Header row */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

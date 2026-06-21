@@ -19,7 +19,7 @@ export function NoTrackingMockup() {
 
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-5">
         <div className="grid grid-cols-2 gap-3">
           {/* Left card — Others */}
           <div className="rounded-xl border border-red-500/10 bg-neutral-900 p-3 space-y-3">

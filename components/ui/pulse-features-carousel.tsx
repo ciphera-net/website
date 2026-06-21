@@ -519,7 +519,7 @@ export function PulseFeaturesCarousel() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-5">
         <div className="min-h-[280px]">
           <ActiveComponent />
         </div>
@@ -531,7 +531,7 @@ export function PulseFeaturesCarousel() {
           <button
             key={card.id}
             onClick={() => setActive(i)}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`h-2 rounded-sm transition-all duration-300 ${
               i === active
                 ? 'w-7 bg-brand-orange'
                 : 'w-2 bg-neutral-600 hover:bg-neutral-500'

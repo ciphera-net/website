@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useSpring, useTransform } from "motion/react";
 import {
   type CSSProperties,
   type ReactNode,
@@ -131,8 +130,6 @@ export interface FunnelChartProps {
 const fmtPct = (p: number) => `${Math.round(p)}%`;
 const fmtVal = (v: number) => v.toLocaleString("en-US");
 
-const springConfig = { stiffness: 120, damping: 20, mass: 1 };
-const hoverSpring = { stiffness: 300, damping: 24 };
 
 // ─── SVG Helpers ─────────────────────────────────────────────────────────────
 
@@ -200,22 +197,18 @@ function HRing({
   totalRings: number;
 }) {
   const extraScale = 1 + (ringIndex / Math.max(totalRings - 1, 1)) * 0.12;
-  const ringSpring = {
-    stiffness: 300 - ringIndex * 60,
-    damping: 24 - ringIndex * 3,
-  };
-  const scaleY = useSpring(1, ringSpring);
-
-  useEffect(() => {
-    scaleY.set(hovered ? extraScale : 1);
-  }, [hovered, scaleY, extraScale]);
+  const scaleY = hovered ? extraScale : 1;
 
   return (
-    <motion.path
+    <path
       d={d}
       fill={fill ?? color}
       opacity={opacity}
-      style={{ scaleY, transformOrigin: "center center" }}
+      style={{
+        transform: `scaleY(${scaleY})`,
+        transformOrigin: "center center",
+        transition: "transform 0.2s ease",
+      }}
     />
   );
 }
@@ -238,22 +231,18 @@ function VRing({
   totalRings: number;
 }) {
   const extraScale = 1 + (ringIndex / Math.max(totalRings - 1, 1)) * 0.12;
-  const ringSpring = {
-    stiffness: 300 - ringIndex * 60,
-    damping: 24 - ringIndex * 3,
-  };
-  const scaleX = useSpring(1, ringSpring);
-
-  useEffect(() => {
-    scaleX.set(hovered ? extraScale : 1);
-  }, [hovered, scaleX, extraScale]);
+  const scaleX = hovered ? extraScale : 1;
 
   return (
-    <motion.path
+    <path
       d={d}
       fill={fill ?? color}
       opacity={opacity}
-      style={{ scaleX, transformOrigin: "center center" }}
+      style={{
+        transform: `scaleX(${scaleX})`,
+        transformOrigin: "center center",
+        transition: "transform 0.2s ease",
+      }}
     />
   );
 }
@@ -291,22 +280,15 @@ function HSegment({
 }) {
   const patternId = `funnel-h-pattern-${index}`;
   const gradientId = `funnel-h-grad-${index}`;
-  const growProgress = useSpring(0, springConfig);
-  const entranceScaleX = useTransform(growProgress, [0, 1], [0, 1]);
-  const entranceScaleY = useTransform(growProgress, [0, 1], [0, 1]);
-  const dimOpacity = useSpring(1, hoverSpring);
-
-  useEffect(() => {
-    dimOpacity.set(dimmed ? 0.4 : 1);
-  }, [dimmed, dimOpacity]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(
-      () => growProgress.set(1),
+      () => setMounted(true),
       index * staggerDelay * 1000
     );
     return () => clearTimeout(timeout);
-  }, [growProgress, index, staggerDelay]);
+  }, [index, staggerDelay]);
 
   const rings = Array.from({ length: layers }, (_, l) => {
     const scale = 1 - (l / layers) * 0.35;
@@ -318,21 +300,22 @@ function HSegment({
   });
 
   return (
-    <motion.div
+    <div
       className="pointer-events-none relative shrink-0 overflow-visible"
       style={{
         width: segW,
         height: fullH,
         zIndex: hovered ? 10 : 1,
-        opacity: dimOpacity,
+        opacity: dimmed ? 0.4 : 1,
+        transition: "opacity 0.2s ease",
       }}
     >
-      <motion.div
+      <div
         className="absolute inset-0 overflow-visible"
         style={{
-          scaleX: entranceScaleX,
-          scaleY: entranceScaleY,
+          transform: mounted ? "scaleX(1) scaleY(1)" : "scaleX(0) scaleY(0)",
           transformOrigin: "left center",
+          transition: "transform 0.4s ease",
         }}
       >
         <svg
@@ -382,8 +365,8 @@ function HSegment({
             );
           })}
         </svg>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -418,22 +401,15 @@ function VSegment({
 }) {
   const patternId = `funnel-v-pattern-${index}`;
   const gradientId = `funnel-v-grad-${index}`;
-  const growProgress = useSpring(0, springConfig);
-  const entranceScaleY = useTransform(growProgress, [0, 1], [0, 1]);
-  const entranceScaleX = useTransform(growProgress, [0, 1], [0, 1]);
-  const dimOpacity = useSpring(1, hoverSpring);
-
-  useEffect(() => {
-    dimOpacity.set(dimmed ? 0.4 : 1);
-  }, [dimmed, dimOpacity]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(
-      () => growProgress.set(1),
+      () => setMounted(true),
       index * staggerDelay * 1000
     );
     return () => clearTimeout(timeout);
-  }, [growProgress, index, staggerDelay]);
+  }, [index, staggerDelay]);
 
   const rings = Array.from({ length: layers }, (_, l) => {
     const scale = 1 - (l / layers) * 0.35;
@@ -445,21 +421,22 @@ function VSegment({
   });
 
   return (
-    <motion.div
+    <div
       className="pointer-events-none relative shrink-0 overflow-visible"
       style={{
         width: fullW,
         height: segH,
         zIndex: hovered ? 10 : 1,
-        opacity: dimOpacity,
+        opacity: dimmed ? 0.4 : 1,
+        transition: "opacity 0.2s ease",
       }}
     >
-      <motion.div
+      <div
         className="absolute inset-0 overflow-visible"
         style={{
-          scaleY: entranceScaleY,
-          scaleX: entranceScaleX,
+          transform: mounted ? "scaleY(1) scaleX(1)" : "scaleY(0) scaleX(0)",
           transformOrigin: "center top",
+          transition: "transform 0.4s ease",
         }}
       >
         <svg
@@ -509,8 +486,8 @@ function VSegment({
             );
           })}
         </svg>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -553,7 +530,7 @@ function SegmentLabel({
     </span>
   );
   const pctEl = showPercentage && (
-    <span className="rounded-full bg-foreground px-3 py-1 font-bold text-background text-xs shadow-sm">
+    <span className="rounded-sm bg-foreground px-3 py-1 font-bold text-background text-xs">
       {formatPercentage(pct)}
     </span>
   );
@@ -565,17 +542,15 @@ function SegmentLabel({
 
   if (layout === "spread") {
     return (
-      <motion.div
-        animate={{ opacity: 1 }}
+      <div
         className={cn(
           "absolute inset-0 flex",
           isHorizontal ? "flex-col items-center" : "flex-row items-center"
         )}
-        initial={{ opacity: 0 }}
-        transition={{
-          delay: index * staggerDelay + 0.25,
-          duration: 0.35,
-          ease: "easeOut",
+        style={{
+          opacity: 0,
+          animation: `fadeIn 0.35s ease forwards`,
+          animationDelay: `${index * staggerDelay + 0.25}s`,
         }}
       >
         {isHorizontal ? (
@@ -603,7 +578,7 @@ function SegmentLabel({
             </div>
           </>
         )}
-      </motion.div>
+      </div>
     );
   }
 
@@ -624,22 +599,18 @@ function SegmentLabel({
   } as const;
 
   return (
-    <motion.div
-      animate={{ opacity: 1 }}
+    <div
       className={cn(
         "absolute inset-0 flex",
         isHorizontal
           ? cn("flex-col items-center", justifyMap[align])
           : cn("flex-row items-center", justifyMap[align])
       )}
-      initial={{ opacity: 0 }}
       style={{
         padding: isHorizontal ? "8% 0" : "0 8%",
-      }}
-      transition={{
-        delay: index * staggerDelay + 0.25,
-        duration: 0.35,
-        ease: "easeOut",
+        opacity: 0,
+        animation: `fadeIn 0.35s ease forwards`,
+        animationDelay: `${index * staggerDelay + 0.25}s`,
       }}
     >
       <div
@@ -654,7 +625,7 @@ function SegmentLabel({
         {pctEl}
         {labelEl}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -749,6 +720,7 @@ export function FunnelChart({
         ...style,
       }}
     >
+      <style>{`@keyframes fadeIn { to { opacity: 1; } }`}</style>
       {W > 0 && H > 0 && (
         <>
           {/* Grid background bands */}
@@ -897,14 +869,17 @@ export function FunnelChart({
             const isDimmed = hoveredIndex !== null && hoveredIndex !== i;
 
             return (
-              <motion.div
-                animate={{ opacity: isDimmed ? 0.4 : 1 }}
+              <div
                 className="absolute cursor-pointer"
                 key={`lbl-${stage.label}`}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                style={{ ...posStyle, zIndex: 20 }}
-                transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                style={{
+                  ...posStyle,
+                  zIndex: 20,
+                  opacity: isDimmed ? 0.4 : 1,
+                  transition: "opacity 0.2s ease",
+                }}
               >
                 <SegmentLabel
                   align={labelAlign}
@@ -921,7 +896,7 @@ export function FunnelChart({
                   stage={stage}
                   staggerDelay={staggerDelay}
                 />
-              </motion.div>
+              </div>
             );
           })}
         </>

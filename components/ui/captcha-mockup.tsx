@@ -5,7 +5,7 @@ import { cipheraIcon } from '@/lib/images'
 export function CaptchaMockup() {
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl space-y-4">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-5 space-y-4">
         {/* Captcha widget */}
         <div className="rounded-lg border border-neutral-700 bg-neutral-800/50 px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">

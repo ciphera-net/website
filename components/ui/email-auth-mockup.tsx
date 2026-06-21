@@ -3,7 +3,7 @@
 export function EmailAuthMockup() {
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl space-y-3">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-5 space-y-3">
         {/* Header */}
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">

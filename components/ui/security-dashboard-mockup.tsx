@@ -3,7 +3,7 @@
 export function SecurityDashboardMockup() {
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl space-y-4">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-5 space-y-4">
         {/* Recent Activity */}
         <div className="space-y-2.5">
           <h3 className="text-sm font-medium text-white">Recent Activity</h3>

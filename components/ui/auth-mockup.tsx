@@ -7,7 +7,7 @@ export function AuthMockup() {
   return (
     <div className="relative w-full max-w-[500px] mx-auto">
       {/* Card */}
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-8 py-6 shadow-2xl">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-8 py-6">
         {/* Header */}
         <div className="text-center mb-5">
           <h3 className="text-lg font-bold text-white">Create Ciphera ID</h3>

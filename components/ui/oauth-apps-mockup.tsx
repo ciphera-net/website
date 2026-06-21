@@ -5,7 +5,7 @@ import { relayIcon, pulseIcon } from '@/lib/images'
 export function OAuthAppsMockup() {
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-6 shadow-2xl">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-6">
         {/* Header */}
         <div className="text-center mb-6">
           <h3 className="text-lg font-bold text-white mb-0.5">Your Apps</h3>

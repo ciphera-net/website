@@ -8,7 +8,7 @@ export function FileRequestMockup() {
 
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl space-y-3">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-5 space-y-3">
         {/* Title field */}
         <div className="space-y-1.5">
           <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-300">
@@ -40,7 +40,7 @@ export function FileRequestMockup() {
                 onClick={() => setExpiration(option)}
                 className={`px-2 py-1.5 text-[11px] font-medium rounded-xl border text-center transition-all duration-200 ${
                   expiration === option
-                    ? 'bg-brand-orange text-white border-brand-orange shadow-md shadow-brand-orange/20'
+                    ? 'bg-brand-orange text-white border-brand-orange'
                     : 'bg-neutral-900 text-neutral-400 border-neutral-800 hover:border-brand-orange/50 hover:bg-brand-orange/10'
                 }`}
               >
@@ -60,7 +60,7 @@ export function FileRequestMockup() {
                 onClick={() => setMaxUploads(option)}
                 className={`px-2 py-1.5 text-[11px] font-medium rounded-xl border text-center transition-all duration-200 ${
                   maxUploads === option
-                    ? 'bg-brand-orange text-white border-brand-orange shadow-md shadow-brand-orange/20'
+                    ? 'bg-brand-orange text-white border-brand-orange'
                     : 'bg-neutral-900 text-neutral-400 border-neutral-800 hover:border-brand-orange/50 hover:bg-brand-orange/10'
                 }`}
               >
@@ -71,7 +71,7 @@ export function FileRequestMockup() {
         </div>
 
         {/* Create Request Link button */}
-        <button className="w-full py-2.5 rounded-xl bg-brand-orange text-xs font-semibold text-white cursor-default shadow-md shadow-brand-orange/20">
+        <button className="w-full py-2.5 rounded-xl bg-brand-orange text-xs font-semibold text-white cursor-default">
           Create Request Link
         </button>
       </div>

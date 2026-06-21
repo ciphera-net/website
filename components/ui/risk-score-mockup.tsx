@@ -11,7 +11,7 @@ export function RiskScoreMockup() {
 
   return (
     <div className="relative w-full max-w-[440px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 px-6 py-5 shadow-2xl space-y-4">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 px-6 py-5 space-y-4">
         {/* Header */}
         <div className="flex items-center gap-2">
           <svg className="w-4 h-4 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -32,7 +32,7 @@ export function RiskScoreMockup() {
           {/* Score bar */}
           <div className="w-full h-1.5 bg-neutral-800 rounded-full overflow-hidden mt-1">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-green-500 to-brand-orange"
+              className="h-full rounded-full bg-primary"
               style={{ width: '87%' }}
             />
           </div>

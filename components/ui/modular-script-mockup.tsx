@@ -8,7 +8,7 @@ function Toggle({ on = true }: { on?: boolean }) {
       }`}
     >
       <div
-        className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${
+        className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
           on ? 'translate-x-[18px]' : 'translate-x-0.5'
         }`}
       />
@@ -19,7 +19,7 @@ function Toggle({ on = true }: { on?: boolean }) {
 export function ModularScriptMockup() {
   return (
     <div className="relative w-full max-w-[460px] mx-auto">
-      <div className="rounded-xl border border-white/[0.08] bg-neutral-900/90 shadow-2xl overflow-hidden px-6 py-5 space-y-5">
+      <div className="rounded-xl border border-white/[0.08] bg-neutral-900 overflow-hidden px-6 py-5 space-y-5">
         {/* Features heading */}
         <h4 className="text-sm font-bold text-white">Features</h4>
 
