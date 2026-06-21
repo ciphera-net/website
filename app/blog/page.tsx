@@ -44,29 +44,30 @@ export default function BlogPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
-      {/* * Hero */}
-      <section className="py-16 md:py-24 pt-32">
-        <div className="max-w-6xl mx-auto px-6">
+
+      {/* Hero */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24 pt-32">
           <div className="max-w-4xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-4">Blog</span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
-              Privacy & Security Insights
+            <p className="font-mono text-xs text-muted-foreground">Blog</p>
+            <h1 className="mt-6 font-display text-5xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+              Privacy &amp; Security Insights
             </h1>
-            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
+            <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
               Learn about zero-knowledge encryption, privacy-first technologies, and secure development practices.
             </p>
           </div>
         </div>
       </section>
 
-      {/* * Search & Filter */}
-      <section className="py-16 md:py-24 !pt-0">
-        <div className="max-w-6xl mx-auto px-6">
+      {/* Search & Filter */}
+      <section className="border-b border-border">
+        <div className="px-6 py-10">
           <div className="max-w-6xl mx-auto space-y-5">
             {/* Search input */}
             <div className="relative max-w-md mx-auto">
               <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={2}
@@ -85,11 +86,11 @@ export default function BlogPage() {
                     track('blog_search')
                   }
                 }}
-                className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange transition-colors duration-200"
+                className="w-full border border-border bg-background text-foreground pl-11 pr-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
 
-            {/* Category pills */}
+            {/* Category tab buttons */}
             <div className="flex flex-wrap items-center justify-center gap-2">
               {categories.map((category) => (
                 <button
@@ -98,10 +99,10 @@ export default function BlogPage() {
                     setActiveCategory(category)
                     track('blog_filter_category')
                   }}
-                  className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200 ${
+                  className={`border px-4 py-1.5 font-mono text-xs transition-colors ${
                     activeCategory === category
-                      ? 'bg-brand-orange-button text-white'
-                      : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-border bg-background text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   {category}
@@ -112,48 +113,48 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* * Blog Posts Grid */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6">
+      {/* Blog Posts Grid */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
           {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {filteredPosts.map((post) => (
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="group flex flex-col rounded-2xl border border-neutral-800 bg-neutral-900 overflow-hidden hover:border-brand-orange/50 transition-all duration-200 hover:shadow-lg"
+                  className="group flex flex-col border border-border bg-card overflow-hidden hover:border-primary transition-colors duration-200"
                 >
                   <div className="aspect-video w-full overflow-hidden">
                     <img
                       src={post.image}
                       alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   </div>
                   <div className="flex flex-col flex-1 p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] text-xs text-neutral-400">{post.category}</span>
-                      <span className="text-xs text-neutral-400">{post.readTime}</span>
+                      <span className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">{post.category}</span>
+                      <span className="font-mono text-xs text-muted-foreground">{post.readTime}</span>
                     </div>
 
-                    <h2 className="text-xl font-semibold text-white mb-3 group-hover:text-brand-orange transition-colors">
+                    <h2 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
                       {post.title}
                     </h2>
 
-                    <p className="text-sm text-neutral-400 leading-relaxed mb-6 flex-1">
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
                       {post.description}
                     </p>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-neutral-800">
-                      <span className="text-sm text-neutral-400">
+                    <div className="flex items-center justify-between pt-4 border-t border-border">
+                      <span className="font-mono text-xs text-muted-foreground">
                         {new Date(post.date).toLocaleDateString('en-GB', {
                           day: '2-digit',
                           month: '2-digit',
                           year: 'numeric',
                         }).replace(/\//g, '-')}
                       </span>
-                      <span className="inline-flex items-center gap-1 text-sm font-medium text-brand-orange group-hover:gap-2 transition-all">
+                      <span className="inline-flex items-center gap-1 font-mono text-xs text-primary">
                         Read more
                         <ArrowRightIcon className="w-3.5 h-3.5" />
                       </span>
@@ -165,7 +166,7 @@ export default function BlogPage() {
           ) : (
             <div className="max-w-6xl mx-auto flex flex-col items-center justify-center py-20 text-center">
               <svg
-                className="w-12 h-12 text-neutral-600 mb-4"
+                className="w-12 h-12 text-muted-foreground mb-4"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={1.5}
@@ -177,8 +178,8 @@ export default function BlogPage() {
                   d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
                 />
               </svg>
-              <p className="text-lg font-medium text-white mb-1">No articles found</p>
-              <p className="text-sm text-neutral-400">
+              <p className="font-display text-lg font-medium text-foreground mb-1">No articles found</p>
+              <p className="text-sm text-muted-foreground">
                 Try adjusting your search or filter to find what you&apos;re looking for.
               </p>
             </div>
