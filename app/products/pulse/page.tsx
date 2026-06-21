@@ -14,17 +14,14 @@ import {
   ShieldCheck,
   Code,
   Lightning,
-  Eye,
-  EyeSlash,
   Globe,
-  ChartLine,
-  ArrowRight,
-  Check,
-  X,
-  GithubLogo,
   Timer,
 } from '@phosphor-icons/react/dist/ssr'
-import { Button } from '@/components/ui/button'
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  XIcon,
+} from '@ciphera-net/facet'
 
 export const metadata: Metadata = {
   title: 'Pulse - Privacy-First Website Analytics',
@@ -105,430 +102,435 @@ export default function PulsePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pulseSchema) }}
       />
 
-      {/* Hero */}
-      <section className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden">
-        <img
+      {/* ─── Hero — A7 full-bleed ─────────────────────────────────────── */}
+      <section className="relative overflow-hidden border-b border-border">
+        <Image
           src={pulseShowcaseBg}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          unoptimized
+          priority
+          sizes="100vw"
+          className="object-cover grayscale brightness-[0.4]"
         />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-neutral-950 to-transparent" />
-        <div className="relative z-10 max-w-6xl mx-auto px-6">
-          <div>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-[1.1] mb-6">
-              Analytics without the surveillance.
-            </h1>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
+        />
+        <div className="relative px-6 py-24 sm:py-32">
+          <p className="font-mono text-xs text-muted-foreground">00 · Analytics</p>
+          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            Analytics without<br />the surveillance.
+          </h1>
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Get the insights you need without compromising user privacy. No
+            cookies, no fingerprinting, no personal data. GDPR compliant by
+            design.
+          </p>
+          {/* Trust badges */}
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <Cookie aria-hidden="true" className="h-3.5 w-3.5" />
+              Cookie-free
+            </span>
+            <span aria-hidden="true" className="text-border">|</span>
+            <span className="flex items-center gap-2">
+              <Code aria-hidden="true" className="h-3.5 w-3.5" />
+              Open source client
+            </span>
+            <span aria-hidden="true" className="text-border">|</span>
+            <span className="flex items-center gap-2">
+              <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
+              GDPR compliant
+            </span>
+            <span aria-hidden="true" className="text-border">|</span>
+            <span className="flex items-center gap-2">
+              <Lightning aria-hidden="true" className="h-3.5 w-3.5" />
+              Under 2KB
+            </span>
+          </div>
+          <div className="mt-10 flex flex-wrap items-center gap-5">
+            <Link href="https://pulse.ciphera.net" className="btn-primary">
+              Try Pulse Free
+              <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link
+              href="https://github.com/ciphera-net/pulse"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+            >
+              View on GitHub
+            </Link>
+          </div>
+        </div>
+      </section>
 
-            <p className="text-xl text-neutral-300 mb-10 leading-relaxed max-w-xl">
-              Get the insights you need without compromising user privacy. No
-              cookies, no fingerprinting, no personal data. GDPR compliant by
-              design.
+      {/* ─── 01 · Dashboard — Your traffic at a glance ───────────────── */}
+      <section id="dashboard" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Copy cell */}
+          <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
+            <p className="font-mono text-xs text-muted-foreground">01 · Dashboard</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Your traffic, at a glance.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Real-time dashboard with unique visitors, pageviews, bounce
+              rate, and visit duration. Filter by date range, compare periods,
+              and export your data — all without a single cookie.
             </p>
-
-            <div className="flex flex-row gap-3 flex-wrap mb-12">
-              <Button
-                size="lg"
-                className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white"
-                asChild
-              >
-                <a href="https://pulse.ciphera.net">
-                  Try Pulse Free <ArrowRight className="w-4 h-4" />
-                </a>
-              </Button>
-              <Button
-                size="lg"
-                variant="ghost"
-                className="gap-2 text-neutral-300 hover:text-white"
-                asChild
-              >
-                <a
-                  href="https://github.com/ciphera-net/pulse"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <GithubLogo className="w-4 h-4" /> View on GitHub
-                </a>
-              </Button>
+            <ul className="mt-8 space-y-3">
+              {[
+                'Live visitor count with real-time updates',
+                'Hourly, daily, and weekly trend charts',
+                'Referrer sources and UTM tracking',
+                'Country-level geographic breakdown',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <Link href="https://pulse.ciphera.net" className="btn-primary">
+                See it live
+                <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+              </Link>
             </div>
+          </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-neutral-400">
-              <span className="flex items-center gap-2">
-                <Cookie className="w-4 h-4 text-brand-orange" />
-                Cookie-free
-              </span>
-              <span className="text-neutral-700">|</span>
-              <span className="flex items-center gap-2">
-                <Code className="w-4 h-4 text-brand-orange" />
-                Open source client
-              </span>
-              <span className="text-neutral-700">|</span>
-              <span className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-brand-orange" />
-                GDPR compliant
-              </span>
-              <span className="text-neutral-700">|</span>
-              <span className="flex items-center gap-2">
-                <Lightning className="w-4 h-4 text-brand-orange" />
-                Under 2KB
-              </span>
+          {/* Visual cell — right on desktop */}
+          <div className="relative min-h-[400px] min-w-0 overflow-hidden border-t border-border lg:border-l lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card mockup-cell">
+            <div className="w-full max-w-md min-w-0">
+              <PulseMockup />
             </div>
           </div>
         </div>
       </section>
 
-
-      {/* Feature blocks — same spacing as landing page ProductShowcase */}
-      <section className="py-20 lg:py-32 bg-neutral-950 space-y-28">
-        {/* Dashboard showcase — text left, mockup right */}
-        <div id="dashboard" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Your traffic, at a glance.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Real-time dashboard with unique visitors, pageviews, bounce
-                rate, and visit duration. Filter by date range, compare periods,
-                and export your data — all without a single cookie.
-              </p>
-              <ul className="space-y-3 mb-8">
-                {[
-                  'Live visitor count with real-time updates',
-                  'Hourly, daily, and weekly trend charts',
-                  'Referrer sources and UTM tracking',
-                  'Country-level geographic breakdown',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button
-                size="lg"
-                className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white"
-                asChild
-              >
-                <a href="https://pulse.ciphera.net">
-                  See it live <ArrowRight className="w-4 h-4" />
-                </a>
-              </Button>
+      {/* ─── 02 · Script — Visitor features carousel ─────────────────── */}
+      <section id="visitors" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Visual cell — left on desktop */}
+          <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card mockup-cell">
+            <div className="w-full max-w-md min-w-0">
+              <PulseFeaturesCarousel />
             </div>
+          </div>
 
-            <div className="relative flex items-center justify-center lg:justify-end">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={pulseShowcaseBg}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative">
-                    <PulseMockup />
-                  </div>
-                </div>
-              </div>
+          {/* Copy cell */}
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+            <p className="font-mono text-xs text-muted-foreground">02 · Script</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Everything you need to know about your visitors.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              From top pages and referrer sources to browser breakdowns,
+              geographic maps, and peak traffic hours — Pulse gives you the
+              full picture without compromising privacy.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 03 · Funnels — Conversion tracking ──────────────────────── */}
+      <section id="funnels" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Copy cell */}
+          <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
+            <p className="font-mono text-xs text-muted-foreground">03 · Funnels</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              See where visitors drop off.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Build custom conversion funnels to understand how visitors move
+              through your site. See exactly where they drop off and optimize
+              each step of the journey — from landing page to signup.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'Multi-step funnels with conversion rates',
+                'Drop-off analysis between each step',
+                'Conversion trends over time',
+                'Breakdown by device, country, or referrer',
+                'Configurable conversion window (up to 90 days)',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Visual cell — right on desktop */}
+          <div className="relative min-h-[400px] min-w-0 overflow-hidden border-t border-border lg:border-l lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card mockup-cell">
+            <div className="w-full max-w-md min-w-0">
+              <FunnelMockup />
             </div>
           </div>
         </div>
-        {/* Features carousel — mockup left, text right */}
-        <div id="visitors" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative flex items-center justify-center lg:justify-start">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={pulseShowcaseBg}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative w-full">
-                    <PulseFeaturesCarousel />
-                  </div>
-                </div>
-              </div>
-            </div>
+      </section>
 
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Everything you need to know about your visitors.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed">
-                From top pages and referrer sources to browser breakdowns,
-                geographic maps, and peak traffic hours — Pulse gives you the
-                full picture without compromising privacy.
-              </p>
+      {/* ─── 04 · Reports — Scheduled email reports ──────────────────── */}
+      <section id="reports" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Visual cell — left on desktop */}
+          <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card mockup-cell">
+            <div className="w-full max-w-md min-w-0">
+              <EmailReportMockup />
             </div>
           </div>
-        </div>
-        {/* Conversion Funnels — text left, mockup right */}
-        <div id="funnels" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                See where visitors drop off.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Build custom conversion funnels to understand how visitors move
-                through your site. See exactly where they drop off and optimize
-                each step of the journey — from landing page to signup.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'Multi-step funnels with conversion rates',
-                  'Drop-off analysis between each step',
-                  'Conversion trends over time',
-                  'Breakdown by device, country, or referrer',
-                  'Configurable conversion window (up to 90 days)',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
 
-            <div className="relative flex items-center justify-center lg:justify-end">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={pulseShowcaseBg}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative">
-                    <FunnelMockup />
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Copy cell */}
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+            <p className="font-mono text-xs text-muted-foreground">04 · Reports</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Reports delivered to your inbox.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Schedule automated reports and get your analytics summary
+              delivered straight to your email or webhook. Stay informed
+              without ever opening the dashboard.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'Daily, weekly, or monthly email summaries',
+                'Key metrics with period-over-period comparison',
+                'Top pages, referrers, and country breakdown',
+                'Webhook delivery for custom integrations',
+                'Multiple recipients per report',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        {/* Scheduled Reports — mockup left, text right */}
-        <div id="reports" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative flex items-center justify-center lg:justify-start">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={pulseShowcaseBg}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative">
-                    <EmailReportMockup />
-                  </div>
-                </div>
-              </div>
-            </div>
+      </section>
 
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Reports delivered to your inbox.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Schedule automated reports and get your analytics summary
-                delivered straight to your email or webhook. Stay informed
-                without ever opening the dashboard.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'Daily, weekly, or monthly email summaries',
-                  'Key metrics with period-over-period comparison',
-                  'Top pages, referrers, and country breakdown',
-                  'Webhook delivery for custom integrations',
-                  'Multiple recipients per report',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-        {/* Lightweight script — mockup left, text right */}
-        <div id="script" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative flex items-center justify-center lg:justify-start">
-              <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-6 w-full max-w-[480px] shadow-2xl">
+      {/* ─── Script snippet + modular config sections ─────────────────── */}
+      {/* Lightweight script — copy right, code left */}
+      <section id="script" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Visual cell — code block, left on desktop */}
+          <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
+            <div className="w-full max-w-md min-w-0">
+              <div className="border border-border bg-background p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                  <span className="text-[10px] text-neutral-500 ml-2 font-mono">
+                  <div className="w-2 h-2 bg-muted-foreground/30" />
+                  <div className="w-2 h-2 bg-muted-foreground/30" />
+                  <div className="w-2 h-2 bg-muted-foreground/30" />
+                  <span className="text-[10px] text-muted-foreground ml-2 font-mono">
                     index.html
                   </span>
                 </div>
                 <pre className="font-mono text-[11px] leading-relaxed overflow-x-auto">
                   <code>
-                    <span className="text-neutral-500">
+                    <span className="text-muted-foreground">
                       {'<!-- Add before </head> -->'}
                     </span>
                     {'\n'}
-                    <span className="text-neutral-500">{'<'}</span>
+                    <span className="text-muted-foreground">{'<'}</span>
                     <span className="text-blue-400">{'script'}</span>
                     {'\n'}
                     <span className="text-purple-400">{'  defer'}</span>
                     {'\n'}
                     <span className="text-purple-400">{'  data-domain'}</span>
-                    <span className="text-neutral-500">{'="'}</span>
-                    <span className="text-amber-300">{'yoursite.com'}</span>
-                    <span className="text-neutral-500">{'"'}</span>
+                    <span className="text-muted-foreground">{'="'}</span>
+                    <span className="text-amber-400">{'yoursite.com'}</span>
+                    <span className="text-muted-foreground">{'"'}</span>
                     {'\n'}
                     <span className="text-purple-400">{'  src'}</span>
-                    <span className="text-neutral-500">{'="'}</span>
-                    <span className="text-amber-300">
+                    <span className="text-muted-foreground">{'="'}</span>
+                    <span className="text-amber-400">
                       {'https://pulse.ciphera.net/js/script.js'}
                     </span>
-                    <span className="text-neutral-500">{'"'}</span>
+                    <span className="text-muted-foreground">{'"'}</span>
                     {'\n'}
-                    <span className="text-neutral-500">{'>'}</span>
-                    <span className="text-neutral-500">{'</'}</span>
+                    <span className="text-muted-foreground">{'>'}</span>
+                    <span className="text-muted-foreground">{'</'}</span>
                     <span className="text-blue-400">{'script'}</span>
-                    <span className="text-neutral-500">{'>'}</span>
+                    <span className="text-muted-foreground">{'>'}</span>
                   </code>
                 </pre>
-                <div className="mt-4 flex items-center justify-between text-[10px] text-neutral-500 border-t border-neutral-800 pt-3">
+                <div className="mt-4 flex items-center justify-between text-[10px] text-muted-foreground border-t border-border pt-3">
                   <span>1.6 KB gzipped</span>
                   <span className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    <div className="w-1.5 h-1.5 bg-green-500" />
                     Non-blocking, async
                   </span>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                One script tag. That&apos;s it.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Add a single script tag to your site and you&apos;re done. Under
-                2KB gzipped — that&apos;s 20x smaller than Google Analytics.
-                Loads asynchronously, never blocks page rendering, works with
-                any framework.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'Works with React, Next.js, Vue, Svelte, WordPress, plain HTML',
-                  'No npm package required — just a script tag',
-                  'No consent banner needed — exempt from ePrivacy requirements',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Copy cell */}
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+            <p className="font-mono text-xs text-muted-foreground">02 · Script</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              One script tag. That&apos;s it.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Add a single script tag to your site and you&apos;re done. Under
+              2KB gzipped — that&apos;s 20x smaller than Google Analytics.
+              Loads asynchronously, never blocks page rendering, works with
+              any framework.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'Works with React, Next.js, Vue, Svelte, WordPress, plain HTML',
+                'No npm package required — just a script tag',
+                'No consent banner needed — exempt from ePrivacy requirements',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-
-        {/* Modular script — text left, mockup right */}
-        <div id="configuration" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Your script, your rules.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Enable only what you need. Scroll depth, outbound links, file
-                downloads, 404 detection — each feature is a toggle. No bloat,
-                no unnecessary tracking. Configure visitor recognition and
-                privacy settings to match your requirements.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'Modular feature toggles — only load what you use',
-                  'Frustration tracking for rage clicks and dead clicks',
-                  'Configurable visitor identity and session duration',
-                  'Framework-specific setup guides for 10+ platforms',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="relative flex items-center justify-center lg:justify-end">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={pulseShowcaseBg}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative w-full">
-                    <ModularScriptMockup />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </section>
 
-      {/* Comparison — side by side cards */}
-      <section id="comparison" className="py-20 lg:py-32 bg-neutral-950 border-t border-white/[0.04] scroll-mt-28">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
-              How Pulse compares.
+      {/* Modular script — text left, mockup right */}
+      <section id="configuration" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Copy cell */}
+          <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
+            <p className="font-mono text-xs text-muted-foreground">02 · Script</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Your script, your rules.
             </h2>
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
-              Google Analytics is installed on over 28 million websites. Here&apos;s
-              why Pulse is the better choice for privacy-conscious teams.
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Enable only what you need. Scroll depth, outbound links, file
+              downloads, 404 detection — each feature is a toggle. No bloat,
+              no unnecessary tracking. Configure visitor recognition and
+              privacy settings to match your requirements.
             </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'Modular feature toggles — only load what you use',
+                'Frustration tracking for rage clicks and dead clicks',
+                'Configurable visitor identity and session duration',
+                'Framework-specific setup guides for 10+ platforms',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Pulse card — highlighted */}
-            <div className="rounded-xl border border-brand-orange/20 bg-neutral-900/80 p-8 relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-orange" />
+          {/* Visual cell — right on desktop */}
+          <div className="relative min-h-[400px] min-w-0 overflow-hidden border-t border-border lg:border-l lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card mockup-cell">
+            <div className="w-full max-w-md min-w-0">
+              <ModularScriptMockup />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 05 · Swiss privacy — photo left, copy right ─────────────── */}
+      <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Photo cell */}
+          <div className="relative min-h-[400px] border-b border-border lg:border-b-0 lg:border-r">
+            <Image
+              src={zurichPhoto}
+              alt="Zurich, Switzerland — where Pulse analytics data is hosted"
+              fill
+              unoptimized
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover grayscale"
+            />
+            {/* Flat info items overlaid at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
+              {[
+                { icon: Globe, title: 'Data residency', desc: 'Switzerland (FADP protected)' },
+                { icon: Timer, title: 'IP retention', desc: '0 seconds — discarded at edge' },
+                { icon: ShieldCheck, title: 'Compliance', desc: 'GDPR, FADP, ePrivacy exempt' },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="flex items-center gap-3 border border-border bg-card px-4 py-3"
+                >
+                  <item.icon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">{item.title}</p>
+                    <p className="font-mono text-[11px] text-muted-foreground">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Copy cell */}
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+            <p className="font-mono text-xs text-muted-foreground">05 · Swiss privacy</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Swiss infrastructure. Swiss privacy laws.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              All analytics data is processed and stored on Swiss
+              infrastructure, protected by the Swiss Federal Act on Data
+              Protection (FADP). IP addresses are used only for country-level
+              geolocation at the edge and immediately discarded — never
+              stored, never logged.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'Data never leaves Swiss jurisdiction',
+                'IP addresses discarded after geo lookup',
+                'Aggregated metrics only — no individual records',
+                'No cookies, no fingerprinting, no personal data',
+                'No Data Processing Agreement required',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 06 · Compare ────────────────────────────────────────────── */}
+      <section id="comparison" className="border-b border-border scroll-mt-20">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">06 · Compare</p>
+          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            How Pulse compares.
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Google Analytics is installed on over 28 million websites. Here&apos;s
+            why Pulse is the better choice for privacy-conscious teams.
+          </p>
+
+          <div className="mt-14 grid gap-px bg-border md:grid-cols-2 max-w-4xl">
+            {/* Pulse card */}
+            <div className="bg-background p-8 relative">
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-primary" />
               <div className="flex items-center gap-3 mb-8">
-                <img
-                  src={pulseIcon}
-                  alt="Pulse"
-                  width={40}
-                  height={40}
-                  className="w-10 h-10 rounded-lg object-contain"
-                />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-card">
+                  <Image
+                    src={pulseIcon}
+                    alt="Pulse"
+                    width={24}
+                    height={24}
+                    unoptimized
+                    className="h-6 w-6 object-contain"
+                  />
+                </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">Pulse</h3>
-                  <p className="text-xs text-brand-orange">Privacy-first analytics</p>
+                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Pulse</h3>
+                  <p className="font-mono text-xs text-primary">Privacy-first analytics</p>
                 </div>
               </div>
               <ul className="space-y-4">
@@ -543,11 +545,8 @@ export default function PulsePage() {
                   'Free tier available',
                   'Real-time dashboard',
                 ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-3 text-neutral-300"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0" />
+                  <li key={item} className="flex items-center gap-3 text-foreground">
+                    <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     <span className="text-sm">{item}</span>
                   </li>
                 ))}
@@ -555,18 +554,20 @@ export default function PulsePage() {
             </div>
 
             {/* Google Analytics card — muted */}
-            <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-8">
+            <div className="bg-background p-8">
               <div className="flex items-center gap-3 mb-8">
-                <img
-                  src="https://www.google.com/s2/favicons?domain=analytics.google.com&sz=64"
-                  alt="Google Analytics"
-                  width={40}
-                  height={40}
-                  className="w-10 h-10 rounded-lg bg-neutral-800 p-1.5"
-                />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-card">
+                  <img
+                    src="https://www.google.com/s2/favicons?domain=analytics.google.com&sz=64"
+                    alt="Google Analytics"
+                    width={24}
+                    height={24}
+                    className="h-6 w-6 object-contain"
+                  />
+                </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">Google Analytics</h3>
-                  <p className="text-xs text-neutral-500">Traditional tracking</p>
+                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Google Analytics</h3>
+                  <p className="font-mono text-xs text-muted-foreground">Traditional tracking</p>
                 </div>
               </div>
               <ul className="space-y-4">
@@ -583,81 +584,14 @@ export default function PulsePage() {
                 ].map((item) => (
                   <li
                     key={item.feature}
-                    className={`flex items-center gap-3 ${item.has ? 'text-neutral-400' : 'text-neutral-500'}`}
+                    className={`flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
                   >
                     {item.has ? (
-                      <Check className="w-5 h-5 text-neutral-500 shrink-0" />
+                      <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                     ) : (
-                      <X className="w-5 h-5 text-neutral-600 shrink-0" />
+                      <XIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                     )}
                     <span className="text-sm">{item.feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Swiss Privacy — photo left, text right */}
-      <section id="privacy" className="py-20 lg:py-32 bg-neutral-950 scroll-mt-28">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative flex items-center justify-center lg:justify-start">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
-                  <img
-                    src={zurichPhoto}
-                    alt="Zurich, Switzerland"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
-                  {/* Info cards floating at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 space-y-2.5">
-                    {[
-                      { icon: Globe, title: 'Data residency', desc: 'Switzerland (FADP protected)' },
-                      { icon: Timer, title: 'IP retention', desc: '0 seconds — discarded at edge' },
-                      { icon: ShieldCheck, title: 'Compliance', desc: 'GDPR, FADP, ePrivacy exempt' },
-                    ].map((item) => (
-                      <div key={item.title} className="flex items-center gap-3 rounded-xl bg-neutral-900/80 border border-white/[0.08] px-4 py-3 backdrop-blur-sm">
-                        <item.icon className="w-5 h-5 text-brand-orange shrink-0" />
-                        <div>
-                          <p className="text-xs font-semibold text-white">{item.title}</p>
-                          <p className="text-[11px] text-neutral-400">{item.desc}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Swiss infrastructure. Swiss privacy laws.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                All analytics data is processed and stored on Swiss
-                infrastructure, protected by the Swiss Federal Act on Data
-                Protection (FADP). IP addresses are used only for country-level
-                geolocation at the edge and immediately discarded — never
-                stored, never logged.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'Data never leaves Swiss jurisdiction',
-                  'IP addresses discarded after geo lookup',
-                  'Aggregated metrics only — no individual records',
-                  'No cookies, no fingerprinting, no personal data',
-                  'No Data Processing Agreement required',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -669,45 +603,37 @@ export default function PulsePage() {
       {/* FAQ */}
       <PulseFAQ />
 
-      {/* CTA */}
-      <section className="py-20 lg:py-32 bg-neutral-950">
-        <div className="container mx-auto px-6">
-          <div className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-neutral-900/80 px-6 py-20 sm:px-10 sm:py-24 max-w-6xl mx-auto">
-            <img
-              src={pulseShowcaseBg}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/50" />
-
-            <div className="relative z-10 text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Start tracking with privacy.
-              </h2>
-              <p className="text-lg text-neutral-300 mb-10">
-                Add one script tag and get privacy-first analytics in under 60
-                seconds. Free forever for personal sites.
-              </p>
-              <div className="flex flex-row gap-3 justify-center flex-wrap">
-                <Button
-                  size="lg"
-                  className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white"
-                  asChild
-                >
-                  <a href="https://pulse.ciphera.net">
-                    Get Started Free <ArrowRight className="w-4 h-4" />
-                  </a>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="ghost"
-                  className="gap-2 text-neutral-300 hover:text-white border border-white/10"
-                  asChild
-                >
-                  <Link href="/contact">Contact Sales</Link>
-                </Button>
-              </div>
-            </div>
+      {/* ─── 07 · Get started — A7 full-bleed CTA ────────────────────── */}
+      <section className="relative overflow-hidden border-b border-border">
+        <Image
+          src={pulseShowcaseBg}
+          alt=""
+          fill
+          unoptimized
+          sizes="100vw"
+          className="object-cover grayscale brightness-[0.4]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
+        />
+        <div className="relative px-6 py-24 sm:py-32">
+          <p className="font-mono text-xs text-muted-foreground">07 · Get started</p>
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            Start tracking with privacy.
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Add one script tag and get privacy-first analytics in under 60
+            seconds. Free forever for personal sites.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-5">
+            <Link href="https://pulse.ciphera.net" className="btn-primary">
+              Get Started Free
+              <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link href="/contact" className="btn-secondary">
+              Contact Sales
+            </Link>
           </div>
         </div>
       </section>
