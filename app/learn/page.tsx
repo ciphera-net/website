@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { ArrowRightIcon } from '@ciphera-net/facet'
 import { learnArticles } from '@/lib/learn-articles.gen'
 import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
+import Breadcrumbs from '@/components/Breadcrumbs'
 
 const PRODUCT_CONFIG: Record<string, { label: string; icon: string }> = {
   pulse: { label: 'Pulse', icon: pulseIcon },
@@ -33,45 +34,44 @@ export default function LearnPage() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Learn' }]} />
+
       {/* Hero */}
-      <section className="py-16 md:py-24 pt-32">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-4">
-              Learn
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
-              Guides, References & Deep-Dives
-            </h1>
-            <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
-              Technical documentation and reference articles across Ciphera products.
-            </p>
-          </div>
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">Learn</p>
+          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            Guides, References &amp; Deep-Dives
+          </h1>
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Technical documentation and reference articles across Ciphera products.
+          </p>
         </div>
       </section>
 
       {/* Filters + Grid */}
-      <section className="pb-24">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
           {/* Search */}
-          <div className="max-w-md mx-auto mb-8">
+          <div className="max-w-md mb-8">
             <input
               type="text"
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-neutral-800 text-white placeholder:text-neutral-500 focus:outline-none focus:border-brand-orange/50 transition-colors"
+              className="w-full px-4 py-3 border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
             />
           </div>
 
-          {/* Product pills */}
-          <div className="flex flex-wrap justify-center gap-2 mb-12">
+          {/* Product filter tabs */}
+          <div className="flex flex-wrap gap-2 mb-12">
             <button
               onClick={() => setActiveProduct('All')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              data-active={activeProduct === 'All' ? '' : undefined}
+              className={`px-4 py-2 text-sm font-medium border transition-colors ${
                 activeProduct === 'All'
-                  ? 'bg-brand-orange-button text-white'
-                  : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
+                  ? 'border-border bg-primary text-primary-foreground'
+                  : 'border-border bg-card text-muted-foreground hover:text-foreground'
               }`}
             >
               All
@@ -82,10 +82,11 @@ export default function LearnPage() {
                 <button
                   key={key}
                   onClick={() => setActiveProduct(key)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  data-active={activeProduct === key ? '' : undefined}
+                  className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border transition-colors ${
                     activeProduct === key
-                      ? 'bg-brand-orange-button text-white'
-                      : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
+                      ? 'border-border bg-primary text-primary-foreground'
+                      : 'border-border bg-card text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   {config && <Image src={config.icon} alt="" width={16} height={16} unoptimized />}
@@ -96,7 +97,7 @@ export default function LearnPage() {
           </div>
 
           {/* Results count */}
-          <p className="text-sm text-neutral-500 mb-6">
+          <p className="font-mono text-xs text-muted-foreground mb-6">
             {filtered.length} {filtered.length === 1 ? 'article' : 'articles'}
           </p>
 
@@ -106,26 +107,26 @@ export default function LearnPage() {
               <Link
                 key={`${article.product}/${article.slug}`}
                 href={`/learn/${article.product}/${article.slug}`}
-                className="group flex flex-col p-5 rounded-2xl border border-neutral-800 bg-neutral-900 hover:border-brand-orange/50 transition-all duration-200"
+                className="group flex flex-col p-5 border border-border bg-card hover:border-primary hover:bg-accent transition-colors duration-200"
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
+                  <span className="inline-flex items-center gap-1.5 border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
                     {PRODUCT_CONFIG[article.product] && (
                       <Image src={PRODUCT_CONFIG[article.product].icon} alt="" width={14} height={14} unoptimized />
                     )}
                     {PRODUCT_CONFIG[article.product]?.label || article.product}
                   </span>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-neutral-700 bg-neutral-800 text-xs text-neutral-400">
+                  <span className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
                     {article.category}
                   </span>
                 </div>
-                <h2 className="text-base font-semibold text-white mb-2 group-hover:text-brand-orange transition-colors line-clamp-2">
+                <h2 className="font-display text-base font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
                   {article.title}
                 </h2>
-                <p className="text-sm text-neutral-500 line-clamp-2 mb-4">
+                <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
                   {article.description}
                 </p>
-                <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-brand-orange group-hover:gap-2 transition-all">
+                <span className="mt-auto inline-flex items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-primary transition-colors">
                   Read
                   <ArrowRightIcon className="w-3.5 h-3.5" />
                 </span>
@@ -134,7 +135,7 @@ export default function LearnPage() {
           </div>
 
           {filtered.length === 0 && (
-            <p className="text-center text-neutral-500 py-12">No articles match your search.</p>
+            <p className="font-mono text-xs text-muted-foreground py-12">No articles match your search.</p>
           )}
         </div>
       </section>
