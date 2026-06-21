@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
-import { HomeIcon, RefreshCwIcon, AlertTriangleIcon } from '@ciphera-net/ui'
+import { HomeIcon, RefreshCwIcon, AlertTriangleIcon } from '@ciphera-net/facet'
 
 export default function Error({
   error,

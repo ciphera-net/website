@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
-import { CheckCircleIcon, LockIcon, GlobeIcon, SwissFlagIcon } from "@ciphera-net/ui";
+import { CheckCircleIcon, LockIcon, GlobeIcon, SwissFlagIcon } from "@ciphera-net/facet";
 import { track } from "@/lib/pulse";
 import { AnimatedCarousel } from "@/components/ui/logo-carousel";
 

@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   // * Image optimization
   images: {
+    // Dev only: load CDN images directly instead of proxying through the
+    // /_next/image optimizer — its upstream fetch times out during cold
+    // Turbopack compiles, rendering every remote image broken on first load.
+    unoptimized: process.env.NODE_ENV === 'development',
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

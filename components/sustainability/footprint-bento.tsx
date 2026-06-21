@@ -99,28 +99,21 @@ function IndicatorCard({ indicator, featured, icon: IconEl, spanClass }: CardPro
   const { value, unit } = formatIndicator(indicator)
 
   return (
-    <div
-      className={
-        'rounded-2xl border border-white/[0.08] bg-neutral-900/80 p-6 md:p-8 backdrop-blur-sm ' +
-        spanClass
-      }
-    >
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-orange/10">
-        <IconEl className="h-5 w-5 text-brand-orange" weight="duotone" />
-      </div>
-      <p className="text-sm text-neutral-400">{indicator.label}</p>
+    <div className={'border border-border bg-card p-6 md:p-8 ' + spanClass}>
+      <IconEl className="h-5 w-5 text-muted-foreground" weight="duotone" />
+      <p className="mt-4 text-sm text-muted-foreground">{indicator.label}</p>
       <div className="mt-2 flex items-baseline gap-2 flex-wrap">
         <span
           className={
-            'font-bold text-white tabular-nums leading-none ' +
+            'font-bold text-foreground tabular-nums leading-none ' +
             (featured ? 'text-4xl md:text-5xl' : 'text-3xl')
           }
         >
           {value}
         </span>
-        <span className="text-sm font-medium text-brand-orange">{unit}</span>
+        <span className="text-sm font-medium text-muted-foreground">{unit}</span>
       </div>
-      <p className="mt-3 text-xs text-neutral-500 leading-relaxed">
+      <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
         {indicator.description}
       </p>
     </div>
@@ -144,13 +137,14 @@ export function FootprintBento({ report }: FootprintBentoProps) {
   ]
 
   return (
-    <section id="footprint" className="py-20 lg:py-32 bg-neutral-950">
+    <section id="footprint" className="border-b border-border py-20 lg:py-32">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+        <div className="mb-12">
+          <p className="font-mono text-xs text-muted-foreground">01 · Footprint</p>
+          <h2 className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight">
             Six ways your cloud footprint matters
           </h2>
-          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
             Climate change is only one of them. We track all six, using the
             Boavizta life-cycle assessment framework.
           </p>

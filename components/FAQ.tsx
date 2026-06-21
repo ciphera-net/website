@@ -1,144 +1,240 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useState } from 'react'
-import { ChevronDownIcon } from '@ciphera-net/ui'
-import { track } from '../lib/pulse'
+import { useRef, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { PlusIcon, EASE_APPLE, DURATION_BASE, DURATION_FAST } from '@ciphera-net/facet'
+import { cn } from '@/lib/utils'
 
-const faqs = [
+interface FAQItem {
+  q: string
+  a: string
+}
+
+interface FAQGroup {
+  label: string
+  items: FAQItem[]
+}
+
+const GROUPS: FAQGroup[] = [
   {
-    question: 'What is zero-knowledge encryption?',
-    answer: 'Zero-knowledge encryption means your data is encrypted on your device before it reaches our servers. We cannot decrypt or access your files, even if we wanted to. Only you hold the encryption keys, ensuring complete privacy.',
+    label: 'General',
+    items: [
+      {
+        q: 'What is zero-knowledge encryption?',
+        a: 'Zero-knowledge encryption means your data is encrypted on your device before it reaches our servers. We cannot decrypt or access your files, even if we wanted to. Only you hold the encryption keys, ensuring complete privacy.',
+      },
+      {
+        q: 'Is Ciphera GDPR compliant?',
+        a: 'Yes. Ciphera is built with privacy-by-design principles and is fully GDPR compliant. We collect minimal data, encrypt everything, and you maintain full control over your information.',
+      },
+      {
+        q: 'How is Ciphera different from Google Drive or Dropbox?',
+        a: "Unlike traditional cloud storage, Ciphera encrypts your files on your device before upload. We never have access to your data. There's no data mining, no ad targeting, and no third-party access. Privacy isn't a feature we added — it's the foundation.",
+      },
+    ],
   },
   {
-    question: 'How secure is end-to-end encryption?',
-    answer: 'End-to-end encryption uses AES-256-GCM, the same military-grade encryption used by governments worldwide. Your files are encrypted before leaving your device, making interception impossible without your private keys.',
+    label: 'Security',
+    items: [
+      {
+        q: 'How secure is end-to-end encryption?',
+        a: 'End-to-end encryption uses AES-256-GCM, the same military-grade encryption used by governments worldwide. Your files are encrypted before leaving your device, making interception impossible without your private keys.',
+      },
+      {
+        q: 'Can you access my files?',
+        a: 'No. With zero-knowledge architecture, we mathematically cannot access your files. Encryption happens client-side on your device, and only you have the decryption keys. Not even our servers can read your data.',
+      },
+      {
+        q: 'What happens if I lose my encryption key?',
+        a: 'Since we use zero-knowledge encryption, we cannot recover your files if you lose your encryption key. This is by design — it ensures that only you have access to your data. We recommend securely storing your keys.',
+      },
+      {
+        q: 'Has Ciphera been independently audited?',
+        a: 'Our code is open source, allowing anyone to audit our security implementations. We also conduct regular internal security reviews and penetration testing. All cryptographic implementations use well-established, peer-reviewed libraries.',
+      },
+      {
+        q: 'How does Ciphera handle password storage?',
+        a: "Your password is hashed client-side using PBKDF2 before being sent to our servers, where it's hashed again with Argon2id. This double-hashing approach means we never see your actual password — not during signup, login, or at any other point.",
+      },
+    ],
   },
   {
-    question: 'Can you access my files?',
-    answer: 'No. With zero-knowledge architecture, we mathematically cannot access your files. Encryption happens client-side on your device, and only you have the decryption keys. Not even our servers can read your data.',
+    label: 'Features',
+    items: [
+      {
+        q: 'Does Pulse use cookies to track visitors?',
+        a: 'No. Pulse is our privacy-first analytics tool that works without cookies, fingerprinting, or any form of personal data collection. It gives you meaningful insights like page views, referrers, and visitor counts while being fully GDPR compliant out of the box.',
+      },
+    ],
   },
   {
-    question: 'Is Ciphera GDPR compliant?',
-    answer: 'Yes. Ciphera is built with privacy-by-design principles and is fully GDPR compliant. We collect minimal data, encrypt everything, and you maintain full control over your information.',
+    label: 'Technical',
+    items: [
+      {
+        q: 'Which encryption algorithm do you use?',
+        a: 'We use AES-256-GCM (Galois/Counter Mode) for file encryption. This authenticated encryption algorithm provides both confidentiality and integrity, ensuring your data cannot be read or tampered with.',
+      },
+      {
+        q: 'Where are the servers located?',
+        a: 'All Ciphera services run on Swiss infrastructure. Your data benefits from Swiss data protection laws and stays in a privacy-respecting jurisdiction known for strong privacy regulations.',
+      },
+      {
+        q: 'Is the code open source?',
+        a: 'Yes! Our code is open source and available on GitHub. We believe transparency builds trust. Anyone can audit our security implementations and verify our privacy claims.',
+      },
+      {
+        q: 'What happens to my data if Ciphera shuts down?',
+        a: "Since your files are encrypted client-side, they remain encrypted and inaccessible on our servers regardless of what happens to the company. Active files can be downloaded by their owners at any time. We'd provide ample notice and migration tools in any shutdown scenario.",
+      },
+      {
+        q: 'Can I self-host Ciphera services?',
+        a: "Since our code is open source, you can inspect and run it yourself. However, we don't currently offer official self-hosting documentation or support. Our managed infrastructure ensures you get automatic updates, security patches, and Swiss data residency.",
+      },
+    ],
   },
 ]
 
-// * JSON-LD FAQ Schema for rich snippets
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((faq) => ({
-    '@type': 'Question',
-    name: faq.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: faq.answer,
-    },
-  })),
-}
-
-function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
-  const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
-      className="border-b border-neutral-800"
-    >
-      <button
-        onClick={() => {
-          if (!isOpen) track('faq_expand')
-          setIsOpen(!isOpen)
-        }}
-        className="w-full py-6 flex items-center justify-between text-left hover:text-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2"
-        aria-expanded={isOpen}
-        aria-controls={`faq-answer-${index}`}
-      >
-        <h3 className="heading-3 pr-4">
-          {faq.question}
-        </h3>
-        <ChevronDownIcon
-          className={`w-5 h-5 text-neutral-500 shrink-0 transition-transform duration-300 ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-        />
-      </button>
-      {isOpen && (
-        <motion.div
-          id={`faq-answer-${index}`}
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3 }}
-          className="pb-6"
-        >
-          <p className="text-neutral-400 leading-relaxed">
-            {faq.answer}
-          </p>
-        </motion.div>
-      )}
-    </motion.div>
-  )
-}
+// Continuous 01–14 numbering across groups — the index aesthetic
+let runningIndex = 0
+const NUMBERED = GROUPS.map((group) => ({
+  ...group,
+  items: group.items.map((item) => ({ ...item, n: String(++runningIndex).padStart(2, '0') })),
+}))
 
 export default function FAQ() {
-  return (
-    <>
-      {/* * JSON-LD FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      
-      <section className="section-padding">
-        <div className="section-container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <span className="badge-primary mb-4 inline-flex">FAQ</span>
-            <h2 className="heading-2 mb-4">
-              Frequently asked questions
-            </h2>
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
-              Learn more about zero-knowledge encryption, file security, and how Ciphera protects your privacy.
-            </p>
-          </motion.div>
+  const [activeGroup, setActiveGroup] = useState(NUMBERED[0].label)
+  const [openId, setOpenId] = useState<string | null>(null)
+  const prefersReduced = useReducedMotion()
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-          <div className="max-w-3xl mx-auto">
-            {faqs.map((faq, index) => (
-              <FAQItem key={index} faq={faq} index={index} />
-            ))}
+  const duration = prefersReduced ? 0 : DURATION_BASE
+  const fastTransition = prefersReduced ? '0ms' : `${DURATION_FAST * 1000}ms`
+
+  function selectGroup(label: string) {
+    setActiveGroup(label)
+    setOpenId(null)
+  }
+
+  // Roving tabindex: arrow keys move both selection and focus along the category list
+  function handleTabKeyDown(e: React.KeyboardEvent<HTMLButtonElement>, index: number) {
+    const last = NUMBERED.length - 1
+    let next: number | null = null
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = index === last ? 0 : index + 1
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = index === 0 ? last : index - 1
+    else if (e.key === 'Home') next = 0
+    else if (e.key === 'End') next = last
+    if (next === null) return
+    e.preventDefault()
+    selectGroup(NUMBERED[next].label)
+    tabRefs.current[next]?.focus()
+  }
+
+  const group = NUMBERED.find((g) => g.label === activeGroup) ?? NUMBERED[0]
+
+  return (
+    <section id="faq" className="border-b border-border">
+      <div className="px-6 py-16 sm:py-20">
+        <p className="font-mono text-xs text-muted-foreground">
+          04 · FAQ
+        </p>
+        <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="mt-10 grid items-start gap-8 lg:grid-cols-[200px_1fr]">
+          {/* Category selector — horizontal row on mobile, vertical rail on desktop */}
+          <div
+            role="tablist"
+            aria-label="FAQ categories"
+            aria-orientation="vertical"
+            className="flex flex-wrap gap-x-6 gap-y-2 lg:flex-col lg:gap-y-1"
+          >
+            {NUMBERED.map((g, i) => {
+              const isActive = g.label === activeGroup
+              return (
+                <button
+                  key={g.label}
+                  ref={(el) => { tabRefs.current[i] = el }}
+                  type="button"
+                  role="tab"
+                  id={`faq-tab-${i}`}
+                  tabIndex={isActive ? 0 : -1}
+                  aria-selected={isActive}
+                  aria-controls={isActive ? 'faq-panel' : undefined}
+                  onClick={() => selectGroup(g.label)}
+                  onKeyDown={(e) => handleTabKeyDown(e, i)}
+                  className={cn(
+                    'flex items-baseline justify-between gap-3 py-1.5 text-left font-mono text-xs transition-colors',
+                    isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                  )}
+                  style={{ transitionDuration: fastTransition }}
+                >
+                  {g.label}
+                  <span className="tabular-nums text-muted-foreground">
+                    {String(g.items.length).padStart(2, '0')}
+                  </span>
+                </button>
+              )
+            })}
           </div>
 
-          {/* * CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-center mt-12"
+          {/* Active category's rows — global 01–14 numbering preserved */}
+          <div
+            role="tabpanel"
+            id="faq-panel"
+            aria-labelledby={`faq-tab-${NUMBERED.findIndex((g) => g.label === activeGroup)}`}
+            className="border border-border"
           >
-            <p className="text-neutral-400 mb-4">
-              Still have questions?
-            </p>
-            <a
-              href="/contact"
-              className="btn-secondary inline-flex"
-              onClick={() => track('faq_contact_click')}
-            >
-              Contact us
-            </a>
-          </motion.div>
+            {group.items.map((item) => {
+                const isOpen = openId === item.n
+                const answerId = `faq-answer-${item.n}`
+                return (
+                  <div key={item.n} className="border-b border-border last:border-b-0">
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={answerId}
+                      onClick={() => setOpenId(isOpen ? null : item.n)}
+                      className="flex w-full items-center gap-5 px-5 py-4 text-left transition-colors hover:bg-accent"
+                      style={{ transitionDuration: fastTransition }}
+                    >
+                      <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                        {item.n}
+                      </span>
+                      <span className="flex-1 text-sm font-medium text-foreground">{item.q}</span>
+                      <PlusIcon
+                        aria-hidden="true"
+                        className="h-4 w-4 shrink-0 text-muted-foreground transition-transform"
+                        style={{
+                          transitionDuration: prefersReduced ? '0ms' : `${DURATION_BASE * 1000}ms`,
+                          transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                        }}
+                      />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          id={answerId}
+                          key="answer"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration, ease: EASE_APPLE }}
+                          style={{ overflow: 'hidden' }}
+                        >
+                          <p className="px-5 pb-5 pl-[60px] text-sm leading-relaxed text-muted-foreground">
+                            {item.a}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )
+            })}
+          </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   )
 }

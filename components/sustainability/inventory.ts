@@ -1,12 +1,12 @@
 import type { InventoryItem } from './types'
 
 /**
- * Static 9-instance inventory — the TypeScript twin of the Go
- * StaticInventory() function in website-backend. Both lists are
- * hand-maintained and must stay in sync. This file is the fallback
- * rendering source for the infrastructure table in case the backend
- * returns a report with no inventory (which should not happen, but the
- * page stays rendered if it does).
+ * Static 12-instance inventory — the TypeScript twin of the Go
+ * StaticInventory() function in website-backend. Reconciled against the
+ * live Exoscale compute API on 2026-06-17: 12 running instances, all in
+ * CH-DK-2 (Zurich). Both lists are hand-maintained and must stay in sync.
+ * This file is the fallback rendering source if the backend returns a
+ * report with no inventory.
  *
  * Keep in sync with:
  *   - Public/website-backend/internal/sustainability/inventory.go
@@ -27,7 +27,7 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     vcpu: 2,
     ramGb: 4,
     zone: 'CH-DK-2',
-    purpose: 'ID + Captcha + SSH bastion',
+    purpose: 'Ciphera ID + Captcha + SSH bastion',
   },
   {
     instance: 'pulse-ops',
@@ -51,7 +51,7 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     vcpu: 2,
     ramGb: 4,
     zone: 'CH-DK-2',
-    purpose: 'Observability: LGTM stack + Uptime Kuma status page',
+    purpose: 'Observability: LGTM stack (Prometheus, Loki, Grafana, Tempo)',
   },
   {
     instance: 'registry-ops',
@@ -84,5 +84,29 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     ramGb: 2,
     zone: 'CH-DK-2',
     purpose: 'HashiCorp Vault (Transit + Raft)',
+  },
+  {
+    instance: 'relay-ops',
+    type: 'Standard-Small',
+    vcpu: 2,
+    ramGb: 2,
+    zone: 'CH-DK-2',
+    purpose: 'Transactional email relay (Stalwart)',
+  },
+  {
+    instance: 'nomad-ops',
+    type: 'Standard-Small',
+    vcpu: 2,
+    ramGb: 2,
+    zone: 'CH-DK-2',
+    purpose: 'Nomad orchestration server',
+  },
+  {
+    instance: 'internal-ops',
+    type: 'Standard-Small',
+    vcpu: 2,
+    ramGb: 2,
+    zone: 'CH-DK-2',
+    purpose: 'Internal services',
   },
 ]

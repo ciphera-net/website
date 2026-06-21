@@ -1,226 +1,158 @@
-'use client'
-
+import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from '@phosphor-icons/react'
-import { Button } from '@/components/ui/button'
+import { ArrowRightIcon, ArrowUpRightIcon, Button } from '@ciphera-net/facet'
+import { cdnUrl } from '@/lib/cdn'
+import { cn } from '@/lib/utils'
+import { PulseMockup } from '@/components/ui/pulse-mockup'
 import { AuthMockup } from '@/components/ui/auth-mockup'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
 import { RelayMockup } from '@/components/ui/relay-mockup'
-import { PulseMockup } from '@/components/ui/pulse-mockup'
-import { pulseIcon, authIcon, captchaIcon, relayIcon, pulseShowcaseBg, authShowcaseBg, captchaShowcaseBg, genA10 } from '@/lib/images'
+
+interface ProductRowProps {
+  icon: string
+  chip: string
+  heading: string
+  body: string
+  primaryLabel: string
+  primaryHref: string
+  secondaryLabel: string
+  secondaryHref: string
+  mockup: React.ReactNode
+  /** When true the mockup column sits on the left (lg:order-first) */
+  mockupLeft?: boolean
+  divider?: boolean
+}
+
+function ProductRow({
+  icon,
+  chip,
+  heading,
+  body,
+  primaryLabel,
+  primaryHref,
+  secondaryLabel,
+  secondaryHref,
+  mockup,
+  mockupLeft = false,
+  divider = false,
+}: ProductRowProps) {
+  return (
+    <div className={divider ? 'border-t border-border' : undefined}>
+      <div className="grid items-center gap-12 px-6 py-20 sm:py-28 lg:grid-cols-2">
+        {/* Text column */}
+        <div className={mockupLeft ? 'lg:order-last' : undefined}>
+          {/* Product chip */}
+          <div className="flex items-center gap-2.5">
+            <Image
+              src={icon}
+              alt=""
+              width={24}
+              height={24}
+              className="h-6 w-6 object-contain"
+            />
+            <span className="font-mono text-xs text-muted-foreground">
+              {chip}
+            </span>
+          </div>
+
+          <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[40px] lg:leading-[1.1]">
+            {heading}
+          </h2>
+
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            {body}
+          </p>
+
+          {/* CTAs */}
+          <div className="mt-8 flex flex-wrap items-center gap-5">
+            <Button asChild>
+              <Link href={primaryHref}>
+                {primaryLabel}
+                <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+              </Link>
+            </Button>
+            <Link
+              href={secondaryHref}
+              className="flex items-center gap-1 text-sm text-brand transition-colors duration-fast hover:text-brand-hover"
+            >
+              {secondaryLabel}
+              <ArrowUpRightIcon className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Mockup column — the real product UI recreations, sharp-framed.
+            The mockup is already a self-framed panel — no second card around it.
+            min-w-0 stops the mockups' min-content width from propagating up and
+            stretching the page on narrow viewports. */}
+        <div className={cn('min-w-0', mockupLeft && 'lg:order-first')}>
+          <div className="origin-top lg:scale-[1.18]">{mockup}</div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function ProductShowcase() {
   return (
-    <section className="py-20 lg:py-32 bg-neutral-950 space-y-28">
-      <div className="container mx-auto px-6">
-        {/* Pulse block — text left, mockup right */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left — text */}
-          <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              Analytics without the surveillance.
-            </h2>
-
-            <div className="flex items-center gap-3 mb-4">
-              <img src={pulseIcon} alt="Pulse" className="w-8 h-8 object-contain" />
-              <span className="text-lg font-semibold text-white">Pulse</span>
-            </div>
-
-            <p className="text-lg text-neutral-400 leading-relaxed mb-8 max-w-lg">
-              Privacy-first web analytics that gives you the insights you need without tracking your visitors.
-              No cookies, no fingerprinting, no personal data collected. GDPR compliant by design.
-            </p>
-
-            <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
-                <Link href="/products/pulse">
-                  Try Pulse <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="ghost" className="gap-2 text-neutral-300 hover:text-white" asChild>
-                <Link href="/products/pulse">
-                  Explore Pulse <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* Right — mockup */}
-          <div className="relative flex items-center justify-center lg:justify-end">
-            <div className="relative">
-              <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-              <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                <img
-                  src={pulseShowcaseBg}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/30" />
-                <div className="relative">
-                  <PulseMockup />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <section id="products" className="scroll-mt-16 border-b border-border">
+      <div className="border-b border-border px-6 py-5">
+        <p className="font-mono text-xs text-muted-foreground">
+          02 · Products
+        </p>
       </div>
 
-      <div className="container mx-auto px-6">
-        {/* Auth block — text left, mockup right */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left — text */}
-          <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              One identity. Every Ciphera service.
-            </h2>
+      <ProductRow
+        icon={cdnUrl('/pulse_icon_no_margins.png')}
+        chip="Pulse"
+        heading="Analytics without the surveillance."
+        body="Privacy-first web analytics that gives you the insights you need without tracking your visitors. No cookies, no fingerprinting, no personal data collected. GDPR compliant by design."
+        primaryLabel="Try Pulse"
+        primaryHref="/products/pulse"
+        secondaryLabel="Explore Pulse"
+        secondaryHref="/products/pulse"
+        mockup={<PulseMockup />}
+      />
 
-            <div className="flex items-center gap-3 mb-4">
-              <img src={authIcon} alt="Ciphera ID" className="w-8 h-8 object-contain" />
-              <span className="text-lg font-semibold text-white">Ciphera ID</span>
-            </div>
+      <ProductRow
+        icon={cdnUrl('/id_icon_no_margins.png')}
+        chip="Ciphera ID"
+        heading="One identity. Every Ciphera service."
+        body="Create a single Ciphera ID to access all services. Your password is hashed on your device before it ever reaches our servers — we authenticate you without ever seeing your credentials."
+        primaryLabel="Get started"
+        primaryHref="/products/id"
+        secondaryLabel="Explore ID"
+        secondaryHref="/products/id"
+        mockup={<AuthMockup />}
+        divider
+      />
 
-            <p className="text-lg text-neutral-400 leading-relaxed mb-8 max-w-lg">
-              Create a single Ciphera ID to access all services. Your password is hashed on your device
-              before it ever reaches our servers — we authenticate you without ever seeing your credentials.
-            </p>
+      <ProductRow
+        icon={cdnUrl('/captcha_icon_no_margins.png')}
+        chip="Ciphera Captcha"
+        heading="Bot protection that respects your users."
+        body="Privacy-first bot protection for any website. No cross-site tracking, no cookies, no third-party data collection. Verifies humans in under 50ms while keeping their data private."
+        primaryLabel="Get started"
+        primaryHref="/products/captcha"
+        secondaryLabel="Explore Captcha"
+        secondaryHref="/products/captcha"
+        mockup={<CaptchaMockup />}
+        mockupLeft
+        divider
+      />
 
-            <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
-                <Link href="/products/id">
-                  Get started <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="ghost" className="gap-2 text-neutral-300 hover:text-white" asChild>
-                <Link href="/products/id">
-                  Explore ID <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* Right — mockup in rounded container */}
-          <div className="relative flex items-center justify-center lg:justify-end">
-            <div className="relative">
-              <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-              <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                <img
-                  src={authShowcaseBg}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/30" />
-                <div className="relative">
-                  <AuthMockup />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container mx-auto px-6">
-        {/* Captcha block — mockup left, text right */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left — mockup */}
-          <div className="relative flex items-center justify-center lg:justify-start">
-            <div className="relative">
-              <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-              <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                <img
-                  src={captchaShowcaseBg}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/30" />
-                <div className="relative">
-                  <CaptchaMockup />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right — text */}
-          <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              Bot protection that respects your users.
-            </h2>
-
-            <div className="flex items-center gap-3 mb-4">
-              <img src={captchaIcon} alt="Ciphera Captcha" className="w-8 h-8 object-contain" />
-              <span className="text-lg font-semibold text-white">Ciphera Captcha</span>
-            </div>
-
-            <p className="text-lg text-neutral-400 leading-relaxed mb-8 max-w-lg">
-              Privacy-first bot protection for any website. No cross-site tracking, no cookies, no third-party data collection.
-              Verifies humans in under 50ms while keeping their data private.
-            </p>
-
-            <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
-                <Link href="/products/captcha">
-                  Get started <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="ghost" className="gap-2 text-neutral-300 hover:text-white" asChild>
-                <Link href="/products/captcha">
-                  Explore Captcha <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container mx-auto px-6">
-        {/* Relay block — text left, mockup right */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left — text */}
-          <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              Transactional email that just works.
-            </h2>
-
-            <div className="flex items-center gap-3 mb-4">
-              <img src={relayIcon} alt="Ciphera Relay" className="w-8 h-8 object-contain" />
-              <span className="text-lg font-semibold text-white">Ciphera Relay</span>
-            </div>
-
-            <p className="text-lg text-neutral-400 leading-relaxed mb-8 max-w-lg">
-              The email backbone of the Ciphera ecosystem. Security alerts, verification codes, and account
-              notifications — delivered in under 2 seconds with DKIM signing and 99.8% deliverability.
-            </p>
-
-            <div className="flex flex-row gap-3 flex-wrap">
-              <Button size="lg" className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white" asChild>
-                <Link href="/products/relay">
-                  Learn more <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="ghost" className="gap-2 text-neutral-300 hover:text-white" asChild>
-                <Link href="/products/relay">
-                  Explore Relay <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* Right — mockup */}
-          <div className="relative flex items-center justify-center lg:justify-end">
-            <div className="relative">
-              <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-              <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                <img
-                  src={genA10}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/30" />
-                <div className="relative">
-                  <RelayMockup />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ProductRow
+        icon={cdnUrl('/relay_icon_no_margins.png')}
+        chip="Ciphera Relay"
+        heading="Transactional email that just works."
+        body="The email backbone of the Ciphera ecosystem. Security alerts, verification codes, and account notifications — delivered in under 2 seconds with DKIM signing and 99.8% deliverability."
+        primaryLabel="Learn more"
+        primaryHref="/products/relay"
+        secondaryLabel="Explore Relay"
+        secondaryHref="/products/relay"
+        mockup={<RelayMockup />}
+        divider
+      />
     </section>
   )
 }

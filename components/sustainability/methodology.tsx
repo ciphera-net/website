@@ -17,12 +17,12 @@ export function Methodology({ report }: MethodologyProps) {
       title: 'Source of truth',
       body: (
         <>
-          <p className="text-neutral-400 leading-relaxed mb-3">
+          <p className="text-muted-foreground leading-relaxed mb-3">
             Numbers come directly from our hosting provider&apos;s LCA
             measurement API, which implements the{' '}
             <a
               href="https://boavizta.org"
-              className="text-brand-orange hover:underline"
+              className="text-primary hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -31,12 +31,12 @@ export function Methodology({ report }: MethodologyProps) {
             life-cycle assessment framework. Every request is HMAC-signed,
             logged, and cached for 24 hours.
           </p>
-          <p className="text-neutral-400 leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed">
             If the measurement API is unavailable, we fall back to numbers
             computed from our published instance inventory using Boavizta&apos;s
             open emissions factors. The source badge at the top of this page
             tells you which path served the current numbers — currently:{' '}
-            <strong className="text-white">
+            <strong className="text-foreground">
               {report.source === 'exoscale-api'
                 ? 'Live measurement API'
                 : 'Computed fallback'}
@@ -51,14 +51,14 @@ export function Methodology({ report }: MethodologyProps) {
       title: "What's included (and what isn't)",
       body: (
         <>
-          <p className="text-neutral-400 mb-3">We count:</p>
-          <ul className="space-y-1.5 text-neutral-400 mb-4">
+          <p className="text-muted-foreground mb-3">We count:</p>
+          <ul className="space-y-1.5 text-muted-foreground mb-4">
             <li>✓ Compute — all {report.totals.instances} VMs across all zones</li>
             <li>✓ Object storage — DB backups, Docker registry, MTA-STS</li>
             <li>✓ All four lifecycle phases: manufacturing, transport, use, end-of-life</li>
           </ul>
-          <p className="text-neutral-400 mb-3">We don&apos;t count:</p>
-          <ul className="space-y-1.5 text-neutral-400">
+          <p className="text-muted-foreground mb-3">We don&apos;t count:</p>
+          <ul className="space-y-1.5 text-muted-foreground">
             {report.methodology.excludes.map((exclusion) => (
               <li key={exclusion}>✗ {exclusion}</li>
             ))}
@@ -70,13 +70,13 @@ export function Methodology({ report }: MethodologyProps) {
       icon: Clock,
       title: 'Refresh cadence',
       body: (
-        <p className="text-neutral-400 leading-relaxed">
+        <p className="text-muted-foreground leading-relaxed">
           This page is regenerated every 24 hours. Our provider&apos;s
           environmental API itself recomputes roughly monthly, so the reporting
           period may lag 3–5 days behind the current date. The badge at the top
           always shows the month the numbers cover. Our provider&apos;s
           environmental API is in public{' '}
-          <span className="text-brand-orange">BETA</span> — if the schema
+          <span className="text-muted-foreground">BETA</span> — if the schema
           changes or the endpoint is retired, we&apos;ll automatically switch
           to the fallback path without breaking the page.
         </p>
@@ -85,13 +85,14 @@ export function Methodology({ report }: MethodologyProps) {
   ]
 
   return (
-    <section id="methodology" className="py-20 lg:py-32 bg-neutral-950">
+    <section id="methodology" className="py-20 lg:py-32 border-b border-border bg-background">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+        <div className="mb-12">
+          <p className="font-mono text-xs text-muted-foreground">04 · Methodology</p>
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             How we measure this
           </h2>
-          <p className="text-lg text-neutral-400">
+          <p className="mt-4 text-lg text-muted-foreground">
             No magic, no marketing. Here&apos;s exactly where the numbers come
             from.
           </p>
@@ -101,20 +102,20 @@ export function Methodology({ report }: MethodologyProps) {
           {blocks.map((block) => (
             <div
               key={block.title}
-              className="rounded-2xl border border-white/[0.08] bg-neutral-900/80 p-6 md:p-8 backdrop-blur-sm"
+              className="border border-border bg-card p-6 md:p-8"
             >
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-orange/10">
-                  <block.icon className="h-5 w-5 text-brand-orange" weight="duotone" />
+                <div className="flex h-10 w-10 items-center justify-center border border-border bg-card">
+                  <block.icon className="h-5 w-5 text-muted-foreground" weight="duotone" />
                 </div>
-                <h3 className="text-xl font-semibold text-white">{block.title}</h3>
+                <h3 className="text-xl font-semibold text-foreground">{block.title}</h3>
               </div>
               <div>{block.body}</div>
             </div>
           ))}
         </div>
 
-        <p className="mt-10 text-center text-xs text-neutral-600">
+        <p className="mt-10 text-xs text-muted-foreground">
           Factors version: {report.methodology.factorsVersion} · Grid intensity
           source: {report.methodology.gridSource}
         </p>

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { ArrowRightIcon } from '@ciphera-net/ui'
+import { ArrowRightIcon } from '@ciphera-net/facet'
 import { blogPosts } from '../../lib/blog-posts.gen'
 import { track } from '../../lib/pulse'
 

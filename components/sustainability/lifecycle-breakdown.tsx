@@ -54,27 +54,28 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
   const hiddenPct = 100 - useOnlyPct
 
   return (
-    <section className="py-20 lg:py-32 bg-neutral-950">
+    <section className="border-b border-border bg-background py-20 lg:py-32">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <p className="font-mono text-xs text-muted-foreground">03 · Lifecycle</p>
+        <div className="mt-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — copy */}
           <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight mb-6">
               We count the whole lifecycle, not just the plug.
             </h2>
-            <p className="text-lg text-neutral-400 leading-relaxed mb-4">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               Most cloud providers report the CO₂ from electricity use and stop
               there. That&apos;s the &ldquo;plug&rdquo; phase — and it&apos;s only
               part of the real impact.
             </p>
-            <p className="text-lg text-neutral-400 leading-relaxed mb-4">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               Every server is manufactured, shipped, used for years, then
               decommissioned. Each step has its own carbon cost. We use the
               Boavizta life-cycle assessment framework, which tracks all four
               phases — so we can show you the whole picture.
             </p>
-            <p className="text-lg text-neutral-400 leading-relaxed">
-              <strong className="text-white">
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">
                 Use phase is only {useOnlyPct.toFixed(0)}% of our real impact.
               </strong>{' '}
               Most cloud providers hide the other {hiddenPct.toFixed(0)}%.
@@ -86,34 +87,31 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
             {phases.map((phase) => (
               <div
                 key={phase.name}
-                className="rounded-2xl border border-white/[0.08] bg-neutral-900/80 p-6 backdrop-blur-sm flex flex-col items-center"
+                className="border border-border bg-card p-6 flex flex-col items-center"
               >
                 <ProgressRadial
                   value={phase.pct}
                   size={140}
                   strokeWidth={10}
                   indicatorClassName={
-                    phase.isUse ? 'text-brand-orange' : 'text-neutral-500'
+                    phase.isUse ? 'text-foreground' : 'text-muted-foreground'
                   }
                   trackClassName="text-white/[0.05]"
                 >
                   <div className="flex flex-col items-center">
                     <phase.icon
                       weight="duotone"
-                      className={
-                        'mb-1 h-5 w-5 ' +
-                        (phase.isUse ? 'text-brand-orange' : 'text-neutral-400')
-                      }
+                      className="mb-1 h-5 w-5 text-muted-foreground"
                     />
-                    <span className="text-2xl font-bold text-white tabular-nums">
+                    <span className="text-2xl font-bold text-foreground tabular-nums">
                       {phase.pct.toFixed(0)}
-                      <span className="text-sm text-neutral-500">%</span>
+                      <span className="text-sm text-muted-foreground">%</span>
                     </span>
                   </div>
                 </ProgressRadial>
                 <div className="mt-4 text-center">
-                  <div className="text-sm font-medium text-white">{phase.name}</div>
-                  <div className="text-xs text-neutral-500 tabular-nums">
+                  <div className="text-sm font-medium text-foreground">{phase.name}</div>
+                  <div className="text-xs text-muted-foreground tabular-nums">
                     {(phase.amount * 1000).toFixed(0)} g CO₂e
                   </div>
                 </div>

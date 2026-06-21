@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeftIcon } from '@ciphera-net/ui'
+import { ArrowLeftIcon } from '@ciphera-net/facet'
 import { notFound } from 'next/navigation'
 import remarkGfm from 'remark-gfm'
 import { getBlogPost, getBlogPosts } from '@/lib/blog'

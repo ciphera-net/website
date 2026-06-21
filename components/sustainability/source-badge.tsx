@@ -17,15 +17,12 @@ export function SourceBadge({ source, periodLabel, className }: SourceBadgeProps
   return (
     <span
       className={
-        'inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm backdrop-blur-sm ' +
-        (isLive
-          ? 'border-brand-orange/20 bg-brand-orange/10 text-brand-orange'
-          : 'border-amber-400/20 bg-amber-400/10 text-amber-400') +
-        (className ? ' ' + className : '')
+        'inline-flex items-center gap-2 border border-border px-3 py-1 font-mono text-xs text-muted-foreground ' +
+        (className ? className : '')
       }
     >
       {isLive ? (
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-orange" />
+        <span className="h-1.5 w-1.5 animate-pulse bg-muted-foreground" />
       ) : (
         <CircleNotch className="h-4 w-4" />
       )}

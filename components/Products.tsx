@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { UserIcon, LockIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/ui'
+import { UserIcon, LockIcon, ArrowRightIcon, CheckIcon } from '@ciphera-net/facet'
 import { track } from '../lib/pulse'
 import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 

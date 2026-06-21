@@ -8,7 +8,7 @@ import Image from "next/image";
 import { cipheraIcon } from "@/lib/images";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { GithubIcon } from "@ciphera-net/ui";
+import { GithubIcon } from "@ciphera-net/facet";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

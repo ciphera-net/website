@@ -1,18 +1,16 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import type { Metadata, Viewport } from 'next'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Space_Grotesk, Geist, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
+import '@ciphera-net/facet/styles'
 import '../styles/globals.css'
 import { env } from '@/lib/env'
 import { cdnUrl } from '@/lib/cdn'
-// import HeroBackground from '../components/HeroBackground'
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-plus-jakarta-sans',
-  display: 'swap',
-})
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk', display: 'swap' })
+const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' })
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono', display: 'swap' })
 
 export const metadata: Metadata = {
   title: {
@@ -81,7 +79,11 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} dark`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${geistSans.variable} ${jetbrainsMono.variable} dark`}
+      suppressHydrationWarning
+    >
       <head>
         {/* DNS prefetch for analytics — sourced from the Zod-validated env schema,
             which provides a prod default so this never renders an invalid URL. */}
@@ -100,8 +102,14 @@ export default async function RootLayout({
           src="https://js.ciphera.net/script.frustration.js"
         />
         <Header />
-        <main className="flex-1">
-          {children}
+        <main className="flex flex-1 flex-col">
+          {/* Continuous vertical rails frame every page: the header nav, this
+              content column, and the footer all share max-w-6xl + border-x, so
+              two hairlines run unbroken from header to footer. flex-1 keeps the
+              column (and its borders) reaching the footer even on short pages. */}
+          <div className="mx-auto w-full max-w-6xl flex-1 sm:border-x sm:border-border">
+            {children}
+          </div>
         </main>
         <Footer />
         {/*

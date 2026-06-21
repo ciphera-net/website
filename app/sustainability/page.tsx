@@ -4,7 +4,6 @@ import { STATIC_INVENTORY } from '@/components/sustainability/inventory'
 import { SustainabilityHero } from '@/components/sustainability/hero'
 import { FootprintBento } from '@/components/sustainability/footprint-bento'
 import { SwissGridBlock } from '@/components/sustainability/swiss-grid-block'
-import { SmallByDesign } from '@/components/sustainability/small-by-design'
 import { LifecycleBreakdown } from '@/components/sustainability/lifecycle-breakdown'
 import { Methodology } from '@/components/sustainability/methodology'
 import { Commitments } from '@/components/sustainability/commitments'
@@ -24,13 +23,23 @@ export const revalidate = 86400
  * and readers can see the source badge.
  */
 function emergencyFallback(): ImpactReport {
-  const nowIso = new Date().toISOString()
+  const now = new Date()
+  const nowIso = now.toISOString()
   const total = 0.5 // * conservative placeholder — keep the page rendered
+  // * Previous calendar month, computed at render time so the fallback never
+  // * shows a stale hardcoded period.
+  const periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
+  const periodEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 0))
+  const periodLabel = periodStart.toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
   return {
     period: {
-      start: '2026-01-01',
-      end: '2026-01-31',
-      label: 'recent month',
+      start: periodStart.toISOString().slice(0, 10),
+      end: periodEnd.toISOString().slice(0, 10),
+      label: periodLabel,
     },
     source: 'computed-fallback',
     lastUpdated: nowIso,
@@ -120,7 +129,6 @@ export default async function SustainabilityPage() {
       <SustainabilityHero report={report} />
       <FootprintBento report={report} />
       <SwissGridBlock />
-      <SmallByDesign report={report} />
       <LifecycleBreakdown report={report} />
       <Methodology report={report} />
       <Commitments />

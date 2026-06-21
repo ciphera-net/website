@@ -1,54 +1,84 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRightIcon, CheckIcon, GlobeIcon, LockIcon, ZapIcon, UserIcon, MailIcon, AlertTriangleIcon, EyeOffIcon, LayoutDashboardIcon } from '@ciphera-net/ui'
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  GlobeIcon,
+  LockIcon,
+  EyeOffIcon,
+  LayoutDashboardIcon,
+} from '@ciphera-net/facet'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import { cipheraIcon, pulseIcon } from '@/lib/images'
+import {
+  zurichPhoto,
+  swissAlpsFlagPhoto,
+  officeHq,
+  pulseIcon,
+  authIcon,
+  captchaIcon,
+  relayIcon,
+} from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
+
+const stats = [
+  { value: '2024', label: 'Founded' },
+  { value: '4', label: 'Services shipped' },
+  { value: 'AGPL-3.0', label: 'Open source' },
+] as const
 
 const values = [
   {
     icon: LockIcon,
-    title: 'Privacy by Design',
-    description: 'Every component of the Ciphera platform is designed with privacy as the foundation. We use end-to-end encryption, zero-knowledge architecture, and minimal data collection.',
-    gradient: 'from-neutral-500 to-neutral-700',
+    title: 'Privacy by design',
+    description:
+      'Every component is built with privacy as the foundation — end-to-end encryption, zero-knowledge architecture, and minimal data collection.',
   },
   {
     icon: EyeOffIcon,
-    title: 'Zero-Knowledge',
-    description: 'We can\'t see your data, we can\'t share your data. Your privacy isn\'t a promise—it\'s mathematically ensured through cryptographic guarantees.',
-    gradient: 'from-neutral-500 to-neutral-700',
+    title: 'Zero-knowledge',
+    description:
+      'Your password never reaches our servers, and your vault is encrypted on your own device. We verify who you are without ever seeing your secrets.',
   },
   {
     icon: LayoutDashboardIcon,
     title: 'Transparency',
-    description: 'We believe in open-source principles. Our code is public for anyone to inspect and verify. Trust is earned through transparency, not marketing.',
-    gradient: 'from-neutral-500 to-neutral-700',
+    description:
+      'Our code is open for anyone to inspect — and we’re opening more of it. We publish a warrant canary and a transparency report. Trust is earned, not marketed.',
+    href: '/transparency',
+    linkLabel: 'Read the transparency report',
   },
   {
     icon: GlobeIcon,
-    title: 'User Control',
-    description: 'You own your encryption keys and can delete your data at any time—no questions asked. We can\'t access your files, even with a court order.',
-    gradient: 'from-neutral-500 to-neutral-700',
+    title: 'User control',
+    description:
+      'You own your encryption keys and can delete your data at any time. We can’t decrypt your vault — not even under a court order.',
   },
-]
+] as const
 
 const techStack = [
   { name: 'Go (Gin)', description: 'High-performance backend services' },
   { name: 'Next.js', description: 'Modern React framework for frontends' },
   { name: 'PostgreSQL', description: 'Reliable database for metadata' },
-  { name: 'AES-256-GCM', description: 'Industry-standard encryption' },
-  { name: 'JWT', description: 'Stateless authentication' },
-  { name: 'Argon2id', description: 'Password hashing algorithm' },
-]
+  { name: 'SRP-6a', description: 'Zero-knowledge password authentication' },
+  { name: 'PBKDF2-SHA256', description: 'Client-side key derivation (1M iterations)' },
+  { name: 'AES-256-GCM', description: 'Client-side vault encryption' },
+] as const
+
+const architecture = [
+  { image: authIcon, name: 'Ciphera ID', detail: 'Identity & authentication' },
+  { image: pulseIcon, name: 'Pulse', detail: 'Privacy-first analytics' },
+  { image: captchaIcon, name: 'Ciphera Captcha', detail: 'Bot protection' },
+  { image: relayIcon, name: 'Ciphera Relay', detail: 'Transactional email' },
+] as const
 
 const timeline = [
-  { year: '2024', event: 'Ciphera founded with a mission to build privacy-first infrastructure' },
-  { year: '2025', event: 'Ciphera ID, Captcha, and Relay services deployed' },
-  { year: '2026', event: 'Continuing to expand the privacy ecosystem' },
-]
+  { year: '2024', event: 'Ciphera founded to build privacy-first infrastructure from the ground up.' },
+  { year: '2025', event: 'Pulse, Ciphera ID, Captcha, and Relay shipped.' },
+  {
+    year: '2026',
+    event: 'Moved Ciphera ID to zero-knowledge authentication and published our first transparency report.',
+  },
+] as const
 
 // * JSON-LD structured data for organization
 const organizationSchema = {
@@ -76,10 +106,7 @@ const organizationSchema = {
     email: 'hello@ciphera.net',
     contactType: 'customer service',
   },
-  sameAs: [
-    'https://github.com/ciphera-net',
-    'https://x.com/CipheraNET',
-  ],
+  sameAs: ['https://github.com/ciphera-net', 'https://x.com/CipheraNET'],
 }
 
 export default function AboutPage() {
@@ -91,312 +118,243 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
       <Breadcrumbs items={[{ label: 'About Us' }]} />
-      {/* * Hero Section */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
-        {/* * Background */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/3 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-brand-orange/10 rounded-full blur-[128px] opacity-50" />
-          <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] bg-neutral-400/10 rounded-full blur-[128px] opacity-30" />
-        </div>
 
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
-              Our Story
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
-              Building the future of{' '}
-              <span className="text-brand-orange">privacy</span>
+      {/* Hero — editorial split: headline + tall Zurich photo */}
+      <section className="border-b border-border">
+        <div className="grid lg:grid-cols-2">
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
+            <p className="font-mono text-xs text-muted-foreground">About Ciphera</p>
+            <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+              Building the future of privacy.
             </h1>
-            <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
-              Ciphera is dedicated to creating privacy-first infrastructure and applications 
-              that put users in control of their data. We believe encryption should be the default, 
-              not an add-on.
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Ciphera is dedicated to creating privacy-first infrastructure and applications that put
+              users in control of their data. We believe encryption should be the default, not an
+              add-on.
             </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* * Mission Section */}
-      <section className="max-w-6xl mx-auto px-6 pb-16 md:pb-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-neutral-800 p-6 sm:p-8 md:p-12 lg:p-16"
-        >
-          {/* * Background pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div 
-              className="absolute inset-0"
-              style={{
-                backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-                backgroundSize: '24px 24px'
-              }}
+          </div>
+          <div className="relative min-h-[440px] border-t border-border lg:border-l lg:border-t-0">
+            <Image
+              src={zurichPhoto}
+              alt="Zurich, Switzerland — where Ciphera data is hosted"
+              fill
+              unoptimized
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover grayscale"
             />
           </div>
-          
-          <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div>
-              <span className="badge bg-white/10 text-white/80 border-white/10 mb-6 inline-flex">
-                Our Mission
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-                Encryption that works invisibly
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                We build tools that protect your data automatically—no configuration, no trade-offs. 
-                Our zero-knowledge architecture means your files are encrypted client-side, so we never see them.
-              </p>
-              <p className="text-neutral-400 leading-relaxed">
-                When your data is encrypted before it leaves your device, there's nothing to track, profile, or compromise. 
-                That's not a feature—it's the foundation.
-              </p>
-            </div>
-            
-            <div className="flex items-center justify-center">
-              <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/30 to-neutral-400/30 rounded-full blur-3xl" />
-                <div className="relative w-full h-full rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                  <Image
-                    src={cipheraIcon}
-                    alt="Ciphera - Privacy-first infrastructure logo"
-                    width={120}
-                    height={120}
-                    loading="lazy"
-                    className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain"
-                    unoptimized
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* * Values Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] text-sm text-neutral-400 mb-4">Our Values</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              What we stand for
-            </h2>
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
-              These principles guide every decision we make and every line of code we write.
-            </p>
-          </motion.div>
+      {/* By the numbers */}
+      <section className="border-b border-border">
+        <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-3">
+          {stats.map((s) => (
+            <div key={s.label} className="bg-background px-6 py-8">
+              <div className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                {s.value}
+              </div>
+              <div className="mt-2 font-mono text-xs text-muted-foreground">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {values.map((value, index) => {
-              const Icon = value.icon
+      {/* Mission — split: monochrome photo + dark text panel (mirrors hero) */}
+      <section className="border-b border-border">
+        <div className="grid lg:grid-cols-2">
+          <div className="relative min-h-[360px] border-b border-border lg:border-b-0 lg:border-r">
+            <Image
+              src={swissAlpsFlagPhoto}
+              alt="The Swiss Alps — Ciphera hosts its data in Switzerland"
+              fill
+              unoptimized
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover grayscale"
+            />
+          </div>
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+            <p className="font-mono text-xs text-muted-foreground">01 · Mission</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Encryption that works invisibly
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              We build tools that protect your data automatically — no configuration, no trade-offs.
+              Your files are encrypted client-side, so we never see them. When data is encrypted before
+              it leaves your device, there’s nothing to track, profile, or compromise. That’s not a
+              feature — it’s the foundation.
+            </p>
+            <p className="mt-6 font-mono text-xs text-muted-foreground">
+              Data residency: Switzerland.{' '}
+              <Link href="/privacy" className="text-primary hover:underline">
+                See our privacy policy →
+              </Link>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Values — editorial list */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">02 · Values</p>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            What we stand for
+          </h2>
+          <div className="mt-14 grid gap-x-14 gap-y-12 sm:grid-cols-2">
+            {values.map((v, i) => {
+              const Icon = v.icon
               return (
-                <motion.div
-                  key={value.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group"
-                >
-                  <div className="h-full rounded-xl border border-white/[0.08] bg-neutral-900/80 hover:bg-white/[0.06] transition-colors p-6 lg:p-8">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${value.gradient} flex items-center justify-center shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className="w-7 h-7 text-white" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-3">
-                      {value.title}
-                    </h3>
-                    <p className="text-neutral-400 leading-relaxed">
-                      {value.description}
-                    </p>
+                <div key={v.title} className="border-t border-border pt-6">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
+                    <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
                   </div>
-                </motion.div>
+                  <h3 className="mt-5 font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+                    {v.title}
+                  </h3>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">{v.description}</p>
+                  {'href' in v && (
+                    <Link
+                      href={v.href}
+                      className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+                    >
+                      {v.linkLabel}
+                      <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
+                    </Link>
+                  )}
+                </div>
               )
             })}
           </div>
         </div>
       </section>
 
-      {/* * Tech Stack Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-6">Technology</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+      {/* Technology — airy two-column */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">03 · Technology</p>
+          <div className="mt-8 grid gap-14 lg:grid-cols-2">
+            <div>
+              <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 Built with modern, secure technologies
               </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-8">
-                We use battle-tested technologies chosen for their security, performance, and reliability. 
-                Every component is carefully selected to ensure your data stays protected.
+              <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+                We use battle-tested technologies chosen for their security, performance, and
+                reliability. Every component is carefully selected to keep your data protected.
               </p>
-              
-              <div className="grid grid-cols-2 gap-4">
-                {techStack.map((tech, index) => (
-                  <motion.div
-                    key={tech.name}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                    className="flex items-start gap-3"
-                  >
-                    <CheckIcon className="w-5 h-5 text-brand-orange mt-0.5 shrink-0" />
+              <Link
+                href="https://github.com/ciphera-net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+              >
+                See our open-source code on GitHub
+                <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
+              </Link>
+              <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6">
+                {techStack.map((tech) => (
+                  <div key={tech.name} className="flex items-start gap-3 border-t border-border pt-4">
+                    <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
                     <div>
-                      <div className="font-semibold text-white text-sm">
-                        {tech.name}
-                      </div>
-                      <div className="text-xs text-neutral-400">
-                        {tech.description}
-                      </div>
+                      <div className="text-sm font-semibold text-foreground">{tech.name}</div>
+                      <div className="text-xs text-muted-foreground">{tech.description}</div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-6 lg:p-8">
-                <h3 className="text-lg font-semibold text-white mb-6">
-                  Architecture Overview
-                </h3>
-                <p className="text-neutral-400 leading-relaxed mb-6">
-                  Ciphera follows a microservices architecture with strict separation of concerns. 
-                  Each service is isolated to maintain security boundaries.
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                      <LockIcon className="w-5 h-5 text-white" />
+            <div className="lg:pl-14">
+              <h3 className="font-display text-xl font-bold tracking-tight text-foreground">
+                Architecture overview
+              </h3>
+              <p className="mt-4 leading-relaxed text-muted-foreground">
+                Ciphera follows a microservices architecture with strict separation of concerns. Each
+                service is isolated to maintain security boundaries.
+              </p>
+              <div className="mt-8">
+                {architecture.map((svc) => (
+                  <div
+                    key={svc.name}
+                    className="flex items-center gap-4 border-t border-border py-4 last:border-b"
+                  >
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-card">
+                      <Image
+                        src={svc.image}
+                        alt=""
+                        width={24}
+                        height={24}
+                        loading="lazy"
+                        unoptimized
+                        className="h-6 w-6 object-contain"
+                      />
                     </div>
                     <div>
-                      <div className="font-semibold text-white text-sm">Ciphera ID</div>
-                      <div className="text-xs text-neutral-500">Identity management</div>
+                      <div className="text-sm font-semibold text-foreground">{svc.name}</div>
+                      <div className="text-xs text-muted-foreground">{svc.detail}</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                      <Image src={pulseIcon} alt="Pulse - Privacy-first analytics icon" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain" unoptimized />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-white text-sm">Pulse Backend</div>
-                      <div className="text-xs text-neutral-500">Analytics engine</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-800">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-500 to-neutral-700 flex items-center justify-center">
-                      <ZapIcon className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-white text-sm">Ciphera Captcha</div>
-                      <div className="text-xs text-neutral-500">Bot protection</div>
-                    </div>
-                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Journey — big editorial years */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">04 · Journey</p>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Building privacy, one step at a time
+          </h2>
+          <div className="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-3">
+            {timeline.map((item) => (
+              <div key={item.year} className="border-t border-border pt-6">
+                <div className="font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+                  {item.year}
                 </div>
+                <p className="mt-5 leading-relaxed text-muted-foreground">{item.event}</p>
               </div>
-            </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* * Timeline Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] text-sm text-neutral-400 mb-4">Our Journey</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Building privacy, one step at a time
-            </h2>
-          </motion.div>
-
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              {/* * Timeline line */}
-              <div className="absolute left-[19px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-orange via-neutral-600 to-neutral-800" />
-              
-              <div className="space-y-8">
-                {timeline.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="relative flex gap-6"
-                  >
-                    <div className="relative">
-                      <div className="w-10 h-10 rounded-full bg-neutral-800 border-2 border-brand-orange flex items-center justify-center shadow-lg">
-                        <div className="w-3 h-3 rounded-full bg-brand-orange" />
-                      </div>
-                    </div>
-                    <div className="flex-1 pt-1">
-                      <div className="text-sm font-bold text-brand-orange mb-1">{item.year}</div>
-                      <p className="text-neutral-400">{item.event}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+      {/* CTA — full-bleed dark monochrome close, gradient to solid bg for legibility */}
+      <section className="relative overflow-hidden border-b border-border">
+        <Image
+          src={officeHq}
+          alt=""
+          fill
+          unoptimized
+          sizes="100vw"
+          className="object-cover grayscale brightness-[0.4]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
+        />
+        <div className="relative px-6 py-24 sm:py-32">
+          <p className="font-mono text-xs text-muted-foreground">05 · Get started</p>
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            One account. Every product.
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            One Ciphera ID works across every product we build — a single, zero-knowledge account
+            whose password never reaches our servers. Create yours in seconds.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-5">
+            <Link href="https://id.ciphera.net/signup" className="btn-primary">
+              Create your Ciphera ID
+              <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link href="/#products" className="btn-secondary">
+              Explore products
+            </Link>
           </div>
-        </div>
-      </section>
-
-      {/* * CTA Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-              Experience Privacy-First Analytics
-            </h2>
-            <p className="text-lg text-neutral-400 mb-8">
-              Try Pulse—our privacy-first analytics platform. 
-              See how analytics can work without compromising user privacy.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="https://pulse.ciphera.net" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                Try Pulse Free
-                <ArrowRightIcon className="w-4 h-4" />
-              </Link>
-              <Link href="/products" className="btn-secondary">
-                View All Products
-              </Link>
-            </div>
-          </motion.div>
         </div>
       </section>
     </>

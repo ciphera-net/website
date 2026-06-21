@@ -2,7 +2,7 @@
 import React from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { GithubIcon } from '@ciphera-net/ui';
+import { GithubIcon } from '@ciphera-net/facet';
 import Image from 'next/image';
 import { cipheraIcon } from '@/lib/images';
 

@@ -3,14 +3,14 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Environmental Impact',
   description:
-    "Ciphera's environmental impact — every server we run, measured with life-cycle assessment, powered by 100% renewable Swiss hydroelectric grid. No offsets, no greenwashing, just receipts.",
+    "Ciphera's environmental impact — every server we run, measured with life-cycle assessment, powered by one of Europe's lowest-carbon grids (Swiss hydro and nuclear, ~12 gCO₂e/kWh). No offsets, no greenwashing, just receipts.",
   alternates: {
     canonical: 'https://ciphera.net/sustainability',
   },
   openGraph: {
     title: 'Environmental Impact — Ciphera',
     description:
-      'Receipts, not promises. Ciphera runs on 100% renewable Swiss hydroelectric power. See every server, every lifecycle phase, every gram of CO₂.',
+      'Receipts, not promises. Ciphera runs on one of Europe’s lowest-carbon grids — Swiss hydro and nuclear, ~12 gCO₂e/kWh. See every server, every lifecycle phase, every gram of CO₂.',
     url: 'https://ciphera.net/sustainability',
     siteName: 'Ciphera',
     locale: 'en_US',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Environmental Impact — Ciphera',
     description:
-      'Receipts, not promises. Ciphera runs on 100% renewable Swiss hydroelectric power.',
+      'Receipts, not promises. Ciphera runs on one of Europe’s lowest-carbon grids — Swiss hydro and nuclear.',
   },
 }
 
@@ -35,7 +35,7 @@ export default function SustainabilityLayout({
     name: 'Environmental Impact — Ciphera',
     url: 'https://ciphera.net/sustainability',
     description:
-      "Ciphera's environmental impact measured with life-cycle assessment, powered by 100% renewable Swiss hydroelectric grid.",
+      "Ciphera's environmental impact measured with life-cycle assessment, powered by one of Europe's lowest-carbon grids (Swiss hydro and nuclear, ~12 gCO₂e/kWh).",
     publisher: {
       '@type': 'Organization',
       name: 'Ciphera',

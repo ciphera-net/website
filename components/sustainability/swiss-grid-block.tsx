@@ -1,77 +1,73 @@
-import { Leaf, Atom, Sparkle, Check } from '@phosphor-icons/react/dist/ssr'
+import { Check } from '@phosphor-icons/react/dist/ssr'
+import Image from 'next/image'
 import { swissGridBuildingsPhoto } from '@/lib/images'
 
 /**
- * Section 3 — Swiss grid advantage. Clones the SwissPrivacy homepage
- * component layout exactly: framed photo on the left with floating info
- * cards, narrative copy on the right.
+ * Section 02 — Swiss grid advantage. About-style editorial split: a grayscale
+ * photo on the left, narrative + grid-composition facts on the right (text on
+ * solid dark, never on raw photo brightness). Facet: sharp, monochrome,
+ * scarce orange.
  */
+const gridFacts = [
+  { value: '~60%', label: 'Hydroelectric' },
+  { value: '~30%', label: 'Nuclear' },
+  { value: '~12g', label: 'CO₂e/kWh' },
+] as const
+
+const sources = [
+  'Hosted on Exoscale, Zurich (CH-DK-2) — 100% on Swiss soil',
+  'Sources: Swiss Federal Office of Energy (BFE), 2025 · EU/US averages, Ember 2024',
+] as const
+
 export function SwissGridBlock() {
   return (
-    <section className="py-20 lg:py-32 bg-neutral-950">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left — framed photo with floating info cards */}
-          <div className="relative flex items-center justify-center lg:justify-start">
-            <div className="relative">
-              <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-              <div className="relative w-[560px] max-w-full h-[600px] rounded-3xl overflow-hidden">
-                <img
-                  src={swissGridBuildingsPhoto}
-                  alt="Swiss government buildings flying Swiss flags"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 space-y-2.5">
-                  {[
-                    { icon: Leaf, title: '60% Hydroelectric', desc: 'Alpine reservoirs' },
-                    { icon: Atom, title: '30% Nuclear', desc: 'Low-carbon baseload' },
-                    { icon: Sparkle, title: '~12 gCO₂e/kWh', desc: 'Swiss grid intensity' },
-                  ].map((item) => (
-                    <div
-                      key={item.title}
-                      className="flex items-center gap-3 rounded-xl bg-neutral-900/80 border border-white/[0.08] px-4 py-3 backdrop-blur-sm"
-                    >
-                      <item.icon
-                        weight="duotone"
-                        className="w-5 h-5 text-brand-orange shrink-0"
-                      />
-                      <div>
-                        <p className="text-xs font-semibold text-white">{item.title}</p>
-                        <p className="text-[11px] text-neutral-400">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+    <section className="border-b border-border">
+      <div className="grid lg:grid-cols-2">
+        {/* Left — grayscale photo */}
+        <div className="relative min-h-[360px] border-b border-border lg:border-b-0 lg:border-r">
+          <Image
+            src={swissGridBuildingsPhoto}
+            alt="Swiss government buildings flying Swiss flags"
+            fill
+            unoptimized
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover grayscale"
+          />
+        </div>
+
+        {/* Right — copy on solid dark */}
+        <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+          <p className="font-mono text-xs text-muted-foreground">02 · The Swiss grid</p>
+          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            One of the cleanest grids in Europe, by accident of geography.
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            The Alps hand Switzerland roughly 60% of its electricity from hydro — gravity doing
+            the work — and nuclear covers most of the rest. The result is a grid that runs at about
+            12 grams of CO₂ per kilowatt-hour, against ~210 across the EU average and ~360 in the
+            United States.
+          </p>
+
+          {/* Grid composition */}
+          <div className="mt-10 grid grid-cols-3 gap-px border border-border bg-border">
+            {gridFacts.map((f) => (
+              <div key={f.label} className="bg-background px-4 py-5">
+                <div className="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                  {f.value}
                 </div>
+                <div className="mt-1 font-mono text-xs text-muted-foreground">{f.label}</div>
               </div>
-            </div>
+            ))}
           </div>
 
-          {/* Right — copy */}
-          <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              The cleanest grid in Europe, by accident of geography.
-            </h2>
-            <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-              Switzerland was burning coal until 1961. Then the Alps gave them 60% of
-              their electricity for free — gravity doing the work — and uranium covered
-              the rest. The result is a grid that runs at roughly 12 grams of CO₂ per
-              kilowatt-hour, compared to ~400 across the EU average and ~650 in the
-              United States.
-            </p>
-            <ul className="space-y-3">
-              {[
-                'Zurich & Geneva datacenters: 100% renewable contracts',
-                'Zero natural gas peaker plants on the Swiss grid',
-                'Source: Swiss Federal Office of Energy (BFE), annualized 2025',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-neutral-400">
-                  <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" weight="bold" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="mt-8 space-y-3">
+            {sources.map((item) => (
+              <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-foreground" weight="bold" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

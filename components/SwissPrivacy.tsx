@@ -1,70 +1,85 @@
-import {
-  Globe,
-  Timer,
-  ShieldCheck,
-  Check,
-} from '@phosphor-icons/react/dist/ssr'
-import { swissAlpsFlagPhoto } from '@/lib/images'
+import Image from 'next/image'
+import { CheckIcon, GlobeIcon, CheckCircleIcon, LockIcon } from '@ciphera-net/facet'
+import { cdnUrl } from '@/lib/cdn'
+
+const INFO_TILES = [
+  {
+    icon: GlobeIcon,
+    title: 'Data residency',
+    desc: 'Hosted in Switzerland',
+  },
+  {
+    icon: CheckCircleIcon,
+    title: 'FADP protected',
+    desc: 'Swiss Federal Data Protection Act',
+  },
+  {
+    icon: LockIcon,
+    title: 'Zero-knowledge',
+    desc: "We can’t read your data",
+  },
+] as const
+
+const CHECKLIST = [
+  'All data processed and stored in Switzerland',
+  'End-to-end encryption across all services',
+  "Zero-knowledge architecture — we can’t read your data",
+  'GDPR and FADP compliant by design',
+  'Open source clients for full transparency',
+] as const
 
 export default function SwissPrivacy() {
   return (
-    <section className="py-20 lg:py-32 bg-neutral-950">
-      <div className="container mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div className="relative flex items-center justify-center lg:justify-start">
-            <div className="relative">
-              <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-              <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
-                <img
-                  src={swissAlpsFlagPhoto}
-                  alt="Swiss Alps with Swiss flag"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
-                {/* Info cards floating at bottom */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 space-y-2.5">
-                  {[
-                    { icon: Globe, title: 'Data residency', desc: 'Hosted in Switzerland' },
-                    { icon: ShieldCheck, title: 'FADP protected', desc: 'Swiss Federal Data Protection Act' },
-                    { icon: Timer, title: 'Zero-knowledge', desc: 'We can\u2019t read your data' },
-                  ].map((item) => (
-                    <div key={item.title} className="flex items-center gap-3 rounded-xl bg-neutral-900/80 border border-white/[0.08] px-4 py-3 backdrop-blur-sm">
-                      <item.icon className="w-5 h-5 text-brand-orange shrink-0" />
-                      <div>
-                        <p className="text-xs font-semibold text-white">{item.title}</p>
-                        <p className="text-[11px] text-neutral-400">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+    <section className="border-b border-border">
+      <div className="px-6 py-20 sm:py-24">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          {/* LEFT — photo + info tiles */}
+          <div>
+            <div className="relative aspect-[4/3] overflow-hidden border border-border">
+              <Image
+                src={cdnUrl('/swiss-alps-flag.jpg')}
+                alt="Swiss Alps with Swiss flag"
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 50vw, 100vw"
+              />
+            </div>
+
+            {/* Grid-rail info tiles — attached flush to the photo bottom edge */}
+            <div className="grid grid-cols-3 gap-px border border-t-0 border-border bg-border">
+              {INFO_TILES.map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="bg-card p-4">
+                  <Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
+                  <p className="mt-3 text-xs font-semibold text-foreground">{title}</p>
+                  <p className="mt-1 text-[11px] leading-snug text-muted-foreground">{desc}</p>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
 
+          {/* RIGHT — copy */}
           <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+            <p className="font-mono text-xs text-muted-foreground">
+              03 · Swiss privacy
+            </p>
+
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Swiss infrastructure. Swiss privacy laws.
             </h2>
-            <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-              Every Ciphera service runs on Swiss infrastructure, protected
-              by the Swiss Federal Act on Data Protection (FADP). Your files,
-              your analytics, your credentials — everything stays in
-              Switzerland. No exceptions.
+
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+              Every Ciphera service runs on Swiss infrastructure, protected by the Swiss Federal Act
+              on Data Protection (FADP). Your files, your analytics, your credentials — everything
+              stays in Switzerland. No exceptions.
             </p>
-            <ul className="space-y-3">
-              {[
-                'All data processed and stored in Switzerland',
-                'End-to-end encryption across all services',
-                'Zero-knowledge architecture — we can\u2019t read your data',
-                'GDPR and FADP compliant by design',
-                'Open source clients for full transparency',
-              ].map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-3 text-neutral-400"
-                >
-                  <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <span>{item}</span>
+
+            <ul className="mt-8 space-y-3.5">
+              {CHECKLIST.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-sm text-foreground">
+                  {/* text-pos, not text-brand: five co-visible orange icons would blow the
+                      one-accent-per-section budget; green carries the "confirmed" semantics */}
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-pos" />
+                  {item}
                 </li>
               ))}
             </ul>

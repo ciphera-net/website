@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeftIcon } from '@ciphera-net/ui'
+import { ArrowLeftIcon } from '@ciphera-net/facet'
 
 export function BackButton() {
   const handleBack = () => {

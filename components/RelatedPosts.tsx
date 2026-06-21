@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRightIcon } from '@ciphera-net/ui'
+import { ArrowRightIcon } from '@ciphera-net/facet'
 import { cdnUrl } from '@/lib/cdn'
 
 interface BlogPostMeta {

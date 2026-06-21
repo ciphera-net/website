@@ -1,9 +1,10 @@
 import Hero from '../components/Hero'
-import Ecosystem from '../components/Ecosystem'
+import TrustStrip from '../components/TrustStrip'
+import FeatureSection from '../components/feature-section'
 import ProductShowcase from '../components/ProductShowcase'
 import SwissPrivacy from '../components/SwissPrivacy'
-import EnhancedFAQ from '../components/EnhancedFAQ'
-import Newsletter from '../components/Newsletter'
+import FAQ from '../components/FAQ'
+import ClosingCta from '../components/ClosingCta'
 
 // * JSON-LD structured data for homepage
 const homepageSchemas = [
@@ -59,12 +60,16 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchemas) }}
       />
+      {/* Rails now live in the root layout (app/layout.tsx) so every page
+          inherits the continuous header→footer frame. Sections provide their
+          own horizontal hairlines via border-b. */}
       <Hero />
-      <Ecosystem />
+      <TrustStrip />
+      <FeatureSection />
       <ProductShowcase />
       <SwissPrivacy />
-      <EnhancedFAQ />
-      <Newsletter />
+      <FAQ />
+      <ClosingCta />
     </>
   )
 }

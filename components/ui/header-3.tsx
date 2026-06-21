@@ -103,15 +103,18 @@ export function Header() {
     }, [open]);
 
     return (
-        <header
-            className={cn('sticky top-0 z-50 w-full border-b border-transparent', {
-                'border-white/[0.06]': scrolled,
-            })}
-        >
+        <header className="sticky top-0 z-50 w-full border-b border-border">
             <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300", scrolled ? "opacity-100 backdrop-blur-xl bg-neutral-950/60 supports-[backdrop-filter]:bg-neutral-950/50" : "opacity-0")} />
-            <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 my-3">
+            {/* Same column as the page rails (max-w-6xl + sm:border-x) so the
+                vertical lines run continuously from header through every section. */}
+            {/* py-3 (not my-3 on the nav): a child margin would collapse through
+                this borderless-top wrapper and shrink the rail borders to the nav
+                row only, leaving gaps above and below. Padding keeps the rails
+                spanning the full header height. */}
+            <div className="mx-auto w-full max-w-6xl py-3 sm:border-x sm:border-border">
+            <nav className="flex h-16 w-full items-center justify-between px-6">
                 <div className="flex items-center gap-5">
-                    <a href={branding ? pathname : "/"} className="hover:bg-accent rounded-md p-2 flex items-center gap-2">
+                    <a href={branding ? pathname : "/"} className="hover:bg-accent rounded-md p-2 -ml-2 flex items-center gap-2">
                         <Image
                             src={branding?.logo || cipheraIcon}
                             alt={branding?.name || "Ciphera"}
@@ -235,6 +238,7 @@ export function Header() {
                     </Button>
                 </div>
             </nav>
+            </div>
             <MobileMenu open={open} className="flex flex-col justify-between gap-2 overflow-y-auto">
                 <NavigationMenu className="max-w-full">
                     <div className="flex w-full flex-col gap-y-2">

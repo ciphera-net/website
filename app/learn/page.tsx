@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRightIcon } from '@ciphera-net/ui'
+import { ArrowRightIcon } from '@ciphera-net/facet'
 import { learnArticles } from '@/lib/learn-articles.gen'
 import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 

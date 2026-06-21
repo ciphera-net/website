@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { ChevronDownIcon } from '@ciphera-net/ui'
+import { ChevronDownIcon } from '@ciphera-net/facet'
 
 interface TocItem {
   id: string

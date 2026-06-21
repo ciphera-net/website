@@ -1,9 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { UserIcon, LockIcon, GlobeIcon } from '@ciphera-net/ui'
+import { UserIcon, LockIcon, GlobeIcon } from '@ciphera-net/facet'
 import Image from 'next/image'
-import { SwissFlagIcon } from '@ciphera-net/ui'
+import { SwissFlagIcon } from '@ciphera-net/facet'
 import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 // * Architecture nodes for the ecosystem diagram

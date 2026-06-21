@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import Image from 'next/image'
-import { ArrowLeftIcon } from '@ciphera-net/ui'
+import { ArrowLeftIcon } from '@ciphera-net/facet'
 import { getLearnArticle, getLearnArticles } from '@/lib/learn'
 import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 

@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { officeHq } from '@/lib/images'
 import { 
   Input, 
-  Select, 
   Button, 
   MailIcon, 
   GlobeIcon, 
@@ -15,7 +14,7 @@ import {
   ArrowRightIcon,
   GithubIcon,
   Captcha
-} from '@ciphera-net/ui'
+} from '@ciphera-net/facet'
 import { track } from '../../lib/pulse'
 import { env } from '@/lib/env'
 
@@ -584,14 +583,18 @@ export default function ContactPage() {
                     <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
                       Subject <span className="text-brand-orange">*</span>
                     </label>
-                    <Select
+                    <select
                       id="subject"
                       value={formData.subject}
-                      onChange={(value) => setFormData({ ...formData, subject: value })}
-                      options={subjectOptions}
-                      variant="input"
-                      fullWidth
-                    />
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="w-full rounded-xl border border-neutral-700 bg-neutral-800 px-4 py-3 text-white transition-all duration-200 focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/50"
+                    >
+                      {subjectOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div>
