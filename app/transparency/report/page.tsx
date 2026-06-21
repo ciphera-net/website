@@ -48,14 +48,14 @@ export default async function TransparencyReportPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <section className="section-padding pt-32">
+      <section className="border-b border-border section-padding pt-32">
         <div className="section-container max-w-3xl mx-auto px-6">
-          <div className="mb-8 text-sm text-neutral-500">
-            <Link href="/transparency" className="text-brand-orange hover:underline">
+          <div className="mb-8 text-sm text-muted-foreground">
+            <Link href="/transparency" className="text-primary hover:underline">
               ← Transparency
             </Link>
           </div>
-          <article className="prose prose-invert max-w-none prose-headings:text-white prose-a:text-brand-orange prose-code:text-brand-orange">
+          <article className="prose prose-invert max-w-none prose-headings:text-foreground prose-a:text-primary prose-code:text-primary">
             <MDXRemote
               source={current.bodyMarkdown}
               options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
@@ -63,9 +63,9 @@ export default async function TransparencyReportPage() {
           </article>
 
           {all.length > 1 && (
-            <div className="mt-16 border-t border-white/[0.08] pt-8">
-              <h2 className="text-xl font-semibold text-white mb-4">Historical reports</h2>
-              <ul className="space-y-2 text-neutral-400 text-sm">
+            <div className="mt-16 border-t border-border pt-8">
+              <h2 className="font-display text-xl font-semibold text-foreground mb-4">Historical reports</h2>
+              <ul className="space-y-2 text-muted-foreground text-sm">
                 {all.slice(1).map((r) => (
                   <li key={r.slug}>
                     {r.title} — published {r.publishedEuropean} ({r.status})
