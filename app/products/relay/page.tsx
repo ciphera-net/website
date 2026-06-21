@@ -1,24 +1,25 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { RelayMockup } from '@/components/ui/relay-mockup'
 import { EmailAuthMockup } from '@/components/ui/email-auth-mockup'
 import { NoTrackingMockup } from '@/components/ui/no-tracking-mockup'
 import { relayIcon, genA10, zurichPhoto } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
 import {
+  ArrowRightIcon,
+  CheckIcon,
+  GlobeIcon,
+  XIcon,
+} from '@ciphera-net/facet'
+import {
   ShieldCheck,
   Lock,
-  Eye,
   EyeSlash,
-  Globe,
-  ArrowRight,
-  Check,
-  X,
+  Eye,
   Timer,
   EnvelopeSimple,
-  Fingerprint,
 } from '@phosphor-icons/react/dist/ssr'
-import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
   title: 'Ciphera Relay - Secure Email Infrastructure',
@@ -98,347 +99,350 @@ export default function CipheraRelayPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(relaySchema) }}
       />
 
-      {/* Hero */}
-      <section className="relative -mt-[88px] min-h-screen flex items-center pt-[88px] pb-20 lg:pb-32 bg-neutral-950 overflow-hidden">
+      {/* ─── Hero — A7 full-bleed ─────────────────────────────────────── */}
+      <section className="relative overflow-hidden border-b border-border">
         <img
           src={genA10}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover grayscale brightness-[0.4]"
         />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-neutral-950 to-transparent" />
-        <div className="relative z-10 max-w-6xl mx-auto px-6">
-          <div>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-[1.1] mb-6">
-              Transactional email that respects privacy.
-            </h1>
-
-            <p className="text-xl text-neutral-300 mb-10 leading-relaxed max-w-xl">
-              The email backbone behind every Ciphera service. TLS 1.3
-              encryption, DKIM signing, and zero tracking — verification
-              codes, security alerts, and notifications delivered in under
-              2 seconds.
-            </p>
-
-            <div className="flex flex-row gap-3 flex-wrap mb-12">
-              <Button
-                size="lg"
-                className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white"
-                asChild
-              >
-                <Link href="/contact">
-                  Contact Sales <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="ghost"
-                className="gap-2 text-neutral-300 hover:text-white"
-                asChild
-              >
-                <Link href="/about">
-                  Learn More <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-
-            {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-neutral-400">
-              <span className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-brand-orange" />
-                TLS 1.3
-              </span>
-              <span className="text-neutral-700">|</span>
-              <span className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-brand-orange" />
-                DKIM / SPF / DMARC
-              </span>
-              <span className="text-neutral-700">|</span>
-              <span className="flex items-center gap-2">
-                <EyeSlash className="w-4 h-4 text-brand-orange" />
-                No tracking
-              </span>
-              <span className="text-neutral-700">|</span>
-              <span className="flex items-center gap-2">
-                <EnvelopeSimple className="w-4 h-4 text-brand-orange" />
-                99.8% deliverability
-              </span>
-            </div>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
+        />
+        <div className="relative px-6 py-24 sm:py-32">
+          <p className="font-mono text-xs text-muted-foreground">01 · Email</p>
+          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            Transactional email that respects privacy.
+          </h1>
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            The email backbone behind every Ciphera service. TLS 1.3
+            encryption, DKIM signing, and zero tracking — verification
+            codes, security alerts, and notifications delivered in under
+            2 seconds.
+          </p>
+          {/* Trust badges */}
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <Lock aria-hidden="true" className="h-3.5 w-3.5" />
+              TLS 1.3
+            </span>
+            <span aria-hidden="true" className="text-border">|</span>
+            <span className="flex items-center gap-2">
+              <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
+              DKIM / SPF / DMARC
+            </span>
+            <span aria-hidden="true" className="text-border">|</span>
+            <span className="flex items-center gap-2">
+              <EyeSlash aria-hidden="true" className="h-3.5 w-3.5" />
+              No tracking
+            </span>
+            <span aria-hidden="true" className="text-border">|</span>
+            <span className="flex items-center gap-2">
+              <EnvelopeSimple aria-hidden="true" className="h-3.5 w-3.5" />
+              99.8% deliverability
+            </span>
+          </div>
+          <div className="mt-10 flex flex-wrap items-center gap-5">
+            <Link href="/contact" className="btn-primary">
+              Contact Sales
+              <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link href="/about" className="btn-secondary">
+              Learn More
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Feature blocks */}
-      <section className="py-20 lg:py-32 bg-neutral-950 space-y-28">
-        {/* Security Alerts — text left, mockup right */}
-        <div id="alerts" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Security-critical emails, delivered fast.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                When someone tries to break into an account or a password
-                needs resetting, speed matters. Relay delivers verification
-                codes, security alerts, and lockout notifications in under
-                2 seconds — with TLS encryption from server to inbox.
-              </p>
-              <ul className="space-y-3 mb-8">
-                {[
-                  'Verification emails and password resets',
-                  'Suspicious login alerts and account lockout notices',
-                  'Billing alerts and uptime reports (Pulse)',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="relative flex items-center justify-center lg:justify-end">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={genA10}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative">
-                    <RelayMockup />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Email Authentication — mockup left, text right */}
-        <div id="authentication" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative flex items-center justify-center lg:justify-start">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={genA10}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative">
-                    <EmailAuthMockup />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Every email authenticated. Every time.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Relay signs every email with DKIM using per-domain key pairs,
-                publishes strict SPF records, and enforces DMARC with a
-                reject policy. The result: 99.8% inbox deliverability and
-                zero spoofing.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'TLS 1.3 encryption for all email transmission',
-                  'Per-domain DKIM key pairs — never shared between services',
-                  'SPF records authorize only the Relay server IP',
-                  'DMARC policy set to reject — spoofed emails are blocked',
-                  'Reverse DNS (PTR) configured for SMTP HELO compliance',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Privacy by Design — text left, mockup right */}
-        <div id="privacy-design" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Zero trackers. Zero pixels. Zero profiling.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Most email services embed tracking pixels, log open rates,
-                and profile recipients across sites. Relay sends clean
-                emails with no hidden payloads — no open tracking, no click
-                tracking, no third-party analytics. Delivery metadata is
-                retained for 30 days, then deleted.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'No tracking pixels embedded in any email',
-                  'No open or click rate monitoring',
-                  'No recipient IP logging or profiling',
-                  'No third-party analytics or data sharing',
-                  '30-day metadata retention, then permanent deletion',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="relative flex items-center justify-center lg:justify-end">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={genA10}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative">
-                    <NoTrackingMockup />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Integration — code left, text right */}
-        <div id="integration" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative flex items-center justify-center lg:justify-start">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08] p-10 flex items-center justify-center">
-                  <img
-                    src={genA10}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative">
-                    <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-6 w-full shadow-2xl space-y-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                        <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                        <span className="text-[10px] text-neutral-500 ml-2 font-mono">
-                          .env
-                        </span>
-                      </div>
-                      <pre className="font-mono text-[11px] leading-relaxed">
-                        <code>
-                          <span className="text-neutral-500"># SMTP configuration</span>{'\n'}
-                          <span className="text-purple-400">SMTP_HOST</span>
-                          <span className="text-neutral-500">=</span>
-                          <span className="text-amber-300">relay.ciphera.net</span>{'\n'}
-                          <span className="text-purple-400">SMTP_PORT</span>
-                          <span className="text-neutral-500">=</span>
-                          <span className="text-amber-300">587</span>{'\n'}
-                          <span className="text-purple-400">SMTP_USER</span>
-                          <span className="text-neutral-500">=</span>
-                          <span className="text-amber-300">authnoreply</span>{'\n'}
-                          <span className="text-purple-400">SMTP_FROM</span>
-                          <span className="text-neutral-500">=</span>
-                          <span className="text-amber-300">noreply@id.ciphera.net</span>{'\n'}
-                          {'\n'}
-                          <span className="text-neutral-500"># Per-service sender domains</span>{'\n'}
-                          <span className="text-neutral-600"># Auth  → noreply@id.ciphera.net</span>{'\n'}
-                          <span className="text-neutral-600"># Pulse → noreply@pulse.ciphera.net</span>
-                        </code>
-                      </pre>
-                      <div className="flex items-center justify-between text-[10px] text-neutral-500 border-t border-neutral-800 pt-3">
-                        <span>Standard SMTP AUTH — works with any language</span>
-                        <span className="flex items-center gap-1">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                          STARTTLS
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Standard SMTP. Any language.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                No SDK, no proprietary API. Relay uses standard SMTP AUTH
-                over port 587 with STARTTLS — it works with any language,
-                framework, or email library. Each Ciphera service gets its
-                own sender domain and DKIM key for clean provenance.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'SMTP AUTH on port 587 (STARTTLS) or 465 (implicit TLS)',
-                  'Per-service sender domains for email provenance',
-                  'Works with Go, Node.js, Python, PHP — any SMTP client',
-                  'Sub-2-second delivery for transactional emails',
-                  'No proprietary SDK or API lock-in',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Comparison — side by side cards */}
-      <section id="comparison" className="py-20 lg:py-32 bg-neutral-950 border-t border-white/[0.04] scroll-mt-28">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
-              How Ciphera Relay compares.
+      {/* ─── 01 · Email — Security-critical emails ───────────────────── */}
+      <section id="alerts" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Copy cell */}
+          <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
+            <p className="font-mono text-xs text-muted-foreground">01 · Email</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Security-critical emails, delivered fast.
             </h2>
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
-              Most email services track opens, clicks, and recipient behavior.
-              Relay just delivers the email.
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              When someone tries to break into an account or a password
+              needs resetting, speed matters. Relay delivers verification
+              codes, security alerts, and lockout notifications in under
+              2 seconds — with TLS encryption from server to inbox.
             </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'Verification emails and password resets',
+                'Suspicious login alerts and account lockout notices',
+                'Billing alerts and uptime reports (Pulse)',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Relay card — highlighted */}
-            <div className="rounded-xl border border-brand-orange/20 bg-neutral-900/80 p-8 relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-orange" />
+          {/* Visual cell — flat, fluid, no fixed width */}
+          <div className="relative min-h-[400px] min-w-0 overflow-hidden border-t border-border lg:border-l lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
+            <div className="w-full max-w-md min-w-0">
+              <RelayMockup />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 02 · Auth — DKIM/SPF ────────────────────────────────────── */}
+      <section id="authentication" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Visual cell — left on desktop */}
+          <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
+            <div className="w-full max-w-md">
+              <EmailAuthMockup />
+            </div>
+          </div>
+
+          {/* Copy cell */}
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+            <p className="font-mono text-xs text-muted-foreground">02 · Auth</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Every email authenticated. Every time.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Relay signs every email with DKIM using per-domain key pairs,
+              publishes strict SPF records, and enforces DMARC with a
+              reject policy. The result: 99.8% inbox deliverability and
+              zero spoofing.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'TLS 1.3 encryption for all email transmission',
+                'Per-domain DKIM key pairs — never shared between services',
+                'SPF records authorize only the Relay server IP',
+                'DMARC policy set to reject — spoofed emails are blocked',
+                'Reverse DNS (PTR) configured for SMTP HELO compliance',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 03 · No tracking ────────────────────────────────────────── */}
+      <section id="privacy-design" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Copy cell */}
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
+            <p className="font-mono text-xs text-muted-foreground">03 · No tracking</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Zero trackers. Zero pixels. Zero profiling.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Most email services embed tracking pixels, log open rates,
+              and profile recipients across sites. Relay sends clean
+              emails with no hidden payloads — no open tracking, no click
+              tracking, no third-party analytics. Delivery metadata is
+              retained for 30 days, then deleted.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'No tracking pixels embedded in any email',
+                'No open or click rate monitoring',
+                'No recipient IP logging or profiling',
+                'No third-party analytics or data sharing',
+                '30-day metadata retention, then permanent deletion',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Visual cell — flat, fluid */}
+          <div className="relative min-h-[400px] border-t border-border lg:border-l lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
+            <div className="w-full max-w-md">
+              <NoTrackingMockup />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Standard SMTP integration — inline visual ───────────────── */}
+      <section id="integration" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Visual cell — left on desktop */}
+          <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
+            <div className="w-full max-w-md min-w-0">
+              {/* SMTP config mockup — flat, sharp */}
+              <div className="border border-border bg-background p-6 space-y-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-3 h-3 bg-red-500/60" />
+                  <div className="w-3 h-3 bg-yellow-500/60" />
+                  <div className="w-3 h-3 bg-green-500/60" />
+                  <span className="font-mono text-[10px] text-muted-foreground ml-2">.env</span>
+                </div>
+                <pre className="font-mono text-[11px] leading-relaxed">
+                  <code>
+                    <span className="text-muted-foreground"># SMTP configuration</span>{'\n'}
+                    <span className="text-foreground">SMTP_HOST</span>
+                    <span className="text-muted-foreground">=</span>
+                    <span className="text-primary">relay.ciphera.net</span>{'\n'}
+                    <span className="text-foreground">SMTP_PORT</span>
+                    <span className="text-muted-foreground">=</span>
+                    <span className="text-primary">587</span>{'\n'}
+                    <span className="text-foreground">SMTP_USER</span>
+                    <span className="text-muted-foreground">=</span>
+                    <span className="text-primary">authnoreply</span>{'\n'}
+                    <span className="text-foreground">SMTP_FROM</span>
+                    <span className="text-muted-foreground">=</span>
+                    <span className="text-primary">noreply@id.ciphera.net</span>{'\n'}
+                    {'\n'}
+                    <span className="text-muted-foreground"># Per-service sender domains</span>{'\n'}
+                    <span className="text-muted-foreground/60"># Auth  → noreply@id.ciphera.net</span>{'\n'}
+                    <span className="text-muted-foreground/60"># Pulse → noreply@pulse.ciphera.net</span>
+                  </code>
+                </pre>
+                <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground border-t border-border pt-3">
+                  <span>Standard SMTP AUTH — works with any language</span>
+                  <span className="flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 bg-green-500" />
+                    STARTTLS
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Copy cell */}
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+            <p className="font-mono text-xs text-muted-foreground">03 · No tracking</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Standard SMTP. Any language.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              No SDK, no proprietary API. Relay uses standard SMTP AUTH
+              over port 587 with STARTTLS — it works with any language,
+              framework, or email library. Each Ciphera service gets its
+              own sender domain and DKIM key for clean provenance.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'SMTP AUTH on port 587 (STARTTLS) or 465 (implicit TLS)',
+                'Per-service sender domains for email provenance',
+                'Works with Go, Node.js, Python, PHP — any SMTP client',
+                'Sub-2-second delivery for transactional emails',
+                'No proprietary SDK or API lock-in',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 04 · Swiss privacy — photo left, copy right ─────────────── */}
+      <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
+        <div className="grid lg:grid-cols-2">
+          {/* Photo cell */}
+          <div className="relative min-h-[400px] border-b border-border lg:border-b-0 lg:border-r">
+            <Image
+              src={zurichPhoto}
+              alt="Zurich, Switzerland — where Ciphera email is hosted"
+              fill
+              unoptimized
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover grayscale"
+            />
+            {/* Flat info items overlaid at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
+              {[
+                { icon: GlobeIcon, title: 'Data residency', desc: 'Exoscale, Switzerland (CH-DK-2)' },
+                { icon: Timer, title: 'Data retention', desc: '30 days, then deleted' },
+                { icon: ShieldCheck, title: 'Compliance', desc: 'GDPR, FADP, no tracking' },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="flex items-center gap-3 border border-border bg-card px-4 py-3"
+                >
+                  <item.icon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">{item.title}</p>
+                    <p className="font-mono text-[11px] text-muted-foreground">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Copy cell */}
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
+            <p className="font-mono text-xs text-muted-foreground">04 · Swiss privacy</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              Swiss infrastructure. Swiss privacy laws.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Relay runs on Exoscale in Switzerland, protected by the
+              Swiss Federal Act on Data Protection (FADP). Email metadata
+              is retained for 30 days under contract performance basis,
+              then permanently deleted. No marketing emails, no behavioral
+              data, no profiling.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                'Hosted on Exoscale, Zurich (CH-DK-2)',
+                'Stalwart Mail Server — open-source foundation',
+                'Admin UI bound to localhost only (SSH tunnel access)',
+                "Let's Encrypt TLS certificates with auto-renewal",
+                'Transactional only — marketing emails are never sent',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 05 · Compare ────────────────────────────────────────────── */}
+      <section id="comparison" className="border-b border-border scroll-mt-20">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">05 · Compare</p>
+          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            How Ciphera Relay compares.
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Most email services track opens, clicks, and recipient behavior.
+            Relay just delivers the email.
+          </p>
+
+          <div className="mt-14 grid gap-px bg-border md:grid-cols-2 max-w-4xl">
+            {/* Relay card */}
+            <div className="bg-background p-8">
               <div className="flex items-center gap-3 mb-8">
-                <img
-                  src={relayIcon}
-                  alt="Ciphera Relay"
-                  width={40}
-                  height={40}
-                  className="w-10 h-10 rounded-lg object-contain"
-                />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-card">
+                  <img
+                    src={relayIcon}
+                    alt="Ciphera Relay"
+                    width={24}
+                    height={24}
+                    className="h-6 w-6 object-contain"
+                  />
+                </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">Ciphera Relay</h3>
-                  <p className="text-xs text-brand-orange">Privacy-first email</p>
+                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Ciphera Relay</h3>
+                  <p className="font-mono text-xs text-primary">Privacy-first email</p>
                 </div>
               </div>
               <ul className="space-y-4">
@@ -453,26 +457,23 @@ export default function CipheraRelayPage() {
                   'Transactional only — no marketing',
                   'Sub-2-second delivery',
                 ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-3 text-neutral-300"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0" />
+                  <li key={item} className="flex items-center gap-3 text-foreground">
+                    <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     <span className="text-sm">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Others card — muted */}
-            <div className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-8">
+            {/* Others card */}
+            <div className="bg-background p-8">
               <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 rounded-lg bg-neutral-800 flex items-center justify-center">
-                  <Eye className="w-5 h-5 text-neutral-500" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-card">
+                  <Eye aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">Traditional Services</h3>
-                  <p className="text-xs text-neutral-500">SendGrid, Postmark, SES</p>
+                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Traditional Services</h3>
+                  <p className="font-mono text-xs text-muted-foreground">SendGrid, Postmark, SES</p>
                 </div>
               </div>
               <ul className="space-y-4">
@@ -489,12 +490,12 @@ export default function CipheraRelayPage() {
                 ].map((item) => (
                   <li
                     key={item.feature}
-                    className={`flex items-center gap-3 ${item.has ? 'text-neutral-400' : 'text-neutral-500'}`}
+                    className={`flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
                   >
                     {item.has ? (
-                      <Check className="w-5 h-5 text-neutral-500 shrink-0" />
+                      <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                     ) : (
-                      <X className="w-5 h-5 text-neutral-600 shrink-0" />
+                      <XIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                     )}
                     <span className="text-sm">{item.feature}</span>
                   </li>
@@ -505,112 +506,35 @@ export default function CipheraRelayPage() {
         </div>
       </section>
 
-      {/* Swiss Privacy — photo left, text right */}
-      <section id="privacy" className="py-20 lg:py-32 bg-neutral-950 scroll-mt-28">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative flex items-center justify-center lg:justify-start">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand-orange/8 rounded-[2.5rem] blur-3xl" />
-                <div className="relative w-[560px] h-[600px] rounded-3xl overflow-hidden border border-white/[0.08]">
-                  <img
-                    src={zurichPhoto}
-                    alt="Zurich, Switzerland"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 space-y-2.5">
-                    {[
-                      { icon: Globe, title: 'Data residency', desc: 'Exoscale, Switzerland (CH-DK-2)' },
-                      { icon: Timer, title: 'Data retention', desc: '30 days, then deleted' },
-                      { icon: ShieldCheck, title: 'Compliance', desc: 'GDPR, FADP, no tracking' },
-                    ].map((item) => (
-                      <div key={item.title} className="flex items-center gap-3 rounded-xl bg-neutral-900/80 border border-white/[0.08] px-4 py-3 backdrop-blur-sm">
-                        <item.icon className="w-5 h-5 text-brand-orange shrink-0" />
-                        <div>
-                          <p className="text-xs font-semibold text-white">{item.title}</p>
-                          <p className="text-[11px] text-neutral-400">{item.desc}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Swiss infrastructure. Swiss privacy laws.
-              </h2>
-              <p className="text-lg text-neutral-400 leading-relaxed mb-6">
-                Relay runs on Exoscale in Switzerland, protected by the
-                Swiss Federal Act on Data Protection (FADP). Email metadata
-                is retained for 30 days under contract performance basis,
-                then permanently deleted. No marketing emails, no behavioral
-                data, no profiling.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'Hosted on Exoscale, Zurich (CH-DK-2)',
-                  'Stalwart Mail Server — open-source foundation',
-                  'Admin UI bound to localhost only (SSH tunnel access)',
-                  'Let\'s Encrypt TLS certificates with auto-renewal',
-                  'Transactional only — marketing emails are never sent',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-neutral-400"
-                  >
-                    <Check className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 lg:py-32 bg-neutral-950">
-        <div className="container mx-auto px-6">
-          <div className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-neutral-900/80 px-6 py-20 sm:px-10 sm:py-24 max-w-6xl mx-auto">
-            <img
-              src={genA10}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/50" />
-
-            <div className="relative z-10 text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Interested in Ciphera Relay?
-              </h2>
-              <p className="text-lg text-neutral-300 mb-10">
-                Ciphera Relay is currently an internal service powering email
-                delivery across the Ciphera ecosystem. Reach out if you&apos;re
-                interested in the technology for your platform.
-              </p>
-              <div className="flex flex-row gap-3 justify-center flex-wrap">
-                <Button
-                  size="lg"
-                  className="gap-2 bg-brand-orange-button hover:bg-brand-orange-button-hover text-white"
-                  asChild
-                >
-                  <Link href="/contact">
-                    Contact Us <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="ghost"
-                  className="gap-2 text-neutral-300 hover:text-white border border-white/10"
-                  asChild
-                >
-                  <Link href="/about">About Ciphera</Link>
-                </Button>
-              </div>
-            </div>
+      {/* ─── 06 · Get started — A7 full-bleed CTA ────────────────────── */}
+      <section className="relative overflow-hidden border-b border-border">
+        <img
+          src={genA10}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover grayscale brightness-[0.4]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
+        />
+        <div className="relative px-6 py-24 sm:py-32">
+          <p className="font-mono text-xs text-muted-foreground">06 · Get started</p>
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            Interested in Ciphera Relay?
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Ciphera Relay is currently an internal service powering email
+            delivery across the Ciphera ecosystem. Reach out if you&apos;re
+            interested in the technology for your platform.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-5">
+            <Link href="/contact" className="btn-primary">
+              Contact Us
+              <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link href="/about" className="btn-secondary">
+              About Ciphera
+            </Link>
           </div>
         </div>
       </section>
