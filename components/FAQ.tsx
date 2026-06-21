@@ -53,7 +53,7 @@ const GROUPS: FAQGroup[] = [
       },
       {
         q: 'How does Ciphera handle password storage?',
-        a: "Your password is hashed client-side using PBKDF2 before being sent to our servers, where it's hashed again with Argon2id. This double-hashing approach means we never see your actual password — not during signup, login, or at any other point.",
+        a: "Your password never leaves your device. We use OPAQUE (RFC 9807), a password-authenticated key exchange: your password is stretched on your device with Argon2id and proven to our servers without ever being sent. We store only an opaque credential record, so we never see your actual password — not during signup, login, or at any other point.",
       },
     ],
   },

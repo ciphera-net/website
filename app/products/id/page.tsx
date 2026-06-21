@@ -18,14 +18,14 @@ import { ShieldCheck, Fingerprint, Key, Timer } from '@phosphor-icons/react/dist
 export const metadata: Metadata = {
   title: 'Ciphera ID - Secure Identity Provider',
   description:
-    'Enterprise-grade authentication with double-hashed passwords (PBKDF2 + Argon2id), passkeys, 2FA, and OAuth 2.0 with PKCE. The identity layer behind Ciphera.',
+    'Enterprise-grade authentication with zero-knowledge password authentication (OPAQUE), passkeys, 2FA, and OAuth 2.0 with PKCE. The identity layer behind Ciphera.',
   alternates: {
     canonical: 'https://ciphera.net/products/id',
   },
   openGraph: {
     title: 'Ciphera ID - Secure Identity Provider',
     description:
-      'Enterprise-grade authentication with double-hashed passwords (PBKDF2 + Argon2id), passkeys, 2FA, and OAuth 2.0 with PKCE.',
+      'Enterprise-grade authentication with zero-knowledge password authentication (OPAQUE), passkeys, 2FA, and OAuth 2.0 with PKCE.',
     url: 'https://ciphera.net/products/id',
     siteName: 'Ciphera',
     images: [
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Ciphera ID - Secure Identity Provider',
     description:
-      'Enterprise-grade authentication with double-hashed passwords, passkeys, and OAuth 2.0 with PKCE.',
+      'Enterprise-grade authentication with zero-knowledge password authentication (OPAQUE), passkeys, and OAuth 2.0 with PKCE.',
     images: [cdnUrl('/id_icon_no_margins.png')],
   },
 }
@@ -54,7 +54,7 @@ const idSchema = [
     '@type': 'SoftwareApplication',
     name: 'Ciphera ID',
     description:
-      'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles. Secure identity management with double-hashed passwords and two-factor authentication.',
+      'Enterprise-grade authentication with OAuth2, JWT, and zero-knowledge principles. Secure identity management with zero-knowledge OPAQUE password authentication and two-factor authentication.',
     applicationCategory: 'SecurityApplication',
     operatingSystem: 'Web',
     url: 'https://ciphera.net/products/id',
@@ -114,15 +114,15 @@ export default function CipheraIDPage() {
             One identity.<br />Complete privacy.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            The identity layer behind every Ciphera service. Double-hashed
-            passwords, passkeys, two-factor authentication, and OAuth 2.0
-            — all on Swiss infrastructure.
+            The identity layer behind every Ciphera service. Zero-knowledge
+            password authentication, passkeys, two-factor authentication,
+            and OAuth 2.0 — all on Swiss infrastructure.
           </p>
           {/* Trust badges */}
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-muted-foreground">
             <span className="flex items-center gap-2">
               <LockIcon aria-hidden="true" className="h-3.5 w-3.5" />
-              Double-hashed
+              Zero-knowledge
             </span>
             <span aria-hidden="true" className="text-border">|</span>
             <span className="flex items-center gap-2">
@@ -152,8 +152,8 @@ export default function CipheraIDPage() {
         </div>
       </section>
 
-      {/* ─── 01 · Authentication — Double Hashing ────────────────────── */}
-      <section id="double-hashing" className="overflow-hidden border-b border-border scroll-mt-20">
+      {/* ─── 01 · Authentication — Zero-knowledge auth ───────────────── */}
+      <section id="zero-knowledge-auth" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Copy cell */}
           <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
@@ -162,18 +162,18 @@ export default function CipheraIDPage() {
               Your password never leaves your device.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Your raw password is transformed in your browser before
-              it&apos;s sent anywhere. Even if someone intercepts the
-              connection, they don&apos;t get your actual password. On
-              our end, we hash it again — so even a full database breach
-              gives attackers nothing usable.
+              With OPAQUE (RFC 9807), your password is stretched on your
+              device with Argon2id and proven to our servers without ever
+              being sent. We store only an opaque credential record that
+              can&apos;t be reversed into your password — so even a full
+              database breach gives attackers nothing usable.
             </p>
             <ul className="mt-8 space-y-3">
               {[
-                'Client-side PBKDF2-SHA256 with email as salt',
-                'Server-side Argon2id (64 MiB memory, 3 iterations)',
-                'Constant-time comparison prevents timing attacks',
-                'Hash pool limits concurrent operations to prevent DoS',
+                'OPAQUE (RFC 9807) — your password is never sent to our servers',
+                'On-device Argon2id key stretching',
+                'We store only an opaque credential record — no password, hash, or verifier',
+                'No password reset: recovery uses your 24-word phrase, which we never hold',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-muted-foreground">
                   <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
@@ -229,8 +229,8 @@ export default function CipheraIDPage() {
                     </div>
                     <ArrowRightIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                     <div className="flex-1 border border-border bg-background px-3 py-2">
-                      <p className="font-mono text-[10px] text-muted-foreground mb-0.5">Scrambled again</p>
-                      <p className="font-mono text-[11px] text-muted-foreground truncate">$argon2id$v=19...</p>
+                      <p className="font-mono text-[10px] text-muted-foreground mb-0.5">Opaque record</p>
+                      <p className="font-mono text-[11px] text-muted-foreground truncate">9f2c4e8a…b1d7</p>
                     </div>
                   </div>
                 </div>
@@ -247,7 +247,7 @@ export default function CipheraIDPage() {
 
                 {/* Database */}
                 <div className="border border-border bg-background px-4 py-3 text-center">
-                  <p className="font-mono text-[11px] text-muted-foreground truncate">$argon2id$v=19$m=65536,t=3,p=2$kR7x...</p>
+                  <p className="font-mono text-[11px] text-muted-foreground truncate">opaque credential · 9f2c4e8a…b1d7</p>
                   <p className="font-mono text-[9px] text-muted-foreground/60 mt-1">Unreadable — even to us</p>
                 </div>
               </div>
@@ -421,8 +421,8 @@ export default function CipheraIDPage() {
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               All identity data is stored on Swiss infrastructure,
               protected by the Swiss Federal Act on Data Protection (FADP).
-              Passwords are double-hashed, IPs are HMAC-hashed, and audit
-              logs are batched asynchronously — privacy at every layer.
+              Passwords use zero-knowledge OPAQUE auth, IPs are HMAC-hashed,
+              and audit logs are batched asynchronously — privacy at every layer.
             </p>
             <ul className="mt-8 space-y-3">
               {[
@@ -475,14 +475,14 @@ export default function CipheraIDPage() {
               </div>
               <ul className="space-y-4">
                 {[
-                  'Double-hashed passwords (PBKDF2 + Argon2id)',
+                  'Zero-knowledge password auth (OPAQUE, RFC 9807)',
                   'Self-hosted on Swiss infrastructure',
                   'Passkeys (FIDO2/WebAuthn)',
                   'Mandatory PKCE (S256 only)',
                   'Stateless token verification',
                   'HMAC-hashed device fingerprints',
                   'Escalating account lockout',
-                  'Hash pool concurrency limits',
+                  'Argon2id key stretching (client-side)',
                   'Built-in organization management',
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3 text-foreground">

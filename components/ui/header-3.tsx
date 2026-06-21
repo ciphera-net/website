@@ -68,7 +68,7 @@ const productFeatures: Record<string, FeatureLink[]> = {
         { title: 'Email Reports', href: '#reports', icon: Send, description: 'Scheduled inbox summaries' },
     ],
     '/products/id': [
-        { title: 'Double Hashing', href: '#double-hashing', icon: Lock, description: 'PBKDF2 + Argon2id' },
+        { title: 'Zero-knowledge auth', href: '#zero-knowledge-auth', icon: Lock, description: 'OPAQUE — password never sent' },
         { title: 'Passkeys & 2FA', href: '#passkeys', icon: Fingerprint, description: 'WebAuthn, TOTP & recovery' },
         { title: 'Unified Login', href: '#oauth', icon: ScanLine, description: 'OAuth 2.0 with PKCE' },
         { title: 'Security Dashboard', href: '#security', icon: ShieldCheck, description: 'Audit log & device trust' },
