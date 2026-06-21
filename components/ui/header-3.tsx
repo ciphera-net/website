@@ -13,37 +13,40 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { LucideIcon } from 'lucide-react';
+import {
+    UsersIcon as Users,
+    MailIcon as Mail,
+    BarChartIcon as BarChart3,
+    EyeIcon as Eye,
+    FunnelIcon as Funnel,
+    LockIcon as Lock,
+    EyeOffIcon as EyeOff,
+    BookOpenIcon as BookOpen,
+} from '@ciphera-net/facet';
 import {
     Shield,
-    FileText,
-    Users,
-    Leaf,
-    HelpCircle,
-    Mail,
-    BarChart3,
-    Eye,
-    Funnel,
-    Send,
-    Lock,
-    Fingerprint,
-    ScanLine,
     ShieldCheck,
-    Puzzle,
-    Activity,
-    Server,
-    EyeOff,
-    Cable,
-    BookOpen,
-} from 'lucide-react';
+    FileText,
+    Leaf,
+    Question as HelpCircle,
+    PaperPlaneTilt as Send,
+    Fingerprint,
+    Scan as ScanLine,
+    PuzzlePiece as Puzzle,
+    Pulse as Activity,
+    HardDrives as Server,
+    PlugsConnected as Cable,
+} from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import { track } from '@/lib/pulse';
 import { pulseIcon, authIcon, captchaIcon, relayIcon, cipheraIcon } from '@/lib/images';
 
+type IconType = React.ComponentType<{ className?: string }>;
+
 type LinkItem = {
     title: string;
     href: string;
-    icon?: LucideIcon;
+    icon?: IconType;
     image?: string;
     description?: string;
 };
@@ -55,7 +58,7 @@ const productBranding: Record<string, { logo: string; name: string; signIn?: str
     '/products/relay': { logo: relayIcon, name: 'Ciphera Relay' },
 };
 
-type FeatureLink = { title: string; href: string; icon: LucideIcon; description: string };
+type FeatureLink = { title: string; href: string; icon: IconType; description: string };
 
 const productFeatures: Record<string, FeatureLink[]> = {
     '/products/pulse': [
@@ -104,7 +107,7 @@ export function Header() {
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border">
-            <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300", scrolled ? "opacity-100 backdrop-blur-xl bg-neutral-950/60 supports-[backdrop-filter]:bg-neutral-950/50" : "opacity-0")} />
+            <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300", scrolled ? "opacity-100 bg-background/95" : "opacity-0")} />
             {/* Same column as the page rails (max-w-6xl + sm:border-x) so the
                 vertical lines run continuously from header through every section. */}
             {/* py-3 (not my-3 on the nav): a child margin would collapse through
@@ -114,7 +117,7 @@ export function Header() {
             <div className="mx-auto w-full max-w-6xl py-3 sm:border-x sm:border-border">
             <nav className="flex h-16 w-full items-center justify-between px-6">
                 <div className="flex items-center gap-5">
-                    <a href={branding ? pathname : "/"} className="hover:bg-accent rounded-md p-2 -ml-2 flex items-center gap-2">
+                    <a href={branding ? pathname : "/"} className="hover:bg-accent p-2 -ml-2 flex items-center gap-2">
                         <Image
                             src={branding?.logo || cipheraIcon}
                             alt={branding?.name || "Ciphera"}
@@ -134,7 +137,7 @@ export function Header() {
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger className="bg-transparent">Features</NavigationMenuTrigger>
                                     <NavigationMenuContent className="bg-transparent p-1 pr-1.5">
-                                        <ul className="grid w-[32rem] grid-cols-2 gap-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
+                                        <ul className="grid w-[32rem] grid-cols-2 gap-2 border border-border bg-card p-2">
                                             {features.map((item, i) => (
                                                 <li key={i}>
                                                     <ListItem title={item.title} href={item.href} icon={item.icon} description={item.description} />
@@ -147,7 +150,7 @@ export function Header() {
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger className="bg-transparent">{features ? 'All Products' : 'Products'}</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5">
-                                    <ul className="grid w-[32rem] grid-cols-2 gap-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
+                                    <ul className="grid w-[32rem] grid-cols-2 gap-2 border border-border bg-card p-2">
                                         {productLinks.map((item, i) => (
                                             <li key={i}>
                                                 <ListItem {...item} />
@@ -168,7 +171,7 @@ export function Header() {
                                 <NavigationMenuTrigger className="bg-transparent">Company</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5 pb-1.5">
                                     <div className="grid w-[32rem] grid-cols-2 gap-2">
-                                        <ul className="space-y-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
+                                        <ul className="space-y-2 border border-border bg-card p-2">
                                             {companyLinks.map((item, i) => (
                                                 <li key={i}>
                                                     <ListItem {...item} />
@@ -180,7 +183,7 @@ export function Header() {
                                                 <li key={i}>
                                                     <NavigationMenuLink
                                                         href={item.href}
-                                                        className="flex p-2 hover:bg-white/[0.06] flex-row rounded-md items-center gap-x-2 transition-colors"
+                                                        className="flex p-2 hover:bg-accent flex-row items-center gap-x-2 transition-colors"
                                                     >
                                                         {item.icon && <item.icon className="text-foreground size-4" />}
                                                         <span className="text-sm font-medium">{item.title}</span>
@@ -195,7 +198,7 @@ export function Header() {
                                 <NavigationMenuTrigger className="bg-transparent">Resources & Support</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5 pb-1.5">
                                     <div className="grid w-[32rem] grid-cols-2 gap-2">
-                                        <ul className="space-y-2 rounded-md border border-white/[0.06] bg-white/[0.04] p-2">
+                                        <ul className="space-y-2 border border-border bg-card p-2">
                                             {resourcesLinks.map((item, i) => (
                                                 <li key={i}>
                                                     <ListItem {...item} />
@@ -207,7 +210,7 @@ export function Header() {
                                             <p className="text-xs text-muted-foreground leading-relaxed">
                                                 Questions about our privacy tools, security concerns, or partnership inquiries — we typically respond within 24-48 hours.
                                             </p>
-                                            <a href="mailto:hello@ciphera.net" className="text-sm font-medium text-brand-orange hover:underline">
+                                            <a href="mailto:hello@ciphera.net" className="text-sm font-medium text-primary hover:underline">
                                                 hello@ciphera.net →
                                             </a>
                                         </div>
@@ -295,7 +298,7 @@ function MobileMenu({ open, children, className, ...props }: MobileMenuProps) {
         <div
             id="mobile-menu"
             className={cn(
-                'bg-background/95 supports-[backdrop-filter]:bg-background/50 backdrop-blur-lg',
+                'bg-background',
                 'fixed top-16 right-0 bottom-0 left-0 z-40 flex flex-col overflow-hidden border-y md:hidden',
             )}
         >
@@ -325,9 +328,9 @@ function ListItem({
     ...props
 }: React.ComponentProps<typeof NavigationMenuLink> & LinkItem) {
     return (
-        <NavigationMenuLink className={cn('w-full flex flex-row gap-x-2 data-[active=true]:focus:bg-white/[0.06] data-[active=true]:hover:bg-white/[0.06] data-[active=true]:text-accent-foreground hover:bg-white/[0.06] hover:text-accent-foreground focus:bg-white/[0.06] focus:text-accent-foreground rounded-sm p-2 transition-colors', className)} {...props} asChild>
+        <NavigationMenuLink className={cn('w-full flex flex-row gap-x-2 data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:text-accent-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground p-2 transition-colors', className)} {...props} asChild>
             <a href={href}>
-                <div className="flex aspect-square size-12 items-center justify-center rounded-md border border-white/[0.08] bg-white/[0.05] shadow-sm p-2">
+                <div className="flex aspect-square size-12 items-center justify-center border border-border bg-card p-2">
                     {image ? (
                         <Image src={image} alt={title} width={32} height={32} className="object-contain max-w-8 max-h-8" unoptimized />
                     ) : Icon ? (
