@@ -1,15 +1,14 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { officeHq } from '@/lib/images'
-import { 
-  Input, 
-  Button, 
-  MailIcon, 
-  GlobeIcon, 
-  CheckCircleIcon, 
+import {
+  Input,
+  Button,
+  MailIcon,
+  GlobeIcon,
+  CheckCircleIcon,
   LockIcon,
   ArrowRightIcon,
   GithubIcon,
@@ -117,7 +116,7 @@ export default function ContactPage() {
   })
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null)
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
-  
+
   // * Captcha state - matching auth implementation
   const [captchaId, setCaptchaId] = useState('')
   const [captchaSolution, setCaptchaSolution] = useState('')
@@ -176,7 +175,7 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setErrorMessage('')
-    
+
     // * Validate all fields
     const errors = {
       name: validateField('name', formData.name),
@@ -246,469 +245,419 @@ export default function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
       />
-      {/* * Hero Section */}
-      <section className="relative pt-16 pb-12 md:pt-24 md:pb-16 overflow-hidden">
 
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-sm text-brand-orange mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
-              Get in Touch
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
-              We&apos;re here to{' '}
-              <span className="text-brand-orange">help</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
-              Have questions about our privacy tools? Want to report a security issue? 
-              Or just want to say hello? We'd love to hear from you.
-            </p>
-          </motion.div>
+      {/* * Hero — A1 full-bleed section with A2 mono kicker + font-display h1 */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">Get in Touch</p>
+          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            We&apos;re here to{' '}
+            <span className="text-primary">help</span>
+          </h1>
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Have questions about our privacy tools? Want to report a security issue?
+            Or just want to say hello? We&apos;d love to hear from you.
+          </p>
         </div>
       </section>
 
-      {/* * Contact Methods */}
-      <section className="max-w-6xl mx-auto px-6 pb-16 md:pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {contactMethods.map((method, index) => {
-            const Icon = method.icon
-            return (
-              <motion.div
-                key={method.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group rounded-xl border border-white/[0.08] bg-white/[0.04] p-6 text-center hover:bg-white/[0.06] transition-colors relative"
-              >
-                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
-                  <Icon className="w-7 h-7 text-brand-orange" />
+      {/* * Contact methods — A1 section with A5 flat cards */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">01 · Contact</p>
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Reach us directly
+          </h2>
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {contactMethods.map((method) => {
+              const Icon = method.icon
+              return (
+                <div
+                  key={method.title}
+                  className="border border-border bg-card p-6"
+                >
+                  {/* A6 icon — bare icon, no colored bubble */}
+                  <Icon className="h-5 w-5 text-muted-foreground" />
+                  <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">
+                    {method.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {method.description}
+                  </p>
+                  <div className="mt-4 flex items-center gap-2">
+                    <a
+                      href={method.href}
+                      className="text-sm text-primary font-medium hover:underline"
+                      onClick={() => track(method.trackEvent)}
+                    >
+                      {method.value}
+                    </a>
+                    <button
+                      onClick={() => copyToClipboard(method.value)}
+                      className="p-1 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
+                      title="Copy to clipboard"
+                    >
+                      {copiedEmail === method.value ? (
+                        <CheckCircleIcon className="w-4 h-4 text-primary" />
+                      ) : (
+                        <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                  <p className="mt-2 font-mono text-xs text-muted-foreground">
+                    Response: {method.responseTime}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-1">
-                  {method.title}
-                </h3>
-                <p className="text-sm text-neutral-400 mb-3">
-                  {method.description}
-                </p>
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <a
-                    href={method.href}
-                    className="text-brand-orange font-medium hover:underline"
-                    onClick={() => track(method.trackEvent)}
-                  >
-                    {method.value}
-                  </a>
-                  <button
-                    onClick={() => copyToClipboard(method.value)}
-                    className="p-1.5 rounded-lg hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
-                    title="Copy to clipboard"
-                  >
-                    {copiedEmail === method.value ? (
-                      <CheckCircleIcon className="w-4 h-4 text-brand-orange" />
-                    ) : (
-                      <svg className="w-4 h-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
-                <p className="text-xs text-neutral-400">
-                  Response: {method.responseTime}
-                </p>
-              </motion.div>
-            )
-          })}
-          
-          {/* * Phone number card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="group rounded-xl border border-white/[0.08] bg-white/[0.04] p-6 text-center hover:bg-white/[0.06] transition-colors"
-          >
-            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
-              <svg className="w-7 h-7 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              )
+            })}
+
+            {/* * Phone number card */}
+            <div className="border border-border bg-card p-6">
+              {/* A6 icon — framed bare icon */}
+              <svg className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
+              <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">
+                Phone
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                For urgent matters
+              </p>
+              <div className="mt-4 flex items-center gap-2">
+                <a
+                  href="tel:+32078480710"
+                  className="text-sm text-primary font-medium hover:underline"
+                  onClick={() => track('contact_phone_click')}
+                >
+                  +32 078 480 710
+                </a>
+                <button
+                  onClick={() => copyToClipboard('+32 078 480 710')}
+                  className="p-1 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
+                  title="Copy to clipboard"
+                >
+                  {copiedEmail === '+32 078 480 710' ? (
+                    <CheckCircleIcon className="w-4 h-4 text-primary" />
+                  ) : (
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <p className="mt-2 font-mono text-xs text-muted-foreground">
+                Mon-Fri, 08:00-12:00, 13:00-18:00
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-1">
-              Phone
-            </h3>
-            <p className="text-sm text-neutral-400 mb-3">
-              For urgent matters
-            </p>
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <a
-                href="tel:+32078480710"
-                className="text-brand-orange font-medium hover:underline"
-                onClick={() => track('contact_phone_click')}
-              >
-                +32 078 480 710
-              </a>
-              <button
-                onClick={() => copyToClipboard('+32 078 480 710')}
-                className="p-1.5 rounded-lg hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-orange"
-                title="Copy to clipboard"
-              >
-                {copiedEmail === '+32 078 480 710' ? (
-                  <CheckCircleIcon className="w-4 h-4 text-brand-orange" />
-                ) : (
-                  <svg className="w-4 h-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                )}
-              </button>
-            </div>
-            <p className="text-xs text-neutral-400">
-              Mon-Fri, 08:00-12:00, 13:00-18:00
-            </p>
-          </motion.div>
-        </div>
+          </div>
 
-        {/* * Social media links */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-8 text-center"
-        >
-          <p className="text-sm text-neutral-400 mb-4">
-            You can also reach us on
-          </p>
-          <div className="flex items-center justify-center gap-4">
+          {/* * Social links */}
+          <div className="mt-10 flex items-center gap-2">
+            <p className="font-mono text-xs text-muted-foreground">Also on</p>
             <a
               href="https://github.com/ciphera-net"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 transition-colors text-neutral-300"
+              className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-background transition-colors"
               onClick={() => track('contact_github_click')}
             >
-              <GithubIcon className="w-5 h-5" />
+              <GithubIcon className="w-4 h-4" />
               GitHub
             </a>
             <a
               href="mailto:hello@ciphera.net"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 transition-colors text-neutral-300"
+              className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-background transition-colors"
               onClick={() => track('contact_email_direct_click')}
             >
-              <MailIcon className="w-5 h-5" />
+              <MailIcon className="w-4 h-4" />
               Email Us
             </a>
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* * Contact Form Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-            {/* * Left - Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-                Send us a message
-              </h2>
-              <p className="text-lg text-neutral-400 mb-8 leading-relaxed">
-                Fill out the form and we'll get back to you as soon as possible. 
-                We typically respond within 24-48 hours.
-              </p>
+      {/* * Send a message — A1 section, editorial split layout */}
+      <section className="border-b border-border">
+        <div className="grid lg:grid-cols-2">
+          {/* * Left — info + office photo + business hours */}
+          <div className="flex flex-col px-6 py-16 sm:py-24 lg:pr-14 border-b border-border lg:border-b-0 lg:border-r">
+            <p className="font-mono text-xs text-muted-foreground">02 · Office</p>
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Send us a message
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Fill out the form and we&apos;ll get back to you as soon as possible.
+              We typically respond within 24-48 hours.
+            </p>
 
-              {/* * Office Info */}
-              <div className="space-y-4">
-                {/* * Office Photo */}
-                <div className="relative">
-                <div className="absolute -inset-4 bg-brand-orange/8 rounded-[2rem] blur-2xl" />
-                <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] shadow-lg">
-                  <div className="relative aspect-video w-full bg-neutral-800">
-                    <Image
-                      src={officeHq}
-                      alt="Ciphera headquarters in Diegem, Belgium"
-                      fill
-                      className="object-cover"
-                      unoptimized
-                      onError={(e) => {
-                        // * Fallback to placeholder if image doesn't exist
-                        const target = e.target as HTMLImageElement
-                        target.style.display = 'none'
-                        const parent = target.parentElement
-                        if (parent) {
-                          parent.innerHTML = `
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-neutral-400 text-neutral-600">
-                              <svg class="w-16 h-16 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                              </svg>
-                              <p class="text-sm">Ciphera Headquarters</p>
-                            </div>
-                          `
-                        }
+            {/* * Office Photo — sharp, no rounded/shadow, grayscale */}
+            <div className="mt-8 border border-border overflow-hidden">
+              <div className="relative aspect-video w-full bg-card">
+                <Image
+                  src={officeHq}
+                  alt="Ciphera headquarters in Diegem, Belgium"
+                  fill
+                  className="object-cover grayscale"
+                  unoptimized
+                  onError={(e) => {
+                    // * Fallback to placeholder if image doesn't exist
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                    const parent = target.parentElement
+                    if (parent) {
+                      parent.innerHTML = `
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground">
+                          <svg class="w-16 h-16 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          </svg>
+                          <p class="text-sm">Ciphera Headquarters</p>
+                        </div>
+                      `
+                    }
+                  }}
+                />
+              </div>
+              <div className="flex items-start gap-3 border-t border-border bg-card p-4">
+                <GlobeIcon className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-display text-sm font-bold text-foreground">
+                    Headquarters
+                  </h4>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    De Kleetlaan 2<br />
+                    1831 Diegem, Belgium
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* * Business hours — A5 flat card */}
+            <div className="mt-4 border border-border bg-card p-6">
+              <div className="flex items-start gap-4">
+                {/* A6 framed icon */}
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-background">
+                  <svg className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-display text-sm font-bold text-foreground">
+                    Business Hours
+                  </h4>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    Monday - Friday<br />
+                    08:00 - 12:00, 13:00 - 18:00 CET
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* * Important notes */}
+            <div className="mt-6 space-y-3">
+              <div className="flex items-start gap-3 text-sm text-muted-foreground">
+                <CheckCircleIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <p>
+                  We take security reports seriously. If you&apos;ve found a vulnerability,
+                  please use the security email above for faster response.
+                </p>
+              </div>
+              <div className="flex items-start gap-3 text-sm text-muted-foreground">
+                <CheckCircleIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <p>
+                  You&apos;ll receive an automatic confirmation email once we receive your message.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* * Right — form — A5 flat card container */}
+          <div className="px-6 py-16 sm:py-24 lg:pl-14">
+            <form onSubmit={handleSubmit} className="border border-border bg-card p-6 sm:p-8">
+              {/*
+                * Honeypot field — invisible to humans (off-screen, aria-hidden,
+                * untabbable, no autocomplete) but present in the DOM so
+                * auto-fill bots will populate it. A non-empty value on submit
+                * identifies the submission as automated and the backend drops it.
+                */}
+              <input
+                ref={honeypotRef}
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                defaultValue=""
+                style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }}
+              />
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                      Name <span className="text-primary">*</span>
+                    </label>
+                    <Input
+                      type="text"
+                      id="name"
+                      required
+                      value={formData.name}
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value })
+                        if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: '' })
                       }}
+                      onBlur={(e) => handleFieldBlur('name', e.target.value)}
+                      placeholder="Your name"
                     />
+                    {touchedFields.name && fieldErrors.name && (
+                      <p className="text-sm text-red-500 mt-1">{fieldErrors.name}</p>
+                    )}
                   </div>
-                  <div className="p-4 bg-neutral-900/80">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                      Email <span className="text-primary">*</span>
+                    </label>
+                    <Input
+                      type="email"
+                      id="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value })
+                        if (fieldErrors.email) setFieldErrors({ ...fieldErrors, email: '' })
+                      }}
+                      onBlur={(e) => handleFieldBlur('email', e.target.value)}
+                      placeholder="you@example.com"
+                    />
+                    {touchedFields.email && fieldErrors.email && (
+                      <p className="text-sm text-red-500 mt-1">{fieldErrors.email}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
+                    Subject <span className="text-primary">*</span>
+                  </label>
+                  <select
+                    id="subject"
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="w-full border border-border bg-background px-4 py-3 text-foreground focus-visible:ring-2 focus-visible:ring-ring focus:outline-none transition-colors"
+                  >
+                    {subjectOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="message" className="block text-sm font-medium text-foreground">
+                      Message <span className="text-primary">*</span>
+                    </label>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {formData.message.length}/{MESSAGE_MAX_LENGTH}
+                    </span>
+                  </div>
+                  <textarea
+                    id="message"
+                    required
+                    rows={5}
+                    value={formData.message}
+                    onChange={(e) => {
+                      if (e.target.value.length <= MESSAGE_MAX_LENGTH) {
+                        setFormData({ ...formData, message: e.target.value })
+                        if (fieldErrors.message) setFieldErrors({ ...fieldErrors, message: '' })
+                      }
+                    }}
+                    onBlur={(e) => handleFieldBlur('message', e.target.value)}
+                    className="w-full border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus:outline-none transition-colors resize-none"
+                    placeholder="How can we help you?"
+                  />
+                  {touchedFields.message && fieldErrors.message && (
+                    <p className="text-sm text-red-500 mt-1">{fieldErrors.message}</p>
+                  )}
+                </div>
+
+                {/* * Ciphera Captcha - same implementation as auth */}
+                <div className="pt-2">
+                  <Captcha
+                    onVerify={(id, solution, token) => {
+                      setCaptchaId(id)
+                      setCaptchaSolution(solution)
+                      setCaptchaToken(token || '')
+                      track('contact_captcha_verified')
+                    }}
+                    apiUrl={env.NEXT_PUBLIC_CAPTCHA_API_URL}
+                    action="contact"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={status === 'submitting'}
+                  className="w-full py-4 h-auto text-base"
+                  isLoading={status === 'submitting'}
+                >
+                  {!status || status === 'idle' || status === 'success' || status === 'error' ? (
+                    <>
+                      Send Message
+                      <ArrowRightIcon className="w-5 h-5 ml-2" />
+                    </>
+                  ) : null}
+                </Button>
+
+                {status === 'success' && (
+                  <div
+                    className="p-4 border border-green-800 bg-card text-green-600"
+                    role="alert"
+                    aria-live="polite"
+                  >
                     <div className="flex items-start gap-3">
-                      <GlobeIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                      <CheckCircleIcon className="w-5 h-5 shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="font-semibold text-white mb-1">
-                          Headquarters
-                        </h4>
-                        <p className="text-neutral-400 text-sm leading-relaxed">
-                          De Kleetlaan 2<br />
-                          1831 Diegem, Belgium
+                        <p className="font-semibold text-foreground mb-1">Message sent successfully!</p>
+                        <p className="text-sm text-muted-foreground">
+                          We&apos;ve received your message and will respond within our typical timeframe.
+                          You&apos;ll receive a confirmation email shortly.
                         </p>
                       </div>
                     </div>
                   </div>
-                </div>
-                </div>
+                )}
 
-                {/* * Business hours */}
-                <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/10 from-brand-orange/30 to-brand-orange/20 flex items-center justify-center shrink-0">
-                      <svg className="w-6 h-6 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-1">
-                        Business Hours
-                      </h4>
-                      <p className="text-neutral-400 text-sm leading-relaxed">
-                        Monday - Friday<br />
-                        08:00 - 12:00, 13:00 - 18:00 CET
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* * Important notes */}
-              <div className="mt-6 space-y-3">
-                <div className="flex items-start gap-3 text-sm text-neutral-400">
-                  <CheckCircleIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <p>
-                    We take security reports seriously. If you've found a vulnerability, 
-                    please use the security email above for faster response.
-                  </p>
-                </div>
-                <div className="flex items-start gap-3 text-sm text-neutral-400">
-                  <CheckCircleIcon className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                  <p>
-                    You'll receive an automatic confirmation email once we receive your message.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* * Right - Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <form onSubmit={handleSubmit} className="rounded-xl border border-white/[0.08] bg-neutral-900/80 p-4 sm:p-6 md:p-8">
-                {/*
-                  * Honeypot field — invisible to humans (off-screen, aria-hidden,
-                  * untabbable, no autocomplete) but present in the DOM so
-                  * auto-fill bots will populate it. A non-empty value on submit
-                  * identifies the submission as automated and the backend drops it.
-                  */}
-                <input
-                  ref={honeypotRef}
-                  type="text"
-                  name="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  aria-hidden="true"
-                  defaultValue=""
-                  style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }}
-                />
-                <div className="space-y-4 sm:space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
-                        Name <span className="text-brand-orange">*</span>
-                      </label>
-                      <Input
-                        type="text"
-                        id="name"
-                        required
-                        value={formData.name}
-                        onChange={(e) => {
-                          setFormData({ ...formData, name: e.target.value })
-                          if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: '' })
-                        }}
-                        onBlur={(e) => handleFieldBlur('name', e.target.value)}
-                        placeholder="Your name"
-                      />
-                      {touchedFields.name && fieldErrors.name && (
-                        <p className="text-sm text-red-400 mt-1">{fieldErrors.name}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
-                        Email <span className="text-brand-orange">*</span>
-                      </label>
-                      <Input
-                        type="email"
-                        id="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => {
-                          setFormData({ ...formData, email: e.target.value })
-                          if (fieldErrors.email) setFieldErrors({ ...fieldErrors, email: '' })
-                        }}
-                        onBlur={(e) => handleFieldBlur('email', e.target.value)}
-                        placeholder="you@example.com"
-                      />
-                      {touchedFields.email && fieldErrors.email && (
-                        <p className="text-sm text-red-400 mt-1">{fieldErrors.email}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
-                      Subject <span className="text-brand-orange">*</span>
-                    </label>
-                    <select
-                      id="subject"
-                      value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full rounded-xl border border-neutral-700 bg-neutral-800 px-4 py-3 text-white transition-all duration-200 focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/50"
-                    >
-                      {subjectOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <label htmlFor="message" className="block text-sm font-medium text-neutral-300">
-                        Message <span className="text-brand-orange">*</span>
-                      </label>
-                      <span className="text-xs text-neutral-400">
-                        {formData.message.length}/{MESSAGE_MAX_LENGTH}
-                      </span>
-                    </div>
-                    <textarea
-                      id="message"
-                      required
-                      rows={5}
-                      value={formData.message}
-                      onChange={(e) => {
-                        if (e.target.value.length <= MESSAGE_MAX_LENGTH) {
-                          setFormData({ ...formData, message: e.target.value })
-                          if (fieldErrors.message) setFieldErrors({ ...fieldErrors, message: '' })
-                        }
-                      }}
-                      onBlur={(e) => handleFieldBlur('message', e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange transition-all duration-200 resize-none"
-                      placeholder="How can we help you?"
-                    />
-                    {touchedFields.message && fieldErrors.message && (
-                      <p className="text-sm text-red-400 mt-1">{fieldErrors.message}</p>
-                    )}
-                  </div>
-
-                  {/* * Ciphera Captcha - same implementation as auth */}
-                  <div className="pt-2">
-                    <Captcha
-                      onVerify={(id, solution, token) => {
-                        setCaptchaId(id)
-                        setCaptchaSolution(solution)
-                        setCaptchaToken(token || '')
-                        track('contact_captcha_verified')
-                      }}
-                      apiUrl={env.NEXT_PUBLIC_CAPTCHA_API_URL}
-                      action="contact"
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={status === 'submitting'}
-                    className="w-full py-4 h-auto text-base"
-                    isLoading={status === 'submitting'}
+                {status === 'error' && (
+                  <div
+                    className="p-4 border border-red-800 bg-card text-red-600"
+                    role="alert"
+                    aria-live="polite"
                   >
-                    {!status || status === 'idle' || status === 'success' || status === 'error' ? (
-                      <>
-                        Send Message
-                        <ArrowRightIcon className="w-5 h-5 ml-2" />
-                      </>
-                    ) : null}
-                  </Button>
-
-                  {status === 'success' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="p-4 bg-green-900/20 border border-green-800 text-green-300 rounded-xl"
-                      role="alert"
-                      aria-live="polite"
-                    >
-                      <div className="flex items-start gap-3">
-                        <CheckCircleIcon className="w-5 h-5 shrink-0 mt-0.5" />
-                        <div>
-                          <p className="font-semibold mb-1">Message sent successfully!</p>
-                          <p className="text-sm">
-                            We've received your message and will respond within our typical timeframe. 
-                            You'll receive a confirmation email shortly.
-                          </p>
-                        </div>
+                    <div className="flex items-start gap-3">
+                      <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <p className="font-semibold text-foreground mb-1">Failed to send message</p>
+                        <p className="text-sm text-muted-foreground">{errorMessage || 'Please try again or contact us directly via email.'}</p>
                       </div>
-                    </motion.div>
-                  )}
+                    </div>
+                  </div>
+                )}
 
-                  {status === 'error' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="p-4 bg-red-900/20 border border-red-800 text-red-300 rounded-xl"
-                      role="alert"
-                      aria-live="polite"
-                    >
-                      <div className="flex items-start gap-3">
-                        <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                        </svg>
-                        <div>
-                          <p className="font-semibold mb-1">Failed to send message</p>
-                          <p className="text-sm">{errorMessage || 'Please try again or contact us directly via email.'}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {errorMessage && status !== 'error' && status !== 'success' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="p-3 bg-yellow-900/20 border border-yellow-800 text-yellow-300 rounded-xl text-sm"
-                      role="alert"
-                      aria-live="polite"
-                    >
-                      {errorMessage}
-                    </motion.div>
-                  )}
-                </div>
-              </form>
-            </motion.div>
+                {errorMessage && status !== 'error' && status !== 'success' && (
+                  <div
+                    className="p-3 border border-yellow-800 bg-card text-yellow-600 text-sm"
+                    role="alert"
+                    aria-live="polite"
+                  >
+                    {errorMessage}
+                  </div>
+                )}
+              </div>
+            </form>
           </div>
         </div>
       </section>
