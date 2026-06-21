@@ -90,40 +90,42 @@ export default async function LearnArticlePage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
-      <article className="py-16 pt-32">
-        <div className="max-w-3xl mx-auto px-6">
-          {/* Back link */}
-          <Link
-            href="/learn"
-            className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-brand-orange transition-colors mb-8"
-          >
-            <ArrowLeftIcon className="w-4 h-4" />
-            Back to Learn
-          </Link>
+      <section className="border-b border-border">
+        <article className="px-6 py-16 sm:py-24 pt-32">
+          <div className="max-w-3xl mx-auto">
+            {/* Back link */}
+            <Link
+              href="/learn"
+              className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline mb-8"
+            >
+              <ArrowLeftIcon className="w-4 h-4" />
+              Back to Learn
+            </Link>
 
-          {/* Product + Category badges */}
-          <div className="flex items-center gap-2 mb-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-brand-orange/20 bg-brand-orange/10 text-xs text-brand-orange">
-              {PRODUCT_ICONS[product] && (
-                <Image src={PRODUCT_ICONS[product]} alt="" width={14} height={14} unoptimized />
-              )}
-              {PRODUCT_LABELS[product] || product}
-            </span>
-            <span className="inline-flex items-center px-3 py-1 rounded-full border border-neutral-700 bg-neutral-800 text-xs text-neutral-400">
-              {article.category}
-            </span>
+            {/* Product + Category badges */}
+            <div className="flex items-center gap-2 mb-4">
+              <span className="inline-flex items-center gap-1.5 border border-border px-2 py-0.5 font-mono text-xs text-primary">
+                {PRODUCT_ICONS[product] && (
+                  <Image src={PRODUCT_ICONS[product]} alt="" width={14} height={14} unoptimized />
+                )}
+                {PRODUCT_LABELS[product] || product}
+              </span>
+              <span className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                {article.category}
+              </span>
+            </div>
+
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-8">
+              {article.title}
+            </h1>
+
+            {/* MDX content */}
+            <div className="prose prose-invert prose-neutral max-w-none prose-headings:font-display prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none">
+              <MDXRemote source={article.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+            </div>
           </div>
-
-          <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-8">
-            {article.title}
-          </h1>
-
-          {/* MDX content */}
-          <div className="prose prose-invert prose-neutral max-w-none prose-headings:text-white prose-a:text-brand-orange prose-a:no-underline hover:prose-a:underline prose-strong:text-white prose-code:text-brand-orange prose-code:bg-neutral-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none">
-            <MDXRemote source={article.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
-          </div>
-        </div>
-      </article>
+        </article>
+      </section>
     </>
   )
 }

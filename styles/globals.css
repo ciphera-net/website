@@ -120,6 +120,12 @@
     font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
     letter-spacing: -0.01em;
   }
+
+  /* * Facet: prose code blocks and inline code stay sharp (override typography plugin defaults) */
+  .prose pre,
+  .prose code {
+    border-radius: 0;
+  }
 }
 
 @layer utilities {
