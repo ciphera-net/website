@@ -96,7 +96,7 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
                   indicatorClassName={
                     phase.isUse ? 'text-foreground' : 'text-muted-foreground'
                   }
-                  trackClassName="text-white/[0.05]"
+                  trackClassName="text-foreground/[0.05]"
                 >
                   <div className="flex flex-col items-center">
                     <phase.icon

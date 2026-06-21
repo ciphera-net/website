@@ -67,7 +67,7 @@ function ProgressRadial({
           strokeWidth={strokeWidth}
           fill="none"
           strokeLinecap="butt"
-          className={cn('text-white/10', trackClassName)}
+          className={cn('text-foreground/10', trackClassName)}
         />
         <path
           d={pathData}
@@ -75,7 +75,7 @@ function ProgressRadial({
           strokeWidth={strokeWidth}
           fill="none"
           strokeLinecap="butt"
-          className={cn('text-brand-orange transition-all duration-1000 ease-out', indicatorClassName)}
+          className={cn('text-primary transition-all duration-1000 ease-out', indicatorClassName)}
         />
       </svg>
       {(showLabel || children) && (

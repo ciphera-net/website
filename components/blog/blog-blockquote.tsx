@@ -9,16 +9,16 @@ export function BlogBlockquote({
 }) {
   return (
     <blockquote
-      className={`my-8 rounded-r-lg border-l-4 px-6 py-4 ${
+      className={`my-8 border-l-4 px-6 py-4 ${
         variant === 'tldr'
-          ? 'border-brand-orange bg-brand-orange/5'
-          : 'border-neutral-700 bg-neutral-900/50'
+          ? 'border-primary bg-primary/5'
+          : 'border-border bg-card'
       }`}
     >
       {variant === 'tldr' && (
-        <strong className="mb-2 block text-white">TL;DR:</strong>
+        <strong className="mb-2 block text-foreground">TL;DR:</strong>
       )}
-      <div className="text-neutral-300 [&>p]:mb-0">{children}</div>
+      <div className="text-muted-foreground [&>p]:mb-0">{children}</div>
     </blockquote>
   )
 }
