@@ -193,15 +193,17 @@
 }
 
 /* Flowing-line animation for the landing hero background paths.
-   stroke-dasharray="300 700" is set inline on each <path> so the
-   dash is always 300 SVG-units long. Animating stroke-dashoffset by
-   -1000 (= dasharray total) scrolls exactly one full cycle forward. */
+   Each <path> sets pathLength={1}, so dash units are fractions of the
+   whole curve: stroke-dasharray "0.35 0.65" = one smooth 35% segment of
+   the curve (no repeating dashes). Animating stroke-dashoffset 1 -> 0
+   flows that segment smoothly along the curve, matching the original
+   framer-motion pathLength/pathOffset effect. */
 @keyframes floatingPathFlow {
   from {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: 1;
   }
   to {
-    stroke-dashoffset: -1000;
+    stroke-dashoffset: 0;
   }
 }
 
@@ -212,6 +214,7 @@
    properties — so we only set the fixed parts here. */
 @media (prefers-reduced-motion: no-preference) {
   .floating-path {
+    stroke-dasharray: 0.35 0.65;
     animation-name: floatingPathFlow;
     animation-timing-function: linear;
     animation-iteration-count: infinite;

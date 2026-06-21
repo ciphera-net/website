@@ -31,7 +31,7 @@ export function FloatingPaths({ position }: { position: number }) {
                         stroke="currentColor"
                         strokeWidth={path.width}
                         strokeOpacity={0.1 + path.id * 0.03}
-                        strokeDasharray="300 700"
+                        pathLength={1}
                         className="floating-path"
                         style={{
                             animationDuration: `${path.duration}s`,
