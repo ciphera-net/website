@@ -185,3 +185,29 @@
     transform: scale(1);
   }
 }
+
+/* Flowing-line animation for the landing hero background paths.
+   stroke-dasharray="300 700" is set inline on each <path> so the
+   dash is always 300 SVG-units long. Animating stroke-dashoffset by
+   -1000 (= dasharray total) scrolls exactly one full cycle forward. */
+@keyframes floatingPathFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+/* Gate motion on the user's system preference.
+   Default (prefers-reduced-motion: reduce) = paths render static, no animation.
+   animation-duration and animation-delay are set inline per-path via React
+   style={{ }} props, which take precedence over class rules for those
+   properties — so we only set the fixed parts here. */
+@media (prefers-reduced-motion: no-preference) {
+  .floating-path {
+    animation-name: floatingPathFlow;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+}
