@@ -513,7 +513,7 @@ export default function ContactPage() {
                       placeholder="Your name"
                     />
                     {submitAttempted && fieldErrors.name && (
-                      <p className="text-sm text-red-500 mt-1">{fieldErrors.name}</p>
+                      <p className="text-sm text-destructive mt-1">{fieldErrors.name}</p>
                     )}
                   </div>
                   <div>
@@ -533,7 +533,7 @@ export default function ContactPage() {
                       placeholder="you@example.com"
                     />
                     {submitAttempted && fieldErrors.email && (
-                      <p className="text-sm text-red-500 mt-1">{fieldErrors.email}</p>
+                      <p className="text-sm text-destructive mt-1">{fieldErrors.email}</p>
                     )}
                   </div>
                 </div>
@@ -581,7 +581,7 @@ export default function ContactPage() {
                     placeholder="How can we help you?"
                   />
                   {submitAttempted && fieldErrors.message && (
-                    <p className="text-sm text-red-500 mt-1">{fieldErrors.message}</p>
+                    <p className="text-sm text-destructive mt-1">{fieldErrors.message}</p>
                   )}
                 </div>
 
@@ -615,7 +615,7 @@ export default function ContactPage() {
 
                 {status === 'success' && (
                   <div
-                    className="p-4 border border-green-800 bg-card text-green-600"
+                    className="p-4 border border-[var(--color-success)]/40 bg-card text-[var(--color-success)]"
                     role="alert"
                     aria-live="polite"
                   >
@@ -634,7 +634,7 @@ export default function ContactPage() {
 
                 {status === 'error' && (
                   <div
-                    className="p-4 border border-red-800 bg-card text-red-600"
+                    className="p-4 border border-destructive/40 bg-card text-destructive"
                     role="alert"
                     aria-live="polite"
                   >
@@ -652,7 +652,7 @@ export default function ContactPage() {
 
                 {errorMessage && status !== 'error' && status !== 'success' && (
                   <div
-                    className="p-3 border border-yellow-800 bg-card text-yellow-600 text-sm"
+                    className="p-3 border border-[var(--color-warning)]/40 bg-card text-[var(--color-warning)] text-sm"
                     role="alert"
                     aria-live="polite"
                   >
