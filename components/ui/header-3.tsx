@@ -107,7 +107,7 @@ export function Header() {
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border">
-            <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300", scrolled ? "opacity-100 bg-background/95" : "opacity-0")} />
+            <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300", scrolled ? "opacity-100 bg-background" : "opacity-0")} />
             {/* Same column as the page rails (max-w-6xl + sm:border-x) so the
                 vertical lines run continuously from header through every section. */}
             {/* py-3 (not my-3 on the nav): a child margin would collapse through
