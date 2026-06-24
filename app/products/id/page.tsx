@@ -120,21 +120,21 @@ export default function CipheraIDPage() {
           </p>
           {/* Trust badges */}
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-muted-foreground">
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-2 text-foreground">
               <LockIcon aria-hidden="true" className="h-3.5 w-3.5" />
               Zero-knowledge
             </span>
-            <span aria-hidden="true" className="text-border">|</span>
+            <span aria-hidden="true" className="h-4 w-px bg-border" />
             <span className="flex items-center gap-2">
               <Fingerprint aria-hidden="true" className="h-3.5 w-3.5" />
               Passkeys
             </span>
-            <span aria-hidden="true" className="text-border">|</span>
+            <span aria-hidden="true" className="h-4 w-px bg-border" />
             <span className="flex items-center gap-2">
               <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
               2FA + recovery codes
             </span>
-            <span aria-hidden="true" className="text-border">|</span>
+            <span aria-hidden="true" className="h-4 w-px bg-border" />
             <span className="flex items-center gap-2">
               <Key aria-hidden="true" className="h-3.5 w-3.5" />
               OAuth 2.0 + PKCE
@@ -404,8 +404,8 @@ export default function CipheraIDPage() {
                 >
                   <item.icon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                   <div>
-                    <p className="text-xs font-semibold text-foreground">{item.title}</p>
-                    <p className="font-mono text-[11px] text-muted-foreground">{item.desc}</p>
+                    <p className="font-mono text-xs text-muted-foreground">{item.title}</p>
+                    <p className="mt-1 font-mono text-sm tabular-nums text-foreground">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -473,7 +473,7 @@ export default function CipheraIDPage() {
                   <p className="font-mono text-xs text-primary">Self-hosted identity provider</p>
                 </div>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-1">
                 {[
                   'Zero-knowledge password auth (OPAQUE, RFC 9807)',
                   'Self-hosted on Swiss infrastructure',
@@ -485,7 +485,7 @@ export default function CipheraIDPage() {
                   'Argon2id key stretching (client-side)',
                   'Built-in organization management',
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-foreground">
+                  <li key={item} className="group -mx-4 flex items-center gap-3 px-4 py-2 text-foreground transition-colors hover:bg-card">
                     <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     <span className="text-sm">{item}</span>
                   </li>
@@ -504,7 +504,7 @@ export default function CipheraIDPage() {
                   <p className="font-mono text-xs text-muted-foreground">Auth0, Clerk, Firebase Auth</p>
                 </div>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-1">
                 {[
                   { feature: 'Single-hashed passwords (bcrypt/scrypt)', has: false },
                   { feature: 'Cloud-hosted (US infrastructure)', has: false },
@@ -518,7 +518,7 @@ export default function CipheraIDPage() {
                 ].map((item) => (
                   <li
                     key={item.feature}
-                    className={`flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
+                    className={`group -mx-4 flex items-center gap-3 px-4 py-2 transition-colors hover:bg-card ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
                   >
                     {item.has ? (
                       <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
