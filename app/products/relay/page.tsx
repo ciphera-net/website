@@ -152,6 +152,17 @@ export default function CipheraRelayPage() {
               Learn More
             </Link>
           </div>
+          <dl className="mt-10 grid max-w-md grid-cols-2 gap-x-12">
+            {[
+              { term: 'Deliverability', detail: '99.8%' },
+              { term: 'Send latency', detail: '< 2 s' },
+            ].map((s) => (
+              <div key={s.term} className="border-t border-border pt-3">
+                <dt className="font-mono text-xs text-muted-foreground">{s.term}</dt>
+                <dd className="mt-1.5 font-display text-3xl font-bold tabular-nums text-foreground">{s.detail}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
@@ -322,7 +333,7 @@ export default function CipheraRelayPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">03 · No tracking</p>
+            <p className="font-mono text-xs text-muted-foreground">04 · SMTP</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Standard SMTP. Any language.
             </h2>
@@ -350,7 +361,7 @@ export default function CipheraRelayPage() {
         </div>
       </section>
 
-      {/* ─── 04 · Swiss privacy — photo left, copy right ─────────────── */}
+      {/* ─── 05 · Swiss privacy — photo left, copy right ─────────────── */}
       <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Photo cell */}
@@ -386,7 +397,7 @@ export default function CipheraRelayPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">04 · Swiss privacy</p>
+            <p className="font-mono text-xs text-muted-foreground">05 · Swiss privacy</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Swiss infrastructure. Swiss privacy laws.
             </h2>
@@ -415,10 +426,10 @@ export default function CipheraRelayPage() {
         </div>
       </section>
 
-      {/* ─── 05 · Compare ────────────────────────────────────────────── */}
+      {/* ─── 06 · Compare ────────────────────────────────────────────── */}
       <section id="comparison" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">05 · Compare</p>
+          <p className="font-mono text-xs text-muted-foreground">06 · Compare</p>
           <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             How Ciphera Relay compares.
           </h2>
@@ -445,7 +456,7 @@ export default function CipheraRelayPage() {
                   <p className="font-mono text-xs text-primary">Privacy-first email</p>
                 </div>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-1">
                 {[
                   'No tracking pixels or open tracking',
                   'TLS 1.3 encryption',
@@ -457,7 +468,7 @@ export default function CipheraRelayPage() {
                   'Transactional only — no marketing',
                   'Sub-2-second delivery',
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-foreground">
+                  <li key={item} className="group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 text-foreground">
                     <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     <span className="text-sm">{item}</span>
                   </li>
@@ -476,7 +487,7 @@ export default function CipheraRelayPage() {
                   <p className="font-mono text-xs text-muted-foreground">SendGrid, Postmark, SES</p>
                 </div>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-1">
                 {[
                   { feature: 'Tracking pixels by default', has: false },
                   { feature: 'TLS encryption', has: true },
@@ -490,7 +501,7 @@ export default function CipheraRelayPage() {
                 ].map((item) => (
                   <li
                     key={item.feature}
-                    className={`flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
+                    className={`group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
                   >
                     {item.has ? (
                       <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -506,7 +517,7 @@ export default function CipheraRelayPage() {
         </div>
       </section>
 
-      {/* ─── 06 · Get started — A7 full-bleed CTA ────────────────────── */}
+      {/* ─── 07 · Get started — A7 full-bleed CTA ────────────────────── */}
       <section className="relative overflow-hidden border-b border-border">
         <img
           src={genA10}
@@ -518,7 +529,7 @@ export default function CipheraRelayPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">06 · Get started</p>
+          <p className="font-mono text-xs text-muted-foreground">07 · Get started</p>
           <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Interested in Ciphera Relay?
           </h2>
