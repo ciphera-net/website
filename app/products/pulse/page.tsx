@@ -210,7 +210,7 @@ export default function PulsePage() {
         </div>
       </section>
 
-      {/* ─── 02 · Script — Visitor features carousel ─────────────────── */}
+      {/* ─── 02 · Visitors — Feature carousel ─────────────────── */}
       <section id="visitors" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Visual cell — left on desktop */}
@@ -222,7 +222,7 @@ export default function PulsePage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">02 · Script</p>
+            <p className="font-mono text-xs text-muted-foreground">02 · Visitors</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Everything you need to know about your visitors.
             </h2>
@@ -371,7 +371,7 @@ export default function PulsePage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">02 · Script</p>
+            <p className="font-mono text-xs text-muted-foreground">05 · Script</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               One script tag. That&apos;s it.
             </h2>
@@ -402,7 +402,7 @@ export default function PulsePage() {
         <div className="grid lg:grid-cols-2">
           {/* Copy cell */}
           <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
-            <p className="font-mono text-xs text-muted-foreground">02 · Script</p>
+            <p className="font-mono text-xs text-muted-foreground">06 · Configuration</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Your script, your rules.
             </h2>
@@ -436,7 +436,7 @@ export default function PulsePage() {
         </div>
       </section>
 
-      {/* ─── 05 · Swiss privacy — photo left, copy right ─────────────── */}
+      {/* ─── 07 · Swiss privacy — photo left, copy right ─────────────── */}
       <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Photo cell */}
@@ -463,7 +463,7 @@ export default function PulsePage() {
                   <item.icon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                   <div>
                     <p className="text-xs font-semibold text-foreground">{item.title}</p>
-                    <p className="font-mono text-[11px] text-muted-foreground">{item.desc}</p>
+                    <p className="font-mono text-[11px] tabular-nums text-muted-foreground">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -472,7 +472,7 @@ export default function PulsePage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">05 · Swiss privacy</p>
+            <p className="font-mono text-xs text-muted-foreground">07 · Swiss privacy</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Swiss infrastructure. Swiss privacy laws.
             </h2>
@@ -501,10 +501,10 @@ export default function PulsePage() {
         </div>
       </section>
 
-      {/* ─── 06 · Compare ────────────────────────────────────────────── */}
+      {/* ─── 08 · Compare ────────────────────────────────────────────── */}
       <section id="comparison" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">06 · Compare</p>
+          <p className="font-mono text-xs text-muted-foreground">08 · Compare</p>
           <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             How Pulse compares.
           </h2>
@@ -512,6 +512,19 @@ export default function PulsePage() {
             Google Analytics is installed on over 28 million websites. Here&apos;s
             why Pulse is the better choice for privacy-conscious teams.
           </p>
+
+          <dl className="mb-10 grid max-w-3xl gap-x-12 gap-y-6 sm:grid-cols-2">
+            {[
+              { term: 'Script size', detail: 'Pulse 1.6 KB gzipped · GA 45+ KB' },
+              { term: 'Cookies', detail: 'Pulse none · GA required' },
+              { term: 'Data residency', detail: 'Pulse Switzerland · GA United States' },
+            ].map((s) => (
+              <div key={s.term} className="border-t border-border pt-3">
+                <dt className="font-mono text-xs text-muted-foreground">{s.term}</dt>
+                <dd className="mt-1.5 font-mono text-sm tabular-nums text-foreground">{s.detail}</dd>
+              </div>
+            ))}
+          </dl>
 
           <div className="mt-14 grid gap-px bg-border md:grid-cols-2 max-w-4xl">
             {/* Pulse card */}
@@ -533,7 +546,7 @@ export default function PulsePage() {
                   <p className="font-mono text-xs text-primary">Privacy-first analytics</p>
                 </div>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-1">
                 {[
                   'No cookies required',
                   'GDPR compliant by default',
@@ -545,7 +558,7 @@ export default function PulsePage() {
                   'Free tier available',
                   'Real-time dashboard',
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-foreground">
+                  <li key={item} className="group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 text-foreground">
                     <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     <span className="text-sm">{item}</span>
                   </li>
@@ -570,7 +583,7 @@ export default function PulsePage() {
                   <p className="font-mono text-xs text-muted-foreground">Traditional tracking</p>
                 </div>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-1">
                 {[
                   { feature: 'Requires cookies', has: false },
                   { feature: 'GDPR requires configuration', has: false },
@@ -584,7 +597,7 @@ export default function PulsePage() {
                 ].map((item) => (
                   <li
                     key={item.feature}
-                    className={`flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
+                    className={`group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
                   >
                     {item.has ? (
                       <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -603,7 +616,7 @@ export default function PulsePage() {
       {/* FAQ */}
       <PulseFAQ />
 
-      {/* ─── 07 · Get started — A7 full-bleed CTA ────────────────────── */}
+      {/* ─── 10 · Get started — A7 full-bleed CTA ────────────────────── */}
       <section className="relative overflow-hidden border-b border-border">
         <Image
           src={pulseShowcaseBg}
@@ -618,7 +631,7 @@ export default function PulsePage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">07 · Get started</p>
+          <p className="font-mono text-xs text-muted-foreground">10 · Get started</p>
           <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Start tracking with privacy.
           </h2>
