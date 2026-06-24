@@ -45,7 +45,7 @@ export default async function Receipts() {
     },
     {
       label: 'Client-side crypto',
-      value: 'AES-256-GCM · SRP-6a · Argon2id',
+      value: 'AES-256-GCM · OPAQUE (RFC 9807) · Argon2id',
       href: '/learn',
     },
   ]
