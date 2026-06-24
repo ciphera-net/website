@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowRightIcon } from '@ciphera-net/facet'
 import { blogPosts } from '../../lib/blog-posts.gen'
 import { track } from '../../lib/pulse'
+import { cdnUrl } from '@/lib/cdn'
 
 const blogSchema = [
   {
@@ -126,7 +127,7 @@ export default function BlogPage() {
                 >
                   <div className="aspect-video w-full overflow-hidden">
                     <img
-                      src={post.image}
+                      src={cdnUrl(post.image)}
                       alt={post.title}
                       className="w-full h-full object-cover"
                       loading="lazy"

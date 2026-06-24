@@ -9,6 +9,7 @@ interface BlogPostMeta {
   category: string
   date: string
   readTime: string
+  image: string
 }
 
 export default function RelatedPosts({
@@ -45,7 +46,7 @@ export default function RelatedPosts({
           >
             <div className="aspect-video w-full overflow-hidden">
               <img
-                src={cdnUrl(`/blog/og/${post.slug}.png`)}
+                src={cdnUrl(post.image)}
                 alt={post.title}
                 className="w-full h-full object-cover"
                 loading="lazy"

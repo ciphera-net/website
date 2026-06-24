@@ -28,13 +28,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: 'Ciphera',
       type: 'article',
       locale: 'en_US',
-      images: [{ url: post.image, width: 1376, height: 768, alt: post.title }],
+      images: [{ url: cdnUrl(post.image), width: 1376, height: 768, alt: post.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
-      images: [post.image],
+      images: [cdnUrl(post.image)],
     },
   }
 }

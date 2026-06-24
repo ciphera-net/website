@@ -12,6 +12,7 @@ export interface BlogPostMeta {
   date: string
   dateModified: string
   readTime: string
+  /** Relative path (e.g. /blog/og/<slug>.png); resolve with cdnUrl() at the point of use. */
   image: string
 }
 
