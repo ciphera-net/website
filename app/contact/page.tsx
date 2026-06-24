@@ -115,7 +115,7 @@ export default function ContactPage() {
     message: '',
   })
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null)
-  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
+  const [submitAttempted, setSubmitAttempted] = useState(false)
 
   // * Captcha state - matching auth implementation
   const [captchaId, setCaptchaId] = useState('')
@@ -155,10 +155,12 @@ export default function ContactPage() {
     }
   }
 
+  // * Field-level validation only kicks in after the first submit attempt, so
+  // * errors never appear on blur before the user tries to send. After a submit
+  // * attempt, blur re-validates that field for live feedback.
   const handleFieldBlur = (field: string, value: string) => {
-    setTouchedFields({ ...touchedFields, [field]: true })
-    const error = validateField(field, value)
-    setFieldErrors({ ...fieldErrors, [field]: error })
+    if (!submitAttempted) return
+    setFieldErrors({ ...fieldErrors, [field]: validateField(field, value) })
   }
 
   const copyToClipboard = async (email: string) => {
@@ -175,6 +177,7 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setErrorMessage('')
+    setSubmitAttempted(true)
 
     // * Validate all fields
     const errors = {
@@ -509,7 +512,7 @@ export default function ContactPage() {
                       onBlur={(e) => handleFieldBlur('name', e.target.value)}
                       placeholder="Your name"
                     />
-                    {touchedFields.name && fieldErrors.name && (
+                    {submitAttempted && fieldErrors.name && (
                       <p className="text-sm text-red-500 mt-1">{fieldErrors.name}</p>
                     )}
                   </div>
@@ -529,7 +532,7 @@ export default function ContactPage() {
                       onBlur={(e) => handleFieldBlur('email', e.target.value)}
                       placeholder="you@example.com"
                     />
-                    {touchedFields.email && fieldErrors.email && (
+                    {submitAttempted && fieldErrors.email && (
                       <p className="text-sm text-red-500 mt-1">{fieldErrors.email}</p>
                     )}
                   </div>
@@ -577,7 +580,7 @@ export default function ContactPage() {
                     className="w-full border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus:outline-none transition-colors resize-none"
                     placeholder="How can we help you?"
                   />
-                  {touchedFields.message && fieldErrors.message && (
+                  {submitAttempted && fieldErrors.message && (
                     <p className="text-sm text-red-500 mt-1">{fieldErrors.message}</p>
                   )}
                 </div>
