@@ -198,7 +198,7 @@ export default function PrivacyPolicyPage() {
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li><strong>Challenge responses</strong> — Your interaction with the CAPTCHA challenge, used solely to verify you are human.</li>
                   <li><strong>Verification tokens</strong> — Short-lived tokens that confirm successful CAPTCHA completion, automatically expired after use.</li>
-                  <li><strong>Behavioral insights</strong> — Mouse movement patterns, keystroke timing, scroll behavior, and touch input, collected solely to distinguish automated traffic from human visitors. This data is processed in-memory only, is never written to persistent storage, is automatically discarded within 15 minutes, and is not linked to user accounts.</li>
+                  <li><strong>Behavioral insights</strong> — Mouse movement patterns, keystroke timing, scroll behavior, and touch input, collected solely to distinguish automated traffic from human visitors. This data is processed in-memory only, is never written to persistent storage, is automatically discarded within <span className="tabular-nums text-foreground">15 minutes</span>, and is not linked to user accounts.</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   Unlike third-party CAPTCHA services, Ciphera Captcha does not track users across pages or websites, does not set persistent cookies, and does not share data with advertising networks.
@@ -260,7 +260,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>No IP address storage</strong> — We do not store raw IP addresses in any database. All IP addresses are cryptographically hashed using HMAC-SHA256 before any persistence: for events tied to a signed-in account the hash is salted with a user-specific value, and for pre-authentication events (such as failed logins) it uses a server-side key. The original IP address is irreversibly discarded and cannot be recovered — not by us, not by anyone.</li>
                   <li><strong>Temporary processing</strong> — IP addresses may be temporarily held in server memory during active connections for rate limiting and abuse prevention. They are not written to persistent storage in their original form.</li>
                   <li><strong>Pulse analytics</strong> — IP addresses are used solely to derive country-level location data, then immediately discarded. The IP address itself is never stored.</li>
-                  <li><strong>Security audit logs</strong> — Security events (logins, password changes, 2FA changes) are logged with a cryptographic hash of the IP address, not the IP itself. This allows detection of patterns (e.g., same device logging in repeatedly) without storing personally identifiable information. Audit logs are retained for up to 180 days, then permanently deleted.</li>
+                  <li><strong>Security audit logs</strong> — Security events (logins, password changes, 2FA changes) are logged with a cryptographic hash of the IP address, not the IP itself. This allows detection of patterns (e.g., same device logging in repeatedly) without storing personally identifiable information. Audit logs are retained for up to <span className="tabular-nums text-foreground">180 days</span>, then permanently deleted.</li>
                   <li><strong>Server logs</strong> — Operational server logs that may contain IP addresses are access-controlled and retained only as long as necessary for security and operational purposes.</li>
                 </ul>
               </section>
@@ -291,19 +291,19 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2 pr-4 font-mono text-xs">access_token</td>
                         <td className="py-2 pr-4">HTTP-only cookie</td>
                         <td className="py-2 pr-4">Keeps you signed in</td>
-                        <td className="py-2">15 minutes</td>
+                        <td className="py-2 tabular-nums text-foreground">15 minutes</td>
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4 font-mono text-xs">refresh_token</td>
                         <td className="py-2 pr-4">HTTP-only cookie</td>
                         <td className="py-2 pr-4">Renews your session without re-entering your password</td>
-                        <td className="py-2">30 days</td>
+                        <td className="py-2 tabular-nums text-foreground">30 days</td>
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4 font-mono text-xs">csrf_token</td>
                         <td className="py-2 pr-4">Cookie (app-readable)</td>
                         <td className="py-2 pr-4">Protects against cross-site request forgery</td>
-                        <td className="py-2">30 days</td>
+                        <td className="py-2 tabular-nums text-foreground">30 days</td>
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4 font-mono text-xs">ciphera_pii</td>
@@ -459,7 +459,7 @@ export default function PrivacyPolicyPage() {
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4">Session data</td>
-                        <td className="py-2 pr-4">Until logout or 30 days (refresh token expiry)</td>
+                        <td className="py-2 pr-4">Until logout or <span className="tabular-nums text-foreground">30 days</span> (refresh token expiry)</td>
                         <td className="py-2">Contract</td>
                       </tr>
                       <tr className="border-b border-border">
@@ -479,7 +479,7 @@ export default function PrivacyPolicyPage() {
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4">Security audit logs (hashed IPs only)</td>
-                        <td className="py-2 pr-4">Up to 180 days, then permanently deleted</td>
+                        <td className="py-2 pr-4">Up to <span className="tabular-nums text-foreground">180 days</span>, then permanently deleted</td>
                         <td className="py-2">Legitimate interest</td>
                       </tr>
                       <tr className="border-b border-border">
@@ -494,7 +494,7 @@ export default function PrivacyPolicyPage() {
                       </tr>
                       <tr>
                         <td className="py-2 pr-4">Email delivery metadata (Relay)</td>
-                        <td className="py-2 pr-4">30 days</td>
+                        <td className="py-2 pr-4 tabular-nums text-foreground">30 days</td>
                         <td className="py-2">Contract</td>
                       </tr>
                     </tbody>
@@ -683,7 +683,7 @@ export default function PrivacyPolicyPage() {
                   In the event of a personal data breach, we will:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
-                  <li>Notify the Belgian Data Protection Authority (Autorité de protection des données / Gegevensbeschermingsautoriteit) within 72 hours of becoming aware of the breach, as required by GDPR Article 33.</li>
+                  <li>Notify the Belgian Data Protection Authority (Autorité de protection des données / Gegevensbeschermingsautoriteit) within <span className="tabular-nums text-foreground">72 hours</span> of becoming aware of the breach, as required by GDPR Article 33.</li>
                   <li>Notify affected users without undue delay if the breach is likely to result in a high risk to their rights and freedoms, as required by GDPR Article 34.</li>
                   <li>Document the breach, its effects, and the remedial actions taken.</li>
                 </ul>
@@ -730,7 +730,7 @@ export default function PrivacyPolicyPage() {
                 <p className="text-muted-foreground leading-relaxed mt-4">
                   To exercise any of these rights, contact us at{' '}
                   <a href="mailto:privacy@ciphera.net" className="text-primary hover:underline">privacy@ciphera.net</a>.
-                  We will respond to verified requests within 30 days, as required by law. We may ask you to verify your identity before processing your request.
+                  We will respond to verified requests within <span className="tabular-nums text-foreground">30 days</span>, as required by law. We may ask you to verify your identity before processing your request.
                 </p>
               </section>
 
@@ -795,7 +795,7 @@ export default function PrivacyPolicyPage() {
                   </ul>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mt-4">
-                  We aim to respond to all inquiries within 5 business days, and to formal data rights requests within 30 days.
+                  We aim to respond to all inquiries within <span className="tabular-nums text-foreground">5 business days</span>, and to formal data rights requests within <span className="tabular-nums text-foreground">30 days</span>.
                 </p>
               </section>
 
