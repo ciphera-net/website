@@ -13,10 +13,10 @@ export function BlogImage({
         src={src}
         alt={alt}
         loading="lazy"
-        className="w-full rounded-xl object-cover"
+        className="w-full object-cover"
       />
       {caption && (
-        <figcaption className="mt-3 text-center text-sm text-neutral-400">
+        <figcaption className="mt-3 text-center text-sm text-muted-foreground">
           {caption}
         </figcaption>
       )}
