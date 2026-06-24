@@ -19,7 +19,17 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* * Instant scroll, NOT smooth. With scroll-behavior: smooth, Next's
+       client-nav scroll-to-top becomes an animation that is slow on long pages
+       and gets interrupted by late-loading content / layout shift (e.g. the
+       captcha on /contact), leaving the page stranded partway down. Instant
+       scroll lands at the top in a single frame and can't be interrupted.
+       (Also on-brand: the sharp Facet language uses no decorative motion.) */
+    scroll-behavior: auto;
+    /* * Offset every scroll target by the sticky-header height (~89px) so that
+       nav scroll-to-top and in-page #anchors clear the header instead of
+       landing underneath it. */
+    scroll-padding-top: 6rem;
   }
 
   body {
