@@ -119,6 +119,15 @@ export default async function LearnArticlePage({ params }: Props) {
               {article.title}
             </h1>
 
+            {article.description && (
+              <p className="mb-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">{article.description}</p>
+            )}
+            {article.date && (
+              <time dateTime={article.date} className="mb-8 block font-mono text-xs tabular-nums text-muted-foreground">
+                {new Date(article.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-')}
+              </time>
+            )}
+
             {/* MDX content */}
             <div className="prose prose-invert prose-neutral max-w-none prose-headings:font-display prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none">
               <MDXRemote source={article.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
