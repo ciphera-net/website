@@ -310,7 +310,8 @@ export default function ContactPage() {
                     </button>
                   </div>
                   <p className="mt-2 font-mono text-xs text-muted-foreground">
-                    Response: {method.responseTime}
+                    Response:{' '}
+                    <span className="tabular-nums text-foreground">{method.responseTime}</span>
                   </p>
                 </div>
               )
@@ -351,7 +352,8 @@ export default function ContactPage() {
                 </button>
               </div>
               <p className="mt-2 font-mono text-xs text-muted-foreground">
-                Mon-Fri, 08:00-12:00, 13:00-18:00
+                Mon-Fri,{' '}
+                <span className="tabular-nums text-foreground">08:00–12:00, 13:00–18:00</span>
               </p>
             </div>
           </div>
@@ -392,7 +394,7 @@ export default function ContactPage() {
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               Fill out the form and we&apos;ll get back to you as soon as possible.
-              We typically respond within 24-48 hours.
+              We typically respond within <span className="tabular-nums text-foreground">24–48 hours</span>.
             </p>
 
             {/* * Office Photo — sharp, no rounded/shadow, grayscale */}
@@ -450,8 +452,8 @@ export default function ContactPage() {
                     Business Hours
                   </h4>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    Monday - Friday<br />
-                    08:00 - 12:00, 13:00 - 18:00 CET
+                    Monday – Friday<br />
+                    <span className="font-mono tabular-nums text-foreground">08:00–12:00, 13:00–18:00 CET</span>
                   </p>
                 </div>
               </div>
