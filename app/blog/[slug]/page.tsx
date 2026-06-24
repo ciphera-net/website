@@ -101,8 +101,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema, ...(post.faqs.length > 0 ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: post.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) }] : [])]) }} />
       <ReadingProgress />
       {/* * Hero */}
-      <section className="section-padding pt-32">
-        <div className="section-container max-w-4xl">
+      <section className="px-6 pt-32 pb-16 sm:pb-24">
+        <div className="mx-auto max-w-4xl">
           <Link
             href="/blog"
             className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline mb-8"

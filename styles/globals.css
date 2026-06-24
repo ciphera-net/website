@@ -79,7 +79,7 @@
   }
 
   .badge-neutral {
-    @apply badge bg-neutral-800 text-neutral-400;
+    @apply badge bg-muted text-muted-foreground;
   }
 
   /* * Icon container */
