@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
+import { ArrowLeftIcon } from '@ciphera-net/facet'
+import Breadcrumbs from '@/components/Breadcrumbs'
 import { getCurrentReport, listReports } from '@/lib/transparency'
 import { cdnUrl } from '@/lib/cdn'
 
@@ -48,34 +50,61 @@ export default async function TransparencyReportPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <section className="border-b border-border section-padding pt-32">
-        <div className="section-container max-w-3xl mx-auto px-6">
-          <div className="mb-8 text-sm text-muted-foreground">
-            <Link href="/transparency" className="text-primary hover:underline">
-              ← Transparency
-            </Link>
-          </div>
-          <article className="prose prose-invert max-w-none prose-headings:text-foreground prose-a:text-primary prose-code:text-primary">
+      <Breadcrumbs items={[{ label: 'Transparency', href: '/transparency' }, { label: 'Report' }]} />
+
+      {/* Report document */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-20">
+          <Link
+            href="/transparency"
+            className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeftIcon aria-hidden="true" className="h-3.5 w-3.5" />
+            Transparency
+          </Link>
+          <p className="mt-6 font-mono text-xs tabular-nums text-muted-foreground">
+            Transparency report · {current.status} · published {current.publishedEuropean}
+          </p>
+
+          <article
+            className="prose prose-invert mt-8 max-w-3xl
+              prose-headings:font-display prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
+              prose-h1:text-4xl prose-h1:leading-[1.05] sm:prose-h1:text-5xl
+              prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground
+              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+              prose-code:text-primary prose-code:before:content-none prose-code:after:content-none
+              prose-table:text-sm prose-th:text-foreground prose-th:border-border prose-td:border-border
+              prose-hr:border-border"
+          >
             <MDXRemote
               source={current.bodyMarkdown}
               options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
             />
           </article>
-
-          {all.length > 1 && (
-            <div className="mt-16 border-t border-border pt-8">
-              <h2 className="font-display text-xl font-semibold text-foreground mb-4">Historical reports</h2>
-              <ul className="space-y-2 text-muted-foreground text-sm">
-                {all.slice(1).map((r) => (
-                  <li key={r.slug}>
-                    {r.title} — published {r.publishedEuropean} ({r.status})
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </section>
+
+      {/* Historical reports */}
+      {all.length > 1 && (
+        <section className="border-b border-border">
+          <div className="px-6 py-16 sm:py-20">
+            <p className="font-mono text-xs text-muted-foreground">Historical reports</p>
+            <ul className="mt-6 max-w-3xl border-t border-border">
+              {all.slice(1).map((r) => (
+                <li
+                  key={r.slug}
+                  className="grid gap-1 border-b border-border py-3 text-sm sm:grid-cols-[1fr_auto] sm:gap-6"
+                >
+                  <span className="text-foreground">{r.title}</span>
+                  <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                    {r.publishedEuropean} · {r.status}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
     </>
   )
 }
