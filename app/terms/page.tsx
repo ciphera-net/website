@@ -74,7 +74,7 @@ export default function TermsOfServicePage() {
                   2. Eligibility
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  The Services are available to individuals who are at least 16 years of age. If you are between 16 and 18 years of age, you may only use the Services with the consent and supervision of a parent or legal guardian who agrees to be bound by these Terms.
+                  The Services are available to individuals who are at least <span className="tabular-nums text-foreground">16 years</span> of age. If you are between <span className="tabular-nums text-foreground">16</span> and <span className="tabular-nums text-foreground">18</span> years of age, you may only use the Services with the consent and supervision of a parent or legal guardian who agrees to be bound by these Terms.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
                   Accounts registered by automated methods (&quot;bots&quot;) are not authorized and will be terminated. Each individual may maintain one account. Creating multiple accounts to circumvent restrictions or abuse the Services is prohibited.
@@ -214,7 +214,7 @@ export default function TermsOfServicePage() {
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li>Captcha verifies that interactions originate from humans, not automated systems.</li>
-                  <li>Captcha collects behavioral insights (mouse movement patterns, keystroke timing, scroll behavior, touch input) solely for bot detection. This data is processed in-memory only, never written to persistent storage, automatically discarded within 15 minutes, and not linked to user accounts.</li>
+                  <li>Captcha collects behavioral insights (mouse movement patterns, keystroke timing, scroll behavior, touch input) solely for bot detection. This data is processed in-memory only, never written to persistent storage, automatically discarded within <span className="tabular-nums text-foreground">15 minutes</span>, and not linked to user accounts.</li>
                   <li>Captcha does not track users across pages or websites and does not use persistent cookies.</li>
                   <li>Verification tokens are short-lived and automatically expired after use.</li>
                 </ul>
@@ -333,7 +333,7 @@ export default function TermsOfServicePage() {
                     <strong>Exclusion of consequential damages:</strong> Ciphera shall not be liable for any indirect, incidental, special, consequential, exemplary, or punitive damages, including but not limited to loss of profits, data, use, goodwill, business interruption, or any other intangible losses, arising out of or in connection with your use of or inability to use the Services.
                   </li>
                   <li>
-                    <strong>Liability cap:</strong> Ciphera&apos;s total aggregate liability for all claims arising from or related to these Terms or the Services shall not exceed the greater of: (a) the total amount you paid to Ciphera in the twelve (12) months immediately preceding the event giving rise to the claim, or (b) one hundred euros (€100).
+                    <strong>Liability cap:</strong> Ciphera&apos;s total aggregate liability for all claims arising from or related to these Terms or the Services shall not exceed the greater of: (a) the total amount you paid to Ciphera in the <span className="tabular-nums text-foreground">twelve (12) months</span> immediately preceding the event giving rise to the claim, or (b) <span className="tabular-nums text-foreground">one hundred euros (€100)</span>.
                   </li>
                   <li>
                     <strong>Encryption limitation:</strong> You acknowledge that Ciphera cannot be held liable for data loss resulting from a lost account password, a lost recovery phrase, or the inability to decrypt data due to the inherent nature of zero-knowledge encryption.
@@ -414,7 +414,7 @@ export default function TermsOfServicePage() {
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
                   <li>The &ldquo;Last updated&rdquo; date at the top of this page will be revised.</li>
-                  <li>For material changes that affect your rights or obligations, we will provide at least 30 days&apos; advance notice via email to your registered address or through a prominent notice on our website.</li>
+                  <li>For material changes that affect your rights or obligations, we will provide at least <span className="tabular-nums text-foreground">30 days</span>&apos; advance notice via email to your registered address or through a prominent notice on our website.</li>
                   <li>Your continued use of the Services after the updated Terms take effect constitutes your acceptance of the changes.</li>
                   <li>If you do not agree with the updated Terms, you must stop using the Services before the changes take effect.</li>
                 </ul>
@@ -498,32 +498,27 @@ export default function TermsOfServicePage() {
                   For questions about these Terms of Service, contact us:
                 </p>
                 <div className="border border-border bg-card p-6">
-                  <ul className="list-none space-y-3 text-muted-foreground">
-                    <li>
-                      <strong className="text-foreground">General inquiries:</strong>{' '}
-                      <a href="mailto:hello@ciphera.net" className="text-primary hover:underline">hello@ciphera.net</a>
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Abuse reports:</strong>{' '}
-                      <a href="mailto:abuse@ciphera.net" className="text-primary hover:underline">abuse@ciphera.net</a>
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Security concerns:</strong>{' '}
-                      <a href="mailto:security@ciphera.net" className="text-primary hover:underline">security@ciphera.net</a>
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Privacy inquiries:</strong>{' '}
-                      <a href="mailto:privacy@ciphera.net" className="text-primary hover:underline">privacy@ciphera.net</a>
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Phone:</strong>{' '}
-                      <a href="tel:+3278480710" className="text-primary hover:underline">+32 78 48 07 10</a>
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Address:</strong>{' '}
-                      Ciphera B.V. (KBO/BCE: 1013.721.660), De Kleetlaan 2, 1831 Diegem, Belgium
-                    </li>
-                  </ul>
+                  <dl className="grid gap-x-12 gap-y-4 sm:grid-cols-2">
+                    {[
+                      { term: 'General inquiries', email: 'hello@ciphera.net' },
+                      { term: 'Abuse reports', email: 'abuse@ciphera.net' },
+                      { term: 'Security concerns', email: 'security@ciphera.net' },
+                      { term: 'Privacy inquiries', email: 'privacy@ciphera.net' },
+                    ].map((c) => (
+                      <div key={c.term} className="border-t border-border pt-3">
+                        <dt className="font-mono text-xs text-muted-foreground">{c.term}</dt>
+                        <dd className="mt-1.5"><a href={`mailto:${c.email}`} className="font-mono text-sm text-primary hover:underline">{c.email}</a></dd>
+                      </div>
+                    ))}
+                    <div className="border-t border-border pt-3">
+                      <dt className="font-mono text-xs text-muted-foreground">Phone</dt>
+                      <dd className="mt-1.5"><a href="tel:+3278480710" className="font-mono text-sm text-primary hover:underline">+32 78 48 07 10</a></dd>
+                    </div>
+                    <div className="border-t border-border pt-3">
+                      <dt className="font-mono text-xs text-muted-foreground">Address</dt>
+                      <dd className="mt-1.5 text-sm text-foreground">Ciphera B.V. (KBO/BCE: 1013.721.660), De Kleetlaan 2, 1831 Diegem, Belgium</dd>
+                    </div>
+                  </dl>
                 </div>
               </section>
 
