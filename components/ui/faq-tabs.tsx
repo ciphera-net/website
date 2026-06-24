@@ -30,7 +30,7 @@ export const FAQ = ({
   return (
     <section
       className={cn(
-        "relative overflow-hidden bg-background px-4 py-12 text-foreground",
+        "border-b border-border bg-background px-4 py-12 text-foreground",
         className
       )}
       {...props}
@@ -54,7 +54,7 @@ const FAQHeader = ({ title, subtitle }: { title: string; subtitle: string }) => 
     <span className="mb-8 font-mono text-xs text-muted-foreground">
       {subtitle}
     </span>
-    <h2 className="mb-8 text-5xl font-bold">{title}</h2>
+    <h2 className="mb-8 font-display text-4xl font-bold tracking-tight sm:text-5xl">{title}</h2>
   </div>
 );
 
@@ -102,7 +102,7 @@ const FAQItemComponent = ({ question, answer }: FAQItem) => {
     <div
       className={cn(
         "border transition-colors duration-150 motion-reduce:transition-none",
-        isOpen ? "bg-muted/50" : "bg-card"
+        isOpen ? "bg-muted" : "bg-card"
       )}
     >
       <button
