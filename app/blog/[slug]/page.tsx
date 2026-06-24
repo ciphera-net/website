@@ -114,8 +114,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="flex items-center gap-3 mb-6 text-sm flex-wrap">
             <span className="badge-neutral">{post.category}</span>
             <span className="text-muted-foreground">By Ciphera Team</span>
-            <span className="text-muted-foreground">{post.readTime}</span>
-            <span className="text-muted-foreground">
+            <span className="text-foreground tabular-nums">{post.readTime}</span>
+            <span className="text-foreground tabular-nums">
               {new Date(post.date).toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
