@@ -46,11 +46,11 @@ export default function ClosingCta() {
               src={cdnUrl('/cta-concrete-blocks.jpg')}
               alt="Brutalist concrete blocks"
               fill
-              className="object-cover"
+              className="object-cover grayscale"
               sizes="(min-width: 1024px) 40vw, 100vw"
             />
             {/* scrim only — sharp blocks stay sharp; the dim does the quieting */}
-            <div aria-hidden="true" className="absolute inset-0 bg-black/40" />
+            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45" />
             <div className="absolute inset-0 flex items-center justify-center">
               {/* Captured from the live id.ciphera.net sign-in (retina 2x) —
                   re-capture when the ID UI changes so this never drifts. */}
