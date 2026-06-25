@@ -2,8 +2,6 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AuthMockup } from '@/components/ui/auth-mockup'
-import { OAuthAppsMockup } from '@/components/ui/oauth-apps-mockup'
-import { SecurityDashboardMockup } from '@/components/ui/security-dashboard-mockup'
 import { authIcon, authShowcaseBg, zurichPhoto } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
 import {
@@ -84,6 +82,19 @@ const idSchema = [
     ],
   },
 ]
+
+const ID_FEATURES = [
+  {
+    icon: Key,
+    title: 'One account, all services',
+    body: 'Log in once and reach every Ciphera service via OAuth 2.0 with mandatory PKCE (S256), short-lived access tokens with refresh rotation, and revoked-token reuse detection.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Security visibility',
+    body: 'A full audit log of every login, password change, and 2FA event. Revoke any session remotely, get new-device alerts, and keep IPs HMAC-hashed — never stored raw.',
+  },
+] as const
 
 export default function CipheraIDPage() {
   return (
@@ -296,84 +307,21 @@ export default function CipheraIDPage() {
         </div>
       </section>
 
-      {/* ─── 02 · SSO — One Account, All Services ────────────────────── */}
-      <section id="oauth" className="overflow-hidden border-b border-border scroll-mt-20">
-        <div className="grid lg:grid-cols-2">
-          {/* Copy cell */}
-          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
-            <p className="font-mono text-xs text-muted-foreground">02 · SSO</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              One account, all services.
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Log in once and access every Ciphera service — Pulse, Relay,
-              and more. Built on OAuth 2.0 with mandatory PKCE, so
-              authorization codes can&apos;t be intercepted. Tokens are
-              verified locally by each service using a shared secret — no
-              network roundtrip needed.
-            </p>
-            <ul className="mt-8 space-y-3">
-              {[
-                'OAuth 2.0 Authorization Code flow with PKCE',
-                'S256 challenge method enforced (no plaintext)',
-                'Short-lived access tokens (15 min) + refresh rotation',
-                'Reuse detection: if a revoked token is reused, all sessions are invalidated',
-                'CSRF protection via double submit cookie pattern',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-muted-foreground">
-                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Visual cell */}
-          <div className="relative min-h-[400px] border-t border-border lg:border-l lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card mockup-cell">
-            <div className="w-full max-w-md">
-              <OAuthAppsMockup />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 03 · Security — Dashboard ───────────────────────────────── */}
-      <section id="security" className="overflow-hidden border-b border-border scroll-mt-20">
-        <div className="grid lg:grid-cols-2">
-          {/* Visual cell — left on desktop */}
-          <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card mockup-cell">
-            <div className="w-full max-w-md">
-              <SecurityDashboardMockup />
-            </div>
-          </div>
-
-          {/* Copy cell */}
-          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">03 · Security</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              Full visibility into your account.
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Every login, every password change, every 2FA event — logged
-              and visible. See which devices have access, revoke sessions
-              you don&apos;t recognize, and get alerts when a new device
-              signs in. Device fingerprints are HMAC-hashed — we track
-              activity without storing raw IPs.
-            </p>
-            <ul className="mt-8 space-y-3">
-              {[
-                'Comprehensive audit log with event details',
-                'Trusted device management with browser/OS detection',
-                'New device alerts via email',
-                'Session revocation — sign out any device remotely',
-                'Privacy-respecting: IPs hashed with HMAC-SHA256',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-muted-foreground">
-                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+      {/* ─── 03 · Features — everything in Ciphera ID ────────────────── */}
+      <section id="features" className="border-b border-border scroll-mt-20">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">03 · Features</p>
+          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            Everything in Ciphera ID.
+          </h2>
+          <div className="mt-14 grid gap-px border border-border bg-border sm:grid-cols-2">
+            {ID_FEATURES.map(({ icon: Icon, title, body }) => (
+              <div key={title} className="flex flex-col bg-background p-8">
+                <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
+                <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
