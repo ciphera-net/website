@@ -2,8 +2,6 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
-import { PuzzleMockup } from '@/components/ui/puzzle-mockup'
-import { RiskScoreMockup } from '@/components/ui/risk-score-mockup'
 import { captchaIcon, captchaShowcaseBg, zurichPhoto } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
 import {
@@ -12,7 +10,15 @@ import {
   GlobeIcon,
   XIcon,
 } from '@ciphera-net/facet'
-import { ShieldCheck, Lightning, EyeSlash, Timer, Robot, Eye } from '@phosphor-icons/react/dist/ssr'
+import {
+  ShieldCheck,
+  Lightning,
+  EyeSlash,
+  Timer,
+  Robot,
+  Eye,
+  PuzzlePiece,
+} from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Ciphera Captcha - Privacy-First Bot Protection',
@@ -83,6 +89,19 @@ const captchaSchema = [
     ],
   },
 ]
+
+const CAPTCHA_FEATURES = [
+  {
+    icon: PuzzlePiece,
+    title: 'Human challenge',
+    body: 'When stronger proof is needed, a drag-to-fit SVG puzzle resists ML and OCR, verifies statelessly via HMAC-signed positions, and ships an audio fallback (WCAG 2.1 AAA).',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Risk scoring',
+    body: 'Every check returns a 0–100 score from solve time, behavioral entropy, IP activity, and request patterns — your backend sets the threshold, strict or lenient.',
+  },
+] as const
 
 export default function CipheraCaptchaPage() {
   return (
@@ -191,88 +210,26 @@ export default function CipheraCaptchaPage() {
         </div>
       </section>
 
-      {/* ─── 02 · Challenge — Puzzle ─────────────────────────────────────── */}
-      <section id="puzzle" className="overflow-hidden border-b border-border scroll-mt-20">
-        <div className="grid lg:grid-cols-2">
-          {/* Visual cell — left on desktop */}
-          <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
-            <div className="w-full max-w-md">
-              <PuzzleMockup />
-            </div>
-          </div>
-
-          {/* Copy cell */}
-          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">02 · Challenge</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              A puzzle only humans can solve.
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              When stronger verification is needed, users drag a puzzle
-              piece into position on an SVG background. It&apos;s spatial
-              recognition — harder for computer vision than image labeling,
-              and verified statelessly via HMAC-signed positions. No
-              server-side session storage needed.
-            </p>
-            <ul className="mt-8 space-y-3">
-              {[
-                'SVG-native puzzles — crisp at any resolution',
-                'Spatial positioning resists ML/OCR attacks',
-                'Stateless verification via HMAC signatures',
-                '±5px tolerance for natural human imprecision',
-                'Audio fallback for full accessibility (WCAG 2.1 AAA)',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-muted-foreground">
-                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+      {/* ─── 02 · Features — everything in Ciphera Captcha ───────────── */}
+      <section id="features" className="border-b border-border scroll-mt-20">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">02 · Features</p>
+          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            Everything in Ciphera Captcha.
+          </h2>
+          <div className="mt-14 grid gap-px border border-border bg-border sm:grid-cols-2">
+            {CAPTCHA_FEATURES.map(({ icon: Icon, title, body }) => (
+              <div key={title} className="flex flex-col bg-background p-8">
+                <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
+                <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── 03 · Risk score ─────────────────────────────────────────────── */}
-      <section id="risk-scoring" className="overflow-hidden border-b border-border scroll-mt-20">
-        <div className="grid lg:grid-cols-2">
-          {/* Copy cell */}
-          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
-            <p className="font-mono text-xs text-muted-foreground">03 · Risk score</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              Five signals. One confidence score.
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Every verification produces a 0-100 risk score combining
-              solve time, challenge difficulty, behavioral analysis, IP
-              activity, and request patterns. Your backend decides the
-              threshold — strict for payments, lenient for page views.
-            </p>
-            <ul className="mt-8 space-y-3">
-              {[
-                'Solve time analysis — instant solutions flag bots',
-                'Behavioral signals: mouse entropy, typing patterns, scroll events',
-                'IP activity tracking with automatic rate scaling',
-                'Success/failure ratio over time detects brute-force',
-                'Classify as low, medium, or high risk',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-muted-foreground">
-                  <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Visual cell */}
-          <div className="relative min-h-[400px] border-t border-border lg:border-l lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
-            <div className="w-full max-w-md">
-              <RiskScoreMockup />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 04 · Stateless — Stateless architecture ────────────────────── */}
+      {/* ─── 03 · Stateless — Stateless architecture ────────────────────── */}
       <section id="stateless" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Visual cell — left on desktop */}
@@ -333,7 +290,7 @@ export default function CipheraCaptchaPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">04 · Stateless</p>
+            <p className="font-mono text-xs text-muted-foreground">03 · Stateless</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               No database. No sessions. No state.
             </h2>
@@ -362,7 +319,7 @@ export default function CipheraCaptchaPage() {
         </div>
       </section>
 
-      {/* ─── 05 · Swiss privacy — photo left, copy right ─────────────────── */}
+      {/* ─── 04 · Swiss privacy — photo left, copy right ─────────────────── */}
       <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Photo cell */}
@@ -398,7 +355,7 @@ export default function CipheraCaptchaPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">05 · Swiss privacy</p>
+            <p className="font-mono text-xs text-muted-foreground">04 · Swiss privacy</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Swiss infrastructure. Zero telemetry.
             </h2>
@@ -427,10 +384,10 @@ export default function CipheraCaptchaPage() {
         </div>
       </section>
 
-      {/* ─── 06 · Compare ────────────────────────────────────────────────── */}
+      {/* ─── 05 · Compare ────────────────────────────────────────────────── */}
       <section id="comparison" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">06 · Compare</p>
+          <p className="font-mono text-xs text-muted-foreground">05 · Compare</p>
           <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             How Ciphera Captcha compares.
           </h2>
@@ -519,7 +476,7 @@ export default function CipheraCaptchaPage() {
         </div>
       </section>
 
-      {/* ─── 07 · Get started — A7 full-bleed CTA ────────────────────────── */}
+      {/* ─── 06 · Get started — A7 full-bleed CTA ────────────────────────── */}
       <section className="relative overflow-hidden border-b border-border">
         <Image
           src={captchaShowcaseBg}
@@ -534,7 +491,7 @@ export default function CipheraCaptchaPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">07 · Get started</p>
+          <p className="font-mono text-xs text-muted-foreground">06 · Get started</p>
           <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Interested in Ciphera Captcha?
           </h2>
