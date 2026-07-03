@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { ArrowLeftIcon } from '@ciphera-net/facet'
 import { getLearnArticle, getLearnArticles } from '@/lib/learn'
 import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
+import { MDXTable } from '@/components/mdx-table'
 
 const PRODUCT_ICONS: Record<string, typeof pulseIcon> = {
   pulse: pulseIcon,
@@ -130,7 +131,7 @@ export default async function LearnArticlePage({ params }: Props) {
 
             {/* MDX content */}
             <div className="prose prose-invert prose-neutral max-w-none prose-headings:font-display prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none">
-              <MDXRemote source={article.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+              <MDXRemote source={article.content} components={{ table: MDXTable }} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
             </div>
           </div>
         </article>

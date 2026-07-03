@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { BlogImage } from '@/components/blog/blog-image'
 import { BlogBlockquote } from '@/components/blog/blog-blockquote'
+import { MDXTable } from '@/components/mdx-table'
 
 const mdxComponents = {
   BlogImage,
   BlogBlockquote,
+  table: MDXTable,
 }
 
 export function BlogMDXRenderer({ compiledSource, scope, frontmatter }: { compiledSource: string; scope: Record<string, unknown>; frontmatter: Record<string, unknown> }) {
