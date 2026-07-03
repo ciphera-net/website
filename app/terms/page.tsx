@@ -35,6 +35,30 @@ const termsSchema = {
   },
 }
 
+const SECTIONS = [
+  { id: 'acceptance-of-terms', title: '1. Acceptance of Terms' },
+  { id: 'eligibility', title: '2. Eligibility' },
+  { id: 'description-of-services', title: '3. Description of Services' },
+  { id: 'user-accounts', title: '4. User Accounts' },
+  { id: 'acceptable-use', title: '5. Acceptable Use' },
+  { id: 'encryption-and-zero-knowledge-architecture', title: '6. Encryption & Zero-Knowledge Architecture' },
+  { id: 'service-specific-terms', title: '7. Service-Specific Terms' },
+  { id: 'intellectual-property', title: '8. Intellectual Property' },
+  { id: 'privacy', title: '9. Privacy' },
+  { id: 'service-availability', title: '10. Service Availability' },
+  { id: 'disclaimer-of-warranties', title: '11. Disclaimer of Warranties' },
+  { id: 'limitation-of-liability', title: '12. Limitation of Liability' },
+  { id: 'indemnification', title: '13. Indemnification' },
+  { id: 'termination', title: '14. Termination' },
+  { id: 'modifications-to-these-terms', title: '15. Modifications to These Terms' },
+  { id: 'force-majeure', title: '16. Force Majeure' },
+  { id: 'governing-law-and-jurisdiction', title: '17. Governing Law & Jurisdiction' },
+  { id: 'severability', title: '18. Severability' },
+  { id: 'assignment', title: '19. Assignment' },
+  { id: 'entire-agreement', title: '20. Entire Agreement' },
+  { id: 'contact', title: '21. Contact' },
+] as const
+
 export default function TermsOfServicePage() {
   return (
     <>
@@ -53,11 +77,27 @@ export default function TermsOfServicePage() {
               Last updated: June 21, 2026
             </p>
 
+            <nav aria-label="Contents" className="mb-12 border border-border bg-card p-6">
+              <p className="font-mono text-xs text-muted-foreground">Contents</p>
+              <ol className="mt-4 grid gap-x-8 gap-y-1.5 sm:grid-cols-2">
+                {SECTIONS.map((s) => (
+                  <li key={s.id}>
+                    <a
+                      href={`#${s.id}`}
+                      className="block py-0.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {s.title}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+
             <div className="prose prose-invert max-w-none space-y-10">
 
               {/* 1. Acceptance of Terms */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="acceptance-of-terms" className="font-display text-2xl font-bold text-foreground mb-4">
                   1. Acceptance of Terms
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -70,7 +110,7 @@ export default function TermsOfServicePage() {
 
               {/* 2. Eligibility */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="eligibility" className="font-display text-2xl font-bold text-foreground mb-4">
                   2. Eligibility
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -83,7 +123,7 @@ export default function TermsOfServicePage() {
 
               {/* 3. Description of Services */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="description-of-services" className="font-display text-2xl font-bold text-foreground mb-4">
                   3. Description of Services
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -102,7 +142,7 @@ export default function TermsOfServicePage() {
 
               {/* 4. User Accounts */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="user-accounts" className="font-display text-2xl font-bold text-foreground mb-4">
                   4. User Accounts
                 </h2>
 
@@ -125,7 +165,7 @@ export default function TermsOfServicePage() {
 
               {/* 5. Acceptable Use */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="acceptable-use" className="font-display text-2xl font-bold text-foreground mb-4">
                   5. Acceptable Use
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
@@ -170,7 +210,7 @@ export default function TermsOfServicePage() {
 
               {/* 6. Encryption & Zero-Knowledge Architecture */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="encryption-and-zero-knowledge-architecture" className="font-display text-2xl font-bold text-foreground mb-4">
                   6. Encryption &amp; Zero-Knowledge Architecture
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
@@ -186,7 +226,7 @@ export default function TermsOfServicePage() {
 
               {/* 7. Service-Specific Terms */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="service-specific-terms" className="font-display text-2xl font-bold text-foreground mb-4">
                   7. Service-Specific Terms
                 </h2>
 
@@ -231,7 +271,7 @@ export default function TermsOfServicePage() {
 
               {/* 8. Intellectual Property */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="intellectual-property" className="font-display text-2xl font-bold text-foreground mb-4">
                   8. Intellectual Property
                 </h2>
 
@@ -261,7 +301,7 @@ export default function TermsOfServicePage() {
 
               {/* 9. Privacy */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="privacy" className="font-display text-2xl font-bold text-foreground mb-4">
                   9. Privacy
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -278,7 +318,7 @@ export default function TermsOfServicePage() {
 
               {/* 10. Service Availability */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="service-availability" className="font-display text-2xl font-bold text-foreground mb-4">
                   10. Service Availability
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -297,7 +337,7 @@ export default function TermsOfServicePage() {
 
               {/* 11. Disclaimer of Warranties */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="disclaimer-of-warranties" className="font-display text-2xl font-bold text-foreground mb-4">
                   11. Disclaimer of Warranties
                 </h2>
                 <p className="text-muted-foreground leading-relaxed font-semibold">
@@ -322,7 +362,7 @@ export default function TermsOfServicePage() {
 
               {/* 12. Limitation of Liability */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="limitation-of-liability" className="font-display text-2xl font-bold text-foreground mb-4">
                   12. Limitation of Liability
                 </h2>
                 <p className="text-muted-foreground leading-relaxed font-semibold">
@@ -346,7 +386,7 @@ export default function TermsOfServicePage() {
 
               {/* 13. Indemnification */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="indemnification" className="font-display text-2xl font-bold text-foreground mb-4">
                   13. Indemnification
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -366,7 +406,7 @@ export default function TermsOfServicePage() {
 
               {/* 14. Termination */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="termination" className="font-display text-2xl font-bold text-foreground mb-4">
                   14. Termination
                 </h2>
 
@@ -406,7 +446,7 @@ export default function TermsOfServicePage() {
 
               {/* 15. Modifications to These Terms */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="modifications-to-these-terms" className="font-display text-2xl font-bold text-foreground mb-4">
                   15. Modifications to These Terms
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -425,7 +465,7 @@ export default function TermsOfServicePage() {
 
               {/* 16. Force Majeure */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="force-majeure" className="font-display text-2xl font-bold text-foreground mb-4">
                   16. Force Majeure
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -435,7 +475,7 @@ export default function TermsOfServicePage() {
 
               {/* 17. Governing Law & Jurisdiction */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="governing-law-and-jurisdiction" className="font-display text-2xl font-bold text-foreground mb-4">
                   17. Governing Law &amp; Jurisdiction
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -453,7 +493,7 @@ export default function TermsOfServicePage() {
 
               {/* 18. Severability */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="severability" className="font-display text-2xl font-bold text-foreground mb-4">
                   18. Severability
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -463,7 +503,7 @@ export default function TermsOfServicePage() {
 
               {/* 19. Assignment */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="assignment" className="font-display text-2xl font-bold text-foreground mb-4">
                   19. Assignment
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -473,7 +513,7 @@ export default function TermsOfServicePage() {
 
               {/* 20. Entire Agreement */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="entire-agreement" className="font-display text-2xl font-bold text-foreground mb-4">
                   20. Entire Agreement
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -491,7 +531,7 @@ export default function TermsOfServicePage() {
 
               {/* 21. Contact */}
               <section>
-                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                <h2 id="contact" className="font-display text-2xl font-bold text-foreground mb-4">
                   21. Contact
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">

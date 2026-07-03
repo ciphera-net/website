@@ -90,6 +90,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/learn" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Learn
+                </Link>
+              </li>
+              <li>
                 <Link href="/sustainability" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Sustainability
                 </Link>

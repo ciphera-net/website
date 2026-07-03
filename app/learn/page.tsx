@@ -15,11 +15,28 @@ const PRODUCT_CONFIG: Record<string, { label: string; icon: string }> = {
   relay: { label: 'Relay', icon: relayIcon },
 }
 
+const CATEGORY_ORDER = ['accessibility', 'performance', 'best-practices', 'seo']
+const CATEGORY_LABELS: Record<string, string> = {
+  accessibility: 'Accessibility',
+  performance: 'Performance',
+  'best-practices': 'Best practices',
+  seo: 'SEO',
+}
+
+const PRODUCT_COUNTS = learnArticles.reduce<Record<string, number>>((acc, article) => {
+  acc[article.product] = (acc[article.product] ?? 0) + 1
+  return acc
+}, {})
+
 export default function LearnPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeProduct, setActiveProduct] = useState('All')
 
-  const productKeys = ['pulse', 'id', 'captcha', 'relay']
+  // Products without published articles are hidden until content exists —
+  // a filter that can only return an empty grid is a dead end, not a feature.
+  const productKeys = ['pulse', 'id', 'captcha', 'relay'].filter(
+    (key) => (PRODUCT_COUNTS[key] ?? 0) > 0
+  )
 
   const filtered = useMemo(() => {
     return learnArticles.filter((article) => {
@@ -31,6 +48,20 @@ export default function LearnPage() {
       return matchesProduct && matchesSearch
     })
   }, [searchQuery, activeProduct])
+
+  // Group the filtered list by category, known categories first in fixed order,
+  // any future category appended rather than dropped.
+  const grouped = useMemo(() => {
+    const present = Array.from(new Set(filtered.map((a) => a.category)))
+    const order = [
+      ...CATEGORY_ORDER.filter((c) => present.includes(c)),
+      ...present.filter((c) => !CATEGORY_ORDER.includes(c)),
+    ]
+    return order.map((category) => ({
+      category,
+      articles: filtered.filter((a) => a.category === category),
+    }))
+  }, [filtered])
 
   return (
     <>
@@ -75,6 +106,7 @@ export default function LearnPage() {
               }`}
             >
               All
+              <span className="ml-2 font-mono text-xs tabular-nums opacity-70">{learnArticles.length}</span>
             </button>
             {productKeys.map((key) => {
               const config = PRODUCT_CONFIG[key]
@@ -91,46 +123,77 @@ export default function LearnPage() {
                 >
                   {config && <Image src={config.icon} alt="" width={16} height={16} unoptimized />}
                   {config?.label || key}
+                  <span className="font-mono text-xs tabular-nums opacity-70">{PRODUCT_COUNTS[key]}</span>
                 </button>
               )
             })}
           </div>
 
-          {/* Results count */}
-          <p className="font-mono text-xs text-muted-foreground mb-6">
-            {filtered.length} {filtered.length === 1 ? 'article' : 'articles'}
-          </p>
+          {/* Results count + category jump links */}
+          <div className="mb-8 flex flex-wrap items-baseline gap-x-6 gap-y-2">
+            <p className="font-mono text-xs text-muted-foreground">
+              {filtered.length} {filtered.length === 1 ? 'article' : 'articles'}
+            </p>
+            {grouped.length > 1 && (
+              <nav aria-label="Categories" className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+                {grouped.map((group) => (
+                  <a
+                    key={group.category}
+                    href={`#cat-${group.category}`}
+                    className="flex items-baseline gap-2 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {CATEGORY_LABELS[group.category] ?? group.category}
+                    <span className="tabular-nums">{group.articles.length}</span>
+                  </a>
+                ))}
+              </nav>
+            )}
+          </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((article) => (
-              <Link
-                key={`${article.product}/${article.slug}`}
-                href={`/learn/${article.product}/${article.slug}`}
-                className="group flex flex-col p-5 border border-border bg-card hover:border-primary hover:bg-accent transition-colors duration-200"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center gap-1.5 border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
-                    {PRODUCT_CONFIG[article.product] && (
-                      <Image src={PRODUCT_CONFIG[article.product].icon} alt="" width={14} height={14} unoptimized />
-                    )}
-                    {PRODUCT_CONFIG[article.product]?.label || article.product}
-                  </span>
-                  <span className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
-                    {article.category}
+          {/* Category sections — anchored so the jump links above can target them */}
+          <div className="space-y-14">
+            {grouped.map((group) => (
+              <section key={group.category} id={`cat-${group.category}`}>
+                <div className="mb-6 flex items-baseline justify-between border-t border-border pt-4">
+                  <h2 className="font-display text-xl font-bold tracking-tight text-foreground">
+                    {CATEGORY_LABELS[group.category] ?? group.category}
+                  </h2>
+                  <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                    {group.articles.length} {group.articles.length === 1 ? 'article' : 'articles'}
                   </span>
                 </div>
-                <h2 className="font-display text-base font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                  {article.title}
-                </h2>
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                  {article.description}
-                </p>
-                <span className="mt-auto inline-flex items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-primary transition-colors">
-                  Read
-                  <ArrowRightIcon className="w-3.5 h-3.5" />
-                </span>
-              </Link>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {group.articles.map((article) => (
+                    <Link
+                      key={`${article.product}/${article.slug}`}
+                      href={`/learn/${article.product}/${article.slug}`}
+                      className="group flex flex-col p-5 border border-border bg-card hover:border-primary hover:bg-accent transition-colors duration-200"
+                    >
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="inline-flex items-center gap-1.5 border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                          {PRODUCT_CONFIG[article.product] && (
+                            <Image src={PRODUCT_CONFIG[article.product].icon} alt="" width={14} height={14} unoptimized />
+                          )}
+                          {PRODUCT_CONFIG[article.product]?.label || article.product}
+                        </span>
+                        <span className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                          {article.category}
+                        </span>
+                      </div>
+                      <h3 className="font-display text-base font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {article.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                        {article.description}
+                      </p>
+                      <span className="mt-auto inline-flex items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-primary transition-colors">
+                        Read
+                        <ArrowRightIcon className="w-3.5 h-3.5" />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
 
