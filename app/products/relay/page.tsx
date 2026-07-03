@@ -243,9 +243,9 @@ export default function CipheraRelayPage() {
               {/* SMTP config mockup — flat, sharp */}
               <div className="border border-border bg-background p-6 space-y-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-3 h-3 bg-red-500/60" />
-                  <div className="w-3 h-3 bg-yellow-500/60" />
-                  <div className="w-3 h-3 bg-green-500/60" />
+                  <div className="w-2 h-2 bg-muted-foreground/30" />
+                  <div className="w-2 h-2 bg-muted-foreground/30" />
+                  <div className="w-2 h-2 bg-muted-foreground/30" />
                   <span className="font-mono text-[10px] text-muted-foreground ml-2">.env</span>
                 </div>
                 <pre className="font-mono text-[11px] leading-relaxed">
@@ -272,7 +272,7 @@ export default function CipheraRelayPage() {
                 <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground border-t border-border pt-3">
                   <span>Standard SMTP AUTH — works with any language</span>
                   <span className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 bg-green-500" />
+                    <div className="w-1.5 h-1.5 bg-primary" />
                     STARTTLS
                   </span>
                 </div>

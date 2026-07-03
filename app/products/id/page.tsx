@@ -122,7 +122,7 @@ export default function CipheraIDPage() {
         <div className="relative px-6 py-24 sm:py-32">
           <p className="font-mono text-xs text-muted-foreground">Ciphera ID</p>
           <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            One identity.<br />Complete privacy.
+            One identity.{' '}<br className="hidden sm:inline" />Complete privacy.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
             The identity layer behind every Ciphera service. Zero-knowledge

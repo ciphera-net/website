@@ -141,7 +141,7 @@ export default function PulsePage() {
         <div className="relative px-6 py-24 sm:py-32">
           <p className="font-mono text-xs text-muted-foreground">Pulse</p>
           <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            Analytics without<br />the surveillance.
+            Analytics without{' '}<br className="hidden sm:inline" />the surveillance.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
             Get the insights you need without compromising user privacy. No
@@ -273,32 +273,32 @@ export default function PulsePage() {
                     </span>
                     {'\n'}
                     <span className="text-muted-foreground">{'<'}</span>
-                    <span className="text-blue-400">{'script'}</span>
+                    <span className="text-foreground">{'script'}</span>
                     {'\n'}
-                    <span className="text-purple-400">{'  defer'}</span>
+                    <span className="text-foreground">{'  defer'}</span>
                     {'\n'}
-                    <span className="text-purple-400">{'  data-domain'}</span>
+                    <span className="text-foreground">{'  data-domain'}</span>
                     <span className="text-muted-foreground">{'="'}</span>
-                    <span className="text-amber-400">{'yoursite.com'}</span>
+                    <span className="text-primary">{'yoursite.com'}</span>
                     <span className="text-muted-foreground">{'"'}</span>
                     {'\n'}
-                    <span className="text-purple-400">{'  src'}</span>
+                    <span className="text-foreground">{'  src'}</span>
                     <span className="text-muted-foreground">{'="'}</span>
-                    <span className="text-amber-400">
+                    <span className="text-primary">
                       {'https://pulse.ciphera.net/js/script.js'}
                     </span>
                     <span className="text-muted-foreground">{'"'}</span>
                     {'\n'}
                     <span className="text-muted-foreground">{'>'}</span>
                     <span className="text-muted-foreground">{'</'}</span>
-                    <span className="text-blue-400">{'script'}</span>
+                    <span className="text-foreground">{'script'}</span>
                     <span className="text-muted-foreground">{'>'}</span>
                   </code>
                 </pre>
                 <div className="mt-4 flex items-center justify-between text-[10px] text-muted-foreground border-t border-border pt-3">
                   <span>1.6 KB gzipped</span>
                   <span className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 bg-green-500" />
+                    <div className="w-1.5 h-1.5 bg-primary" />
                     Non-blocking, async
                   </span>
                 </div>
@@ -473,7 +473,7 @@ export default function PulsePage() {
                     alt="Google Analytics"
                     width={24}
                     height={24}
-                    className="h-6 w-6 object-contain"
+                    className="h-6 w-6 object-contain grayscale"
                   />
                 </div>
                 <div>

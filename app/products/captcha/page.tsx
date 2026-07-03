@@ -129,7 +129,7 @@ export default function CipheraCaptchaPage() {
         <div className="relative px-6 py-24 sm:py-32">
           <p className="font-mono text-xs text-muted-foreground">Ciphera Captcha</p>
           <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            Stop bots without<br />compromising privacy.
+            Stop bots without{' '}<br className="hidden sm:inline" />compromising privacy.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
             Adaptive proof-of-work, puzzle challenges, and behavioral

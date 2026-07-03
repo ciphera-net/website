@@ -4,7 +4,7 @@ import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated June 21, 2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 21-06-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -74,7 +74,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: June 21, 2026
+              Last updated: 21-06-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 border border-border bg-card p-6">
