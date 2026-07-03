@@ -59,7 +59,7 @@ export const blogPosts: BlogPostSummary[] = [
     "description": "Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.",
     "category": "Privacy",
     "date": "2026-04-12",
-    "dateModified": "2026-04-16",
+    "dateModified": "2026-07-03",
     "readTime": "10 min read",
     "image": "/blog/og/what-we-see-about-you-what-we-dont.png"
   },

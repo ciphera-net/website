@@ -59,7 +59,7 @@ const techStack = [
   { name: 'Go (Gin)', description: 'High-performance backend services' },
   { name: 'Next.js', description: 'Modern React framework for frontends' },
   { name: 'PostgreSQL', description: 'Reliable database for metadata' },
-  { name: 'SRP-6a', description: 'Zero-knowledge password authentication' },
+  { name: 'OPAQUE (RFC 9807)', description: 'Zero-knowledge password authentication' },
   { name: 'PBKDF2-SHA256', description: 'Client-side key derivation (1M iterations)' },
   { name: 'AES-256-GCM', description: 'Client-side vault encryption' },
 ] as const
