@@ -18,9 +18,8 @@ export default function ClosingCta() {
           Own your data.
         </h2>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-          One Ciphera ID for every service. Your password is hashed on your device before it
-          ever reaches our servers &mdash; we authenticate you without ever seeing your
-          credentials.
+          One Ciphera ID for every service. Your password never leaves your device &mdash;
+          we authenticate you without ever seeing your credentials.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Button asChild size="lg">

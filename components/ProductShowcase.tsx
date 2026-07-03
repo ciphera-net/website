@@ -15,8 +15,9 @@ interface ProductRowProps {
   body: string
   primaryLabel: string
   primaryHref: string
-  secondaryLabel: string
-  secondaryHref: string
+  /** Optional — rows with a single destination render only the primary CTA */
+  secondaryLabel?: string
+  secondaryHref?: string
   mockup: React.ReactNode
   /** When true the mockup column sits on the left (lg:order-first) */
   mockupLeft?: boolean
@@ -71,13 +72,15 @@ function ProductRow({
                 <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
             </Button>
-            <Link
-              href={secondaryHref}
-              className="flex items-center gap-1 text-sm text-brand transition-colors duration-fast hover:text-brand-hover"
-            >
-              {secondaryLabel}
-              <ArrowUpRightIcon className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            {secondaryLabel && secondaryHref && (
+              <Link
+                href={secondaryHref}
+                className="flex items-center gap-1 text-sm text-brand transition-colors duration-fast hover:text-brand-hover"
+              >
+                {secondaryLabel}
+                <ArrowUpRightIcon className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            )}
           </div>
         </div>
 
@@ -118,11 +121,9 @@ export default function ProductShowcase() {
         icon={cdnUrl('/id_icon_no_margins.png')}
         chip="Ciphera ID"
         heading="One identity. Every Ciphera service."
-        body="Create a single Ciphera ID to access all services. Your password is hashed on your device before it ever reaches our servers — we authenticate you without ever seeing your credentials."
-        primaryLabel="Get started"
+        body="Create a single Ciphera ID to access all services. Your password never leaves your device — we authenticate you without ever seeing your credentials."
+        primaryLabel="Explore ID"
         primaryHref="/products/id"
-        secondaryLabel="Explore ID"
-        secondaryHref="/products/id"
         mockup={<AuthMockup />}
         divider
       />

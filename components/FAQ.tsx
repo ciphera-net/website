@@ -19,16 +19,20 @@ const GROUPS: FAQGroup[] = [
     label: 'General',
     items: [
       {
-        q: 'What is zero-knowledge encryption?',
-        a: 'Zero-knowledge encryption means your data is encrypted on your device before it reaches our servers. We cannot decrypt or access your files, even if we wanted to. Only you hold the encryption keys, ensuring complete privacy.',
+        q: 'What is Ciphera?',
+        a: 'Ciphera is a Swiss privacy platform: Pulse for cookieless web analytics, Ciphera ID for zero-knowledge authentication, Ciphera Captcha for bot protection without tracking, and Ciphera Relay for transactional email that nobody reads along the way. Every product is built on the same principle — we shouldn’t have to see your data to serve you.',
+      },
+      {
+        q: 'What does zero-knowledge mean at Ciphera?',
+        a: 'Zero-knowledge means the server can verify something without learning it. Ciphera ID proves who you are without ever seeing your password, and your profile lives in a vault encrypted on your device — we authenticate you and store your data without being able to read either. Where zero-knowledge isn’t the right tool, we minimize instead: Pulse never learns who your visitors are, and Relay forgets where it delivered.',
       },
       {
         q: 'Is Ciphera GDPR compliant?',
-        a: 'Yes. Ciphera is built with privacy-by-design principles and is fully GDPR compliant. We collect minimal data, encrypt everything, and you maintain full control over your information.',
+        a: 'Yes. Ciphera is built with privacy-by-design principles and is fully GDPR compliant. We collect minimal data, store it on Swiss infrastructure, and you keep full control over your information.',
       },
       {
-        q: 'How is Ciphera different from Google Drive or Dropbox?',
-        a: "Unlike traditional cloud storage, Ciphera encrypts your files on your device before upload. We never have access to your data. There's no data mining, no ad targeting, and no third-party access. Privacy isn't a feature we added — it's the foundation.",
+        q: 'How is Ciphera different from Big-Tech alternatives?',
+        a: "The business model. Ad-funded tools are free because your users' data is the product. Ciphera products are paid tools with no data resale, no ad targeting, and no third-party access: Pulse gives you traffic insight without tracking individuals, Captcha verifies humans without profiling them, and Relay delivers email without reading it. Privacy isn't a feature we added — it's the foundation.",
       },
     ],
   },
@@ -36,33 +40,45 @@ const GROUPS: FAQGroup[] = [
     label: 'Security',
     items: [
       {
-        q: 'How secure is end-to-end encryption?',
-        a: 'End-to-end encryption uses AES-256-GCM, the same military-grade encryption used by governments worldwide. Your files are encrypted before leaving your device, making interception impossible without your private keys.',
+        q: 'How does Ciphera handle password storage?',
+        a: "Your password never leaves your device. We use OPAQUE (RFC 9807), a password-authenticated key exchange: your password is stretched on your device with Argon2id and proven to our servers without ever being sent. We store only an opaque credential record, so we never see your actual password — not during signup, login, or at any other point.",
       },
       {
-        q: 'Can you access my files?',
-        a: 'No. With zero-knowledge architecture, we mathematically cannot access your files. Encryption happens client-side on your device, and only you have the decryption keys. Not even our servers can read your data.',
+        q: 'Can Ciphera see my personal data?',
+        a: 'Your Ciphera ID profile — name, display name, email — lives in a vault that is encrypted on your device before it reaches us. An operator with full access to our database sees a UUID, an opaque credential record, and encrypted bytes: no name, no email, no profile. We publish a full accounting of what we can and cannot see on our blog.',
       },
       {
-        q: 'What happens if I lose my encryption key?',
-        a: 'Since we use zero-knowledge encryption, we cannot recover your files if you lose your encryption key. This is by design — it ensures that only you have access to your data. We recommend securely storing your keys.',
+        q: 'What if I forget my password?',
+        a: 'We can’t send it to you or reset it for you — we never have it. Account recovery uses your 24-word recovery phrase, generated when you create your Ciphera ID and never stored by us. Zero-knowledge cuts both ways: the same design that keeps us out of your data means there is no back door for anyone else either.',
+      },
+      {
+        q: 'How does Captcha block bots without tracking people?',
+        a: 'Ciphera Captcha runs a stateless, HMAC-signed challenge: your browser does a small proof-of-work in the background, and the server verifies its own signature instead of looking you up in a database. No cookies, no cross-site tracking, no behavioral profiling — it proves you are human without learning who you are.',
       },
       {
         q: 'Has Ciphera been independently audited?',
-        a: 'Our code is open source, allowing anyone to audit our security implementations. We also conduct regular internal security reviews and penetration testing. All cryptographic implementations use well-established, peer-reviewed libraries.',
-      },
-      {
-        q: 'How does Ciphera handle password storage?',
-        a: "Your password never leaves your device. We use OPAQUE (RFC 9807), a password-authenticated key exchange: your password is stretched on your device with Argon2id and proven to our servers without ever being sent. We store only an opaque credential record, so we never see your actual password — not during signup, login, or at any other point.",
+        a: 'Our cryptographic core is open source, allowing anyone to audit the code that handles your password. We also conduct regular internal security reviews and penetration testing. All cryptographic implementations use well-established, peer-reviewed libraries.',
       },
     ],
   },
   {
-    label: 'Features',
+    label: 'Products',
     items: [
       {
         q: 'Does Pulse use cookies to track visitors?',
         a: 'No. Pulse is our privacy-first analytics tool that works without cookies, fingerprinting, or any form of personal data collection. It gives you meaningful insights like page views, referrers, and visitor counts while being fully GDPR compliant out of the box.',
+      },
+      {
+        q: 'Can Pulse identify individual visitors?',
+        a: 'No. Session identifiers rotate every day and are computed from a one-way hash — the same visitor on Monday and Tuesday produces two unlinked sessions. Raw IP addresses are discarded immediately after that computation, and site owners only ever see aggregates. A “show me this visitor’s history” view doesn’t exist because the data model can’t construct it.',
+      },
+      {
+        q: 'What makes Relay different from other email providers?',
+        a: 'Relay sends transactional email — password resets, verification codes, security alerts — through self-hosted Swiss infrastructure with no tracking pixels, no open-rate beacons, and no click-tracking redirects. Our delivery log records which template was sent and whether it succeeded; it has no column for the recipient address or the message body.',
+      },
+      {
+        q: 'Do I need a Ciphera ID to use the products?',
+        a: 'Yes — one Ciphera ID signs you into every Ciphera product: one password we never see, one encrypted vault. We don’t currently offer Ciphera ID as a standalone identity provider for third-party apps; today it is the identity layer behind the Ciphera platform.',
       },
     ],
   },
@@ -70,8 +86,8 @@ const GROUPS: FAQGroup[] = [
     label: 'Technical',
     items: [
       {
-        q: 'Which encryption algorithm do you use?',
-        a: 'We use AES-256-GCM (Galois/Counter Mode) for file encryption. This authenticated encryption algorithm provides both confidentiality and integrity, ensuring your data cannot be read or tampered with.',
+        q: 'Which encryption do you use?',
+        a: 'AES-256-GCM authenticated encryption for data at rest — including your Ciphera ID vault and stored email addresses — and TLS in transit. Authentication runs OPAQUE (RFC 9807), and the key that unlocks your vault is derived and used on your device, never on our servers.',
       },
       {
         q: 'Where are the servers located?',
@@ -79,21 +95,21 @@ const GROUPS: FAQGroup[] = [
       },
       {
         q: 'Is the code open source?',
-        a: 'Yes! Our code is open source and available on GitHub. We believe transparency builds trust. Anyone can audit our security implementations and verify our privacy claims.',
+        a: 'Our cryptographic core is: Tessera, the OPAQUE implementation behind Ciphera ID, is on GitHub under Apache-2.0 — and we are opening more of the platform over time. The code that handles your password is exactly the code anyone can audit.',
       },
       {
         q: 'What happens to my data if Ciphera shuts down?',
-        a: "Since your files are encrypted client-side, they remain encrypted and inaccessible on our servers regardless of what happens to the company. Active files can be downloaded by their owners at any time. We'd provide ample notice and migration tools in any shutdown scenario.",
+        a: "Your vault stays encrypted with a key only you hold, so a shutdown can't expose it. Pulse analytics belong to the site owner and can be exported. In any wind-down we'd provide ample notice and migration tooling — and everything encrypted client-side stays unreadable to whoever ends up with the disks.",
       },
       {
         q: 'Can I self-host Ciphera services?',
-        a: "Since our code is open source, you can inspect and run it yourself. However, we don't currently offer official self-hosting documentation or support. Our managed infrastructure ensures you get automatic updates, security patches, and Swiss data residency.",
+        a: 'The open-source pieces — like Tessera, our OPAQUE core — you can run yourself today. The managed platform isn’t offered for self-hosting: running it ourselves is how we guarantee automatic security patches, monitored infrastructure, and Swiss data residency.',
       },
     ],
   },
 ]
 
-// Continuous 01–14 numbering across groups — the index aesthetic
+// Continuous 01–18 numbering across groups — the index aesthetic
 let runningIndex = 0
 const NUMBERED = GROUPS.map((group) => ({
   ...group,
