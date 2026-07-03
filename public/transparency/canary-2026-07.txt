@@ -1,0 +1,45 @@
+CIPHERA WARRANT CANARY
+======================
+
+Period: July 2026
+Published: 03-07-2026 (DD-MM-YYYY)
+Next update: on or before 05-08-2026
+Company: Ciphera (Belgian company, jurisdiction: Belgium / European Union)
+
+As of the date above, Ciphera:
+
+  1. Has NOT received any National Security Letter, secret warrant, or
+     equivalent gag-ordered legal process from any government agency.
+  2. Has NOT received any request or order compelling disclosure of
+     cryptographic keys, decrypted user data, or plaintext user secrets.
+  3. Has NOT been compelled to install, modify, or weaken any security
+     mechanism, backdoor, or interception capability.
+  4. Has NOT received any order to modify source code or binaries in a
+     manner hostile to user security.
+  5. Has NOT handed over bulk user data to any third party absent specific,
+     legally-valid, narrowly-scoped process that Ciphera may lawfully
+     disclose.
+
+Proof of non-backdating (headlines from 03-07-2026):
+
+  - [BBC]: France records 2,025 excess deaths at peak of heatwave as Europe braces for more extreme weather
+    https://www.bbc.co.uk/news/articles/c3ry307rxqro
+
+  - [NPR]: July 4th events threatened by heat wave. And, Russia strikes on Ukraine's capital
+    https://www.npr.org/2026/07/03/g-s1-131920/up-first-newsletter-america-250-heat-wave-ukraine-russia-democratic-party
+
+  - [France 24]: Russia faces challenges trying to jam Starlink in Ukraine
+    https://www.france24.com/en/europe/20260703-ukraine-russia-faces-challenge-jamming-starlink
+
+  - [Tagesschau]: Wertvollste Börsenkonzerne: Nur Siemens schafft es in die Top 100
+    https://www.tagesschau.de/wirtschaft/finanzen/aktien-mittagsschwerpunkt-100.html
+
+This canary is signed with GPG key
+94E796164FF853902D89E46173011BE3BD5174AE, whose public key is published at
+https://ciphera.net/transparency/canary-pubkey.asc.
+
+Verify:
+    gpg --import canary-pubkey.asc
+    gpg --verify canary-2026-07.txt.asc canary-2026-07.txt
+
+-- Usman Baig, founder, Ciphera
