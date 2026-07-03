@@ -139,7 +139,7 @@ export default function PulsePage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">00 · Analytics</p>
+          <p className="font-mono text-xs text-muted-foreground">Pulse</p>
           <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Analytics without<br />the surveillance.
           </h1>
@@ -514,7 +514,7 @@ export default function PulsePage() {
       {/* FAQ */}
       <PulseFAQ />
 
-      {/* ─── 06 · Get started — A7 full-bleed CTA ────────────────────── */}
+      {/* ─── 07 · Get started — A7 full-bleed CTA ────────────────────── */}
       <section className="relative overflow-hidden border-b border-border">
         <Image
           src={pulseShowcaseBg}
@@ -529,7 +529,7 @@ export default function PulsePage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">06 · Get started</p>
+          <p className="font-mono text-xs text-muted-foreground">07 · Get started</p>
           <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Start tracking with privacy.
           </h2>

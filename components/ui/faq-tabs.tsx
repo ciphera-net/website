@@ -30,7 +30,7 @@ export const FAQ = ({
   return (
     <section
       className={cn(
-        "border-b border-border bg-background px-4 py-12 text-foreground",
+        "border-b border-border bg-background px-6 py-16 text-foreground sm:py-20",
         className
       )}
       {...props}
@@ -50,16 +50,16 @@ export const FAQ = ({
 };
 
 const FAQHeader = ({ title, subtitle }: { title: string; subtitle: string }) => (
-  <div className="relative z-10 flex flex-col items-center justify-center">
-    <span className="mb-8 font-mono text-xs text-muted-foreground">
+  <div className="relative z-10">
+    <span className="font-mono text-xs text-muted-foreground">
       {subtitle}
     </span>
-    <h2 className="mb-8 font-display text-4xl font-bold tracking-tight sm:text-5xl">{title}</h2>
+    <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{title}</h2>
   </div>
 );
 
 const FAQTabs = ({ categories, selected, setSelected }: { categories: Record<string, string>; selected: string; setSelected: (key: string) => void }) => (
-  <div className="relative z-10 flex flex-wrap items-center justify-center gap-4">
+  <div className="relative z-10 mt-8 flex flex-wrap items-center gap-4">
     {Object.entries(categories).map(([key, label]) => (
       <button
         key={key}
@@ -67,7 +67,7 @@ const FAQTabs = ({ categories, selected, setSelected }: { categories: Record<str
         className={cn(
           "relative whitespace-nowrap border px-3 py-1.5 text-sm font-medium transition-colors duration-150 motion-reduce:transition-none",
           selected === key
-            ? "border-primary bg-primary text-primary-foreground"
+            ? "border-primary bg-transparent text-primary"
             : "border-border bg-transparent text-muted-foreground hover:text-foreground"
         )}
       >
@@ -78,7 +78,7 @@ const FAQTabs = ({ categories, selected, setSelected }: { categories: Record<str
 );
 
 const FAQList = ({ faqData, selected }: { faqData: Record<string, FAQItem[]>; selected: string }) => (
-  <div className="mx-auto mt-12 max-w-3xl">
+  <div className="mt-10 max-w-3xl">
     {Object.entries(faqData).map(([category, questions]) => (
       <div
         key={category}

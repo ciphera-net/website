@@ -252,10 +252,9 @@ export default function ContactPage() {
       {/* * Hero — A1 full-bleed section with A2 mono kicker + font-display h1 */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">Get in Touch</p>
+          <p className="font-mono text-xs text-muted-foreground">Get in touch</p>
           <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            We&apos;re here to{' '}
-            <span className="text-primary">help</span>
+            We&apos;re here to help
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Have questions about our privacy tools? Want to report a security issue?

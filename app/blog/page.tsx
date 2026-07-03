@@ -49,7 +49,7 @@ export default function BlogPage() {
       {/* Hero */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24 pt-32">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-4xl">
             <p className="font-mono text-xs text-muted-foreground">Blog</p>
             <h1 className="mt-6 font-display text-5xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               Privacy &amp; Security Insights
@@ -64,9 +64,9 @@ export default function BlogPage() {
       {/* Search & Filter */}
       <section className="border-b border-border">
         <div className="px-6 py-10">
-          <div className="max-w-6xl mx-auto space-y-5">
+          <div className="space-y-5">
             {/* Search input */}
-            <div className="relative max-w-md mx-auto">
+            <div className="relative max-w-md">
               <svg
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
                 fill="none"
@@ -92,7 +92,7 @@ export default function BlogPage() {
             </div>
 
             {/* Category tab buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {categories.map((category) => (
                 <button
                   key={category}
@@ -102,7 +102,7 @@ export default function BlogPage() {
                   }}
                   className={`border px-4 py-1.5 font-mono text-xs transition-colors ${
                     activeCategory === category
-                      ? 'border-primary bg-primary text-primary-foreground'
+                      ? 'border-primary bg-transparent text-primary'
                       : 'border-border bg-background text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -118,7 +118,7 @@ export default function BlogPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           {filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => (
                 <Link
                   key={post.slug}
@@ -165,7 +165,7 @@ export default function BlogPage() {
               ))}
             </div>
           ) : (
-            <div className="max-w-6xl mx-auto flex flex-col items-center justify-center py-20 text-center">
+            <div className="flex flex-col items-start py-20">
               <svg
                 className="w-12 h-12 text-muted-foreground mb-4"
                 fill="none"

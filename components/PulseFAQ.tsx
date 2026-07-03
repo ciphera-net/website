@@ -104,7 +104,7 @@ export default function PulseFAQ() {
   return (
     <FAQ
       title="Frequently Asked Questions"
-      subtitle="09 · FAQ"
+      subtitle="06 · FAQ"
       categories={categories}
       faqData={faqData}
     />

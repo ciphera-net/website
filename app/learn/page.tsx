@@ -70,7 +70,7 @@ export default function LearnPage() {
               data-active={activeProduct === 'All' ? '' : undefined}
               className={`px-4 py-2 text-sm font-medium border transition-colors ${
                 activeProduct === 'All'
-                  ? 'border-border bg-primary text-primary-foreground'
+                  ? 'border-primary bg-transparent text-primary'
                   : 'border-border bg-card text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -85,7 +85,7 @@ export default function LearnPage() {
                   data-active={activeProduct === key ? '' : undefined}
                   className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border transition-colors ${
                     activeProduct === key
-                      ? 'border-border bg-primary text-primary-foreground'
+                      ? 'border-primary bg-transparent text-primary'
                       : 'border-border bg-card text-muted-foreground hover:text-foreground'
                   }`}
                 >

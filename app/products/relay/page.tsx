@@ -122,7 +122,7 @@ export default function CipheraRelayPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">01 · Email</p>
+          <p className="font-mono text-xs text-muted-foreground">Ciphera Relay</p>
           <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Transactional email that respects privacy.
           </h1>
