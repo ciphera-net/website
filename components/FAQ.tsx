@@ -20,7 +20,7 @@ const GROUPS: FAQGroup[] = [
     items: [
       {
         q: 'What is Ciphera?',
-        a: 'Ciphera is a Swiss privacy platform: Pulse for cookieless web analytics, Ciphera ID for zero-knowledge authentication, Ciphera Captcha for bot protection without tracking, and Ciphera Relay for transactional email that nobody reads along the way. Every product is built on the same principle — we shouldn’t have to see your data to serve you.',
+        a: 'Ciphera is a privacy platform: Pulse for cookieless web analytics, Ciphera ID for zero-knowledge authentication, Ciphera Captcha for bot protection without tracking, and Ciphera Relay for transactional email that nobody reads along the way. We’re a Belgian company, and all customer data resides on Swiss infrastructure. Every product is built on the same principle — we shouldn’t have to see your data to serve you.',
       },
       {
         q: 'What does zero-knowledge mean at Ciphera?',
