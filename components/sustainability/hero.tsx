@@ -49,7 +49,7 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
         priority
         unoptimized
         sizes="100vw"
-        className="object-cover grayscale brightness-[0.4]"
+        className="object-cover grayscale"
       />
       {/* Gradient resolving to the solid background on the text side */}
       <div

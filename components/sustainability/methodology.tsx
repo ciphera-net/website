@@ -7,8 +7,8 @@ interface MethodologyProps {
 
 /**
  * Section 6 — How we measure this. Auditor-shaped: narrower column,
- * content-dense, three stacked blocks (source, what's included, refresh
- * cadence). No imagery.
+ * content-dense, one welded panel (source, what's included, refresh cadence
+ * as internal rows). No imagery.
  */
 export function Methodology({ report }: MethodologyProps) {
   const blocks = [
@@ -98,14 +98,16 @@ export function Methodology({ report }: MethodologyProps) {
           </p>
         </div>
 
-        <div className="space-y-4">
-          {blocks.map((block) => (
+        <div className="border border-border bg-card">
+          {blocks.map((block, i) => (
             <div
               key={block.title}
-              className="border border-border bg-card p-6 md:p-8"
+              className={
+                'p-6 md:p-8 ' + (i > 0 ? 'border-t border-border' : '')
+              }
             >
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center border border-border bg-card">
+                <div className="flex h-10 w-10 items-center justify-center border border-border bg-background">
                   <block.icon className="h-5 w-5 text-muted-foreground" weight="duotone" />
                 </div>
                 <h3 className="text-xl font-semibold text-foreground">{block.title}</h3>
@@ -113,12 +115,13 @@ export function Methodology({ report }: MethodologyProps) {
               <div>{block.body}</div>
             </div>
           ))}
+          <div className="border-t border-border px-6 py-4 md:px-8 md:py-5">
+            <p className="text-xs text-muted-foreground">
+              Factors version: {report.methodology.factorsVersion} · Grid intensity
+              source: {report.methodology.gridSource}
+            </p>
+          </div>
         </div>
-
-        <p className="mt-10 text-xs text-muted-foreground">
-          Factors version: {report.methodology.factorsVersion} · Grid intensity
-          source: {report.methodology.gridSource}
-        </p>
       </div>
     </section>
   )

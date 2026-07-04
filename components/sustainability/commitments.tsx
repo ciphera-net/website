@@ -1,5 +1,3 @@
-import { Quotes } from '@phosphor-icons/react/dist/ssr'
-
 /**
  * Section 06 — Our commitments. A solid-background manifesto block (no photo,
  * so it doesn't sit adjacent to another full-bleed image). Facet: sharp,
@@ -10,7 +8,6 @@ export function Commitments() {
     <section className="border-b border-border">
       <div className="px-6 py-20 sm:py-28">
         <p className="font-mono text-xs text-muted-foreground">05 · Commitments</p>
-        <Quotes weight="fill" aria-hidden="true" className="mt-6 h-10 w-10 text-border" />
         <div className="mt-6 max-w-3xl space-y-6 text-2xl font-light leading-relaxed text-foreground sm:text-3xl">
           <p>
             We don’t buy carbon offsets. We don’t plant trees for PR. We don’t claim “carbon

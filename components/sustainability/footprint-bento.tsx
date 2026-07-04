@@ -99,7 +99,7 @@ function IndicatorCard({ indicator, featured, icon: IconEl, spanClass }: CardPro
   const { value, unit } = formatIndicator(indicator)
 
   return (
-    <div className={'border border-border bg-card p-6 md:p-8 ' + spanClass}>
+    <div className={'bg-background px-4 py-5 sm:px-5 sm:py-6 ' + spanClass}>
       <IconEl className="h-5 w-5 text-muted-foreground" weight="duotone" />
       <p className="mt-4 text-sm text-muted-foreground">{indicator.label}</p>
       <div className="mt-2 flex items-baseline gap-2 flex-wrap">
@@ -150,7 +150,7 @@ export function FootprintBento({ report }: FootprintBentoProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-px border border-border bg-border">
           {sorted.map((indicator) => {
             const featured = indicator.key === 'GWP' || indicator.key === 'WU'
             const IconEl = ICON_BY_KEY[indicator.key] ?? CloudLightning

@@ -1,5 +1,3 @@
-import { Factory, Truck, Lightning, Recycle } from '@phosphor-icons/react/dist/ssr'
-import { ProgressRadial } from '@/components/ui/progress-radial'
 import type { ImpactReport } from './types'
 
 interface LifecycleBreakdownProps {
@@ -7,10 +5,11 @@ interface LifecycleBreakdownProps {
 }
 
 /**
- * Section 5 — Four radial progress rings showing each Boavizta lifecycle
- * phase (manufacturing, transport, use, end-of-life) as a percentage of
- * the total GWP. This is the "we count the whole lifecycle, not just the
- * plug" section — the Boavizta differentiator.
+ * Section 03 — One 100% stacked bar of the four Boavizta lifecycle phases
+ * (manufacturing, transport, use, end-of-life), Use highlighted in primary,
+ * with a ledger of phase / share / grams underneath. This is the "we count
+ * the whole lifecycle, not just the plug" section — the Boavizta
+ * differentiator.
  */
 export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
   const { manufacturing, transport, use, endOfLife } = report.lifecycle
@@ -22,28 +21,24 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
   const phases = [
     {
       name: 'Manufacturing',
-      icon: Factory,
       amount: manufacturing.amount,
       pct: (manufacturing.amount / safeTotal) * 100,
       isUse: false,
     },
     {
       name: 'Transport',
-      icon: Truck,
       amount: transport.amount,
       pct: (transport.amount / safeTotal) * 100,
       isUse: false,
     },
     {
       name: 'Use',
-      icon: Lightning,
       amount: use.amount,
       pct: (use.amount / safeTotal) * 100,
       isUse: true,
     },
     {
       name: 'End of life',
-      icon: Recycle,
       amount: endOfLife.amount,
       pct: (endOfLife.amount / safeTotal) * 100,
       isUse: false,
@@ -82,41 +77,58 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
             </p>
           </div>
 
-          {/* Right — 4 radial rings */}
-          <div className="grid grid-cols-2 gap-6">
-            {phases.map((phase) => (
-              <div
-                key={phase.name}
-                className="border border-border bg-card p-6 flex flex-col items-center"
-              >
-                <ProgressRadial
-                  value={phase.pct}
-                  size={140}
-                  strokeWidth={10}
-                  indicatorClassName={
-                    phase.isUse ? 'text-foreground' : 'text-muted-foreground'
+          {/* Right — 100% stacked bar + ledger */}
+          <div>
+            <div
+              className="flex h-10 w-full overflow-hidden border border-border"
+              role="img"
+              aria-label={`Lifecycle breakdown: ${useOnlyPct.toFixed(0)}% use, ${(100 - useOnlyPct).toFixed(0)}% other phases`}
+            >
+              {phases.map((p) => (
+                <div
+                  key={p.name}
+                  className={
+                    p.isUse
+                      ? 'bg-primary'
+                      : 'bg-foreground/15'
                   }
-                  trackClassName="text-foreground/[0.05]"
+                  style={{ width: `${p.pct}%` }}
+                  aria-hidden="true"
+                />
+              ))}
+            </div>
+
+            {/* Ledger */}
+            <ol className="mt-6 divide-y divide-border border border-border">
+              {phases.map((p) => (
+                <li
+                  key={p.name}
+                  className="grid grid-cols-[1fr_auto_auto] items-baseline gap-4 bg-background px-4 py-3 sm:px-5"
                 >
-                  <div className="flex flex-col items-center">
-                    <phase.icon
-                      weight="duotone"
-                      className="mb-1 h-5 w-5 text-muted-foreground"
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={
+                        'inline-block h-2 w-2 ' +
+                        (p.isUse ? 'bg-primary' : 'bg-foreground/30')
+                      }
+                      aria-hidden="true"
                     />
-                    <span className="text-2xl font-bold text-foreground tabular-nums">
-                      {phase.pct.toFixed(0)}
-                      <span className="text-sm text-muted-foreground">%</span>
-                    </span>
+                    <span className="text-sm font-medium text-foreground">{p.name}</span>
                   </div>
-                </ProgressRadial>
-                <div className="mt-4 text-center">
-                  <div className="text-sm font-medium text-foreground">{phase.name}</div>
-                  <div className="text-xs text-muted-foreground tabular-nums">
-                    {(phase.amount * 1000).toFixed(0)} g CO₂e
-                  </div>
-                </div>
-              </div>
-            ))}
+                  <span className="font-mono text-sm tabular-nums text-foreground">
+                    {p.pct.toFixed(0)}%
+                  </span>
+                  <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                    {(p.amount * 1000).toFixed(0)} g CO₂e
+                  </span>
+                </li>
+              ))}
+            </ol>
+
+            <p className="mt-4 font-mono text-xs text-muted-foreground">
+              Bar segments sized by share of total lifecycle GWP. Use phase highlighted
+              because it is the only phase competitors typically report.
+            </p>
           </div>
         </div>
       </div>

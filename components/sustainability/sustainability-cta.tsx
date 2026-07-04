@@ -22,7 +22,7 @@ export function SustainabilityCTA() {
         fill
         unoptimized
         sizes="100vw"
-        className="object-cover grayscale brightness-[0.4]"
+        className="object-cover grayscale"
       />
       <div
         aria-hidden="true"
