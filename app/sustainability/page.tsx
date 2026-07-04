@@ -66,7 +66,7 @@ function emergencyFallback(): ImpactReport {
       excludes: [
         'Bunny CDN edge delivery',
         'Office electricity (we have no office)',
-        'Backend unreachable — using emergency snapshot',
+        'Public/free-tier CDN egress',
       ],
     },
     indicators: [
