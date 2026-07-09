@@ -12,6 +12,13 @@ export default function Hero() {
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />
       </div>
+      {/* Scrim resolving to the solid background on the text side — the same
+          treatment the photo sections use. Keeps the paths lively on the
+          right, quiets them behind the kicker and paragraph. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent"
+      />
 
       <div className="relative px-6 pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
         <p className="font-mono text-xs text-muted-foreground">
