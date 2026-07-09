@@ -132,6 +132,7 @@ export default async function TransparencyIndexPage() {
           <div className="mt-10 max-w-3xl">
             <Link
               href="/transparency/report"
+              aria-label={report.title}
               className="group -mx-4 block border-y border-border px-4 py-7 transition-colors hover:bg-card"
             >
               <p className="font-mono text-xs tabular-nums text-muted-foreground">
@@ -152,6 +153,7 @@ export default async function TransparencyIndexPage() {
 
             <Link
               href="/transparency/canary"
+              aria-label="Warrant canary"
               className="group -mx-4 block border-b border-border px-4 py-7 transition-colors hover:bg-card"
             >
               <p className="font-mono text-xs tabular-nums text-muted-foreground">
@@ -213,6 +215,7 @@ export default async function TransparencyIndexPage() {
                   <Link
                     key={f.label}
                     href={f.href}
+                    aria-label={`${f.label} file`}
                     className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
                   >
                     {f.label}

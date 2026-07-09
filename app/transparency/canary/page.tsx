@@ -106,6 +106,7 @@ export default async function WarrantCanaryPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="font-mono text-xs text-muted-foreground">01 · The signed statement</p>
+          <h2 className="sr-only">The signed statement</h2>
           <pre className="mt-6 max-w-3xl overflow-x-auto whitespace-pre-wrap break-words border border-border bg-card p-6 font-mono text-xs leading-relaxed text-muted-foreground sm:text-sm">
             {canary.text}
           </pre>
@@ -116,6 +117,7 @@ export default async function WarrantCanaryPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="font-mono text-xs text-muted-foreground">02 · Verify the signature</p>
+          <h2 className="sr-only">Verify the signature</h2>
           <div className="mt-6 max-w-3xl border border-border bg-card p-6">
             <pre className="overflow-x-auto font-mono text-xs leading-relaxed text-foreground">
               <code>{`gpg --import canary-pubkey.asc\ngpg --verify \\\n  canary-${canary.period}.txt.asc \\\n  canary-${canary.period}.txt`}</code>

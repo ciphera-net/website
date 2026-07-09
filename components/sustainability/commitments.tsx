@@ -8,6 +8,7 @@ export function Commitments() {
     <section className="border-b border-border">
       <div className="px-6 py-20 sm:py-28">
         <p className="font-mono text-xs text-muted-foreground">05 · Commitments</p>
+        <h2 className="sr-only">Our commitments</h2>
         <div className="mt-6 max-w-3xl space-y-6 text-2xl font-light leading-relaxed text-foreground sm:text-3xl">
           <p>
             We don’t buy carbon offsets. We don’t plant trees for PR. We don’t claim “carbon
