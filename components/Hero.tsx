@@ -13,11 +13,12 @@ export default function Hero() {
         <FloatingPaths position={-1} />
       </div>
       {/* Scrim resolving to the solid background on the text side — the same
-          treatment the photo sections use. Keeps the paths lively on the
-          right, quiets them behind the kicker and paragraph. */}
+          treatment the photo sections use. Compressed into the text column:
+          near-solid behind the copy, fully clear by 70% so the right side
+          keeps the paths at native strength. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent"
+        className="absolute inset-0 bg-gradient-to-r from-background/95 from-10% via-background/55 via-45% to-transparent to-70%"
       />
 
       <div className="relative px-6 pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
