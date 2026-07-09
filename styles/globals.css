@@ -36,6 +36,11 @@
     @apply bg-neutral-950 text-neutral-100 antialiased;
     font-family: var(--font-geist-sans), Geist, system-ui, sans-serif;
   }
+
+  a:focus-visible,
+  button:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
 }
 
 @layer components {
@@ -167,6 +172,11 @@
     .animate-slide-up,
     .animate-scale-in {
       animation: none;
+    }
+
+    .animate-in,
+    .animate-out {
+      animation: none !important;
     }
   }
 }
