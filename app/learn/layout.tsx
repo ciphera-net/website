@@ -2,13 +2,13 @@ import { Metadata } from 'next'
 import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
-  title: 'Learn - Learn',
+  title: 'Learn - Technical Guides & Reference',
   description: 'Guides, references, and technical deep-dives across Ciphera products. Web performance, security, encryption, analytics, and more.',
   alternates: {
     canonical: 'https://ciphera.net/learn',
   },
   openGraph: {
-    title: 'Learn - Learn',
+    title: 'Learn - Technical Guides & Reference',
     description: 'Guides, references, and technical deep-dives across Ciphera products.',
     url: 'https://ciphera.net/learn',
     siteName: 'Ciphera',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Learn - Learn',
+    title: 'Learn - Technical Guides & Reference',
     description: 'Guides, references, and technical deep-dives across Ciphera products.',
     images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
@@ -28,7 +28,7 @@ const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Learn - Learn',
+    name: 'Learn - Technical Guides & Reference',
     description: 'Guides, references, and technical deep-dives across Ciphera products.',
     url: 'https://ciphera.net/learn',
     publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
