@@ -46,22 +46,22 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <Link href="/products/pulse" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/products/pulse" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Pulse
                 </Link>
               </li>
               <li>
-                <Link href="/products/id" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/products/id" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Ciphera ID
                 </Link>
               </li>
               <li>
-                <Link href="/products/captcha" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/products/captcha" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Ciphera Captcha
                 </Link>
               </li>
               <li>
-                <Link href="/products/relay" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/products/relay" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Ciphera Relay
                 </Link>
               </li>
@@ -75,27 +75,27 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <Link href="/about" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/about" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/contact" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Contact
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/blog" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/learn" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/learn" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Learn
                 </Link>
               </li>
               <li>
-                <Link href="/sustainability" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/sustainability" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Sustainability
                 </Link>
               </li>
@@ -109,17 +109,17 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <Link href="/privacy" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/privacy" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/terms" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/transparency" className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                <Link href="/transparency" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Transparency
                 </Link>
               </li>
@@ -128,7 +128,7 @@ export default function Footer() {
                   href="https://github.com/ciphera-net"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground"
+                  className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground"
                 >
                   GitHub
                   <ArrowUpRightIcon aria-hidden="true" className="ml-1 inline h-3 w-3" />

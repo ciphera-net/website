@@ -89,6 +89,8 @@ const productFeatures: Record<string, FeatureLink[]> = {
 
 export function Header() {
     const [open, setOpen] = React.useState(false);
+    const closeMenu = React.useCallback(() => setOpen(false), []);
+    const toggleRef = React.useRef<HTMLButtonElement>(null);
     const scrolled = useScroll(10);
     const pathname = usePathname();
     const branding = productBranding[pathname];
@@ -107,7 +109,7 @@ export function Header() {
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border">
-            <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300", scrolled ? "opacity-100 bg-background" : "opacity-0")} />
+            <div className={cn("absolute inset-0 -z-10 transition-opacity duration-300 motion-reduce:transition-none", scrolled ? "opacity-100 bg-background" : "opacity-0")} />
             {/* Same column as the page rails (max-w-6xl + sm:border-x) so the
                 vertical lines run continuously from header through every section. */}
             {/* py-3 (not my-3 on the nav): a child margin would collapse through
@@ -230,19 +232,21 @@ export function Header() {
                 </div>
                 <div className="flex items-center gap-2 md:hidden">
                     <Button
+                        ref={toggleRef}
                         size="icon"
                         variant="outline"
                         onClick={() => setOpen(!open)}
                         aria-expanded={open}
                         aria-controls="mobile-menu"
                         aria-label="Toggle menu"
+                        className="min-h-11 min-w-11 inline-flex items-center justify-center"
                     >
                         <MenuToggleIcon open={open} className="size-5" duration={300} />
                     </Button>
                 </div>
             </nav>
             </div>
-            <MobileMenu open={open} className="flex flex-col justify-between gap-2 overflow-y-auto">
+            <MobileMenu open={open} onClose={closeMenu} triggerRef={toggleRef} className="flex flex-col justify-between gap-2 overflow-y-auto">
                 <NavigationMenu className="max-w-full">
                     <div className="flex w-full flex-col gap-y-2">
                         {features && (
@@ -289,14 +293,95 @@ export function Header() {
 
 type MobileMenuProps = React.ComponentProps<'div'> & {
     open: boolean;
+    onClose: () => void;
+    triggerRef: React.RefObject<HTMLButtonElement>;
 };
 
-function MobileMenu({ open, children, className, ...props }: MobileMenuProps) {
+function MobileMenu({ open, onClose, triggerRef, children, className, ...props }: MobileMenuProps) {
+    const panelRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        if (!open) return;
+
+        const panel = panelRef.current;
+        if (!panel) return;
+
+        const FOCUSABLE =
+            'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+        const getFocusable = () =>
+            Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+                (el) => el.offsetParent !== null || el === document.activeElement,
+            );
+
+        // Restore focus to the toggle button on close/unmount.
+        const previouslyFocused = triggerRef.current;
+
+        // Move focus into the panel: first focusable element, or the panel itself.
+        const focusable = getFocusable();
+        if (focusable.length > 0) {
+            focusable[0].focus();
+        } else {
+            panel.focus();
+        }
+
+        // Inert the background so screen readers / tab order skip it while open.
+        // The header is intentionally left reachable so the toggle stays usable.
+        const inertTargets = Array.from(
+            document.querySelectorAll<HTMLElement>('main, footer'),
+        );
+        inertTargets.forEach((el) => el.setAttribute('inert', ''));
+
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                onClose();
+                return;
+            }
+
+            if (event.key === 'Tab') {
+                const items = getFocusable();
+                if (items.length === 0) {
+                    // Nothing to cycle through — keep focus on the panel.
+                    event.preventDefault();
+                    panel.focus();
+                    return;
+                }
+
+                const first = items[0];
+                const last = items[items.length - 1];
+                const active = document.activeElement;
+
+                if (event.shiftKey) {
+                    if (active === first || !panel.contains(active)) {
+                        event.preventDefault();
+                        last.focus();
+                    }
+                } else if (active === last || !panel.contains(active)) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            }
+        };
+
+        document.addEventListener('keydown', onKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', onKeyDown);
+            inertTargets.forEach((el) => el.removeAttribute('inert'));
+            previouslyFocused?.focus();
+        };
+    }, [open, onClose, triggerRef]);
+
     if (!open || typeof window === 'undefined') return null;
 
     return createPortal(
         <div
             id="mobile-menu"
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+            tabIndex={-1}
             className={cn(
                 'bg-background',
                 'fixed top-16 right-0 bottom-0 left-0 z-40 flex flex-col overflow-hidden border-y md:hidden',
