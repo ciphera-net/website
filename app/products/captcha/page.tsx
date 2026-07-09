@@ -319,7 +319,7 @@ export default function CipheraCaptchaPage() {
         </div>
       </section>
 
-      {/* ─── 04 · Swiss privacy — photo left, copy right ─────────────────── */}
+      {/* ─── 04 · Data residency — photo left, copy right ─────────────────── */}
       <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Photo cell */}
@@ -355,13 +355,13 @@ export default function CipheraCaptchaPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">04 · Swiss privacy</p>
+            <p className="font-mono text-xs text-muted-foreground">04 · Data residency</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              Swiss infrastructure. Zero telemetry.
+              Hosted in Switzerland. Zero telemetry.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Ciphera Captcha runs entirely on Swiss infrastructure with
-              no external dependencies. No telemetry sent to Google,
+              Ciphera Captcha runs entirely on our own infrastructure,
+              with no external dependencies. No telemetry sent to Google,
               Cloudflare, or any third party. Client IPs are SHA-256
               hashed before embedding in tokens — we verify without
               storing identities.
@@ -425,7 +425,6 @@ export default function CipheraCaptchaPage() {
                   'Action-scoped JWT tokens',
                   'Zero-downtime key rotation',
                   'Audio + puzzle + PoW challenges',
-                  'Swiss infrastructure',
                 ].map((item) => (
                   <li key={item} className="group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 text-foreground">
                     <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />

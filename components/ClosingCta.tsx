@@ -33,7 +33,7 @@ export default function ClosingCta() {
           </Button>
         </div>
         <p className="mt-8 font-mono text-xs text-muted-foreground">
-          Zero-knowledge &middot; Swiss hosted &middot; Open source
+          Zero-knowledge &middot; No tracking &middot; Open source
         </p>
         </div>
 

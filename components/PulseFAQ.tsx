@@ -29,7 +29,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
     {
       question: "How is Pulse different from Plausible or Fathom?",
-      answer: "Pulse shares the privacy-first philosophy with Plausible and Fathom, but it's built on Swiss infrastructure with Swiss data protection laws. The client — dashboard and tracking script — are open source, and Pulse is part of the Ciphera ecosystem, giving you a unified privacy-first stack.",
+      answer: "Pulse shares the privacy-first philosophy with Plausible and Fathom, but it stores data in Switzerland under the FADP. The client — dashboard and tracking script — are open source, and Pulse is part of the Ciphera ecosystem, giving you a unified privacy-first stack.",
     },
   ],
   setup: [
@@ -69,7 +69,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
     {
       question: "Where is my analytics data stored?",
-      answer: "All data is processed and stored on Swiss infrastructure, protected by the Swiss Federal Act on Data Protection (FADP). Data never leaves Swiss jurisdiction.",
+      answer: "All data is processed and stored in Switzerland, protected by the Federal Act on Data Protection (FADP). It never leaves that jurisdiction.",
     },
     {
       question: "Can Pulse identify individual users?",

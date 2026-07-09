@@ -127,7 +127,7 @@ export default function CipheraIDPage() {
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
             The identity layer behind every Ciphera service. Zero-knowledge
             password authentication, passkeys, two-factor authentication,
-            and OAuth 2.0 — all on Swiss infrastructure.
+            and OAuth 2.0 — on infrastructure we run ourselves.
           </p>
           {/* Trust badges */}
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-muted-foreground">
@@ -326,7 +326,7 @@ export default function CipheraIDPage() {
         </div>
       </section>
 
-      {/* ─── 04 · Swiss privacy — photo left, copy right ─────────────── */}
+      {/* ─── 04 · Data residency — photo left, copy right ─────────────── */}
       <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Photo cell */}
@@ -362,13 +362,13 @@ export default function CipheraIDPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">04 · Swiss privacy</p>
+            <p className="font-mono text-xs text-muted-foreground">04 · Data residency</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              Swiss infrastructure. Swiss privacy laws.
+              Hosted in Switzerland. Blind by design.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              All identity data is stored on Swiss infrastructure,
-              protected by the Swiss Federal Act on Data Protection (FADP).
+              All identity data is stored under the Federal Act on Data
+              Protection (FADP).
               Passwords use zero-knowledge OPAQUE auth, IPs are HMAC-hashed,
               and audit logs are batched asynchronously — privacy at every layer.
             </p>
@@ -424,7 +424,7 @@ export default function CipheraIDPage() {
               <ul className="space-y-1">
                 {[
                   'Zero-knowledge password auth (OPAQUE, RFC 9807)',
-                  'Self-hosted on Swiss infrastructure',
+                  'Self-hosted — no third-party auth providers',
                   'Passkeys (FIDO2/WebAuthn)',
                   'Mandatory PKCE (S256 only)',
                   'Stateless token verification',

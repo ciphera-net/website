@@ -334,7 +334,7 @@ export default function PulsePage() {
         </div>
       </section>
 
-      {/* ─── 04 · Swiss privacy — photo left, copy right ─────────────── */}
+      {/* ─── 04 · Data residency — photo left, copy right ─────────────── */}
       <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Photo cell */}
@@ -370,14 +370,13 @@ export default function PulsePage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">04 · Swiss privacy</p>
+            <p className="font-mono text-xs text-muted-foreground">04 · Data residency</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              Swiss infrastructure. Swiss privacy laws.
+              Hosted in Switzerland. Discarded at the edge.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              All analytics data is processed and stored on Swiss
-              infrastructure, protected by the Swiss Federal Act on Data
-              Protection (FADP). IP addresses are used only for country-level
+              All analytics data is processed and stored under the
+              Federal Act on Data Protection (FADP). IP addresses are used only for country-level
               geolocation at the edge and immediately discarded — never
               stored, never logged.
             </p>
@@ -451,7 +450,6 @@ export default function PulsePage() {
                   'No consent banner needed',
                   'Open source client',
                   'Script under 2KB',
-                  'Swiss infrastructure',
                   'No cross-site tracking',
                   'Free tier available',
                   'Real-time dashboard',

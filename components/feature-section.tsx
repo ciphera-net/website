@@ -4,8 +4,8 @@ import {
   GithubIcon,
   LockIcon,
   LockClosedIcon,
-  SwissFlagIcon,
 } from '@ciphera-net/facet'
+import { Leaf } from '@phosphor-icons/react/dist/ssr'
 import { FullWidthDivider } from '@/components/full-width-divider'
 
 // "01 · Why Ciphera" — four claims, each paired with verifiable proof
@@ -31,10 +31,10 @@ const features = [
     external: false,
   },
   {
-    icon: SwissFlagIcon,
-    title: 'Swiss Infrastructure',
+    icon: Leaf,
+    title: 'Measured Sustainability',
     description:
-      'All services run on Swiss servers, protected by some of the strongest data privacy laws in the world.',
+      'Every server we run is carbon-accounted with life-cycle assessment — published as numbers, not marketing.',
     proofLabel: 'See the datacenter numbers',
     proofHref: '/sustainability',
     external: false,

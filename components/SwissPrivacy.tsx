@@ -11,7 +11,7 @@ const INFO_TILES = [
   {
     icon: CheckCircleIcon,
     title: 'FADP protected',
-    desc: 'Swiss Federal Data Protection Act',
+    desc: 'Federal Act on Data Protection',
   },
   {
     icon: LockIcon,
@@ -21,7 +21,7 @@ const INFO_TILES = [
 ] as const
 
 const CHECKLIST = [
-  'All data processed and stored in Switzerland',
+  'No tracking, no profiling, no data resale',
   'End-to-end encryption across all services',
   "Zero-knowledge architecture — we can’t read your data",
   'GDPR and FADP compliant by design',
@@ -68,9 +68,9 @@ export default function SwissPrivacy() {
             </h2>
 
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-              Every Ciphera service runs on Swiss infrastructure, protected by the Swiss Federal Act
-              on Data Protection (FADP) and the GDPR. Your files, your analytics, your credentials —
-              stored and processed in Switzerland.
+              Every Ciphera service runs on infrastructure in Switzerland, protected by the Federal
+              Act on Data Protection (FADP) and the GDPR. Your files, your analytics, your
+              credentials — stored and processed there, nowhere else.
             </p>
 
             <ul className="mt-8 space-y-3.5">

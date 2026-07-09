@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Ciphera Relay - Secure Email Infrastructure',
     description:
-      'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking, Swiss hosted.',
+      'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking.',
     url: 'https://ciphera.net/products/relay',
     siteName: 'Ciphera',
     images: [
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Ciphera Relay - Secure Email Infrastructure',
     description:
-      'Privacy-first transactional email with TLS 1.3, DKIM/SPF/DMARC. No tracking, Swiss infrastructure.',
+      'Privacy-first transactional email with TLS 1.3, DKIM/SPF/DMARC. No tracking, 99.8% deliverability.',
     images: [cdnUrl('/relay_icon_no_margins.png')],
   },
 }
@@ -310,7 +310,7 @@ export default function CipheraRelayPage() {
         </div>
       </section>
 
-      {/* ─── 04 · Swiss privacy — photo left, copy right ─────────────── */}
+      {/* ─── 04 · Data residency — photo left, copy right ─────────────── */}
       <section id="privacy" className="overflow-hidden border-b border-border scroll-mt-20">
         <div className="grid lg:grid-cols-2">
           {/* Photo cell */}
@@ -346,13 +346,13 @@ export default function CipheraRelayPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">04 · Swiss privacy</p>
+            <p className="font-mono text-xs text-muted-foreground">04 · Data residency</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              Swiss infrastructure. Swiss privacy laws.
+              Hosted in Switzerland. Deleted in 30 days.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Relay runs on Exoscale in Switzerland, protected by the
-              Swiss Federal Act on Data Protection (FADP). Email metadata
+              Relay runs on Exoscale (CH-DK-2), under the Federal Act on
+              Data Protection (FADP). Email metadata
               is retained for 30 days under contract performance basis,
               then permanently deleted. No marketing emails, no behavioral
               data, no profiling.
@@ -411,7 +411,7 @@ export default function CipheraRelayPage() {
                   'TLS 1.3 encryption',
                   'Per-domain DKIM signing',
                   'DMARC reject policy',
-                  'Self-hosted (Swiss infrastructure)',
+                  'Self-hosted — no third-party processors',
                   'Standard SMTP — no vendor lock-in',
                   '30-day metadata retention only',
                   'Transactional only — no marketing',

@@ -3,11 +3,9 @@ import {
   EyeOffIcon,
   GithubIcon,
   LockClosedIcon,
-  SwissFlagIcon,
 } from '@ciphera-net/facet'
 
 const BADGES = [
-  { icon: SwissFlagIcon, label: 'Swiss hosted' },
   { icon: CheckCircleIcon, label: 'GDPR & FADP' },
   { icon: EyeOffIcon, label: 'Zero-knowledge' },
   { icon: LockClosedIcon, label: 'End-to-end encrypted' },
@@ -17,7 +15,7 @@ const BADGES = [
 export default function TrustStrip() {
   return (
     <section className="border-b border-border" aria-label="Compliance and trust">
-      <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-5">
+      <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-4">
         {BADGES.map(({ icon: Icon, label }) => (
           <div
             key={label}
