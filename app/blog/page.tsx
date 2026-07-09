@@ -100,7 +100,7 @@ export default function BlogPage() {
                     setActiveCategory(category)
                     track('blog_filter_category')
                   }}
-                  className={`border px-4 py-1.5 font-mono text-xs transition-colors ${
+                  className={`inline-flex items-center min-h-9 border px-4 py-1.5 font-mono text-xs transition-colors ${
                     activeCategory === category
                       ? 'border-primary bg-transparent text-primary'
                       : 'border-border bg-background text-muted-foreground hover:text-foreground'
@@ -129,7 +129,7 @@ export default function BlogPage() {
                     <img
                       src={cdnUrl(post.image)}
                       alt={post.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover grayscale"
                       loading="lazy"
                     />
                   </div>
