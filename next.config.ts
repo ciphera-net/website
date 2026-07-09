@@ -6,21 +6,13 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   // * Privacy-first: Disable analytics and telemetry
   productionBrowserSourceMaps: false,
-  // * Image optimization
+  // * Images are served directly from cdn.ciphera.net (path-keyed, immutable),
+  // * never through the /_next/image optimizer. The optimizer's query-string
+  // * URLs (?url=&w=&q=) sit behind the ciphera.net Bunny pull zone, whose
+  // * cache collapses query strings and ignores Accept — one cached body was
+  // * served for every image on the site. Assets are pre-sized at upload.
   images: {
-    // Dev only: load CDN images directly instead of proxying through the
-    // /_next/image optimizer — its upstream fetch times out during cold
-    // Turbopack compiles, rendering every remote image broken on first load.
-    unoptimized: process.env.NODE_ENV === 'development',
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 2592000,
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    remotePatterns: [
-      { protocol: 'https' as const, hostname: 'cdn.ciphera.net' },
-    ],
+    unoptimized: true,
   },
   // * Performance optimizations
   compress: true,
