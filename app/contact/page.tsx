@@ -296,7 +296,7 @@ export default function ContactPage() {
                     </a>
                     <button
                       onClick={() => copyToClipboard(method.value)}
-                      className="p-1 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
+                      className="inline-flex items-center justify-center size-11 shrink-0 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
                       title="Copy to clipboard"
                     >
                       {copiedEmail === method.value ? (
@@ -338,7 +338,7 @@ export default function ContactPage() {
                 </a>
                 <button
                   onClick={() => copyToClipboard('+32 078 480 710')}
-                  className="p-1 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
+                  className="inline-flex items-center justify-center size-11 shrink-0 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
                   title="Copy to clipboard"
                 >
                   {copiedEmail === '+32 078 480 710' ? (
@@ -426,9 +426,9 @@ export default function ContactPage() {
               <div className="flex items-start gap-3 border-t border-border bg-card p-4">
                 <GlobeIcon className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-display text-sm font-bold text-foreground">
+                  <h3 className="font-display text-sm font-bold text-foreground">
                     Headquarters
-                  </h4>
+                  </h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     De Kleetlaan 2<br />
                     1831 Diegem, Belgium
@@ -447,9 +447,9 @@ export default function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-display text-sm font-bold text-foreground">
+                  <h3 className="font-display text-sm font-bold text-foreground">
                     Business Hours
-                  </h4>
+                  </h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     Monday – Friday<br />
                     <span className="font-mono tabular-nums text-foreground">08:00–12:00, 13:00–18:00 CET</span>
@@ -512,9 +512,11 @@ export default function ContactPage() {
                       }}
                       onBlur={(e) => handleFieldBlur('name', e.target.value)}
                       placeholder="Your name"
+                      aria-invalid={(submitAttempted && !!fieldErrors.name) || undefined}
+                      aria-describedby={submitAttempted && fieldErrors.name ? 'name-error' : undefined}
                     />
                     {submitAttempted && fieldErrors.name && (
-                      <p className="text-sm text-destructive mt-1">{fieldErrors.name}</p>
+                      <p id="name-error" className="text-sm text-destructive mt-1">{fieldErrors.name}</p>
                     )}
                   </div>
                   <div>
@@ -532,9 +534,11 @@ export default function ContactPage() {
                       }}
                       onBlur={(e) => handleFieldBlur('email', e.target.value)}
                       placeholder="you@example.com"
+                      aria-invalid={(submitAttempted && !!fieldErrors.email) || undefined}
+                      aria-describedby={submitAttempted && fieldErrors.email ? 'email-error' : undefined}
                     />
                     {submitAttempted && fieldErrors.email && (
-                      <p className="text-sm text-destructive mt-1">{fieldErrors.email}</p>
+                      <p id="email-error" className="text-sm text-destructive mt-1">{fieldErrors.email}</p>
                     )}
                   </div>
                 </div>
@@ -580,9 +584,11 @@ export default function ContactPage() {
                     onBlur={(e) => handleFieldBlur('message', e.target.value)}
                     className="w-full border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus:outline-none transition-colors resize-none"
                     placeholder="How can we help you?"
+                    aria-invalid={(submitAttempted && !!fieldErrors.message) || undefined}
+                    aria-describedby={submitAttempted && fieldErrors.message ? 'message-error' : undefined}
                   />
                   {submitAttempted && fieldErrors.message && (
-                    <p className="text-sm text-destructive mt-1">{fieldErrors.message}</p>
+                    <p id="message-error" className="text-sm text-destructive mt-1">{fieldErrors.message}</p>
                   )}
                 </div>
 
