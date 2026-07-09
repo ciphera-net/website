@@ -2,7 +2,7 @@ import { cipheraIcon } from '@/lib/images'
 
 export function CaptchaMockup() {
   return (
-    <div className="relative w-full max-w-[440px] mx-auto">
+    <div className="relative w-full max-w-[440px] mx-auto" aria-hidden="true">
       <div className="border border-border bg-card px-6 py-5 space-y-4">
         {/* Captcha widget */}
         <div className="border border-border bg-muted px-5 py-4 flex items-center justify-between">
@@ -36,6 +36,7 @@ export function CaptchaMockup() {
                   <span className="text-[10px] text-muted-foreground font-mono">{entry.ip}</span>
                 </div>
                 <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-mono text-muted-foreground">{entry.status === 'verified' ? 'ok' : 'blocked'}</span>
                   <span className="text-[10px] text-muted-foreground">{entry.action}</span>
                   <span className="text-[10px] text-muted-foreground">{entry.time}</span>
                 </div>

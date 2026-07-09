@@ -2,7 +2,7 @@ import { cipheraIcon } from '@/lib/images'
 
 export function RelayMockup() {
   return (
-    <div className="relative w-full max-w-[440px] mx-auto">
+    <div className="relative w-full max-w-[440px] mx-auto" aria-hidden="true">
       <div className="border border-border bg-card px-6 py-5 space-y-4">
         {/* Email header */}
         <div className="space-y-2">
@@ -51,7 +51,7 @@ export function RelayMockup() {
           </div>
 
           {/* CTA button */}
-          <button className="bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground cursor-default">
+          <button tabIndex={-1} className="bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground cursor-default">
             Reset password
           </button>
 

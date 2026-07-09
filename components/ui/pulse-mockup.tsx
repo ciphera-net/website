@@ -1,6 +1,6 @@
 export function PulseMockup() {
   return (
-    <div className="relative w-full max-w-[440px] mx-auto">
+    <div className="relative w-full max-w-[440px] mx-auto" aria-hidden="true">
       <div className="border border-border bg-card px-5 py-4 space-y-3">
         {/* Header row */}
         <div className="flex items-center justify-between">
@@ -15,7 +15,7 @@ export function PulseMockup() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1.5 bg-primary px-2.5 py-1 text-[10px] font-medium text-primary-foreground cursor-default">
+            <button tabIndex={-1} className="flex items-center gap-1.5 bg-primary px-2.5 py-1 text-[10px] font-medium text-primary-foreground cursor-default">
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
@@ -32,7 +32,7 @@ export function PulseMockup() {
 
         {/* Filter button */}
         <div>
-          <button className="flex items-center gap-1.5 border border-border bg-muted px-2.5 py-1 text-[10px] text-muted-foreground cursor-default">
+          <button tabIndex={-1} className="flex items-center gap-1.5 border border-border bg-muted px-2.5 py-1 text-[10px] text-muted-foreground cursor-default">
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             </svg>

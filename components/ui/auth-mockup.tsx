@@ -3,7 +3,7 @@ import { cipheraIcon } from '@/lib/images'
 
 export function AuthMockup() {
   return (
-    <div className="relative w-full max-w-[500px] mx-auto">
+    <div className="relative w-full max-w-[500px] mx-auto" aria-hidden="true">
       {/* Card */}
       <div className="border border-border bg-card px-8 py-6">
         {/* Header */}
@@ -56,7 +56,7 @@ export function AuthMockup() {
           </div>
 
           {/* Submit button */}
-          <button className="w-full bg-primary py-2.5 text-xs font-semibold text-primary-foreground cursor-default">
+          <button tabIndex={-1} className="w-full bg-primary py-2.5 text-xs font-semibold text-primary-foreground cursor-default">
             Create account
           </button>
 
