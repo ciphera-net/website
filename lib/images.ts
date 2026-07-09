@@ -18,6 +18,7 @@ export const zurichPhoto = cdnUrl('/zurich.jpg')
 export const swissAlpsFlagPhoto = cdnUrl('/swiss-alps-flag.jpg')
 export const swissGridBuildingsPhoto = cdnUrl('/swiss-grid-buildings.jpg')
 export const sustainabilityHeroBg = cdnUrl('/sustainability-hero.jpg')
+export const homeHeroBg = cdnUrl('/hero-glyph-ember.jpg')
 
 // Other
 export const newsletterBg = cdnUrl('/newsletter-bg.png')
