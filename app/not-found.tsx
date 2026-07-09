@@ -10,7 +10,7 @@ export const metadata = {
 export default function NotFound() {
   return (
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center py-12 sm:py-16">
-      <div className="section-container w-full">
+      <div className="w-full">
         <div className="max-w-2xl mx-auto text-center px-4">
           {/* * 404 Number */}
           <div className="mb-8">
