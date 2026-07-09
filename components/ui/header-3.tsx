@@ -383,7 +383,7 @@ const companyLinks: LinkItem[] = [
     {
         title: 'Sustainability',
         href: '/sustainability',
-        description: '100% renewable Swiss hosting — see the real numbers',
+        description: 'Our carbon footprint, measured — see the real numbers',
         icon: Leaf,
     },
 ];
