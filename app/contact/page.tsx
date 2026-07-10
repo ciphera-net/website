@@ -14,6 +14,7 @@ import {
   GithubIcon,
   Captcha
 } from '@ciphera-net/facet'
+import { CaretDown as CaretDownIcon } from '@phosphor-icons/react/dist/ssr'
 import { track } from '../../lib/pulse'
 import { env } from '@/lib/env'
 
@@ -428,18 +429,21 @@ export default function ContactPage() {
                   <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
                     Subject <span className="text-primary">*</span>
                   </label>
-                  <select
-                    id="subject"
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full border border-border bg-background px-4 py-3 text-foreground focus-visible:ring-2 focus-visible:ring-ring focus:outline-none transition-colors"
-                  >
-                    {subjectOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      id="subject"
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="w-full appearance-none border border-border bg-background px-4 py-3 pr-10 text-foreground focus-visible:ring-2 focus-visible:ring-ring focus:outline-none transition-colors"
+                    >
+                      {subjectOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <CaretDownIcon aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  </div>
                 </div>
 
                 <div>
@@ -590,7 +594,7 @@ export default function ContactPage() {
                       title="Copy to clipboard"
                     >
                       {copiedEmail === method.value ? (
-                        <CheckCircleIcon className="w-4 h-4 text-primary" />
+                        <CheckCircleIcon className="w-4 h-4 text-pos" />
                       ) : (
                         <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -632,7 +636,7 @@ export default function ContactPage() {
                   title="Copy to clipboard"
                 >
                   {copiedEmail === '+32 078 480 710' ? (
-                    <CheckCircleIcon className="w-4 h-4 text-primary" />
+                    <CheckCircleIcon className="w-4 h-4 text-pos" />
                   ) : (
                     <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
