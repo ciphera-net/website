@@ -13,7 +13,6 @@ steps:
 
   build-push:
     image: woodpeckerci/plugin-docker-buildx:6.1.1
-    privileged: true
     settings:
       registry: registry.ops.ciphera.net
       repo: registry.ops.ciphera.net/ciphera-net/ciphera-frontend
