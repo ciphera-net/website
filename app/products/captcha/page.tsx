@@ -501,7 +501,7 @@ export default function CipheraCaptchaPage() {
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-5">
             <Link href="/contact" className="btn-primary">
-              Contact Us
+              Contact Sales
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>
             <Link href="/about" className="btn-secondary">

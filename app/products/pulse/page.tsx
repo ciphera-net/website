@@ -172,7 +172,7 @@ export default function PulsePage() {
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <Link href="https://pulse.ciphera.net" className="btn-primary">
-              Try Pulse Free
+              Get Started Free
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>
             <Link
@@ -216,7 +216,7 @@ export default function PulsePage() {
             </ul>
             <div className="mt-8">
               <Link href="https://pulse.ciphera.net" className="btn-primary">
-                See it live
+                Get Started Free
                 <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
