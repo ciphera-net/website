@@ -4,6 +4,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeftIcon } from '@ciphera-net/facet'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import { MDXTable } from '@/components/mdx-table'
 import { getCurrentReport, listReports } from '@/lib/transparency'
 import { cdnUrl } from '@/lib/cdn'
 
@@ -78,6 +79,7 @@ export default async function TransparencyReportPage() {
           >
             <MDXRemote
               source={current.bodyMarkdown}
+              components={{ table: MDXTable }}
               options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
             />
           </article>
@@ -85,10 +87,10 @@ export default async function TransparencyReportPage() {
       </section>
 
       {/* Historical reports */}
-      {all.length > 1 && (
-        <section className="border-b border-border">
-          <div className="px-6 py-16 sm:py-20">
-            <p className="font-mono text-xs text-muted-foreground">Historical reports</p>
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-20">
+          <p className="font-mono text-xs text-muted-foreground">Historical reports</p>
+          {all.length > 1 ? (
             <ul className="mt-6 max-w-3xl border-t border-border">
               {all.slice(1).map((r) => (
                 <li
@@ -102,9 +104,13 @@ export default async function TransparencyReportPage() {
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
-      )}
+          ) : (
+            <p className="mt-6 font-mono text-xs text-muted-foreground">
+              First report — history accumulates here.
+            </p>
+          )}
+        </div>
+      </section>
     </>
   )
 }

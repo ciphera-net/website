@@ -13,6 +13,7 @@ export interface Canary {
   publishedEuropean: string
   publishedISO: string
   nextUpdateEuropean: string
+  isOverdue: boolean
   plaintextUrl: string
   signatureUrl: string
   pubkeyUrl: string
@@ -33,6 +34,16 @@ function europeanToISO(dmy: string): string {
   return `${y}-${m}-${d}`
 }
 
+// * "Today" at UTC midnight, compared against the canary's next-update date
+// * (also UTC midnight) so overdue status flips exactly on the calendar day,
+// * independent of server timezone/time-of-day.
+function isPastEuropeanDate(dmy: string): boolean {
+  const deadline = new Date(`${europeanToISO(dmy)}T00:00:00Z`)
+  const todayISO = new Date().toISOString().slice(0, 10)
+  const today = new Date(`${todayISO}T00:00:00Z`)
+  return today > deadline
+}
+
 function parseCanaryField(text: string, label: 'Published' | 'Next update'): string {
   const re = new RegExp(`^${label}:\\s*(?:on or before\\s+)?(\\d{2}-\\d{2}-\\d{4})`, 'im')
   const m = text.match(re)
@@ -40,16 +51,7 @@ function parseCanaryField(text: string, label: 'Published' | 'Next update'): str
   return m[1]
 }
 
-export async function getCurrentCanary(): Promise<Canary> {
-  const entries = await fs.readdir(CANARY_DIR)
-  const textFiles = entries
-    .filter((n) => /^\d{4}-\d{2}\.txt$/.test(n))
-    .sort()
-    .reverse()
-  if (textFiles.length === 0) {
-    throw new Error('No canary text file found in content/transparency/canaries/')
-  }
-  const name = textFiles[0]
+async function parseCanaryFile(name: string): Promise<Canary> {
   const period = name.replace(/\.txt$/, '')
   const text = await fs.readFile(path.join(CANARY_DIR, name), 'utf8')
 
@@ -65,10 +67,36 @@ export async function getCurrentCanary(): Promise<Canary> {
     publishedEuropean,
     publishedISO: europeanToISO(publishedEuropean),
     nextUpdateEuropean,
+    isOverdue: isPastEuropeanDate(nextUpdateEuropean),
     plaintextUrl: `/transparency/canary-${period}.txt`,
     signatureUrl: `/transparency/canary-${period}.txt.asc`,
     pubkeyUrl: `/transparency/canary-pubkey.asc`,
   }
+}
+
+// * Every canary text file on disk, newest period first. Prior months are
+// * served statically from public/transparency/ (mirrored 1:1 with
+// * content/transparency/canaries/ at build time), so linking to them here
+// * requires no new routes.
+export async function listCanaries(): Promise<Canary[]> {
+  const entries = await fs.readdir(CANARY_DIR)
+  const textFiles = entries
+    .filter((n) => /^\d{4}-\d{2}\.txt$/.test(n))
+    .sort()
+    .reverse()
+  return Promise.all(textFiles.map(parseCanaryFile))
+}
+
+export async function getCurrentCanary(): Promise<Canary> {
+  const entries = await fs.readdir(CANARY_DIR)
+  const textFiles = entries
+    .filter((n) => /^\d{4}-\d{2}\.txt$/.test(n))
+    .sort()
+    .reverse()
+  if (textFiles.length === 0) {
+    throw new Error('No canary text file found in content/transparency/canaries/')
+  }
+  return parseCanaryFile(textFiles[0])
 }
 
 export async function listReports(): Promise<TransparencyReport[]> {
