@@ -263,131 +263,12 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* * Contact methods — A1 section with A5 flat cards */}
-      <section className="border-b border-border">
-        <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">01 · Contact</p>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Reach us directly
-          </h2>
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {contactMethods.map((method) => {
-              const Icon = method.icon
-              return (
-                <div
-                  key={method.title}
-                  className="border border-border bg-card p-6"
-                >
-                  {/* A6 icon — bare icon, no colored bubble */}
-                  <Icon className="h-5 w-5 text-muted-foreground" />
-                  <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">
-                    {method.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {method.description}
-                  </p>
-                  <div className="mt-4 flex items-center gap-2">
-                    <a
-                      href={method.href}
-                      className="text-sm text-primary font-medium hover:underline"
-                      onClick={() => track(method.trackEvent)}
-                    >
-                      {method.value}
-                    </a>
-                    <button
-                      onClick={() => copyToClipboard(method.value)}
-                      className="inline-flex items-center justify-center size-11 shrink-0 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
-                      title="Copy to clipboard"
-                    >
-                      {copiedEmail === method.value ? (
-                        <CheckCircleIcon className="w-4 h-4 text-primary" />
-                      ) : (
-                        <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
-                  <p className="mt-2 font-mono text-xs text-muted-foreground">
-                    Response:{' '}
-                    <span className="tabular-nums text-foreground">{method.responseTime}</span>
-                  </p>
-                </div>
-              )
-            })}
-
-            {/* * Phone number card */}
-            <div className="border border-border bg-card p-6">
-              {/* A6 icon — framed bare icon */}
-              <svg className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">
-                Phone
-              </h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                For urgent matters
-              </p>
-              <div className="mt-4 flex items-center gap-2">
-                <a
-                  href="tel:+32078480710"
-                  className="text-sm text-primary font-medium hover:underline"
-                  onClick={() => track('contact_phone_click')}
-                >
-                  +32 078 480 710
-                </a>
-                <button
-                  onClick={() => copyToClipboard('+32 078 480 710')}
-                  className="inline-flex items-center justify-center size-11 shrink-0 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
-                  title="Copy to clipboard"
-                >
-                  {copiedEmail === '+32 078 480 710' ? (
-                    <CheckCircleIcon className="w-4 h-4 text-primary" />
-                  ) : (
-                    <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-              <p className="mt-2 font-mono text-xs text-muted-foreground">
-                Mon-Fri,{' '}
-                <span className="tabular-nums text-foreground">08:00–12:00, 13:00–18:00</span>
-              </p>
-            </div>
-          </div>
-
-          {/* * Social links */}
-          <div className="mt-10 flex items-center gap-2">
-            <p className="font-mono text-xs text-muted-foreground">Also on</p>
-            <a
-              href="https://github.com/ciphera-net"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-background transition-colors"
-              onClick={() => track('contact_github_click')}
-            >
-              <GithubIcon className="w-4 h-4" />
-              GitHub
-            </a>
-            <a
-              href="mailto:hello@ciphera.net"
-              className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-background transition-colors"
-              onClick={() => track('contact_email_direct_click')}
-            >
-              <MailIcon className="w-4 h-4" />
-              Email Us
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* * Send a message — A1 section, editorial split layout */}
       <section className="border-b border-border">
         <div className="grid lg:grid-cols-2">
           {/* * Left — info + office photo + business hours */}
           <div className="flex flex-col px-6 py-16 sm:py-24 lg:pr-14 border-b border-border lg:border-b-0 lg:border-r">
-            <p className="font-mono text-xs text-muted-foreground">02 · Office</p>
+            <p className="font-mono text-xs text-muted-foreground">01 · Office</p>
             <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Send us a message
             </h2>
@@ -668,6 +549,125 @@ export default function ContactPage() {
                 )}
               </div>
             </form>
+          </div>
+        </div>
+      </section>
+
+      {/* * Contact methods — A1 section with A5 flat cards */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">02 · Contact</p>
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Reach us directly
+          </h2>
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {contactMethods.map((method) => {
+              const Icon = method.icon
+              return (
+                <div
+                  key={method.title}
+                  className="border border-border bg-card p-6"
+                >
+                  {/* A6 icon — bare icon, no colored bubble */}
+                  <Icon className="h-5 w-5 text-muted-foreground" />
+                  <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">
+                    {method.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {method.description}
+                  </p>
+                  <div className="mt-4 flex items-center gap-2">
+                    <a
+                      href={method.href}
+                      className="text-sm text-primary font-medium hover:underline"
+                      onClick={() => track(method.trackEvent)}
+                    >
+                      {method.value}
+                    </a>
+                    <button
+                      onClick={() => copyToClipboard(method.value)}
+                      className="inline-flex items-center justify-center size-11 shrink-0 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
+                      title="Copy to clipboard"
+                    >
+                      {copiedEmail === method.value ? (
+                        <CheckCircleIcon className="w-4 h-4 text-primary" />
+                      ) : (
+                        <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                  <p className="mt-2 font-mono text-xs text-muted-foreground">
+                    Response:{' '}
+                    <span className="tabular-nums text-foreground">{method.responseTime}</span>
+                  </p>
+                </div>
+              )
+            })}
+
+            {/* * Phone number card */}
+            <div className="border border-border bg-card p-6">
+              {/* A6 icon — framed bare icon */}
+              <svg className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">
+                Phone
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                For urgent matters
+              </p>
+              <div className="mt-4 flex items-center gap-2">
+                <a
+                  href="tel:+32078480710"
+                  className="text-sm text-primary font-medium hover:underline"
+                  onClick={() => track('contact_phone_click')}
+                >
+                  +32 078 480 710
+                </a>
+                <button
+                  onClick={() => copyToClipboard('+32 078 480 710')}
+                  className="inline-flex items-center justify-center size-11 shrink-0 border border-border bg-card hover:bg-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus:outline-none"
+                  title="Copy to clipboard"
+                >
+                  {copiedEmail === '+32 078 480 710' ? (
+                    <CheckCircleIcon className="w-4 h-4 text-primary" />
+                  ) : (
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <p className="mt-2 font-mono text-xs text-muted-foreground">
+                Mon-Fri,{' '}
+                <span className="tabular-nums text-foreground">08:00–12:00, 13:00–18:00</span>
+              </p>
+            </div>
+          </div>
+
+          {/* * Social links */}
+          <div className="mt-10 flex items-center gap-2">
+            <p className="font-mono text-xs text-muted-foreground">Also on</p>
+            <a
+              href="https://github.com/ciphera-net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-background transition-colors"
+              onClick={() => track('contact_github_click')}
+            >
+              <GithubIcon className="w-4 h-4" />
+              GitHub
+            </a>
+            <a
+              href="mailto:hello@ciphera.net"
+              className="inline-flex items-center gap-2 border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-background transition-colors"
+              onClick={() => track('contact_email_direct_click')}
+            >
+              <MailIcon className="w-4 h-4" />
+              Email Us
+            </a>
           </div>
         </div>
       </section>
