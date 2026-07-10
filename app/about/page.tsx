@@ -23,7 +23,7 @@ import { cdnUrl } from '@/lib/cdn'
 const stats = [
   { value: '2024', label: 'Founded' },
   { value: '4', label: 'Services shipped' },
-  { value: 'AGPL-3.0', label: 'Open source' },
+  { value: 'AGPL-3.0 / Apache-2.0', label: 'Open source' },
 ] as const
 
 const values = [

@@ -75,7 +75,7 @@ function ProductRow({
             {secondaryLabel && secondaryHref && (
               <Link
                 href={secondaryHref}
-                className="flex items-center gap-1 text-sm text-brand transition-colors duration-fast hover:text-brand-hover"
+                className="flex items-center gap-1 text-sm text-foreground transition-colors duration-fast hover:text-foreground/80"
               >
                 {secondaryLabel}
                 <ArrowUpRightIcon className="h-4 w-4" aria-hidden="true" />

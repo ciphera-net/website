@@ -142,14 +142,14 @@ export default function Footer() {
       {/* Typographic signature — SVG textLength stretches the line to exactly
           the content width at every viewport (slack becomes letter-spacing) */}
       <div className="px-6 py-4" aria-hidden="true">
-        <svg viewBox="0 0 1104 96" className="h-auto w-full select-none" role="presentation">
+        <svg viewBox="0 0 1104 96" className="h-auto w-full select-none text-foreground/[0.16]" role="presentation">
           <text
             x="0"
             y="90"
             textLength="1104"
             lengthAdjust="spacing"
             fill="transparent"
-            stroke="rgba(255,255,255,0.16)"
+            stroke="currentColor"
             strokeWidth="1.25"
             style={{ font: '700 118px var(--font-space-grotesk), "Space Grotesk", sans-serif' }}
           >
