@@ -11,7 +11,7 @@ import {
   LockIcon,
   XIcon,
 } from '@ciphera-net/facet'
-import { ShieldCheck, Fingerprint, Key, Timer } from '@phosphor-icons/react/dist/ssr'
+import { ShieldCheck, Fingerprint, Key, Timer, Password } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Ciphera ID - Secure Identity Provider',
@@ -259,7 +259,7 @@ export default function CipheraIDPage() {
                 {/* Database */}
                 <div className="border border-border bg-background px-4 py-3 text-center">
                   <p className="font-mono text-[11px] text-muted-foreground truncate">opaque credential · 9f2c4e8a…b1d7</p>
-                  <p className="font-mono text-[9px] text-muted-foreground/60 mt-1">Unreadable — even to us</p>
+                  <p className="font-mono text-[11px] text-muted-foreground mt-1">Unreadable — even to us</p>
                 </div>
               </div>
             </div>
@@ -433,7 +433,7 @@ export default function CipheraIDPage() {
                   'Argon2id key stretching (client-side)',
                   'Built-in organization management',
                 ].map((item) => (
-                  <li key={item} className="group -mx-4 flex items-center gap-3 px-4 py-2 text-foreground transition-colors hover:bg-card">
+                  <li key={item} className="-mx-4 flex items-center gap-3 px-4 py-2 text-foreground">
                     <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     <span className="text-sm">{item}</span>
                   </li>
@@ -445,7 +445,7 @@ export default function CipheraIDPage() {
             <div className="bg-background p-8">
               <div className="flex items-center gap-3 mb-8">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-card">
-                  <Key aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
+                  <Password aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <div>
                   <h3 className="font-display text-xl font-bold tracking-tight text-foreground">SaaS Auth Providers</h3>
@@ -466,7 +466,7 @@ export default function CipheraIDPage() {
                 ].map((item) => (
                   <li
                     key={item.feature}
-                    className={`group -mx-4 flex items-center gap-3 px-4 py-2 transition-colors hover:bg-card ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
+                    className={`-mx-4 flex items-center gap-3 px-4 py-2 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
                   >
                     {item.has ? (
                       <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />

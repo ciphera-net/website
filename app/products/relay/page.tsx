@@ -133,26 +133,19 @@ export default function CipheraRelayPage() {
             2 seconds.
           </p>
           {/* Trust badges */}
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-muted-foreground">
-            <span className="flex items-center gap-2">
-              <Lock aria-hidden="true" className="h-3.5 w-3.5" />
-              TLS 1.3
-            </span>
-            <span aria-hidden="true" className="text-border">|</span>
-            <span className="flex items-center gap-2">
-              <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
-              DKIM / SPF / DMARC
-            </span>
-            <span aria-hidden="true" className="text-border">|</span>
-            <span className="flex items-center gap-2">
-              <EyeSlash aria-hidden="true" className="h-3.5 w-3.5" />
-              No tracking
-            </span>
-            <span aria-hidden="true" className="text-border">|</span>
-            <span className="flex items-center gap-2">
-              <EnvelopeSimple aria-hidden="true" className="h-3.5 w-3.5" />
-              99.8% deliverability
-            </span>
+          <div className="mt-8 flex flex-wrap items-center gap-y-3 font-mono text-xs text-muted-foreground">
+            {[
+              { icon: Lock, label: 'TLS 1.3' },
+              { icon: ShieldCheck, label: 'DKIM / SPF / DMARC' },
+              { icon: EyeSlash, label: 'No tracking' },
+              { icon: EnvelopeSimple, label: '99.8% deliverability' },
+            ].map((badge, i) => (
+              <span key={badge.label} className="flex items-center gap-2 whitespace-nowrap">
+                {i > 0 && <span className="mx-2 text-muted-foreground" aria-hidden="true">·</span>}
+                <badge.icon aria-hidden="true" className="h-3.5 w-3.5" />
+                {badge.label}
+              </span>
+            ))}
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <Link href="/contact" className="btn-primary">
@@ -417,7 +410,7 @@ export default function CipheraRelayPage() {
                   'Transactional only — no marketing',
                   'Sub-2-second delivery',
                 ].map((item) => (
-                  <li key={item} className="group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 text-foreground">
+                  <li key={item} className="-mx-4 px-4 py-2 flex items-center gap-3 text-foreground">
                     <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     <span className="text-sm">{item}</span>
                   </li>
@@ -450,10 +443,10 @@ export default function CipheraRelayPage() {
                 ].map((item) => (
                   <li
                     key={item.feature}
-                    className={`group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
+                    className={`-mx-4 px-4 py-2 flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
                   >
                     {item.has ? (
-                      <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     ) : (
                       <XIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                     )}

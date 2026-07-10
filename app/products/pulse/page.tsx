@@ -149,26 +149,19 @@ export default function PulsePage() {
             design.
           </p>
           {/* Trust badges */}
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-muted-foreground">
-            <span className="flex items-center gap-2">
-              <Cookie aria-hidden="true" className="h-3.5 w-3.5" />
-              Cookie-free
-            </span>
-            <span aria-hidden="true" className="text-border">|</span>
-            <span className="flex items-center gap-2">
-              <Code aria-hidden="true" className="h-3.5 w-3.5" />
-              Open source client
-            </span>
-            <span aria-hidden="true" className="text-border">|</span>
-            <span className="flex items-center gap-2">
-              <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
-              GDPR compliant
-            </span>
-            <span aria-hidden="true" className="text-border">|</span>
-            <span className="flex items-center gap-2">
-              <Lightning aria-hidden="true" className="h-3.5 w-3.5" />
-              Under 2KB
-            </span>
+          <div className="mt-8 flex flex-wrap items-center gap-y-3 font-mono text-xs text-muted-foreground">
+            {[
+              { icon: Cookie, label: 'Cookie-free' },
+              { icon: Code, label: 'Open source client' },
+              { icon: ShieldCheck, label: 'GDPR compliant' },
+              { icon: Lightning, label: 'Under 2KB' },
+            ].map((badge, i) => (
+              <span key={badge.label} className="flex items-center gap-2 whitespace-nowrap">
+                {i > 0 && <span className="mx-2 text-muted-foreground" aria-hidden="true">·</span>}
+                <badge.icon aria-hidden="true" className="h-3.5 w-3.5" />
+                {badge.label}
+              </span>
+            ))}
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <Link href="https://pulse.ciphera.net" className="btn-primary">
@@ -414,7 +407,6 @@ export default function PulsePage() {
             {[
               { term: 'Script size', detail: 'Pulse 1.6 KB gzipped · GA 45+ KB' },
               { term: 'Cookies', detail: 'Pulse none · GA required' },
-              { term: 'Data residency', detail: 'Pulse Switzerland · GA United States' },
             ].map((s) => (
               <div key={s.term} className="border-t border-border pt-3">
                 <dt className="font-mono text-xs text-muted-foreground">{s.term}</dt>
@@ -454,7 +446,7 @@ export default function PulsePage() {
                   'Free tier available',
                   'Real-time dashboard',
                 ].map((item) => (
-                  <li key={item} className="group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 text-foreground">
+                  <li key={item} className="-mx-4 px-4 py-2 flex items-center gap-3 text-foreground">
                     <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                     <span className="text-sm">{item}</span>
                   </li>
@@ -467,7 +459,7 @@ export default function PulsePage() {
               <div className="flex items-center gap-3 mb-8">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-card">
                   <img
-                    src="https://www.google.com/s2/favicons?domain=analytics.google.com&sz=64"
+                    src="https://cdn.ciphera.net/website/ga-favicon.png"
                     alt="Google Analytics"
                     width={24}
                     height={24}
@@ -493,7 +485,7 @@ export default function PulsePage() {
                 ].map((item) => (
                   <li
                     key={item.feature}
-                    className={`group -mx-4 px-4 py-2 transition-colors hover:bg-card flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
+                    className={`-mx-4 px-4 py-2 flex items-center gap-3 ${item.has ? 'text-foreground' : 'text-muted-foreground'}`}
                   >
                     {item.has ? (
                       <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
