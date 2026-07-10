@@ -12,7 +12,7 @@ steps:
       - printf '@ciphera-net:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s\nlegacy-peer-deps=true\n' "$NPM_TOKEN" > .npmrc-ci
 
   build-push:
-    image: woodpeckerci/plugin-docker-buildx:6.0.2
+    image: woodpeckerci/plugin-docker-buildx:6.1.1
     privileged: true
     settings:
       registry: registry.ops.ciphera.net
@@ -24,8 +24,14 @@ steps:
         from_secret: registry_username
       password:
         from_secret: registry_password
-      cache_from: "type=registry,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache"
-      secret-files: "npmrc=.npmrc-ci"
+      # Literal commas in list-valued settings (cache_from, secrets) must be
+      # escaped as \\, per the plugin docs, or items get split apart.
+      cache_from:
+        - type=registry\\,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache
+      # Each item is passed verbatim to `docker buildx build --secret`;
+      # the Dockerfile mounts it via --mount=type=secret,id=npmrc.
+      secrets:
+        - id=npmrc\\,src=.npmrc-ci
       build_args:
         NEXT_PUBLIC_CAPTCHA_API_URL:
           from_secret: next_public_captcha_api_url
