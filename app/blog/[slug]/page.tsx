@@ -138,7 +138,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <TableOfContents content={post.content} />
 
-          <BlogMDXRenderer compiledSource={mdxSource.compiledSource} scope={mdxSource.scope ?? {}} frontmatter={mdxSource.frontmatter ?? {}} />
+          <div className="max-w-3xl mx-auto">
+            <BlogMDXRenderer compiledSource={mdxSource.compiledSource} scope={mdxSource.scope ?? {}} frontmatter={mdxSource.frontmatter ?? {}} />
+          </div>
 
           <RelatedPosts currentSlug={slug} currentCategory={post.category} allPosts={allPosts} />
 

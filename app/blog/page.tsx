@@ -79,6 +79,7 @@ export default function BlogPage() {
               </svg>
               <input
                 type="text"
+                aria-label="Search articles"
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => {
