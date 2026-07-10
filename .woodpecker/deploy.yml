@@ -16,21 +16,18 @@ steps:
     settings:
       registry: registry.ops.ciphera.net
       repo: registry.ops.ciphera.net/ciphera-net/ciphera-frontend
-      # SHADOW MODE: distinct tag namespace; GitHub Actions remains the sole deployer.
-      # cache_to intentionally omitted: do not overwrite the buildcache GH Actions relies on.
-      tags: ["shadow-${CI_COMMIT_SHA:0:7}"]
+      tags:
+        - sha-${CI_COMMIT_SHA:0:7}
+        - latest
       username:
         from_secret: registry_username
       password:
         from_secret: registry_password
-      # Literal commas in list-valued settings (cache_from, secrets) must be
-      # escaped as \\, per the plugin docs, or items get split apart.
       cache_from:
-        - type=registry\\,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache
-      # Each item is passed verbatim to `docker buildx build --secret`;
-      # the Dockerfile mounts it via --mount=type=secret,id=npmrc.
+        - type=registry\,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache
+      cache_to: type=registry\,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache\,mode=max
       secrets:
-        - id=npmrc\\,src=.npmrc-ci
+        - id=npmrc\,src=.npmrc-ci
       build_args:
         NEXT_PUBLIC_CAPTCHA_API_URL:
           from_secret: next_public_captcha_api_url
@@ -42,3 +39,36 @@ steps:
           from_secret: next_public_website_api_url
         NEXT_PUBLIC_CDN_URL:
           from_secret: next_public_cdn_url
+
+  deploy:
+    image: alpine:3.20
+    volumes:
+      - /opt/woodpecker/secrets/nomad-token:/run/ci/nomad-token:ro
+      - /opt/vault-agent/tls/ca.pem:/run/ci/nomad-ca.pem:ro
+    environment:
+      REGISTRY_USERNAME:
+        from_secret: registry_username
+      REGISTRY_PASSWORD:
+        from_secret: registry_password
+    commands:
+      - apk add --no-cache curl jq >/dev/null
+      - export NOMAD_TOKEN=$(cat /run/ci/nomad-token)
+      - export DEPLOY_SHA=${CI_COMMIT_SHA:0:7}
+      - |
+        DIGEST=$(curl -sfI -u "$REGISTRY_USERNAME:$REGISTRY_PASSWORD" \
+          -H "Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json" \
+          "https://registry.ops.ciphera.net/v2/ciphera-net/ciphera-frontend/manifests/sha-$DEPLOY_SHA" \
+          | tr -d '\r' | awk 'tolower($1)=="docker-content-digest:"{print $2}')
+        test -n "$DIGEST"
+      - |
+        curl -sf --cacert /run/ci/nomad-ca.pem -H "X-Nomad-Token: $NOMAD_TOKEN" \
+          https://10.10.0.110:4646/v1/job/ciphera-website | jq \
+          ".Meta.deploy_sha = \"$DEPLOY_SHA\" |
+           .TaskGroups[0].Tasks[0].Config.image = \"registry.ops.ciphera.net/ciphera-net/ciphera-frontend@$DIGEST\" |
+           .TaskGroups[0].Tasks[0].Config.force_pull = true" > /tmp/job.json
+      - |
+        curl -fsS --cacert /run/ci/nomad-ca.pem -X POST -H "X-Nomad-Token: $NOMAD_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d "{\"Job\": $(cat /tmp/job.json)}" \
+          https://10.10.0.110:4646/v1/jobs
+      - echo "Deployed ciphera-website ($DEPLOY_SHA)"
