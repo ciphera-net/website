@@ -25,7 +25,7 @@ steps:
         from_secret: registry_password
       cache_from:
         - type=registry\,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache
-      cache_to: type=registry\,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache\,mode=max
+      cache_to: type=registry,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache,mode=max
       secrets:
         - id=npmrc\,src=.npmrc-ci
       build_args:
