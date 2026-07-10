@@ -11,7 +11,37 @@ steps:
     commands:
       - printf '@ciphera-net:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s\nlegacy-peer-deps=true\n' "$NPM_TOKEN" > .npmrc-ci
 
-  build-push:
+  build:
+    image: woodpeckerci/plugin-docker-buildx:6.1.1
+    settings:
+      dry_run: true
+      registry: registry.ops.ciphera.net
+      repo: registry.ops.ciphera.net/ciphera-net/ciphera-frontend
+      tags:
+        - sha-${CI_COMMIT_SHA:0:7}
+        - latest
+      username:
+        from_secret: registry_username
+      password:
+        from_secret: registry_password
+      cache_from:
+        - type=registry\,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache
+      cache_to: type=registry,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache,mode=max
+      secrets:
+        - id=npmrc\,src=.npmrc-ci
+      build_args:
+        NEXT_PUBLIC_CAPTCHA_API_URL:
+          from_secret: next_public_captcha_api_url
+        NEXT_PUBLIC_PULSE_SCRIPT_URL:
+          from_secret: next_public_pulse_script_url
+        NEXT_PUBLIC_PULSE_API_URL:
+          from_secret: next_public_pulse_api_url
+        NEXT_PUBLIC_WEBSITE_API_URL:
+          from_secret: next_public_website_api_url
+        NEXT_PUBLIC_CDN_URL:
+          from_secret: next_public_cdn_url
+
+  push:
     image: woodpeckerci/plugin-docker-buildx:6.1.1
     settings:
       registry: registry.ops.ciphera.net
