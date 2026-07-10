@@ -283,7 +283,7 @@ export default function CipheraRelayPage() {
               No SDK, no proprietary API. Relay uses standard SMTP AUTH
               over port 587 with STARTTLS — it works with any language,
               framework, or email library. Each Ciphera service gets its
-              own sender domain and DKIM key for clean provenance.
+              own sender domain and <Link href="/glossary/dkim" className="text-primary hover:underline">DKIM</Link> key for clean provenance.
             </p>
             <ul className="mt-8 space-y-3">
               {[
@@ -344,8 +344,7 @@ export default function CipheraRelayPage() {
               Hosted in Switzerland. Deleted in 30 days.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Relay runs on Exoscale (CH-DK-2), under the Federal Act on
-              Data Protection (FADP). Email metadata
+              Relay runs on Exoscale (CH-DK-2), under the <Link href="/glossary/fadp" className="text-primary hover:underline">Federal Act on Data Protection (FADP)</Link>. Email metadata
               is retained for 30 days under contract performance basis,
               then permanently deleted. No marketing emails, no behavioral
               data, no profiling.

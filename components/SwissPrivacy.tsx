@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { CheckIcon, GlobeIcon, CheckCircleIcon, LockIcon } from '@ciphera-net/facet'
 import { cdnUrl } from '@/lib/cdn'
 
@@ -68,8 +69,7 @@ export default function SwissPrivacy() {
             </h2>
 
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-              Every Ciphera service runs on infrastructure in Switzerland, protected by the Federal
-              Act on Data Protection (FADP) and the GDPR. Your files, your analytics, your
+              Every Ciphera service runs on infrastructure in Switzerland, protected by the <Link href="/glossary/fadp" className="text-primary hover:underline">Federal Act on Data Protection (FADP)</Link> and the GDPR. Your files, your analytics, your
               credentials — stored and processed there, nowhere else.
             </p>
 

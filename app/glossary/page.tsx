@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { cdnUrl } from '@/lib/cdn'
 import { GLOSSARY_CATEGORIES, glossaryTerms, termsByCategory } from '@/lib/glossary'
 
 export const metadata: Metadata = {
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     locale: 'en_US',
     type: 'website',
+    images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
   },
 }
 

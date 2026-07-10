@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowUpRightIcon } from '@ciphera-net/facet'
+import { cdnUrl } from '@/lib/cdn'
 import { getTerm, glossaryTerms } from '@/lib/glossary'
 
 interface Props {
@@ -29,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'Ciphera',
       locale: 'en_US',
       type: 'article',
+      images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
     },
   }
 }

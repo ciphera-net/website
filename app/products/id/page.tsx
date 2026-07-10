@@ -173,7 +173,7 @@ export default function CipheraIDPage() {
               Your password never leaves your device.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              With OPAQUE (RFC 9807), your password is stretched on your
+              With <Link href="/glossary/opaque" className="text-primary hover:underline">OPAQUE</Link> (RFC 9807), your password is stretched on your
               device with Argon2id and proven to our servers without ever
               being sent. We store only an opaque credential record that
               can&apos;t be reversed into your password — so even a full
@@ -284,7 +284,7 @@ export default function CipheraIDPage() {
               Passwords optional. Security mandatory.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Sign in with passkeys (FIDO2/WebAuthn) using your
+              Sign in with <Link href="/glossary/passkeys" className="text-primary hover:underline">passkeys</Link> (FIDO2/WebAuthn) using your
               fingerprint, face, or hardware security key — no password
               needed. For password-based logins, add TOTP two-factor
               authentication with recovery codes as a safety net.
@@ -367,8 +367,7 @@ export default function CipheraIDPage() {
               Hosted in Switzerland. Blind by design.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              All identity data is stored under the Federal Act on Data
-              Protection (FADP).
+              All identity data is stored under the <Link href="/glossary/fadp" className="text-primary hover:underline">Federal Act on Data Protection (FADP)</Link>.
               Passwords use zero-knowledge OPAQUE auth, IPs are HMAC-hashed,
               and audit logs are batched asynchronously — privacy at every layer.
             </p>
