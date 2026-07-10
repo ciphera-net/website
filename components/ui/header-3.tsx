@@ -499,6 +499,12 @@ const resourcesLinks: LinkItem[] = [
         icon: BookOpen,
     },
     {
+        title: 'Glossary',
+        href: '/glossary',
+        description: 'Privacy & cryptography terms, defined precisely',
+        icon: FileText,
+    },
+    {
         title: 'Contact',
         href: '/contact',
         description: 'Get in touch with our team',

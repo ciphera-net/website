@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getLearnArticles } from '@/lib/learn'
 import { getBlogPosts } from '@/lib/blog'
+import { glossaryTerms } from '@/lib/glossary'
 
 /**
  * Sitemap for ciphera.net
@@ -75,6 +76,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
+  // Glossary index + every term page (all statically generated)
+  const glossaryPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/glossary`, lastModified: '2026-07-10' },
+    ...glossaryTerms.map((term) => ({
+      url: `${baseUrl}/glossary/${term.slug}`,
+      lastModified: '2026-07-10',
+    })),
+  ]
+
   // Dynamically add published blog posts
   const blogPages: MetadataRoute.Sitemap = getBlogPosts().map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
@@ -87,5 +97,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: article.date,
   }))
 
-  return [...staticPages, ...blogPages, ...learnPages]
+  return [...staticPages, ...glossaryPages, ...blogPages, ...learnPages]
 }
