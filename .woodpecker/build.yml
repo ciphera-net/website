@@ -1,6 +1,7 @@
 when:
   - event: push
     branch: main
+  - event: pull_request
 
 steps:
   write-npmrc:
@@ -10,6 +11,18 @@ steps:
         from_secret: npm_token
     commands:
       - printf '@ciphera-net:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s\nlegacy-peer-deps=true\n' "$NPM_TOKEN" > .npmrc-ci
+    when:
+      - event: push
+
+  write-npmrc-pr:
+    image: alpine:3.20
+    environment:
+      NPM_TOKEN:
+        from_secret: npm_read_token
+    commands:
+      - printf '@ciphera-net:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s\nlegacy-peer-deps=true\n' "$NPM_TOKEN" > .npmrc-ci
+    when:
+      - event: pull_request
 
   build:
     image: woodpeckerci/plugin-docker-buildx:6.1.1
@@ -40,3 +53,29 @@ steps:
           from_secret: next_public_website_api_url
         NEXT_PUBLIC_CDN_URL:
           from_secret: next_public_cdn_url
+    when:
+      - event: push
+
+  build-pr:
+    image: woodpeckerci/plugin-docker-buildx:6.1.1
+    settings:
+      dry_run: true
+      repo: registry.ops.ciphera.net/ciphera-net/ciphera-frontend
+      tags:
+        - sha-${CI_COMMIT_SHA:0:7}
+        - latest
+      secrets:
+        - id=npmrc\,src=.npmrc-ci
+      build_args:
+        NEXT_PUBLIC_CAPTCHA_API_URL:
+          from_secret: next_public_captcha_api_url
+        NEXT_PUBLIC_PULSE_SCRIPT_URL:
+          from_secret: next_public_pulse_script_url
+        NEXT_PUBLIC_PULSE_API_URL:
+          from_secret: next_public_pulse_api_url
+        NEXT_PUBLIC_WEBSITE_API_URL:
+          from_secret: next_public_website_api_url
+        NEXT_PUBLIC_CDN_URL:
+          from_secret: next_public_cdn_url
+    when:
+      - event: pull_request
