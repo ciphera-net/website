@@ -28,7 +28,6 @@ import {
     ShieldCheck,
     FileText,
     Leaf,
-    Question as HelpCircle,
     PaperPlaneTilt as Send,
     Fingerprint,
     Scan as ScanLine,
@@ -51,11 +50,11 @@ type LinkItem = {
     description?: string;
 };
 
-const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string }> = {
+const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string; ctaLabel?: string; ctaHref?: string }> = {
     '/products/pulse': { logo: pulseIcon, name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
-    '/products/id': { logo: authIcon, name: 'Ciphera ID' },
-    '/products/captcha': { logo: captchaIcon, name: 'Ciphera Captcha' },
-    '/products/relay': { logo: relayIcon, name: 'Ciphera Relay' },
+    '/products/id': { logo: authIcon, name: 'Ciphera ID', ctaLabel: 'Contact Sales', ctaHref: '/contact' },
+    '/products/captcha': { logo: captchaIcon, name: 'Ciphera Captcha', ctaLabel: 'Contact Sales', ctaHref: '/contact' },
+    '/products/relay': { logo: relayIcon, name: 'Ciphera Relay', ctaLabel: 'Contact Sales', ctaHref: '/contact' },
 };
 
 type FeatureLink = { title: string; href: string; icon: IconType; description: string };
@@ -227,7 +226,7 @@ export function Header() {
                         <a href={branding?.signIn || "https://id.ciphera.net"} onClick={() => track('header_sign_in')}>Sign In</a>
                     </Button>
                     <Button asChild>
-                        <a href={branding?.signUp || "https://id.ciphera.net/signup"} onClick={() => track('header_cta_get_started')}>Get Started</a>
+                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://id.ciphera.net/signup")} onClick={() => track('header_cta_get_started')}>{branding?.ctaLabel ?? 'Get Started'}</a>
                     </Button>
                 </div>
                 <div className="flex items-center gap-2 md:hidden">
@@ -281,8 +280,8 @@ export function Header() {
                         </a>
                     </Button>
                     <Button className="w-full" asChild>
-                        <a href={branding?.signUp || "https://id.ciphera.net/signup"} onClick={() => track('header_cta_get_started_mobile')}>
-                            Get Started
+                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://id.ciphera.net/signup")} onClick={() => track('header_cta_get_started_mobile')}>
+                            {branding?.ctaLabel ?? 'Get Started'}
                         </a>
                     </Button>
                 </div>
@@ -504,12 +503,6 @@ const resourcesLinks: LinkItem[] = [
         href: '/contact',
         description: 'Get in touch with our team',
         icon: Mail,
-    },
-    {
-        title: 'Help Center',
-        href: '/contact',
-        description: 'Guides and support',
-        icon: HelpCircle,
     },
 ];
 
