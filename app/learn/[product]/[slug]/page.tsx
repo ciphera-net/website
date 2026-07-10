@@ -71,7 +71,6 @@ export default async function LearnArticlePage({ params }: Props) {
       headline: article.title,
       description: article.description,
       datePublished: article.date,
-      dateModified: article.date,
       author: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
       publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
       url: `https://ciphera.net/learn/${product}/${article.slug}`,
@@ -126,12 +125,12 @@ export default async function LearnArticlePage({ params }: Props) {
             )}
             {article.date && (
               <time dateTime={article.date} className="mb-8 block font-mono text-xs tabular-nums text-muted-foreground">
-                {new Date(article.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-')}
+                Published {new Date(article.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-')}
               </time>
             )}
 
             {/* MDX content */}
-            <div className="prose prose-invert prose-neutral max-w-none prose-headings:font-display prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none">
+            <div className="prose prose-invert prose-neutral max-w-none prose-headings:font-display prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-pre:p-4 [&_pre_code]:text-muted-foreground [&_pre_code]:bg-transparent [&_pre_code]:p-0">
               <MDXRemote source={article.content} components={{ table: MDXTable }} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
             </div>
           </div>

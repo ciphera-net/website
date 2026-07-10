@@ -88,6 +88,7 @@ export default function LearnPage() {
             <input
               type="text"
               placeholder="Search articles..."
+              aria-label="Search articles"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-4 py-3 border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
