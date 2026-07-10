@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeftIcon } from '@ciphera-net/facet'
+import { ArrowLeftIcon, ArrowRightIcon, Button } from '@ciphera-net/facet'
 import { notFound } from 'next/navigation'
 import remarkGfm from 'remark-gfm'
 import { getBlogPost, getBlogPosts } from '@/lib/blog'
@@ -9,6 +9,14 @@ import TableOfContents from '../../../components/TableOfContents'
 import RelatedPosts from '../../../components/RelatedPosts'
 import ReadingProgress from '../../../components/ReadingProgress'
 import { cdnUrl } from '@/lib/cdn'
+
+/** Primary CTA target by post category — falls back to the products section for anything unmapped. */
+const CATEGORY_CTA: Record<string, { label: string; href: string }> = {
+  Security: { label: 'Explore Ciphera ID', href: '/products/id' },
+  Privacy: { label: 'Explore Pulse', href: '/products/pulse' },
+  Comparison: { label: 'Explore Pulse', href: '/products/pulse' },
+}
+const DEFAULT_CTA = { label: 'Explore products', href: '/#products' }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -133,6 +141,31 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <BlogMDXRenderer compiledSource={mdxSource.compiledSource} scope={mdxSource.scope ?? {}} frontmatter={mdxSource.frontmatter ?? {}} />
 
           <RelatedPosts currentSlug={slug} currentCategory={post.category} allPosts={allPosts} />
+
+          {/* * Closing CTA */}
+          <section className="border-t border-border">
+            <div className="px-6 py-16 sm:py-20">
+              <p className="font-mono text-xs text-muted-foreground">Get started</p>
+              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground">
+                Put this into practice.
+              </h2>
+              <p className="mt-4 max-w-2xl text-base text-muted-foreground">
+                Ciphera builds privacy-first infrastructure — analytics, identity, bot protection, and
+                email that don&rsquo;t surveil. The tools this article describes are the ones we run.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild size="lg">
+                  <Link href={(CATEGORY_CTA[post.category] ?? DEFAULT_CTA).href}>
+                    {(CATEGORY_CTA[post.category] ?? DEFAULT_CTA).label}
+                    <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <Link href="/contact">Talk to us</Link>
+                </Button>
+              </div>
+            </div>
+          </section>
 
           <div className="mt-12 pt-12 border-t border-border">
             <Link
