@@ -155,3 +155,5 @@ This website follows privacy-first principles:
 ## License
 
 AGPL-3.0
+<!-- ci: pr build check -->
+
