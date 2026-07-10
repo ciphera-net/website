@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prebuild": "npm run generate:learn && npm run generate:blog && npm run sync:transparency",
+    "prebuild": "npm run generate:learn && npm run generate:blog && npm run sync:transparency && npm run generate:llms",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "generate:learn": "npx tsx scripts/generate-learn-articles.ts",
     "generate:blog": "npx tsx scripts/generate-blog-posts.ts",
-    "sync:transparency": "npx tsx scripts/sync-transparency.ts"
+    "sync:transparency": "npx tsx scripts/sync-transparency.ts",
+    "generate:llms": "npx tsx scripts/generate-llms.ts"
   },
   "dependencies": {
     "@ciphera-net/facet": "^0.2.3",

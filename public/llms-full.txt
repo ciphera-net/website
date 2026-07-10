@@ -1,0 +1,604 @@
+# Ciphera
+
+> Privacy-first infrastructure: cookieless analytics, zero-knowledge authentication, private bot protection, and tracking-free transactional email. Belgian company with Swiss-hosted infrastructure.
+
+Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), zero-knowledge authentication using OPAQUE (Ciphera ID — passwords never reach the server), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection. This file is the comprehensive companion to llms.txt: full product fact sheets, the complete glossary, and every blog and learn article.
+
+## Products
+
+### Pulse
+URL: https://ciphera.net/products/pulse
+
+Pulse is cookie-free website analytics: real-time dashboards and geographic insights without tracking individual visitors. The tracking script is under 2KB and the product is open source.
+
+- No cookies, no fingerprinting, no personal data collection
+- GDPR compliant by architecture, not policy
+- Tracking script under 2KB
+- Open source
+
+### Ciphera ID
+URL: https://ciphera.net/products/id
+
+Ciphera ID is the identity layer behind Ciphera. It authenticates every account with OPAQUE, an asymmetric password-authenticated key exchange standardized in RFC 9807, so the password never leaves the client in any form — not even during registration. Ciphera ID also supports passkeys (WebAuthn/FIDO2), TOTP two-factor authentication, and OAuth 2.0 with mandatory PKCE.
+
+- Zero-knowledge password authentication via OPAQUE (RFC 9807), not password hashing
+- The OPAQUE implementation is open-sourced as Tessera (Rust core, Go and TypeScript SDKs, Apache-2.0)
+- Passkeys (WebAuthn/FIDO2) and TOTP two-factor authentication supported
+- OAuth 2.0 with mandatory PKCE (S256) on all authorization-code flows
+- JWT sessions: 15-minute access tokens, 30-day rotating refresh tokens
+
+### Ciphera Captcha
+URL: https://ciphera.net/products/captcha
+
+Ciphera Captcha protects applications from bots with adaptive proof-of-work, puzzle challenges, audio verification, and behavioral risk scoring. It is fully stateless and does not track users across sites.
+
+- Adaptive proof-of-work and puzzle challenges
+- 5-signal behavioral risk scoring
+- No cookies, no cross-site tracking
+- Fully stateless, self-hosted
+
+### Ciphera Relay
+URL: https://ciphera.net/products/relay
+
+Ciphera Relay delivers transactional email (verification, notifications, alerts) with TLS 1.3 encryption in transit and DKIM/SPF/DMARC authentication. It carries no tracking pixels and no open tracking, and is Swiss hosted.
+
+- TLS 1.3, DKIM, SPF, and DMARC
+- No tracking pixels, no open tracking
+- Swiss hosted
+- 99.8% deliverability
+
+## Glossary
+
+### AES-256-GCM
+AES-256-GCM is authenticated encryption: the AES block cipher with 256-bit keys in Galois/Counter Mode, providing confidentiality and integrity in one pass — tampered ciphertext fails authentication instead of decrypting to garbage.
+GCM matters because encryption without authentication is exploitable: attackers can flip ciphertext bits and observe how systems react. GCM computes an authentication tag over the ciphertext (and optional associated data), so any modification is detected before a single byte is accepted.
+Its critical operational rule is nonce uniqueness — reusing a nonce under the same key is catastrophic for both confidentiality and the ability to forge tags. Correct implementations derive fresh nonces per message (randomly, or via counters) and rotate keys well before birthday bounds.
+AES-GCM is hardware-accelerated on effectively all modern CPUs and is the workhorse of TLS 1.3 and client-side encryption, including the vault encryption in Ciphera services.
+URL: https://ciphera.net/glossary/aes-256-gcm
+
+### Anonymization
+Anonymization is processing data such that the individual it once related to can no longer be identified by any means reasonably likely to be used — done correctly, the result falls entirely outside GDPR’s scope, unlike pseudonymized data.
+The GDPR standard, drawn from Recital 26, is demanding: data counts as anonymous only if re-identification is not "reasonably likely" using any means available to the controller or a third party, accounting for cost, time, available technology, and technological development. This is a higher bar than simply removing names — direct identifiers can be stripped while enough quasi-identifiers (age, postcode, employer, rare combinations of attributes) remain to re-identify a person through cross-referencing with other datasets, a repeatedly demonstrated failure mode in supposedly anonymized releases.
+Genuine anonymization techniques include aggregation (reporting statistics over groups rather than individual records), generalization (broadening precise values like exact age into ranges), k-anonymity and differential-privacy approaches (mathematically bounding how much any single record influences an output), and irreversible deletion of the linking data needed to re-identify pseudonymized records. The test is outcome-based, not method-based: a technique claimed as "anonymization" that still permits realistic re-identification is legally pseudonymization at best.
+Because true anonymization is hard to achieve and verify, organizations often rely on pseudonymization plus access controls and legal safeguards instead — and stay within GDPR’s scope as a result, rather than claiming an anonymization exemption they can’t defend.
+URL: https://ciphera.net/glossary/anonymization
+
+### Argon2id
+Argon2id is the recommended variant of Argon2, winner of the Password Hashing Competition: a memory-hard key-derivation function that makes password guessing expensive on GPUs and custom hardware, while resisting side-channel attacks.
+Argon2 comes in three variants: Argon2d (fastest, data-dependent memory access, side-channel sensitive), Argon2i (data-independent access), and Argon2id, which runs the first pass independent and the rest dependent — the practical default recommended by RFC 9106 and OWASP.
+Memory-hardness is the point: each guess requires holding tens of megabytes, so an attacker cannot pack thousands of parallel attempts onto a GPU the way they can against SHA-based PBKDF2. Parameters (memory, iterations, parallelism) are tuned to the slowest acceptable legitimate login.
+Ciphera ID runs Argon2id client-side when stretching account secrets — the cost is paid in the user’s browser, and what leaves the device is already high-entropy key material.
+URL: https://ciphera.net/glossary/argon2id
+
+### Blind index
+A blind index is a keyed, deterministic hash of a field (such as an email address) stored in place of the plaintext, so a database can look records up by exact match without holding — or leaking — the value itself.
+Encrypting a column normally breaks lookups: two encryptions of the same value differ, so WHERE email = ? stops working. A blind index restores exact-match capability by storing a deterministic derivation of the value — computed with a slow or keyed function — alongside the ciphertext. The database can find the row; nobody browsing the database can read the addresses.
+The derivation must resist offline guessing, since email addresses are low-entropy and enumerable. That means a secret key unavailable to the database, an expensive derivation, or both.
+Ciphera ID uses a client-side blind index for account lookup: the email address is stretched through PBKDF2 with 1,000,000 iterations in the browser, and only that digest travels to the server as the lookup key. The server can match a returning user without ever storing the address in searchable plaintext.
+URL: https://ciphera.net/glossary/blind-index
+
+### Bot detection
+Bot detection distinguishes automated traffic from genuine human visitors before allowing an action — form submission, login, checkout — to prevent spam, credential stuffing, and scraping at scale.
+Detection approaches sit on a spectrum by how much data they need about the visitor. On one end, behavioral and device-fingerprinting systems build a profile from mouse movement, keystroke timing, browser and hardware attributes, and cross-site history — effective, but privacy-invasive, and legally exposed under GDPR’s data-minimization requirements when deployed without clear necessity. On the other end, proof-of-work and honeypot techniques verify a request is well-behaved without building any profile of who sent it.
+The classic tradeoff is friction versus accuracy: a visible image-grid CAPTCHA is highly disruptive to real users and, per published research, increasingly solvable by automated systems anyway — so the friction is paid disproportionately by legitimate visitors while sophisticated bots pass through. Invisible, verification-based approaches (proof-of-work, HMAC-signed stateless tokens, honeypots) aim to impose cost on automated traffic without interrupting humans at all.
+Ciphera Captcha combines invisible adaptive proof-of-work with stateless HMAC-signed tokens and no third-party telemetry — verification happens without building a behavioral profile of the visitor or sharing data with an outside vendor.
+URL: https://ciphera.net/glossary/bot-detection
+
+### Bounce rate
+Bounce rate is the share of visits in which a user views a single page and leaves without any further interaction or navigation — a rough signal of whether a landing page held attention.
+A "bounce" is a single-page session: someone lands on a page and leaves without clicking through to another page or firing a tracked event, regardless of how long they stayed or how much they read. That definition makes bounce rate a blunt instrument — a visitor who reads a full blog post carefully and leaves satisfied looks identical to one who left in half a second, unless the tool also tracks engagement signals like scroll depth or time on page alongside it.
+Interpretation is directional, not absolute: bounce rate norms vary hugely by page type. A high bounce rate on a blog post or documentation page can be entirely healthy — the visitor got their answer and left. A high bounce rate on a checkout funnel is a real problem. It is best read alongside referrer and landing-page data, not as a standalone health score.
+Ciphera Pulse reports bounce rate as part of its standard aggregate metrics, computed the same way — single-page sessions — without needing a cookie to detect subsequent navigation within the same visit.
+URL: https://ciphera.net/glossary/bounce-rate
+
+### Browser fingerprinting
+Browser fingerprinting identifies a device by combining device and browser attributes — screen size, installed fonts, GPU details, timezone, and more — into a composite signature, without storing anything on the device.
+A fingerprint is built from characteristics the browser exposes to any page it visits: canvas and WebGL rendering quirks, audio stack behavior, installed fonts, screen resolution, timezone, language, and dozens of other data points. No single attribute is unique, but the combination often is — enough entropy to re-identify a specific device across sites and sessions with no cookie required.
+This is precisely what makes fingerprinting harder to govern than cookies: there is nothing stored on the device to delete, no consent prompt to decline, and no expiry date. A user who clears cookies, uses private browsing, or rejects a consent banner can still be re-identified on their next visit if the underlying signals have not changed. Regulators increasingly treat fingerprinting as functionally equivalent to a persistent identifier under cookie-consent law, even though no cookie exists.
+Ciphera Pulse does not fingerprint devices — it collects no canvas, font, GPU, or other device-attribute signals, and builds no per-device signature.
+URL: https://ciphera.net/glossary/fingerprinting
+
+### Consent banner
+A consent banner is the on-page prompt asking a visitor to accept or decline non-essential cookies and tracking, required under the EU ePrivacy Directive whenever a site stores or reads anything on the visitor’s device that isn’t strictly necessary.
+The legal trigger for a consent banner isn’t the GDPR directly — it’s Article 5(3) of the ePrivacy Directive, which requires prior, informed consent before storing or accessing information on a user’s device, with an exception for storage strictly necessary to deliver a service the user asked for. Analytics cookies, advertising pixels, and cross-site tracking identifiers don’t fall under that exception, so a site using them needs a valid consent mechanism before those scripts fire — not just a banner that displays but one that actually blocks the tracking until consent is given.
+Regulators across the EU have increasingly penalized "dark pattern" banners — an obvious "Accept" button paired with a buried or multi-click "Reject" — treating that asymmetry as invalid consent under GDPR’s requirement that consent be freely given and as easy to withdraw as to give. A compliant banner needs equally prominent accept and reject options, granular choices by purpose, and no pre-ticked boxes.
+The banner itself is a symptom of a technical choice, not a legal requirement in isolation: a site that doesn’t use cookies or persistent identifiers for tracking has nothing to gate consent on. Ciphera’s own site runs Pulse for analytics, which identifies sessions without cookies or device storage, so ciphera.net does not show a cookie consent banner.
+URL: https://ciphera.net/glossary/consent-banner
+
+### Cookieless analytics
+Cookieless analytics measures website traffic without setting cookies or any other persistent client-side identifier — counts are derived from request-level signals, not a stored ID that follows a browser over time.
+Conventional analytics tools drop a first-party cookie containing a random visitor ID on first page load, then read it back on every subsequent visit to stitch sessions together and recognize returning users. That cookie is what makes the tool subject to consent rules in most jurisdictions: it is a persistent identifier stored on the user’s device, regardless of whether the data behind it is later called "anonymized."
+Cookieless tools drop the persistent identifier entirely. Traffic is aggregated from what a request already carries — page URL, referrer, user agent, coarse geolocation from the IP — without writing anything to the browser or building a durable per-visitor profile. The tradeoff is precision: without a stable ID, distinguishing a returning visitor from a new one becomes an estimate rather than a lookup, so cookieless tools favor aggregate trends over individual visitor timelines.
+Because there is no cookie and no persistent identifier, this category of tool typically falls outside ePrivacy consent-banner requirements in the EU and needs no cookie disclosure. Ciphera Pulse is built cookieless from the ground up: no cookies, no fingerprinting, and no consent banner required, with metrics aggregated rather than tied to a stored per-visitor record.
+URL: https://ciphera.net/glossary/cookieless-analytics
+
+### Data controller
+A data controller is the natural or legal person that determines the purposes and means of processing personal data — under GDPR, the controller bears primary responsibility for lawful processing and for honoring data subjects’ rights.
+The controller/processor split is the organizing structure of GDPR accountability: whoever decides why data is being processed and how — what fields to collect, what the data will be used for, how long to keep it — is the controller, regardless of whether that organization does the technical processing itself or outsources it. A retailer deciding to run an email marketing campaign and collecting addresses for it is the controller even if it uses a third-party service to actually send the emails.
+Controller status carries the heaviest compliance burden: establishing a lawful basis for processing, providing privacy notices, honoring access/erasure/portability requests, conducting data protection impact assessments where required, and — if using a processor — putting a compliant DPA in place. Two organizations can also be joint controllers when they jointly determine the purposes and means of the same processing, which requires its own arrangement clarifying respective responsibilities.
+For most of Ciphera’s products, the customer organization using Ciphera ID or Pulse to manage its own end users is typically the controller for that end-user data, with Ciphera acting as processor — the relationship a DPA is meant to formalize.
+URL: https://ciphera.net/glossary/data-controller
+
+### Data processor
+A data processor is the natural or legal person that processes personal data on behalf of, and under the instructions of, a data controller — without independently deciding why or how that data is used.
+The processor’s defining trait under GDPR Article 4(8) is following instructions: it acts on the controller’s documented directions rather than setting its own purposes for the data. A cloud hosting provider, an email-delivery service, or an analytics vendor operating on a customer’s behalf are typical processors — they handle the mechanics of storage, transmission, or computation without deciding what the data is collected for in the first place.
+GDPR Article 28 imposes direct obligations on processors, not just controllers: implementing appropriate security measures, assisting the controller with data-subject rights and breach notifications, not engaging a sub-processor without authorization, and deleting or returning data when the engagement ends. A processor that starts determining its own purposes for the data — repurposing it beyond the controller’s instructions — risks being reclassified as a controller (or joint controller) for that processing, with the fuller compliance burden that implies.
+Where Ciphera runs infrastructure that a customer uses to manage its own end users’ data — Ciphera ID for authentication, Pulse for analytics — Ciphera typically sits in the processor role, bound by the DPA the customer relationship establishes.
+URL: https://ciphera.net/glossary/data-processor
+
+### Data residency
+Data residency is the physical or jurisdictional location where an organization’s data is stored — a deliberate infrastructure choice, distinct from data sovereignty, which concerns whose laws govern that data regardless of where it sits.
+Residency is an operational fact: which country or region the servers and backups physically live in. Organizations choose residency for latency, regulatory alignment, or customer expectation — a company promising EU data residency commits to keeping storage and processing within EU/EEA borders, which simplifies GDPR cross-border-transfer analysis because there’s no border being crossed for that data flow.
+Residency alone doesn’t fully answer where legal authority reaches; a server physically located in one country can still be subject to another country’s law if the operating company is headquartered elsewhere and subject to extraterritorial legal process — that broader question is data sovereignty. Residency is nonetheless the practical lever most organizations can control directly, since it’s a hosting decision rather than a matter of corporate domicile.
+Ciphera hosts its infrastructure on Exoscale in Zurich, Switzerland (availability zone CH-DK-2) — data residency chosen specifically for Switzerland’s data protection regime (the FADP) and the EU’s adequacy recognition of it, independent of Ciphera BV’s own incorporation in Belgium.
+URL: https://ciphera.net/glossary/data-residency
+
+### Data sovereignty
+Data sovereignty is the principle that data is subject to the laws of the jurisdiction that governs it — broader than data residency, since a legal claim can reach across borders regardless of where servers physically sit.
+The distinction from residency matters in practice: a server in Switzerland is subject to Swiss law by residency, but if the company operating it is a US-headquartered entity, US laws with extraterritorial reach — the CLOUD Act being the frequently cited example — can potentially compel disclosure of data the company controls, wherever it’s stored. Sovereignty asks who can lawfully compel access to the data, not merely where the disks are.
+This is why sovereignty-conscious organizations look past the marketing claim of "data stored in country X" to ask which legal entity controls the infrastructure, what jurisdiction that entity is incorporated and headquartered in, and what legal process could reach it. A jurisdiction with strong statutory protections and no extraterritorial-reach conflicts is a stronger sovereignty position than residency alone provides.
+Ciphera’s infrastructure runs on Exoscale, a Swiss-headquartered cloud provider, hosted in Zurich — aligning both residency and the operating entity’s jurisdiction with Switzerland’s FADP regime, rather than relying on residency in a jurisdiction whose data could still be reached through a foreign parent company’s legal obligations.
+URL: https://ciphera.net/glossary/data-sovereignty
+
+### DKIM
+DKIM (DomainKeys Identified Mail, RFC 6376) lets a sending domain cryptographically sign outgoing email — a public key published in DNS verifies the signature, proving headers and body were not altered in transit.
+A sending server computes a hash over selected headers and the message body, signs it with a private key, and attaches the signature as a DKIM-Signature header. The receiving server looks up the corresponding public key at a DNS TXT record — under a selector-specific subdomain of the sending domain — and verifies the signature. A match proves the message genuinely originated from a system holding that domain’s private key and was not modified after signing.
+DKIM alone answers "was this message tampered with and does it belong to this domain," not "is this domain allowed to send as this address" — that second question is SPF’s job, and DMARC ties the two together into an enforceable policy. Rotating DKIM keys per domain, rather than sharing one key across many customers on a platform, limits the blast radius if a key is ever compromised.
+Ciphera Relay signs every message with a per-domain DKIM key — customers get their own key rather than shared signing infrastructure, which keeps sender reputation isolated per domain.
+URL: https://ciphera.net/glossary/dkim
+
+### DMARC
+DMARC (RFC 7489) is a DNS policy record tying SPF and DKIM together: it requires one to align with the visible From address, tells receivers what to do on failure, and requests reporting on the results.
+SPF and DKIM can each pass while still allowing spoofing, because neither is required to match the domain a human actually sees in their inbox. DMARC closes that gap with alignment: it demands that the domain in SPF or DKIM correspond to the visible From header, not just some technically valid but unrelated domain. A message that fails alignment on both checks fails DMARC, regardless of whether SPF or DKIM individually passed.
+DMARC’s policy tag (p=none, p=quarantine, or p=reject) tells receiving mail servers what to do with messages that fail — none just monitors, quarantine sends them to spam, and reject refuses delivery outright. Most domains start at p=none while reviewing DMARC aggregate reports, then tighten to reject once they have confirmed every legitimate sending source passes.
+Ciphera Relay enforces a DMARC reject policy — mail claiming to be from a Relay-protected domain that fails both SPF and DKIM alignment is refused, not quarantined for a human to second-guess.
+URL: https://ciphera.net/glossary/dmarc
+
+### Do Not Track (DNT)
+Do Not Track was an HTTP header and browser setting, standardized as DNT, that signaled a user’s preference not to be tracked across sites — largely abandoned because sites were never legally required to honor it.
+DNT sent a simple header (DNT: 1) with every request, expressing intent rather than enforcing anything technically. It required every receiving site to voluntarily change its behavior, and most advertising-funded sites simply ignored the signal — there was no penalty for non-compliance and no way for the browser to verify a site had complied. Major browsers have since removed the DNT setting or stopped sending it by default, and the W3C working group that standardized it disbanded.
+DNT’s failure is the reference case for why its successor, Global Privacy Control, was designed differently: GPC is written into law in several US states, giving it an enforcement mechanism DNT never had. The lesson generalizes beyond browser settings — a privacy signal only changes behavior at a service that is either compelled to honor it or architecturally already compliant, not one that merely promises to.
+Ciphera products need no opt-out signal for tracking that never happens: Pulse collects no cookies or fingerprints to opt out of, and Relay sends no tracking pixels to suppress.
+URL: https://ciphera.net/glossary/do-not-track
+
+### DPA (data processing agreement)
+A data processing agreement (DPA) is the contract required by GDPR Article 28 between a data controller and a data processor, setting out the scope, purpose, and security obligations governing the processor’s handling of personal data on the controller’s behalf.
+Whenever a controller hands personal data to another organization to process on its behalf — a hosting provider, an email-delivery service, an analytics vendor that processes identifiable data — GDPR Article 28 requires a written contract, not just a verbal understanding or a line in a terms-of-service page. The DPA has to specify the subject matter and duration of processing, its nature and purpose, the categories of data and data subjects involved, and the controller’s and processor’s respective obligations.
+Substantively, a compliant DPA commits the processor to act only on the controller’s documented instructions, to impose confidentiality on anyone processing the data, to implement appropriate technical and organizational security measures, to assist the controller with data-subject rights requests and breach notifications, to delete or return data at the end of the engagement, and to flow the same obligations down to any sub-processor it engages — which is why sub-processor lists and consent mechanisms appear as DPA annexes.
+A DPA is a contractual layer, distinct from a transfer mechanism like standard contractual clauses: a DPA governs the relationship and duties between controller and processor, while SCCs (when needed) govern the legal basis for moving data across a border. The two often accompany each other in the same document set when a processor is outside the EU/EEA.
+URL: https://ciphera.net/glossary/data-processing-agreement
+
+### Email open tracking
+Email open tracking records when a recipient views a message, typically via an embedded tracking pixel that silently reports back to the sender the moment the email client loads remote images.
+The mechanism is a tracking pixel: a tiny invisible image with a per-recipient URL, inserted into the message body. When the recipient’s email client renders the message and fetches remote images, that request tells the sender the exact time the message was opened, along with the recipient’s approximate location and client software — all without the recipient clicking anything or being asked.
+Open tracking is unreliable by nature — many clients block remote images by default, which undercounts opens — but it is also a persistent surveillance mechanism layered onto what recipients generally expect to be a private exchange. For transactional email specifically (password resets, receipts, verification codes), there is no legitimate product need to know whether or when the recipient opened it; the message either reaches the inbox or it doesn’t.
+Ciphera Relay includes no tracking pixels and no open or click monitoring of any kind — a message sent through Relay is not instrumented, by design, not just by default configuration.
+URL: https://ciphera.net/glossary/open-tracking
+
+### End-to-end encryption (E2EE)
+End-to-end encryption means data is encrypted on the sender’s device and decrypted only on the recipient’s — every intermediary, including the service operator, handles ciphertext it cannot read.
+The phrase draws a line at key possession. Encryption in transit (TLS) protects the wire but terminates at the server, which sees plaintext; encryption at rest protects stolen disks but the operator holds the keys. E2EE keeps the keys exclusively at the endpoints, so the operator’s servers, backups, and staff are outside the trust boundary.
+The engineering burden moves to key management: generating keys on-device, exchanging or wrapping them safely, and recovering from device loss without reintroducing a readable copy. Systems that offer operator-assisted password reset for encrypted data are, by definition, not end-to-end encrypted — someone else could decrypt.
+At Ciphera, account vaults are E2EE: the vault master key is a non-extractable browser key unwrapped via the OPAQUE export key, so it exists in usable form only on the user’s device.
+URL: https://ciphera.net/glossary/end-to-end-encryption
+
+### ePrivacy Directive
+The ePrivacy Directive (2002/58/EC, amended 2009) is the EU law governing confidentiality of electronic communications, including the cookie-consent rule: storing or reading anything on a user’s device requires prior consent unless it is strictly necessary.
+Where the GDPR sets general rules for personal data, the ePrivacy Directive is a more specific, older instrument (first adopted 2002, amended by the 2009 "Cookie Directive" amendment) covering electronic communications: cookies and similar device storage, unsolicited marketing communications, and confidentiality of traffic and location data from telecom and online services. Its cookie provision, Article 5(3), is the actual legal basis for the consent banners seen across the web — not the GDPR itself, which is a common misconception.
+The rule is technology-neutral: it covers cookies, local storage, device fingerprinting, and any similar technique used to store or access information on a user’s terminal equipment. An exemption exists for storage that is strictly necessary to provide a service the user requested (a session cookie for a shopping cart, for instance) or for the sole purpose of carrying out the transmission — analytics and advertising cookies do not qualify, which is why they trigger a consent banner.
+A long-planned ePrivacy Regulation intended to replace the Directive and align its enforcement with the GDPR has been in negotiation for years without adoption, so the 2002/2009 Directive, as implemented into each member state’s national law, remains the operative rule. Ciphera’s own site uses Pulse, which does not set cookies or fingerprint visitors, so no consent banner is needed under Article 5(3)’s strictly-necessary logic.
+URL: https://ciphera.net/glossary/eprivacy-directive
+
+### EU-US Data Privacy Framework
+The EU-US Data Privacy Framework (DPF) is a 2023 adequacy decision permitting personal-data transfers to US companies that self-certify to its principles — successor to the invalidated Privacy Shield and Safe Harbor.
+US companies aren’t covered by an EU adequacy decision by default, since US law lacks a GDPR-equivalent federal privacy statute and has broader government surveillance powers than the EU considers acceptable. The DPF, which the European Commission adopted on 10 July 2023, addresses this for companies that opt in: a US organization self-certifies to the Department of Commerce that it will follow DPF principles — purpose limitation, data minimization, individual rights, onward-transfer accountability — and, once certified, can receive personal data from the EU/EEA as if the destination were adequate.
+The DPF is the third iteration of this mechanism. Its predecessor, Privacy Shield, was struck down by the Court of Justice of the EU in the 2020 Schrems II ruling over concerns that US surveillance law gave intelligence agencies disproportionate access to transferred data without adequate redress for EU citizens; Safe Harbor, the version before that, was invalidated in 2015 for similar reasons. The DPF tries to address the Schrems II concerns with new limits on US signals-intelligence collection and a redress mechanism — a Data Protection Review Court — for EU individuals, though its durability against a future legal challenge is not settled.
+Because certification is company-specific and voluntary, a DPF-transfer path only exists if the specific US recipient is on the certified list; otherwise, exporters fall back to SCCs or another safeguard.
+URL: https://ciphera.net/glossary/eu-us-data-privacy-framework
+
+### FADP / nFADP
+The FADP (Federal Act on Data Protection) is Switzerland’s national data protection law; its fully revised version (nFADP) took effect 1 September 2023, modernizing Swiss law to align closely — though not identically — with the GDPR.
+Switzerland is not an EU member state, so the GDPR does not apply there directly; the FADP is the domestic statute that plays the equivalent role, enforced by the Federal Data Protection and Information Commissioner (FDPIC). The original FADP dated to 1992. The revised version, adopted by the Swiss Parliament in 2020 and brought into force on 1 September 2023, is what’s meant by nFADP — the "n" for "new" is a common shorthand rather than part of the law’s official name.
+The revision brought Swiss law closer to the GDPR in structure: it introduced explicit data protection impact assessments for high-risk processing, a breach-notification duty to the FDPIC, an expanded definition of sensitive personal data (adding genetic and biometric data), privacy-by-design and privacy-by-default obligations, and criminal liability provisions for individuals rather than only companies. It also formalizes the requirement for a representative in Switzerland for foreign controllers processing Swiss residents’ data under certain conditions.
+Notable differences from the GDPR remain. The nFADP does not include a direct equivalent to the GDPR’s 4%-of-turnover administrative fines — Swiss sanctions instead target responsible individuals with criminal fines up to CHF 250,000 for willful violations of specific duties. The nFADP also has no general "legitimate interest" balancing test framed the same way, and its territorial scope, while extraterritorial in effect (it applies wherever processing affects people in Switzerland), is drawn slightly differently than Article 3 GDPR. The European Commission has recognized Switzerland as providing an adequate level of protection for data transfers from the EU/EEA, a status that predates the revision and continues to hold.
+Ciphera BV is a Belgian company, but Ciphera’s infrastructure runs on Exoscale in Zurich (availability zone CH-DK-2) specifically to keep data under Swiss jurisdiction and the nFADP’s protections — a data residency choice independent of where the company itself is incorporated.
+URL: https://ciphera.net/glossary/fadp
+
+### GDPR
+The GDPR (General Data Protection Regulation, EU 2016/679) is the European Union’s data protection law, in force since 25 May 2018, governing how personal data of people in the EU/EEA is collected, processed, and transferred.
+The GDPR applies to any organization that processes the personal data of people in the EU/EEA, regardless of where the organization itself is based — a US or Swiss company with EU users is in scope. It sets out principles (lawfulness, purpose limitation, data minimization, storage limitation), a set of legal bases for processing (consent, contract, legitimate interest, and others), and individual rights including access, rectification, erasure, portability, and objection.
+Organizations that determine why and how data is processed are data controllers; those processing on a controller’s behalf are data processors, and the regulation requires a data processing agreement between them. Cross-border transfers outside the EU/EEA need a safeguard — an adequacy decision, standard contractual clauses, or a certified framework such as the EU-US Data Privacy Framework. Fines can reach 4% of global annual turnover or €20 million, whichever is higher.
+Ciphera processes personal data under GDPR for EU/EEA users and stores it on Swiss infrastructure (Exoscale, Zurich), which the European Commission recognizes as offering adequate protection — so no additional transfer mechanism is needed for that flow.
+URL: https://ciphera.net/glossary/gdpr
+
+### Global Privacy Control (GPC)
+Global Privacy Control is a browser-sent HTTP signal (Sec-GPC: 1) expressing a user’s opt-out of sale and sharing of personal data — legally binding in California and other US states, unlike Do Not Track.
+GPC works mechanically much like Do Not Track: a header attached to outgoing requests, plus a matching JavaScript property (navigator.globalPrivacyControl) sites can read. The difference is legal weight. Under the California Consumer Privacy Act (as amended by the CPRA) and similar laws in states such as Colorado and Connecticut, a business receiving a GPC signal must treat it as a valid opt-out request from that browser, with real enforcement behind it — which is what gave adoption a reason to happen where DNT never did.
+For sites that sell or share personal data with third parties for advertising, honoring GPC means suppressing that sharing for the signaling visitor. For sites that never sell or share personal data to begin with, GPC changes nothing to honor, because there is no matching activity to opt out of.
+Ciphera Pulse does not sell, share, or use visitor data for advertising, so a GPC signal changes nothing about how Pulse behaves — there is no data-sharing pathway for it to disable.
+URL: https://ciphera.net/glossary/global-privacy-control
+
+### HKDF
+HKDF (HMAC-based key derivation function, RFC 5869) expands one strong secret into any number of independent, purpose-bound keys via extract-then-expand — the standard way to turn a shared secret into separate encryption, signing, and session keys.
+Reusing one key for multiple purposes is a classic protocol flaw. HKDF solves it in two steps: extract compresses input keying material into a uniform pseudorandom key, and expand derives per-purpose keys from it using distinct info labels — so a compromise or misuse of one derived key tells an attacker nothing about its siblings.
+HKDF is not for passwords — it assumes its input already has full entropy (a Diffie-Hellman result, an export key, a random master key). Passwords go through key stretching first; HKDF then fans the result out. Protocols like TLS 1.3 and OPAQUE use HKDF internally, and Ciphera uses it to derive purpose-separated keys from vault master secrets.
+URL: https://ciphera.net/glossary/hkdf
+
+### Honeypot
+A honeypot, in bot detection, is a form field hidden from human view but present in the page’s HTML — automated submitters that fill in every field reveal themselves, while real visitors never see it to fill in.
+The technique relies on a simple gap between how humans and simple bots interact with a form: a field hidden via CSS (rather than a hidden input type, which unsophisticated scrapers skip) is invisible to a person using a browser normally, but a bot parsing raw HTML and filling every input it finds will populate it anyway. A submission arriving with that field non-empty is discarded or flagged as automated.
+Honeypots are cheap to implement and impose zero friction on legitimate users — there is nothing for a human to solve or wait on — but they only catch unsophisticated bots that do not render or evaluate CSS. More capable automated traffic, using a real headless browser, will see the field is hidden and skip it, same as a human would. For that reason honeypots function best as one low-cost layer in a stack, not a standalone defense.
+Ciphera Captcha layers honeypot fields alongside proof-of-work and stateless token verification, catching unsophisticated bots for free while the harder cases are handled by the adaptive computational challenge.
+URL: https://ciphera.net/glossary/honeypot
+
+### JWT (JSON Web Token)
+A JWT is a compact, signed token carrying claims (user ID, expiry, scopes) that services can verify statelessly — any holder of the verification key can check authenticity without a database lookup.
+A JWT is three base64url segments: a header naming the algorithm, a claims payload, and a signature over both. Verification is local and fast, which is why JWTs dominate service-to-service auth and API sessions. The cost of statelessness is revocation: a signed token stays valid until expiry, so real systems pair short-lived access tokens with longer-lived, revocable refresh tokens.
+The classic implementation mistakes are accepting the token’s own header as the source of truth (the alg=none and key-confusion attacks), putting secrets in the readable payload, and issuing long expiries. Ciphera services verify JWTs statelessly with 15-minute access tokens and 30-day rotating refresh tokens.
+URL: https://ciphera.net/glossary/jwt
+
+### Key stretching
+Key stretching turns a low-entropy secret like a password into a stronger key by making each derivation deliberately expensive — thousands to millions of iterations, or memory-hard computation — so brute-force guessing becomes uneconomical.
+A password has perhaps 30–60 bits of real entropy; an attacker with a stolen hash tries billions of guesses per second on GPUs. Stretching inserts a cost multiplier: PBKDF2 iterates a hash, bcrypt adds per-guess work, scrypt and Argon2 add memory-hardness that GPUs and ASICs cannot amortize away.
+Stretching appears anywhere a human secret becomes a cryptographic key: password storage, key derivation for encrypted vaults, and lookup-key derivation (Ciphera’s blind index runs PBKDF2 at one million iterations client-side; vault key derivation uses Argon2id in the browser). It complements — never replaces — protocols like OPAQUE that keep the secret off the server entirely.
+URL: https://ciphera.net/glossary/key-stretching
+
+### MTA-STS
+MTA-STS (RFC 8461) lets a domain require TLS for all inbound email delivery, published and fetched over HTTPS rather than trusted opportunistically — closing the downgrade attack that plain SMTP TLS leaves open.
+Standard SMTP transport encryption (STARTTLS) is opportunistic: a sending server offers TLS, but if the connection is intercepted and the offer is stripped, most servers silently fall back to sending the message in plaintext rather than refusing delivery. MTA-STS removes that fallback. A domain publishes a policy — enforced over HTTPS, not DNS alone, since DNS itself can be spoofed without DNSSEC — declaring that mail to it must use TLS with a valid certificate, and sending servers that support MTA-STS will refuse to deliver over a downgraded connection.
+The policy is discovered via a well-known HTTPS URL plus a DNS TXT record that signals the policy exists and should be checked; the HTTPS fetch, not the DNS record itself, carries the enforceable policy content. This two-step design means an attacker who can only forge DNS cannot silently loosen the domain’s TLS requirement.
+Ciphera Relay publishes MTA-STS alongside DKIM, SPF, and DMARC, so mail to a Relay-protected domain is both authenticated and required to travel encrypted end-to-end between mail servers.
+URL: https://ciphera.net/glossary/mta-sts
+
+### OPAQUE
+OPAQUE is an asymmetric password-authenticated key exchange (aPAKE) protocol, standardized in RFC 9807, that lets a server verify a password without ever seeing it — the password never leaves the client, even during registration.
+Traditional login forms send your password to the server, which hashes and compares it. Even with TLS and good hashing, the server momentarily holds the plaintext password — so a compromised or malicious server can capture it. OPAQUE removes that exposure entirely: the password is never transmitted in any form, hashed or otherwise.
+It works by combining an oblivious pseudorandom function (OPRF) with an authenticated key exchange. During registration, the client and server run the OPRF so the client can derive a strong key from the password without the server learning either the password or the key. The client uses that key to encrypt a small "envelope" of key material, which the server stores alongside its OPRF secret — together called the password file or registration record.
+At login, the client re-runs the OPRF against the server, decrypts its envelope locally, and the two sides complete a mutually authenticated key exchange. A wrong password simply fails to decrypt the envelope. The server learns one bit: the login succeeded or it did not.
+A breached OPAQUE server yields no passwords, no password hashes in the conventional offline-crackable sense, and no reusable credentials — an attacker who steals the registration record must still perform an online OPRF exchange per guess, which the server can rate-limit. This is the core difference from classic schemes where a stolen database enables unlimited offline cracking.
+OPAQUE also produces an export key: a client-side secret, derived from the password, that the server never learns. This is what makes OPAQUE a foundation for zero-knowledge applications — the export key can encrypt user data (a vault key, for example) so the operator is architecturally unable to read it.
+Ciphera ID uses OPAQUE for all password authentication, via Tessera — Ciphera’s open-source OPAQUE implementation (Rust core with Go and TypeScript SDKs, Apache-2.0). The export key unwraps each account’s vault master key locally, so credentials and vault contents are unreadable to Ciphera by construction.
+URL: https://ciphera.net/glossary/opaque
+
+### OPRF (oblivious pseudorandom function)
+An OPRF is a two-party protocol where a server holding a secret key helps a client evaluate a pseudorandom function on the client’s input — without the server learning the input or the output, and without the client learning the key.
+Think of it as a blind keyed hash: the client wants F(key, password) but must not reveal the password; the server owns the key but must not learn what it was applied to. The client blinds its input, the server evaluates on the blinded value, and the client unblinds the result.
+OPRFs are the engine inside OPAQUE: they let a client stretch its password into a strong encryption key with the server’s participation, which is what forces password guessing to be an online, rate-limitable event instead of an offline dictionary attack. They also appear in private set intersection and privacy-preserving credential checkers (the "has this password been breached" lookups that never send your password).
+URL: https://ciphera.net/glossary/oprf
+
+### PAKE (password-authenticated key exchange)
+A PAKE is a cryptographic protocol in which two parties use a shared password to establish a strong session key — without ever transmitting the password or exposing it to offline guessing from intercepted traffic.
+The problem PAKEs solve: passwords are low-entropy secrets, and anything derived from them naively (hashes, simple challenge-responses) can be brute-forced offline once observed. A PAKE binds the password into a key exchange such that an eavesdropper — or an active man-in-the-middle — learns nothing they can grind against a dictionary; each password guess costs a live protocol run.
+PAKEs come in two families. In a balanced PAKE, both sides know the password. In an asymmetric or augmented PAKE (aPAKE) — the family relevant to client-server login — the server stores only derived material, never anything password-equivalent, so a database breach does not directly hand the attacker usable credentials. OPAQUE is the modern, IETF-standardized aPAKE; SRP is its widely deployed predecessor.
+URL: https://ciphera.net/glossary/pake
+
+### Passkeys (WebAuthn / FIDO2)
+Passkeys are public-key login credentials based on the FIDO2/WebAuthn standards: your device holds a private key and signs a per-site challenge, so there is no shared secret to phish, leak, or reuse across sites.
+Each passkey is a keypair scoped to one origin. At login the site sends a random challenge; the authenticator — phone, laptop, or security key — signs it after local user verification (biometric or PIN). The server stores only the public key, which is worthless to steal, and the origin binding defeats phishing: a lookalike domain cannot request a signature valid for the real one.
+Because private keys sync through platform keychains or stay on hardware, there is nothing for a user to type and nothing for a breach to expose. The residual risks move to account-recovery design and the security of the platform keychain itself.
+Ciphera ID supports passkeys alongside OPAQUE passwords and TOTP — the password path itself is already unphishable-by-server since the server never receives it, and passkeys extend that property against lookalike-site phishing.
+URL: https://ciphera.net/glossary/passkeys
+
+### Personal data
+Personal data, under GDPR, is any information relating to an identified or identifiable natural person — a deliberately broad definition covering not just names and IDs but anything that can be linked back to someone, directly or in combination with other data.
+GDPR Article 4(1) defines an identifiable person as one who can be identified, directly or indirectly, by reference to an identifier — a name, ID number, location data, an online identifier, or factors specific to physical, physiological, genetic, mental, economic, cultural, or social identity. That "indirectly" and "in combination" language is what makes the definition wide: an IP address, a device fingerprint, or a hashed identifier can all be personal data if they can realistically be linked to a person, even if the organization holding them doesn’t itself know the name behind it.
+A narrower subcategory, "special category" or sensitive personal data, covers information revealing racial or ethnic origin, political opinions, religious beliefs, trade union membership, genetic or biometric data used for identification, health data, or data about sex life or sexual orientation — processing these requires a higher bar than ordinary personal data, generally explicit consent or another narrowly defined legal basis.
+Techniques like pseudonymization reduce risk but don’t remove data from GDPR’s scope, since the data remains re-identifiable with additional information held elsewhere; only true anonymization — where re-identification is no longer reasonably possible — takes data outside the definition entirely.
+URL: https://ciphera.net/glossary/personal-data
+
+### PKCE
+PKCE (Proof Key for Code Exchange, RFC 7636) hardens the OAuth 2.0 authorization-code flow: the client commits to a one-time secret up front, so an intercepted authorization code is useless without it.
+The attack PKCE kills: authorization codes travel through browser redirects, and anything that can observe the redirect — a malicious app registered for the same URL scheme, a leaky log — could historically exchange the stolen code for tokens. With PKCE the client sends a hash (the code challenge, S256) when authorization starts and must present the preimage (the code verifier) when redeeming the code. Interceptors hold a code they cannot spend.
+Originally designed for mobile apps that cannot keep a client secret, PKCE is now the recommended default for every OAuth client — OAuth 2.1 makes it mandatory. Ciphera ID requires PKCE with S256 on all authorization-code flows; the plain method is rejected.
+URL: https://ciphera.net/glossary/pkce
+
+### Privacy by design
+Privacy by design is the principle — codified as a legal obligation in GDPR Article 25 — that data protection must be built into a system’s architecture from the outset, not added afterward as a policy or a configuration toggle.
+The term predates GDPR, originating with Ontario privacy commissioner Ann Cavoukian in the 1990s as a set of design principles: proactive rather than reactive, privacy as the default setting, embedded into design, full functionality without unnecessary trade-offs, end-to-end security, visibility and transparency, and respect for user privacy. GDPR Article 25 turned the core of this into a legal requirement — "data protection by design and by default" — obliging controllers to implement appropriate technical and organizational measures, such as pseudonymization and data minimization, at the time of determining the means of processing, not after launch.
+In practice, privacy by design shows up as architectural decisions rather than policy statements: collecting only the fields a feature actually needs, defaulting new accounts to the most private setting rather than requiring opt-out, choosing authentication protocols that never transmit a password rather than merely promising not to log it, and encrypting data such that even the operator cannot read it where the product doesn’t require them to. It’s the difference between a company saying it protects data and a company built so that mishandling it is architecturally difficult.
+Ciphera treats this as a build-time constraint: Ciphera ID uses OPAQUE so passwords never reach the server in any form, and Pulse is architected to run without cookies or persistent identifiers rather than collecting them and promising restraint.
+URL: https://ciphera.net/glossary/privacy-by-design
+
+### Proof-of-work challenge
+A proof-of-work challenge requires a client to perform a small, verifiable computation before a request is accepted — cheap for one user, expensive enough at scale to make bulk automated abuse uneconomical.
+The term is most widely known from cryptocurrency mining, where proof-of-work secures a blockchain by making block creation computationally costly — that context is unrelated here. In bot protection, the same core idea is repurposed defensively: the server issues a cryptographic puzzle (commonly, find an input that hashes below some target), the client’s browser solves it, and the server verifies the answer in near-zero time. One human clicking a login form barely notices the delay; a bot farm submitting thousands of requests per second has to pay that computational cost thousands of times over.
+Proof-of-work’s advantage over behavioral or fingerprint-based bot detection is that it requires no tracking data at all — no cookies, no device profile, no history of the visitor. It only requires the current request to prove it did the work, which makes it verifiable statelessly: no database of past behavior is needed to check the answer, only the cryptographic proof attached to this one request.
+Ciphera Captcha runs proof-of-work invisibly in a background Web Worker, with difficulty that adapts per-IP to request volume, so legitimate visitors see nothing while bulk automated traffic hits a rising computational cost.
+URL: https://ciphera.net/glossary/proof-of-work
+
+### Pseudonymization
+Pseudonymization is processing personal data so it can no longer be attributed to a specific person without additional information, which is kept separately and secured — a GDPR-recognized risk-reduction measure, but the data remains personal data in scope.
+GDPR Article 4(5) defines pseudonymization specifically: replacing identifying fields with an artificial identifier (a token, a hash, a reference number) and keeping the mapping between the two separately, under technical and organizational controls that prevent re-attribution. A customer database with names replaced by tokens, where a separate, access-restricted table holds the token-to-name mapping, is a canonical example.
+The key legal point is that pseudonymized data is still personal data under GDPR — because the possibility of re-identification exists, even if it’s access-controlled, the regulation continues to apply in full. What pseudonymization buys is risk reduction (a leak of the pseudonymized dataset alone doesn’t directly expose identities) and it’s explicitly named in Article 25 and Article 32 as an appropriate technical measure for privacy by design and for security of processing — but it is not a substitute for anonymization when an organization actually wants data to fall outside GDPR’s scope.
+A blind index is a form of pseudonymization applied to a specific problem — search over encrypted data — where the "additional information" needed for re-identification is the encryption key or the original plaintext value, held separately from the searchable token itself.
+URL: https://ciphera.net/glossary/pseudonymization
+
+### Referrer
+The referrer is the URL of the page a visitor was on immediately before arriving at the current one, sent by the browser in the HTTP Referer header (or omitted, per the page’s referrer policy).
+Referrer data is how analytics attributes traffic to its source: a search engine results page, a social platform, another site linking in, or an email client. It arrives as a standard (if famously misspelled) HTTP header, Referer, that browsers send on navigation — no cookie or script is required to capture it, which is why referrer breakdowns work equally well in cookieless tools.
+Referrer data is also increasingly incomplete by design. Modern browsers default to a Referrer-Policy that strips paths and query strings, or omits the header entirely on cross-origin or HTTPS-to-HTTP navigation, for the visitor’s privacy. Analytics tools generally see only the referring domain, not the specific page or search query that led there — this is a browser privacy feature working as intended, not a tracking gap to be closed.
+Ciphera Pulse reports referrer sources as part of its standard traffic breakdown, using the same browser-supplied header available to any analytics tool.
+URL: https://ciphera.net/glossary/referrer
+
+### SCCs (standard contractual clauses)
+Standard contractual clauses (SCCs) are European Commission-approved contract templates that legalize personal-data transfers from the EU/EEA to countries without an adequacy decision by extending GDPR-equivalent protections.
+GDPR restricts moving personal data outside the EU/EEA unless the destination offers an adequate level of protection. Where the European Commission hasn’t issued an adequacy decision for that country, organizations need an alternative safeguard, and SCCs are the most widely used one: a standardized contract, published by the Commission (the current set dates to June 2021), that the exporting and importing parties sign to bind the importer to GDPR-equivalent obligations regardless of local law.
+The 2021 SCCs use a modular structure covering four transfer scenarios — controller to controller, controller to processor, processor to processor, and processor to controller — so one template set fits most real-world data flows. Since the Schrems II ruling, using SCCs alone isn’t automatically sufficient: exporters are expected to conduct a transfer impact assessment considering whether the importing country’s government surveillance laws could override the contractual protections, and to layer on supplementary technical measures (such as encryption the recipient cannot break) where warranted.
+SCCs are one of several transfer mechanisms alongside adequacy decisions and certified frameworks like the EU-US Data Privacy Framework — organizations pick whichever applies to a given transfer, and a DPA will often reference SCCs by annex when the processor sits outside an adequate jurisdiction.
+URL: https://ciphera.net/glossary/standard-contractual-clauses
+
+### Session (analytics)
+In web analytics, a session is a group of interactions — pageviews, events — from one visitor treated as a single continuous visit, typically closed out after a period of inactivity (commonly 30 minutes).
+A session groups activity so that "five pageviews in three minutes" reads as one visit rather than five unrelated ones. The grouping logic usually relies on an inactivity timeout: once a set gap passes with no new activity, the next pageview starts a new session, even if it is the same person. Some tools also force a new session at midnight or when a visitor arrives via a new campaign source.
+Session count and session duration are foundational inputs to metrics like bounce rate and pages-per-visit, so how a tool defines a session boundary quietly shapes every derived number. Cookie-based tools tie sessions to a stored session ID; cookieless tools infer session boundaries from request timing and other signals without persisting an identifier between visits.
+Ciphera Pulse groups activity into sessions to compute bounce rate and session-based metrics without setting a session cookie.
+URL: https://ciphera.net/glossary/session
+
+### SPF
+SPF (Sender Policy Framework, RFC 7208) is a DNS TXT record listing which mail servers may send email for a domain — receiving servers check the connecting IP against it to catch spoofed sender addresses.
+A domain publishes a single TXT record naming its authorized sending IPs or including other domains’ SPF records by reference (for services sending on its behalf). When mail arrives, the receiving server checks the IP that delivered it against the sending domain’s published record and returns a pass, fail, or soft-fail result depending on the record’s policy.
+SPF has two structural weaknesses on its own: it evaluates the envelope sender (the SMTP MAIL FROM), which recipients rarely see, not the From header they actually read — and it breaks under simple forwarding, since the forwarding server’s IP is not in the original domain’s SPF record. Both are why SPF is deployed alongside DKIM and rolled up into DMARC rather than relied on alone.
+Ciphera Relay maintains strict SPF records for every sending domain as one layer of its authentication stack, alongside per-domain DKIM signing and a DMARC reject policy.
+URL: https://ciphera.net/glossary/spf
+
+### SRP (Secure Remote Password)
+SRP is a 1990s password-authenticated key exchange that lets clients log in without sending the password. It was the workhorse aPAKE for two decades and is now superseded by OPAQUE (RFC 9807).
+SRP-6a advanced the state of the art enormously: the server stores a verifier rather than the password, and eavesdroppers learn nothing usable. Its age shows in the details — it lacks a modern security proof, leaks the salt to unauthenticated parties (enabling precomputation against a later breach), resists safe instantiation on modern elliptic curves, and its verifier is offline-crackable once stolen.
+OPAQUE addresses each of those: proofs in a standard model, no salt disclosure (the OPRF hides it), curve-native operation, and breach resistance that forces per-guess online interaction. Ciphera ID ran SRP-6a historically and completed a full migration to OPAQUE in June 2026; SRP remains in this glossary because so much deployed software still speaks it.
+URL: https://ciphera.net/glossary/srp
+
+### Sub-processor
+A sub-processor is a third party a data processor engages to help process personal data on a controller’s behalf — a cloud host, for example. GDPR requires the controller’s prior authorization and a flow-down contract.
+Processors rarely operate in isolation: a SaaS vendor acting as processor for its customer (the controller) typically relies on infrastructure providers, backup services, or specialized tooling that also touch personal data. Each of those is a sub-processor, and GDPR Article 28(2) and 28(4) require the primary processor to obtain either specific or general written authorization from the controller before engaging one, and to bind the sub-processor to data-protection obligations at least as protective as those in the original DPA.
+Where general authorization is used — common in SaaS contracts — the processor must give the controller a mechanism to object to new sub-processors, usually via advance notice and a published, kept-current list. This is why many vendors maintain a public sub-processor page: it satisfies the transparency obligation without requiring bespoke sign-off for every new one.
+Liability doesn’t evaporate down the chain — the primary processor remains responsible to the controller for a sub-processor’s compliance, which is why the flow-down contractual terms matter as much as the notification process itself.
+URL: https://ciphera.net/glossary/sub-processor
+
+### Third-party cookies
+A third-party cookie is set by a domain other than the one the user is visiting — typically an ad or analytics vendor embedded via script — letting that vendor recognize the same browser across unrelated sites.
+A first-party cookie is set by the site in the address bar and is only ever sent back to that site — a shopping cart or login session, for example. A third-party cookie is set by an embedded resource (an ad tag, a tracking pixel, a "Like" button) on a domain the user never typed into their address bar. Because that same embedded resource appears on thousands of unrelated sites, the vendor can correlate one browser’s visits across all of them, which is the technical basis for cross-site ad retargeting and behavioral profiling.
+This is also why third-party cookies attract the most regulatory and browser scrutiny: the user has no direct relationship with the domain doing the tracking, and rarely knows it is happening. Major browsers now block or restrict third-party cookies by default, which has pushed both advertising and analytics vendors toward alternatives — some privacy-preserving (aggregation, on-device processing), others simply harder to see, like fingerprinting.
+Ciphera Pulse sets no cookies at all, first-party or third-party — there is no cross-site identifier for Pulse to correlate in the first place.
+URL: https://ciphera.net/glossary/third-party-cookies
+
+### TOTP (time-based one-time password)
+TOTP (RFC 6238) generates six-digit codes from a shared secret and the current time, giving accounts a second factor that changes every 30 seconds and works fully offline in any authenticator app.
+Enrollment shares a random secret (the QR code); afterwards both sides compute HMAC(secret, time window) and compare. Because the code is valid for seconds and never travels until the user types it, database leaks of password hashes alone stop being sufficient for account takeover.
+TOTP’s limits are worth knowing: codes can be phished in real time by a proxying attacker, and the server must store the shared secret (unlike passkeys, where it stores only a public key). It remains an excellent, vendor-neutral second factor — Ciphera ID offers TOTP alongside passkeys, with rate-limited verification.
+URL: https://ciphera.net/glossary/totp
+
+### Tracking pixel
+A tracking pixel is a tiny, invisible image embedded in a page or email whose load request signals to the hosting server that the content was opened, along with the viewer’s IP and client details.
+The mechanism is simple: a 1x1 transparent image tag points at a URL unique to the recipient or session. Loading the page or email triggers an HTTP request for that image, and the mere act of fetching it — not any interaction with visible content — tells the server the content was viewed, when, from what IP, and with what client software. No click or explicit action is required.
+On the web, pixels are a common cross-site tracking mechanism, often paired with third-party cookies to build advertising profiles. In email, they are the standard method behind "open tracking": read receipts the recipient never explicitly granted. Because loading remote images can be disabled or blocked, pixel-based tracking is inherently unreliable — but it is also silent, which is what makes it a privacy concern independent of its accuracy.
+Ciphera Relay sends transactional email with no tracking pixels and no open tracking of any kind — a delivered message stays a private exchange between sender and recipient, not a telemetry event.
+URL: https://ciphera.net/glossary/tracking-pixel
+
+### Transactional email
+Transactional email is a message triggered by a specific user action or system event — password resets, receipts, verification codes, shipping notices — as opposed to marketing email sent to a list on a schedule.
+The distinction matters legally and technically. Marketing email requires opt-in consent, unsubscribe mechanisms, and list-hygiene discipline under laws like CAN-SPAM and GDPR’s ePrivacy rules; transactional email, sent as the direct result of an action the recipient just took, generally does not — a password-reset email does not need an unsubscribe link, because opting out of it means the account stops functioning.
+Deliverability infrastructure for transactional email is typically judged on speed and reliability rather than open rates: a verification code that arrives two minutes late is a support ticket, not a missed marketing metric. That shifts the engineering priorities toward low-latency sending, strict authentication (DKIM, SPF, DMARC) to avoid spam-folder placement, and minimal data retention, since transactional messages carry no analytics purpose once delivered.
+Ciphera Relay is built for transactional email specifically — password resets, verification codes, receipts — with no marketing-sending capability, no tracking pixels, and delivery metadata retained for 30 days before deletion.
+URL: https://ciphera.net/glossary/transactional-email
+
+### Unique visitors
+Unique visitors counts distinct people (or devices) visiting a site over a period, as opposed to pageviews, which counts every page load — the same visitor loading ten pages is one unique visitor and ten pageviews.
+Cookie-based analytics tools count uniqueness by reading back a persistent visitor ID: if the same cookie value shows up twice, it is the same visitor. That approach is precise when the cookie survives, but it fails silently whenever it doesn’t — private browsing, cookie clearing, cross-device visits, or consent rejection all inflate the unique count by turning one real person into several apparent ones.
+Cookieless tools cannot read back a stored ID, so they estimate uniqueness from request-level signals over a bounded window instead of maintaining a durable per-visitor profile. This trades some precision for not requiring any persistent identifier — the count is an aggregate estimate, not a guarantee that no two counted visits came from the same person.
+Ciphera Pulse reports unique visitor counts using privacy-preserving counting that avoids cookies, fingerprinting, and long-lived per-visitor identifiers.
+URL: https://ciphera.net/glossary/unique-visitors
+
+### UTM parameters
+UTM parameters are standardized query-string tags (utm_source, utm_medium, utm_campaign, and related fields) appended to a URL so analytics tools can attribute traffic to a specific campaign, channel, or link.
+Where the Referer header only tells you the referring domain, UTM parameters let the linking party label the click explicitly — "this came from the July newsletter" or "this came from the LinkedIn paid campaign" — by embedding that label directly in the URL. The analytics tool on the receiving end reads the query string and buckets the visit accordingly, independent of what the browser’s referrer policy allows through.
+Because UTM tags are just visible query-string text, they work identically whether the analytics tool uses cookies or not, and they carry no personal data by design — a well-formed UTM link identifies a campaign, not a person. They are also easy to misuse: over-tagging internal links or sharing UTM-tagged URLs publicly can pollute attribution data with noise.
+Ciphera Pulse parses standard UTM parameters to attribute traffic to campaigns and sources, the same as any analytics tool — no cookie is needed to read a query string.
+URL: https://ciphera.net/glossary/utm-parameters
+
+### Warrant canary
+A warrant canary is a regularly published statement that an organization has not received a secret government order — its disappearance warns users implicitly, since a gag order would forbid saying so directly.
+The mechanism exploits a legal gap: many government orders that compel data disclosure come with a gag provision making it a crime to reveal the order’s existence — but courts in some jurisdictions have held that compelling an organization to keep affirmatively publishing a false statement ("we have received no such order") is a step beyond merely forbidding disclosure, and may not be enforceable the same way. A warrant canary is published on a fixed schedule; as long as it keeps being renewed, no such order has arrived. If it quietly stops updating, that silence is the signal — without anyone having stated the forbidden fact directly.
+The legal reliability of warrant canaries is genuinely contested and untested in many jurisdictions — there’s no guarantee a court would treat forced silence (rather than forced speech) as protected, and the mechanism gives no warning at all if the canary’s operator is compelled to keep publishing it falsely. It functions best as a transparency commitment and an operational signal, not a guaranteed legal shield.
+Ciphera publishes a GPG-signed warrant canary monthly, with the current statement and a public archive of past ones, at /transparency/canary.
+URL: https://ciphera.net/glossary/warrant-canary
+
+### Zero-knowledge
+In applied privacy engineering, zero-knowledge describes systems designed so the service operator cannot read user data or secrets — verification and storage work without the server ever holding the plaintext.
+The term originates in the theory of zero-knowledge proofs, where one party proves a statement is true without revealing why. Product engineering borrows it more broadly: a zero-knowledge service is one where, by architecture rather than policy, the operator holds only ciphertext and derived records it cannot invert.
+The distinction that matters is capability versus promise. A privacy policy says the operator will not look; a zero-knowledge design means the operator cannot — a subpoena, an insider, or a full database breach yields nothing readable. That property has to be built in: keys derived and held client-side, encryption before transmission, and authentication protocols that never expose the secret.
+Ciphera applies this where the mathematics permits it: OPAQUE authentication (the server never sees passwords), client-side encrypted vaults (unwrapped by a key the server never learns), and blind-indexed lookups. Where zero-knowledge is not the right tool — analytics, email delivery — the honest alternative is data minimization, not the label.
+URL: https://ciphera.net/glossary/zero-knowledge
+
+### Zero-knowledge authentication
+Authentication in which the server verifies you know your password without ever receiving it — during signup or login, in any form. The standard construction today is an aPAKE such as OPAQUE (RFC 9807).
+Almost every login form on the web sends the password to the server inside TLS. The server is trusted to hash it and forget it — and that trust is exactly what phishing infrastructure, compromised servers, and malicious insiders exploit. Zero-knowledge authentication removes the transmission entirely: the client proves knowledge of the password through a cryptographic exchange, and the server ends up with a yes/no.
+Beyond keeping the password private, the approach yields a second prize: a client-only secret (OPAQUE’s export key) that can seal user data. Login and end-to-end encryption then share one root secret the user already has — their password — without the server ever being able to derive it.
+Ciphera ID authenticates every account this way. The password never reaches Ciphera’s servers; what is stored is an OPAQUE registration record plus a vault key wrapped under the client-side export key.
+URL: https://ciphera.net/glossary/zero-knowledge-authentication
+
+## Learn articles
+
+- [Accesskey Values Are Unique](https://ciphera.net/learn/pulse/accesskeys): Ensure no two elements share the same accesskey value.
+- [All Headings Have Content](https://ciphera.net/learn/pulse/empty-heading): Ensure heading elements are not empty.
+- [Allow Users to Paste into Input Fields](https://ciphera.net/learn/pulse/paste-preventing-inputs): Do not block paste on input fields — it harms usability, accessibility, and security.
+- [ARIA Attributes Are Valid and Not Misspelled](https://ciphera.net/learn/pulse/aria-valid-attr): Ensure all aria-* attributes are valid and correctly spelled.
+- [ARIA Attributes Have Valid Values](https://ciphera.net/learn/pulse/aria-valid-attr-value): Ensure every ARIA attribute has a valid value for its type.
+- [ARIA Attributes Match Element Roles](https://ciphera.net/learn/pulse/aria-conditional-attr): Ensure ARIA attributes are conditionally valid for the element's role.
+- [ARIA Attributes Match Their Roles](https://ciphera.net/learn/pulse/aria-allowed-attr): Ensure every ARIA attribute is allowed on the element's role.
+- [ARIA IDs Are Unique](https://ciphera.net/learn/pulse/duplicate-id-aria): Ensure IDs used in ARIA attributes are unique in the document.
+- [ARIA Input Fields Have Accessible Names](https://ciphera.net/learn/pulse/aria-input-field-name): Ensure every ARIA input field has a discernible accessible name.
+- [ARIA Meter Elements Have Accessible Names](https://ciphera.net/learn/pulse/aria-meter-name): Ensure elements with role=meter have accessible names.
+- [ARIA Progressbar Elements Have Accessible Names](https://ciphera.net/learn/pulse/aria-progressbar-name): Ensure elements with role=progressbar have accessible names.
+- [ARIA Role Values Are Valid](https://ciphera.net/learn/pulse/aria-roles): Ensure all role attribute values are valid WAI-ARIA roles.
+- [ARIA Roles Are in Required Parent Elements](https://ciphera.net/learn/pulse/aria-required-parent): Ensure elements with ARIA roles are nested inside required parent roles.
+- [ARIA Roles Have Required Children](https://ciphera.net/learn/pulse/aria-required-children): Ensure elements with ARIA roles contain the required child elements.
+- [ARIA Roles Used on Compatible Elements](https://ciphera.net/learn/pulse/aria-allowed-role): Ensure ARIA roles are only applied to elements that support them.
+- [ARIA Toggle Fields Have Accessible Names](https://ciphera.net/learn/pulse/aria-toggle-field-name): Ensure ARIA toggle fields like checkboxes and switches have accessible names.
+- [ARIA Tooltip Elements Have Accessible Names](https://ciphera.net/learn/pulse/aria-tooltip-name): Ensure elements with role=tooltip have accessible names.
+- [ARIA Treeitem Elements Have Accessible Names](https://ciphera.net/learn/pulse/aria-treeitem-name): Ensure elements with role=treeitem have accessible names.
+- [aria-hidden Is Not on the Body](https://ciphera.net/learn/pulse/aria-hidden-body): Ensure aria-hidden is not present on the document body.
+- [Avoid Deprecated APIs](https://ciphera.net/learn/pulse/deprecations): Stop using deprecated web platform APIs before browsers remove them.
+- [Avoid Enormous Network Payloads](https://ciphera.net/learn/pulse/total-byte-weight): Keep total page weight low to ensure fast load times on all connection speeds.
+- [Avoid Large Layout Shifts](https://ciphera.net/learn/pulse/layout-shifts): Prevent unexpected content movement to improve visual stability and Cumulative Layout Shift (CLS).
+- [Avoid Long Main-Thread Tasks](https://ciphera.net/learn/pulse/long-tasks): Break up tasks longer than 50 ms so the browser can respond to user input without delay.
+- [Avoid Multiple Page Redirects](https://ciphera.net/learn/pulse/redirects): Eliminate unnecessary redirects to reduce time to first byte and speed up page load.
+- [Avoid Non-Composited Animations](https://ciphera.net/learn/pulse/non-composited-animations): Use compositor-friendly CSS properties for animations to prevent jank and keep frame rates smooth.
+- [Avoid Requesting Geolocation on Page Load](https://ciphera.net/learn/pulse/geolocation-on-start): Do not request geolocation permission automatically — wait until the user takes a relevant action.
+- [Avoid Requesting Notification Permission on Page Load](https://ciphera.net/learn/pulse/notification-on-start): Do not prompt users for notification permission until they express interest in receiving updates.
+- [Back/Forward Cache Restoration](https://ciphera.net/learn/pulse/bf-cache): Ensure your pages are eligible for the browser's back/forward cache to enable instant navigation.
+- [Background and Foreground Colors Have Sufficient Contrast](https://ciphera.net/learn/pulse/color-contrast): Ensure text has enough contrast against its background to be readable.
+- [Buttons Have an Accessible Name](https://ciphera.net/learn/pulse/button-name): Ensure every button element has a discernible accessible name.
+- [Command Elements Have Accessible Names](https://ciphera.net/learn/pulse/aria-command-name): Ensure elements with ARIA command roles have accessible names.
+- [Cumulative Layout Shift (CLS)](https://ciphera.net/learn/pulse/cumulative-layout-shift): What CLS measures, how Lighthouse scores it, and how to improve it.
+- [Custom Controls Have ARIA Roles](https://ciphera.net/learn/pulse/custom-controls-roles): Ensure custom interactive controls have appropriate ARIA roles.
+- [Custom Controls Have Associated Labels](https://ciphera.net/learn/pulse/custom-controls-labels): Ensure custom interactive controls have accessible labels.
+- [Definition Items Are Wrapped in dl Elements](https://ciphera.net/learn/pulse/dlitem): Ensure dt and dd elements are contained within a dl.
+- [Definition Lists Are Properly Structured](https://ciphera.net/learn/pulse/definition-list): Ensure dl elements contain only dt, dd, div, template, or script groups.
+- [Detected JavaScript Libraries](https://ciphera.net/learn/pulse/js-libraries): See which JavaScript libraries and frameworks are running on your page.
+- [Dialog Elements Have Accessible Names](https://ciphera.net/learn/pulse/aria-dialog-name): Ensure elements with role=dialog or role=alertdialog have accessible names.
+- [Display Images with Correct Aspect Ratio](https://ciphera.net/learn/pulse/image-aspect-ratio): Ensure rendered images match their natural aspect ratio to prevent visual distortion.
+- [Document Has a Main Landmark](https://ciphera.net/learn/pulse/landmark-one-main): Ensure the page contains exactly one main landmark region.
+- [Document Has a Meta Description](https://ciphera.net/learn/pulse/meta-description): Add a concise meta description to improve how your page appears in search results.
+- [Document Has a Title Element](https://ciphera.net/learn/pulse/document-title): Ensure the HTML document has a non-empty title element.
+- [Document Has a Valid hreflang](https://ciphera.net/learn/pulse/hreflang): Use correct hreflang annotations to serve the right language version to users in different regions.
+- [Document Has a Valid rel=canonical](https://ciphera.net/learn/pulse/canonical): Set a canonical URL to prevent duplicate content issues and consolidate ranking signals.
+- [Document Request Latency](https://ciphera.net/learn/pulse/document-latency-insight): Checks how long the server takes to respond with the main HTML document and flags slow responses.
+- [Duplicated JavaScript](https://ciphera.net/learn/pulse/duplicated-javascript-insight): Detects JavaScript modules that are included more than once in your bundles, wasting bytes and parse time.
+- [Elements Use Only Permitted ARIA Attributes](https://ciphera.net/learn/pulse/aria-prohibited-attr): Ensure elements don't use ARIA attributes that are prohibited for their role.
+- [Ensure CSP Is Effective Against XSS Attacks](https://ciphera.net/learn/pulse/csp-xss): Deploy a Content Security Policy that blocks inline scripts and untrusted sources to prevent XSS.
+- [Ensure Proper Origin Isolation with COOP](https://ciphera.net/learn/pulse/origin-isolation): Set the Cross-Origin-Opener-Policy header to isolate your browsing context from cross-origin windows.
+- [First Contentful Paint (FCP)](https://ciphera.net/learn/pulse/first-contentful-paint): What FCP measures, how Lighthouse scores it, and how to improve it.
+- [Focus Is Directed to New Content](https://ciphera.net/learn/pulse/managed-focus): Ensure focus moves to new content when it appears on the page.
+- [Font Display](https://ciphera.net/learn/pulse/font-display-insight): Checks whether custom fonts use font-display to avoid invisible text during loading.
+- [Forced Reflow](https://ciphera.net/learn/pulse/forced-reflow-insight): Detects JavaScript that forces the browser to recalculate layout synchronously, causing jank and long tasks.
+- [Form Elements Have Associated Labels](https://ciphera.net/learn/pulse/label): Ensure every form element has an associated label.
+- [Frames Have a Title](https://ciphera.net/learn/pulse/frame-title): Ensure iframe and frame elements have a descriptive title attribute.
+- [Headings Appear in Sequential Order](https://ciphera.net/learn/pulse/heading-order): Ensure heading levels do not skip (e.g., h1 to h3).
+- [Hidden Elements Don't Contain Focusable Content](https://ciphera.net/learn/pulse/aria-hidden-focus): Ensure aria-hidden elements don't contain focusable interactive content.
+- [HTML Element Has a lang Attribute](https://ciphera.net/learn/pulse/html-has-lang): Ensure the html element has a lang attribute.
+- [HTML lang and xml:lang Match](https://ciphera.net/learn/pulse/html-xml-lang-mismatch): Ensure lang and xml:lang attributes on the html element have the same value.
+- [HTML lang Attribute Is Valid](https://ciphera.net/learn/pulse/html-lang-valid): Ensure the html lang attribute uses a valid BCP 47 language tag.
+- [HTML5 Landmark Elements Improve Navigation](https://ciphera.net/learn/pulse/use-landmarks): Use landmark elements to define page regions for assistive technology.
+- [Identical Links Have the Same Purpose](https://ciphera.net/learn/pulse/identical-links-same-purpose): Ensure links with the same text all point to the same destination.
+- [Image Elements Have Alt Attributes](https://ciphera.net/learn/pulse/image-alt): Ensure every image element has an alt attribute.
+- [Image Elements Need Explicit Width and Height](https://ciphera.net/learn/pulse/unsized-images): Set width and height attributes on images to prevent layout shifts when images load.
+- [Image Inputs Have Alt Text](https://ciphera.net/learn/pulse/input-image-alt): Ensure input elements with type=image have alt attributes.
+- [Images Don't Have Redundant Alt Text](https://ciphera.net/learn/pulse/image-redundant-alt): Ensure image alt text doesn't duplicate surrounding text content.
+- [Improve Image Delivery](https://ciphera.net/learn/pulse/image-delivery-insight): Flags images that use outdated formats, are not properly sized, or lack compression.
+- [INP Breakdown](https://ciphera.net/learn/pulse/inp-breakdown-insight): Breaks down the phases of Interaction to Next Paint to show where interaction delays originate.
+- [Input Buttons Have Discernible Text](https://ciphera.net/learn/pulse/input-button-name): Ensure input elements with type=button, submit, or reset have accessible names.
+- [Interaction to Next Paint (INP)](https://ciphera.net/learn/pulse/interaction-to-next-paint): What INP measures, how Lighthouse scores it, and how to improve it.
+- [Interactive Controls Are Keyboard Focusable](https://ciphera.net/learn/pulse/focusable-controls): Ensure all interactive controls can receive keyboard focus.
+- [Interactive Elements Indicate Purpose and State](https://ciphera.net/learn/pulse/interactive-element-affordance): Ensure interactive elements visually communicate their function and current state.
+- [JavaScript Execution Time](https://ciphera.net/learn/pulse/bootup-time): Reduce the time the browser spends parsing, compiling, and executing JavaScript to improve responsiveness.
+- [lang Attributes Have Valid Values](https://ciphera.net/learn/pulse/valid-lang): Ensure all elements with a lang attribute use valid BCP 47 tags.
+- [Largest Contentful Paint (LCP)](https://ciphera.net/learn/pulse/largest-contentful-paint): What LCP measures, how Lighthouse scores it, and how to improve it.
+- [Layout Shift Culprits](https://ciphera.net/learn/pulse/cls-culprits-insight): Identifies the DOM elements responsible for unexpected layout shifts during page load.
+- [LCP Breakdown](https://ciphera.net/learn/pulse/lcp-breakdown-insight): Decomposes Largest Contentful Paint into sub-parts to pinpoint the slowest phase of your LCP element's load.
+- [LCP Request Discovery](https://ciphera.net/learn/pulse/lcp-discovery-insight): Checks whether the browser can discover the LCP resource early enough to start downloading it without delay.
+- [Legacy JavaScript](https://ciphera.net/learn/pulse/legacy-javascript-insight): Flags JavaScript bundles that ship polyfills and transpiled syntax unnecessary for modern browsers.
+- [Links Are Distinguishable Without Color](https://ciphera.net/learn/pulse/link-in-text-block): Ensure links within text blocks are identifiable by more than color alone.
+- [Links Have a Discernible Name](https://ciphera.net/learn/pulse/link-name): Ensure every anchor element has a discernible accessible name.
+- [Links Have Descriptive Text](https://ciphera.net/learn/pulse/link-text): Use meaningful anchor text so users and search engines understand where each link leads.
+- [List Items Are in Proper Parent Elements](https://ciphera.net/learn/pulse/listitem): Ensure li elements are contained within ul, ol, or menu.
+- [Lists Contain Only Proper Elements](https://ciphera.net/learn/pulse/list): Ensure ul and ol elements only contain li, script, or template children.
+- [Max Potential First Input Delay (Max Potential FID)](https://ciphera.net/learn/pulse/max-potential-first-input-delay): What Max Potential FID measures, how Lighthouse scores it, and how to improve it.
+- [Minify CSS](https://ciphera.net/learn/pulse/unminified-css): Remove unnecessary characters from CSS files to reduce network payload and speed up page load.
+- [Minify JavaScript](https://ciphera.net/learn/pulse/unminified-javascript): Remove unnecessary characters from JavaScript files to reduce transfer size and improve load performance.
+- [Minimize Main-Thread Work](https://ciphera.net/learn/pulse/mainthread-work-breakdown): Reduce the total amount of work the browser's main thread performs during page load to improve responsiveness.
+- [Mitigate Clickjacking with XFO or CSP](https://ciphera.net/learn/pulse/clickjacking-mitigation): Prevent your page from being embedded in malicious iframes by setting X-Frame-Options or CSP frame-ancestors.
+- [Mitigate DOM-Based XSS with Trusted Types](https://ciphera.net/learn/pulse/trusted-types-xss): Enforce Trusted Types to prevent DOM-based cross-site scripting attacks.
+- [Modern HTTP](https://ciphera.net/learn/pulse/modern-http-insight): Checks whether your server uses HTTP/2 or HTTP/3 to deliver resources efficiently.
+- [Network Dependency Tree](https://ciphera.net/learn/pulse/network-dependency-tree-insight): Visualizes the critical request chain to identify resources that block page rendering.
+- [No Browser Errors in the Console](https://ciphera.net/learn/pulse/errors-in-console): Ensure your page loads without logging errors to the browser console.
+- [No Deprecated ARIA Roles](https://ciphera.net/learn/pulse/aria-deprecated-role): Ensure elements don't use ARIA roles that have been deprecated.
+- [No Element Has tabindex Greater Than Zero](https://ciphera.net/learn/pulse/tabindex): Ensure no element uses a positive tabindex value.
+- [No Form Fields Have Multiple Labels](https://ciphera.net/learn/pulse/form-field-multiple-labels): Ensure form fields are not associated with more than one label element.
+- [No Meta Refresh Redirect](https://ciphera.net/learn/pulse/meta-refresh): Ensure the page does not use a timed meta refresh redirect.
+- [Object Elements Have Alternate Text](https://ciphera.net/learn/pulse/object-alt): Ensure object elements have text alternatives for accessibility.
+- [Offscreen Content Is Hidden from Assistive Technology](https://ciphera.net/learn/pulse/offscreen-content-hidden): Ensure content moved offscreen is invisible to screen readers.
+- [Optimize DOM Size](https://ciphera.net/learn/pulse/dom-size-insight): Flags pages with an excessively large DOM tree that slows rendering, layout calculations, and memory usage.
+- [Optimize Viewport for Mobile](https://ciphera.net/learn/pulse/viewport-insight): Checks whether your page has a properly configured viewport meta tag for mobile devices.
+- [Page Has a Logical Tab Order](https://ciphera.net/learn/pulse/logical-tab-order): Ensure the tab order follows the visual layout of the page.
+- [Page Has a Skip Link or Landmark](https://ciphera.net/learn/pulse/bypass): Ensure users can bypass repeated navigation blocks.
+- [Page Has Successful HTTP Status Code](https://ciphera.net/learn/pulse/http-status-code): Verify your page returns a 2xx HTTP status code so search engines can index it.
+- [Page Has the HTML Doctype](https://ciphera.net/learn/pulse/doctype): Include a DOCTYPE declaration to prevent the browser from falling into quirks mode.
+- [Page Has Valid Source Maps](https://ciphera.net/learn/pulse/valid-source-maps): Verify that all JavaScript source maps are valid and correctly linked.
+- [Page Isn't Blocked from Indexing](https://ciphera.net/learn/pulse/is-crawlable): Ensure search engines can crawl and index your page by removing blocking directives.
+- [Properly Defines Charset](https://ciphera.net/learn/pulse/charset): Declare a character encoding early in your HTML to ensure text renders correctly.
+- [Redirects HTTP Traffic to HTTPS](https://ciphera.net/learn/pulse/redirects-http): Automatically redirect all HTTP requests to HTTPS to ensure encrypted connections.
+- [Reduce Server Response Time (TTFB)](https://ciphera.net/learn/pulse/server-response-time): Minimize Time to First Byte so the browser can start rendering the page sooner.
+- [Reduce Unused CSS](https://ciphera.net/learn/pulse/unused-css-rules): Remove CSS rules that are never applied to reduce render-blocking payload and speed up first paint.
+- [Reduce Unused JavaScript](https://ciphera.net/learn/pulse/unused-javascript): Remove JavaScript that is downloaded but never executed to cut load time and reduce main-thread work.
+- [Render Blocking Requests](https://ciphera.net/learn/pulse/render-blocking-insight): Identifies CSS and JavaScript resources that block the browser from rendering the page.
+- [robots.txt Is Valid](https://ciphera.net/learn/pulse/robots-txt): Ensure your robots.txt file is correctly formatted so search engines can parse your crawl directives.
+- [role=text Elements Don't Have Focusable Children](https://ciphera.net/learn/pulse/aria-text): Ensure elements with role=text contain no focusable descendants.
+- [Roles Have All Required ARIA Attributes](https://ciphera.net/learn/pulse/aria-required-attr): Ensure elements with ARIA roles include all required attributes for that role.
+- [Select Elements Have Associated Labels](https://ciphera.net/learn/pulse/select-name): Ensure every select element has an associated accessible label.
+- [Serve Images with Appropriate Resolution](https://ciphera.net/learn/pulse/image-size-responsive): Deliver images sized for the user's viewport to avoid wasting bandwidth on oversized files.
+- [Skip Links Are Focusable](https://ciphera.net/learn/pulse/skip-link): Ensure skip navigation links are focusable and become visible on focus.
+- [Speed Index (SI)](https://ciphera.net/learn/pulse/speed-index): What SI measures, how Lighthouse scores it, and how to improve it.
+- [Structured Data Is Valid](https://ciphera.net/learn/pulse/structured-data): Add valid structured data to help search engines understand your content and enable rich results.
+- [Table Cells Have Headers](https://ciphera.net/learn/pulse/td-has-header): Ensure every non-empty table data cell has an associated header.
+- [Table Cells Reference Headers in Same Table](https://ciphera.net/learn/pulse/td-headers-attr): Ensure td headers attributes point to th elements in the same table.
+- [Table Headers Have Data Cells](https://ciphera.net/learn/pulse/th-has-data-cells): Ensure every th element in a table has associated data cells.
+- [Tables Have Unique Summary and Caption](https://ciphera.net/learn/pulse/table-duplicate-name): Ensure tables do not have identical summary and caption attributes.
+- [Tables Use Caption Instead of Colspan Cells](https://ciphera.net/learn/pulse/table-fake-caption): Ensure tables use the caption element rather than cells spanning all columns as a title.
+- [Third-Party Impact](https://ciphera.net/learn/pulse/third-parties-insight): Measures the performance cost of third-party scripts loaded on your page.
+- [Time to Interactive (TTI)](https://ciphera.net/learn/pulse/time-to-interactive): What TTI measures, how Lighthouse scores it, and how to improve it.
+- [Total Blocking Time (TBT)](https://ciphera.net/learn/pulse/total-blocking-time): What TBT measures, how Lighthouse scores it, and how to improve it.
+- [Touch Targets Have Sufficient Size](https://ciphera.net/learn/pulse/target-size): Ensure interactive elements are large enough to tap accurately.
+- [Use a Strong HSTS Policy](https://ciphera.net/learn/pulse/has-hsts): Enable HTTP Strict Transport Security to force browsers to always connect over HTTPS.
+- [Use Efficient Cache Lifetimes](https://ciphera.net/learn/pulse/cache-insight): Checks whether your static assets use long cache lifetimes so repeat visitors load pages faster.
+- [User Focus Is Not Trapped in a Region](https://ciphera.net/learn/pulse/focus-traps): Ensure keyboard users can always move focus away from any element.
+- [User Timing Marks and Measures](https://ciphera.net/learn/pulse/user-timings): Use the User Timing API to instrument custom performance milestones and measure what matters to your app.
+- [Uses HTTPS](https://ciphera.net/learn/pulse/is-on-https): Serve your site over HTTPS to protect user data and meet modern browser requirements.
+- [Videos Have Captions](https://ciphera.net/learn/pulse/video-caption): Ensure video elements include a track element with captions.
+- [Viewport Does Not Disable Zoom](https://ciphera.net/learn/pulse/meta-viewport): Ensure the viewport meta tag allows users to zoom in.
+- [Visible Labels Match Accessible Names](https://ciphera.net/learn/pulse/label-content-name-mismatch): Ensure an element's visible text is included in its accessible name.
+- [Visual Order Follows DOM Order](https://ciphera.net/learn/pulse/visual-order-follows-dom): Ensure the visual presentation order matches the DOM source order.
+
+## Blog
+
+- [What Happened in the Basic-Fit Data Breach — and Why Your IBAN Makes It Dangerous](https://ciphera.net/blog/basic-fit-data-breach-1-million-members): Basic-Fit's April 2026 breach exposed IBANs, addresses, and birth dates for 1 million gym members across 6 EU countries. Here's what was stolen and what to do now.
+- [How the Vercel Data Breach Happened — And What It Means for Every Developer](https://ciphera.net/blog/vercel-data-breach-2026): Vercel confirmed a supply chain breach exposing customer environment variables and 580 employee records. Here's the full 5-step attack chain and what to do now.
+- [DarkSword iPhone Exploit: 221 Million iOS Devices at Risk and How to Protect Yours](https://ciphera.net/blog/darksword-iphone-exploit-how-to-protect-yourself): DarkSword chains six iOS flaws — three of them zero-days — to take over iPhones from a single malicious link. Here's how to check exposure and lock it down.
+- [How We Stopped a Bot Account Farming Attack With Zero-Knowledge Auth](https://ciphera.net/blog/bot-account-farming-defense-zero-knowledge-auth): Fake account creation is the #1 attack type, accounting for 46% of all fraud. Here's how Ciphera built an 11-layer defense stack that's compatible with zero-knowledge encryption — and stopped an automated attack in 48 hours.
+- [What We See About You, What We Don't, and Why It Matters](https://ciphera.net/blog/what-we-see-about-you-what-we-dont): Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.
+- [Your AI Assistant Is Training on Your Data — Here's What ChatGPT, Gemini, and Meta AI Actually Collect](https://ciphera.net/blog/ai-assistant-data-collection-chatgpt-gemini-meta): ChatGPT has 900M weekly users. Most don't know their conversations train the model by default. Here's what each AI assistant collects — and how to stop it.
+- [Data Brokers Have 10,000 Data Points on You — Here's How to Delete Them](https://ciphera.net/blog/data-brokers-10000-data-points-how-to-delete): Acxiom holds data on 2.5 billion people with 10,000+ attributes each. Data broker breaches cost $20.8 billion. Here's how to fight back under GDPR.
+- [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.
+- [Meta Promised Encryption for Everyone — Then Took It Away from 2 Billion Instagram Users](https://ciphera.net/blog/instagram-drops-end-to-end-encryption): Meta is removing E2EE from Instagram DMs on May 8, 2026 — 11 days before the Take It Down Act kicks in. Here's what 2B users lose.
+- [Apple's UK Age Verification Sets a Dangerous Precedent for Device-Level Identity Checks](https://ciphera.net/blog/uk-age-verification-apple-iphone): VPN sign-ups surged 1,800% after UK age checks launched. Apple's voluntary device-level verification turns phones into identity checkpoints — here's why that matters.
+- [Why European Businesses Should Stop Defaulting to American Software](https://ciphera.net/blog/why-european-businesses-should-use-european-software): US firms account for 83% of all GDPR fines. European governments are switching to sovereign software — here's why your business should too.
+- [Why We Chose BunnyCDN as Ciphera's CDN](https://ciphera.net/blog/why-we-chose-bunnycdn): 97% of EU cloud infra is US-controlled. Here's why we picked an EU-native CDN with 119+ PoPs, $0.01/GB pricing, and GDPR baked in — not bolted on.
+- [How to Use Google Search Console with Privacy-First Analytics in 2026](https://ciphera.net/blog/google-search-console-privacy-first-analytics): 75% of GSC impression data is filtered from reports. Here's how to combine Search Console with privacy-first analytics for complete, cookie-free search and traffic insights.
+- [Why Most Analytics Tools Can't Show You How Visitors Navigate Your Site](https://ciphera.net/blog/why-most-analytics-tools-skip-user-journeys): The customer journey analytics market hits $4.96B in 2025, yet Plausible, Fathom, and Simple Analytics offer zero flow visualization. Here's why — and what Pulse does differently.
+- [How to Monitor BunnyCDN Performance Without Google Analytics](https://ciphera.net/blog/cdn-performance-monitoring-bunnycdn-analytics): A 0.1s speed improvement lifts retail conversions 8.4%. Track BunnyCDN bandwidth, cache ratios, and traffic maps in a privacy-first analytics dashboard.
+- [How to Run a Data Privacy Audit for Your Startup (2026 Step-by-Step Guide)](https://ciphera.net/blog/data-privacy-audit-guide-startups): GDPR fines hit EUR 7.1B cumulatively and breaches cost $4.44M on average (IBM, 2025). Here's a 6-step data privacy audit you can run without a legal team.
+- [Zero-Knowledge Encryption Guide (2026)](https://ciphera.net/blog/zero-knowledge-encryption-guide): 47% of sensitive cloud data is still unencrypted (Thales, 2026). Zero-knowledge encryption means the provider can never read your data. Here's how it works.
+- [reCAPTCHA Privacy Risks: 3 Alternatives (2026)](https://ciphera.net/blog/recaptcha-privacy-liability-alternatives-2026): reCAPTCHA holds 85% market share but collects fingerprints, behavioral data, and cross-site cookies. With €7.1B in GDPR fines, here are 3 alternatives.
+- [EU AI Act Compliance Guide for 2026](https://ciphera.net/blog/eu-ai-act-compliance-guide-2026): Only 18% of EU employers feel ready for the AI Act. Fines reach EUR 35M or 7% of turnover. Here's what every business must do before the August 2026 deadline.
+- [Passkeys vs Passwords: Why 2026 Is the Tipping Point](https://ciphera.net/blog/passkeys-vs-passwords-2026): Passkeys succeed 93% of the time vs 63% for passwords (FIDO Alliance, 2025). With 87% of enterprises deploying, 2026 marks the end of the password era.
+- [Open Source Privacy Tools: Complete List 2026](https://ciphera.net/blog/open-source-privacy-tools-2026): 30 open source privacy tools across 10 categories. 96% of orgs increased OSS use in 2025. Every tool here has auditable code and no hidden data collection.
+- [25 Privacy Statistics for 2026](https://ciphera.net/blog/privacy-statistics-2026): 25 sourced privacy statistics for 2026 — from $4.44M average breach costs to EUR 7.1B in GDPR fines. The numbers every business needs to see.
+- [Pulse vs GA vs Plausible vs Fathom (2026)](https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom): Side-by-side comparison of Pulse, Google Analytics, Plausible, and Fathom on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.
+- [Biggest Data Breaches of 2025-2026](https://ciphera.net/blog/biggest-data-breaches-2025-2026): Analysis of the largest data breaches of 2025-2026 affecting 280M+ people. IBM reports the average breach costs $4.44M globally, $10.22M in the U.S.
+- [Why Swiss Infrastructure Matters for Privacy](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy): Switzerland hosts 75 data centers outside CLOUD Act reach. Swiss FADP and neutrality make it the top choice for privacy infrastructure.
+- [Why Privacy Can't Be an Afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought): 82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta paid $2B+ in privacy fines. Here's what real privacy architecture looks like.
+
+## Transparency
+
+Ciphera publishes a monthly GPG-signed warrant canary, signed with an offline key, stating that no secret government compulsion has been received; a lapsed canary is itself the disclosure. Past canaries are archived, and periodic transparency reports summarize legal process received. Everything is independently verifiable: pull the plaintext and signature directly from the site and verify with gpg.
+URL: https://ciphera.net/transparency
+URL: https://ciphera.net/transparency/canary
+
+## Sustainability
+
+Ciphera measures its infrastructure's carbon footprint with a life-cycle assessment covering all four lifecycle phases — manufacturing, transport, use, and end-of-life — rather than reporting operational energy use alone. Infrastructure runs on Swiss grid electricity, which the Swiss Federal Office of Energy rates at roughly 12 gCO2e/kWh, predominantly hydro and nuclear. Methodology and current figures are published and updated regularly.
+URL: https://ciphera.net/sustainability
+
+## Policies
+- Privacy policy: https://ciphera.net/privacy
+- Terms of service: https://ciphera.net/terms
+- AI training on this site's content is not permitted. Search indexing is allowed.

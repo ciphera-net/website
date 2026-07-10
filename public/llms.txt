@@ -1,34 +1,44 @@
 # Ciphera
-> Privacy-first infrastructure and applications built on zero-knowledge principles. Belgian company with Swiss-hosted infrastructure.
 
-Ciphera provides end-to-end encrypted services including file sharing, website analytics, authentication, bot protection, and email infrastructure. All encryption happens client-side using AES-256-GCM — servers never possess decryption keys.
+> Privacy-first infrastructure: cookieless analytics, zero-knowledge authentication, private bot protection, and tracking-free transactional email. Belgian company with Swiss-hosted infrastructure.
+
+Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), zero-knowledge authentication using OPAQUE (Ciphera ID — passwords never reach the server), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection.
 
 ## Products
-- [Drop](https://ciphera.net/products/drop): End-to-end encrypted file sharing with zero-knowledge architecture. Free, up to 5GB per file. Client-side AES-256-GCM encryption.
-- [Pulse](https://ciphera.net/products/pulse): Privacy-first website analytics without cookies, fingerprinting, or personal data collection. GDPR compliant by architecture. Under 2KB tracking script.
-- [Ciphera ID](https://ciphera.net/products/id): Secure identity and authentication provider with double-hashed passwords (PBKDF2 + Argon2id).
-- [Ciphera Captcha](https://ciphera.net/products/captcha): Privacy-first bot protection that works without tracking users.
-- [Ciphera Relay](https://ciphera.net/products/relay): Secure transactional email infrastructure with DKIM, SPF, and DMARC.
+- [Pulse](https://ciphera.net/products/pulse): Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.
+- [Ciphera ID](https://ciphera.net/products/id): Zero-knowledge identity and authentication provider using OPAQUE (RFC 9807) — passwords never reach the server.
+- [Ciphera Captcha](https://ciphera.net/products/captcha): Privacy-first bot protection using adaptive proof-of-work and behavioral analysis — no cookies, no cross-site tracking.
+- [Ciphera Relay](https://ciphera.net/products/relay): Privacy-first transactional email infrastructure with TLS 1.3, DKIM, SPF, and DMARC — no tracking pixels.
 
-## Key Facts
-- Founded: 2024, Diegem, Belgium
-- Infrastructure: Swiss-hosted servers (FADP protected)
-- Encryption: AES-256-GCM, client-side, zero-knowledge
-- Open source: https://github.com/ciphera-net
-- GDPR compliant, Swiss FADP compliant
+## Key facts
+- Founded: 2024, Diegem, Belgium (Ciphera BV)
+- Infrastructure: Swiss-hosted (Exoscale, Zurich CH-DK-2), Swiss FADP protected
+- Authentication: zero-knowledge, OPAQUE (RFC 9807) — passwords never reach the server
+- Open source: OPAQUE implementation released as Tessera (github.com/ciphera-net/tessera, Apache-2.0)
+- Compliance: GDPR and Swiss FADP
 - No cookies, no fingerprinting, no third-party trackers
+- Warrant canary: monthly, GPG-signed
+- Carbon footprint: published with a full life-cycle assessment
+
+## Reference
+- [Glossary](https://ciphera.net/glossary): definitions of privacy and cryptography terms
+- [Learn](https://ciphera.net/learn): in-depth articles per product
+- [Blog](https://ciphera.net/blog): articles on privacy, security, and infrastructure
+- [Transparency](https://ciphera.net/transparency): legal process reports and disclosure policy
+- [Warrant canary](https://ciphera.net/transparency/canary): monthly GPG-signed canary
+- [Sustainability](https://ciphera.net/sustainability): measured carbon footprint and methodology
 
 ## Blog
-- [Why Privacy Can't Be an Afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought): Privacy washing vs. real privacy engineering. Google, Apple, Meta paid $2B+ in fines. How zero-knowledge encryption and open source make privacy verifiable.
-- [Why Swiss Infrastructure Matters for Data Privacy](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy): Why Switzerland's FADP, neutrality, and encryption protections make it the top jurisdiction for privacy-focused infrastructure. Includes CLOUD Act analysis and sovereign cloud trends.
-- [The Biggest Data Breaches of 2025-2026](https://ciphera.net/blog/biggest-data-breaches-2025-2026): Analysis of the largest data breaches affecting 280M+ people, breach cost data from IBM, and how encryption reduces damage.
-- [Pulse vs Google Analytics vs Plausible vs Fathom](https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom): Side-by-side comparison of 4 analytics tools on privacy, performance, accuracy, and cost.
-- [Drop vs WeTransfer vs Google Drive vs Dropbox](https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing): Comparison of 7 file sharing services on encryption, privacy, jurisdiction, and cost. Only 3 use zero-knowledge encryption.
-- [25 Privacy Statistics That Define 2026](https://ciphera.net/blog/privacy-statistics-2026): 25 sourced statistics on breach costs ($4.44M global average), GDPR fines (\u20AC7.1B cumulative), consumer trust erosion, surveillance economy scale, and the 1.6x ROI on privacy investment.
-- [Open Source Privacy Tools: The Complete List (2026)](https://ciphera.net/blog/open-source-privacy-tools-2026): 30 open source privacy tools across 10 categories including messaging, email, file sharing, analytics, VPN, browsers, password managers, cloud storage, operating systems, and search. Covers Signal, Proton, Drop, Pulse, Mullvad, Brave, Bitwarden, Nextcloud, and more.
-- [Passkeys vs Passwords: Which Is More Secure in 2026?](https://ciphera.net/blog/passkeys-vs-passwords-2026): Side-by-side comparison of passkeys, passwords, passwords + 2FA, and hardware keys across phishing, brute force, credential stuffing, SIM swap, and man-in-the-middle attacks. Includes FIDO2/WebAuthn adoption data and migration guidance.
-- [reCAPTCHA Is a Privacy Liability: Here's What to Use Instead](https://ciphera.net/blog/recaptcha-privacy-liability-alternatives-2026): Analysis of reCAPTCHA's data collection (device fingerprint, cookies, browsing history) and GDPR liability. Compares 4 CAPTCHA providers on privacy, performance, and compliance. Includes Cloudflare Turnstile, hCaptcha, and Friendly Captcha alternatives.
-- [EU AI Act Compliance Guide for Developers (2026)](https://ciphera.net/blog/eu-ai-act-compliance-guide-2026): Developer-focused guide to the EU AI Act's risk-based framework, compliance deadlines, prohibited practices, and fine structure (up to €35M or 7% of turnover). Covers high-risk AI requirements, open source exemptions, and practical implementation steps.
+- [What Happened in the Basic-Fit Data Breach — and Why Your IBAN Makes It Dangerous](https://ciphera.net/blog/basic-fit-data-breach-1-million-members): Basic-Fit's April 2026 breach exposed IBANs, addresses, and birth dates for 1 million gym members across 6 EU countries. Here's what was stolen and what to do now.
+- [How the Vercel Data Breach Happened — And What It Means for Every Developer](https://ciphera.net/blog/vercel-data-breach-2026): Vercel confirmed a supply chain breach exposing customer environment variables and 580 employee records. Here's the full 5-step attack chain and what to do now.
+- [DarkSword iPhone Exploit: 221 Million iOS Devices at Risk and How to Protect Yours](https://ciphera.net/blog/darksword-iphone-exploit-how-to-protect-yourself): DarkSword chains six iOS flaws — three of them zero-days — to take over iPhones from a single malicious link. Here's how to check exposure and lock it down.
+- [How We Stopped a Bot Account Farming Attack With Zero-Knowledge Auth](https://ciphera.net/blog/bot-account-farming-defense-zero-knowledge-auth): Fake account creation is the #1 attack type, accounting for 46% of all fraud. Here's how Ciphera built an 11-layer defense stack that's compatible with zero-knowledge encryption — and stopped an automated attack in 48 hours.
+- [What We See About You, What We Don't, and Why It Matters](https://ciphera.net/blog/what-we-see-about-you-what-we-dont): Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.
+- [Your AI Assistant Is Training on Your Data — Here's What ChatGPT, Gemini, and Meta AI Actually Collect](https://ciphera.net/blog/ai-assistant-data-collection-chatgpt-gemini-meta): ChatGPT has 900M weekly users. Most don't know their conversations train the model by default. Here's what each AI assistant collects — and how to stop it.
+- [Data Brokers Have 10,000 Data Points on You — Here's How to Delete Them](https://ciphera.net/blog/data-brokers-10000-data-points-how-to-delete): Acxiom holds data on 2.5 billion people with 10,000+ attributes each. Data broker breaches cost $20.8 billion. Here's how to fight back under GDPR.
+- [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.
+- [Meta Promised Encryption for Everyone — Then Took It Away from 2 Billion Instagram Users](https://ciphera.net/blog/instagram-drops-end-to-end-encryption): Meta is removing E2EE from Instagram DMs on May 8, 2026 — 11 days before the Take It Down Act kicks in. Here's what 2B users lose.
+- [Apple's UK Age Verification Sets a Dangerous Precedent for Device-Level Identity Checks](https://ciphera.net/blog/uk-age-verification-apple-iphone): VPN sign-ups surged 1,800% after UK age checks launched. Apple's voluntary device-level verification turns phones into identity checkpoints — here's why that matters.
 
 ## Policies
 - Privacy policy: https://ciphera.net/privacy
@@ -38,4 +48,5 @@ Ciphera provides end-to-end encrypted services including file sharing, website a
 ## Contact
 - Email: hello@ciphera.net
 - Address: De Kleetlaan 2, 1831 Diegem, Belgium
-- Phone: +32 078 480 710
+
+Full corpus (products, glossary, blog, and learn articles in full): https://ciphera.net/llms-full.txt
