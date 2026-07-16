@@ -15,8 +15,6 @@ faqs:
     answer: "ZKE supports GDPR compliance but doesn't automatically satisfy it. If you can't access personal data because it's client-side encrypted and you don't hold keys, you have minimal processing liability. However, you still need lawful basis for storing ciphertext and must provide erasure mechanisms. ZKE makes GDPR Article 32 (security of processing) straightforward to satisfy."
   - question: "What is the difference between zero-knowledge encryption and zero-knowledge proofs?"
     answer: "They're unrelated despite the shared name. Zero-knowledge proofs (ZKPs) are a cryptographic protocol where one party proves knowledge of something without revealing it — used in blockchain and authentication. Zero-knowledge encryption refers to a service architecture where the provider has zero access to plaintext data. Different concepts, coincidental naming."
-  - question: "How does Ciphera Drop protect files differently from Dropbox?"
-    answer: "Dropbox uses server-side AES-256, meaning Dropbox holds the encryption keys and can decrypt your files for features like search indexing and thumbnail generation. Ciphera Drop encrypts files in your browser with AES-256-GCM before upload. The key stays in the URL fragment — which the server never receives — or is derived from a password that never leaves your browser. Ciphera cannot decrypt your files even under a court order."
 ---
 
 Nearly half of all sensitive cloud data — 47% — sits unencrypted right now, even as AI systems gain broader access to corporate environments ([Thales 2026 Data Threat Report](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/), n=3,120 organizations). The zero-knowledge encryption market is growing from $1.28 billion to a projected $7.59 billion by 2033 ([Grand View Research](https://www.grandviewresearch.com/industry-analysis/zero-knowledge-proof-market-report), 2025). That's a 22.1% compound annual growth rate — the industry is voting with its wallet.
@@ -87,12 +85,6 @@ No encryption system protects against everything. ZKE has real boundaries, and u
 3. **Can customer support access your files for troubleshooting?** If support can see your files, they're not zero-knowledge. Real ZKE means the vendor literally can't help you recover data — because they can't see it.
 4. **Are the client applications closed-source?** You can't verify that encryption happens client-side if you can't inspect the code. Open-source clients let anyone audit the encryption implementation.
 
-<BlogBlockquote>
-
-**How we built Drop:** We designed [Ciphera Drop](https://drop.ciphera.net) so that even Ciphera staff cannot access your files. There's no admin panel for file contents, no support override, no key escrow. If you lose your link and password, the file is permanently inaccessible to everyone — including us. That's not a bug. That's the guarantee. Drop is open source — you can [verify every claim in the code](https://github.com/ciphera-net/drop).
-
-</BlogBlockquote>
-
 ## Why Is ZKE Becoming the Standard?
 
 The zero-knowledge encryption market grew from $1.28 billion in 2024 to a projected $7.59 billion by 2033 — a 22.1% compound annual growth rate ([Grand View Research](https://www.grandviewresearch.com/industry-analysis/zero-knowledge-proof-market-report), 2025). Three forces are driving this shift: regulation, breach liability, and post-quantum readiness.
@@ -103,13 +95,9 @@ On breach liability: when your cloud provider suffers a breach and they held the
 
 On post-quantum: 60% of organizations are already evaluating post-quantum cryptography solutions, with 63% citing future encryption compromise as their top quantum risk ([Thales](https://cpl.thalesgroup.com/about-us/newsroom/2025-thales-data-threat-report-reveals-nearly-70-percent-of-organizations-identify-ais-fast-moving-ecosystem-as-top-genai-related-security-risk), 2025). ZKE's client-side architecture makes algorithm upgrades possible without re-engineering the entire system — the encryption happens in the client, so upgrading the cipher is a client update, not a server migration.The [Swiss FADP and neutrality](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy) add another layer. US-hosted services can be compelled under the CLOUD Act to hand over data stored anywhere globally. Swiss-hosted ZKE services are outside that jurisdiction entirely — and even if they were compelled, there's no plaintext to hand over.
 
-## ZKE in Practice: Drop, Auth, and Your Business
+## ZKE in Practice: Auth and Pulse
 
 Organizations that use AI and security automation save an average of $1.9 million per breach and reduce the breach lifecycle by 80 days ([IBM](https://www.ibm.com/reports/data-breach), 2025). Choosing tools with built-in ZKE is one of the fastest ways to reduce your attack surface without adding operational overhead. Here's how Ciphera implements it:
-
-### Drop: Zero-Knowledge File Sharing
-
-[Ciphera Drop](https://drop.ciphera.net) encrypts files in your browser with AES-256-GCM before upload. The decryption key is embedded in the URL fragment — which [the browser specification](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment) guarantees never reaches the server. For password-protected links, the key is derived from your password via PBKDF2 — again, entirely in your browser. The server stores only ciphertext. Drop is [fully open source](https://github.com/ciphera-net/drop). For a detailed comparison with other services, see our [encrypted file sharing comparison](https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing).
 
 ### Auth: Double-Hashed Passwords
 
@@ -129,4 +117,4 @@ Zero-knowledge encryption isn't a feature checkbox — it's an architecture deci
 - **ZKE has real limits** — it doesn't protect against malware on your device, user error, or weak passwords
 - **The ZKE market is growing at 22.1% annually** — regulation, breach liability, and post-quantum threats are driving adoption
 
-For more on building a complete privacy strategy, read [why privacy can't be an afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought). If you're evaluating file-sharing tools, our [Drop vs. WeTransfer comparison](https://ciphera.net/blog/drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing) covers seven services in detail.
+For more on building a complete privacy strategy, read [why privacy can't be an afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought).
