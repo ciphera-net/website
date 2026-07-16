@@ -23,8 +23,10 @@ export interface TransparencyReport {
   slug: string
   title: string
   period: string
+  periodEnd: string
   publishedEuropean: string
   publishedISO: string
+  nextDue: string
   status: 'interim' | 'final'
   bodyMarkdown: string
 }
@@ -116,8 +118,10 @@ export async function listReports(): Promise<TransparencyReport[]> {
       slug,
       title: String(parsed.data.title ?? slug),
       period: String(parsed.data.period ?? slug),
+      periodEnd: String(parsed.data.periodEnd ?? ''),
       publishedEuropean,
       publishedISO,
+      nextDue: String(parsed.data.nextDue ?? ''),
       status: parsed.data.status === 'final' ? 'final' : 'interim',
       bodyMarkdown: parsed.content,
     })
