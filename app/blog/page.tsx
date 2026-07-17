@@ -130,7 +130,7 @@ export default function BlogPage() {
                     <img
                       src={cdnUrl(post.image)}
                       alt={post.title}
-                      className="w-full h-full object-cover grayscale"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   </div>
