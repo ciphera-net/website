@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: cdnUrl('/pulse_icon_no_margins.png'),
-        width: 512,
-        height: 512,
+        url: cdnUrl('/og-pulse.png'),
+        width: 1200,
+        height: 630,
         alt: 'Pulse - Privacy-First Website Analytics',
       },
     ],
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: 'Pulse - Privacy-First Website Analytics',
     description:
       'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design.',
-    images: [cdnUrl('/pulse_icon_no_margins.png')],
+    images: [cdnUrl('/og-pulse.png')],
   },
 }
 
