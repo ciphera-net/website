@@ -23,8 +23,6 @@ Microsoft blocks 1.6 million bot signup attempts every hour and has thwarted ove
 
 Here's exactly how we did it.
 
-<BlogImage src="/blog/images/pexels-5380642.jpg" alt="Hooded figure in front of a screen with lines of code, representing an automated bot operator running account farming scripts against web platforms" />
-
 <BlogBlockquote variant="tldr">
 
 Ciphera stopped a bot account farming attack using an 11-layer defense-in-depth stack that works within zero-knowledge encryption constraints. The centerpiece: a "verify-before-create" pattern where no account record exists until email ownership is proven via OTP. Combined with a canonical blind index for duplicate detection, the stack eliminated bot signups entirely with zero impact on legitimate users. Fake account creation accounts for 46% of all fraud ([Arkose Labs](https://www.arkoselabs.com/resource/enterprises-under-attack-quarterly-threat-actor-patterns-released-q4-2025-report/), Q4 2025).
@@ -59,8 +57,6 @@ So how do you defend against bots when your own server is cryptographically blin
 
 
 ## What Are the 11 Layers of Ciphera's Defense Stack?
-
-<BlogImage src="/blog/images/pexels-325229.jpg" alt="Server room with rows of network equipment and blinking status lights, representing the infrastructure behind a multi-layered defense stack" />
 
 Each layer operates independently. If any single layer fails, the others still hold. That's the core principle of defense-in-depth: no single point of failure. Here's the full stack, ordered by where each layer activates in the signup flow.
 
@@ -111,8 +107,6 @@ The final layer. The signup token — issued after successful OTP verification �
 
 
 ## How Does Verify-Before-Create Eliminate Zombie Accounts?
-
-<BlogImage src="/blog/images/pexels-60504.jpg" alt="A padlock resting on a laptop keyboard, symbolizing the verification step that must be completed before any account record is created" />
 
 The verify-before-create pattern inverts the standard signup flow. Most platforms create the account first, then send a verification email. Unverified accounts pile up as "zombie" records — and bots exploit this gap relentlessly.
 
