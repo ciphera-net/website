@@ -16,7 +16,7 @@ export const blogPosts: BlogPostSummary[] = [
   {
     "slug": "bunny-hopstart-second-place",
     "title": "Ciphera Takes 2nd Place in Bunny.net's HopStart",
-    "description": "Ciphera placed second in Bunny's HopStart Cohort #3, winning $25,000 in credits for Pulse — a data point for what a fully European privacy stack actually looks like in practice.",
+    "description": "Ciphera placed second in Bunny's HopStart Cohort #3, winning $25,000 in credits — a data point for what a fully European privacy stack actually looks like in practice.",
     "category": "Privacy",
     "date": "2026-07-17",
     "dateModified": "2026-07-17",

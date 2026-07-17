@@ -560,7 +560,7 @@ URL: https://ciphera.net/glossary/zero-knowledge-authentication
 
 ## Blog
 
-- [Ciphera Takes 2nd Place in Bunny.net's HopStart](https://ciphera.net/blog/bunny-hopstart-second-place): Ciphera placed second in Bunny's HopStart Cohort #3, winning $25,000 in credits for Pulse — a data point for what a fully European privacy stack actually looks like in practice.
+- [Ciphera Takes 2nd Place in Bunny.net's HopStart](https://ciphera.net/blog/bunny-hopstart-second-place): Ciphera placed second in Bunny's HopStart Cohort #3, winning $25,000 in credits — a data point for what a fully European privacy stack actually looks like in practice.
 - [What Happened in the Basic-Fit Data Breach — and Why Your IBAN Makes It Dangerous](https://ciphera.net/blog/basic-fit-data-breach-1-million-members): Basic-Fit's April 2026 breach exposed IBANs, addresses, and birth dates for 1 million gym members across 6 EU countries. Here's what was stolen and what to do now.
 - [How the Vercel Data Breach Happened — And What It Means for Every Developer](https://ciphera.net/blog/vercel-data-breach-2026): Vercel confirmed a supply chain breach exposing customer environment variables and 580 employee records. Here's the full 5-step attack chain and what to do now.
 - [DarkSword iPhone Exploit: 221 Million iOS Devices at Risk and How to Protect Yours](https://ciphera.net/blog/darksword-iphone-exploit-how-to-protect-yourself): DarkSword chains six iOS flaws — three of them zero-days — to take over iPhones from a single malicious link. Here's how to check exposure and lock it down.
