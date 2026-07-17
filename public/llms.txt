@@ -29,6 +29,7 @@ Ciphera builds privacy-first infrastructure and applications on zero-knowledge p
 - [Sustainability](https://ciphera.net/sustainability): measured carbon footprint and methodology
 
 ## Blog
+- [Ciphera Takes 2nd Place in Bunny.net's HopStart](https://ciphera.net/blog/bunny-hopstart-second-place): Ciphera placed second in Bunny's HopStart Cohort #3, winning $25,000 in credits for Pulse — a data point for what a fully European privacy stack actually looks like in practice.
 - [What Happened in the Basic-Fit Data Breach — and Why Your IBAN Makes It Dangerous](https://ciphera.net/blog/basic-fit-data-breach-1-million-members): Basic-Fit's April 2026 breach exposed IBANs, addresses, and birth dates for 1 million gym members across 6 EU countries. Here's what was stolen and what to do now.
 - [How the Vercel Data Breach Happened — And What It Means for Every Developer](https://ciphera.net/blog/vercel-data-breach-2026): Vercel confirmed a supply chain breach exposing customer environment variables and 580 employee records. Here's the full 5-step attack chain and what to do now.
 - [DarkSword iPhone Exploit: 221 Million iOS Devices at Risk and How to Protect Yours](https://ciphera.net/blog/darksword-iphone-exploit-how-to-protect-yourself): DarkSword chains six iOS flaws — three of them zero-days — to take over iPhones from a single malicious link. Here's how to check exposure and lock it down.
@@ -38,7 +39,6 @@ Ciphera builds privacy-first infrastructure and applications on zero-knowledge p
 - [Data Brokers Have 10,000 Data Points on You — Here's How to Delete Them](https://ciphera.net/blog/data-brokers-10000-data-points-how-to-delete): Acxiom holds data on 2.5 billion people with 10,000+ attributes each. Data broker breaches cost $20.8 billion. Here's how to fight back under GDPR.
 - [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.
 - [Meta Promised Encryption for Everyone — Then Took It Away from 2 Billion Instagram Users](https://ciphera.net/blog/instagram-drops-end-to-end-encryption): Meta is removing E2EE from Instagram DMs on May 8, 2026 — 11 days before the Take It Down Act kicks in. Here's what 2B users lose.
-- [Apple's UK Age Verification Sets a Dangerous Precedent for Device-Level Identity Checks](https://ciphera.net/blog/uk-age-verification-apple-iphone): VPN sign-ups surged 1,800% after UK age checks launched. Apple's voluntary device-level verification turns phones into identity checkpoints — here's why that matters.
 
 ## Policies
 - Privacy policy: https://ciphera.net/privacy

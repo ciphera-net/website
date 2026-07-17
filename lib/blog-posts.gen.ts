@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "bunny-hopstart-second-place",
+    "title": "Ciphera Takes 2nd Place in Bunny.net's HopStart",
+    "description": "Ciphera placed second in Bunny's HopStart Cohort #3, winning $25,000 in credits for Pulse — a data point for what a fully European privacy stack actually looks like in practice.",
+    "category": "Privacy",
+    "date": "2026-07-17",
+    "dateModified": "2026-07-17",
+    "readTime": "4 min read",
+    "image": "/blog/og/bunny-hopstart-second-place.png"
+  },
+  {
     "slug": "basic-fit-data-breach-1-million-members",
     "title": "What Happened in the Basic-Fit Data Breach — and Why Your IBAN Makes It Dangerous",
     "description": "Basic-Fit's April 2026 breach exposed IBANs, addresses, and birth dates for 1 million gym members across 6 EU countries. Here's what was stolen and what to do now.",
