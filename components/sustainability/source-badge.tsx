@@ -9,8 +9,12 @@ export interface SourceBadgeProps {
 
 /**
  * Small pill shown near the hero that tells readers which data path served
- * the current report. Transparent about fallback state — when the upstream
- * measurement API is unavailable, this badge shows "Approximated" in amber.
+ * the current report. Transparent about fallback state without advertising a
+ * broken pipeline on the hero: when the report is not from the live
+ * measurement API, the badge reads "Approximated" and names the actual basis
+ * of the fallback numbers — Boavizta life-cycle factors — rather than pointing
+ * at an outage. The full fallback disclosure lives in the Methodology section
+ * lower on the page ("Source of truth").
  */
 export function SourceBadge({ source, periodLabel, className }: SourceBadgeProps) {
   const isLive = source === 'exoscale-api'
@@ -27,8 +31,8 @@ export function SourceBadge({ source, periodLabel, className }: SourceBadgeProps
         <CircleNotch className="h-4 w-4" />
       )}
       {isLive
-        ? `Live data · ${periodLabel}`
-        : `Approximated · Measurement API unavailable`}
+        ? `Measured · ${periodLabel}`
+        : `Approximated · Boavizta life-cycle factors`}
     </span>
   )
 }
