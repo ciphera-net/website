@@ -3,8 +3,11 @@ import Link from 'next/link'
 import { ArrowLeftIcon, ArrowRightIcon, Button } from '@ciphera-net/facet'
 import { notFound } from 'next/navigation'
 import remarkGfm from 'remark-gfm'
+import { MDXRemote } from 'next-mdx-remote/rsc'
 import { getBlogPost, getBlogPosts } from '@/lib/blog'
-import { BlogMDXRenderer } from '@/components/blog/blog-mdx-renderer'
+import { BlogImage } from '@/components/blog/blog-image'
+import { BlogBlockquote } from '@/components/blog/blog-blockquote'
+import { MDXTable } from '@/components/mdx-table'
 import TableOfContents from '../../../components/TableOfContents'
 import RelatedPosts from '../../../components/RelatedPosts'
 import ReadingProgress from '../../../components/ReadingProgress'
@@ -17,6 +20,13 @@ const CATEGORY_CTA: Record<string, { label: string; href: string }> = {
   Comparison: { label: 'Explore Pulse', href: '/products/pulse' },
 }
 const DEFAULT_CTA = { label: 'Explore products', href: '/#products' }
+
+/** Custom components available to blog MDX bodies (rendered server-side). */
+const mdxComponents = {
+  BlogImage,
+  BlogBlockquote,
+  table: MDXTable,
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -53,10 +63,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound()
 
   const allPosts = getBlogPosts()
-  const { serialize } = await import('next-mdx-remote/serialize')
-  const mdxSource = await serialize(post.content, {
-    mdxOptions: { remarkPlugins: [remarkGfm] },
-  })
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -139,7 +145,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <TableOfContents content={post.content} />
 
           <div className="max-w-3xl mx-auto">
-            <BlogMDXRenderer compiledSource={mdxSource.compiledSource} scope={mdxSource.scope ?? {}} frontmatter={mdxSource.frontmatter ?? {}} />
+            <div className="prose prose-invert max-w-none">
+              <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+            </div>
           </div>
 
           <RelatedPosts currentSlug={slug} currentCategory={post.category} allPosts={allPosts} />
