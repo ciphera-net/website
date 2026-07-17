@@ -95,7 +95,7 @@ IBM's data shows organizations with encryption saved $208,000 per breach ([IBM](
 
 **Enable multi-factor authentication everywhere.** This is the single highest-impact action you can take. Change Healthcare and PowerSchool — breaches affecting over 264 million people combined — both would have been blocked by MFA on their remote access portals. If a system accepts a password, it should require a second factor. No exceptions for "internal" tools.
 
-**Encrypt data before it leaves your device.** Server-side encryption protects against physical disk theft but not against compromised servers, stolen credentials, or insider threats. [Zero-knowledge encryption](https://ciphera.net/products/drop) — where data is encrypted on the client before it reaches the server — means that even a full server breach yields nothing but ciphertext. This is how [Ciphera Drop](https://drop.ciphera.net) works: AES-256-GCM encryption happens in your browser, and the server never has the decryption key.
+**Encrypt data before it leaves your device.** Server-side encryption protects against physical disk theft but not against compromised servers, stolen credentials, or insider threats. Zero-knowledge encryption — where data is encrypted on the client before it reaches the server — means that even a full server breach yields nothing but ciphertext.
 
 **Audit your third-party vendors.** With 30% of breaches now involving third parties (Verizon DBIR), your security posture includes every vendor with access to your data. Ask for SOC 2 reports. Check where their data is hosted. Understand what happens to your data when it reaches their systems. The Qantas breach started at a Manila call center — not at Qantas.
 
@@ -103,7 +103,7 @@ IBM's data shows organizations with encryption saved $208,000 per breach ([IBM](
 
 <BlogBlockquote>
 
-**How Ciphera approaches this:** We built our entire platform around the principle that we shouldn't be able to access your data even if we wanted to. Ciphera Drop encrypts files client-side with AES-256-GCM before upload. Pulse collects zero personal data. Our servers are [hosted in Switzerland](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy) under the FADP. Even in a worst-case server compromise, attackers would find only encrypted blobs and aggregate analytics — no personal data, no keys, nothing useful.
+**How Ciphera approaches this:** We built our entire platform around the principle that we shouldn't be able to access your data even if we wanted to. Pulse collects zero personal data. Our servers are [hosted in Switzerland](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy) under the FADP. Even in a worst-case server compromise, attackers would find only encrypted blobs and aggregate analytics — no personal data, no keys, nothing useful.
 
 </BlogBlockquote>
 
@@ -139,4 +139,4 @@ Every major breach of 2025-2026 traces back to something preventable. Missing MF
 - **Minimize data collection** — you can't breach what you don't store
 - **Don't pay ransoms** — the 28% payment rate and re-extortion cases prove it doesn't work
 
-The cost of prevention is a fraction of the cost of response. A $4.44 million average breach cost makes $208,000 worth of encryption look like the best investment you'll ever make. If you're looking for a starting point, [encrypt your file sharing with Drop](https://drop.ciphera.net) and replace invasive analytics with [Pulse](https://pulse.ciphera.net). Your data — and your users' data — deserves better than an open door.
+The cost of prevention is a fraction of the cost of response. A $4.44 million average breach cost makes $208,000 worth of encryption look like the best investment you'll ever make. If you're looking for a starting point, replace invasive analytics with [Pulse](https://pulse.ciphera.net). Your data — and your users' data — deserves better than an open door.

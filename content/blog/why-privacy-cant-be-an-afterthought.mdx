@@ -8,13 +8,13 @@ readTime: "10 min read"
 image: "/blog/og/why-privacy-cant-be-an-afterthought.png"
 faqs:
   - question: "Is Ciphera really open source?"
-    answer: "The client applications — Drop, Pulse, and the UI library — are open source on GitHub. Since all encryption happens client-side, the privacy-critical code is fully auditable. The Linux Foundation (2025) found 78% of enterprises cite improved security from open source because code is inspectable by anyone."
+    answer: "The client applications — Pulse and the UI library — are open source on GitHub. Since all encryption happens client-side, the privacy-critical code is fully auditable. The Linux Foundation (2025) found 78% of enterprises cite improved security from open source because code is inspectable by anyone."
   - question: "What does zero-knowledge encryption mean in practice?"
     answer: "It means Ciphera's servers can't read your files. Data is encrypted with AES-256-GCM in your browser before upload. The decryption key stays with you — embedded in the URL fragment or derived from your password. Even in a worst-case server breach, attackers find only encrypted blobs with no keys."
   - question: "Does Ciphera sell any user data?"
-    answer: "No. We don't collect personal data, so there's nothing to sell. Pulse collects zero personal data by architecture. Drop encrypts files client-side so we can't access them. The data broker market is worth $294-313 billion (Mordor Intelligence, 2025). We opted out of that economy entirely."
+    answer: "No. We don't collect personal data, so there's nothing to sell. Pulse collects zero personal data by architecture. The data broker market is worth $294-313 billion (Mordor Intelligence, 2025). We opted out of that economy entirely."
   - question: "How is Ciphera different from Proton or Signal?"
-    answer: "Ciphera fills a different gap: encrypted file sharing (Drop), privacy-first analytics (Pulse), authentication, bot protection, and email infrastructure — all Swiss-hosted. Think of it as the privacy infrastructure layer that complements tools like Proton and Signal."
+    answer: "Ciphera fills a different gap: privacy-first analytics (Pulse), authentication, bot protection, and email infrastructure — all Swiss-hosted. Think of it as the privacy infrastructure layer that complements tools like Proton and Signal."
 ---
 
 Every major tech company says it cares about privacy. Google's homepage says "keeping your information safe." Apple calls privacy "a fundamental human right." Meta talks about "putting privacy first." And in 2025 alone, those three companies collectively paid over $2 billion in privacy-related fines and settlements. Something doesn't add up. According to the [Thales 2025 Digital Trust Index](https://cpl.thalesgroup.com/about-us/newsroom/digital-trust-index-2025), no single industry sector reaches above 50% consumer trust for handling personal data. And 82% of consumers abandoned a brand in the past 12 months because of data concerns.
@@ -61,7 +61,7 @@ The [Linux Foundation's 2025 survey](https://canonical.com/blog/state-of-global-
 
 Think about Apple's Siri recording scandal. It happened because nobody outside Apple could inspect what Siri was doing. The code was closed. The behavior was hidden. Users had to trust Apple's marketing — and that trust was betrayed. With open-source software, the recording behavior would have been discovered in the code before it ever shipped. That's not hypothetical. It's how open-source security works in practice: thousands of eyes catching what internal teams miss or ignore.
 
-Every Ciphera product is open source. Not "source available." Not "shared source under a restrictive license." Genuinely open source on GitHub. [Ciphera Drop](https://github.com/ciphera-net/drop). [Pulse](https://github.com/ciphera-net/pulse). The authentication service. The UI library. If we claimed zero-knowledge encryption but actually decrypted files server-side, anyone could read the code and call us out. That's the point. Open source doesn't ask you to trust us. It invites you to verify us.An [Android device with Chrome communicates location data back to Google 340 times per 24-hour period](https://www.security.org/resources/data-tech-companies-have/) — 14 times per hour (Security.org / Vanderbilt University). Background data collection is double that of active usage. Google earns Security.org's worst possible rating for data collection: an "F." The bars in the chart above aren't proportional for readability, but the gap is real: services built on surveillance collect hundreds of data points per user per day. Privacy-first alternatives collect close to zero.
+Every Ciphera product is open source. Not "source available." Not "shared source under a restrictive license." Genuinely open source on GitHub. [Pulse](https://github.com/ciphera-net/pulse). The authentication service. The UI library. If we claimed zero-knowledge encryption but actually decrypted files server-side, anyone could read the code and call us out. That's the point. Open source doesn't ask you to trust us. It invites you to verify us.An [Android device with Chrome communicates location data back to Google 340 times per 24-hour period](https://www.security.org/resources/data-tech-companies-have/) — 14 times per hour (Security.org / Vanderbilt University). Background data collection is double that of active usage. Google earns Security.org's worst possible rating for data collection: an "F." The bars in the chart above aren't proportional for readability, but the gap is real: services built on surveillance collect hundreds of data points per user per day. Privacy-first alternatives collect close to zero.
 
 ## How Ciphera's Architecture Makes Privacy Washing Impossible
 
@@ -69,11 +69,9 @@ Every Ciphera product is open source. Not "source available." Not "shared source
 
 <BlogImage src="/blog/images/unsplash-1614064641938-3bbee52942c7.jpg" alt="A golden padlock resting on a computer keyboard representing encryption and digital data protection" />
 
-**Zero-knowledge encryption.** When you share a file through [Ciphera Drop](https://drop.ciphera.net), it's encrypted with AES-256-GCM in your browser before it leaves your device. The server receives ciphertext. It never has the decryption key. This isn't a policy we could change next quarter. It's cryptography. The server *cannot* read your files — not "we choose not to," but "it's mathematically impossible without the key." Google Drive can read every file you upload. Dropbox can too. They encrypt data "at rest," but they hold the keys. That's a policy. Our approach is math.
-
 **Zero personal data collection.** [Pulse](https://pulse.ciphera.net) provides website analytics without cookies, fingerprinting, or IP storage. It doesn't collect personal data as defined by GDPR Article 4. There's no consent banner needed because there's nothing to consent to. Compare that to Google Analytics, which collects IP addresses, sets tracking cookies, builds cross-site behavioral profiles, and requires a full cookie consent banner plus a Data Processing Agreement. We didn't build "Google Analytics but more private." We built something architecturally different.
 
-**Open source where it matters.** The client applications — [Drop](https://github.com/ciphera-net/drop), [Pulse](https://github.com/ciphera-net/pulse), and the [UI library](https://github.com/ciphera-net/ciphera-ui) — are open source on GitHub. Since all encryption happens client-side, that's where the privacy guarantees live. You can read the code that encrypts your files and verify it does what we say. If Apple had published Siri's voice processing code, the recording scandal would have been caught in a code review, not a lawsuit.
+**Open source where it matters.** The client applications — [Pulse](https://github.com/ciphera-net/pulse) and the [UI library](https://github.com/ciphera-net/ciphera-ui) — are open source on GitHub. Since all client-side processing happens in code anyone can inspect, that's where the privacy guarantees live. You can read the code and verify it does what we say. If Apple had published Siri's voice processing code, the recording scandal would have been caught in a code review, not a lawsuit.
 
 **[Swiss infrastructure](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy).** Our servers are hosted in Switzerland, governed by the FADP, outside the reach of the US CLOUD Act, and outside Five Eyes intelligence-sharing alliances. Ciphera is a Belgian company — not a US entity — so the CLOUD Act can't compel us to hand over data.
 
@@ -93,7 +91,7 @@ The privacy-enhancing technologies market stood at [$3.1-5.0 billion in 2025](ht
 
 ### Is Ciphera really open source?
 
-The client applications — [Drop](https://github.com/ciphera-net/drop), [Pulse](https://github.com/ciphera-net/pulse), and the [UI library](https://github.com/ciphera-net/ciphera-ui) — are open source on GitHub. Since all encryption happens client-side, the privacy-critical code is fully auditable. The Linux Foundation (2025) found 78% of enterprises cite improved security from open source because code is inspectable by anyone, not just the company that wrote it.
+The client applications — [Pulse](https://github.com/ciphera-net/pulse) and the [UI library](https://github.com/ciphera-net/ciphera-ui) — are open source on GitHub. Since all encryption happens client-side, the privacy-critical code is fully auditable. The Linux Foundation (2025) found 78% of enterprises cite improved security from open source because code is inspectable by anyone, not just the company that wrote it.
 
 ### What does zero-knowledge encryption mean in practice?
 
@@ -101,10 +99,10 @@ It means Ciphera's servers can't read your files. Data is encrypted with AES-256
 
 ### Does Ciphera sell any user data?
 
-No. We don't collect personal data, so there's nothing to sell. Pulse collects zero personal data by architecture. Drop encrypts files client-side so we can't access them. The data broker market is worth $294-313 billion ([Mordor Intelligence](https://www.mordorintelligence.com/industry-reports/data-broker-market), 2025). We opted out of that economy entirely.
+No. We don't collect personal data, so there's nothing to sell. Pulse collects zero personal data by architecture. The data broker market is worth $294-313 billion ([Mordor Intelligence](https://www.mordorintelligence.com/industry-reports/data-broker-market), 2025). We opted out of that economy entirely.
 
 ### How is Ciphera different from Proton or Signal?
 
-We love Proton and Signal — we use them daily. They've done incredible work proving that privacy-first products can compete at scale. Ciphera isn't a replacement for either. It fills a different gap: encrypted file sharing (Drop), privacy-first analytics (Pulse), authentication, bot protection, and email infrastructure — all [Swiss-hosted](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy). Think of it as the privacy infrastructure layer that complements tools like Proton and Signal.
+We love Proton and Signal — we use them daily. They've done incredible work proving that privacy-first products can compete at scale. Ciphera isn't a replacement for either. It fills a different gap: privacy-first analytics (Pulse), authentication, bot protection, and email infrastructure — all [Swiss-hosted](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy). Think of it as the privacy infrastructure layer that complements tools like Proton and Signal.
 
 Privacy isn't a feature you can add to a product that was built to collect data. It's a foundation you either build on from day one or you don't. We built Ciphera because we were tired of reading privacy policies that contradicted the code behind them. Every architectural decision — client-side encryption, zero data collection, open source, Swiss hosting, no ad model — exists because we believe privacy should be verifiable, not promised. Don't take our word for it. [Read the code](https://github.com/ciphera-net).
