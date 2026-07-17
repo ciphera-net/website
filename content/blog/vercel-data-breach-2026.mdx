@@ -23,8 +23,6 @@ On April 20, 2026, Vercel — the deployment platform behind millions of web app
 
 But here's what makes this breach different. Vercel's own infrastructure wasn't directly compromised. The attack started two months earlier, on a completely different company's employee laptop, with malware disguised as a Roblox cheat tool. What followed was a five-step supply chain reaction that turned one person's bad download into a platform-wide incident.
 
-<BlogImage src="/blog/images/pexels-5935787.jpg" alt="Hand typing on a laptop keyboard with green terminal code glowing on screen in a dark environment" />
-
 <BlogBlockquote variant="tldr">
 
 The Vercel breach originated from infostealer malware on a Context.ai employee's machine — not from Vercel's own infrastructure. Third-party involvement in data breaches doubled to 30% in 2025 ([Verizon DBIR](https://www.verizon.com/about/news/2025-data-breach-investigations-report), 2025). Customer environment variables stored without the "sensitive" flag were exposed in plaintext. If you deploy on Vercel, rotate your credentials, audit OAuth grants, and flag every environment variable as sensitive — today.
@@ -54,8 +52,6 @@ Worth noting: Vercel confirmed that environment variables marked as "sensitive" 
 ## How a Roblox Cheat Took Down a $9.3 Billion Platform
 
 Software supply chain attacks doubled in early 2025, jumping from an average of 13 per month to 41 per month by October ([ReversingLabs](https://www.reversinglabs.com/sscs-report), 2026). The Vercel breach shows exactly how these attacks unfold in practice — and why they're so hard to prevent.
-
-<BlogImage src="/blog/images/pexels-220237.jpg" alt="Close-up of interlocking steel chain links representing supply chain dependencies and interconnected security risk" />
 
 It started with Lumma Stealer, the most prevalent infostealer of 2025. This isn't exotic nation-state malware. It's commodity tooling sold on dark web forums for a few hundred dollars. And it's everywhere: 54% of ransomware victims had credentials appear in infostealer logs before the actual attack hit ([Pen Test Partners](https://www.pentestpartners.com/security-blog/2025-the-year-of-the-infostealer/), 2025).
 
@@ -89,8 +85,6 @@ If you're using Google Workspace for your team, go to the [admin console's API c
 
 A staggering 28.65 million hardcoded secrets were pushed to public GitHub repositories in 2025 — a 34% increase year-over-year and the largest single-year jump ever recorded ([GitGuardian](https://blog.gitguardian.com/the-state-of-secrets-sprawl-2026/), 2026). The secrets management problem doesn't stop at GitHub. It's everywhere developers store configuration, including platforms like Vercel.
 
-<BlogImage src="/blog/images/pexels-6424583.jpg" alt="Computer monitor displaying syntax-highlighted source code on a dark background representing developer environment security" />
-
 Vercel's platform offers a "sensitive" toggle for environment variables. When enabled, the value gets encrypted at rest and can't be read back through the dashboard or API. When it's not toggled? The variable sits in plaintext, accessible to anyone with sufficient account access.
 
 Most developers never flip that switch. It's not the default. It's not enforced. And until this breach, there wasn't a compelling reason to care — the assumption being that Vercel's perimeter security was enough.
@@ -102,8 +96,6 @@ The crypto sector felt this immediately. DeFi frontends deployed on Vercel scram
 ## What Should You Do Right Now?
 
 Supply chain breaches take an average of 267 days to identify and contain — the longest of any attack vector ([IBM Cost of a Data Breach 2025](https://www.ibm.com/reports/data-breach), 2025). Speed matters. If you deploy on Vercel or use any platform that stores environment variables, don't wait for an official "you've been affected" email. Act now.
-
-<BlogImage src="/blog/images/pexels-39624.jpg" alt="Brass padlock with key resting on heavy steel chains representing security protection measures" />
 
 **Immediate actions — do these today:**
 

@@ -25,8 +25,6 @@ According to [Precedence Research](https://www.precedenceresearch.com/content-de
 
 This guide walks you through connecting BunnyCDN to [Pulse](https://pulse.ciphera.net) — a privacy-first analytics platform — so you can track bandwidth, cache performance, origin response times, and per-datacenter traffic distribution from one dashboard. No cookies. No Google. No third-party data sharing.
 
-<BlogImage src="/blog/images/pexels-1148820.jpg" alt="Close-up of blue-lit server storage drives with network cables in a data center rack" />
-
 <BlogBlockquote variant="tldr">
 
 BunnyCDN runs 119+ PoPs across 70+ countries, but without active monitoring, cache misses and origin slowdowns go unnoticed. Pulse's BunnyCDN integration tracks bandwidth, cache hit rates, error breakdowns, and geographic traffic — all stored on Swiss infrastructure with zero cookies. A 0.1-second speed improvement drives 8.4% more retail conversions ([Deloitte/Google](https://web.dev/case-studies/milliseconds-make-millions), 2020).
@@ -46,8 +44,6 @@ CDN monitoring gives you early warning signals. A dropping cache hit ratio, risi
 ## What CDN Metrics Actually Matter?
 
 [Cloudflare](https://www.cloudflare.com/learning/cdn/what-is-a-cache-hit-ratio/) recommends targeting a cache hit ratio above 95%, and [Adobe's CDN best practices](https://experienceleague.adobe.com/en/docs/experience-manager-learn/cloud-service/caching/cdn-cache-hit-ratio-analysis) flag anything below 90% as concerning. But cache ratio alone doesn't paint the full picture. Here are the five metrics worth watching — and what each one tells you.
-
-<BlogImage src="/blog/images/unsplash-1558494949-ef010cbdcc31.jpg" alt="Dark server room with orange fiber optic cables and green status LEDs glowing across multiple network racks" />
 
 **Bandwidth** measures total data served through your CDN edge nodes. A sudden spike might mean a traffic surge — or a misconfigured asset served uncompressed. A steady climb confirms content is reaching users efficiently.
 
@@ -70,8 +66,6 @@ According to Cloudflare and Adobe AEM documentation, a well-performing CDN shoul
 **Step 3:** Click **Fetch Pull Zones**. Pulse calls the BunnyCDN API to list your available pull zones. Select the one that serves your site's assets.
 
 **Step 4:** Hit **Connect**. Pulse starts syncing historical data in 38-day chunks (BunnyCDN's API caps requests at a 40-day window).
-
-<BlogImage src="/blog/images/pexels-4716292.jpg" alt="Blue Ethernet cables neatly connected to a network patch panel inside a server rack" />
 
 That's it. A new **CDN** tab appears in your site navigation. Pulse syncs daily statistics in the background — no cron jobs, no webhooks, no manual CSV exports.
 
@@ -96,8 +90,6 @@ Below the cards, you get three detailed views. The **Bandwidth Chart** is an are
 </BlogBlockquote>
 
 **Requests and Errors** sit side by side as bar charts. The requests chart shows daily volume trends. The errors chart stacks 3xx redirects, 4xx client errors, and 5xx server errors so you can spot patterns instantly. A 5xx spike right after a deployment? Roll it back.
-
-<BlogImage src="/blog/images/pexels-4597280.jpg" alt="Data center aisle with a mobile monitoring workstation positioned between tall server racks" />
 
 The **Traffic Distribution** view is the most distinctive part. A dotted world map plots every BunnyCDN datacenter serving your traffic, with dots sized by bandwidth. Below the map, a grid lists each datacenter with its country flag, city name, bandwidth served, and percentage of total traffic.
 
