@@ -20,7 +20,7 @@ export function BlogImage({
         loading="lazy"
         className={
           variant === 'logo'
-            ? 'mx-auto w-full max-w-[240px] grayscale'
+            ? 'mx-auto w-full max-w-[240px]'
             : 'w-full object-cover grayscale'
         }
       />
