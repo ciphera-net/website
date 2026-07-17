@@ -23,8 +23,6 @@ Your analytics dashboard shows pageviews, bounce rates, and referral sources. It
 
 We built user journey visualization into [Pulse](https://pulse.ciphera.net) because we think privacy-first analytics shouldn't mean feature-poor analytics. Here's why most tools skip this feature, what it costs you, and how we built it without compromising on privacy.
 
-<BlogImage src="/blog/images/unsplash-1551288049-bebda4e38f71.jpg" alt="Web analytics dashboard displaying colorful performance graphs, session data, and traffic visualizations" />
-
 <BlogBlockquote variant="tldr">
 
 Privacy analytics tools like Plausible, Fathom, and Simple Analytics don't offer user journey visualization — leaving a $4.96B gap (Fortune Business Insights, 2025). Most site owners end up running two separate tools at $108-214/month to see how visitors navigate. Pulse includes Sankey-diagram flow visualization natively, built on aggregated session data with zero cookies.
@@ -38,8 +36,6 @@ Standard analytics gives you a spreadsheet view of your site: page A got 500 vis
 This matters because websites aren't collections of isolated pages. They're navigation structures. According to [Digital Web Solutions](https://www.digitalwebsolutions.com/blog/average-bounce-rate-by-industry/) (2025), the average visitor views 2.5-4 pages per session across industries, with desktop users averaging 3.4 pages. That's 2-3 page transitions per visit that standard analytics simply can't show you. Where do visitors go after your homepage? Where do they exit your pricing page? Which blog posts actually lead to signups?
 
 Without flow data, you're guessing. With it, you can see — in hard numbers — where your navigation works and where it breaks.
-
-<BlogImage src="/blog/images/unsplash-1581291518857-4e27b48ff24e.jpg" alt="Designer sketching user flow wireframes and journey maps on paper with user goals written" />
 
 ## Why Don't Plausible, Fathom, and Simple Analytics Offer This?
 
@@ -73,8 +69,6 @@ To use it, you manually create an exploration, drag in dimensions and metrics fr
 
 So GA4 technically has the feature — buried three clicks deep, behind a configuration wall, running on incomplete data. Is that really "having" it?
 
-<BlogImage src="/blog/images/unsplash-1504868584819-f8e8b4b6d7e3.jpg" alt="Analytics dashboard displaying cohort analysis reports and geographic session data on a laptop screen" />
-
 ## The Two-Tool Tax: What This Gap Actually Costs
 
 Because privacy analytics tools don't include journey visualization, teams that need this data end up running two tools. A privacy-first analytics platform for compliant pageview tracking, plus a behavior analytics tool for flow and session data. The costs stack up quickly.The cheapest two-tool combination with real flow visualization is Matomo Cloud plus the paid Users Flow plugin at around $31/month. But Matomo's [Users Flow plugin costs EUR 94-282/year](https://plugins.matomo.org/UsersFlow) depending on team size, on top of hosting. And self-hosted Matomo means managing your own infrastructure. The most common pairing — Plausible at $9/month plus Hotjar Business at $99/month — costs $108/month for what should be a single dashboard.
@@ -102,8 +96,6 @@ The system stores two types of aggregated data. First, session flows: the ordere
 ### The Sankey Visualization
 
 The frontend renders this data as an interactive Sankey diagram using D3's Sankey layout algorithm. You see your site's traffic flow as a connected graph: entry pages on the left, subsequent pages in columns moving right, exit nodes in grey. The width of each connection shows volume. You can adjust depth from 2-10 steps, filter by entry page, and see the exact session count for each transition.
-
-<BlogImage src="/blog/images/unsplash-1639322537228-f710d846310a.jpg" alt="Abstract network of connected translucent nodes on a dark background representing data flow paths" />
 
 <BlogBlockquote>
 
@@ -134,8 +126,6 @@ Pulse's entry point filter lets you isolate traffic by landing page. Filter to "
 ### Measure Navigation Changes
 
 Moved a CTA? Reorganized your header? Journey data gives you before-and-after evidence. If you changed your pricing page link from the footer to the main nav, you can see exactly how many more sessions now flow from homepage → pricing. No guessing. No A/B testing frameworks. Just direct observation of traffic flow.
-
-<BlogImage src="/blog/images/unsplash-1460925895917-afdab827c52f.jpg" alt="Laptop displaying a web analytics dashboard with area charts, daily active users, and marketing metrics" />
 
 ## Why the Industry Is Moving Toward Integrated Journey Analytics
 
