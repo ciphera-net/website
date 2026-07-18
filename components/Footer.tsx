@@ -156,7 +156,7 @@ export default function Footer() {
             fill="transparent"
             stroke="currentColor"
             strokeWidth="1.25"
-            style={{ font: '700 118px var(--font-space-grotesk), "Space Grotesk", sans-serif' }}
+            style={{ font: '700 118px var(--font-geist-sans), "Geist", system-ui, sans-serif' }}
           >
             BUILT FOR PRIVACY
           </text>

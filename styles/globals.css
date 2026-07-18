@@ -127,12 +127,12 @@
     text-decoration-color: #fd5e0f;
   }
 
-  /* * Blog headings pick up the display face */
+  /* * Blog headings share the body face (Geist, one-family system) — they only
+     tighten tracking; weight comes from the typography plugin */
   .prose h1,
   .prose h2,
   .prose h3,
   .prose h4 {
-    font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
     letter-spacing: -0.01em;
   }
 

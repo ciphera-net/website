@@ -1,14 +1,13 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import type { Metadata, Viewport } from 'next'
-import { Space_Grotesk, Geist, JetBrains_Mono } from 'next/font/google'
+import { Geist, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
 import '@ciphera-net/facet/styles'
 import '../styles/globals.css'
 import { env } from '@/lib/env'
 import { cdnUrl } from '@/lib/cdn'
 
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk', display: 'swap' })
 const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' })
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono', display: 'swap' })
 
@@ -81,7 +80,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${geistSans.variable} ${jetbrainsMono.variable} dark`}
+      className={`${geistSans.variable} ${jetbrainsMono.variable} dark`}
       suppressHydrationWarning
     >
       <head>

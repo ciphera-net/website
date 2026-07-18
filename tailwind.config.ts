@@ -14,8 +14,9 @@ const config: Config = {
   	extend: {
   		fontFamily: {
   			display: [
-  				'var(--font-space-grotesk)',
-  				'"Space Grotesk"',
+  				'var(--font-geist-sans)',
+  				'Geist',
+  				'system-ui',
   				'sans-serif'
   			],
   			sans: [
