@@ -43,11 +43,28 @@ const nextConfig: NextConfig = {
       ['why-european-businesses-should-use-european-software', '/blog/why-swiss-infrastructure-matters-for-data-privacy'],
       ['why-most-analytics-tools-skip-user-journeys', '/blog/pulse-vs-google-analytics-plausible-fathom'],
     ]
-    return gone.map(([slug, destination]) => ({
-      source: `/blog/${slug}`,
-      destination,
-      permanent: true,
-    }))
+    // * Removed site pages (GSC 404 report, 19-07-2026): the old /products
+    // * landing (removed 31-03), the pre-rename Auth product page, the retired
+    // * Drop product page, and two dead marketing pages from the March cleanup.
+    const goneSite: Array<[string, string]> = [
+      ['/companies', '/'],
+      ['/comparison', '/blog/zero-knowledge-encryption-guide'],
+      ['/products', '/#products'],
+      ['/products/auth', '/products/id'],
+      ['/products/drop', '/#products'],
+    ]
+    return [
+      ...gone.map(([slug, destination]) => ({
+        source: `/blog/${slug}`,
+        destination,
+        permanent: true,
+      })),
+      ...goneSite.map(([source, destination]) => ({
+        source,
+        destination,
+        permanent: true,
+      })),
+    ]
   },
   // * Security headers
   async headers() {
