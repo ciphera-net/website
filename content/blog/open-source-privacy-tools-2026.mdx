@@ -1,325 +1,297 @@
 ---
 title: "Open Source Privacy Tools: Complete List 2026"
-description: "30 open source privacy tools across 10 categories. 96% of orgs increased OSS use in 2025. Every tool here has auditable code and no hidden data collection."
+description: "34 open source privacy tools across 11 categories — every one re-verified in July 2026: licenses, maintenance status, and governance changes. Plus the open-source stack we run ourselves."
 category: Privacy
 date: "2026-03-02"
-dateModified: "2026-03-07"
-readTime: "15 min read"
+dateModified: "2026-07-19"
+readTime: "14 min read"
 image: "/blog/og/open-source-privacy-tools-2026.png"
 faqs:
   - question: "What's the most important open source privacy tool to start with?"
-    answer: "Signal and Bitwarden. Messaging and passwords are the two highest-risk categories for most people. Signal has 70 million monthly users and handles all message types with end-to-end encryption (Backlinko, 2025). Bitwarden covers cross-device password management — and the free tier is enough for most individuals."
-  - question: "Is open source software really more secure?"
-    answer: "68% of organizations believe so (OpenLogic, 2025). Public code means vulnerabilities are found faster and there's no hidden data collection. However, 87% of commercial codebases contain at least one open source vulnerability (Black Duck, 2026), so keeping software updated matters just as much as using it."
+    answer: "Signal and Bitwarden. Messaging and passwords are the two highest-risk categories for most people. Both install in minutes, both have genuinely usable free tiers, and both have held up under years of public scrutiny of their code."
+  - question: "What's the difference between open source and source-available?"
+    answer: "Open source means an OSI-approved license (GPL, MIT, Apache, AGPL, MPL) granting the freedom to use, modify, and redistribute — including commercially. Source-available means you can read the code but the license restricts what you can do with it (BUSL, SSPL, and similar). The distinction matters: several well-known infrastructure tools, including HashiCorp Vault and Nomad, moved to BUSL and are no longer open source. Every tool on this list was license-checked in July 2026."
   - question: "Are these tools hard to set up?"
-    answer: "Most work out of the box. Signal, Brave, Bitwarden, and Proton Mail install like any other app — under 5 minutes each. Self-hosted tools like Nextcloud, Plausible, and SearXNG need a server but all offer Docker deployments that take under 30 minutes."
+    answer: "Most work out of the box. Signal, Brave, Bitwarden, and Proton Mail install like any other app. Self-hosted tools like Nextcloud, Plausible, Immich, and SearXNG need a server but offer Docker deployments that take under 30 minutes. Pi-hole runs happily on a Raspberry Pi. GrapheneOS requires flashing a Pixel phone, which takes about an hour."
   - question: "Can I use these tools on mobile?"
-    answer: "Yes. Signal, Proton Mail, Bitwarden, Brave, Mullvad, Cryptomator, and Tuta all have iOS and Android apps. GrapheneOS replaces your entire phone operating system (Pixel devices only). Tor Browser is available on Android. The only category that's desktop-only is operating systems like Tails and QubesOS."
-  - question: "Do open source privacy tools work for businesses?"
-    answer: "Absolutely. Nextcloud serves government agencies across Europe. Bitwarden reports 99% of organizations strengthened security after deployment. Proton has over 50,000 business customers. Matomo has 100M+ Docker downloads. Enterprise support is available for most tools on this list."
+    answer: "Yes. Signal, SimpleX, Proton Mail, Bitwarden, Brave, Mullvad, Cryptomator, Immich, Ente, and Tuta all have iOS and Android apps. GrapheneOS replaces your entire phone operating system (Pixel devices only). Tor Browser is available on Android. The only desktop-only category is operating systems like Tails and QubesOS."
+  - question: "How often is this list re-verified?"
+    answer: "The full list was last re-verified in July 2026: license, maintenance activity within the previous 12 months, and any governance or funding events. Substantive changes are logged in dated update notes in the article rather than edited in silently. If a tool's status changes materially between updates, we'd rather remove it than let the list rot."
 ---
 
-96% of organizations increased or maintained their use of open source software in 2025 ([OpenLogic / OSI](https://www.openlogic.com/blog/state-of-open-source-report-key-insights), 2025). The privacy software market hit $5.37 billion the same year and is projected to reach $45.13 billion by 2034 ([Fortune Business Insights](https://www.fortunebusinessinsights.com/data-privacy-software-market-105420), 2025). Something is clearly shifting.
+"Open source" is a verifiable claim — which means a list like this one is only worth publishing if someone actually verifies it. So in July 2026 we re-checked every tool on this page: license (OSI-approved or out), maintenance (a release or significant activity within 12 months), and governance (acquisitions, license changes, funding crises, project-status announcements). Several entries changed as a result, and we've said so rather than quietly rewording.
 
-But "privacy tool" means nothing if you can't verify the claim. Proprietary apps can promise zero tracking while quietly phoning home. Open source changes the equation: the code is public, auditable, and accountable. 68% of organizations now believe open source software is more secure than closed-source alternatives ([OpenLogic](https://www.openlogic.com/resources/state-of-open-source-report), 2025).
-
-Here are 30 tools across 10 categories — every one actively maintained, genuinely open source, and usable without a computer science degree. We've included links to our other deep-dive comparisons where relevant.
+That's also the honest pitch for open source itself: proprietary apps can promise zero tracking while quietly phoning home; public code can be checked. What follows is 34 tools across 11 categories that passed verification — plus, at the end, the open-source stack we run ourselves, because a list like this from a company that doesn't practice it would be decoration.
 
 <BlogBlockquote variant="tldr">
 
-30 open source privacy tools across messaging, email, file sharing, analytics, VPN, browsers, passwords, cloud storage, operating systems, and search. Every tool has publicly auditable code and active 2026 development. Start with Signal, Bitwarden, and Brave for immediate impact — all three are free.
+34 open source privacy tools across messaging, email, file sharing, analytics, VPN, browsers, passwords, cloud storage and photos, DNS blocking, operating systems, and search — every one license-checked and maintenance-verified in July 2026, with a country tag per tool. Start with Signal, Bitwarden, and Brave for immediate impact. All three are free.
 
 </BlogBlockquote>
+
+*Update, 19-07-2026 — full re-verification of every entry. Notable changes: Session survived a serious funding crisis (note added), Briar entered maintenance mode, Bitwarden's enterprise modules moved to a source-available license (core stays open), Mullvad completed its OpenVPN retirement. Added: SimpleX Chat, Immich, Ente, Pi-hole, AdGuard Home, and a new DNS-blocking category.*
+
+## How We Verified This List
+
+Four criteria, applied to every entry in July 2026:
+
+- **Genuinely open source:** an OSI-approved license (GPL, MIT, Apache, AGPL, MPL) for the product as you'd actually run it. Source-available licenses (BUSL, SSPL) don't qualify — see the FAQ for why that distinction has teeth.
+- **Active within 12 months:** at least one release or significant development activity. Projects in formal maintenance mode are marked as such, not silently kept.
+- **Usable without expertise:** a non-technical person should be able to install and use it (underlying protocols like WireGuard excepted).
+- **Governance noted:** acquisitions, license moves, funding trouble, and controversies get a clause, not a cover-up. Trust survives bad news; it doesn't survive discovering the list glossed over it.
+
+Three tools on this list are ours (Pulse, and two entries in the "what we run" section). They're labeled. No tool paid for placement.
 
 ## What Are the Best Open Source Encrypted Messaging Apps?
 
 ### Signal — Best for Everyday Private Messaging
 
-[Signal](https://signal.org) is the gold standard. End-to-end encryption by default for messages, calls, and video — with 70 million monthly active users ([Backlinko](https://backlinko.com/signal-stats), 2025). The Signal Protocol has been adopted by WhatsApp, Google Messages, and Facebook Messenger, but Signal itself stores virtually no metadata. We use it daily — it's the team default at Ciphera.
+[Signal](https://signal.org) remains the gold standard: end-to-end encryption by default for messages, calls, and video, with the Signal Protocol so battle-tested that WhatsApp and Google Messages adopted it. Signal itself stores virtually no metadata — subpoena responses have shown account-creation date and last-connection date, nothing more. It's the team default at Ciphera.
 
-**License:** AGPL-3.0
+**License:** AGPL-3.0 · **Country:** US · **Cost:** Free · **Platforms:** All
 
-| **Cost:** Free | **Platforms:** iOS, Android, Windows, macOS, Linux
+### SimpleX Chat — Best for No-Identifier Messaging
+
+[SimpleX](https://simplex.chat) goes a step further than everyone else in this category: no phone number, no email, and — uniquely — no user identifiers of any kind, not even random ones. Message queues are unidirectional and disposable, so there's no stable "you" for servers to correlate. Actively developed and audited; the most interesting new entrant since our last revision.
+
+**License:** AGPL-3.0 · **Country:** UK · **Cost:** Free · **Platforms:** iOS, Android, desktop
 
 ### Element (Matrix) — Best for Decentralized Team Communication
 
-[Element](https://element.io) runs on the Matrix protocol — a decentralized, federated network where you control your own server. The French and German governments use Matrix for internal communication. If Signal goes down, Matrix keeps running because there's no single point of failure.
+[Element](https://element.io) runs on the Matrix protocol — a federated network where you control your own server. The French and German governments run internal messengers on Matrix (Tchap, BwMessenger). If any single operator disappears, the network keeps running.
 
-**License:** Apache 2.0
-
-| **Cost:** Free (self-hosted), paid hosting from $5/user/mo | **Platforms:** All
+**License:** AGPL-3.0 / GPL-3.0 (commercial licensing available) · **Country:** UK · **Cost:** Free self-hosted; hosted plans available · **Platforms:** All
 
 ### Session — Best for Anonymous Messaging
 
-[Session](https://getsession.org) doesn't require a phone number or email to sign up. Messages route through an onion network, hiding metadata from even the servers that relay them. It's built on the Oxen network with decentralized infrastructure. If you need messaging without any identity link, Session is the answer.
+[Session](https://getsession.org) requires no phone number or email, and routes messages through an onion network that hides metadata even from relay servers. One honest note from our verification: the foundation behind it nearly shut down in mid-2026 after a funding crisis, surviving on roughly $1M in community donations. The project is alive and shipping, but running leaner than before — worth knowing if you're betting a workflow on it.
 
-**License:** GPL-3.0
-
-| **Cost:** Free | **Platforms:** iOS, Android, Windows, macOS, Linux
+**License:** GPL-3.0 · **Country:** International (foundation) · **Cost:** Free · **Platforms:** All
 
 ### Briar — Best for Extreme Conditions
 
-[Briar](https://briarproject.org) works without internet. It can sync messages peer-to-peer via Bluetooth or Wi-Fi, making it invaluable for journalists, activists, or anyone in a region with internet shutdowns. Messages are stored on-device only — no servers involved at all.
+[Briar](https://briarproject.org) syncs peer-to-peer over Bluetooth or Wi-Fi — no internet required, no servers at all — which makes it unique for internet shutdowns and extreme-risk situations. Verification note: Briar formally entered **maintenance mode in July 2026** (security fixes only, no new features). For its niche, that's acceptable; for a daily driver, pick Signal or SimpleX.
 
-**License:** GPL-3.0
-
-| **Cost:** Free | **Platforms:** Android (desktop in beta)
+**License:** GPL-3.0 · **Country:** UK · **Cost:** Free · **Platforms:** Android
 
 ## What Are the Best Open Source Private Email Providers?
 
 ### Proton Mail — Best for Encrypted Email
 
-[Proton Mail](https://proton.me/mail) passed 100 million accounts in 2023 ([Proton](https://proton.me/blog/proton-100-million-accounts), 2023) and has grown substantially since. Swiss jurisdiction, end-to-end encryption between Proton users, and zero-access encryption for all stored email. The web client is fully open source. We love Proton and use it personally — it's the benchmark for private email.
+[Proton Mail](https://proton.me/mail) offers end-to-end encryption between Proton users and zero-access encryption for stored mail, under Swiss jurisdiction, with fully open-source clients. Over 50,000 business customers as of 2026. It's the benchmark for private email, and what several of us use personally.
 
-**License:** GPL-3.0 (web client)
+**License:** GPL-3.0 (clients) · **Country:** Switzerland · **Cost:** Free tier; paid from $3.99/mo · **Platforms:** All
 
-| **Cost:** Free tier, paid from $3.99/mo | **Platforms:** All
+### Tuta — Best for Post-Quantum Email
 
-### Tuta — Best for Post-Quantum Ready Email
+[Tuta](https://tuta.com) has run hybrid post-quantum encryption (TutaCrypt) in production since 2024 — earlier than nearly anyone — and encrypts subject lines, which Proton doesn't. German-hosted and expanding (a government-grant-funded encrypted drive is in beta).
 
-[Tuta](https://tuta.com) (formerly Tutanota, rebranded in 2024) is German-hosted and working on post-quantum encryption — future-proofing against quantum computing threats. It encrypts subject lines too, which Proton Mail doesn't. A solid alternative if you want a European provider outside Switzerland.
-
-**License:** GPL-3.0
-
-| **Cost:** Free tier, paid from EUR 3/mo | **Platforms:** All
+**License:** GPL-3.0 · **Country:** Germany · **Cost:** Free tier; paid from EUR 3/mo · **Platforms:** All
 
 ### Thunderbird — Best Desktop Email Client
 
-[Thunderbird](https://www.thunderbird.net) went through a major revival under MZLA Technologies. The 2024-2025 redesign modernized the interface while keeping it fully open source. It supports any email provider, has built-in PGP encryption, and runs locally — your email never touches a third-party server.
+[Thunderbird](https://www.thunderbird.net) keeps a local, open-source client viable in a webmail world: any provider, built-in PGP, active 2026 roadmap (Exchange support, database overhaul) under Mozilla subsidiary MZLA.
 
-**License:** MPL-2.0
-
-| **Cost:** Free | **Platforms:** Windows, macOS, Linux
+**License:** MPL-2.0 · **Country:** US · **Cost:** Free · **Platforms:** Windows, macOS, Linux
 
 ## What Are the Best Open Source Encrypted File Sharing Tools?
 
-82% of data breaches in 2024 involved cloud-stored data ([IBM](https://www.ibm.com/reports/data-breach), 2025). How you share files matters.
-
 ### Send — Best for Self-Hosted File Transfers
 
-[Send](https://send.vis.ee) is the community-maintained fork of Firefox Send, which Mozilla discontinued in 2020. End-to-end encrypted file transfer with expiring links. The key differentiator: you can self-host it on your own server for complete control over where your files transit.
+[Send](https://send.vis.ee) is the community fork of Mozilla's discontinued Firefox Send: end-to-end encrypted transfers with expiring links, self-hostable. Caveat from verification: the flagship public instance is a single-maintainer community project — self-host it if you need it to exist next year.
 
-**License:** MPL-2.0
-
-| **Cost:** Free (self-hosted) | **Platforms:** Web
+**License:** MPL-2.0 · **Country:** Netherlands (maintainer) · **Cost:** Free self-hosted · **Platforms:** Web
 
 ### OnionShare — Best for Anonymous File Sharing
 
-[OnionShare](https://onionshare.org) shares files directly from your computer over the Tor network. No server involved — the recipient connects directly to your machine through an onion address. When you close the app, the share disappears. Perfect for sensitive documents that shouldn't exist on any server.
+[OnionShare](https://onionshare.org) serves files directly from your machine over Tor — no server ever holds the file, and the share vanishes when you close the app. Still actively released.
 
-**License:** GPL-3.0
-
-| **Cost:** Free | **Platforms:** Windows, macOS, Linux
+**License:** GPL-3.0 · **Country:** International · **Cost:** Free · **Platforms:** Windows, macOS, Linux
 
 ## What Are the Best Open Source Privacy-First Analytics Tools?
 
-Google Analytics collects 72+ data points per visitor. Privacy-first alternatives prove you can measure what matters without surveillance. For a detailed comparison, see our [Pulse vs Google Analytics vs Plausible vs Fathom](https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom) breakdown.
+For the detailed comparison of this category, see [Pulse vs Google Analytics vs Plausible vs Fathom](/blog/pulse-vs-google-analytics-plausible-fathom).
 
 ### Pulse — Best for Zero-Cookie Analytics
 
-[Pulse](https://ciphera.net/products/pulse) collects website analytics without cookies, fingerprinting, or personal data — by architecture, not policy. The tracking script is under 2 KB. No consent banners needed because there's nothing to consent to. Swiss-hosted, open source client, and it integrates with the broader Ciphera ecosystem.
+[Pulse](/products/pulse) — **ours, so judge accordingly** — collects website analytics with no cookies, no fingerprinting, and no personal data, by architecture rather than policy. The script is under 2 KB, data lives in Switzerland, and there's nothing to consent-banner because nothing personal is collected.
 
-**License:** Open source
-
-| **Cost:** Free tier available | **Platforms:** Web
+**License:** AGPL-3.0 · **Country:** Belgium (company) / Switzerland (data) · **Cost:** Free tier · **Platforms:** Web
 
 ### Plausible — Best Lightweight Analytics
 
-[Plausible](https://plausible.io) is under 1.6 KB — 75 times smaller than Google Analytics' 75 KB tag — and gives you page views, referrers, and basic metrics. EU-hosted by default. GDPR compliant without consent banners. The dashboard is refreshingly simple — most teams find it gives them everything GA provided minus the privacy invasion.
+[Plausible](https://plausible.io) pioneered the category: a sub-2 KB script, simple dashboard, EU hosting, no cookies. The Community Edition is self-hostable.
 
-**License:** AGPL-3.0
-
-| **Cost:** From $9/mo (cloud), free self-hosted | **Platforms:** Web
+**License:** AGPL-3.0 · **Country:** Estonia · **Cost:** From $9/mo cloud; free self-hosted · **Platforms:** Web
 
 ### Umami — Best for Self-Hosted Simplicity
 
-[Umami](https://umami.is) is MIT-licensed (the most permissive option on this list), lightweight, and deploys in minutes via Docker. It's the fastest-growing privacy analytics tool by GitHub stars. If you want analytics on your own infrastructure with zero external dependencies, Umami makes it easy.
+[Umami](https://umami.is) is MIT-licensed, deploys via Docker in minutes, and has become the default "just give me pageviews on my own server" choice.
 
-**License:** MIT
+**License:** MIT · **Country:** US · **Cost:** Free self-hosted · **Platforms:** Web
 
-| **Cost:** Free (self-hosted) | **Platforms:** Web
+### Matomo — Best Full Google Analytics Replacement
 
-### Matomo — Best for Full GA Replacement
+[Matomo](https://matomo.org) is the mature heavyweight: funnels, heatmaps, tag management — the full GA feature set with complete data ownership.
 
-[Matomo](https://matomo.org) is the most mature open source analytics platform, with 100M+ Docker downloads. It offers everything Google Analytics does — funnels, heatmaps, A/B testing, tag management — without sending data to a third party. If your organization needs enterprise features with full data ownership, Matomo is the answer.
+**License:** GPL-3.0 · **Country:** New Zealand · **Cost:** Free self-hosted; cloud from EUR 23/mo · **Platforms:** Web
 
-**License:** GPL-3.0
-
-| **Cost:** Free self-hosted, cloud from EUR 23/mo | **Platforms:** Web## What Are the Best Open Source VPN and Network Privacy Tools?
-
-1.75 billion people worldwide use VPNs — approximately one-third of all internet users ([Security.org](https://www.security.org/vpn/statistics/), 2026). But most commercial VPNs are proprietary black boxes. These three put the code where their promises are.
+## What Are the Best Open Source VPN and Network Privacy Tools?
 
 ### Mullvad — Best No-Nonsense VPN
 
-[Mullvad](https://mullvad.net) went WireGuard-only in January 2026, dropping OpenVPN entirely. EUR 5/month flat — no tiers, no upsells, no email required. You can literally mail them cash in an envelope. The apps are open source, independently audited, and they've been transparent about law enforcement requests (none have resulted in data handover because they don't store any).
+[Mullvad](https://mullvad.net) completed its OpenVPN retirement in January 2026 and now runs WireGuard-only. EUR 5/month flat, no email required, cash accepted by post, apps open source and independently audited, and a documented history of having nothing to hand over.
 
-**License:** GPL-3.0 (apps)
-
-| **Cost:** EUR 5/mo | **Platforms:** All
+**License:** GPL-3.0 (apps) · **Country:** Sweden · **Cost:** EUR 5/mo · **Platforms:** All
 
 ### ProtonVPN — Best Free-Tier VPN
 
-[ProtonVPN](https://protonvpn.com) is part of the Proton ecosystem, which means it integrates with Proton Mail, Calendar, and Drive. The free tier has no data caps and no ads — genuinely usable, not a crippled demo. Secure Core routes traffic through multiple countries for extra protection.
+[ProtonVPN](https://protonvpn.com)'s free tier has no data caps and no ads — genuinely usable rather than a crippled demo — and Secure Core multi-hops traffic through hardened data centers.
 
-**License:** GPL-3.0 (apps)
-
-| **Cost:** Free tier, paid from $4.99/mo | **Platforms:** All
+**License:** GPL-3.0 (apps) · **Country:** Switzerland · **Cost:** Free tier; paid from $4.99/mo · **Platforms:** All
 
 ### WireGuard — Best VPN Protocol
 
-[WireGuard](https://www.wireguard.com) isn't a VPN service — it's the protocol that powers the best ones. Around 4,000 lines of code compared to 100,000+ for OpenVPN, which means a dramatically smaller attack surface. It's built into the Linux kernel, and both Mullvad and ProtonVPN use it. If you run your own server, WireGuard is the fastest and simplest option.
+[WireGuard](https://www.wireguard.com) is the protocol underneath the good VPNs: ~4,000 lines of code versus 100,000+ for OpenVPN, in the Linux kernel since 5.6. If you run your own server, this is the primitive to build on.
 
-**License:** GPL-2.0
-
-| **Cost:** Free | **Platforms:** Linux kernel, all major OS
+**License:** GPL-2.0 · **Country:** — · **Cost:** Free · **Platforms:** All major OS
 
 ## What Are the Best Open Source Privacy Browsers?
 
 ### Firefox — Best Independent Browser
 
-[Firefox](https://www.mozilla.org/firefox) is the only major browser with its own rendering engine (Gecko) not based on Chromium. That independence matters — a browser monoculture gives Google enormous influence over web standards. Firefox holds 7.1% of desktop market share ([DemandSage](https://www.demandsage.com/browser-market-share/), 2025). Enhanced Tracking Protection blocks third-party cookies and fingerprinting by default.
+[Firefox](https://www.mozilla.org/firefox) remains the only major browser whose engine isn't Chromium — an independence that matters for the whole web, not just your tabs. Worth one clause of honesty: Mozilla's early-2025 Terms-of-Use wording sparked a real backlash before being walked back; the product's tracking protection is unchanged and strong.
 
-**License:** MPL-2.0
-
-| **Cost:** Free | **Platforms:** All
+**License:** MPL-2.0 · **Country:** US · **Cost:** Free · **Platforms:** All
 
 ### Tor Browser — Best for Anonymity
 
-[Tor Browser](https://www.torproject.org) routes your traffic through three relays, making it extremely difficult to trace back to you. Based on Firefox ESR with modifications that prevent fingerprinting. It's slower than regular browsing, but that's the trade-off for genuine anonymity — not just privacy.
+[Tor Browser](https://www.torproject.org) routes traffic through three relays with fingerprinting defenses layered on Firefox ESR. Slower, by design, in exchange for genuine anonymity. Note: US government funding cuts in 2025 hit the project's budget — the software is unaffected, but it has never needed community support more.
 
-**License:** BSD-3-Clause
-
-| **Cost:** Free | **Platforms:** Windows, macOS, Linux, Android
+**License:** BSD-3-Clause (Tor) / MPL-2.0 (browser base) · **Country:** US (non-profit) · **Cost:** Free · **Platforms:** Windows, macOS, Linux, Android
 
 ### Brave — Best Privacy-by-Default Browser
 
-[Brave](https://brave.com) surpassed 100 million monthly active users in September 2025 ([Brave](https://brave.com/blog/100m-mau/), 2025). Built on Chromium but with aggressive ad and tracker blocking out of the box. The Shields feature blocks an average of 30+ trackers per page. Chromium-based means full extension compatibility.
+[Brave](https://brave.com) blocks ads and trackers out of the box on a Chromium base (full extension compatibility), with 100M+ monthly users as of late 2025. Its crypto features are ignorable if they're not your thing.
 
-**License:** MPL-2.0
-
-| **Cost:** Free | **Platforms:** All
+**License:** MPL-2.0 · **Country:** US · **Cost:** Free · **Platforms:** All
 
 ### LibreWolf — Best for Firefox Purists
 
-[LibreWolf](https://librewolf.net) is Firefox with every telemetry feature removed. No Mozilla data collection, no sponsored suggestions, no Pocket integration. It's what Firefox would be if Mozilla's revenue didn't depend on Google. Tracks Firefox ESR releases with privacy patches applied automatically.
+[LibreWolf](https://librewolf.net) is Firefox with every telemetry and sponsorship surface removed, tracking Firefox ESR within days of each release.
 
-**License:** MPL-2.0
-
-| **Cost:** Free | **Platforms:** Windows, macOS, Linux
+**License:** MPL-2.0 · **Country:** — · **Cost:** Free · **Platforms:** Windows, macOS, Linux
 
 ## What Are the Best Open Source Password Managers?
 
 ### Bitwarden — Best Overall Password Manager
 
-99% of organizations strengthened their security posture after deploying [Bitwarden](https://bitwarden.com) ([Bitwarden](https://www.businesswire.com/news/home/20250730060878/en/Bitwarden-Report-Finds-99-of-Organizations-Strengthened-Security-Posture-After-Deploying-Password-Management), 2025). Cross-platform, regularly audited, and the free tier is genuinely usable for individuals. The server is AGPL-3.0 — you can self-host it if you don't trust anyone else with your vault.
+[Bitwarden](https://bitwarden.com) is cross-platform, regularly audited, self-hostable, and the free tier genuinely covers individual use. Verification nuance: the core clients and server remain GPL/AGPL, but newer *enterprise* modules ship under a source-available "Bitwarden License," and January 2026 brought a steep premium price hike — on top of private-equity investment taken back in 2022. The open-source core is unaffected today — we're noting the trajectory, not sounding an alarm.
 
-**License:** AGPL-3.0 (server), GPL-3.0 (clients)
-
-| **Cost:** Free, premium $10/year | **Platforms:** All
+**License:** AGPL-3.0 (server), GPL-3.0 (clients), source-available enterprise modules · **Country:** US · **Cost:** Free; premium $10/yr · **Platforms:** All
 
 ### KeePassXC — Best Offline Password Manager
 
-[KeePassXC](https://keepassxc.org) stores your passwords in an encrypted local database. No cloud sync by default — you control where the file lives. Pair it with Syncthing or Nextcloud for cross-device access without trusting a third party. It's the choice for people who believe password vaults shouldn't be online services.
+[KeePassXC](https://keepassxc.org) keeps your vault in an encrypted local file you control — no cloud, no account, no company. Pair with Syncthing or Nextcloud for multi-device sync on your own terms.
 
-**License:** GPL-2.0
+**License:** GPL-2.0 / GPL-3.0 · **Country:** — · **Cost:** Free · **Platforms:** Windows, macOS, Linux
 
-| **Cost:** Free | **Platforms:** Windows, macOS, Linux
-
-## What Are the Best Open Source Cloud Storage and Encryption Tools?
+## What Are the Best Open Source Cloud Storage and Photo Tools?
 
 ### Nextcloud — Best Self-Hosted Cloud Platform
 
-[Nextcloud](https://nextcloud.com)'s customer base grew more than 10x in a single year ([Nextcloud](https://nextcloud.com/blog/nextcloud-keeps-growth-up-with-75-more-revenue-and-10x-userbase/), 2025). It's a full Google Workspace replacement: files, calendar, contacts, video calls, document editing — all self-hosted. Government agencies in France, Germany, and Sweden run on Nextcloud. If you want to own your cloud, this is the platform.
+[Nextcloud](https://nextcloud.com) is the full Google-Workspace replacement — files, calendar, video calls, document editing — self-hosted, with strong momentum from European governments' sovereignty push in 2025–2026.
 
-**License:** AGPL-3.0
-
-| **Cost:** Free (self-hosted), enterprise plans available | **Platforms:** All
+**License:** AGPL-3.0 · **Country:** Germany · **Cost:** Free self-hosted; enterprise plans · **Platforms:** All
 
 ### Cryptomator — Best Encryption Layer for Any Cloud
 
-[Cryptomator](https://cryptomator.org) adds client-side encryption to any cloud storage — Dropbox, Google Drive, OneDrive, anything. It creates an encrypted vault that syncs like a regular folder. You keep using your existing cloud provider, but now even they can't read your files. Dead simple to use.
+[Cryptomator](https://cryptomator.org) adds client-side encryption on top of whatever cloud you already use — the vault syncs like a normal folder, but the provider sees only ciphertext.
 
-**License:** GPL-3.0
+**License:** GPL-3.0 · **Country:** Germany · **Cost:** Free desktop; paid mobile · **Platforms:** All
 
-| **Cost:** Free (desktop), $14.99 (mobile) | **Platforms:** All## What Are the Best Open Source Private Operating Systems?
+### Immich — Best Self-Hosted Photo Library
+
+[Immich](https://immich.app) is the credible self-hosted Google Photos replacement — mobile backup, timeline, search, face grouping — developed full-time under the FUTO umbrella and improving at a startling pace. The standout addition to this list in 2026.
+
+**License:** AGPL-3.0 · **Country:** US (FUTO) · **Cost:** Free self-hosted · **Platforms:** Server + iOS/Android
+
+### Ente — Best Encrypted Photo Cloud
+
+[Ente](https://ente.io) offers end-to-end encrypted photo storage if you'd rather not run a server — and its companion app, Ente Auth, is an excellent open-source 2FA authenticator, filling a category this list previously lacked.
+
+**License:** AGPL-3.0 · **Country:** India · **Cost:** Free tier; paid plans · **Platforms:** All
+
+## What Are the Best Open Source DNS-Level Blockers?
+
+New category this revision — network-level blocking protects every device behind it, including the ones (TVs, IoT) that can't run a browser extension.
+
+### Pi-hole — Best for the Home Network
+
+[Pi-hole](https://pi-hole.net) sinkholes ad and tracker domains for your entire network from something as small as a Raspberry Pi. The classic homelab first project, still actively maintained.
+
+**License:** EUPL-1.2 · **Country:** — · **Cost:** Free · **Platforms:** Linux (incl. Raspberry Pi)
+
+### AdGuard Home — Best Polished Self-Hosted DNS Filter
+
+[AdGuard Home](https://adguard.com/adguard-home/overview.html) covers the same ground as Pi-hole with a more polished UI and built-in encrypted DNS (DoH/DoT) upstream support. The Home product is fully open source (the company also sells proprietary apps — don't conflate them).
+
+**License:** GPL-3.0 · **Country:** Cyprus · **Cost:** Free · **Platforms:** Linux, macOS, Windows, ARM
+
+## What Are the Best Open Source Private Operating Systems?
 
 ### GrapheneOS — Best Secure Mobile OS
 
-[GrapheneOS](https://grapheneos.org) is a hardened Android fork for Google Pixel phones. It strips out all Google services while keeping app compatibility through a sandboxed Google Play layer. Memory-safe, exploit-mitigated, and the most secure mobile OS available to consumers. If you're serious about mobile privacy, there's nothing else in the same category.
+[GrapheneOS](https://grapheneos.org) hardens Android for Pixel devices — memory-safety mitigations, sandboxed Google Play compatibility, no Google services by default. It gained its first major OEM partnership in 2026, a strong signal for longevity.
 
-**License:** MIT / Apache 2.0
-
-| **Cost:** Free | **Platforms:** Google Pixel phones
+**License:** MIT / Apache-2.0 · **Country:** Canada · **Cost:** Free · **Platforms:** Google Pixel
 
 ### Tails — Best Amnesic Live OS
 
-[Tails](https://tails.net) boots from a USB drive and routes all traffic through Tor. When you shut down, it leaves zero trace on the computer. No files saved, no history, no evidence it was ever running. Journalists and whistleblowers rely on it. Edward Snowden used Tails to communicate with reporters.
+[Tails](https://tails.net) boots from USB, routes everything through Tor, and forgets everything at shutdown. Actively released (7.x series through 2026), and still what journalists reach for.
 
-**License:** GPL-3.0+
-
-| **Cost:** Free | **Platforms:** Any PC via USB boot
+**License:** GPL-3.0+ · **Country:** — · **Cost:** Free · **Platforms:** Any PC via USB
 
 ### QubesOS — Best Compartmentalized Desktop
 
-[QubesOS](https://www.qubes-os.org) runs every application in its own virtual machine. Your browser, email client, and work tools are completely isolated from each other. If one compartment is compromised, the rest stay clean. It's the most paranoid desktop OS available — and for high-risk users, that paranoia is justified.
+[QubesOS](https://www.qubes-os.org) isolates every application in its own virtual machine — a compromise in one compartment stays in that compartment. Demanding, and worth it for high-risk work. 4.3 shipped in December 2025, with 4.3.1 following in June 2026.
 
-**License:** GPL-2.0
-
-| **Cost:** Free | **Platforms:** x86 desktops/laptops
+**License:** GPL-2.0 · **Country:** Poland (origin) · **Cost:** Free · **Platforms:** x86 desktops
 
 ## What Are the Best Open Source Private Search Engines?
 
 ### SearXNG — Best Self-Hosted Search
 
-[SearXNG](https://docs.searxng.org) is a metasearch engine that aggregates results from Google, Bing, DuckDuckGo, and dozens of other sources — without any of them knowing who searched. Fully self-hostable. The project maintains a list of public instances you can use immediately, or deploy your own in minutes with Docker.
+[SearXNG](https://docs.searxng.org) aggregates results from dozens of engines without any of them knowing who searched. Run your own instance or use a public one.
 
-**License:** AGPL-3.0
+**License:** AGPL-3.0 · **Country:** — · **Cost:** Free · **Platforms:** Web (self-hosted or public instances)
 
-| **Cost:** Free | **Platforms:** Web (self-hosted or public instances)
+### Brave Search — Best Independent Index
 
-### Brave Search — Best Independent Search Index
+[Brave Search](https://search.brave.com) built its own index — no Google or Bing dependency, a feat only a handful of companies have managed — and it's now genuinely independent at 40B+ pages. The index is proprietary; it earns its slot here for independence and no user tracking, clearly labeled.
 
-[Brave Search](https://search.brave.com) built its own search index from scratch — no Google or Bing dependency. That's a massive technical achievement that only a handful of companies have accomplished. It's built into Brave browser but works in any browser. No user tracking, and results are genuinely independent.
+**License:** Proprietary index, open-source browser · **Country:** US · **Cost:** Free; premium $3/mo · **Platforms:** Web
 
-**License:** Proprietary index, open source browser
+## The Open-Source Stack We Run Ourselves
 
-| **Cost:** Free, premium $3/mo | **Platforms:** Web
+A list like this is cheap if the publisher's own stack is a black box. Ours isn't. What Ciphera ships and runs:
 
-## How We Selected These Tools
+| Software | Role | License |
+|---|---|---|
+| [Tessera](https://github.com/ciphera-net/tessera) *(ours)* | OPAQUE authentication core + SDKs — the system behind [our login](/blog/zero-knowledge-encryption-guide) | Apache-2.0 |
+| [Sigil](https://github.com/ciphera-net/sigil) *(ours)* | SSRF-hardened favicon resolution service | Apache-2.0 |
+| [Pulse](/products/pulse) *(ours)* | Cookieless analytics (listed above) | AGPL-3.0 |
+| Stalwart | Self-hosted mail server (Community Edition) | AGPL-3.0 |
+| Woodpecker CI | All our build and deploy pipelines | Apache-2.0 |
+| Traefik | Reverse proxy on every host | MIT |
+| Prometheus + Alertmanager | Metrics and alerting | Apache-2.0 |
+| Grafana + Loki | Dashboards and logs | AGPL-3.0 |
+| PostgreSQL | Every primary database | PostgreSQL License |
 
-We evaluated over 50 privacy tools and applied four strict criteria. Every tool on this list had to pass all four:
+And the honesty beat, because the source-available distinction cuts against us too: we also run HashiCorp Vault and Nomad, which are **BUSL-licensed — source-available, not open source** — and Teleport, whose repository is AGPL but whose binaries carry usage restrictions since v16. We know the difference, we count them accordingly, and they're on the long-term replacement list. If a vendor's "open source" page doesn't make these distinctions, that tells you something about the rest of the page.
 
-- **Genuinely open source:** A recognized OSI-approved license (GPL, MIT, Apache, AGPL, MPL). "Source available" or proprietary with open clients didn't qualify.
-- **Active in 2025-2026:** At least one release or significant commit in the past 12 months. Abandoned projects were excluded regardless of quality.
-- **Usable without expertise:** A non-technical person should be able to install and use it. Command-line-only tools were excluded unless they serve as underlying protocols (like WireGuard).
-- **No hidden telemetry:** No data collection by default. If telemetry exists, it must be opt-in and clearly disclosed.
+## Which Three Should You Start With?
 
-We also use many of these tools ourselves at Ciphera — Signal for team messaging, Proton for email, Firefox and Brave for browsing, Bitwarden for passwords. That hands-on experience informed our assessments. No tool on this list paid for placement.
+You don't need 34 tools. Start with [Signal](https://signal.org) for messaging, [Bitwarden](https://bitwarden.com) for passwords, and [Brave](https://brave.com) or [Firefox](https://www.mozilla.org/firefox) for browsing — the three categories where the most personal data actually leaks, all free, all installable this afternoon.
 
-## Frequently Asked Questions
-
-### What's the most important open source privacy tool to start with?
-
-Signal and Bitwarden. Messaging and passwords are the two highest-risk categories for most people. Signal has 70 million monthly users and handles all message types with end-to-end encryption ([Backlinko](https://backlinko.com/signal-stats), 2025). Bitwarden covers cross-device password management — and the free tier is enough for most individuals.
-
-### Is open source software really more secure?
-
-68% of organizations believe so ([OpenLogic](https://www.openlogic.com/resources/state-of-open-source-report), 2025). Public code means vulnerabilities are found faster and there's no hidden data collection. However, 87% of commercial codebases contain at least one open source vulnerability ([Black Duck](https://www.blackduck.com/blog/open-source-trends-ossra-report.html), 2026), so keeping software updated matters just as much as using it.
-
-### Are these tools hard to set up?
-
-Most work out of the box. Signal, Brave, Bitwarden, and Proton Mail install like any other app — under 5 minutes each. Self-hosted tools like Nextcloud, Plausible, and SearXNG need a server but all offer Docker deployments that take under 30 minutes. GrapheneOS requires flashing a Pixel phone, which takes about an hour.
-
-### Can I use these tools on mobile?
-
-Yes. Signal, Proton Mail, Bitwarden, Brave, Mullvad, Cryptomator, and Tuta all have iOS and Android apps. GrapheneOS replaces your entire phone operating system (Pixel devices only). Tor Browser is available on Android. The only category that's desktop-only is operating systems like Tails and QubesOS.
-
-### Do open source privacy tools work for businesses?
-
-Absolutely. Nextcloud serves government agencies across Europe. Bitwarden reports 99% of organizations strengthened security after deployment ([Bitwarden](https://www.businesswire.com/news/home/20250730060878/en/Bitwarden-Report-Finds-99-of-Organizations-Strengthened-Security-Posture-After-Deploying-Password-Management), 2025). Proton has over 50,000 business customers. Matomo has 100M+ Docker downloads. Enterprise support is available for most tools on this list.
-
-## Which Three Open Source Privacy Tools Should You Start With?
-
-You don't need all 30 tools. Start with three: [Signal](https://signal.org) for messaging, [Bitwarden](https://bitwarden.com) for passwords, and [Brave](https://brave.com) or [Firefox](https://www.mozilla.org/firefox) for browsing. That covers the three areas where the most personal data leaks happen — and all three are free.
-
-From there, explore [Proton Mail](https://proton.me/mail) for email and [Nextcloud](https://nextcloud.com) for cloud storage. Every tool here is free or has a free tier. The code is open for anyone to verify. That's the whole point — [privacy you don't have to take on faith](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought).
+From there: [Proton Mail](https://proton.me/mail) for email, [Pi-hole](https://pi-hole.net) for the whole household, [Nextcloud](https://nextcloud.com) when you're ready to own your cloud. Every claim on this list is checkable in public code — which is the entire point: [privacy you don't have to take on faith](/blog/why-privacy-cant-be-an-afterthought).
