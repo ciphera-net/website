@@ -18,9 +18,8 @@ if [ $# -gt 0 ]; then
   URLS=("$@")
 else
   URLS=(
-    # Core pages
+    # Core pages (/products is a section on the homepage, not a route — do not add it)
     "https://ciphera.net"
-    "https://ciphera.net/products"
     "https://ciphera.net/about"
     "https://ciphera.net/contact"
 
