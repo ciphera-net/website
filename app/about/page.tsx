@@ -87,6 +87,7 @@ const organizationSchema = {
   '@id': 'https://ciphera.net/#organization',
   name: 'Ciphera',
   legalName: 'Ciphera BV',
+  vatID: 'BE1013721660',
   url: 'https://ciphera.net',
   logo: {
     '@type': 'ImageObject',
@@ -109,7 +110,11 @@ const organizationSchema = {
     email: 'hello@ciphera.net',
     contactType: 'customer service',
   },
-  sameAs: ['https://github.com/ciphera-net', 'https://x.com/CipheraNET'],
+  sameAs: [
+    'https://github.com/ciphera-net',
+    'https://x.com/CipheraNET',
+    'https://www.linkedin.com/company/ciphera/',
+  ],
 }
 
 export default function AboutPage() {
