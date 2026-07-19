@@ -17,6 +17,38 @@ const nextConfig: NextConfig = {
   // * Performance optimizations
   compress: true,
   poweredByHeader: false,
+  // * Permanent redirects for removed blog posts (corpus purge 19-07-2026, see
+  // * Public/docs/audits/19-07-2026-blog-corpus-audit.md). Deleted URLs keep
+  // * receiving search/backlink traffic for months — every removal must land here,
+  // * never on a 404 (the Drop post leaked 17 visits/90d into a 404 after its
+  // * redirect-less removal).
+  async redirects() {
+    const gone: Array<[string, string]> = [
+      ['ai-assistant-data-collection-chatgpt-gemini-meta', '/blog/what-we-see-about-you-what-we-dont'],
+      ['basic-fit-data-breach-1-million-members', '/blog'],
+      ['biggest-data-breaches-2025-2026', '/blog'],
+      ['bot-account-farming-defense-zero-knowledge-auth', '/blog/zero-knowledge-encryption-guide'],
+      ['cdn-performance-monitoring-bunnycdn-analytics', '/blog/why-we-chose-bunnycdn'],
+      ['darksword-iphone-exploit-how-to-protect-yourself', '/blog'],
+      ['data-brokers-10000-data-points-how-to-delete', '/blog/what-we-see-about-you-what-we-dont'],
+      ['data-privacy-audit-guide-startups', '/blog/why-privacy-cant-be-an-afterthought'],
+      ['drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing', '/blog/zero-knowledge-encryption-guide'],
+      ['google-search-console-privacy-first-analytics', '/blog/pulse-vs-google-analytics-plausible-fathom'],
+      ['instagram-drops-end-to-end-encryption', '/blog/zero-knowledge-encryption-guide'],
+      ['passkeys-vs-passwords-2026', '/blog/zero-knowledge-encryption-guide'],
+      ['privacy-statistics-2026', '/blog'],
+      ['recaptcha-privacy-liability-alternatives-2026', '/products/captcha'],
+      ['uk-age-verification-apple-iphone', '/blog'],
+      ['vercel-data-breach-2026', '/blog'],
+      ['why-european-businesses-should-use-european-software', '/blog/why-swiss-infrastructure-matters-for-data-privacy'],
+      ['why-most-analytics-tools-skip-user-journeys', '/blog/pulse-vs-google-analytics-plausible-fathom'],
+    ]
+    return gone.map(([slug, destination]) => ({
+      source: `/blog/${slug}`,
+      destination,
+      permanent: true,
+    }))
+  },
   // * Security headers
   async headers() {
     return [

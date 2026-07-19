@@ -86,8 +86,6 @@ This architecture means BunnyCDN's caching works perfectly — encrypted blobs a
 
 We also use BunnyCDN's Routing Filters for files that require EU-only delivery. A single toggle ensures those encrypted blobs are served exclusively from European PoPs. No workaround, no Terraform scripting, no manual edge configuration. It just works.
 
-Want to see how we monitor this setup? Check out our guide on [monitoring BunnyCDN performance without Google Analytics](https://ciphera.net/blog/cdn-performance-monitoring-bunnycdn-analytics).
-
 ## What's Next for CDN and Privacy?
 
 The CDN market is on track to reach $164.06 billion by 2035 — a 17.50% compound annual growth rate ([Precedence Research](https://www.precedenceresearch.com/content-delivery-network-market), 2025). At the same time, GDPR enforcement is accelerating. Cumulative fines have hit EUR 5.88 billion, with EUR 1.2 billion levied in 2024 alone ([Secure Privacy](https://secureprivacy.ai/blog/gdpr-compliance-2026), 2026). And 71% of organizations now rank cross-border data compliance as their top regulatory challenge ([Forcepoint](https://www.forcepoint.com/blog/insights/tracking-global-data-protection-laws-2026), 2025).These trends point in one direction. Companies that route European user data through US-jurisdictioned infrastructure face growing legal exposure. The EU's push for digital sovereignty isn't slowing down. Choosing an EU-native CDN today isn't just about current compliance — it's about not having to rip out your infrastructure when the next regulatory wave hits.
@@ -120,4 +118,4 @@ BunnyCDN charges $0.01 per GB in North America and Europe — 88% cheaper than A
 - **E2EE and CDN caching work together** — encrypted blobs are static, immutable, and cache-friendly. The CDN never sees plaintext.
 - **EU-only delivery is one toggle away** — Routing Filters restrict content to European edge nodes, eliminating cross-border data transfer headaches.
 
-If you're building something where privacy isn't optional, we'd recommend giving [BunnyCDN](https://bunny.net?ref=00y9gyb6dz) a serious look. It's the rare CDN where performance, pricing, and privacy actually align. Already using BunnyCDN? See how to [monitor its performance with privacy-first analytics](https://ciphera.net/blog/cdn-performance-monitoring-bunnycdn-analytics).
+If you're building something where privacy isn't optional, we'd recommend giving [BunnyCDN](https://bunny.net?ref=00y9gyb6dz) a serious look. It's the rare CDN where performance, pricing, and privacy actually align.
