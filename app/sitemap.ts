@@ -18,6 +18,13 @@ import { getCurrentCanary, getCurrentReport } from '@/lib/transparency'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://ciphera.net'
 
+  // Trust hub lastmod derives from the published documents (the canary rolls
+  // monthly), floored at the date the hub copy was last revised.
+  const [canary, report] = await Promise.all([getCurrentCanary(), getCurrentReport()])
+  const trustHubLastModified = ['2026-07-19', canary.publishedISO, report.publishedISO]
+    .sort()
+    .at(-1) as string
+
   const staticPages: MetadataRoute.Sitemap = [
     // Core pages
     {
@@ -65,7 +72,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/trust`,
-      lastModified: '2026-07-19',
+      // Hub copy last revised 19-07-2026; the max() below keeps it fresh as
+      // the live canary/report content rolls forward monthly.
+      lastModified: trustHubLastModified,
     },
 
     // Blog index (include even if posts are drafts -- the index page itself is valid)
@@ -83,7 +92,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Trust hub subpages — lastmod derives from the published documents
   // themselves (the canary changes monthly; a hardcoded date would go stale)
-  const [canary, report] = await Promise.all([getCurrentCanary(), getCurrentReport()])
   const trustPages: MetadataRoute.Sitemap = [
     { url: `${baseUrl}/trust/canary`, lastModified: canary.publishedISO },
     { url: `${baseUrl}/trust/report`, lastModified: report.publishedISO },

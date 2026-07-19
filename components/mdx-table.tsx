@@ -16,7 +16,9 @@ import type { ComponentPropsWithoutRef } from 'react'
 export function MDXTable({ className, ...props }: ComponentPropsWithoutRef<'table'>) {
   const base = 'min-w-[40rem] [&_th]:whitespace-nowrap [&_td:first-child]:whitespace-nowrap'
   return (
-    <div className="table-scroll overflow-x-auto">
+    // * tabIndex makes the scroll container focusable so keyboard-only users
+    // * can arrow-scroll content that overflows on narrow viewports.
+    <div className="table-scroll overflow-x-auto" tabIndex={0} role="region" aria-label="Table, scrollable">
       <table {...props} className={className ? `${base} ${className}` : base} />
     </div>
   )

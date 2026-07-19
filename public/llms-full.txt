@@ -577,6 +577,7 @@ URL: https://ciphera.net/glossary/zero-knowledge-authentication
 Ciphera publishes a monthly GPG-signed warrant canary, signed with an offline key, stating that no secret government compulsion has been received; a lapsed canary is itself the disclosure. Past canaries are archived, and periodic transparency reports summarize legal process received. Everything is independently verifiable: pull the plaintext and signature directly from the site and verify with gpg.
 URL: https://ciphera.net/trust
 URL: https://ciphera.net/trust/canary
+URL: https://ciphera.net/trust/report
 
 ## Sustainability
 

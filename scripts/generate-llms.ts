@@ -243,6 +243,7 @@ function buildLlmsFullTxt(): string {
   )
   lines.push(`URL: ${SITE}/trust`)
   lines.push(`URL: ${SITE}/trust/canary`)
+  lines.push(`URL: ${SITE}/trust/report`)
   lines.push('')
 
   lines.push('## Sustainability')

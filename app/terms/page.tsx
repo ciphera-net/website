@@ -25,7 +25,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-06-21',
+  dateModified: '2026-07-19',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -91,7 +91,7 @@ export default function TermsOfServicePage() {
               Terms of Service
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 21-06-2026
+              Last updated: 19-07-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -114,7 +114,7 @@ export default function TermsOfServicePage() {
                   1. Acceptance of Terms
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  By accessing or using any Ciphera service — including Pulse, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera B.V., a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
+                  By accessing or using any Ciphera service — including Pulse, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera BV, a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
                   If you do not agree to these Terms, you must not access or use the Services. If you are accepting these Terms on behalf of an organization, you represent and warrant that you have the authority to bind that organization.
@@ -323,7 +323,7 @@ export default function TermsOfServicePage() {
                   which describes how we collect, use, and protect your personal data. By using the Services, you acknowledge that you have read and understood our Privacy Policy.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
-                  Where you use the Services to process personal data of third parties (for example, by using Pulse on your website to collect visitor analytics), you act as the data controller for that data under GDPR, and Ciphera B.V. acts as your data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
+                  Where you use the Services to process personal data of third parties (for example, by using Pulse on your website to collect visitor analytics), you act as the data controller for that data under GDPR, and Ciphera BV acts as your data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
                   <a href="mailto:privacy@ciphera.net" className="text-primary hover:underline">privacy@ciphera.net</a>.
                   You are responsible for ensuring your use complies with applicable data protection laws, including maintaining an appropriate privacy policy for your own users.
                 </p>
@@ -569,7 +569,7 @@ export default function TermsOfServicePage() {
                     </div>
                     <div className="border-t border-border pt-3">
                       <dt className="font-mono text-xs text-muted-foreground">Address</dt>
-                      <dd className="mt-1.5 text-sm text-foreground">Ciphera B.V. (KBO/BCE: 1013.721.660), De Kleetlaan 2, 1831 Diegem, Belgium</dd>
+                      <dd className="mt-1.5 text-sm text-foreground">Ciphera BV (KBO/BCE: 1013.721.660), De Kleetlaan 2, 1831 Diegem, Belgium</dd>
                     </div>
                   </dl>
                 </div>
