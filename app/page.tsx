@@ -28,12 +28,15 @@ const homepageSchemas = [
     '@type': 'Organization',
     '@id': 'https://ciphera.net/#organization',
     name: 'Ciphera',
+    legalName: 'Ciphera BV',
     url: 'https://ciphera.net',
     logo: {
       '@type': 'ImageObject',
       url: 'https://ciphera.net/ciphera_logo_no_margins.png',
     },
     description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
+    disambiguatingDescription:
+      'Ciphera (Ciphera BV) is a Belgian privacy-infrastructure company behind Pulse cookieless analytics, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the open-source Tessera authentication library. Not affiliated with other companies, apps, or fictional characters sharing the Ciphera name.',
     foundingDate: '2024-01-01',
     address: {
       '@type': 'PostalAddress',
@@ -49,6 +52,14 @@ const homepageSchemas = [
       contactType: 'customer service',
     },
     sameAs: ['https://github.com/ciphera-net', 'https://x.com/CipheraNET'],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://ciphera.net/#website',
+    url: 'https://ciphera.net',
+    name: 'Ciphera',
+    publisher: { '@id': 'https://ciphera.net/#organization' },
   },
 ]
 

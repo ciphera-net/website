@@ -43,7 +43,7 @@ EU regulators issued [EUR 1.2 billion in GDPR fines in 2025](https://www.bitdefe
 
 So how do the four tools compare on privacy compliance? The differences are stark.
 
-| Feature | Pulse | Google Analytics | Plausible | Fathom |
+| Feature | <ToolLogo src="/blog/tools/pulse.png" /> Pulse | <ToolLogo src="/blog/tools/google-analytics.png" /> Google Analytics | <ToolLogo src="/blog/tools/plausible.png" /> Plausible | <ToolLogo src="/blog/tools/fathom.png" /> Fathom |
 |---|---|---|---|---|
 | Cookie-free | Yes | No | Yes | Yes |
 | No consent banner | Yes | No | Yes | Yes |
@@ -85,10 +85,10 @@ Your analytics tool choice isn't invisible to your users. A consent banner askin
 
 But what do you actually lose by switching from GA to a privacy-first alternative? Less than you'd think. Here's what each tool offers:
 
-- **Google Analytics:** Page views, sessions, user journeys, conversion funnels, audience demographics, event tracking, cross-site tracking, remarketing audiences, attribution modeling. Requires cookie consent and complex setup.
-- **Plausible:** Page views, unique visitors, bounce rate, visit duration, referrer sources, countries, devices, browsers, UTM tracking, custom events, goals. No cookies, 2.5 KB script.
-- **Fathom:** Page views, unique visitors, referrers, countries, devices, browsers, UTM tracking, custom events, uptime monitoring included. No cookies, EU visitor isolation.
-- **Pulse:** Page views, unique visitors, bounce rate, session duration, referrer sources, countries, devices, browsers, UTM tracking, aggregate user journeys with a Sankey flow view, funnels (up to 8 steps), automatic 404 detection, page rules for grouping or excluding paths, a Google Search Console integration on every plan including free, a 75-integration directory, and a BunnyCDN integration. No cookies, open-source client and script with versioned builds and SRI, Swiss infrastructure.
+- <ToolLogo src="/blog/tools/google-analytics.png" /> **Google Analytics:** Page views, sessions, user journeys, conversion funnels, audience demographics, event tracking, cross-site tracking, remarketing audiences, attribution modeling. Requires cookie consent and complex setup.
+- <ToolLogo src="/blog/tools/plausible.png" /> **Plausible:** Page views, unique visitors, bounce rate, visit duration, referrer sources, countries, devices, browsers, UTM tracking, custom events, goals. No cookies, 2.5 KB script.
+- <ToolLogo src="/blog/tools/fathom.png" /> **Fathom:** Page views, unique visitors, referrers, countries, devices, browsers, UTM tracking, custom events, uptime monitoring included. No cookies, EU visitor isolation.
+- <ToolLogo src="/blog/tools/pulse.png" /> **Pulse:** Page views, unique visitors, bounce rate, session duration, referrer sources, countries, devices, browsers, UTM tracking, aggregate user journeys with a Sankey flow view, funnels (up to 8 steps), automatic 404 detection, page rules for grouping or excluding paths, a Google Search Console integration on every plan including free, a 75-integration directory, and a BunnyCDN integration. No cookies, open-source client and script with versioned builds and SRI, Swiss infrastructure.
 
 What you won't get from any privacy-first tool: an individual, person-level user journey, session recordings, cross-site behavioral profiles, or remarketing audiences — none of these tools identify or follow a specific visitor across sessions. Pulse's Sankey flow view and funnels get you most of the way there anyway: they show how visitors *as a group* move through your site and where they drop off, without building a profile of any one visitor to do it. That's not a gap in the privacy-first category — it's the trade-off that makes the rest of this comparison possible. The real question is whether you use person-level journey replay to make product decisions, or whether you mainly look at traffic trends, top pages, referrer sources, and drop-off points. Most teams operate on the latter, which is exactly what aggregate journeys give you.
 
@@ -106,10 +106,10 @@ Pulse's free tier covers 1 site, 5,000 pageviews/month, and 6-month data retenti
 
 | Tool | Monthly Cost at 100K Pageviews | Notes |
 |---|---|---|
-| Pulse | Solo: EUR 15/mo (~$16) | Free tier caps at 5,000 pageviews/mo; no CMP, DPA, or consent banner required |
-| Google Analytics | $0* | *Plus $100-500/mo for consent management (CMP) |
-| Plausible | $19/mo | Starts at $9/mo for 10K pageviews |
-| Fathom | from ~$15/mo | No free tier, as of July 2026 |
+| <ToolLogo src="/blog/tools/pulse.png" /> Pulse | Solo: EUR 15/mo (~$16) | Free tier caps at 5,000 pageviews/mo; no CMP, DPA, or consent banner required |
+| <ToolLogo src="/blog/tools/google-analytics.png" /> Google Analytics | $0* | *Plus $100-500/mo for consent management (CMP) |
+| <ToolLogo src="/blog/tools/plausible.png" /> Plausible | $19/mo | Starts at $9/mo for 10K pageviews |
+| <ToolLogo src="/blog/tools/fathom.png" /> Fathom | from ~$15/mo | No free tier, as of July 2026 |
 
 At higher volumes, the gap holds. GA4's free tier samples data above 10 million events; unsampled data requires GA 360, which starts at roughly $50,000/year. Plausible scales to $69/month at 1 million pageviews, and Fathom runs around $45/month at 500K pageviews (as of July 2026) — both with full, unsampled data at every tier. Pulse's Solo plan reaches EUR 55/mo (~$60) at 1 million pageviews. None of the three privacy-first tools need a CMP, a DPA, or GDPR configuration on top of the sticker price — which means, unlike GA, the sticker price is close to the real price.
 
@@ -123,34 +123,12 @@ There isn't one right answer for every team. Here's a decision framework based o
 - **You need advertising integrations and remarketing:** Google Analytics. If your business model depends on Google Ads, retargeting audiences, and attribution modeling, GA is still the tool for you — just budget for consent management and legal review.
 - **You're an EU-focused business that values data sovereignty:** Pulse. Swiss data residency under the FADP, combined with a zero-cookie architecture, gives you a strong legal position on this list. Companies that treat [privacy as an afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought) end up paying for it — in fines, in trust, and in churn.
 
-## Frequently Asked Questions
-
-### Is Google Analytics illegal in Europe?
-
-Not outright, but it's under active legal challenge. The Cologne Regional Court (LG Köln) ruled on 23 March 2023 that transferring personal data to the US without Schrems II-adequate safeguards violates GDPR ([case 33 O 376/22, against Deutsche Telekom](https://gdprhub.eu/index.php?title=LG_K%C3%B6ln_-_33_O_376/22)) — a precedent with direct bearing on GA's US data transfers. Using GA4 without proper consent mechanisms carries real regulatory risk — [GDPR fines have exceeded EUR 7.1 billion cumulatively through 10 January 2026](https://www.dlapiper.com/en/insights/publications/2026/01/dla-piper-gdpr-fines-and-data-breach-survey-january-2026).
-
-### Can privacy analytics track conversions?
-
-Yes. Plausible, Fathom, and Pulse all support custom event tracking and goal conversions without cookies. You can track form submissions, button clicks, and signups by firing events from your frontend code. You won't get cross-site attribution or remarketing audiences, but conversion counting itself works without personal data.
-
-### Which privacy analytics tool is easiest to set up?
-
-Pulse requires a single line of HTML — just a script tag with your domain and the Pulse source URL. No npm packages, no build step, no configuration files. Plausible uses a nearly identical one-line setup. Fathom also uses a single script tag. All three are dramatically simpler than GA4's multi-step tag configuration.
-
-### Do I still need a cookie banner with Pulse?
-
-No. Pulse doesn't set any cookies — no first-party, no third-party, no session cookies. Because it doesn't use cookies, no consent is required under the [ePrivacy Directive](https://gdpr.eu/cookies/). If you use other cookie-setting tools (advertising scripts, chat widgets), you may still need a banner for those — but Pulse will never be the reason.
-
-### How accurate are cookieless analytics compared to Google Analytics?
-
-In EU markets, cookieless analytics are *more* accurate than GA because they count every visitor, not just the 10-20% who accept cookies ([SealMetrics](https://docs.sealmetrics.com/blog/cookie-banner-ghosting-data-loss), 2025). Unique visitor counts may differ slightly from cookie-based tools because privacy tools estimate sessions without persistent identifiers, but traffic trends and patterns remain reliable for product decisions.
-
 ## The Bottom Line
 
 Google Analytics remains powerful, but it carries growing legal risk, loses the majority of EU visitor data to consent rejection, samples data above modest thresholds, and ships a script roughly 55-60x heavier than Pulse's versioned build (and in a similar range against Plausible's and Fathom's). Pulse, Plausible, and Fathom each offer a genuine alternative with different strengths:
 
-- **Pulse:** Free tier (5,000 pageviews/mo), open-source client and script (AGPL-3.0), Swiss data residency (FADP), 2.3 KB gzipped versioned script with SRI
-- **Plausible:** Self-hostable, 2.5 KB script, German data residency, 19,000+ paying subscribers
-- **Fathom:** EU visitor isolation, included uptime monitoring, simple dashboard
+- <ToolLogo src="/blog/tools/pulse.png" /> **Pulse:** Free tier (5,000 pageviews/mo), open-source client and script (AGPL-3.0), Swiss data residency (FADP), 2.3 KB gzipped versioned script with SRI
+- <ToolLogo src="/blog/tools/plausible.png" /> **Plausible:** Self-hostable, 2.5 KB script, German data residency, 19,000+ paying subscribers
+- <ToolLogo src="/blog/tools/fathom.png" /> **Fathom:** EU visitor isolation, included uptime monitoring, simple dashboard
 
 The privacy-first analytics market is growing at 25.3% CAGR for a reason. Businesses are realizing that accurate, compliant analytics doesn't require tracking individual users across the web — and the receipts here, from script weight to data residency to open-source code, hold up to scrutiny in a way "trust us" tracking scripts don't.

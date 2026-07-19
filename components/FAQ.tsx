@@ -1,8 +1,8 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { PlusIcon } from '@ciphera-net/facet'
 import { cn } from '@/lib/utils'
+import FAQAccordion from '@/components/FAQAccordion'
 
 interface FAQItem {
   q: string
@@ -118,12 +118,10 @@ const NUMBERED = GROUPS.map((group) => ({
 
 export default function FAQ() {
   const [activeGroup, setActiveGroup] = useState(NUMBERED[0].label)
-  const [openId, setOpenId] = useState<string | null>(null)
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   function selectGroup(label: string) {
     setActiveGroup(label)
-    setOpenId(null)
   }
 
   // Roving tabindex: arrow keys move both selection and focus along the category list
@@ -188,52 +186,20 @@ export default function FAQ() {
             })}
           </div>
 
-          {/* Active category's rows — global 01–14 numbering preserved */}
+          {/* Active category's rows — global 01–18 numbering preserved via startIndex;
+              key remounts the accordion on group switch so open state resets */}
           <div
             role="tabpanel"
             id="faq-panel"
             aria-labelledby={`faq-tab-${NUMBERED.findIndex((g) => g.label === activeGroup)}`}
-            className="border border-border"
           >
-            {group.items.map((item) => {
-                const isOpen = openId === item.n
-                const answerId = `faq-answer-${item.n}`
-                return (
-                  <div key={item.n} className="border-b border-border last:border-b-0">
-                    <button
-                      type="button"
-                      aria-expanded={isOpen}
-                      aria-controls={answerId}
-                      onClick={() => setOpenId(isOpen ? null : item.n)}
-                      className="flex w-full items-center gap-5 px-5 py-4 text-left transition-colors duration-150 motion-reduce:transition-none hover:bg-accent"
-                    >
-                      <span className="font-mono text-xs tabular-nums text-muted-foreground">
-                        {item.n}
-                      </span>
-                      <span className="flex-1 text-sm font-medium text-foreground">{item.q}</span>
-                      <PlusIcon
-                        aria-hidden="true"
-                        className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 motion-reduce:transition-none"
-                        style={{
-                          transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-                        }}
-                      />
-                    </button>
-
-                    <div
-                      id={answerId}
-                      className="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none"
-                      style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="px-5 pb-5 pl-[60px] text-sm leading-relaxed text-muted-foreground">
-                          {item.a}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )
-            })}
+            <FAQAccordion
+              key={group.label}
+              idPrefix="faq-home"
+              items={group.items.map(({ q, a }) => ({ q, a }))}
+              startIndex={NUMBERED.slice(0, NUMBERED.findIndex((g) => g.label === group.label))
+                .reduce((sum, g) => sum + g.items.length, 0)}
+            />
           </div>
         </div>
       </div>
