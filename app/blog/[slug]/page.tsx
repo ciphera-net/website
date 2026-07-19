@@ -15,7 +15,12 @@ import RelatedPosts from '../../../components/RelatedPosts'
 import ReadingProgress from '../../../components/ReadingProgress'
 import { cdnUrl } from '@/lib/cdn'
 
-/** Primary CTA target by post category — falls back to the products section for anything unmapped. */
+/**
+ * Primary CTA target by post category — falls back to the products section for
+ * anything unmapped. A post can override this with a frontmatter `cta` object
+ * ({ label, href }) — e.g. a Comparison post about Ciphera ID pointing at
+ * /products/id instead of the category default.
+ */
 const CATEGORY_CTA: Record<string, { label: string; href: string }> = {
   Security: { label: 'Explore Ciphera ID', href: '/products/id' },
   Privacy: { label: 'Explore Pulse', href: '/products/pulse' },
@@ -184,8 +189,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild size="lg">
-                  <Link href={(CATEGORY_CTA[post.category] ?? DEFAULT_CTA).href}>
-                    {(CATEGORY_CTA[post.category] ?? DEFAULT_CTA).label}
+                  <Link href={(post.cta ?? CATEGORY_CTA[post.category] ?? DEFAULT_CTA).href}>
+                    {(post.cta ?? CATEGORY_CTA[post.category] ?? DEFAULT_CTA).label}
                     <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
                   </Link>
                 </Button>

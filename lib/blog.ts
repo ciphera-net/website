@@ -21,9 +21,16 @@ export interface BlogPostFaq {
   answer: string
 }
 
+/** Optional per-post CTA override; when absent the template falls back to its category map. */
+export interface BlogPostCta {
+  label: string
+  href: string
+}
+
 export interface BlogPost extends BlogPostMeta {
   content: string
   faqs: BlogPostFaq[]
+  cta?: BlogPostCta
 }
 
 export function getBlogPosts(): BlogPostMeta[] {
@@ -70,5 +77,9 @@ export function getBlogPost(slug: string): BlogPost | null {
     image: data.image || `/blog/og/${slug}.png`,
     content,
     faqs: data.faqs || [],
+    cta:
+      data.cta && typeof data.cta.label === 'string' && typeof data.cta.href === 'string'
+        ? { label: data.cta.label, href: data.cta.href }
+        : undefined,
   }
 }

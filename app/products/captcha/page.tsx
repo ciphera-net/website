@@ -386,7 +386,15 @@ export default function CipheraCaptchaPage() {
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Most captcha services track your users and send telemetry to
-            third parties. Ciphera Captcha is self-contained.
+            third parties. Ciphera Captcha is self-contained. For the full
+            breakdown, read{' '}
+            <Link
+              href="/blog/ciphera-captcha-vs-recaptcha-vs-turnstile"
+              className="text-primary hover:underline"
+            >
+              Ciphera Captcha vs reCAPTCHA, Turnstile &amp; hCaptcha
+            </Link>
+            .
           </p>
 
           <div className="mt-14 grid gap-px bg-border md:grid-cols-2 max-w-4xl">
