@@ -3,16 +3,18 @@ title: "The EU-US Data Privacy Framework Is Built on an Executive Order — and 
 description: "The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty."
 category: Privacy
 date: "2026-04-04"
-dateModified: "2026-04-04"
-readTime: "7 min read"
+dateModified: "2026-07-19"
+readTime: "10 min read"
 image: "/blog/og/eu-us-data-privacy-framework-executive-order.png"
 faqs:
   - question: "Is the EU-US Data Privacy Framework still valid?"
-    answer: "Yes, as of April 2026. The EU General Court upheld it in September 2025 (Latombe v. Commission). However, an appeal is pending at the CJEU, the PCLOB oversight board has lost its quorum, and FISA Section 702 sunsets on April 20. The legal foundation is intact but structurally weakening."
+    answer: "Yes, as of July 2026 — the adequacy decision has not been repealed or annulled. But it's under more pressure than the April 2026 assessment anticipated: FISA Section 702 lapsed on 12 June 2026 with no reauthorization yet, the PCLOB still lacks a quorum despite a court order to reinstate its fired members, and a June 2026 Supreme Court ruling (Trump v. Slaughter) stripped the FTC of independence the adequacy decision cites 259 times — prompting noyb to demand the Commission withdraw it and prepare a new CJEU challenge. The CJEU's ruling on Latombe's separate appeal (Case C-703/25) isn't expected until late 2026 or 2027."
   - question: "What happens to my data if the DPF is invalidated?"
     answer: "Companies would need to rely on Standard Contractual Clauses (SCCs) or Binding Corporate Rules (BCRs) for EU-US data transfers. Both require Transfer Impact Assessments documenting that US law provides adequate protection — which becomes harder to argue if the CJEU finds it doesn't."
   - question: "Is Swiss data hosting safer than US-hosted alternatives?"
     answer: "From a legal stability perspective, yes. Switzerland's adequacy decision was granted in 2000 and has never been challenged. Swiss law (FADP) isn't subject to US surveillance frameworks like FISA 702 or the CLOUD Act. However, Swiss hosting alone isn't sufficient — the provider must also implement proper encryption and access controls."
+  - question: "Did FISA Section 702 actually expire?"
+    answer: "Yes. After two short-term patches, the authority lapsed at midnight on 12 June 2026 — the first lapse since Congress created it in 2008. In practice, surveillance continues under FISA Court certifications approved in March 2026 that remain valid into 2027, so the operational effect has been muted so far. Congress has not reauthorized it as of this writing."
 ---
 
 Safe Harbor lasted 15 years before the Court of Justice of the European Union struck it down. Privacy Shield lasted four. The Data Privacy Framework is barely three years old, already at the CJEU on appeal — and the US oversight board that underpins it has been gutted to a single member. FISA Section 702 sunsets on April 20, 2026. That's 16 days from now.
@@ -21,9 +23,11 @@ Max Schrems put it plainly: "This deal was always built on sand. Instead of stab
 
 <BlogBlockquote variant="tldr">
 
-The EU-US Data Privacy Framework depends on Executive Order 14086 — not legislation — and can be revoked at any time. With the PCLOB oversight board stripped to one member, FISA Section 702 sunsetting April 20, and a CJEU appeal pending, the legal basis for 2,800+ companies transferring EU data to the US is eroding fast ([European Commission](https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection/eu-us-data-transfers_en), 2024).
+The EU-US Data Privacy Framework depends on Executive Order 14086 — not legislation — and can be revoked at any time. With the PCLOB oversight board stripped to one member, FISA Section 702 sunsetting April 20, and a CJEU appeal pending, the legal basis for 2,800+ companies transferring EU data to the US is eroding fast — and three months on, it's being tested by a legal theory nobody was watching in April ([European Commission](https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection/eu-us-data-transfers_en), 2024).
 
 </BlogBlockquote>
+
+*Update, 19-07-2026 — This post's countdown resolved, and not the way the framing implied. FISA Section 702 didn't sunset cleanly on 20-04-2026: Congress patched it twice, then let it lapse anyway on 12-06-2026 — the first lapse of the authority since 2008 (collection continues in practice under March-2026 FISA Court certifications). The DPF adequacy decision is still formally in force. But on 29-06-2026 the US Supreme Court decided [_Trump v. Slaughter_](https://www.supremecourt.gov/opinions/25pdf/25-332_qn12.pdf), fully overruling _Humphrey's Executor_ and holding that FTC commissioners can be fired at will — the same independence the Commission's adequacy decision cites 259 times. noyb has already written to the Commission demanding withdrawal and is preparing a fresh CJEU challenge ("Schrems III"). The sections below are updated in place; the shape of the risk has changed as much as its severity.*
 
 ## What Keeps Failing — and Why?
 
@@ -43,6 +47,8 @@ The DPF's answer to this was Executive Order 14086, signed by Biden in October 2
 
 The European Commission completed its [first periodic review](https://commission.europa.eu/document/download/2bfa848f-9203-44a4-b3b9-90a513daa452_en?filename=First%20review%20of%20the%20EU-U.S.%20Data%20Privacy%20Framework%20-%20Report.pdf) in October 2024 and concluded the DPF was "functioning effectively." French MP Philippe Latombe challenged the framework at the EU General Court — and [lost in September 2025](https://curia.europa.eu/jcms/jcms/p1_4093698/en/). But Latombe appealed to the CJEU in October 2025. That's the same court that struck down both predecessors.
 
+*Update, 19-07-2026 — Latombe's appeal is now Case C-703/25 at the CJEU, limited to points of law, no hearing date set. On 29-06-2026 the Court granted Microsoft leave to intervene in support of the Commission's defense. Legal commentators now expect a ruling in late 2026 or early 2027.*
+
 Switzerland's adequacy decision, by contrast, was granted in 2000 and has never been challenged at any court. For more on why that matters, see [why Swiss infrastructure matters for data privacy](/blog/why-swiss-infrastructure-matters-for-data-privacy).
 
 ## Why Is the DPF Under More Pressure Than Ever?
@@ -50,6 +56,10 @@ Switzerland's adequacy decision, by contrast, was granted in 2000 and has never 
 The structural supports holding the DPF together are failing. On January 27, 2025, the Trump administration fired three of five Privacy and Civil Liberties Oversight Board members — including chair Sharon Bradford Franklin. The board lost its quorum and can no longer initiate investigations or publish reports ([CDT](https://cdt.org/insights/what-the-pclob-firings-mean-for-the-eu-us-data-privacy-framework/), 2025).
 
 Why does a five-person board matter for European data protection? Because the PCLOB's annual review of EO 14086 compliance was a core piece of the DPF's credibility. That review is now on indefinite hold.
+
+*Update, 19-07-2026 — A federal court found the firings unlawful in May 2025 and ordered two of the three members reinstated; the administration appealed, and as of this writing the board still has zero quorum in practice. Beth Ann Williams, the sole remaining member, is herself on holdover status — her term expired 29-01-2026.*
+
+*Update, 19-07-2026 — A larger threat than PCLOB has since emerged. On 29-06-2026 the Supreme Court's _Trump v. Slaughter_ ruling stripped the FTC of for-cause removal protection entirely, and the Commission's own DPF adequacy decision relies on FTC independence 259 times by noyb's count (source: [noyb.eu](https://noyb.eu/en/us-supreme-court-just-blew-eu-us-data-transfers)). noyb sent the Commission a formal letter demanding the adequacy decision be withdrawn and is preparing a direct CJEU challenge. Not everyone agrees this is fatal: the DPRC — the actual redress body at issue in Schrems I and II — draws its independence from an executive order and DOJ regulation, not a congressional statute, a distinction _Slaughter_ didn't address ([counter-view: iapp.org](https://iapp.org/news/a/no-trump-v-slaughter-does-not-undo-the-eu-us-data-transfer-redress-mechanism)). The Commission so far: it has "taken note" and "will carefully analyse."*
 
 EO 14086 itself hasn't been formally revoked. But an executive order without oversight is a policy without teeth. Schrems raised this point directly: "What does that mean for something that doesn't even have statutory independence, but basically just executive order independence?"
 
@@ -70,6 +80,8 @@ FISA Section 702 — the surveillance authority at the heart of every EU challen
 That sounds like progress. But the picture is more complicated. CIA, NSA, and NCTC queries involving US persons rose from about 3,800 to roughly 7,800 in the same period ([DNI](https://www.dni.gov/files/CLPT/documents/2025_ASTR_for_CY2024.pdf), 2025). Surveillance didn't decrease across the board — it shifted.
 
 The Trump administration has taken no public position on reauthorisation. If Section 702 lapses entirely, the DPF's adequacy foundation weakens — the Commission's assessment specifically relied on 702 oversight mechanisms. If Congress reforms it with warrant requirements, as the SAFE Act (Durbin/Lee) proposes, it could actually strengthen the DPF's legal footing.
+
+*Update, 19-07-2026 — It didn't get reformed; it lapsed. Congress patched the April 20 deadline twice (to 30-04, then to 12-06) before a further extension failed in the House 198–218 on 11-06-2026, over an unrelated dispute about the acting-DNI appointment. Section 702 has had no statutory basis since 12-06-2026 — the first lapse since 2008. Surveillance continues in practice under FISA Court certifications valid into 2027, but the statutory authority the Commission's adequacy finding assessed is currently unauthorized.*
 
 But here's what keeps European data protection officers awake at night: even hosted-in-Europe data isn't safe. Microsoft France's general manager testified under oath that he "cannot guarantee data safety from access by US authorities" even for EU-hosted data. The CLOUD Act allows US authorities to compel data production regardless of where it's stored. So the question isn't just where your data lives. It's who has jurisdiction over the company that holds it.
 
