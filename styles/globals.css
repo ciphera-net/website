@@ -240,3 +240,19 @@
     animation-iteration-count: infinite;
   }
 }
+
+/* * Scroll affordance for wide MDX tables (blog + learn). The cover gradients
+   (background-attachment: local) travel with the content and slide away from
+   an edge as soon as there is anything to scroll toward; the shadow gradients
+   (attachment: scroll) sit fixed at the container edges underneath them. Net
+   effect: a soft light edge appears exactly when — and only when — content
+   continues off-screen in that direction. Pure CSS, no JS, no listeners. */
+.table-scroll {
+  background:
+    linear-gradient(90deg, rgb(var(--background)) 40%, transparent) left / 3rem 100%,
+    linear-gradient(270deg, rgb(var(--background)) 40%, transparent) right / 3rem 100%,
+    linear-gradient(90deg, rgb(255 255 255 / 0.14), transparent) left / 1rem 100%,
+    linear-gradient(270deg, rgb(255 255 255 / 0.14), transparent) right / 1rem 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
+}

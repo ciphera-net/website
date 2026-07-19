@@ -8,11 +8,16 @@ import type { ComponentPropsWithoutRef } from 'react'
  * min-content. The scroll container keeps wide tables readable — they scroll
  * horizontally inside it — and the min-width keeps columns at a legible width
  * instead of wrapping word-by-word.
+ *
+ * Header cells never wrap: the container scrolls, so a two-line "Google
+ * Analytics" header buys nothing except a ragged header row. Body cells keep
+ * wrapping — notes columns carry full sentences.
  */
 export function MDXTable({ className, ...props }: ComponentPropsWithoutRef<'table'>) {
+  const base = 'min-w-[40rem] [&_th]:whitespace-nowrap [&_td:first-child]:whitespace-nowrap'
   return (
-    <div className="overflow-x-auto">
-      <table {...props} className={className ? `min-w-[40rem] ${className}` : 'min-w-[40rem]'} />
+    <div className="table-scroll overflow-x-auto">
+      <table {...props} className={className ? `${base} ${className}` : base} />
     </div>
   )
 }

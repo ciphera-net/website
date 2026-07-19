@@ -11,6 +11,12 @@ import { cdnUrl } from '@/lib/cdn'
  * Sovereignty rule: marks are self-hosted on cdn.ciphera.net (uploaded via
  * scripts/cdn-upload.sh, prefix website/blog/tools/) — never hotlinked, so
  * reading the post pings no third-party host.
+ *
+ * Asset contract (normalized 19-07-2026): 128×128 transparent PNG, glyph
+ * trimmed and centered with its longest side at 110px (~86% coverage). The
+ * box here is fixed h-6/w-6 with object-contain, so any padding baked into a
+ * source file shrinks that mark relative to its neighbors — normalize new
+ * marks to this contract before upload or they will visibly mismatch.
  */
 export function ToolLogo({ src }: { src: string }) {
   return (
