@@ -36,21 +36,21 @@ export const blogPosts: BlogPostSummary[] = [
   {
     "slug": "why-we-chose-bunnycdn",
     "title": "Why We Chose BunnyCDN as Ciphera's CDN",
-    "description": "97% of EU cloud infra is US-controlled. Here's why we picked an EU-native CDN with 119+ PoPs, $0.01/GB pricing, and GDPR baked in — not bolted on.",
+    "description": "A CDN terminates TLS and sees every request. For a privacy company, choosing one is a trust decision. Here's the checklist we used, our actual setup, and what running it taught us.",
     "category": "Privacy",
     "date": "2026-03-16",
-    "dateModified": "2026-03-16",
-    "readTime": "11 min read",
+    "dateModified": "2026-07-19",
+    "readTime": "8 min read",
     "image": "/blog/og/why-we-chose-bunnycdn.png"
   },
   {
     "slug": "zero-knowledge-encryption-guide",
     "title": "Zero-Knowledge Encryption Guide (2026)",
-    "description": "47% of sensitive cloud data is still unencrypted (Thales, 2026). Zero-knowledge encryption means the provider can never read your data. Here's how it works.",
+    "description": "What zero-knowledge encryption actually means — explained through the system we run in production: OPAQUE authentication, blind indexes, and a vault key that never leaves your browser.",
     "category": "Security",
     "date": "2026-03-10",
-    "dateModified": "2026-03-10",
-    "readTime": "11 min read",
+    "dateModified": "2026-07-19",
+    "readTime": "9 min read",
     "image": "/blog/og/zero-knowledge-encryption-guide.png"
   },
   {
@@ -66,11 +66,11 @@ export const blogPosts: BlogPostSummary[] = [
   {
     "slug": "open-source-privacy-tools-2026",
     "title": "Open Source Privacy Tools: Complete List 2026",
-    "description": "30 open source privacy tools across 10 categories. 96% of orgs increased OSS use in 2025. Every tool here has auditable code and no hidden data collection.",
+    "description": "34 open source privacy tools across 11 categories — every one re-verified in July 2026: licenses, maintenance status, and governance changes. Plus the open-source stack we run ourselves.",
     "category": "Privacy",
     "date": "2026-03-02",
-    "dateModified": "2026-03-07",
-    "readTime": "15 min read",
+    "dateModified": "2026-07-19",
+    "readTime": "14 min read",
     "image": "/blog/og/open-source-privacy-tools-2026.png"
   },
   {

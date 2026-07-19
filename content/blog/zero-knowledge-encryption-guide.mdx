@@ -1,120 +1,127 @@
 ---
 title: "Zero-Knowledge Encryption Guide (2026)"
-description: "47% of sensitive cloud data is still unencrypted (Thales, 2026). Zero-knowledge encryption means the provider can never read your data. Here's how it works."
+description: "What zero-knowledge encryption actually means — explained through the system we run in production: OPAQUE authentication, blind indexes, and a vault key that never leaves your browser."
 category: Security
 date: "2026-03-10"
-dateModified: "2026-03-10"
-readTime: "11 min read"
+dateModified: "2026-07-19"
+readTime: "9 min read"
 image: "/blog/og/zero-knowledge-encryption-guide.png"
 faqs:
   - question: "Is zero-knowledge encryption the same as end-to-end encryption?"
-    answer: "Often, but not always. End-to-end encryption means data is encrypted from sender to recipient with no intermediary access. However, some E2EE implementations derive keys server-side, giving the provider a theoretical access path. Zero-knowledge encryption is the stronger guarantee: the provider has zero access to keys or plaintext by architecture. All ZKE is E2EE, but not all E2EE is ZKE."
-  - question: "Can zero-knowledge encryption be broken?"
-    answer: "AES-256-GCM, the cipher used in ZKE implementations, is considered computationally unbreakable with current and foreseeable technology. The practical risks are endpoint compromise (malware on your device), weak passwords, or implementation bugs — not attacks on the cipher itself. Even early quantum computers at current qubit counts can't crack AES-256."
-  - question: "Does zero-knowledge encryption comply with GDPR?"
-    answer: "ZKE supports GDPR compliance but doesn't automatically satisfy it. If you can't access personal data because it's client-side encrypted and you don't hold keys, you have minimal processing liability. However, you still need lawful basis for storing ciphertext and must provide erasure mechanisms. ZKE makes GDPR Article 32 (security of processing) straightforward to satisfy."
+    answer: "Often, but not always. End-to-end encryption means data is encrypted from sender to recipient with no intermediary access. Some E2EE implementations still derive or escrow keys server-side, giving the provider a theoretical access path. Zero-knowledge encryption is the stronger guarantee: the provider has zero access to keys or plaintext by architecture. All ZKE is E2EE, but not all E2EE is ZKE."
   - question: "What is the difference between zero-knowledge encryption and zero-knowledge proofs?"
-    answer: "They're unrelated despite the shared name. Zero-knowledge proofs (ZKPs) are a cryptographic protocol where one party proves knowledge of something without revealing it — used in blockchain and authentication. Zero-knowledge encryption refers to a service architecture where the provider has zero access to plaintext data. Different concepts, coincidental naming."
+    answer: "They share a name but are different things. Zero-knowledge proofs (ZKPs) are a cryptographic protocol where one party proves knowledge of something without revealing it — used in blockchain and authentication research. Zero-knowledge encryption describes a service architecture where the provider has no access to your plaintext data. OPAQUE, the protocol we use for login, borrows ideas from this family: the server verifies you know your password without ever learning it."
+  - question: "What happens if I forget my Ciphera password?"
+    answer: "You recover access with your 24-word recovery phrase, which was generated on your device when you signed up. The phrase unwraps the same vault key your password did, and you can then set a new password. Without either the password or the phrase, nobody can restore access — including us. That is not a support limitation; it is the security property working as designed."
+  - question: "Can Ciphera reset my password for me?"
+    answer: "No. There is no password stored anywhere to reset, and no server-side key that can decrypt your vault. A password change is your device re-running the OPAQUE registration and re-wrapping your vault key — it requires you. Any vendor that CAN reset your password without you holds keys to your data, which is exactly what the zero-knowledge test in this guide checks for."
+  - question: "What would a breach of Ciphera's database actually expose?"
+    answer: "Per user: an OPAQUE credential record (useless without running a full Argon2id-cost brute force per password guess), a random credential identifier, a blinded email-lookup hash, an encrypted profile vault, and a wrapped vault key that only your password or recovery phrase can unwrap. No password, no password hash in the classical sense, no plaintext email, no decryption keys."
 ---
 
-Nearly half of all sensitive cloud data — 47% — sits unencrypted right now, even as AI systems gain broader access to corporate environments ([Thales 2026 Data Threat Report](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/), n=3,120 organizations). The zero-knowledge encryption market is growing from $1.28 billion to a projected $7.59 billion by 2033 ([Grand View Research](https://www.grandviewresearch.com/industry-analysis/zero-knowledge-proof-market-report), 2025). That's a 22.1% compound annual growth rate — the industry is voting with its wallet.
+Every cloud service promises it can't read your data. Very few can show you why that's true instead of asking you to take their word for it. The difference between the two is the difference between a policy — which can change, be subpoenaed, or be quietly violated — and an architecture, which can't.
 
-But what is zero-knowledge encryption, actually? Not the marketing version. Not the Wikipedia abstract. This guide explains ZKE in plain English: what it means, how it works inside real products, what it can't protect against, and how to spot vendors faking it. No math degree required.
+This guide explains zero-knowledge encryption in plain English, using a system you can actually inspect: our own. Ciphera's authentication stack is open source, so every claim in this post links to real code, a real protocol spec, or a real database migration. No math degree required — but receipts throughout.
 
 <BlogBlockquote variant="tldr">
 
-Zero-knowledge encryption means the service storing your data can't read it — not by policy, but by architecture. Data is encrypted on your device before upload. The server only ever sees ciphertext. 47% of sensitive cloud data remains unencrypted globally ([Thales](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/), 2026). ZKE closes that gap completely.
+Zero-knowledge encryption means the service storing your data structurally cannot read it — encryption and key material live on your device, and the server only ever holds ciphertext. We walk through our own production login flow (OPAQUE, RFC 9807) as the worked example: what your browser computes, what our server stores, and why a full database breach would yield nothing usable.
 
 </BlogBlockquote>
 
-## What Does "Zero-Knowledge" Actually Mean?
+*Update, 19-07-2026 — this guide was rewritten. The previous version misdescribed our own authentication as layered password hashing. The real system is OPAQUE, a password-authenticated key exchange: no password-derived value is ever transmitted to our servers in any form. The corrected walkthrough is below.*
 
-The [Thales 2026 Data Threat Report](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/) found that only 34% of organizations know where all their data resides — and even fewer encrypt the sensitive parts. Zero-knowledge encryption solves a specific problem: it ensures the company storing your data has zero knowledge of its contents. Not "they promise not to look." Mathematically, they can't.
+## What "Zero-Knowledge" Actually Means (and What It Doesn't)
 
-Think of it like a safety deposit box. A traditional cloud service is a bank vault — you hand your valuables to the bank, they lock it up, and they hold a copy of the key. They promise security, but they can open your box anytime. Zero-knowledge encryption is different: you bring your own padlock, you keep the only key, and the bank stores a sealed box they can't open.
+Think of a safety deposit box. A traditional cloud service is a bank vault: you hand over your valuables, the bank locks them up, and the bank keeps a copy of the key. They promise security — but they can open your box any time, and so can anyone who compels or compromises them. Zero-knowledge encryption is different: you bring your own padlock, you keep the only key, and the bank stores a sealed box it cannot open.
 
-Formally: ZKE means all encryption and decryption happens on your device. Your encryption keys never leave your device. The server receives, stores, and transmits ciphertext — encrypted data it can't read.
+Formally: all encryption and decryption happens on your device, your keys never leave your device, and the server receives, stores, and serves only ciphertext. The provider's knowledge of your data is zero — not by promise, by construction.
 
-One common confusion worth clearing up. Zero-knowledge encryption is not the same as zero-knowledge proofs. They share a name but differ fundamentally. Zero-knowledge proofs (ZKPs) are a mathematical protocol where one party proves they know something without revealing the information itself — used in blockchain and authentication systems ([NIST](https://csrc.nist.gov/projects/pec/zkproof)). Zero-knowledge encryption describes a service architecture where the provider has no access to your plaintext data. Related concepts, different applications.
+Two distinctions worth making before we go further:
 
-## Why Should a Non-Technical Founder Care?
+**Zero-knowledge encryption is not zero-knowledge proofs.** ZKPs are a mathematical protocol for proving you know something without revealing it ([NIST](https://csrc.nist.gov/projects/pec/zkproof)); ZKE describes a service architecture. The naming overlap is mostly coincidence — though as you'll see below, modern login protocols like OPAQUE genuinely borrow from the proof-without-revealing idea.
 
-The average data breach costs $4.44 million globally and $10.22 million in the United States ([IBM Cost of a Data Breach Report](https://www.ibm.com/reports/data-breach), 2025). If your cloud provider holds your encryption keys, a breach of their systems exposes your data — regardless of whether "encryption" appears on their features page. Server-side encryption protects against physical disk theft. It doesn't protect against the vendor itself, government subpoenas, insider threats, or breaches of the key management infrastructure.
+**Zero-knowledge encryption is stronger than end-to-end encryption.** All ZKE is E2EE, but some E2EE systems still derive or escrow keys server-side, leaving the provider a theoretical path to plaintext. ZKE closes that path entirely.
 
-The Dropbox Sign breach of April 2024 demonstrated this precisely. Dropbox uses server-side AES-256 encryption — but because Dropbox holds the keys, the breach exposed API keys, OAuth tokens, and user data. The encryption existed, but the company holding the keys got compromised. With zero-knowledge encryption, the same breach yields nothing but unreadable ciphertext.
+## Why Server-Side Encryption Keeps Failing
 
-67% of organizations that experienced cloud attacks in 2025 identified credential theft as the primary attack vector ([Thales](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/), 2026). Stolen credentials give attackers access to everything the vendor's encryption was supposed to protect. ZKE makes credential theft irrelevant to your data — even with full server access, there are no keys to find.
+Most breached companies had encryption. The [Dropbox Sign breach of April 2024](https://www.sec.gov/Archives/edgar/data/1467623/000146762324000024/dbx-20240429.htm) is the instructive example — and it's usually told wrong. The attacker didn't crack any cipher or steal decryption keys. They compromised an automated service account and walked in through the front door with legitimate backend access, reaching customer emails, hashed passwords, API keys, OAuth tokens, and MFA data. The encryption at rest was real. It just didn't matter, because encryption the *server* can undo is undone the moment someone becomes the server.
 
-## How Does ZKE Work in Plain English?
+That's the general pattern: server-side encryption protects against stolen disks. It does not protect against the vendor itself, compromised employee or service accounts, government compulsion, or bugs in the key-management layer. Credential theft was the top attack vector in cloud breaches again in 2025 ([Thales](https://www.channelinsider.com/security/thales-ai-data-threat-report-2026-unencrypted-cloud/), 2026) — and stolen credentials grant exactly the access that server-held keys were supposed to gate.
 
-According to the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment) specification, the fragment portion of a URL — everything after the `#` symbol — is never transmitted to the server. This single browser behavior is what makes zero-knowledge file sharing possible. Here's the full process, step by step:
+Zero-knowledge architecture changes what a breach *is*. If the server never holds plaintext or keys, then full server compromise yields ciphertext and nothing else. You can't leak what you never had.
 
-1. **You select a file.** Your browser generates a random 256-bit encryption key using the Web Crypto API.
-2. **Your browser encrypts the file.** Using AES-256-GCM — a NIST-approved cipher ([SP 800-38D](https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-38d.pdf)) that would take longer than the age of the universe to brute-force — your browser turns the file into ciphertext.
-3. **Only the ciphertext uploads.** The encrypted file goes to the server. The encryption key stays in your browser.
-4. **The server stores what it can't read.** The server holds a blob of encrypted data. No key. No plaintext. No way in.
-5. **You share a link with the key embedded.** The decryption key sits after the `#` in the URL. Since browsers never send the fragment to servers, the key travels directly from your link to the recipient's browser — never touching any server.
-6. **The recipient's browser decrypts.** Their browser reads the key from the URL fragment and decrypts the file locally. Done.
+## A Worked Example: Logging In Without Ever Sending a Password
 
-If you set a password on the shared link, the process adds one step: your browser derives the encryption key from your password using PBKDF2 — a key derivation function that runs thousands of hash iterations to turn your password into a strong key. The password itself never leaves your browser. The recipient enters the same password, their browser runs the same derivation, and they get the same key to decrypt.
+Here's where most explanations go abstract. We'll do the opposite and walk through our production system. Ciphera ID uses [OPAQUE](https://www.rfc-editor.org/rfc/rfc9807), an asymmetric password-authenticated key exchange standardized in RFC 9807, via [Tessera](https://github.com/ciphera-net/tessera), our open-source implementation. The property that makes OPAQUE remarkable: **the server verifies your password without ever seeing your password — or any hash of it, or anything derived from it.**
 
-## What ZKE Cannot Protect Against
+**When you sign up:**
 
-No encryption system protects against everything. ZKE has real boundaries, and understanding them matters more than the marketing copy. Here's what it won't save you from:
+1. Your browser computes two independent things. From your **email**, it derives a *blind index* — PBKDF2-SHA256 at 1,000,000 iterations ([`blind-index.ts`](https://github.com/ciphera-net/id-frontend)) — which becomes the server's only way to look up your account. The server never stores your email address in readable form.
+2. From your **password**, the browser runs the OPAQUE registration exchange: an oblivious pseudorandom function (OPRF) over Ristretto255, with Argon2id as the key-stretching function. The ciphersuite is [RFC 9807's recommended configuration](https://www.rfc-editor.org/rfc/rfc9807); the Argon2id cost parameters (64 MiB memory, 3 passes) are our own pinned deployment choice in [Tessera's client](https://github.com/ciphera-net/tessera). What travels to the server is a blinded registration message — not the password, not a hash, not anything an attacker could brute-force offline.
+3. The exchange yields two outputs. The server gets a **credential record** to store — an opaque envelope it cannot invert. Your browser gets a 64-byte **`export_key`** that the server never sees and mathematically cannot compute.
+4. Your browser then generates a random 32-byte **vault master key (VMK)**, encrypts your profile data (name, email, settings) under it, and wraps the VMK itself under a key derived from `export_key`. The wrapped key is a 61-byte envelope; the VMK inside it never exists on our servers in unwrapped form.
 
-**Endpoint compromise.** If malware is running on your device before encryption happens, the attacker sees your plaintext file before it gets encrypted. ZKE protects data in transit and at rest — not data at the moment you're looking at it on a compromised machine.
+**When you log in:**
 
-**User error.** If you share a ZKE link with someone who forwards it to the wrong person, the encryption is irrelevant. The key is in the link. Sharing the link is sharing access.
+1. Your browser recomputes the blind index from your email and starts an OPAQUE login exchange.
+2. The server looks up your credential record and responds. It learns nothing about the password you typed — for accounts that don't exist, it even responds with a timing-safe decoy record, so an attacker can't probe which emails are registered.
+3. If — and only if — you typed the right password, your browser independently re-derives the same `export_key` from the exchange. Wrong password, wrong key, and the login simply fails. Nothing transmitted at any step is offline-attackable.
+4. Your browser uses the `export_key` to unwrap your VMK — imported as a *non-extractable* WebCrypto key, meaning even our own frontend code can't export its bytes, only use it — and decrypts your vault locally.
 
-**Metadata leakage.** ZKE encrypts file contents, not metadata. The server still knows file sizes, upload timestamps, and who shared with whom. Some services minimize this metadata; others don't.
+Notice what never happened: no password left your device in any form, and no decryption key was ever held by, transmitted to, or reconstructable by the server. That is zero knowledge as an engineering fact rather than a slogan.
 
-**Weak passwords.** When you use password-based key derivation (PBKDF2, Argon2id), the encryption key is only as strong as your password. A four-character password produces a guessable key. PBKDF2's intentionally slow iterations help — but a weak password is still a weak password.
+## What a Full Database Breach Would Yield
+
+The honest way to evaluate any zero-knowledge claim is to enumerate what the server actually stores and ask what each item is worth to an attacker. For a Ciphera ID account, a complete database dump contains, per user:
+
+| Stored field | What it is | What an attacker gets |
+|---|---|---|
+| `opaque_record` | The OPAQUE credential envelope | Nothing without a per-guess brute force, each guess paying the full Argon2id cost (64 MiB, 3 passes) |
+| `opaque_credential_id` | 16 random bytes | Nothing — it's random |
+| `email_blind_index` | The PBKDF2 email digest, HMAC-peppered again server-side | No email address; peppering means even a rainbow table of common emails doesn't apply outside our infrastructure |
+| `encrypted_vault` | Your profile data, AES-256-GCM under the VMK | Ciphertext |
+| `opaque_wrapped_key` | The VMK, wrapped under a key derived from your `export_key` | A locked box whose key only your password or recovery phrase can re-derive |
+
+No password column. No password-hash column in the classical crackable sense. No plaintext email. This isn't a redacted summary — it's the actual schema, and you can trace its history in our migrations: the last legacy authentication columns (from the SRP protocol we previously ran) were dropped on 18-06-2026 when the OPAQUE migration completed. For the full accounting of everything we can and cannot see across all our products, read [what we see about you, what we don't](/blog/what-we-see-about-you-what-we-dont).
+
+## The Limits: What ZKE Cannot Protect Against
+
+No encryption system protects against everything, and vendors who skip this section are selling, not explaining.
+
+**Endpoint compromise.** If malware runs on your device, it sees what you see — before encryption happens. ZKE protects data in transit and at rest, not a compromised screen and keyboard.
+
+**Weak passwords.** OPAQUE's Argon2id stretching makes each guess expensive, and its design means guesses can only be made *online against our rate-limited servers* — a major upgrade over crackable stolen hashes. But "correct horse battery staple" still beats "hunter2".
+
+**Metadata.** Zero-knowledge applies to content. A server still observes that an account exists, when it authenticates, and how large its ciphertext is. We minimize this (blind indexes exist precisely to take email addresses out of that picture), but minimized is not zero.
+
+**User error.** Losing both your password and your recovery phrase means losing your data — there is no backdoor for us to helpfully use. That trade-off is the entire point, and you should walk into it with open eyes.
 
 <BlogBlockquote>
 
-**Our take:** We include these limitations because honesty builds trust. ZKE is one layer in a security strategy — not a silver bullet. For the full picture of what privacy engineering looks like, read [why privacy can't be an afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought).
+**Our take:** these limitations are why we publish them. A vendor who claims zero knowledge *and* effortless password recovery *and* helpful support access to your files is describing a system that cannot exist. Honest architecture has sharp edges.
 
 </BlogBlockquote>
 
-## How Do You Tell If a Product Is Actually Zero-Knowledge?
+## Verify, Don't Trust: The Code Is Public
 
-45% of organizations reported experiencing a data breach in 2025, and only 39% can fully classify their data ([Thales 2025 Data Threat Report](https://cpl.thalesgroup.com/about-us/newsroom/2025-thales-data-threat-report-reveals-nearly-70-percent-of-organizations-identify-ais-fast-moving-ecosystem-as-top-genai-related-security-risk)). Many tools claim "encryption" without specifying who holds the keys. Here are four questions that expose the difference in five minutes:
+Everything described above is inspectable. Tessera — the OPAQUE core, the sidecar service, and the SDKs — is open source under Apache-2.0:
 
-1. **Can they reset your password without you providing the old one?** True ZKE derives encryption keys from your password. If the vendor can reset it independently, they hold a separate key — which means they can access your data.
-2. **Does "forgot password" recovery work without a user-generated recovery key?** In ZKE, losing your password means losing access. If recovery works without a recovery key you set up yourself, the vendor has a backdoor.
-3. **Can customer support access your files for troubleshooting?** If support can see your files, they're not zero-knowledge. Real ZKE means the vendor literally can't help you recover data — because they can't see it.
-4. **Are the client applications closed-source?** You can't verify that encryption happens client-side if you can't inspect the code. Open-source clients let anyone audit the encryption implementation.
+- **[`ciphera-tessera`](https://crates.io/crates/ciphera-tessera)** — the Rust core and sidecar, built on the widely used `opaque-ke` implementation, `#![forbid(unsafe_code)]`, with the cipher suite pinned to RFC 9807's recommended configuration (Ristretto255-SHA512, 3DH, Argon2id).
+- **[`@ciphera-net/tessera`](https://www.npmjs.com/package/@ciphera-net/tessera)** — the browser SDK: OPAQUE flows, blind index, vault, BIP-39 recovery, WebAuthn-PRF.
+- **[`tessera-go`](https://github.com/ciphera-net/tessera-go)** — the server-side SDK our backend uses to relay OPAQUE messages to the sidecar.
 
-## Why Is ZKE Becoming the Standard?
+One disclosure we make prominently, because a receipts-driven post cuts both ways: **Tessera has not yet had an independent third-party audit.** We've published our threat model, security docs, and a detailed self-audit in the repositories, and an external audit is planned — but until it happens, "audited" is a claim you won't find us making. What you *can* do today is read the code, which is more than most zero-knowledge claims allow.
 
-The zero-knowledge encryption market grew from $1.28 billion in 2024 to a projected $7.59 billion by 2033 — a 22.1% compound annual growth rate ([Grand View Research](https://www.grandviewresearch.com/industry-analysis/zero-knowledge-proof-market-report), 2025). Three forces are driving this shift: regulation, breach liability, and post-quantum readiness.
+## How to Spot Fake Zero-Knowledge
 
-On regulation: GDPR, the Swiss FADP, and emerging U.S. state privacy laws (20 states now have comprehensive privacy laws, up from 6 in 2023, according to [IAPP](https://iapp.org/resources/article/key-trends-developments-and-practices-for-2026)) all create liability for providers that can be compelled to hand over plaintext data. ZKE makes legal compulsion irrelevant — there's nothing plaintext to hand over.
+Four questions expose most pretenders in five minutes:
 
-On breach liability: when your cloud provider suffers a breach and they held the encryption keys, your data is exposed and you share liability. With ZKE, the same breach yields only ciphertext. Your exposure drops to near zero.
+1. **Can they reset your password without you?** If yes, a key exists outside your control. (We can't — a password change requires your device re-running OPAQUE registration.)
+2. **Does account recovery work without a recovery secret *you* generated?** If yes, that's a backdoor with a friendlier name. (Ours requires the 24-word phrase your device minted at signup.)
+3. **Can support access your data "for troubleshooting"?** Then it isn't zero-knowledge, whatever the marketing page says.
+4. **Are the clients closed-source?** Client-side encryption you can't inspect is client-side encryption you're taking on faith.
 
-On post-quantum: 60% of organizations are already evaluating post-quantum cryptography solutions, with 63% citing future encryption compromise as their top quantum risk ([Thales](https://cpl.thalesgroup.com/about-us/newsroom/2025-thales-data-threat-report-reveals-nearly-70-percent-of-organizations-identify-ais-fast-moving-ecosystem-as-top-genai-related-security-risk), 2025). ZKE's client-side architecture makes algorithm upgrades possible without re-engineering the entire system — the encryption happens in the client, so upgrading the cipher is a client update, not a server migration.The [Swiss FADP and neutrality](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy) add another layer. US-hosted services can be compelled under the CLOUD Act to hand over data stored anywhere globally. Swiss-hosted ZKE services are outside that jurisdiction entirely — and even if they were compelled, there's no plaintext to hand over.
+Ask these of any vendor — including us. The difference with a zero-knowledge architecture is that the answers are properties of the system, not promises of the company. Policies change with ownership, jurisdiction, and pressure. Architecture doesn't care who's asking.
 
-## ZKE in Practice: Auth and Pulse
-
-Organizations that use AI and security automation save an average of $1.9 million per breach and reduce the breach lifecycle by 80 days ([IBM](https://www.ibm.com/reports/data-breach), 2025). Choosing tools with built-in ZKE is one of the fastest ways to reduce your attack surface without adding operational overhead. Here's how Ciphera implements it:
-
-### Auth: Double-Hashed Passwords
-
-[Ciphera ID](https://id.ciphera.net) never sees your plaintext password. Your browser hashes it with PBKDF2 before transmission. The server then hashes it again with Argon2id — the current gold standard for password hashing. Even a full database breach exposes only Argon2id hashes of PBKDF2-derived values. An attacker would need to crack both layers to recover the original password. That's why passkeys and strong hashing are complementary — not competing approaches.
-
-### Pulse: Data Minimization Instead of Encryption
-
-[Ciphera Pulse](https://pulse.ciphera.net) takes a different approach: instead of encrypting sensitive analytics data, it doesn't collect any. No cookies, no personal data, no IP addresses stored. You can't breach what doesn't exist. In our [open source privacy tools list](https://ciphera.net/blog/open-source-privacy-tools-2026), data minimization and ZKE are two sides of the same coin.
-
-## The Bottom Line
-
-Zero-knowledge encryption isn't a feature checkbox — it's an architecture decision that determines whether your provider can read your data. Here's what to remember:
-
-- **47% of sensitive cloud data is unencrypted** — and server-side encryption doesn't close the gap if the vendor holds the keys
-- **ZKE means encryption happens on your device** — the server never sees your plaintext data or your keys
-- **The password reset test is the fastest way to verify claims** — if a vendor can reset your password without you, they're not zero-knowledge
-- **ZKE has real limits** — it doesn't protect against malware on your device, user error, or weak passwords
-- **The ZKE market is growing at 22.1% annually** — regulation, breach liability, and post-quantum threats are driving adoption
-
-For more on building a complete privacy strategy, read [why privacy can't be an afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought).
+If you want the broader philosophy behind building this way, read [why privacy can't be an afterthought](/blog/why-privacy-cant-be-an-afterthought) — and if you want to see the full inventory of what a company that *can't* see your data actually does see, [we wrote that down too](/blog/what-we-see-about-you-what-we-dont).

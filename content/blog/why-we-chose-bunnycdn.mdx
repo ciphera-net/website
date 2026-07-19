@@ -1,121 +1,83 @@
 ---
 title: "Why We Chose BunnyCDN as Ciphera's CDN"
-description: "97% of EU cloud infra is US-controlled. Here's why we picked an EU-native CDN with 119+ PoPs, $0.01/GB pricing, and GDPR baked in — not bolted on."
+description: "A CDN terminates TLS and sees every request. For a privacy company, choosing one is a trust decision. Here's the checklist we used, our actual setup, and what running it taught us."
 category: Privacy
 date: "2026-03-16"
-dateModified: "2026-03-16"
-readTime: "11 min read"
+dateModified: "2026-07-19"
+readTime: "8 min read"
 image: "/blog/og/why-we-chose-bunnycdn.png"
 faqs:
-  - question: "Is BunnyCDN GDPR compliant?"
-    answer: "Yes. Bunny.net is headquartered in Slovenia — an EU member state — making it subject to GDPR by default. The company holds ISO 27001 and SOC 2 Type II certifications, offers a built-in Data Processing Agreement, anonymizes all end-user logs, and provides EU-only Routing Filters that restrict content delivery to European edge nodes exclusively."
-  - question: "How fast is BunnyCDN compared to other CDNs?"
-    answer: "BunnyCDN averages roughly 25ms global latency across 119+ Points of Presence in 82 countries, backed by over 200 Tbps of network capacity. The HTTP Archive Web Almanac (2025) found that CDNs deliver DNS responses 60% faster on desktop and 19% faster on mobile versus origin servers — and BunnyCDN consistently ranks among the top performers on CDNPerf benchmarks."
-  - question: "Can you use BunnyCDN with end-to-end encrypted files?"
-    answer: "Yes. Because client-side encryption happens before upload, the CDN only ever caches and delivers opaque encrypted blobs. BunnyCDN doesn't need to read or transform the file contents — it simply moves bytes closer to the recipient."
-  - question: "How much does BunnyCDN cost?"
-    answer: "BunnyCDN charges $0.01 per GB in North America and Europe — 88% cheaper than AWS CloudFront at $0.085/GB for equivalent traffic (Backblaze, 2025). There are no minimum commitments or monthly fees. You pay only for what you use, with volume discounts dropping to $0.005/GB for the first 500 TB and lower beyond that."
+  - question: "Does BunnyCDN see visitor data on ciphera.net?"
+    answer: "A CDN necessarily sees requests — that's what serving traffic means. What matters is what gets retained. Bunny's GDPR commitments include anonymized logging, and a signed DPA governs the relationship. On our side, the assets we serve through the CDN are static and identical for every visitor: no personalization, no cookies, nothing per-user in the cached content itself."
+  - question: "Why not Cloudflare?"
+    answer: "Capability-wise, Cloudflare would work. Jurisdiction-wise, it's a US company, which places it under the CLOUD Act regardless of where its servers sit. Our vendor policy ranks residency above features: Bunny is EU-based (Slovenia), which keeps the request path inside EU jurisdiction. That's a policy call, stated as such — not a claim that Cloudflare mishandles data."
+  - question: "Why split the CDN and the object storage between two providers?"
+    answer: "The origin (Exoscale SOS in Zurich) holds the source of truth under Swiss jurisdiction; the CDN (Bunny) is a disposable cache in front of it. Either can be replaced without touching the other — the CDN never holds the only copy of anything, and swapping CDN providers is a DNS change plus a cache warm-up, not a migration."
+  - question: "Does CDN caching work with end-to-end encrypted content?"
+    answer: "Yes — and it's a useful mental model even for unencrypted assets. A CDN caches bytes; it doesn't need to understand them. Encrypted blobs cache exactly like images do. We treat the CDN as untrusted infrastructure on principle: it should be able to do its job — moving bytes close to users — without needing to interpret any of them."
 ---
 
-According to the [World Economic Forum](https://www.weforum.org/stories/2025/01/europe-digital-sovereignty/) (2025), 97% of Europe's cloud infrastructure is controlled by non-European providers. American tech giants dominate CDN, compute, and storage — which means most "GDPR-compliant" services are really just US companies with European data centers and a checkbox DPA. When we built Ciphera, a platform where every file is encrypted before it leaves your browser, we couldn't afford that kind of compliance theater. We needed a CDN that treated European data privacy as a founding principle, not a feature toggle.
+A CDN terminates your TLS, sits in the request path of every visitor, and sees every asset request your pages make. Most engineering teams choose one on price and latency. For a privacy company, those are the *second* questions — the first is jurisdictional: who operates the box that decrypts every request, and which courts can compel them?
 
-That's why we chose [BunnyCDN](https://bunny.net?ref=00y9gyb6dz). Here's the full story — what we looked for, what we rejected, and why an EU-native CDN headquartered in Slovenia won out.
-
-<BlogImage src="/bunnycdn_53a0dec5c9.png" alt="Bunny.net official logo — an orange geometric origami-style rabbit representing the BunnyCDN content delivery network" />
+We went through that decision for ciphera.net and our product frontends, picked [Bunny](https://bunny.net), and have now run it in production long enough to have opinions with evidence. This is the checklist we used, what the setup actually looks like, and four things running it taught us — including one embarrassing number worth reading about so you don't repeat it.
 
 <BlogBlockquote variant="tldr">
 
-We chose BunnyCDN because it's EU-headquartered (Slovenia), GDPR-native with ISO 27001 and SOC 2 Type II certifications, 88% cheaper than AWS CloudFront at $0.01/GB ([Backblaze](https://www.backblaze.com/blog/aws-cloudfront-vs-bunny-net-how-do-the-cdns-compare/), 2025), and delivers ~25ms global latency across 119+ edge locations. Privacy baked in — not bolted on.
+We chose Bunny because it's EU-jurisdiction (Slovenia), commits to anonymized logging under a GDPR DPA, prices transparently ($0.01/GB in Europe), and performs well (119 PoPs, ~24 ms average global latency). Our setup: Bunny pull zones in front of Swiss object storage (Exoscale, Zurich), serving path-keyed immutable assets. The lessons: CDN caches collapse things you don't expect, measure your real cache-hit rate, push security rules to the edge, and draw a hard line around what never leaves the origin.
 
 </BlogBlockquote>
 
-## What Does a Privacy-First Platform Actually Need From a CDN?
+*Update, 19-07-2026 — rewritten around our current production setup, with all network and pricing figures re-verified against bunny.net on this date.*
 
-CDNs deliver DNS responses 60% faster on desktop and 19% faster on mobile compared to origin servers, according to the [HTTP Archive Web Almanac](https://almanac.httparchive.org/en/2025/cdn) (2025). Speed matters — a 1-second delay in page load time results in a 7% reduction in conversions ([HubSpot](https://blog.hubspot.com/marketing/page-load-time-conversion-rates), 2025). But when your entire product is built around the promise that nobody — not even you — can read your users' files, speed isn't enough.
+## Why a CDN Is a Privacy Decision
 
-Here's what our CDN checklist looked like:
+The CDN's entire job is to stand between your users and your servers. That means it observes every request — URL, IP, headers — for every visitor, on every page. You can architect so it holds nothing *sensitive* (more on that below), but you cannot architect away the fact that it *sees traffic*. Whoever operates it is inside your trust boundary whether you like it or not.
 
-- **EU jurisdiction** — headquartered in an EU member state, not just hosting EU data centers
-- **No PII logging** — anonymized access logs by default, not as an opt-in
-- **Data routing control** — ability to restrict delivery to EU-only edge nodes
-- **E2EE compatibility** — works with opaque encrypted blobs, no need to inspect or transform content
-- **Transparent pricing** — pay-as-you-go without enterprise sales calls or hidden fees
-- **Security certifications** — ISO 27001, SOC 2, or equivalent
+The asymmetry is easy to miss because static assets *feel* harmless. An icon request is just an icon request — until you notice that every one arrives with an IP address, a user agent, and a referer header naming the exact page being read. Aggregate those across a browsing session and a CDN's logs reconstruct visitor behavior about as well as an analytics script would. A company that won't run invasive analytics on its own pages has no business ignoring the same data accumulating in a vendor's log pipeline.
 
-Most major CDNs failed at least two of these. Cloudflare is US-headquartered and routes through US infrastructure by default. AWS CloudFront is a subsidiary of the world's largest surveillance-adjacent cloud provider. Fastly is publicly traded in the US with data processing governed by US law. Are they fast? Absolutely. But for a privacy platform, jurisdiction and data handling aren't negotiable.
+That makes jurisdiction the first filter. A US-headquartered CDN operates under the CLOUD Act wherever its edge nodes physically sit — the compulsion follows the company, not the server. Our vendor policy is explicit and ranked: **residency, then privacy, then security, then robustness.** Applied here, that ruled out the default answers (Cloudflare, CloudFront, Fastly) before performance was even discussed — not because they're bad at CDN-ing, but because they move the request path into a legal system we're deliberately building away from. Ciphera is a Belgian company; our origin storage is Swiss; the CDN needed to keep the chain European.
 
-<BlogBlockquote>
+## The Checklist We Used
 
-**Our take:** GDPR compliance isn't a feature you bolt onto a US-headquartered service. It's a property of where a company is incorporated, where its data flows, and which courts have jurisdiction over it. That distinction matters more than any checkbox on a compliance page.
+Five criteria, in the order we applied them:
 
-</BlogBlockquote>
+1. **EU jurisdiction.** Bunny is Slovenian. The request path — visitor, edge, origin — stays inside EU/Swiss legal territory end to end.
+2. **Logging you can live with.** Bunny's [GDPR commitments](https://bunny.net/gdpr/) include anonymizing personally identifiable data in logging, with a signed DPA available in the panel. "We anonymize" from an EU company under GDPR enforcement is a materially different promise than the same words from elsewhere.
+3. **Content-agnostic serving.** The CDN must do its job without interpreting the bytes. We treat the CDN as untrusted infrastructure on principle: it caches and moves opaque objects, whether those are PNGs or encrypted blobs. Any CDN feature that requires inspecting or transforming content gets extra scrutiny before we enable it.
+4. **Transparent pricing.** $0.01/GB for European and North American traffic on the standard network, volume tiers from $0.005/GB, and a $1 monthly minimum — all public on [the pricing page](https://bunny.net/pricing/cdn/), no sales call required. (All figures re-checked 19-07-2026.)
+5. **Performance, last.** 119 PoPs, 250+ Tbps network capacity, ~24 ms average global latency ([bunny.net/network](https://bunny.net/network/)). Comfortably more than a content site needs — but it was the *fifth* question, not the first.
 
-## Why Did BunnyCDN Stand Out?
+The order is the point. Plenty of CDNs pass criterion five. Very few pass one and two first.
 
-The [World Economic Forum](https://www.weforum.org/stories/2025/01/europe-digital-sovereignty/) (2025) reports that American tech giants control over 70% of EU cloud infrastructure. Bunny.net is one of the rare exceptions. Headquartered in Medvode, Slovenia — an EU member state since 2004 — BunnyCDN is subject to GDPR natively. It isn't a US company with a European subsidiary. It's a European company, full stop.
+## What Our Setup Actually Looks Like
 
-That single fact changes everything downstream. Their [Data Processing Agreement](https://bunny.net/gdpr/) isn't a legal patch over a US-first architecture. Their [EU-only Routing Filters](https://bunny.net/blog/introducing-routing-filters-gdpr-friendly-eu-only-cdn-routing/) let you restrict content delivery entirely to European edge nodes — so encrypted files never touch a server outside EU jurisdiction. And their logging is anonymized by default. No IP addresses. No PII. No opt-in toggles required.
+The architecture is deliberately boring:
 
-On top of that, Bunny.net holds both [ISO 27001](https://bunny.net/blog/bunnynet-achieves-iso-27001-certification/) and SOC 2 Type II certifications. These are the same standards expected from enterprise-grade providers charging ten times the price. With GDPR fines reaching EUR 5.88 billion cumulatively and EUR 1.2 billion in 2024 alone ([Secure Privacy](https://secureprivacy.ai/blog/gdpr-compliance-2026), 2026), the cost of getting this wrong is real. Picking a CDN that's natively aligned with EU law isn't paranoia — it's risk management.
+- **Origin:** all static assets — product illustrations, icons, blog OG cards — live in object storage on Exoscale SOS in Zurich (CH-DK-2), under Swiss jurisdiction.
+- **Edge:** Bunny pull zones (fifteen of them, across our sites and services) front that origin at `cdn.ciphera.net`. The CDN holds only cache copies; the origin holds truth. Swapping CDN providers would be a DNS change, not a migration.
+- **Assets are path-keyed and immutable.** Every object uploads with `Cache-Control: public, max-age=31536000, immutable` and is never edited in place — a changed image gets a new path. Edges can cache for a year with zero staleness risk, and there's no revalidation traffic to leak anything about visitors.
+- **Assets are pre-sized at upload.** No on-the-fly transformation service sits in the pipeline resizing images per request — what's in storage is exactly what's served.
 
-71% of organizations now cite cross-border data transfer compliance as their top regulatory challenge ([Forcepoint](https://www.forcepoint.com/blog/insights/tracking-global-data-protection-laws-2026), 2025). BunnyCDN sidesteps this entirely for EU-to-EU delivery. When you flip on Routing Filters, your data stays in Europe. No Schrems II headaches. No standard contractual clause gymnastics. Just European bytes on European servers, governed by European law.
+Belgian company, Swiss storage, EU edge. Each layer's jurisdiction is chosen, not inherited from a default.
 
-## How Does BunnyCDN's Performance Stack Up?
+## Four Things Running It Taught Us
 
-The [HTTP Archive Web Almanac](https://almanac.httparchive.org/en/2025/cdn) (2025) measured CDN impact across millions of websites: DNS resolution drops from 129ms to 52ms on desktop (60% faster), and TLS negotiation drops from 177ms to 57ms (68% faster). BunnyCDN specifically runs 119+ Points of Presence across 82 countries on 6 continents, backed by over 200 Tbps of network capacity and an average global latency of roughly 25ms ([CDN Planet](https://www.cdnplanet.com/cdns/bunnycdn/), 2025).What about the real-world impact on users? It's significant. 53% of mobile users abandon sites that take over 3 seconds to load, and conversion rates plummet from 3.05% at 1 second to just 1.08% at 5 seconds ([Hostinger](https://www.hostinger.com/tutorials/website-load-time-statistics), citing Google research, 2026). For a file-sharing platform where users upload and download encrypted files, every millisecond of CDN latency translates directly into user experience.
+**1. Cache keys will collapse things you didn't expect.** Next.js ships an image optimizer that serves every image through query-string URLs (`/_next/image?url=…&w=…&q=…`). Our Bunny zone's cache configuration collapsed query strings — so one cached body was served for *every image on the site*. The fix is right in our `next.config.ts`, comment and all: images are served directly from `cdn.ciphera.net`, path-keyed and pre-sized, `unoptimized: true`, never through the optimizer. The general lesson: know exactly what your CDN includes in its cache key *before* you put a URL scheme that depends on query strings behind it.
 
-BunnyCDN also supports TLS 1.3 across its entire network. The Web Almanac found that 99% of CDN-served HTML requests use TLS 1.3, compared to just 77.7% on origin servers. Faster handshakes, better security, zero configuration on our end.
+**2. Measure your real cache-hit rate — ours was embarrassing.** When we actually audited it in March, our aggregate cache-hit rate was 8.65%. Not 86 — eight point six five. The immutable asset zones were fine; the damage came from zones and paths that were never being cached at all, silently proxying every request to origin. A CDN with a single-digit hit rate is an expensive DNS alias. We fixed the worst offenders the same day with explicit cache rules. Watch the hit rate *per zone*, too, not just the fleet aggregate — one silently bypassing zone hides comfortably behind nine healthy ones in an average. If you haven't looked at your numbers this quarter, they are probably lower than you think.
 
-## What About Cost? Privacy Doesn't Have to Be Expensive
+**3. Push security rules to the edge.** Internal paths — metrics endpoints, health checks, anything under `/internal/` — shouldn't rely on application middleware alone to stay private. Bunny's edge rules let us block those routes at the CDN, before requests ever reach origin. Defense in depth costs one API call per rule.
 
-An independent comparison by [Backblaze](https://www.backblaze.com/blog/aws-cloudfront-vs-bunny-net-how-do-the-cdns-compare/) (2025) found that BunnyCDN charges $0.01/GB in North America and Europe — compared to AWS CloudFront's $0.085/GB for the first 10 TB. For 5 TB of monthly bandwidth in EU/NA, that's roughly $50 with BunnyCDN versus $425 with CloudFront. An 88% cost reduction for a CDN that's also EU-headquartered and privacy-first.There's no minimum commitment. No enterprise contract. No sales call required. You sign up, configure a pull zone, and pay for exactly what you use. Volume discounts kick in automatically — $0.005/GB for the first 500 TB, dropping further beyond that. For a startup, this pricing model means you can start small and scale without worrying about surprise invoices.
+**4. Decide what *never* goes on the CDN — and write it down.** Not everything belongs behind `cdn.ciphera.net`. Favicons, `robots.txt`, `sitemap.xml`, and PWA manifests stay at the origin, because browsers and crawlers expect them there and some flatly require it. Everything else follows a written rule: images are never committed to a frontend repo's `public/` directory — they're uploaded to the bucket under a per-project prefix (`website/`, `pulse/`, `id/`) and referenced through a small `cdnUrl()` helper that falls back to local paths in development. The payoff of that discipline shows up in purging: because assets are immutable and path-versioned, cache purges are rare, deliberate, single-URL API calls — not panicked zone-wide flushes. If your team purges the whole zone more than a couple of times a year, the asset pipeline is telling you something.
 
-BunnyCDN's [Bunny Optimizer](https://bunny.net/optimizer/) adds another layer of savings. It handles automatic WebP conversion (up to 80% file size reduction), on-the-fly image resizing via query parameters, and CSS/JS minification at the edge. These transforms are cached, so your origin server handles less load and your bandwidth bill shrinks further. For a platform serving encrypted file downloads alongside a marketing site, that optimization matters.
+## What We'd Tell Another EU Team
 
-## How BunnyCDN Fits Into Ciphera's Architecture
+Choose the CDN like you'd choose a payment processor — as a counterparty, not a utility. Concretely:
 
-The [global CDN market](https://www.precedenceresearch.com/content-delivery-network-market) is valued at $32.70 billion in 2025 and projected to hit $38.75 billion by 2026 (Precedence Research). But most CDN architectures assume they'll inspect, transform, or cache readable content. Ciphera's model is different. Every file uploaded through our platform is encrypted with AES-256-GCM in the user's browser before it ever hits our servers. The CDN never sees plaintext. It caches and delivers opaque encrypted blobs.
+- Write the jurisdiction requirement down *first*, before benchmarks make you fall in love with someone's latency map.
+- Read the DPA and the logging policy, not the marketing page. "GDPR-compliant" on a landing page is decoration; anonymization commitments in a signed DPA are a contract.
+- Keep origin and edge separable. The CDN should be replaceable in an afternoon; if it isn't, you've built a dependency, not a cache.
+- Treat the CDN as untrusted. Serve it opaque, immutable, path-keyed objects and let it do the one thing CDNs are great at.
+- One honest caveat: Bunny's software is proprietary. We verify behavior through its DPA, its GDPR commitments, and what we can observe operationally — the same "verify, don't trust" standard we apply elsewhere is only partially available here, and pretending otherwise would be exactly the kind of claim we tell you to distrust.
 
-<BlogBlockquote>
-
-**How it works:** The browser encrypts the file → uploads to our backend → backend stores the blob in S3-compatible storage → BunnyCDN sits in front as a pull zone → recipients download the encrypted blob from the nearest edge node → their browser decrypts it locally. BunnyCDN never needs to read the file. It just moves encrypted bytes closer to the user.
-
-</BlogBlockquote>
-
-This architecture means BunnyCDN's caching works perfectly — encrypted blobs are static, immutable files with unique URLs. Cache hit ratios stay high. Edge delivery stays fast. And because the CDN can't read the content, there's zero risk of accidental data exposure at the edge. Even if an attacker compromised a BunnyCDN edge node, they'd only find encrypted noise.
-
-We also use BunnyCDN's Routing Filters for files that require EU-only delivery. A single toggle ensures those encrypted blobs are served exclusively from European PoPs. No workaround, no Terraform scripting, no manual edge configuration. It just works.
-
-## What's Next for CDN and Privacy?
-
-The CDN market is on track to reach $164.06 billion by 2035 — a 17.50% compound annual growth rate ([Precedence Research](https://www.precedenceresearch.com/content-delivery-network-market), 2025). At the same time, GDPR enforcement is accelerating. Cumulative fines have hit EUR 5.88 billion, with EUR 1.2 billion levied in 2024 alone ([Secure Privacy](https://secureprivacy.ai/blog/gdpr-compliance-2026), 2026). And 71% of organizations now rank cross-border data compliance as their top regulatory challenge ([Forcepoint](https://www.forcepoint.com/blog/insights/tracking-global-data-protection-laws-2026), 2025).These trends point in one direction. Companies that route European user data through US-jurisdictioned infrastructure face growing legal exposure. The EU's push for digital sovereignty isn't slowing down. Choosing an EU-native CDN today isn't just about current compliance — it's about not having to rip out your infrastructure when the next regulatory wave hits.
-
-CDN adoption already reaches 71% among the top 1,000 websites ([HTTP Archive](https://almanac.httparchive.org/en/2025/cdn), 2025). As the market grows, the question won't be whether you use a CDN — it'll be whether your CDN provider shares your values on data privacy. For us, that answer is [BunnyCDN](https://bunny.net?ref=00y9gyb6dz).
-
-## Frequently Asked Questions
-
-### Is BunnyCDN GDPR compliant?
-
-Yes. Bunny.net is headquartered in Slovenia — an EU member state — making it subject to GDPR by default. The company holds ISO 27001 and SOC 2 Type II certifications, offers a built-in Data Processing Agreement, anonymizes all end-user logs, and provides EU-only Routing Filters that restrict content delivery to European edge nodes exclusively.
-
-### How fast is BunnyCDN compared to other CDNs?
-
-BunnyCDN averages roughly 25ms global latency across 119+ Points of Presence in 82 countries, backed by over 200 Tbps of network capacity. The HTTP Archive Web Almanac (2025) found that CDNs deliver DNS responses 60% faster on desktop versus origin servers — and BunnyCDN consistently ranks among the top performers on [CDNPerf](https://www.cdnperf.com/cdn-provider/bunny-net/) benchmarks.
-
-### Can you use BunnyCDN with end-to-end encrypted files?
-
-Yes. Because client-side encryption happens before upload, the CDN only caches and delivers opaque encrypted blobs. BunnyCDN doesn't need to read or transform file contents — it moves bytes closer to the recipient.
-
-### How much does BunnyCDN cost?
-
-BunnyCDN charges $0.01 per GB in North America and Europe — 88% cheaper than AWS CloudFront at $0.085/GB for equivalent traffic ([Backblaze](https://www.backblaze.com/blog/aws-cloudfront-vs-bunny-net-how-do-the-cdns-compare/), 2025). No minimum commitments or monthly fees. Volume discounts drop to $0.005/GB for the first 500 TB and lower beyond that.
-
-## Key Takeaways
-
-- **Jurisdiction matters more than features** — BunnyCDN is EU-headquartered (Slovenia), so GDPR applies natively. 97% of EU cloud infrastructure is US-controlled, making EU-native providers a rare and valuable choice.
-- **Privacy-first doesn't mean slow** — 119+ PoPs, 82 countries, ~25ms global latency, and 200+ Tbps capacity. CDNs improve DNS resolution by 60% on desktop over origin servers.
-- **Cost scales with usage** — $0.01/GB in NA/EU is 88% cheaper than CloudFront. No minimums, no enterprise contracts, no sales calls.
-- **E2EE and CDN caching work together** — encrypted blobs are static, immutable, and cache-friendly. The CDN never sees plaintext.
-- **EU-only delivery is one toggle away** — Routing Filters restrict content to European edge nodes, eliminating cross-border data transfer headaches.
-
-If you're building something where privacy isn't optional, we'd recommend giving [BunnyCDN](https://bunny.net?ref=00y9gyb6dz) a serious look. It's the rare CDN where performance, pricing, and privacy actually align.
+Jurisdiction is also why this choice sits inside a bigger pattern for us — the same reasoning that puts our origin storage in Zurich puts our CDN in the EU. That argument, with the receipts, is in [why Swiss infrastructure matters for data privacy](/blog/why-swiss-infrastructure-matters-for-data-privacy); and the full inventory of what our stack can and can't see about you is in [what we see about you, what we don't](/blog/what-we-see-about-you-what-we-dont).
