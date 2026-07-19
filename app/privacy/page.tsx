@@ -84,7 +84,7 @@ export default function PrivacyPolicyPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(privacySchema) }}
       />
 
-      <section className="pt-32">
+      <section className="pt-32 pb-24 sm:pb-32">
         <div>
           <div className="max-w-3xl mx-auto px-6">
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-4">
