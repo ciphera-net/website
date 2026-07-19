@@ -8,6 +8,7 @@ import { getBlogPost, getBlogPosts } from '@/lib/blog'
 import { BlogImage } from '@/components/blog/blog-image'
 import { BlogBlockquote } from '@/components/blog/blog-blockquote'
 import { ToolLogo } from '@/components/blog/tool-logo'
+import FAQAccordion from '@/components/FAQAccordion'
 import { MDXTable } from '@/components/mdx-table'
 import TableOfContents from '../../../components/TableOfContents'
 import RelatedPosts from '../../../components/RelatedPosts'
@@ -150,6 +151,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="prose prose-invert max-w-none">
               <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
             </div>
+
+            {/* * FAQ — rendered from frontmatter with the shared house accordion
+              * (hard rule 19-07-2026: every FAQ surface uses FAQAccordion; posts
+              * never hand-write FAQ sections in the body). Also feeds the
+              * FAQPage JSON-LD above from the same data. */}
+            {post.faqs.length > 0 && (
+              <section className="mt-16">
+                <p className="font-mono text-xs text-muted-foreground">FAQ</p>
+                <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                  Frequently Asked Questions
+                </h2>
+                <div className="mt-8">
+                  <FAQAccordion idPrefix={`faq-${slug}`} items={post.faqs.map((f) => ({ q: f.question, a: f.answer }))} />
+                </div>
+              </section>
+            )}
           </div>
 
           <RelatedPosts currentSlug={slug} currentCategory={post.category} allPosts={allPosts} />

@@ -89,22 +89,4 @@ An [Android device with Chrome communicates location data back to Google 340 tim
 
 The privacy-enhancing technologies market stood at [$3.12 billion in 2024](https://www.grandviewresearch.com/industry-analysis/privacy-enhancing-technologies-market-report) and is projected to reach $12.09 billion by 2030, growing at a 25.3% CAGR from 2025-2030 (Grand View Research). People aren't just expressing concern in surveys. They're switching. Signal reached #1 in app stores across Finland, Belgium, Italy, and the Netherlands in 2025, with [Dutch downloads surging 958%](https://techcrunch.com/2025/03/02/signal-is-the-number-one-downloaded-app-in-the-netherlands-but-why/) in three months. Proton grew from a 10,000-person crowdfunding campaign to [100 million accounts](https://proton.me/blog/proton-100-million-accounts). DuckDuckGo handles 98.8 million searches daily.An [ExpressVPN survey](https://www.expressvpn.com/blog/digital-privacy-us-attitudes-survey-2025/) (2025) found that 21% of Americans would pay for a social media platform that doesn't use their data to train AI, with another 50% saying they'd consider it depending on features and pricing. That's 71% of Americans open to paying for privacy. The demand isn't theoretical. People are tired of being the product, and they're putting their money where their frustration is.
 
-## Frequently Asked Questions
-
-### Is Ciphera really open source?
-
-[Pulse](https://github.com/ciphera-net/pulse) is open source, and so is [Tessera](https://github.com/ciphera-net/tessera) — the OPAQUE authentication core and SDKs behind our zero-knowledge claims, Apache-2.0, live on crates.io and npm since June 2026 ([tessera-go](https://github.com/ciphera-net/tessera-go), [@ciphera-net/tessera](https://www.npmjs.com/package/@ciphera-net/tessera)). That's the cryptography itself, independently auditable — a stronger receipt than a UI kit. The Linux Foundation (2025) found 78% of enterprises cite improved security from open source because code is inspectable by anyone, not just the company that wrote it.
-
-### What does zero-knowledge encryption mean in practice?
-
-It means Ciphera's servers can't read your files. Data is encrypted with AES-256-GCM in your browser before upload. Authentication itself is OPAQUE (RFC 9807) — no password-derived value ever reaches the server. The vault key is a non-extractable browser CryptoKey, stored wrapped under the OPAQUE export_key that only a successful login can re-derive; SRP-6a, the protocol this replaced, was retired in June 2026. Even in a worst-case server breach, attackers find only encrypted blobs and wrapped keys they can't unwrap. See our [zero-knowledge encryption guide](https://ciphera.net/blog/zero-knowledge-encryption-guide) for the full flow.
-
-### Does Ciphera sell any user data?
-
-No. We don't collect personal data, so there's nothing to sell. Pulse collects zero personal data by architecture. The data broker market is worth $315.66 billion in 2026, up from $294.27 billion in 2025 ([Mordor Intelligence](https://www.mordorintelligence.com/industry-reports/data-broker-market)). We opted out of that economy entirely.
-
-### How is Ciphera different from Proton or Signal?
-
-We love Proton and Signal — we use them daily. They've done incredible work proving that privacy-first products can compete at scale. Ciphera isn't a replacement for either. It fills a different gap: privacy-first analytics (Pulse), authentication, bot protection, and email infrastructure — all [Swiss-hosted](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy). Think of it as the privacy infrastructure layer that complements tools like Proton and Signal.
-
 Privacy isn't a feature you can add to a product that was built to collect data. It's a foundation you either build on from day one or you don't. We built Ciphera because we were tired of reading privacy policies that contradicted the code behind them. Every architectural decision — client-side encryption, zero data collection, open source, Swiss hosting, no ad model — exists because we believe privacy should be verifiable, not promised. Don't take our word for it. [Read the code](https://github.com/ciphera-net).
