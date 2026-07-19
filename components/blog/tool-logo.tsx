@@ -20,11 +20,11 @@ export function ToolLogo({ src }: { src: string }) {
       alt=""
       aria-hidden="true"
       loading="lazy"
-      width={20}
-      height={20}
+      width={24}
+      height={24}
       // my-0 defeats the typography plugin's `.prose img` 2em vertical margins
       // (prose selectors are :where()-wrapped, so utilities win on specificity)
-      className="my-0 mr-1.5 inline-block h-5 w-5 rounded-none object-contain align-[-0.2em]"
+      className="my-0 mr-2 inline-block h-6 w-6 rounded-none object-contain align-[-0.25em]"
     />
   )
 }
