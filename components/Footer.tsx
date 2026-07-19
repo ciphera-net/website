@@ -166,7 +166,8 @@ export default function Footer() {
         <div className="px-6 py-6">
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
             <p className="text-xs text-muted-foreground">
-              &copy; 2024&ndash;{new Date().getFullYear()} Ciphera. All rights reserved.
+              &copy; 2024&ndash;{new Date().getFullYear()}{' '}
+              Ciphera BV &middot; KBO/BCE 1013.721.660 &middot; De Kleetlaan 2, 1831 Diegem, Belgium
             </p>
             <p className="font-mono text-xs text-muted-foreground">
               Zero-knowledge &middot; Swiss hosted
