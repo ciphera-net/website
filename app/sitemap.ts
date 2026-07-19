@@ -62,6 +62,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/terms`,
       lastModified: '2026-03-06',
     },
+    {
+      url: `${baseUrl}/security`,
+      lastModified: '2026-07-19',
+    },
 
     // Blog index (include even if posts are drafts -- the index page itself is valid)
     {
