@@ -14,6 +14,26 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "ciphera-captcha-vs-recaptcha-vs-turnstile",
+    "title": "Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha (2026)",
+    "description": "The bot-protection widget you add to a form often watches your visitors more than it protects them. A privacy- and jurisdiction-first comparison of reCAPTCHA, Turnstile, hCaptcha, and Ciphera Captcha's proof-of-work, cookieless approach.",
+    "category": "Comparison",
+    "date": "2026-07-19",
+    "dateModified": "2026-07-19",
+    "readTime": "11 min read",
+    "image": "/blog/og/ciphera-captcha-vs-recaptcha-vs-turnstile.png"
+  },
+  {
+    "slug": "ciphera-id-vs-auth0-vs-clerk",
+    "title": "Ciphera ID vs Auth0 vs Clerk (2026)",
+    "description": "An honest architectural comparison of three approaches to authentication: Auth0 and Clerk as developer platforms, and Ciphera ID's zero-knowledge model built on the open-source Tessera stack — where your users' passwords and data actually live, and who can read them.",
+    "category": "Comparison",
+    "date": "2026-07-19",
+    "dateModified": "2026-07-19",
+    "readTime": "12 min read",
+    "image": "/blog/og/ciphera-id-vs-auth0-vs-clerk.png"
+  },
+  {
     "slug": "what-we-see-about-you-what-we-dont",
     "title": "What We See About You, What We Don't, and Why It Matters",
     "description": "Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.",

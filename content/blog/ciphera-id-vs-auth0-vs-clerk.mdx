@@ -1,0 +1,111 @@
+---
+title: "Ciphera ID vs Auth0 vs Clerk (2026)"
+description: "An honest architectural comparison of three approaches to authentication: Auth0 and Clerk as developer platforms, and Ciphera ID's zero-knowledge model built on the open-source Tessera stack — where your users' passwords and data actually live, and who can read them."
+category: Comparison
+date: "2026-07-19"
+dateModified: "2026-07-19"
+readTime: "12 min read"
+image: "/blog/og/ciphera-id-vs-auth0-vs-clerk.png"
+cta:
+  label: "Explore Ciphera ID"
+  href: "/products/id"
+faqs:
+  - question: "Can I use Ciphera ID as a drop-in replacement for Auth0 or Clerk?"
+    answer: "Not today. Ciphera ID is the identity provider for Ciphera's own products, not a general-purpose authentication platform you can point a third-party app at. It has no self-serve client registration, no OpenID Connect discovery endpoint, and no 'Sign in with Ciphera' SDK for relying-party apps. If you want to build authentication on the same zero-knowledge model, the path is Tessera — our OPAQUE implementation, published open-source under Apache-2.0 on crates.io, npm, and as a Go module."
+  - question: "What is OPAQUE and why does it matter for authentication?"
+    answer: "OPAQUE (RFC 9807) is an asymmetric password-authenticated key exchange. Your password is proven to the server through a blinded exchange without ever being sent to it — not the password, not a hash of it, not even the salt. The server stores a credential record it cannot reverse. If the server is breached or subpoenaed, there is no password to steal or hand over, because it was never there. Traditional systems store a password hash, which is strong but still a hash of your actual password that an attacker can try to crack offline."
+  - question: "Are Auth0 and Clerk secure?"
+    answer: "Yes. Both are mature, well-engineered platforms with SOC 2 Type II attestations, extensive standards support, and full-time security teams. Auth0 additionally holds ISO 27001 and offers HIPAA Business Associate Agreements. The architectural difference this article draws is not about their competence — it is about where data lives (both host in the United States) and whether the server can, in principle, access your users' passwords and profile data. That is a design choice, not a quality judgment."
+  - question: "Where is each service's data hosted?"
+    answer: "Auth0 is operated by Okta, Inc., a US company; Clerk is operated by Clerk, Inc., also US-based, hosting primarily on Google Cloud and Cloudflare. Both rely on the EU-US Data Privacy Framework plus Standard Contractual Clauses for EU data transfers. Ciphera runs on Swiss infrastructure (Exoscale, CH-DK-2) under the Belgian company Ciphera BV, with no US company in the critical path."
+  - question: "Is the EU-US Data Privacy Framework a reliable basis for transferring data to US auth providers?"
+    answer: "It is currently in force but under active legal pressure. The framework's adequacy decision survived its first court challenge in September 2025, but that ruling is on appeal to the Court of Justice, and a June 2026 US Supreme Court decision on the independence of federal regulators has prompted a formal demand from the privacy group noyb for the framework's withdrawal. Whether it survives is genuinely uncertain, which is the reason some EU businesses prefer keeping personal data on EU or Swiss infrastructure in the first place."
+---
+
+If you are choosing an authentication provider in 2026, the shortlist writes itself: Auth0, the incumbent Okta now owns; Clerk, the React-native newcomer with the polished components. Both are good products. Neither is what this article is really about.
+
+We build Ciphera ID, our own identity provider, and we get asked how it stacks up against those two. The honest answer is that they are not quite the same kind of thing — and the differences that matter are not on a feature checklist. They are architectural: where your users' passwords go, what your server can read, and which country's courts can compel that data. This is a comparison of three answers to those questions, with the trade-offs stated plainly, including the ones that don't favor us.
+
+<BlogBlockquote variant="tldr">
+
+Auth0 and Clerk are excellent developer platforms — comprehensive standards support, prebuilt UI, strong certifications — and both store a hash of your users' passwords on US infrastructure. Ciphera ID takes a different architectural path: <a href="/glossary/opaque">OPAQUE</a> (RFC 9807), where the password never reaches the server in any form, on Swiss infrastructure with no US company in the path. The catch: Ciphera ID is currently the IdP for Ciphera's own products, not a drop-in Auth0 replacement. The reusable piece for developers is <a href="https://github.com/ciphera-net/tessera">Tessera</a>, our OPAQUE stack, open-source under Apache-2.0.
+
+</BlogBlockquote>
+
+## What Auth0 and Clerk Actually Are
+
+It is worth being precise about what you are buying, because both products are genuinely strong and the comparison is meaningless if it pretends otherwise.
+
+<ToolLogo src="/blog/tools/auth0.png" /> **Auth0** is a full identity platform, acquired by [Okta](https://www.okta.com) in May 2021 for around $6.5 billion. It is a standards-complete identity provider: it issues OpenID Connect and SAML, publishes a per-tenant [JWKS endpoint](https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-key-sets) at `/.well-known/jwks.json` for asymmetric (RS256) token verification, supports WS-Federation and OAuth 2, and offers extensibility through Actions, adaptive MFA, and hardware-key and passkey support. On the free plan you get 25,000 monthly active users (raised from 7,500 in [September 2024](https://auth0.com/blog/auth0-plans-got-an-upgrade/)), no credit card required. Its compliance shelf is deep: SOC 2 Type II, ISO 27001/27017/27018, PCI, FAPI, CSA STAR, and HIPAA Business Associate Agreements. If you are a third-party developer who needs to *be* an OIDC provider, Auth0 does that out of the box.
+
+<ToolLogo src="/blog/tools/clerk.png" /> **Clerk** (Clerk, Inc., founded 2019, $50M Series C in [October 2025](https://clerk.com/blog/series-c)) took the newer, React-native approach: drop-in `<SignIn />`, `<UserButton />`, and `<OrganizationSwitcher />` components that give you a working, styled auth flow in an afternoon. Its free (Hobby) tier is generous — 50,000 monthly active users per app as of [February 2026](https://clerk.com/changelog/2026-02-05-new-plans-more-value) — and Pro is $25/month. It has SOC 2 Type II and HIPAA (available on Business and up), multi-tenant Organizations, webhooks via [Svix](https://www.svix.com), and enterprise SSO via SAML and OIDC. Clerk's own docs are organized per-framework around React, Next.js, and TanStack Start; its prebuilt-UI strength is, by design, most complete in the React ecosystem.
+
+Both of these are things Ciphera ID is not. Ciphera ID has no self-serve client registration for third-party apps, no OIDC discovery endpoint, no prebuilt "Sign in with Ciphera" SDK, no social-login connectors, and no SAML. If your requirement is "let arbitrary external developers register apps and sign in via my IdP," Auth0 and Clerk are built for that and Ciphera ID is not. We will come back to what Ciphera ID *is* built for.
+
+## The One Difference That Isn't on the Feature List
+
+Here is the architectural fork, and it is the whole point of this comparison.
+
+When a user sets a password with Auth0 or Clerk, the server receives that password (over TLS), hashes it with a strong algorithm like bcrypt, and stores the hash. This is the industry-standard, correct way to do password storage, and both do it competently. But it means that at the moment of login, the plaintext password passes through the provider's servers, and what sits at rest is a hash *of the user's actual password* — an artifact an attacker who steals the database can attack offline, one guess at a time.
+
+Ciphera ID uses [OPAQUE](https://www.rfc-editor.org/rfc/rfc9807) (RFC 9807), an asymmetric password-authenticated key exchange. When a user registers, their device stretches the password with Argon2id and runs a *blinded* exchange with the server. Blinded means the server completes registration without ever seeing the password, a hash of it, or even the salt. What the server stores is an opaque credential record. Every subsequent login repeats that blinded exchange. The plaintext password, and any reversible derivation of it, never touches Ciphera infrastructure at any point.
+
+The consequences are concrete, not rhetorical:
+
+| | Password-hash model (Auth0, Clerk) | OPAQUE model (Ciphera ID) |
+|---|---|---|
+| Password reaches the server | Yes, at login (over TLS), then discarded | Never, in any form |
+| Stored at rest | Strong hash of the real password | Opaque credential record (not derived from a guessable secret in a crackable way) |
+| Database breach exposes | Hashes crackable offline, one user at a time | No password to crack; each guess pays the full Argon2id cost against a single account |
+| Subpoena for a password | The hash exists to hand over | There is nothing to hand over |
+
+This is not a claim that Auth0 or Clerk are insecure. It is a claim that they *hold something* — a hash of your users' passwords — that a zero-knowledge design refuses to hold at all. We wrote up the full mechanics, including what our servers can and cannot see, in our [zero-knowledge encryption guide](/blog/zero-knowledge-encryption-guide) and our [itemized account of what we see about you](/blog/what-we-see-about-you-what-we-dont).
+
+The same idea extends past the password. In Ciphera ID, profile data like a user's email address lives in a vault encrypted on the user's own device, under a key the server never holds in usable form. A Ciphera operator with full database access sees a UUID, a blind index, a credential record, a wrapped key, and a blob of ciphertext — no name, no email, no profile. That is a categorically different thing from a provider that stores your users' email addresses in plaintext because it needs them to send a password-reset link.
+
+## Where Your Users' Data Lives — and Who Can Compel It
+
+Architecture decides what a server *can* read. Jurisdiction decides who can *make* it read.
+
+Auth0 is operated by Okta, Inc., a Delaware-incorporated, San-Francisco-headquartered, Nasdaq-listed US company. Clerk is operated by Clerk, Inc., a US company that hosts primarily on Google Cloud and Cloudflare; its own GDPR notice states that website and account data goes "directly to the USA," and it offers no EU or regional data-residency option. Both rely on the [EU-US Data Privacy Framework](/blog/eu-us-data-privacy-framework-executive-order) plus Standard Contractual Clauses to legitimize EU data transfers.
+
+That legal basis is under real strain in 2026. The Data Privacy Framework's adequacy decision (Commission Implementing Decision 2023/1795) survived its first challenge when the EU General Court dismissed *Latombe v Commission* [on the merits in September 2025](https://curia.europa.eu/juris/liste.jsf?num=T-553/23) — but that ruling is now on appeal to the Court of Justice. Then, on 29 June 2026, the US Supreme Court held 6-3 in *Trump v. Slaughter* that for-cause removal protections for Federal Trade Commission commissioners are unconstitutional, overruling a 1935 precedent. Within a day, the privacy group [noyb formally asked](https://noyb.eu/en/us-supreme-court-decision-endangers-eu-us-data-flows) the European Commission for an "orderly withdrawal" of the framework, noting the adequacy decision references FTC independence 259 times. Legal analysts at the [IAPP](https://iapp.org) have pushed back that the specific redress mechanism for EU complaints rests on a separate Executive Order, not the FTC — so this is contested, not decided. But "contested and on appeal to the CJEU" is exactly the uncertainty that makes some EU businesses uneasy about routing their users' identity data through US providers.
+
+Separately, US law — the CLOUD Act, and Section 702 of FISA (which itself [lapsed in June 2026](https://www.eff.org) with existing certifications grandfathered into 2027) — reaches US-headquartered companies regardless of where the data is physically stored. That is a structural feature of using a US provider, not a criticism of any one company's conduct.
+
+Ciphera runs on Swiss infrastructure — [Exoscale, in Zurich](/blog/why-swiss-infrastructure-matters-for-data-privacy) — operated by Ciphera BV, a Belgian company under GDPR and the Swiss [FADP](/glossary/fadp). There is no US company in the critical path, by deliberate design. Combined with the OPAQUE architecture, the practical result is that even a lawful compulsion order lands on a server that holds a credential record and a blob of ciphertext, not a password and not a readable profile.
+
+## Neither Auth0 Nor Clerk Has Had a Quiet Few Years
+
+Any honest security comparison has to note that the incumbents are large targets, and being a target has consequences.
+
+Okta, Auth0's parent, disclosed a [breach of its support case-management system in October 2023](https://sec.okta.com/articles/2023/10/tracking-unauthorized-access-oktas-support-system): an attacker used a stolen service-account credential to access support files, and HAR files in those cases contained session tokens that were used to hijack sessions at five customers, including 1Password, Cloudflare, and BeyondTrust. A November 2023 follow-up disclosed that the stolen report contained the names and email addresses of effectively all Okta Workforce and Customer Identity customers. That followed the January 2022 Lapsus$/Sitel incident. Okta's Auth0 case-management system was stated to be unaffected by the 2023 support-system breach.
+
+Clerk has shipped its share of CVEs: a January 2024 privilege-escalation vulnerability in `@clerk/nextjs` ([CVE-2024-22206](https://github.com/clerk/javascript/security/advisories/GHSA-q6w5-jg5q-47vg)); an interaction with the Next.js middleware-bypass [CVE-2025-29927](https://clerk.com/blog/cve-2025-29927) where Clerk initially told customers they were not impacted and then publicly retracted, calling it "a significant error"; a July 2025 webhook-verification flaw (CVE-2025-53548) that accepted forged events; and a November 2025 OAuth-flow bypass in `clerk-js` (CVE-2025-63700).
+
+We are not throwing stones from a glass house here — Ciphera ID has not been independently audited yet (more on that below), and no software this side of a formal proof is breach-proof. The point is narrower: when a provider holds password hashes and plaintext profile data, a breach of that provider is a breach of that data. When the architecture holds neither, the same class of breach exposes far less. That is the entire argument for the zero-knowledge approach, and it is an argument from blast radius, not from anyone's competence.
+
+## For Developers Who Want This Model: Tessera
+
+Here is the honest limitation, stated without softening: you cannot currently buy Ciphera ID as your app's auth provider the way you buy Auth0 or Clerk. It is the identity layer for Ciphera's products — Pulse, and our own services — not a multi-tenant platform open to arbitrary third-party apps. It uses a shared-secret (HS256) JWT model suited to our own backend fleet, not the RS256/JWKS model a third party would need to verify our tokens independently.
+
+But the cryptographic core is open source, and that is the part a developer can actually use. [Tessera](https://github.com/ciphera-net/tessera) is our OPAQUE implementation, published under Apache-2.0 across three repositories:
+
+- <ToolLogo src="/blog/tools/ciphera-id.png" /> [**ciphera-net/tessera**](https://github.com/ciphera-net/tessera) — the Rust OPAQUE core and a sidecar you run alongside your backend, talking over a Unix socket. On [crates.io](https://crates.io/crates/ciphera-tessera).
+- [**ciphera-net/tessera-go**](https://github.com/ciphera-net/tessera-go) — the Go server SDK: pooled sidecar client, blind index, and versioned AES-256-GCM vault sealing.
+- [**ciphera-net/tessera-ts**](https://github.com/ciphera-net/tessera-ts) — the browser SDK, on npm as `@ciphera-net/tessera`: the WASM OPAQUE client, vault key wrap/unwrap, WebAuthn-PRF passwordless unlock, and BIP-39 recovery.
+
+Cross-language correctness is not assumed — a WASM-to-native handshake and byte-exact Go-to-TypeScript vault and blind-index parity are gated in CI, and there is a language-neutral conformance kit any third-party implementation can check itself against. If you are building an application where you would rather not be able to read your own users' passwords, Tessera is the reusable answer, and it does not require adopting anything else of ours.
+
+The one caveat we state on every Tessera page, and will repeat here: **Tessera has not yet had an independent third-party security audit.** What exists is a published self-audit and threat model, the CI parity gates, and the conformance vectors. An external audit is planned; until it lands, treat the cryptographic claims as self-reviewed, and read the [source](https://github.com/ciphera-net/tessera) rather than taking our word. Auth0 and Clerk, for their part, carry SOC 2 Type II attestations that Ciphera does not — a real point in their favor, and the honest counterweight to everything above.
+
+## How to Actually Choose
+
+Set aside the architecture argument for a second and route by what you are building.
+
+- **You need a general-purpose IdP for a third-party or B2B app — social login, SAML for enterprise customers, an admin dashboard, standards-based OIDC that other systems consume.** That is Auth0's and Clerk's home turf, and Ciphera ID does not compete there. Choose between them on ecosystem fit: Clerk if you live in React/Next.js and want prebuilt UI fast; Auth0 if you need the deepest standards and compliance surface and enterprise SSO breadth.
+- **You are cost-sensitive at the free tier.** Both are generous now — Clerk's 50,000 MAU and Auth0's 25,000 MAU are real. Watch the step-ups: enterprise SSO connections and B2B tiers are where the bill climbs.
+- **Your priority is that your provider physically cannot read your users' passwords or profile data, and that the data stays out of US legal reach.** That is the zero-knowledge, EU/Swiss-residency position — and today the way to get it is to build on [Tessera](https://github.com/ciphera-net/tessera) rather than to adopt Ciphera ID as a service.
+- **You are already inside the Ciphera ecosystem** — using Pulse, or building on our products — in which case Ciphera ID is the identity layer you get, with the OPAQUE and Swiss-residency properties built in.
+
+The tools change; the question underneath doesn't. It is not "which auth provider has the most features" — Auth0 wins that outright. It is "what does my auth provider hold about my users, and who can make it talk." Auth0 and Clerk answer that with policy, certifications, and a US legal posture. Ciphera answers it with architecture and a Swiss one. Both are legitimate; they are just not the same bet, and now the trade-offs are on the table.

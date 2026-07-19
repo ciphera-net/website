@@ -1,0 +1,102 @@
+---
+title: "Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha (2026)"
+description: "The bot-protection widget you add to a form often watches your visitors more than it protects them. A privacy- and jurisdiction-first comparison of reCAPTCHA, Turnstile, hCaptcha, and Ciphera Captcha's proof-of-work, cookieless approach."
+category: Comparison
+date: "2026-07-19"
+dateModified: "2026-07-19"
+readTime: "11 min read"
+image: "/blog/og/ciphera-captcha-vs-recaptcha-vs-turnstile.png"
+cta:
+  label: "Explore Ciphera Captcha"
+  href: "/products/captcha"
+faqs:
+  - question: "Does adding a CAPTCHA to my EU website create a consent obligation?"
+    answer: "It can. France's data protection regulator, the CNIL, states in its cookies FAQ that a CAPTCHA needs user consent when it reads from or writes to the visitor's device for purposes beyond what is strictly necessary for security — and it explicitly names Google reCAPTCHA as a provider that reuses data for its own account. The CNIL has fined companies partly for deploying reCAPTCHA without consent. A CAPTCHA that sets no cookies and collects no personal data for reuse avoids this problem by design."
+  - question: "Can I use Ciphera Captcha on my own website today?"
+    answer: "Not yet as a standalone product. Ciphera Captcha currently protects Ciphera's own products — for example, it guards signup on Ciphera ID. There is no public site-key signup and no third-party script-tag embed at this time. A standalone offering is planned. This article compares its architecture against reCAPTCHA, Turnstile, and hCaptcha because that architecture is the point; availability is a roadmap question, and we say so plainly rather than imply you can buy it now."
+  - question: "How is a proof-of-work CAPTCHA different from reCAPTCHA or hCaptcha?"
+    answer: "reCAPTCHA and hCaptcha primarily rely on behavioral risk scoring — they observe signals like mouse movement, and reCAPTCHA sets a cookie for risk analysis. Ciphera Captcha's default challenge is proof-of-work: the visitor's browser computes a small cryptographic puzzle (finding a hash with a required number of leading zeros) in the background. It is invisible to a real user, imposes a measurable cost on bots that request challenges at scale, and requires no behavioral profiling and no cookie to work."
+  - question: "Is Cloudflare Turnstile private?"
+    answer: "Turnstile is the most privacy-respecting of the three large incumbents: it is cookieless by default, runs non-interactive challenges instead of image puzzles, and Cloudflare states it cannot directly identify individuals from the signals it collects. The remaining consideration is jurisdictional — Cloudflare, Inc. is a US company subject to the CLOUD Act, and Turnstile is not listed among the products covered by Cloudflare's Data Localization Suite. For many teams Turnstile is a genuinely good choice; the residency question is what remains."
+  - question: "Is Ciphera Captcha open source?"
+    answer: "No. Its source is viewable for transparency and auditing, but it is released under a proprietary, source-available license, not an open-source one — you can read the code but not freely reuse or redeploy it. This is different from our Tessera authentication libraries, which are fully open source under Apache-2.0. We state the distinction precisely rather than let 'source-available' be mistaken for 'open source.'"
+---
+
+You add a CAPTCHA to stop bots. What you often also add, without meaning to, is a third-party script that profiles your visitors, sets a tracking cookie, ships behavioral data to a US company, and — in at least one regulator's view — creates a consent obligation you now have to satisfy. The bot protection is real. So is everything else that came with it.
+
+This is a comparison of four CAPTCHAs along the axes that a privacy-minded team actually cares about: what each one does to your visitors, whether it sets cookies, where the data goes, and who can compel it. Three of these — Google's reCAPTCHA, Cloudflare's Turnstile, and hCaptcha — are widely deployed and, in Turnstile's case, genuinely thoughtful about privacy. The fourth is ours, and we will be equally plain about what it can't do yet as about what it does differently.
+
+<BlogBlockquote variant="tldr">
+
+reCAPTCHA sets a cookie and profiles behavior, and EU regulators have fined companies for deploying it without consent. hCaptcha profiles behavior and doubles as a data-labeling marketplace. Turnstile is the strong privacy pick among the incumbents — cookieless, no puzzles — but Cloudflare is still a US company under the CLOUD Act. Ciphera Captcha uses invisible proof-of-work, sets no cookies, stores no raw data, and runs on Swiss infrastructure. The honest catch: it currently protects Ciphera's own products, with a standalone offering planned — not something you can embed on your own site today.
+
+</BlogBlockquote>
+
+## What Each One Does to the People Filling In Your Form
+
+A CAPTCHA sits between your visitor and your form, so the first question is what it does while it's there.
+
+<ToolLogo src="/blog/tools/recaptcha.png" /> **Google reCAPTCHA** works by behavioral risk analysis. The current v3 returns a score from 0.0 to 1.0 without ever interrupting the user, and it [sets a cookie](https://developers.google.com/recaptcha/docs/faq) (`_GRECAPTCHA`) to perform that analysis. The score is Google's assessment of how bot-like the session looks, derived from signals the user never sees. It is effective, and it is also Google observing your visitors' behavior on your site. Google's own free tier was cut sharply in 2024 — self-serve now allows 10,000 assessments per month (industry reporting put the prior allowance around a million, though Google's current docs state only today's number), after which pricing begins.
+
+<ToolLogo src="/blog/tools/hcaptcha.png" /> **hCaptcha** (operated by Intuition Machines, Inc., a US company) presents image-grid challenges and applies adaptive, risk-based triggering. Its business model is worth understanding: hCaptcha is openly built around [data labeling](https://www.hcaptcha.com/labeling) — the challenges double as a way to "solve the most labor intensive problem in machine learning: labeling massive amounts of data." Its privacy policy discloses collection of name, email, and country; analytics data including IP, browser, ISP, and device; and behavioral signals including mouse movements, scroll position, keypress events, and touch events. It markets a privacy-forward design with a "no long-term retention" claim and an Enterprise "Zero PII" option, and it relies on Standard Contractual Clauses and the Data Privacy Framework to move data to the US. Passive/invisible mode and ML risk scores are paid tiers, not the free default.
+
+<ToolLogo src="/blog/tools/turnstile.png" /> **Cloudflare Turnstile** is the one that genuinely rethought the model. Instead of image or text puzzles, it runs small [non-interactive JavaScript challenges](https://developers.cloudflare.com/turnstile/concepts/how-turnstile-works/) — proof-of-work, proof-of-space, browser-quirk probing — and it is [cookieless by default](https://developers.cloudflare.com/turnstile/reference/privacy-and-data-collection/): Cloudflare states Turnstile "never looks for cookies... or uses cookies to collect or store information of any kind." The signals it does collect are the client IP, a TLS fingerprint, the User-Agent, and the sitekey and origin, and Cloudflare states it "does not have the ability to directly identify any individuals" from them. It even integrates Apple Private Access Tokens so supporting devices can prove they're human without a challenge. On privacy mechanics, Turnstile is very good.
+
+<ToolLogo src="/blog/tools/ciphera-captcha.png" /> **Ciphera Captcha** defaults to invisible [proof-of-work](/glossary/proof-of-work). The visitor's browser is handed a seed and asked to find a value whose SHA-256 hash has a required number of leading zeros — a small computation that runs in a background Web Worker, invisible to a real user, with difficulty that scales up automatically for IPs requesting challenges at abnormal rates. It sets no cookies and uses no local storage. For accessibility and harder cases it can fall back to a puzzle, a distorted-text image, or an audio challenge, but the default path asks nothing of a human and profiles nothing. There is a behavioral-signal layer, but it is held in memory, bound to a short token lifetime, and then discarded — never written to a database, because there is no database.
+
+## The Privacy and Jurisdiction Ledger
+
+Put the four side by side on the things that determine your compliance exposure and your visitors' privacy.
+
+| | <ToolLogo src="/blog/tools/recaptcha.png" /> reCAPTCHA | <ToolLogo src="/blog/tools/hcaptcha.png" /> hCaptcha | <ToolLogo src="/blog/tools/turnstile.png" /> Turnstile | <ToolLogo src="/blog/tools/ciphera-captcha.png" /> Ciphera Captcha |
+|---|---|---|---|---|
+| Primary mechanism | Behavioral scoring | Image labeling + scoring | Non-interactive JS challenges | Proof-of-work |
+| Sets a cookie | Yes (`_GRECAPTCHA`) | Opt-in a11y cookie only | No | No |
+| Behavioral profiling | Yes | Yes | Signal-based, de-identified | In-memory, discarded |
+| Operator jurisdiction | US (Google LLC) | US (Intuition Machines) | US (Cloudflare, Inc.) | Swiss infra / Belgian company |
+| CLOUD Act reach | Yes | Yes | Yes | No |
+| Data residency option | US | US (SCCs/DPF) | US (not in Data Localization Suite) | Swiss (Exoscale, CH-DK-2) |
+| Free tier | 10,000 assessments/mo | 10,000 requests/mo | Unlimited (20 widgets) | Not yet standalone |
+
+Two rows deserve elaboration, because they are where the compliance risk actually lives.
+
+**The cookie-and-consent row is not theoretical.** France's [CNIL](https://www.cnil.fr) states in its cookies FAQ that a CAPTCHA requires consent when it reads from or writes to the user's device for purposes beyond strict security necessity — and it [explicitly names](https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience) Google's reCAPTCHA as a provider that "reuses data for its own account." This has teeth: the CNIL fined Cityscoot €125,000 in March 2023, of which €25,000 was specifically for depositing reCAPTCHA cookies without consent, and fined NS Cards France €105,000 in December 2023, including a €15,000 penalty that covered depositing trackers — both Google Analytics cookies and the reCAPTCHA module — without consent before any user action. (That second penalty was not for reCAPTCHA alone; it is fair to name reCAPTCHA as one of the two grievances, not the whole of it.) The broader EU picture reinforces the point: [EDPB Guidelines 2/2023](https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-22023-technical-scope-art-53-eprivacy-directive_en) confirm that even IP-only tracking and unique identifiers fall within the ePrivacy Directive's consent requirement.
+
+**The jurisdiction row is structural, not a knock on anyone's conduct.** Google LLC, Intuition Machines, and Cloudflare, Inc. are all US companies, which means the US CLOUD Act reaches the data they hold regardless of where it is physically stored. This sits inside the same [Data Privacy Framework turbulence](/blog/eu-us-data-privacy-framework-executive-order) affecting every US-hosted service in 2026: the framework's adequacy decision survived its first court challenge in September 2025 but is on appeal to the Court of Justice, and a June 2026 US Supreme Court ruling on regulator independence prompted the privacy group [noyb to demand](https://noyb.eu) its withdrawal. Turnstile is cookieless and de-identified, which addresses the *privacy-mechanics* concern well — but it does not change the *residency* question, and Turnstile is notably not listed among the products covered by [Cloudflare's Data Localization Suite](https://developers.cloudflare.com/data-localization/).
+
+## How Ciphera Captcha Is Built
+
+The design goal was a CAPTCHA that adds no surveillance surface to the site it protects. Concretely:
+
+- **Proof-of-work by default, invisible to humans.** A legitimate visitor's browser solves a small SHA-256 puzzle in the background; the cost is negligible for one person and compounds for a bot solving thousands. Difficulty adapts per-IP, so an address hammering the endpoint faces harder puzzles automatically. When proof-of-work isn't appropriate — accessibility, or an already-suspicious session — it escalates to a drag puzzle, a distorted-text image, or an audio challenge built for screen-reader users.
+- **No cookies, no local storage, no persistent identifier.** The widget sets nothing on the client. A per-mount session identifier is random and regenerated each time the widget loads — there is no stable device ID to track a visitor across sessions or sites.
+- **Nothing durable is stored.** Client IPs are HMAC-hashed and never written in raw form. The whole service runs in memory — challenge state, replay protection, rate-limit windows, and risk history all live in process memory with time-bounded cleanup. There is no database, so there is no long-term store of visitor data to leak or subpoena.
+- **No third-party trackers.** Operational analytics, when enabled, go to [Pulse](/blog/pulse-vs-google-analytics-plausible-fathom) — our own cookieless, self-hosted analytics — and nowhere else. There is no Google, no ad network, no external beacon in the request path.
+- **Swiss infrastructure, Belgian company.** It runs on the same [Swiss-hosted](/blog/why-swiss-infrastructure-matters-for-data-privacy) Exoscale infrastructure as the rest of Ciphera, operated by Ciphera BV under GDPR and the Swiss [FADP](/glossary/fadp) — no US company in the path.
+
+It already does this work in production: Ciphera Captcha guards signup on Ciphera ID, where a passed challenge has to clear a risk-score threshold before the flow proceeds. So this is a running system, not a mockup.
+
+## The Honest Limitations
+
+This is the section that separates a comparison from a sales page, so here is the unflattering half.
+
+**You cannot embed Ciphera Captcha on your own site today.** It currently protects Ciphera's own products. There is no public site-key signup and no third-party embed. A standalone offering is planned — we are telling you it exists on the roadmap rather than implying you can adopt it now.
+
+**There is no drop-in script tag.** The incumbents all offer a zero-build `<script>` embed; reCAPTCHA, Turnstile, and hCaptcha can be on a page in minutes. Ciphera Captcha's widget currently ships as a React component inside our internal design-system package, which is a real adoption-friction gap a standalone product would need to close.
+
+**It is source-available, not open source.** You can read the code for transparency and audit, but it is released under a proprietary license — unlike our [Tessera](https://github.com/ciphera-net/tessera) authentication libraries, which are fully open source under Apache-2.0. We draw that line explicitly because "source-available" is often blurred into "open source," and they are not the same thing.
+
+**Its risk model is deliberately simpler.** reCAPTCHA and hCaptcha score risk using machine-learning models trained on signal graphs spanning millions of sites — cross-customer intelligence a single-tenant service structurally cannot match. Ciphera Captcha's risk scoring is hand-tuned and sees only the traffic hitting Ciphera. That is the direct cost of not participating in a cross-site surveillance graph: less shared signal. We think proof-of-work plus jurisdiction is the better trade for a privacy product, but it is a trade, not a free win.
+
+And the standard caveat that applies to everything we build: the cryptographic and security design here is self-reviewed, not independently audited. Read the approach, weigh it, and hold it to the same scrutiny you'd apply to any vendor's claims.
+
+## How to Choose Right Now
+
+Because Ciphera Captcha isn't yet something you can deploy, the practical recommendation for *today* is mostly among the other three — and we would rather give you a useful answer than pretend otherwise.
+
+- **If you want the best privacy posture you can deploy today with minimal effort, choose Turnstile.** It is cookieless, puzzle-free, free at meaningful scale, and Cloudflare has clearly engineered it to minimize data collection. The one thing it doesn't solve is US jurisdiction — if that is your binding constraint, no US-operated CAPTCHA solves it, and that is precisely the gap Ciphera Captcha is being built to fill.
+- **If you are an EU business, treat reCAPTCHA as a consent-and-liability question, not just a technical one.** The CNIL fines are real and the cookie makes it a tracker in regulators' eyes. If you keep it, budget for a consent mechanism; many teams find that friction is the reason to move.
+- **Weigh hCaptcha's data-labeling model against your own values.** It is a capable product, but your visitors' challenge-solving is, by the operator's own description, feeding a machine-learning-data business. Some teams are fine with that; some are not. Decide deliberately.
+- **If your binding requirement is EU/Swiss residency with no US company in the path** — the reason you'd care about a CAPTCHA at all in a sovereignty-first stack — then the honest status is: Turnstile for privacy mechanics today, and [Ciphera Captcha](/products/captcha) on the roadmap for the residency piece. When the standalone offering ships, this is the gap it closes.
+
+The uncomfortable truth of the CAPTCHA market is that the tool you reach for to keep bots out is frequently the most invasive third-party script on your page. Turnstile proved you can protect a form without profiling the person filling it in. Ciphera Captcha's bet is that you can do that *and* keep the whole thing on European soil — and when you can deploy it yourself, that is the bet we are asking you to make.

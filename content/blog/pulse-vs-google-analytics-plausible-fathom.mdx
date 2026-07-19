@@ -55,6 +55,8 @@ So how do the four tools compare on privacy compliance? The differences are star
 
 Pulse, Plausible, and Fathom are all GDPR-compliant by architecture — they don't collect personal data, so most GDPR obligations don't apply. Google Analytics requires explicit cookie consent under GDPR, extensive configuration to approach compliance, and still transfers data to US servers by default. Pulse differentiates itself with [Swiss data residency under the FADP](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy) — Switzerland isn't in the EU, but the FADP provides equivalent protection and Exoscale's Zurich datacenter keeps the data out of US jurisdiction entirely — plus a fully open-source client and tracking script. Plausible leads on self-hosting capability, running on German infrastructure by default. Fathom isolates EU visitor data to servers inside the EU but isn't open source.
 
+Analytics isn't the only third-party script that can quietly create a consent obligation — the CAPTCHA on your signup and contact forms often carries the same problem, and the CNIL has fined companies specifically for deploying Google reCAPTCHA without consent. We break down the options in [Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha](/blog/ciphera-captcha-vs-recaptcha-vs-turnstile).
+
 With [172 countries now having data privacy laws](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5275559) (up from 120 in 2017), GDPR compliance isn't just a European concern. It's becoming the global baseline. Picking an analytics tool that's compliant by design saves you from playing legal whack-a-mole as new regulations appear.
 
 ## How Does Script Size Affect Page Speed?

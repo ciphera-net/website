@@ -45,6 +45,8 @@ else
     "https://ciphera.net/blog/open-source-privacy-tools-2026"
     "https://ciphera.net/blog/zero-knowledge-encryption-guide"
     "https://ciphera.net/blog/why-we-chose-bunnycdn"
+    "https://ciphera.net/blog/ciphera-id-vs-auth0-vs-clerk"
+    "https://ciphera.net/blog/ciphera-captcha-vs-recaptcha-vs-turnstile"
   )
 fi
 
