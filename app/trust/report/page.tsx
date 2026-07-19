@@ -12,12 +12,12 @@ export const metadata: Metadata = {
   title: 'Transparency Report — Ciphera',
   description:
     'Ciphera transparency report: all law enforcement and legal process received by reporting period. Biannual, interim snapshots available.',
-  alternates: { canonical: 'https://ciphera.net/transparency/report' },
+  alternates: { canonical: 'https://ciphera.net/trust/report' },
   openGraph: {
     title: 'Transparency Report — Ciphera',
     description:
       'Ciphera transparency report: all law enforcement and legal process received, by period.',
-    url: 'https://ciphera.net/transparency/report',
+    url: 'https://ciphera.net/trust/report',
     siteName: 'Ciphera',
     images: [
       {
@@ -42,7 +42,7 @@ export default async function TransparencyReportPage() {
     name: current.title,
     datePublished: current.publishedISO,
     publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
-    url: 'https://ciphera.net/transparency/report',
+    url: 'https://ciphera.net/trust/report',
   }
 
   return (
@@ -51,17 +51,17 @@ export default async function TransparencyReportPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <Breadcrumbs items={[{ label: 'Transparency', href: '/transparency' }, { label: 'Report' }]} />
+      <Breadcrumbs items={[{ label: 'Trust', href: '/trust' }, { label: 'Report' }]} />
 
       {/* Report document */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <Link
-            href="/transparency"
+            href="/trust"
             className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeftIcon aria-hidden="true" className="h-3.5 w-3.5" />
-            Transparency
+            Trust
           </Link>
           <p className="mt-6 font-mono text-xs tabular-nums text-muted-foreground">
             Transparency report · {current.status} · published {current.publishedEuropean}

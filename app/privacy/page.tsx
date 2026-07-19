@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { cdnUrl } from '@/lib/cdn'
+import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -601,30 +602,14 @@ export default function PrivacyPolicyPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-medium">Exoscale</td>
-                        <td className="py-2 pr-4">Compute and object storage</td>
-                        <td className="py-2 pr-4">Encrypted data at rest</td>
-                        <td className="py-2">Switzerland</td>
-                      </tr>
-                      <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-medium">Bunny</td>
-                        <td className="py-2 pr-4">CDN, DNS, DDoS protection, edge routing</td>
-                        <td className="py-2 pr-4">IP addresses (transient)</td>
-                        <td className="py-2">Global (edge network)</td>
-                      </tr>
-                      <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-medium">GitHub</td>
-                        <td className="py-2 pr-4">Source code hosting</td>
-                        <td className="py-2 pr-4">Source code</td>
-                        <td className="py-2">United States</td>
-                      </tr>
-                      <tr>
-                        <td className="py-2 pr-4 font-medium">Mollie</td>
-                        <td className="py-2 pr-4">Payment processing</td>
-                        <td className="py-2 pr-4">Billing and subscription data</td>
-                        <td className="py-2">Netherlands</td>
-                      </tr>
+                      {subprocessors.map((s, i) => (
+                        <tr key={s.service} className={i < subprocessors.length - 1 ? 'border-b border-border' : ''}>
+                          <td className="py-2 pr-4 font-medium">{s.service}</td>
+                          <td className="py-2 pr-4">{s.purpose}</td>
+                          <td className="py-2 pr-4">{s.dataProcessed}</td>
+                          <td className="py-2">{s.location}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -633,12 +618,9 @@ export default function PrivacyPolicyPage() {
                   <a href="mailto:privacy@ciphera.net" className="text-primary hover:underline">privacy@ciphera.net</a>. We do not use:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-2">
-                  <li>Google Analytics, Google Tag Manager, or any Google tracking service</li>
-                  <li>Meta Pixel, Facebook SDK, or any Meta tracking service</li>
-                  <li>Third-party CAPTCHA services (we use our own Ciphera Captcha)</li>
-                  <li>Third-party email tracking services</li>
-                  <li>Advertising networks of any kind</li>
-                  <li>Customer data platforms (CDPs) or data brokers</li>
+                  {weDoNotUse.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
                 </ul>
               </section>
 

@@ -44,8 +44,8 @@ const values = [
     title: 'Transparency',
     description:
       'Our code is open for anyone to inspect — and we’re opening more of it. We publish a warrant canary and a transparency report. Trust is earned, not marketed.',
-    href: '/transparency',
-    linkLabel: 'Read the transparency report',
+    href: '/trust',
+    linkLabel: 'See the trust hub',
   },
   {
     icon: GlobeIcon,

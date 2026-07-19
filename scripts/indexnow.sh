@@ -32,7 +32,11 @@ else
     # Legal pages
     "https://ciphera.net/privacy"
     "https://ciphera.net/terms"
-    "https://ciphera.net/security"
+
+    # Trust hub (absorbed /security and /transparency, 19-07-2026)
+    "https://ciphera.net/trust"
+    "https://ciphera.net/trust/canary"
+    "https://ciphera.net/trust/report"
 
     # Blog (survivors of the 19-07-2026 corpus purge — keep in sync with content/blog/)
     "https://ciphera.net/blog"
