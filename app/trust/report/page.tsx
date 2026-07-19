@@ -9,7 +9,7 @@ import { getCurrentReport, listReports } from '@/lib/transparency'
 import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
-  title: 'Transparency Report — Ciphera',
+  title: 'Transparency Report',
   description:
     'Ciphera transparency report: all law enforcement and legal process received by reporting period. Biannual, interim snapshots available.',
   alternates: { canonical: 'https://ciphera.net/trust/report' },
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: cdnUrl('/ciphera_logo_no_margins.png'),
+        url: cdnUrl('/og/report.png'),
         width: 1200,
         height: 630,
         alt: 'Ciphera Transparency Report',
@@ -29,7 +29,11 @@ export const metadata: Metadata = {
     ],
     type: 'article',
   },
-  twitter: { card: 'summary_large_image' },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@CipheraNET',
+    images: [cdnUrl('/og/report.png')],
+  },
 }
 
 export default async function TransparencyReportPage() {
@@ -41,6 +45,8 @@ export default async function TransparencyReportPage() {
     '@type': 'Report',
     name: current.title,
     datePublished: current.publishedISO,
+    dateModified: current.publishedISO,
+    inLanguage: 'en',
     publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
     url: 'https://ciphera.net/trust/report',
   }
@@ -72,7 +78,7 @@ export default async function TransparencyReportPage() {
               prose-headings:font-display prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
               prose-h1:text-4xl prose-h1:leading-[1.05] sm:prose-h1:text-5xl
               prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+              prose-a:text-primary prose-a:underline
               prose-code:text-primary prose-code:before:content-none prose-code:after:content-none
               prose-table:text-sm prose-th:text-foreground prose-th:border-border prose-td:border-border
               prose-hr:border-border"
@@ -89,7 +95,8 @@ export default async function TransparencyReportPage() {
       {/* Historical reports */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">Historical reports</p>
+          <h2 className="sr-only">Historical reports</h2>
+          <p className="font-mono text-xs text-muted-foreground" aria-hidden="true">Historical reports</p>
           {all.length > 1 ? (
             <ul className="mt-6 max-w-3xl border-t border-border">
               {all.slice(1).map((r) => (

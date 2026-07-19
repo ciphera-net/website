@@ -7,7 +7,7 @@ import { getCurrentCanary, listCanaries } from '@/lib/transparency'
 import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
-  title: 'Warrant Canary — Ciphera',
+  title: 'Warrant Canary',
   description:
     'Ciphera warrant canary: monthly GPG-signed statement that we have not received secret government compulsion. Offline-signed, independently verifiable.',
   alternates: { canonical: 'https://ciphera.net/trust/canary' },
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     images: [
       {
-        url: cdnUrl('/ciphera_logo_no_margins.png'),
+        url: cdnUrl('/og/canary.png'),
         width: 1200,
         height: 630,
         alt: 'Ciphera Warrant Canary',
@@ -26,7 +26,11 @@ export const metadata: Metadata = {
     ],
     type: 'article',
   },
-  twitter: { card: 'summary_large_image' },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@CipheraNET',
+    images: [cdnUrl('/og/canary.png')],
+  },
 }
 
 const dont = [
@@ -85,7 +89,7 @@ export default async function WarrantCanaryPage() {
             order, or demand for user keys or plaintext. The GPG signature is the proof — not our
             word. If a month’s canary ever fails to appear on time, the silence is the disclosure —
             read the{' '}
-            <Link href="#non-update" className="text-primary hover:underline">
+            <Link href="#non-update" className="text-primary underline">
               non-update protocol
             </Link>
             .
@@ -150,7 +154,7 @@ export default async function WarrantCanaryPage() {
               </div>
             )}
             <div className="flex items-start justify-between gap-4 pt-4">
-              <pre className="min-w-0 overflow-x-auto font-mono text-xs leading-relaxed text-foreground">
+              <pre tabIndex={0} className="min-w-0 overflow-x-auto font-mono text-xs leading-relaxed text-foreground">
                 <code>{verifyCommand}</code>
               </pre>
               <CopyButton value={verifyCommand} />
@@ -170,6 +174,7 @@ export default async function WarrantCanaryPage() {
                 <a
                   key={f.label}
                   href={f.href}
+                  aria-label={`${canary.periodLabel} canary — ${f.label.toLowerCase()} file`}
                   className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
                 >
                   {f.label}
@@ -197,11 +202,19 @@ export default async function WarrantCanaryPage() {
                     {c.periodLabel} · published {c.publishedEuropean}
                   </span>
                   <span className="flex flex-wrap gap-x-5 gap-y-1">
-                    <a href={c.plaintextUrl} className="inline-flex items-center gap-1 text-primary hover:underline">
+                    <a
+                      href={c.plaintextUrl}
+                      aria-label={`${c.periodLabel} canary — plaintext file`}
+                      className="inline-flex items-center gap-1 text-primary hover:underline"
+                    >
                       Plaintext
                       <ArrowRightIcon aria-hidden="true" className="h-3 w-3" />
                     </a>
-                    <a href={c.signatureUrl} className="inline-flex items-center gap-1 text-primary hover:underline">
+                    <a
+                      href={c.signatureUrl}
+                      aria-label={`${c.periodLabel} canary — detached signature file`}
+                      className="inline-flex items-center gap-1 text-primary hover:underline"
+                    >
                       Signature
                       <ArrowRightIcon aria-hidden="true" className="h-3 w-3" />
                     </a>

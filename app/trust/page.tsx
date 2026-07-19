@@ -21,24 +21,21 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
-}
-
-const trustSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: 'Trust & Security',
-  description:
-    'What you can verify yourself: the zero-knowledge architecture, open-source proofs, warrant canary, transparency reports, and coordinated disclosure policy.',
-  url: 'https://ciphera.net/trust',
-  dateModified: '2026-07-19',
-  breadcrumb: {
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
-      { '@type': 'ListItem', position: 2, name: 'Trust & Security' },
-    ],
+  twitter: {
+    card: 'summary_large_image',
+    site: '@CipheraNET',
+    title: 'Trust & Security | Ciphera',
+    description:
+      'What you can verify yourself: the zero-knowledge architecture, open-source proofs, warrant canary, transparency reports, and coordinated disclosure policy.',
+    images: [cdnUrl('/og/trust.png')],
   },
 }
+
+// * Bump when the page COPY changes. The rendered "Last updated" and JSON-LD
+// * dateModified take the max of this and the live canary/report publish
+// * dates, so monthly canary rolls refresh the page's freshness signals
+// * without an edit here.
+const PAGE_REVISED_ISO = '2026-07-19'
 
 const SECTIONS = [
   { id: 'the-zero-knowledge-architecture', title: '1. The Zero-Knowledge Architecture' },
@@ -84,6 +81,28 @@ export default async function TrustPage() {
   const fingerprint = canary.text.match(/\b([0-9A-F]{40})\b/)?.[1] ?? null
   const fingerprintSpaced = fingerprint ? fingerprint.replace(/(.{4})(?=.)/g, '$1 ') : null
 
+  const lastUpdatedISO = [PAGE_REVISED_ISO, canary.publishedISO, report.publishedISO]
+    .sort()
+    .at(-1) as string
+  const lastUpdatedEuropean = lastUpdatedISO.split('-').reverse().join('-')
+
+  const trustSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Trust & Security',
+    description:
+      'What you can verify yourself: the zero-knowledge architecture, open-source proofs, warrant canary, transparency reports, and coordinated disclosure policy.',
+    url: 'https://ciphera.net/trust',
+    dateModified: lastUpdatedISO,
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
+        { '@type': 'ListItem', position: 2, name: 'Trust' },
+      ],
+    },
+  }
+
   // * Live status facts — canary and report values come from the published
   // * documents themselves; the audit line is a static label (no audit data
   // * source exists yet — see section 2).
@@ -110,7 +129,7 @@ export default async function TrustPage() {
             <p className="text-muted-foreground mb-12">
               Everything on this page is something you can check — open code,
               signed statements, raw files, named vendors. What we cannot prove,
-              we say plainly. Last updated: 19-07-2026
+              we say plainly. Last updated: {lastUpdatedEuropean}
             </p>
 
             <div className="mb-12 border border-border bg-card p-6">
@@ -134,7 +153,7 @@ export default async function TrustPage() {
 
             <nav aria-label="Contents" className="mb-12 md:hidden">
               <details className="group border border-border bg-card p-6">
-                <summary className="cursor-pointer list-none font-mono text-xs text-muted-foreground">Contents</summary>
+                <summary className="cursor-pointer font-mono text-xs text-muted-foreground">Contents</summary>
                 <ContentsList />
               </details>
             </nav>
@@ -173,19 +192,19 @@ export default async function TrustPage() {
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
                   <li>
                     <a href="https://github.com/ciphera-net/tessera" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      ciphera-net/tessera
+                      ciphera-net/tessera<span className="sr-only"> (opens in a new tab)</span>
                     </a>{' '}
                     — Rust OPAQUE core and sidecar (RFC 9807 configuration #1: ristretto255-SHA-512, 3DH, Argon2id)
                   </li>
                   <li>
                     <a href="https://github.com/ciphera-net/tessera-go" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      ciphera-net/tessera-go
+                      ciphera-net/tessera-go<span className="sr-only"> (opens in a new tab)</span>
                     </a>{' '}
                     — Go server SDK
                   </li>
                   <li>
                     <a href="https://github.com/ciphera-net/tessera-ts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      ciphera-net/tessera-ts
+                      ciphera-net/tessera-ts<span className="sr-only"> (opens in a new tab)</span>
                     </a>{' '}
                     — browser SDK, published on npm as <span className="font-mono text-sm">@ciphera-net/tessera</span>
                   </li>
@@ -210,15 +229,24 @@ export default async function TrustPage() {
                   independent security audit.</strong> What exists today is a
                   published{' '}
                   <a href="https://github.com/ciphera-net/tessera/blob/main/docs/SELF-AUDIT.md" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                    self-audit
+                    self-audit<span className="sr-only"> (opens in a new tab)</span>
                   </a>{' '}
                   and{' '}
                   <a href="https://github.com/ciphera-net/tessera/blob/main/docs/THREAT-MODEL.md" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                    threat model
+                    threat model<span className="sr-only"> (opens in a new tab)</span>
                   </a>, CI-gated cross-language parity tests, and conformance
                   vectors anyone can run. An independent third-party audit is
                   planned; this page will state the result when it happens —
                   whatever it finds.
+                </p>
+                <p className="text-muted-foreground leading-relaxed mt-3">
+                  The open code goes beyond the crypto core: Pulse, our
+                  analytics engine, is open source under AGPL-3.0 at{' '}
+                  <a href="https://github.com/ciphera-net/pulse" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                    ciphera-net/pulse<span className="sr-only"> (opens in a new tab)</span>
+                  </a>{' '}
+                  — the code that runs on your visitors is the code you can
+                  read.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
                   We hold no SOC 2 or ISO 27001 certification. Rather than rent
@@ -240,10 +268,12 @@ export default async function TrustPage() {
                   </Link>{' '}
                   in Zurich, under the Swiss{' '}
                   <Link href="/glossary/fadp" className="text-primary hover:underline">FADP</Link>.
-                  The company is Belgian: Ciphera BV operates from Belgium,
-                  under GDPR and NIS2. Two jurisdictions, both chosen on
-                  purpose — strong data-protection law where the data sits,
-                  EU accountability where the company answers for it.
+                  The company is Belgian: Ciphera BV (KBO/BCE 1013.721.660,
+                  De Kleetlaan 2, 1831 Diegem) operates from Belgium, under
+                  GDPR and NIS2 — you can look us up in the Belgian enterprise
+                  register. Two jurisdictions, both chosen on purpose — strong
+                  data-protection law where the data sits, EU accountability
+                  where the company answers for it.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
                   The stack is deliberately European: Swiss compute and storage,
@@ -302,7 +332,7 @@ export default async function TrustPage() {
                 </ol>
                 <div className="border border-border bg-card p-6 mt-4">
                   <p className="font-mono text-xs text-muted-foreground mb-3">Verify the signature</p>
-                  <pre className="overflow-x-auto font-mono text-xs leading-relaxed text-foreground">
+                  <pre tabIndex={0} className="overflow-x-auto font-mono text-xs leading-relaxed text-foreground">
                     <code>{`gpg --import canary-pubkey.asc\ngpg --verify \\\n  canary-${canary.period}.txt.asc \\\n  canary-${canary.period}.txt`}</code>
                   </pre>
                   {fingerprintSpaced && (
@@ -322,9 +352,10 @@ export default async function TrustPage() {
                       <a
                         key={f.label}
                         href={f.href}
+                        aria-label={`${canary.periodLabel} canary — ${f.label.toLowerCase()} file`}
                         className="font-mono text-xs text-primary hover:underline"
                       >
-                        {f.label} &rarr;
+                        {f.label} <span aria-hidden="true">&rarr;</span>
                       </a>
                     ))}
                   </div>
@@ -377,7 +408,7 @@ export default async function TrustPage() {
                   <li>
                     Our public repositories under{' '}
                     <a href="https://github.com/ciphera-net" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      github.com/ciphera-net
+                      github.com/ciphera-net<span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   </li>
                 </ul>
@@ -440,12 +471,7 @@ export default async function TrustPage() {
                   once a fix is available — not before.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
-                  The{' '}
-                  <a href="#warrant-canary-and-transparency-reports" className="text-primary hover:underline">
-                    transparency reports and warrant canary
-                  </a>{' '}
-                  above are part of the same standard — updated on a fixed
-                  schedule, verifiable without taking our word for it.
+                  We will link the advisory here the day it publishes.
                 </p>
               </section>
 
@@ -464,20 +490,21 @@ export default async function TrustPage() {
                   apart:
                 </p>
                 <p className="font-mono text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Subprocessor table, scrollable">
                   <table className="w-full text-sm text-muted-foreground mt-2">
+                    <caption className="sr-only">Subprocessors — service, purpose, data processed, and location</caption>
                     <thead>
                       <tr className="border-b border-border">
-                        <th className="text-left py-2 pr-4 font-semibold text-foreground">Service</th>
-                        <th className="text-left py-2 pr-4 font-semibold text-foreground">Purpose</th>
-                        <th className="text-left py-2 pr-4 font-semibold text-foreground">Data Processed</th>
-                        <th className="text-left py-2 font-semibold text-foreground">Location</th>
+                        <th scope="col" className="text-left py-2 pr-4 font-semibold text-foreground">Service</th>
+                        <th scope="col" className="text-left py-2 pr-4 font-semibold text-foreground">Purpose</th>
+                        <th scope="col" className="text-left py-2 pr-4 font-semibold text-foreground">Data Processed</th>
+                        <th scope="col" className="text-left py-2 font-semibold text-foreground">Location</th>
                       </tr>
                     </thead>
                     <tbody>
                       {subprocessors.map((s, i) => (
                         <tr key={s.service} className={i < subprocessors.length - 1 ? 'border-b border-border' : ''}>
-                          <td className="py-2 pr-4 font-medium">{s.service}</td>
+                          <th scope="row" className="text-left py-2 pr-4 font-medium">{s.service}</th>
                           <td className="py-2 pr-4">{s.purpose}</td>
                           <td className="py-2 pr-4">{s.dataProcessed}</td>
                           <td className="py-2">{s.location}</td>
@@ -487,11 +514,10 @@ export default async function TrustPage() {
                   </table>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mt-4">
-                  All third-party processors are bound by Data Processing
-                  Agreements (DPAs) and are contractually required to process
-                  data only for the specified purpose. A complete list of
-                  sub-processor identities, including specific company names and
-                  registered addresses, is available upon request at{' '}
+                  This table is the whole list — there is no vendor we left
+                  out. Each one is bound by a Data Processing Agreement; full
+                  sub-processor identities, including registered addresses, are
+                  available on request at{' '}
                   <a href="mailto:privacy@ciphera.net" className="text-primary hover:underline">privacy@ciphera.net</a>.
                   We do not use:
                 </p>
@@ -514,11 +540,12 @@ export default async function TrustPage() {
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
                   <li>
-                    <strong className="text-foreground">Ciphera ID</strong> — our servers hold an OPAQUE
-                    record and a wrapped vault key. No password, no password
-                    hash, no readable email address. We cannot decrypt your
+                    <strong className="text-foreground">Ciphera ID</strong> — we cannot decrypt your
                     vault; there is nothing useful to hand over, subpoena or
-                    not.
+                    not. Exactly what our servers do hold is itemized in{' '}
+                    <a href="#the-zero-knowledge-architecture" className="text-primary hover:underline">
+                      section 1
+                    </a>.
                   </li>
                   <li>
                     <strong className="text-foreground">Pulse</strong> — cookieless analytics. No
@@ -537,9 +564,8 @@ export default async function TrustPage() {
                   </li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-3">
-                  Where operational data must exist, it is minimized: audit
-                  logs store HMAC-hashed IP addresses only and are purged after
-                  180 days. The full, itemized account is in{' '}
+                  The full, itemized account of what our servers can and cannot
+                  see is in{' '}
                   <Link href="/blog/what-we-see-about-you-what-we-dont" className="text-primary hover:underline">
                     what we see about you — and what we don&rsquo;t
                   </Link>.
@@ -571,6 +597,13 @@ export default async function TrustPage() {
                     When the independent Tessera audit is complete, the report
                     will be published here — not summarized, published
                   </li>
+                  <li>
+                    Environmental footprint, measured by life-cycle assessment
+                    with no offsets:{' '}
+                    <Link href="/sustainability" className="text-primary hover:underline">
+                      /sustainability
+                    </Link>
+                  </li>
                 </ul>
               </section>
 
@@ -578,10 +611,10 @@ export default async function TrustPage() {
 
             <div className="mt-12 pt-8 border-t border-border flex items-center justify-between">
               <Link href="/" className="text-primary hover:underline font-medium">
-                &larr; Back to Home
+                <span aria-hidden="true">&larr; </span>Back to Home
               </Link>
               <Link href="/privacy" className="text-primary hover:underline font-medium">
-                Privacy Policy &rarr;
+                Privacy Policy<span aria-hidden="true"> &rarr;</span>
               </Link>
             </div>
           </div>

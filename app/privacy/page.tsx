@@ -5,7 +5,7 @@ import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 21-06-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 19-07-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -26,7 +26,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-06-21',
+  dateModified: '2026-07-19',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 21-06-2026
+              Last updated: 19-07-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -130,7 +130,7 @@ export default function PrivacyPolicyPage() {
                   2. Legal Framework
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Ciphera is operated by Ciphera B.V., a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium. Our operations are governed by:
+                  Ciphera is operated by Ciphera BV, a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium. Our operations are governed by:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
                   <li><strong>Belgian law</strong> — as our entity is incorporated in Belgium</li>
@@ -153,7 +153,7 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <div className="border border-border bg-card p-6 mt-3">
                   <p className="text-muted-foreground">
-                    <strong className="text-foreground">Ciphera B.V.</strong><br />
+                    <strong className="text-foreground">Ciphera BV</strong><br />
                     KBO/BCE: 1013.721.660<br />
                     De Kleetlaan 2<br />
                     1831 Diegem, Belgium<br />
@@ -235,7 +235,7 @@ export default function PrivacyPolicyPage() {
                   Pulse does not use cookies, does not use browser fingerprinting, does not track users across websites, and does not collect personally identifiable information by default. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  When website owners use Pulse on their websites, Ciphera B.V. acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
+                  When website owners use Pulse on their websites, Ciphera BV acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
                   <a href="mailto:privacy@ciphera.net" className="text-primary hover:underline">privacy@ciphera.net</a>.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
@@ -591,20 +591,21 @@ export default function PrivacyPolicyPage() {
                   We minimize our reliance on third-party services. The services we use, and the data they may process, are listed below:
                 </p>
                 <p className="font-mono text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Subprocessor table, scrollable">
                   <table className="w-full text-sm text-muted-foreground mt-2">
+                    <caption className="sr-only">Subprocessors — service, purpose, data processed, and location</caption>
                     <thead>
                       <tr className="border-b border-border">
-                        <th className="text-left py-2 pr-4 font-semibold text-foreground">Service</th>
-                        <th className="text-left py-2 pr-4 font-semibold text-foreground">Purpose</th>
-                        <th className="text-left py-2 pr-4 font-semibold text-foreground">Data Processed</th>
-                        <th className="text-left py-2 font-semibold text-foreground">Location</th>
+                        <th scope="col" className="text-left py-2 pr-4 font-semibold text-foreground">Service</th>
+                        <th scope="col" className="text-left py-2 pr-4 font-semibold text-foreground">Purpose</th>
+                        <th scope="col" className="text-left py-2 pr-4 font-semibold text-foreground">Data Processed</th>
+                        <th scope="col" className="text-left py-2 font-semibold text-foreground">Location</th>
                       </tr>
                     </thead>
                     <tbody>
                       {subprocessors.map((s, i) => (
                         <tr key={s.service} className={i < subprocessors.length - 1 ? 'border-b border-border' : ''}>
-                          <td className="py-2 pr-4 font-medium">{s.service}</td>
+                          <th scope="row" className="text-left py-2 pr-4 font-medium">{s.service}</th>
                           <td className="py-2 pr-4">{s.purpose}</td>
                           <td className="py-2 pr-4">{s.dataProcessed}</td>
                           <td className="py-2">{s.location}</td>

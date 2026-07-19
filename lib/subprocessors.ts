@@ -17,6 +17,12 @@ export const subprocessors: Subprocessor[] = [
     location: 'Switzerland',
   },
   {
+    service: 'Infomaniak',
+    purpose: 'Off-site backup storage and domain registration',
+    dataProcessed: 'Encrypted backups',
+    location: 'Switzerland',
+  },
+  {
     service: 'Bunny',
     purpose: 'CDN, DNS, DDoS protection, edge routing',
     dataProcessed: 'IP addresses (transient)',
