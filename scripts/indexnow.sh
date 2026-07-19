@@ -34,14 +34,17 @@ else
     "https://ciphera.net/privacy"
     "https://ciphera.net/terms"
 
-    # Blog
+    # Blog (survivors of the 19-07-2026 corpus purge — keep in sync with content/blog/)
     "https://ciphera.net/blog"
-    "https://ciphera.net/blog/why-privacy-cant-be-an-afterthought"
+    "https://ciphera.net/blog/what-we-see-about-you-what-we-dont"
     "https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy"
-    "https://ciphera.net/blog/biggest-data-breaches-2025-2026"
+    "https://ciphera.net/blog/why-privacy-cant-be-an-afterthought"
     "https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom"
-    "https://ciphera.net/blog/privacy-statistics-2026"
+    "https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order"
+    "https://ciphera.net/blog/eu-ai-act-compliance-guide-2026"
     "https://ciphera.net/blog/open-source-privacy-tools-2026"
+    "https://ciphera.net/blog/zero-knowledge-encryption-guide"
+    "https://ciphera.net/blog/why-we-chose-bunnycdn"
   )
 fi
 
