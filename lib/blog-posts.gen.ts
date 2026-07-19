@@ -21,7 +21,7 @@ export const blogPosts: BlogPostSummary[] = [
     "date": "2026-07-19",
     "dateModified": "2026-07-19",
     "readTime": "11 min read",
-    "image": "/blog/og/ciphera-captcha-vs-recaptcha-vs-turnstile.png"
+    "image": "/blog/og/ciphera-captcha-vs-recaptcha-vs-turnstile.png?v=2"
   },
   {
     "slug": "ciphera-id-vs-auth0-vs-clerk",
@@ -31,7 +31,7 @@ export const blogPosts: BlogPostSummary[] = [
     "date": "2026-07-19",
     "dateModified": "2026-07-19",
     "readTime": "12 min read",
-    "image": "/blog/og/ciphera-id-vs-auth0-vs-clerk.png"
+    "image": "/blog/og/ciphera-id-vs-auth0-vs-clerk.png?v=2"
   },
   {
     "slug": "what-we-see-about-you-what-we-dont",

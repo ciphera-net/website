@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { GithubIcon, ArrowUpRightIcon } from '@ciphera-net/facet'
+import { GithubIcon } from '@ciphera-net/facet'
 import { cdnUrl } from '@/lib/cdn'
 
 export default function Footer() {
@@ -28,15 +28,28 @@ export default function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Privacy-first infrastructure and applications built on zero-knowledge principles. Your data is encrypted before it leaves your device.
             </p>
-            <a
-              href="https://github.com/ciphera-net"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Ciphera on GitHub"
-              className="mt-6 inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-fast hover:border-line-hover hover:text-foreground"
-            >
-              <GithubIcon className="h-4 w-4" />
-            </a>
+            <div className="mt-6 flex items-center gap-2">
+              <a
+                href="https://github.com/ciphera-net"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ciphera on GitHub"
+                className="inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-fast hover:border-line-hover hover:text-foreground"
+              >
+                <GithubIcon className="h-4 w-4" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/ciphera/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ciphera on LinkedIn"
+                className="inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-fast hover:border-line-hover hover:text-foreground"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           {/* Products */}
@@ -132,17 +145,6 @@ export default function Footer() {
                 <Link href="/security" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Security
                 </Link>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/ciphera-net"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground"
-                >
-                  GitHub
-                  <ArrowUpRightIcon aria-hidden="true" className="ml-1 inline h-3 w-3" />
-                </a>
               </li>
             </ul>
           </div>
