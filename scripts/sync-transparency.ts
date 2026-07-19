@@ -4,7 +4,7 @@ import { getCurrentReport } from '../lib/transparency'
 
 const ROOT = path.resolve(__dirname, '..')
 const SRC = path.join(ROOT, 'content', 'transparency', 'canaries')
-const DEST = path.join(ROOT, 'public', 'transparency')
+const DEST = path.join(ROOT, 'public', 'trust')
 
 async function syncCanaries() {
   await fs.mkdir(DEST, { recursive: true })
@@ -24,7 +24,7 @@ async function syncCanaries() {
       : file.name
     const destPath = path.join(DEST, destName)
     await fs.copyFile(srcPath, destPath)
-    console.log(`sync-transparency: ${file.name} -> public/transparency/${destName}`)
+    console.log(`sync-transparency: ${file.name} -> public/trust/${destName}`)
   }
 }
 
@@ -33,7 +33,7 @@ async function syncCanaries() {
 // * on or before") so a freshness watcher can parse it with the same regex it
 // * already uses for the canary — no hardcoded due dates baked into ops scripts.
 // * Generated at build time from content/transparency/reports/*.md, the single
-// * source of truth also used to render the live /transparency pages, so this
+// * source of truth also used to render the live /trust pages, so this
 // * file can never drift from what's published.
 async function generateReportStatus() {
   await fs.mkdir(DEST, { recursive: true })
@@ -54,7 +54,7 @@ async function generateReportStatus() {
   ].join('\n')
 
   await fs.writeFile(destPath, lines, 'utf8')
-  console.log('sync-transparency: generated public/transparency/report-status.txt')
+  console.log('sync-transparency: generated public/trust/report-status.txt')
 }
 
 async function main() {

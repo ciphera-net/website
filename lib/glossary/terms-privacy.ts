@@ -258,9 +258,9 @@ export const privacyTerms: GlossaryTerm[] = [
     paragraphs: [
       'The mechanism exploits a legal gap: many government orders that compel data disclosure come with a gag provision making it a crime to reveal the order’s existence — but courts in some jurisdictions have held that compelling an organization to keep affirmatively publishing a false statement ("we have received no such order") is a step beyond merely forbidding disclosure, and may not be enforceable the same way. A warrant canary is published on a fixed schedule; as long as it keeps being renewed, no such order has arrived. If it quietly stops updating, that silence is the signal — without anyone having stated the forbidden fact directly.',
       'The legal reliability of warrant canaries is genuinely contested and untested in many jurisdictions — there’s no guarantee a court would treat forced silence (rather than forced speech) as protected, and the mechanism gives no warning at all if the canary’s operator is compelled to keep publishing it falsely. It functions best as a transparency commitment and an operational signal, not a guaranteed legal shield.',
-      'Ciphera publishes a GPG-signed warrant canary monthly, with the current statement and a public archive of past ones, at /transparency/canary.',
+      'Ciphera publishes a GPG-signed warrant canary monthly, with the current statement and a public archive of past ones, at /trust/canary.',
     ],
     related: ['data-sovereignty', 'end-to-end-encryption'],
-    see: [{ label: 'Ciphera transparency — warrant canary', href: '/transparency/canary' }],
+    see: [{ label: 'Ciphera trust hub — warrant canary', href: '/trust/canary' }],
   },
 ]

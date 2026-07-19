@@ -399,7 +399,7 @@ URL: https://ciphera.net/glossary/utm-parameters
 A warrant canary is a regularly published statement that an organization has not received a secret government order — its disappearance warns users implicitly, since a gag order would forbid saying so directly.
 The mechanism exploits a legal gap: many government orders that compel data disclosure come with a gag provision making it a crime to reveal the order’s existence — but courts in some jurisdictions have held that compelling an organization to keep affirmatively publishing a false statement ("we have received no such order") is a step beyond merely forbidding disclosure, and may not be enforceable the same way. A warrant canary is published on a fixed schedule; as long as it keeps being renewed, no such order has arrived. If it quietly stops updating, that silence is the signal — without anyone having stated the forbidden fact directly.
 The legal reliability of warrant canaries is genuinely contested and untested in many jurisdictions — there’s no guarantee a court would treat forced silence (rather than forced speech) as protected, and the mechanism gives no warning at all if the canary’s operator is compelled to keep publishing it falsely. It functions best as a transparency commitment and an operational signal, not a guaranteed legal shield.
-Ciphera publishes a GPG-signed warrant canary monthly, with the current statement and a public archive of past ones, at /transparency/canary.
+Ciphera publishes a GPG-signed warrant canary monthly, with the current statement and a public archive of past ones, at /trust/canary.
 URL: https://ciphera.net/glossary/warrant-canary
 
 ### Zero-knowledge
@@ -575,8 +575,8 @@ URL: https://ciphera.net/glossary/zero-knowledge-authentication
 ## Transparency
 
 Ciphera publishes a monthly GPG-signed warrant canary, signed with an offline key, stating that no secret government compulsion has been received; a lapsed canary is itself the disclosure. Past canaries are archived, and periodic transparency reports summarize legal process received. Everything is independently verifiable: pull the plaintext and signature directly from the site and verify with gpg.
-URL: https://ciphera.net/transparency
-URL: https://ciphera.net/transparency/canary
+URL: https://ciphera.net/trust
+URL: https://ciphera.net/trust/canary
 
 ## Sustainability
 

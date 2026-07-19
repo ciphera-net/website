@@ -10,11 +10,11 @@ export const metadata: Metadata = {
   title: 'Warrant Canary — Ciphera',
   description:
     'Ciphera warrant canary: monthly GPG-signed statement that we have not received secret government compulsion. Offline-signed, independently verifiable.',
-  alternates: { canonical: 'https://ciphera.net/transparency/canary' },
+  alternates: { canonical: 'https://ciphera.net/trust/canary' },
   openGraph: {
     title: 'Warrant Canary — Ciphera',
     description: 'Monthly GPG-signed warrant canary. Offline-signed. Independently verifiable.',
-    url: 'https://ciphera.net/transparency/canary',
+    url: 'https://ciphera.net/trust/canary',
     siteName: 'Ciphera',
     images: [
       {
@@ -54,7 +54,7 @@ export default async function WarrantCanaryPage() {
     '@type': 'WebPage',
     name: 'Ciphera Warrant Canary',
     description: 'Monthly GPG-signed warrant canary.',
-    url: 'https://ciphera.net/transparency/canary',
+    url: 'https://ciphera.net/trust/canary',
     dateModified: canary.publishedISO,
   }
 
@@ -64,17 +64,17 @@ export default async function WarrantCanaryPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <Breadcrumbs items={[{ label: 'Transparency', href: '/transparency' }, { label: 'Warrant canary' }]} />
+      <Breadcrumbs items={[{ label: 'Trust', href: '/trust' }, { label: 'Warrant canary' }]} />
 
       {/* Header */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <Link
-            href="/transparency"
+            href="/trust"
             className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeftIcon aria-hidden="true" className="h-3.5 w-3.5" />
-            Transparency
+            Trust
           </Link>
           <p className="mt-6 font-mono text-xs text-muted-foreground">Warrant canary · {canary.periodLabel}</p>
           <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">

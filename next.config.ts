@@ -53,6 +53,20 @@ const nextConfig: NextConfig = {
       ['/products/auth', '/products/id'],
       ['/products/drop', '/#products'],
     ]
+    // * /security and /transparency were consolidated into the /trust hub
+    // * (19-07-2026, see Public/docs/plans/19-07-2026-trust-hub-consolidation.md).
+    // * The wildcard maps the whole /transparency tree 1:1 onto /trust: the
+    // * index (zero segments), /canary, /report, and every static file
+    // * (canary-*.txt, canary-*.txt.asc, canary-pubkey.asc, report-status.txt).
+    // * HARD CONSTRAINT — never remove these entries: the GPG-signed canaries
+    // * published 2026-04..2026-07 cite ciphera.net/transparency/canary-pubkey.asc
+    // * INSIDE their signed plaintext, which can never be edited without
+    // * invalidating the signatures. These redirects are permanent
+    // * infrastructure, not a migration aid.
+    const trustHub = [
+      { source: '/security', destination: '/trust', permanent: true },
+      { source: '/transparency/:path*', destination: '/trust/:path*', permanent: true },
+    ]
     return [
       ...gone.map(([slug, destination]) => ({
         source: `/blog/${slug}`,
@@ -64,6 +78,7 @@ const nextConfig: NextConfig = {
         destination,
         permanent: true,
       })),
+      ...trustHub,
     ]
   },
   // * Security headers

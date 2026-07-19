@@ -137,13 +137,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/transparency" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
-                  Transparency
-                </Link>
-              </li>
-              <li>
-                <Link href="/security" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
-                  Security
+                <Link href="/trust" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Trust &amp; Security
                 </Link>
               </li>
             </ul>

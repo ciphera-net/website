@@ -6,6 +6,13 @@ const CONTENT_ROOT = path.join(process.cwd(), 'content', 'transparency')
 const CANARY_DIR = path.join(CONTENT_ROOT, 'canaries')
 const REPORT_DIR = path.join(CONTENT_ROOT, 'reports')
 
+// * Base path where the canary/report static files are served. Must match the
+// * DEST of scripts/sync-transparency.ts (public/trust/) — change both together
+// * or every download link on the site 404s. The old /transparency/* paths are
+// * covered by a permanent redirect in next.config.ts that can never be removed
+// * (the 2026-04..07 signed canaries cite /transparency URLs in signed bytes).
+export const TRUST_FILES_BASE = '/trust'
+
 export interface Canary {
   period: string
   periodLabel: string
@@ -70,14 +77,14 @@ async function parseCanaryFile(name: string): Promise<Canary> {
     publishedISO: europeanToISO(publishedEuropean),
     nextUpdateEuropean,
     isOverdue: isPastEuropeanDate(nextUpdateEuropean),
-    plaintextUrl: `/transparency/canary-${period}.txt`,
-    signatureUrl: `/transparency/canary-${period}.txt.asc`,
-    pubkeyUrl: `/transparency/canary-pubkey.asc`,
+    plaintextUrl: `${TRUST_FILES_BASE}/canary-${period}.txt`,
+    signatureUrl: `${TRUST_FILES_BASE}/canary-${period}.txt.asc`,
+    pubkeyUrl: `${TRUST_FILES_BASE}/canary-pubkey.asc`,
   }
 }
 
 // * Every canary text file on disk, newest period first. Prior months are
-// * served statically from public/transparency/ (mirrored 1:1 with
+// * served statically from public/trust/ (mirrored 1:1 with
 // * content/transparency/canaries/ at build time), so linking to them here
 // * requires no new routes.
 export async function listCanaries(): Promise<Canary[]> {

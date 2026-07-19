@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { getLearnArticles } from '@/lib/learn'
 import { getBlogPosts } from '@/lib/blog'
 import { glossaryTerms } from '@/lib/glossary'
+import { getCurrentCanary, getCurrentReport } from '@/lib/transparency'
 
 /**
  * Sitemap for ciphera.net
@@ -14,7 +15,7 @@ import { glossaryTerms } from '@/lib/glossary'
  * - Blog post dates are read from MDX frontmatter via getBlogPosts()
  */
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://ciphera.net'
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -63,7 +64,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: '2026-03-06',
     },
     {
-      url: `${baseUrl}/security`,
+      url: `${baseUrl}/trust`,
       lastModified: '2026-07-19',
     },
 
@@ -78,6 +79,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/learn`,
       lastModified: '2026-03-27',
     },
+  ]
+
+  // Trust hub subpages — lastmod derives from the published documents
+  // themselves (the canary changes monthly; a hardcoded date would go stale)
+  const [canary, report] = await Promise.all([getCurrentCanary(), getCurrentReport()])
+  const trustPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/trust/canary`, lastModified: canary.publishedISO },
+    { url: `${baseUrl}/trust/report`, lastModified: report.publishedISO },
   ]
 
   // Glossary index + every term page (all statically generated)
@@ -101,5 +110,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: article.date,
   }))
 
-  return [...staticPages, ...glossaryPages, ...blogPages, ...learnPages]
+  return [...staticPages, ...trustPages, ...glossaryPages, ...blogPages, ...learnPages]
 }

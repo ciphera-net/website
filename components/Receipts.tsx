@@ -36,7 +36,7 @@ export default async function Receipts() {
     {
       label: 'Warrant canary',
       value: canaryDate ? `GPG-signed · ${canaryDate}` : 'GPG-signed · monthly',
-      href: '/transparency/canary',
+      href: '/trust/canary',
     },
     {
       label: 'Renewable hosting',

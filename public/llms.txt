@@ -24,8 +24,8 @@ Ciphera builds privacy-first infrastructure and applications on zero-knowledge p
 - [Glossary](https://ciphera.net/glossary): definitions of privacy and cryptography terms
 - [Learn](https://ciphera.net/learn): in-depth articles per product
 - [Blog](https://ciphera.net/blog): articles on privacy, security, and infrastructure
-- [Transparency](https://ciphera.net/transparency): legal process reports and disclosure policy
-- [Warrant canary](https://ciphera.net/transparency/canary): monthly GPG-signed canary
+- [Trust & Security](https://ciphera.net/trust): architecture proofs, audit status, legal process reports, and disclosure policy
+- [Warrant canary](https://ciphera.net/trust/canary): monthly GPG-signed canary
 - [Sustainability](https://ciphera.net/sustainability): measured carbon footprint and methodology
 
 ## Blog

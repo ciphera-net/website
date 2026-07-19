@@ -132,8 +132,8 @@ function buildLlmsTxt(): string {
   lines.push(`- [Glossary](${SITE}/glossary): definitions of privacy and cryptography terms`)
   lines.push(`- [Learn](${SITE}/learn): in-depth articles per product`)
   lines.push(`- [Blog](${SITE}/blog): articles on privacy, security, and infrastructure`)
-  lines.push(`- [Transparency](${SITE}/transparency): legal process reports and disclosure policy`)
-  lines.push(`- [Warrant canary](${SITE}/transparency/canary): monthly GPG-signed canary`)
+  lines.push(`- [Trust & Security](${SITE}/trust): architecture proofs, audit status, legal process reports, and disclosure policy`)
+  lines.push(`- [Warrant canary](${SITE}/trust/canary): monthly GPG-signed canary`)
   lines.push(`- [Sustainability](${SITE}/sustainability): measured carbon footprint and methodology`)
   lines.push('')
 
@@ -241,8 +241,8 @@ function buildLlmsFullTxt(): string {
   lines.push(
     'Ciphera publishes a monthly GPG-signed warrant canary, signed with an offline key, stating that no secret government compulsion has been received; a lapsed canary is itself the disclosure. Past canaries are archived, and periodic transparency reports summarize legal process received. Everything is independently verifiable: pull the plaintext and signature directly from the site and verify with gpg.'
   )
-  lines.push(`URL: ${SITE}/transparency`)
-  lines.push(`URL: ${SITE}/transparency/canary`)
+  lines.push(`URL: ${SITE}/trust`)
+  lines.push(`URL: ${SITE}/trust/canary`)
   lines.push('')
 
   lines.push('## Sustainability')

@@ -1,6 +1,6 @@
-# Ciphera security contact. Full policy: https://ciphera.net/security
+# Ciphera security contact. Full policy: https://ciphera.net/trust
 Contact: mailto:security@ciphera.net
 Expires: 2027-07-01T00:00:00.000Z
 Canonical: https://ciphera.net/.well-known/security.txt
-Policy: https://ciphera.net/security
+Policy: https://ciphera.net/trust
 Preferred-Languages: en
