@@ -7,6 +7,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import { getBlogPost, getBlogPosts } from '@/lib/blog'
 import { BlogImage } from '@/components/blog/blog-image'
 import { BlogBlockquote } from '@/components/blog/blog-blockquote'
+import { ToolLogo } from '@/components/blog/tool-logo'
 import { MDXTable } from '@/components/mdx-table'
 import TableOfContents from '../../../components/TableOfContents'
 import RelatedPosts from '../../../components/RelatedPosts'
@@ -25,6 +26,7 @@ const DEFAULT_CTA = { label: 'Explore products', href: '/#products' }
 const mdxComponents = {
   BlogImage,
   BlogBlockquote,
+  ToolLogo,
   table: MDXTable,
 }
 
