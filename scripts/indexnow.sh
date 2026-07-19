@@ -32,6 +32,7 @@ else
     # Legal pages
     "https://ciphera.net/privacy"
     "https://ciphera.net/terms"
+    "https://ciphera.net/security"
 
     # Blog (survivors of the 19-07-2026 corpus purge — keep in sync with content/blog/)
     "https://ciphera.net/blog"

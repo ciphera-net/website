@@ -129,6 +129,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/security" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Security
+                </Link>
+              </li>
+              <li>
                 <a
                   href="https://github.com/ciphera-net"
                   target="_blank"
