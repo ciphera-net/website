@@ -75,12 +75,12 @@ export default async function WarrantCanaryPage() {
         <div className="px-6 py-16 sm:py-20">
           <Link
             href="/trust"
-            className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeftIcon aria-hidden="true" className="h-3.5 w-3.5" />
             Trust
           </Link>
-          <p className="mt-6 font-mono text-xs text-muted-foreground">Warrant canary · {canary.periodLabel}</p>
+          <p className="mt-6 text-xs text-muted-foreground">Warrant canary · {canary.periodLabel}</p>
           <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
             Warrant canary
           </h1>
@@ -111,9 +111,9 @@ export default async function WarrantCanaryPage() {
               },
             ].map((s) => (
               <div key={s.term} className="border-t border-border pt-3">
-                <dt className="font-mono text-xs text-muted-foreground">{s.term}</dt>
+                <dt className="text-xs text-muted-foreground">{s.term}</dt>
                 <dd
-                  className={`mt-1.5 font-mono text-sm tabular-nums ${
+                  className={`mt-1.5 text-sm tabular-nums ${
                     s.destructive ? 'text-destructive' : 'text-foreground'
                   }`}
                 >
@@ -128,7 +128,7 @@ export default async function WarrantCanaryPage() {
       {/* 01 · The signed statement */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">01 · The signed statement</p>
+          <p className="text-xs text-muted-foreground">01 · The signed statement</p>
           <h2 className="sr-only">The signed statement</h2>
           <pre className="mt-6 max-w-3xl overflow-x-auto whitespace-pre-wrap break-words border border-border bg-card p-6 font-mono text-xs leading-relaxed text-muted-foreground sm:text-sm">
             {canary.text}
@@ -139,13 +139,13 @@ export default async function WarrantCanaryPage() {
       {/* 02 · Verify the signature */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">02 · Verify the signature</p>
+          <p className="text-xs text-muted-foreground">02 · Verify the signature</p>
           <h2 className="sr-only">Verify the signature</h2>
           <div className="mt-6 max-w-3xl border border-border bg-card p-6">
             {fingerprintSpaced && (
               <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
                 <div className="min-w-0">
-                  <p className="font-mono text-xs text-muted-foreground">Signing key fingerprint</p>
+                  <p className="text-xs text-muted-foreground">Signing key fingerprint</p>
                   <p className="mt-1.5 break-words font-mono text-xs tabular-nums text-foreground">
                     {fingerprintSpaced}
                   </p>
@@ -175,7 +175,7 @@ export default async function WarrantCanaryPage() {
                   key={f.label}
                   href={f.href}
                   aria-label={`${canary.periodLabel} canary — ${f.label.toLowerCase()} file`}
-                  className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                 >
                   {f.label}
                   <ArrowRightIcon aria-hidden="true" className="h-3 w-3" />
@@ -190,13 +190,13 @@ export default async function WarrantCanaryPage() {
       {archive.length > 0 && (
         <section className="border-b border-border">
           <div className="px-6 py-16 sm:py-20">
-            <p className="font-mono text-xs text-muted-foreground">03 · Archive</p>
+            <p className="text-xs text-muted-foreground">03 · Archive</p>
             <h2 className="sr-only">Archive</h2>
             <ul className="mt-6 max-w-3xl border-t border-border">
               {archive.map((c) => (
                 <li
                   key={c.period}
-                  className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-border py-3 font-mono text-xs"
+                  className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-border py-3 text-xs"
                 >
                   <span className="tabular-nums text-foreground">
                     {c.periodLabel} · published {c.publishedEuropean}
@@ -229,7 +229,7 @@ export default async function WarrantCanaryPage() {
       {/* 04 · Non-update protocol */}
       <section id="non-update" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">04 · Non-update protocol</p>
+          <p className="text-xs text-muted-foreground">04 · Non-update protocol</p>
           <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
             If the canary goes silent
           </h2>
@@ -240,7 +240,7 @@ export default async function WarrantCanaryPage() {
 
           <div className="mt-10 grid max-w-3xl gap-10 sm:grid-cols-2">
             <div>
-              <p className="font-mono text-xs text-muted-foreground">Don’t</p>
+              <p className="text-xs text-muted-foreground">Don’t</p>
               <ul className="mt-3 list-disc space-y-2 pl-4 text-sm leading-relaxed text-muted-foreground marker:text-border">
                 {dont.map((item) => (
                   <li key={item}>{item}</li>
@@ -248,7 +248,7 @@ export default async function WarrantCanaryPage() {
               </ul>
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">Do</p>
+              <p className="text-xs text-muted-foreground">Do</p>
               <ul className="mt-3 list-disc space-y-2 pl-4 text-sm leading-relaxed text-muted-foreground marker:text-border">
                 {doList.map((item) => (
                   <li key={item}>{item}</li>

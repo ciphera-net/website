@@ -64,12 +64,12 @@ export default async function TransparencyReportPage() {
         <div className="px-6 py-16 sm:py-20">
           <Link
             href="/trust"
-            className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeftIcon aria-hidden="true" className="h-3.5 w-3.5" />
             Trust
           </Link>
-          <p className="mt-6 font-mono text-xs tabular-nums text-muted-foreground">
+          <p className="mt-6 text-xs tabular-nums text-muted-foreground">
             Transparency report · {current.status} · published {current.publishedEuropean}
           </p>
 
@@ -96,7 +96,7 @@ export default async function TransparencyReportPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <h2 className="sr-only">Historical reports</h2>
-          <p className="font-mono text-xs text-muted-foreground" aria-hidden="true">Historical reports</p>
+          <p className="text-xs text-muted-foreground" aria-hidden="true">Historical reports</p>
           {all.length > 1 ? (
             <ul className="mt-6 max-w-3xl border-t border-border">
               {all.slice(1).map((r) => (
@@ -105,14 +105,14 @@ export default async function TransparencyReportPage() {
                   className="grid gap-1 border-b border-border py-3 text-sm sm:grid-cols-[1fr_auto] sm:gap-6"
                 >
                   <span className="text-foreground">{r.title}</span>
-                  <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                  <span className="text-xs tabular-nums text-muted-foreground">
                     {r.publishedEuropean} · {r.status}
                   </span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="mt-6 font-mono text-xs text-muted-foreground">
+            <p className="mt-6 text-xs text-muted-foreground">
               First report — history accumulates here.
             </p>
           )}
