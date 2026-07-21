@@ -211,9 +211,6 @@ export default function Footer() {
               &copy; 2024&ndash;{new Date().getFullYear()}{' '}
               Ciphera BV &middot; KBO/BCE 1013.721.660 &middot; De Kleetlaan 2, 1831 Diegem, Belgium
             </p>
-            <p className="text-xs text-muted-foreground">
-              Zero-knowledge &middot; Swiss hosted
-            </p>
           </div>
         </div>
       </div>
