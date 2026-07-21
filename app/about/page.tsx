@@ -430,19 +430,9 @@ export default function AboutPage() {
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Who&rsquo;s behind Ciphera
           </h2>
-          <div className="mt-12 border-t border-border pt-8">
-            <div className="grid gap-8 sm:grid-cols-[minmax(0,22rem)_1fr] sm:gap-12">
-              <div className="relative aspect-[4/5] w-full overflow-hidden border border-border">
-                <Image
-                  src={cdnUrl('/team/founder-usman.jpg')}
-                  alt="Usman Baig, founder of Ciphera"
-                  fill
-                  unoptimized
-                  sizes="(min-width: 640px) 22rem, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col justify-center">
+          <div className="mt-12 overflow-hidden border border-border">
+            <div className="grid sm:grid-cols-[1fr_minmax(0,18rem)]">
+              <div className="flex flex-col justify-center p-8 sm:p-10">
                 <p className="text-xs text-muted-foreground">Founder</p>
                 <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight text-foreground">
                   {FOUNDER_NAME}
@@ -474,6 +464,16 @@ export default function AboutPage() {
                     GitHub
                   </a>
                 </div>
+              </div>
+              <div className="relative order-first min-h-[280px] border-b border-border sm:order-last sm:min-h-0 sm:border-b-0 sm:border-l">
+                <Image
+                  src={cdnUrl('/team/founder-usman.jpg')}
+                  alt="Usman Baig, founder of Ciphera"
+                  fill
+                  unoptimized
+                  sizes="(min-width: 640px) 18rem, 100vw"
+                  className="object-cover object-[center_25%]"
+                />
               </div>
             </div>
           </div>
