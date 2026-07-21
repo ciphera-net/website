@@ -61,7 +61,7 @@ export default function FeatureSection() {
         <p className="text-xs text-muted-foreground">
           01 · Why Ciphera
         </p>
-        <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           Built different
         </h2>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">

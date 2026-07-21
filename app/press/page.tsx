@@ -124,7 +124,7 @@ export default function PressPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">Press &amp; Media Kit</p>
-          <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
             Press &amp; media kit
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -148,7 +148,7 @@ export default function PressPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">01 · Boilerplate</p>
-          <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Company description
           </h2>
           <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
@@ -164,7 +164,7 @@ export default function PressPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">02 · Fact sheet</p>
-          <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             The essentials
           </h2>
           <dl className="mt-8 grid max-w-4xl gap-x-12 gap-y-6 sm:grid-cols-2">
@@ -176,7 +176,7 @@ export default function PressPage() {
             ))}
           </dl>
 
-          <h3 className="mt-14 font-display text-lg font-bold tracking-tight text-foreground">
+          <h3 className="mt-14 font-display text-lg font-semibold tracking-tight text-foreground">
             Products
           </h3>
           <ul className="mt-6 max-w-3xl">
@@ -199,7 +199,7 @@ export default function PressPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">03 · Brand assets</p>
-          <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Logos and marks
           </h2>
           <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
@@ -245,7 +245,7 @@ export default function PressPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">04 · Official links</p>
-          <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Verify and follow
           </h2>
           <ul className="mt-8 max-w-3xl">

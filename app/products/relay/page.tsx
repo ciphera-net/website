@@ -119,7 +119,7 @@ export default function CipheraRelayPage() {
         />
         <div className="relative px-6 py-24 sm:py-32">
           <p className="text-xs text-muted-foreground">Ciphera Relay</p>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Transactional email that respects privacy.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
@@ -159,7 +159,7 @@ export default function CipheraRelayPage() {
             ].map((s) => (
               <div key={s.term} className="border-t border-border pt-3">
                 <dt className="text-xs text-muted-foreground">{s.term}</dt>
-                <dd className="mt-1.5 font-display text-3xl font-bold tabular-nums text-foreground">{s.detail}</dd>
+                <dd className="mt-1.5 font-display text-3xl font-semibold tabular-nums text-foreground">{s.detail}</dd>
               </div>
             ))}
           </dl>
@@ -172,7 +172,7 @@ export default function CipheraRelayPage() {
           {/* Copy cell */}
           <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
             <p className="text-xs text-muted-foreground">01 · Email</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Security-critical emails, delivered fast.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -208,14 +208,14 @@ export default function CipheraRelayPage() {
       <section id="features" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">02 · Features</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             Everything in Ciphera Relay.
           </h2>
           <div className="mt-14 grid gap-px border border-border bg-border sm:grid-cols-2">
             {RELAY_FEATURES.map(({ icon: Icon, title, body }) => (
               <div key={title} className="flex flex-col bg-background p-8">
                 <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
-                <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">{title}</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
               </div>
             ))}
@@ -272,7 +272,7 @@ export default function CipheraRelayPage() {
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
             <p className="text-xs text-muted-foreground">03 · SMTP</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Standard SMTP. Any language.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -336,7 +336,7 @@ export default function CipheraRelayPage() {
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
             <p className="text-xs text-muted-foreground">04 · Data residency</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Hosted in Switzerland. Deleted in 30 days.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -367,7 +367,7 @@ export default function CipheraRelayPage() {
       <section id="comparison" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">05 · Compare</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             How Ciphera Relay compares.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -389,7 +389,7 @@ export default function CipheraRelayPage() {
                   />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Ciphera Relay</h3>
+                  <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Ciphera Relay</h3>
                   <p className="text-xs text-primary">Privacy-first email</p>
                 </div>
               </div>
@@ -420,7 +420,7 @@ export default function CipheraRelayPage() {
                   <Eye aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Traditional Services</h3>
+                  <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Traditional Services</h3>
                   <p className="text-xs text-muted-foreground">SendGrid, Postmark, SES</p>
                 </div>
               </div>
@@ -467,7 +467,7 @@ export default function CipheraRelayPage() {
         />
         <div className="relative px-6 py-24 sm:py-32">
           <p className="text-xs text-muted-foreground">06 · Get started</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Interested in Ciphera Relay?
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">

@@ -31,7 +31,7 @@ export default function Hero() {
           Zero-knowledge infrastructure
         </p>
 
-        <h1 className="mt-8 max-w-4xl font-display text-6xl font-bold leading-[0.95] tracking-tight text-foreground sm:text-7xl lg:text-[96px]">
+        <h1 className="mt-8 max-w-4xl font-display text-6xl font-semibold leading-[0.95] tracking-tight text-foreground sm:text-7xl lg:text-[96px]">
           Your data is yours.
         </h1>
 

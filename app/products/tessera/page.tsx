@@ -131,7 +131,7 @@ export default function TesseraPage() {
         />
         <div className="relative px-6 py-24 sm:py-32">
           <p className="text-xs text-muted-foreground">Tessera</p>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Zero-knowledge auth,{' '}<br className="hidden sm:inline" />open source.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
@@ -172,7 +172,7 @@ export default function TesseraPage() {
       <section id="what-it-is" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">01 · What it is</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             An OPAQUE library you can read
           </h2>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
@@ -210,7 +210,7 @@ export default function TesseraPage() {
       <section id="packages" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">02 · Packages</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             Three packages, one protocol
           </h2>
           <div className="mt-14 grid gap-px border border-border bg-border lg:grid-cols-3">
@@ -275,7 +275,7 @@ export default function TesseraPage() {
       <section id="why-opaque" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">03 · Why OPAQUE</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             The password never reaches the server
           </h2>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
@@ -434,7 +434,7 @@ export default function TesseraPage() {
       <section id="who-uses-it" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">04 · Who uses it</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             It runs in production at Ciphera
           </h2>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
@@ -498,7 +498,7 @@ export default function TesseraPage() {
         />
         <div className="relative px-6 py-24 sm:py-32">
           <p className="text-xs text-muted-foreground">05 · Get the code</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Read it, run it, build on it.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">

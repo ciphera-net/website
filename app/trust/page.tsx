@@ -110,7 +110,7 @@ export default async function TrustPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">Trust &amp; Security · updated {lastUpdatedEuropean}</p>
-          <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
             Trust &amp; Security
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -164,7 +164,7 @@ export default async function TrustPage() {
       <section id="the-zero-knowledge-architecture" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">01</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             The zero-knowledge architecture
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -226,7 +226,7 @@ export default async function TrustPage() {
       <section id="data-handling-in-plain-language" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">02</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Data handling in plain language
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -273,7 +273,7 @@ export default async function TrustPage() {
       <section id="open-source-and-audit-status" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">03</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Open source &amp; audit status
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -313,7 +313,7 @@ export default async function TrustPage() {
       <section id="swiss-residency-belgian-jurisdiction" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">04</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Swiss residency, Belgian jurisdiction
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -348,7 +348,7 @@ export default async function TrustPage() {
       <section id="warrant-canary-and-transparency-reports" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">05</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Warrant canary &amp; transparency reports
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -368,7 +368,7 @@ export default async function TrustPage() {
               <p className="text-xs tabular-nums text-muted-foreground">
                 Report · {report.status} · published {report.publishedEuropean}
               </p>
-              <h3 className="mt-2 flex items-center gap-2 font-display text-xl font-bold tracking-tight text-foreground">
+              <h3 className="mt-2 flex items-center gap-2 font-display text-xl font-semibold tracking-tight text-foreground">
                 {report.title}
                 <ArrowRightIcon
                   aria-hidden="true"
@@ -389,7 +389,7 @@ export default async function TrustPage() {
               <p className="text-xs tabular-nums text-muted-foreground">
                 Canary · {canary.periodLabel} · next on or before {canary.nextUpdateEuropean}
               </p>
-              <h3 className="mt-2 flex items-center gap-2 font-display text-xl font-bold tracking-tight text-foreground">
+              <h3 className="mt-2 flex items-center gap-2 font-display text-xl font-semibold tracking-tight text-foreground">
                 Warrant canary
                 <ArrowRightIcon
                   aria-hidden="true"
@@ -462,7 +462,7 @@ export default async function TrustPage() {
       <section id="subprocessors" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">06</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Subprocessors
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -518,7 +518,7 @@ export default async function TrustPage() {
       <section id="coordinated-disclosure" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">07</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Coordinated disclosure
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -552,7 +552,7 @@ export default async function TrustPage() {
       <section id="scope-and-safe-harbor" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">08</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Scope &amp; safe harbor
           </h2>
           <div className="mt-8 grid max-w-4xl gap-10 sm:grid-cols-2">
@@ -604,7 +604,7 @@ export default async function TrustPage() {
       <section id="what-to-expect-from-us" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">09</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             What to expect from us
           </h2>
           <ul className="mt-6 max-w-3xl list-disc space-y-2 pl-6 text-muted-foreground">
@@ -628,7 +628,7 @@ export default async function TrustPage() {
       <section id="our-track-record" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">10</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Our track record
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -649,7 +649,7 @@ export default async function TrustPage() {
       <section id="for-security-reviewers" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">11</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             For security reviewers
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">

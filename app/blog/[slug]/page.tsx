@@ -146,7 +146,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold font-display text-foreground mb-12">
+          <h1 className="text-4xl sm:text-5xl font-semibold font-display text-foreground mb-12">
             {post.title}
           </h1>
 
@@ -164,7 +164,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.faqs.length > 0 && (
               <section className="mt-16">
                 <p className="text-xs text-muted-foreground">FAQ</p>
-                <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                   Frequently Asked Questions
                 </h2>
                 <div className="mt-8">
@@ -180,7 +180,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <section className="border-t border-border">
             <div className="px-6 py-16 sm:py-20">
               <p className="text-xs text-muted-foreground">Get started</p>
-              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground">
+              <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground">
                 Put this into practice.
               </h2>
               <p className="mt-4 max-w-2xl text-base text-muted-foreground">

@@ -21,7 +21,7 @@ export default function Footer() {
                 height={28}
                 className="h-7 w-7 object-contain"
               />
-              <span className="font-display text-lg font-bold tracking-tight text-foreground">
+              <span className="font-display text-lg font-semibold tracking-tight text-foreground">
                 Ciphera
               </span>
             </div>

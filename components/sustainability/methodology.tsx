@@ -89,7 +89,7 @@ export function Methodology({ report }: MethodologyProps) {
       <div className="max-w-4xl mx-auto px-6">
         <div className="mb-12">
           <p className="text-xs text-muted-foreground">04 · Methodology</p>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             How we measure this
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">

@@ -149,8 +149,8 @@ const founderSchema = {
   jobTitle: 'Founder',
   worksFor: { '@id': 'https://ciphera.net/#organization' },
   sameAs: [
-    'https://www.linkedin.com/company/ciphera/',
-    'https://github.com/ciphera-net',
+    'https://www.linkedin.com/in/usman-baig-79b843238/',
+    'https://github.com/uz1mani',
   ],
 }
 
@@ -173,7 +173,7 @@ export default function AboutPage() {
         <div className="grid lg:grid-cols-2">
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
             <p className="text-xs text-muted-foreground">About Ciphera</p>
-            <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               Building the future of privacy.
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
@@ -207,7 +207,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-3">
           {stats.map((s) => (
             <div key={s.label} className="bg-background px-6 py-8">
-              <div className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <div className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
                 {s.value}
               </div>
               <div className="mt-2 text-xs text-muted-foreground">{s.label}</div>
@@ -221,7 +221,7 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">Company facts</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Ciphera BV, on the record
           </h2>
           <dl className="mt-8 grid max-w-4xl gap-x-12 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -260,7 +260,7 @@ export default function AboutPage() {
           </div>
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
             <p className="text-xs text-muted-foreground">01 · Mission</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Encryption that works invisibly
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -283,7 +283,7 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">02 · Values</p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             What we stand for
           </h2>
           <div className="mt-14 grid gap-x-14 gap-y-12 sm:grid-cols-2">
@@ -295,7 +295,7 @@ export default function AboutPage() {
                     <span className="text-xs text-muted-foreground">0{i + 1}</span>
                     <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
                   </div>
-                  <h3 className="mt-5 font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+                  <h3 className="mt-5 font-display text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
                     {v.title}
                   </h3>
                   <p className="mt-3 leading-relaxed text-muted-foreground">{v.description}</p>
@@ -321,7 +321,7 @@ export default function AboutPage() {
           <p className="text-xs text-muted-foreground">03 · Technology</p>
           <div className="mt-8 grid gap-14 lg:grid-cols-2">
             <div>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
                 Built with modern, secure technologies
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -366,7 +366,7 @@ export default function AboutPage() {
             </div>
 
             <div className="lg:pl-14">
-              <h3 className="font-display text-xl font-bold tracking-tight text-foreground">
+              <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">
                 Architecture overview
               </h3>
               <p className="mt-4 leading-relaxed text-muted-foreground">
@@ -406,13 +406,13 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">04 · Journey</p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Building privacy, one step at a time
           </h2>
           <div className="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-3">
             {timeline.map((item) => (
               <div key={item.year} className="border-t border-border pt-6">
-                <div className="font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+                <div className="font-display text-5xl font-semibold tracking-tight text-foreground sm:text-6xl">
                   {item.year}
                 </div>
                 <p className="mt-5 leading-relaxed text-muted-foreground">{item.event}</p>
@@ -427,40 +427,54 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">Team</p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Who&rsquo;s behind Ciphera
           </h2>
           <div className="mt-12 max-w-2xl border-t border-border pt-8">
-            <p className="text-xs text-muted-foreground">Founder</p>
-            <h3 className="mt-3 font-display text-2xl font-bold tracking-tight text-foreground">
-              {FOUNDER_NAME}
-            </h3>
-            <p className="mt-4 leading-relaxed text-muted-foreground">
-              {FOUNDER_NAME}{' '}founded Ciphera BV in 2024 and leads it from Belgium. Ciphera&rsquo;s
-              privacy-first products — Pulse, Ciphera ID, Captcha, and Relay — and its open-source
-              Tessera authentication library were built under that direction.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-              <a
-                href="https://www.linkedin.com/company/ciphera/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-3.5 w-3.5">
-                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z" />
-                </svg>
-                LinkedIn
-              </a>
-              <a
-                href="https://github.com/ciphera-net"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
-              >
-                <GithubIcon aria-hidden="true" className="h-3.5 w-3.5" />
-                GitHub
-              </a>
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+              <div className="relative h-44 w-36 shrink-0 overflow-hidden border border-border">
+                <Image
+                  src={cdnUrl('/website/team/founder-usman.jpg')}
+                  alt="Usman Baig, founder of Ciphera"
+                  fill
+                  unoptimized
+                  sizes="144px"
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Founder</p>
+                <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight text-foreground">
+                  {FOUNDER_NAME}
+                </h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  {FOUNDER_NAME}{' '}founded Ciphera BV in 2024 and leads it from Belgium. Ciphera&rsquo;s
+                  privacy-first products — Pulse, Ciphera ID, Captcha, and Relay — and its open-source
+                  Tessera authentication library were built under that direction.
+                </p>
+                <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+                  <a
+                    href="https://www.linkedin.com/in/usman-baig-79b843238/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-3.5 w-3.5">
+                      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z" />
+                    </svg>
+                    LinkedIn
+                  </a>
+                  <a
+                    href="https://github.com/uz1mani"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+                  >
+                    <GithubIcon aria-hidden="true" className="h-3.5 w-3.5" />
+                    GitHub
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -482,7 +496,7 @@ export default function AboutPage() {
         />
         <div className="relative px-6 py-24 sm:py-32">
           <p className="text-xs text-muted-foreground">05 · Get started</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             One account. Every product.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">

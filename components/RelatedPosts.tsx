@@ -34,7 +34,7 @@ export default function RelatedPosts({
 
   return (
     <section className="mt-16 pt-12 border-t border-border">
-      <h2 className="text-2xl font-bold font-display text-foreground mb-8">
+      <h2 className="text-2xl font-semibold font-display text-foreground mb-8">
         Related Articles
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

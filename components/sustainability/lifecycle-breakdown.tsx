@@ -55,7 +55,7 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
         <div className="mt-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — copy */}
           <div>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight mb-6">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground leading-tight mb-6">
               We count the whole lifecycle, not just the plug.
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">

@@ -75,7 +75,7 @@ export default async function TransparencyReportPage() {
 
           <article
             className="prose prose-invert mt-8 max-w-3xl
-              prose-headings:font-display prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
+              prose-headings:font-display prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-foreground
               prose-h1:text-4xl prose-h1:leading-[1.05] sm:prose-h1:text-5xl
               prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground
               prose-a:text-primary prose-a:underline

@@ -60,7 +60,7 @@ export default function GlossaryPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">Reference</p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+          <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
             The privacy glossary.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">

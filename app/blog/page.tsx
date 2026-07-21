@@ -51,7 +51,7 @@ export default function BlogPage() {
         <div className="px-6 py-16 sm:py-24 pt-32">
           <div className="max-w-4xl">
             <p className="text-xs text-muted-foreground">Blog</p>
-            <h1 className="mt-6 font-display text-5xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               Privacy &amp; Security Insights
             </h1>
             <p className="mt-6 text-xl text-muted-foreground leading-relaxed">

@@ -38,7 +38,7 @@ export function SwissGridBlock() {
         {/* Right — copy on solid dark */}
         <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
           <p className="text-xs text-muted-foreground">02 · The Swiss grid</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             One of the cleanest grids in Europe, by accident of geography.
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -52,7 +52,7 @@ export function SwissGridBlock() {
           <div className="mt-10 grid grid-cols-3 gap-px border border-border bg-border">
             {gridFacts.map((f) => (
               <div key={f.label} className="bg-background px-4 py-5">
-                <div className="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                <div className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                   {f.value}
                 </div>
                 <div className="mt-1 text-xs text-muted-foreground">{f.label}</div>

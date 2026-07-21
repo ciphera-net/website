@@ -81,7 +81,7 @@ export default async function WarrantCanaryPage() {
             Trust
           </Link>
           <p className="mt-6 text-xs text-muted-foreground">Warrant canary · {canary.periodLabel}</p>
-          <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
             Warrant canary
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -230,7 +230,7 @@ export default async function WarrantCanaryPage() {
       <section id="non-update" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
           <p className="text-xs text-muted-foreground">04 · Non-update protocol</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             If the canary goes silent
           </h2>
           <p className="mt-6 max-w-2xl leading-relaxed text-muted-foreground">

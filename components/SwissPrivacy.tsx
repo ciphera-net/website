@@ -64,7 +64,7 @@ export default function SwissPrivacy() {
               03 · Swiss privacy
             </p>
 
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
               Swiss data residency. FADP + GDPR.
             </h2>
 

@@ -71,7 +71,7 @@ export default function LearnPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">Learn</p>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Guides, References &amp; Deep-Dives
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -156,7 +156,7 @@ export default function LearnPage() {
             {grouped.map((group) => (
               <section key={group.category} id={`cat-${group.category}`}>
                 <div className="mb-6 flex items-baseline justify-between border-t border-border pt-4">
-                  <h2 className="font-display text-xl font-bold tracking-tight text-foreground">
+                  <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
                     {CATEGORY_LABELS[group.category] ?? group.category}
                   </h2>
                   <span className="text-xs tabular-nums text-muted-foreground">

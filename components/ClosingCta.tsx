@@ -14,7 +14,7 @@ export default function ClosingCta() {
         <p className="text-xs text-muted-foreground">
           05 · Get started
         </p>
-        <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
+        <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-5xl">
           Own your data.
         </h2>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">

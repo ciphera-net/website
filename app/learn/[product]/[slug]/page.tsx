@@ -121,7 +121,7 @@ export default async function LearnArticlePage({ params }: Props) {
               </span>
             </div>
 
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-8">
+            <h1 className="font-display text-3xl sm:text-4xl font-semibold text-foreground leading-tight mb-8">
               {article.title}
             </h1>
 

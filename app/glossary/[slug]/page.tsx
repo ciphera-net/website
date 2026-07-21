@@ -99,7 +99,7 @@ export default async function GlossaryTermPage({ params }: Props) {
           <p className="mt-8 text-xs text-muted-foreground">
             Glossary · {term.category}
           </p>
-          <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
             {term.term}
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-foreground">{term.short}</p>
@@ -114,7 +114,7 @@ export default async function GlossaryTermPage({ params }: Props) {
 
           {term.faq && term.faq.length > 0 && (
             <section className="mt-12">
-              <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
                 Common questions
               </h2>
               <dl className="mt-6 divide-y divide-border border border-border">

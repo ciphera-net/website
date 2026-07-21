@@ -136,7 +136,7 @@ export default function PulsePage() {
         />
         <div className="relative px-6 py-24 sm:py-32">
           <p className="text-xs text-muted-foreground">Pulse</p>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Analytics without{' '}<br className="hidden sm:inline" />the surveillance.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
@@ -182,7 +182,7 @@ export default function PulsePage() {
           {/* Copy cell */}
           <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
             <p className="text-xs text-muted-foreground">01 · Dashboard</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Your traffic, at a glance.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -224,14 +224,14 @@ export default function PulsePage() {
       <section id="features" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">02 · Features</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             Everything in Pulse.
           </h2>
           <div className="mt-14 grid gap-px border border-border bg-border sm:grid-cols-2">
             {PULSE_FEATURES.map(({ icon: Icon, title, body }) => (
               <div key={title} className="flex flex-col bg-background p-8">
                 <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
-                <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">{title}</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
               </div>
             ))}
@@ -298,7 +298,7 @@ export default function PulsePage() {
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
             <p className="text-xs text-muted-foreground">03 · Script</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               One script tag. That&apos;s it.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -360,7 +360,7 @@ export default function PulsePage() {
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
             <p className="text-xs text-muted-foreground">04 · Data residency</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Hosted in Switzerland. Discarded at the edge.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -390,7 +390,7 @@ export default function PulsePage() {
       <section id="comparison" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">05 · Compare</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             How Pulse compares.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -426,7 +426,7 @@ export default function PulsePage() {
                   />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Pulse</h3>
+                  <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Pulse</h3>
                   <p className="text-xs text-primary">Privacy-first analytics</p>
                 </div>
               </div>
@@ -462,7 +462,7 @@ export default function PulsePage() {
                   />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Google Analytics</h3>
+                  <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Google Analytics</h3>
                   <p className="text-xs text-muted-foreground">Traditional tracking</p>
                 </div>
               </div>
@@ -515,7 +515,7 @@ export default function PulsePage() {
         />
         <div className="relative px-6 py-24 sm:py-32">
           <p className="text-xs text-muted-foreground">07 · Get started</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Start tracking with privacy.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">

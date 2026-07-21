@@ -254,7 +254,7 @@ export default function ContactPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">Get in touch</p>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             We&apos;re here to help
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -270,7 +270,7 @@ export default function ContactPage() {
           {/* * Left — info + office photo + business hours */}
           <div className="flex flex-col px-6 py-16 sm:py-24 lg:pr-14 border-b border-border lg:border-b-0 lg:border-r">
             <p className="text-xs text-muted-foreground">01 · Office</p>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
               Send us a message
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -308,7 +308,7 @@ export default function ContactPage() {
               <div className="flex items-start gap-3 border-t border-border bg-card p-4">
                 <GlobeIcon className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="font-display text-sm font-bold text-foreground">
+                  <h3 className="font-display text-sm font-semibold text-foreground">
                     Headquarters
                   </h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
@@ -329,7 +329,7 @@ export default function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-display text-sm font-bold text-foreground">
+                  <h3 className="font-display text-sm font-semibold text-foreground">
                     Business Hours
                   </h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
@@ -561,7 +561,7 @@ export default function ContactPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
           <p className="text-xs text-muted-foreground">02 · Contact</p>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Reach us directly
           </h2>
           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -574,7 +574,7 @@ export default function ContactPage() {
                 >
                   {/* A6 icon — bare icon, no colored bubble */}
                   <Icon className="h-5 w-5 text-muted-foreground" />
-                  <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">
+                  <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-foreground">
                     {method.title}
                   </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
@@ -616,7 +616,7 @@ export default function ContactPage() {
               <svg className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">
+              <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-foreground">
                 Phone
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">
