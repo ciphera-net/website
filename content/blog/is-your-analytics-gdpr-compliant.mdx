@@ -1,0 +1,103 @@
+---
+title: "Is Your Website Analytics GDPR-Compliant? A 2026 Checklist"
+description: "GDPR applies to your analytics the moment it processes personal data — and an IP address usually counts. A practical, source-backed 2026 checklist: lawful basis, data minimisation, retention, international transfers, and the one design choice that collapses most of it."
+category: Privacy
+date: "2026-07-22"
+readTime: "12 min read"
+image: "/blog/og/is-your-analytics-gdpr-compliant.png"
+faqs:
+  - question: "Is Google Analytics GDPR-compliant?"
+    answer: "It can be configured toward compliance, but it has a structural problem: between 2022 and 2023, the data protection authorities of Austria, France, and Italy each ruled that using Google Analytics unlawfully transferred EU visitors' data to the United States. The EU-US Data Privacy Framework adopted in 2023 restored a legal transfer route for certified US companies, but that framework is itself under an unresolved legal challenge. So GA is not automatically compliant — it depends on configuration, consent, and a transfer mechanism that is currently contested."
+  - question: "Do I need consent to run analytics under GDPR?"
+    answer: "There are two separate questions. First, the ePrivacy rules require consent before storing or reading information on a visitor's device, such as a cookie — legitimate interest cannot substitute for this. Second, GDPR requires a lawful basis (consent or legitimate interest) for processing any personal data, such as an IP address. A tool can clear one bar and not the other. The cleanest way to avoid both is to process no personal data and store nothing on the device."
+  - question: "Are hashed or truncated IP addresses anonymous under GDPR?"
+    answer: "Usually not. According to the European Data Protection Board's 2025 guidelines on pseudonymisation, data that could still be attributed to a person using additional information is pseudonymised, not anonymised — and pseudonymised data remains personal data under GDPR. Truncating or hashing an IP reduces risk but does not by itself take the data out of GDPR's scope. Genuine anonymisation requires that re-identification is no longer reasonably possible by anyone."
+  - question: "Does hosting my analytics in the EU or Switzerland make it GDPR-compliant?"
+    answer: "It solves one specific problem — international transfers — but not the whole picture. Keeping data in the EU, or in Switzerland under the EU's reaffirmed adequacy finding, means you avoid the Schrems II transfer question that made US-hosted tools unlawful. But you still need a lawful basis, data minimisation, and the rest of the checklist. EU or Swiss hosting is necessary for a clean posture, not sufficient on its own."
+  - question: "Can web analytics avoid GDPR entirely?"
+    answer: "Only by processing genuinely no personal data: no cookie or cross-site identifier, no retained IP address, and output that is truly aggregate and non-re-identifiable. That is a design choice made at the architecture level, not a setting you toggle. If a tool momentarily processes an IP to compute a statistic, that momentary use is still processing under GDPR — but if it retains nothing identifying, almost none of the downstream obligations have anything to attach to."
+---
+
+Ask ten website owners whether their analytics is GDPR-compliant and you will get ten confident answers, most of them wrong in the same direction: "we added a cookie banner, so we're fine." A banner is one small piece of a much larger picture, and it doesn't touch the questions that actually decide whether your analytics is lawful — what data you collect, why, where it goes, and how long you keep it.
+
+The good news is that GDPR compliance for analytics is not mysterious. It is a finite checklist, every item of which traces back to a specific article or ruling you can read yourself. The more useful news is that there is one architectural decision that makes most of the checklist evaporate — and it is worth understanding before you spend a quarter arguing with a consent-management platform.
+
+<BlogBlockquote variant="tldr">
+
+GDPR governs your analytics the moment it processes personal data, and an IP address usually qualifies. That pulls in a lawful basis, data minimisation, retention limits, transparency, sometimes a formal impact assessment, and a separate consent rule for anything stored on the device. The sharpest failure mode is international transfers — Google Analytics was ruled unlawful across the EU in 2022 for sending data to the US, and the framework that restored transfers is in force but under active legal challenge. The cleanest compliance path isn't paperwork: it's processing no personal data and hosting in the EU or Switzerland. This is the checklist, and how Pulse's architecture answers each line.
+
+</BlogBlockquote>
+
+## When does GDPR even apply to your analytics?
+
+GDPR applies to the processing of *personal data* — [Article 4(1)](https://gdpr-info.eu/art-4-gdpr/) defines that as "any information relating to an identified or identifiable natural person," including someone identifiable indirectly "by reference to an identifier such as a name, an identification number, location data, an online identifier." The whole question of whether GDPR governs your analytics turns on whether what you collect counts as personal data.
+
+For most analytics, it does — because of the IP address. [Recital 30](https://gdpr-info.eu/recitals/no-30/) of the GDPR names IP addresses and cookie identifiers explicitly as "online identifiers" that can be used to profile and identify people. The Court of Justice reinforced this in [Breyer](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A62014CJ0582) (Case C-582/14): a dynamic IP address is personal data for a website operator *wherever* that operator has a legal means of obtaining, from a third party like an internet provider, the extra information needed to identify the visitor. The ruling is conditional rather than absolute — but in practice, regulators now treat that condition as met in essentially every EU online context, which is why IP addresses are treated as personal data by default. A 2025 CJEU decision ([EDPS v SRB](https://www.jonesday.com/en/insights/2025/09/cjeu-clarifies-scope-of-personal-data-in-edps-v-srb-decision), C-413/23 P) refined the edges — whether pseudonymised data is "personal" depends on who holds it and what they can reasonably do — but did not change the baseline for an analytics operator sitting on raw request data.
+
+Here is the trap that catches a lot of "privacy-friendly" tools: **not retaining data is not the same as not processing it.** [Article 4(2)](https://gdpr-info.eu/art-4-gdpr/) defines processing to include mere *collection*, not just storage. If a tool reads your IP address for a fraction of a second to derive a country or a counting hash and then throws it away, that fraction of a second is still processing of personal data, and it still needs a lawful basis. "We don't store IPs" is a good and important property — but on its own it does not put you outside GDPR. It changes *how much* is at stake, not *whether the rules apply*.
+
+## The checklist
+
+Once GDPR applies, these are the obligations that decide whether your analytics deployment is lawful. None of them is exotic; all of them are checkable against your actual setup.
+
+| What GDPR requires | Article | How to check your setup |
+|---|---|---|
+| **A lawful basis** — consent or legitimate interest | [Art 6](https://gdpr-info.eu/art-6-gdpr/) | Can you name your basis? If legitimate interest, is the balancing test documented? (Separate from cookie consent, below.) |
+| **Purpose limitation** | [Art 5(1)(b)](https://gdpr-info.eu/art-5-gdpr/) | Is every field tied to a stated purpose, or collected "just in case"? |
+| **Data minimisation** | Art 5(1)(c) | Full IPs, precise geolocation, or per-user journeys you never use? |
+| **Storage limitation** | Art 5(1)(e) | Is there a real retention period — and does data actually get deleted? |
+| **Protection by design & default** | [Art 25](https://gdpr-info.eu/art-25-gdpr/) | Built in from the start, or bolted on after? |
+| **Transparency** | Arts 12–14 | Does your privacy notice describe the analytics accurately? |
+| **A DPIA** where the risk is high | [Art 35](https://gdpr-info.eu/art-35-gdpr/) | Does the tool profile or track at scale? If so, is it assessed? |
+| **Records of processing** | [Art 30](https://gdpr-info.eu/art-30-gdpr/) | The "under 250 staff" exemption is narrow — most tracking still needs a record. |
+| **A lawful transfer** if data leaves the EEA | [Chapter V](https://gdpr-info.eu/chapter-5/) | See the next section — where most tools fail. |
+| **Consent for device storage** (ePrivacy, separate) | Art 5(3) ePD | Sets a cookie or reads storage? You generally need prior consent — see the [cookie-banner post](/blog/do-you-need-a-cookie-banner-for-analytics). |
+
+Two of these deserve emphasis because they are the most commonly botched. The **lawful basis and the cookie consent are different questions** — you can have a valid legitimate-interest basis for processing analytics data and *still* be required to get consent before setting the cookie, because those obligations come from two different laws. And the **records exemption is a trap**: "we're a small company" is not the shield people assume, because the exemption falls away for processing that is regular or that risks people's rights, which is most analytics.
+
+## The transfer trap — where most tools actually fail
+
+If there is one line on the checklist that has done the most legal damage, it is international transfers. And the story is best told through the tool most sites reach for.
+
+In 2020, the Court of Justice's [Schrems II](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A62018CJ0311) ruling (Case C-311/18) struck down the EU-US Privacy Shield, holding that US surveillance law did not offer EU-equivalent protection or redress. Then, across 2022, a coordinated wave of complaints turned that principle on Google Analytics specifically. The Austrian authority [ruled first](https://noyb.eu/en/austrian-dsb-eu-us-data-transfers-google-analytics-illegal) (decision published January 2022) that a website's use of Google Analytics was an unlawful transfer of personal data to the US; France's CNIL issued formal notices weeks later; and Italy's Garante followed in June, in a decision against [Caffeina Media](https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9782890) that made a point worth remembering — it held that Google's "IP anonymisation" feature is *pseudonymisation*, not anonymisation, because Google retains the capacity to re-identify. These three were the most visible of roughly a hundred near-identical complaints filed across the EEA. The pattern was uniform: US-hosted analytics, EU visitors, no adequate safeguard.
+
+The 2023 [EU-US Data Privacy Framework](/blog/eu-us-data-privacy-framework-executive-order) restored a lawful transfer route for US organisations that self-certify under it — and it is formally in force in 2026. But it should be treated as *live and contested*, not settled: its first court challenge was dismissed by the EU General Court in September 2025, and that dismissal was [appealed to the Court of Justice](https://iapp.org/news/a/european-general-court-dismisses-latombe-challenge-upholds-eu-us-data-privacy-framework) (Case C-703/25 P), which was still pending as of mid-2026 — while separate concerns about the independence of the US oversight board that the framework relies on have added political fragility. Building your compliance on a transfer mechanism that a pending case could unwind is a risk you should at least take with your eyes open.
+
+There is a way to make the entire transfer question disappear: don't transfer. If analytics data never leaves the EU — or sits in Switzerland, whose adequacy the European Commission [reaffirmed](https://www.edoeb.admin.ch/en/15012024-eu-adequacy-decision-regarding-switzerland) in its January 2024 periodic review of that country's long-standing adequate status — then Chapter V simply isn't engaged. No standard contractual clauses, no supplementary-measures analysis, no framework-under-appeal to worry about. Residency is not a compliance silver bullet on its own, but it removes the single hardest line on the checklist.
+
+## The shortcut: process no personal data
+
+Look back at the checklist and notice something. Almost every obligation is triggered by *processing personal data*. Lawful basis, minimisation, retention, records, transfers, most DPIA triggers — they all attach to personal data. Remove the personal data, and most of the list has nothing to attach to.
+
+That is the architectural move privacy-first analytics is built around: collect no cookie or cross-site identifier, retain no IP address, and produce output that is genuinely aggregate. If the data you keep cannot be tied back to a person, [Recital 26](https://gdpr-info.eu/recitals/no-26/) takes it outside GDPR's scope entirely, because the data-protection principles "do not apply to anonymous information."
+
+But this is exactly where honesty has to be louder than marketing, because two shortcuts here are false:
+
+- **"Aggregated" is not automatically "anonymous."** Aggregation can still leak identity through small cells and singling-out; whether an aggregate output is truly anonymous is a substantive, fact-specific question, not a label you get to apply because you ran a `GROUP BY`.
+- **Hashed or truncated IPs are pseudonymisation, not anonymisation.** The EDPB's [2025 guidelines on pseudonymisation](https://www.edpb.europa.eu/system/files/2025-01/edpb_guidelines_202501_pseudonymisation_en.pdf) are explicit: data that could be attributed to a person using additional information remains personal data, even if the person holding it has erased that additional information — it becomes anonymous only if the full conditions for anonymity are met. So a tool that same-day-hashes your IP and calls the result "anonymous" is usually overstating it. The data is minimised and pseudonymised — which is genuinely better — but it is not magically outside GDPR.
+
+The honest version of the shortcut, then, is not "we process no personal data, so GDPR doesn't apply to us." It is: *we minimise processing to the point where there is almost nothing left to govern, and we build toward genuine anonymity in the output.* That is a defensible, checkable claim. "We're exempt" is not.
+
+## How Pulse checks each box
+
+[Pulse](/products/pulse) is our own analytics product, and it was designed around exactly this shortcut — not to *manage* GDPR obligations after the fact, but to remove what triggers them. Here is how it maps to the checklist, from the code rather than the brochure. (For the full architectural accounting, including the exact session-hash mechanics, see [what we see about you, and what we don't](/blog/what-we-see-about-you-what-we-dont).)
+
+**Personal data — minimised to a transient moment.** Pulse does process your IP address, and we should say so plainly: to count a visit it needs the IP for the instant it takes to compute a session hash and an optional country lookup. Under GDPR, that momentary use is processing. What Pulse does *not* do is keep it. A dedicated middleware wipes the raw IP from the request the moment the derived values are computed; the events table has no column for an IP address or a raw user-agent to live in. So the processing exists, but it leaves nothing behind for the rest of the checklist to grip.
+
+**Data minimisation and by-design (Art 5(1)(c), Art 25).** There is no persistent visitor identifier — no cookie, no cross-site ID, no fingerprint. Unique visitors are counted with a server-side salted hash of the IP, user-agent, and domain, where the salt rotates every day, so the same person is uncorrelated from one day to the next. The dashboard's only visitor metric is a plain `COUNT(DISTINCT session_id)` — an aggregate, never a per-person profile. Minimisation isn't a setting here; it's the shape of the data model.
+
+**Geolocation without a data-sharing step.** Country and region come from a geo-IP database queried *in process*, on our own infrastructure — your IP is never sent to a third-party geolocation service. Only the derived country/region strings are kept.
+
+**International transfers (Chapter V) — not engaged.** Pulse's data lives in Switzerland (Exoscale's Zurich datacentre), and there is no US sub-processor in the path. The single hardest line on the checklist — the one that sank Google Analytics — simply does not arise, because nothing crosses to a jurisdiction that needs a transfer mechanism. We wrote about [why Swiss infrastructure matters](/blog/why-swiss-infrastructure-matters-for-data-privacy) for exactly this reason.
+
+**Device storage / cookie consent — nothing to consent to.** The tracker sets no cookie and stores no identifier, so the separate ePrivacy consent question that a cookie triggers doesn't arise for it. (The honest footnotes — two non-identifying local flags, and the fact that logging into the Pulse *dashboard* uses ordinary session cookies — are covered in the [cookie-banner companion post](/blog/do-you-need-a-cookie-banner-for-analytics).)
+
+The net effect is not that Pulse waves a wand and exits GDPR. It is that the obligations which normally pile up around retained personal data — subject-access requests for visitor data, retention schedules, breach exposure, transfer paperwork — mostly have nothing to attach to, because there is no retained personal data to be the subject of them. That is a quieter claim than "100% compliant, guaranteed," and a much more honest one.
+
+## Compliant by design, not by disclaimer
+
+If you take one thing from the checklist, let it be this: GDPR compliance for analytics is decided by architecture far more than by paperwork. You can paper over a data-hungry tool with a legitimate-interest assessment, a consent banner, standard contractual clauses, and a retention policy — and you will still be carrying every one of those obligations, plus the risk that a pending court case or a regulator's next decision moves the ground under you. Or you can choose a tool that never collects the thing that triggers the obligations in the first place, and spend that quarter on your product instead.
+
+There is no configuration that makes a US-hosted, cookie-setting, IP-retaining analytics tool disappear from GDPR's scope. There is an architecture that gets most of the way there — cookieless, identifier-free, aggregate-only, hosted in the EU's neighbourhood — and the difference between the two is not marketing. It is what your data model actually does when a visitor loads your page. Ours you can read; that was the whole point of building it in the open.
+
+*This post is an engineering and legal-landscape explainer, not legal advice. Whether a specific analytics deployment is GDPR-compliant depends on your configuration, jurisdiction, and processing purposes; consult a qualified adviser or your supervisory authority for a determination about your own site.*
