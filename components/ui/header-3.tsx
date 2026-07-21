@@ -29,6 +29,7 @@ import {
     FileText,
     Leaf,
     PaperPlaneTilt as Send,
+    Newspaper,
     Fingerprint,
     Scan as ScanLine,
     PuzzlePiece as Puzzle,
@@ -481,6 +482,12 @@ const companyLinks: LinkItem[] = [
         href: '/trust',
         description: 'Architecture proofs, warrant canary & disclosure policy',
         icon: ShieldCheck,
+    },
+    {
+        title: 'Press',
+        href: '/press',
+        description: 'Media kit, company facts & brand assets',
+        icon: Newspaper,
     },
 ];
 
