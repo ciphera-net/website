@@ -3,14 +3,12 @@ import Image from 'next/image'
 import {
   ArrowRightIcon,
   CheckIcon,
-  GlobeIcon,
   GithubIcon,
   LockIcon,
-  EyeOffIcon,
-  LayoutDashboardIcon,
 } from '@ciphera-net/facet'
 import { Fingerprint, Key } from '@phosphor-icons/react/dist/ssr'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import ValuesScroll from '@/components/ValuesScroll'
 import {
   zurichPhoto,
   swissAlpsFlagPhoto,
@@ -26,35 +24,6 @@ const stats = [
   { value: '2024', label: 'Founded' },
   { value: '4', label: 'Services shipped' },
   { value: 'AGPL-3.0 / Apache-2.0', label: 'Open source' },
-] as const
-
-const values = [
-  {
-    icon: LockIcon,
-    title: 'Privacy by design',
-    description:
-      'Every component is built with privacy as the foundation — end-to-end encryption, zero-knowledge architecture, and minimal data collection.',
-  },
-  {
-    icon: EyeOffIcon,
-    title: 'Zero-knowledge',
-    description:
-      'Your password never reaches our servers, and your vault is encrypted on your own device. We verify who you are without ever seeing your secrets.',
-  },
-  {
-    icon: LayoutDashboardIcon,
-    title: 'Transparency',
-    description:
-      'Our code is open for anyone to inspect — and we’re opening more of it. We publish a warrant canary and a transparency report. Trust is earned, not marketed.',
-    href: '/trust',
-    linkLabel: 'See the trust hub',
-  },
-  {
-    icon: GlobeIcon,
-    title: 'User control',
-    description:
-      'You own your encryption keys and can delete your data at any time. We can’t decrypt your vault — not even under a court order.',
-  },
 ] as const
 
 // * Brand marks (Go/Next.js/PostgreSQL) are monochrome Simple Icons on the CDN;
@@ -279,41 +248,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values — editorial list */}
-      <section className="border-b border-border">
-        <div className="px-6 py-16 sm:py-24">
-          <p className="text-xs text-muted-foreground">02 · Values</p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            What we stand for
-          </h2>
-          <div className="mt-14 grid gap-x-14 gap-y-12 sm:grid-cols-2">
-            {values.map((v, i) => {
-              const Icon = v.icon
-              return (
-                <div key={v.title} className="border-t border-border pt-6">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-muted-foreground">0{i + 1}</span>
-                    <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <h3 className="mt-5 font-display text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-                    {v.title}
-                  </h3>
-                  <p className="mt-3 leading-relaxed text-muted-foreground">{v.description}</p>
-                  {'href' in v && (
-                    <Link
-                      href={v.href}
-                      className="mt-4 inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                    >
-                      {v.linkLabel}
-                      <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
-                    </Link>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+      {/* Values — scroll-driven reveal (see components/ValuesScroll) */}
+      <ValuesScroll />
 
       {/* Technology — airy two-column */}
       <section className="border-b border-border">
