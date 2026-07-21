@@ -24,6 +24,16 @@ export const blogPosts: BlogPostSummary[] = [
     "image": "/blog/og/do-you-need-a-cookie-banner-for-analytics.png"
   },
   {
+    "slug": "is-your-analytics-gdpr-compliant",
+    "title": "Is Your Website Analytics GDPR-Compliant? A 2026 Checklist",
+    "description": "GDPR applies to your analytics the moment it processes personal data — and an IP address usually counts. A practical, source-backed 2026 checklist: lawful basis, data minimisation, retention, international transfers, and the one design choice that collapses most of it.",
+    "category": "Privacy",
+    "date": "2026-07-22",
+    "dateModified": "2026-07-22",
+    "readTime": "12 min read",
+    "image": "/blog/og/is-your-analytics-gdpr-compliant.png"
+  },
+  {
     "slug": "ciphera-captcha-vs-recaptcha-vs-turnstile",
     "title": "Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha (2026)",
     "description": "The bot-protection widget you add to a form often watches your visitors more than it protects them. A privacy- and jurisdiction-first comparison of reCAPTCHA, Turnstile, hCaptcha, and Ciphera Captcha's proof-of-work, cookieless approach.",

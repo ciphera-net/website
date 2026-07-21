@@ -52,6 +52,7 @@ else
     "https://ciphera.net/blog/ciphera-id-vs-auth0-vs-clerk"
     "https://ciphera.net/blog/ciphera-captcha-vs-recaptcha-vs-turnstile"
     "https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics"
+    "https://ciphera.net/blog/is-your-analytics-gdpr-compliant"
   )
 fi
 
