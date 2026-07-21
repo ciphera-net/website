@@ -61,36 +61,6 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
-
-            {/* Zero-knowledge trust badge — a diamond lock seal (ties to the brand
-                mark, stays sharp), our own verifiable claim, links to /trust */}
-            <Link
-              href="/trust"
-              className="group mt-8 flex max-w-sm items-center gap-4 border border-border p-4 transition-colors duration-fast hover:border-line-hover"
-            >
-              <span className="relative flex h-12 w-12 shrink-0 items-center justify-center">
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0.5 rotate-45 border border-primary/40 bg-primary/[0.06]"
-                />
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-[7px] rotate-45 border border-primary/20"
-                />
-                <LockIcon aria-hidden="true" className="relative h-4 w-4 text-primary" />
-              </span>
-              <span>
-                <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                  Zero-knowledge
-                </span>
-                <span className="mt-1 block text-sm font-semibold leading-snug text-foreground">
-                  We hold the ciphertext, never your keys.
-                </span>
-                <span className="mt-1 block text-xs text-primary group-hover:underline">
-                  Verified on our trust hub &rarr;
-                </span>
-              </span>
-            </Link>
           </div>
 
           {/* Products */}
@@ -236,14 +206,39 @@ export default function Footer() {
       {/* Bottom bar */}
       <div>
         <div className="px-6 py-6">
-          <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-            <p className="text-xs text-muted-foreground">
+          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:gap-4">
+            <p className="order-last text-xs text-muted-foreground sm:order-first">
               &copy; 2024&ndash;{new Date().getFullYear()}{' '}
               Ciphera BV &middot; KBO/BCE 1013.721.660 &middot; De Kleetlaan 2, 1831 Diegem, Belgium
             </p>
-            <p className="text-xs text-muted-foreground">
-              Zero-knowledge &middot; Swiss hosted
-            </p>
+            {/* Zero-knowledge trust badge — diamond lock seal, our own verifiable claim, links to /trust */}
+            <Link
+              href="/trust"
+              className="group flex shrink-0 items-center gap-3 border border-border px-4 py-3 transition-colors duration-fast hover:border-line-hover"
+            >
+              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center">
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0.5 rotate-45 border border-primary/40 bg-primary/[0.06]"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-[6px] rotate-45 border border-primary/20"
+                />
+                <LockIcon aria-hidden="true" className="relative h-3.5 w-3.5 text-primary" />
+              </span>
+              <span>
+                <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                  Zero-knowledge
+                </span>
+                <span className="mt-0.5 block text-xs font-semibold leading-snug text-foreground">
+                  We hold the ciphertext, never your keys.
+                </span>
+                <span className="mt-0.5 block text-[11px] text-primary group-hover:underline">
+                  Verified on our trust hub &rarr;
+                </span>
+              </span>
+            </Link>
           </div>
         </div>
       </div>
