@@ -219,34 +219,40 @@ export default function TesseraPage() {
                 </h3>
                 <p className="mt-1 text-sm font-semibold text-foreground">{p.role}</p>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-                <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border pt-4">
+                <div className="mt-5 flex items-center gap-2.5 border-t border-border pt-4">
+                  {/* * Footer-style bordered icon tiles — the site's canonical
+                      external-brand-link treatment (see components/Footer.tsx). */}
                   <a
                     href={p.repo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-mono text-xs text-primary hover:underline"
+                    aria-label={`${p.name} on GitHub`}
+                    title="GitHub"
+                    className="inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-fast hover:border-line-hover hover:text-foreground"
                   >
-                    <GithubIcon className="h-3.5 w-3.5" aria-hidden="true" />
-                    GitHub
+                    <GithubIcon className="h-4 w-4" aria-hidden="true" />
                   </a>
                   <a
                     href={p.registry}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-mono text-xs text-primary hover:underline"
+                    aria-label={`${p.pkg} on ${p.registryLabel}`}
+                    title={p.registryLabel}
+                    className="group inline-flex h-9 w-9 items-center justify-center border border-border transition-colors duration-fast hover:border-line-hover"
                   >
                     <Image
                       src={cdnUrl(p.registryIcon)}
                       alt=""
-                      width={14}
-                      height={14}
+                      width={16}
+                      height={16}
                       unoptimized
                       aria-hidden="true"
-                      className="h-3.5 w-3.5 rounded-[2px]"
+                      className="h-4 w-4 object-contain grayscale transition-[filter] duration-fast group-hover:grayscale-0"
                     />
-                    {p.registryLabel}
-                    <span aria-hidden="true"> &rarr;</span>
                   </a>
+                  <span className="ml-1 font-mono text-xs text-muted-foreground">
+                    {p.registryLabel}
+                  </span>
                 </div>
                 <p className="mt-3 break-all font-mono text-[11px] text-muted-foreground">{p.pkg}</p>
               </div>
