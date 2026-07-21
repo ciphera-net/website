@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     'Ciphera warrant canary: monthly GPG-signed statement that we have not received secret government compulsion. Offline-signed, independently verifiable.',
   alternates: { canonical: 'https://ciphera.net/trust/canary' },
   openGraph: {
-    title: 'Warrant Canary — Ciphera',
+    title: 'Warrant Canary | Ciphera',
     description: 'Monthly GPG-signed warrant canary. Offline-signed. Independently verifiable.',
     url: 'https://ciphera.net/trust/canary',
     siteName: 'Ciphera',

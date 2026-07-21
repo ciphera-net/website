@@ -14,7 +14,7 @@ const blogSchema = [
     name: 'Blog - Privacy & Security Insights',
     description: 'Learn about zero-knowledge encryption, privacy-first technologies, and secure development practices from the Ciphera team.',
     url: 'https://ciphera.net/blog',
-    publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+    publisher: { '@id': 'https://ciphera.net/#organization' },
   },
   {
     '@context': 'https://schema.org',

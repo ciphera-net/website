@@ -4,6 +4,8 @@
 
 Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), zero-knowledge authentication using OPAQUE (Ciphera ID — passwords never reach the server), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection.
 
+Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affiliated with ciphera.co (a security consultancy), ciphera.org, ciphera.uk, the Ciphera mobile apps, or any fictional character sharing the name.
+
 ## Products
 - [Pulse](https://ciphera.net/products/pulse): Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.
 - [Ciphera ID](https://ciphera.net/products/id): Zero-knowledge identity and authentication provider using OPAQUE (RFC 9807) — passwords never reach the server.

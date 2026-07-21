@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     canonical: 'https://ciphera.net/products/captcha',
   },
   openGraph: {
-    title: 'Ciphera Captcha - Privacy-First Bot Protection',
+    title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
     description:
       'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking.',
     url: 'https://ciphera.net/products/captcha',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ciphera Captcha - Privacy-First Bot Protection',
+    title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
     description:
       'Adaptive proof-of-work, puzzle challenges, and 5-signal risk scoring. No tracking, fully stateless.',
     images: [cdnUrl('/captcha_icon_no_margins.png')],
@@ -63,11 +63,7 @@ const captchaSchema = [
     applicationCategory: 'SecurityApplication',
     operatingSystem: 'Web',
     url: 'https://ciphera.net/products/captcha',
-    provider: {
-      '@type': 'Organization',
-      name: 'Ciphera',
-      url: 'https://ciphera.net',
-    },
+    provider: { '@id': 'https://ciphera.net/#organization' },
   },
   {
     '@context': 'https://schema.org',
@@ -83,7 +79,7 @@ const captchaSchema = [
         '@type': 'ListItem',
         position: 2,
         name: 'Products',
-        item: 'https://ciphera.net/products',
+        item: 'https://ciphera.net/#products',
       },
       { '@type': 'ListItem', position: 3, name: 'Ciphera Captcha' },
     ],

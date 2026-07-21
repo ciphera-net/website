@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     canonical: 'https://ciphera.net/blog',
   },
   openGraph: {
-    title: 'Blog - Privacy & Security Insights',
+    title: 'Blog - Privacy & Security Insights | Ciphera',
     description: 'Privacy and security insights from the Ciphera team. Data breach analysis, encryption guides, tool comparisons, and privacy statistics backed by sourced data.',
     url: 'https://ciphera.net/blog',
     siteName: 'Ciphera',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Blog - Privacy & Security Insights',
+    title: 'Blog - Privacy & Security Insights | Ciphera',
     description: 'Privacy and security insights from the Ciphera team. Data breach analysis, encryption guides, and privacy statistics.',
     images: [cdnUrl('/blog/og/_index.png')],
   },

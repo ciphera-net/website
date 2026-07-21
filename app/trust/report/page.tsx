@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     'Ciphera transparency report: all law enforcement and legal process received by reporting period. Biannual, interim snapshots available.',
   alternates: { canonical: 'https://ciphera.net/trust/report' },
   openGraph: {
-    title: 'Transparency Report — Ciphera',
+    title: 'Transparency Report | Ciphera',
     description:
       'Ciphera transparency report: all law enforcement and legal process received, by period.',
     url: 'https://ciphera.net/trust/report',

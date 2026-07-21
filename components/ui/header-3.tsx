@@ -470,6 +470,12 @@ const companyLinks: LinkItem[] = [
         description: 'Our carbon footprint, measured — see the real numbers',
         icon: Leaf,
     },
+    {
+        title: 'Trust & Security',
+        href: '/trust',
+        description: 'Architecture proofs, warrant canary & disclosure policy',
+        icon: ShieldCheck,
+    },
 ];
 
 const companyLinks2: LinkItem[] = [

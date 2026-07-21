@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     canonical: 'https://ciphera.net/products/relay',
   },
   openGraph: {
-    title: 'Ciphera Relay - Secure Email Infrastructure',
+    title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
     description:
       'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking.',
     url: 'https://ciphera.net/products/relay',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ciphera Relay - Secure Email Infrastructure',
+    title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
     description:
       'Privacy-first transactional email with TLS 1.3, DKIM/SPF/DMARC. No tracking, 99.8% deliverability.',
     images: [cdnUrl('/relay_icon_no_margins.png')],
@@ -62,11 +62,7 @@ const relaySchema = [
     applicationCategory: 'CommunicationApplication',
     operatingSystem: 'Web',
     url: 'https://ciphera.net/products/relay',
-    provider: {
-      '@type': 'Organization',
-      name: 'Ciphera',
-      url: 'https://ciphera.net',
-    },
+    provider: { '@id': 'https://ciphera.net/#organization' },
   },
   {
     '@context': 'https://schema.org',
@@ -82,7 +78,7 @@ const relaySchema = [
         '@type': 'ListItem',
         position: 2,
         name: 'Products',
-        item: 'https://ciphera.net/products',
+        item: 'https://ciphera.net/#products',
       },
       { '@type': 'ListItem', position: 3, name: 'Ciphera Relay' },
     ],

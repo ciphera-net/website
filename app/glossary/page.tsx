@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     canonical: 'https://ciphera.net/glossary',
   },
   openGraph: {
-    title: 'Glossary - Privacy, Cryptography & Analytics Terms',
+    title: 'Glossary - Privacy, Cryptography & Analytics Terms | Ciphera',
     description:
       'Precise definitions of the cryptography, privacy-regulation, analytics, and email-infrastructure terms behind Ciphera.',
     url: 'https://ciphera.net/glossary',
