@@ -285,39 +285,48 @@ export default function TesseraPage() {
             an OPAQUE record — not a password, and not a password hash.
           </p>
 
-          {/* * Wire diagram — what actually crosses the network in an OPAQUE
-              login. Built from the border/mono grammar; the struck-through
-              "password" in the middle column IS the argument. */}
-          <div className="mt-10 grid max-w-4xl gap-px border border-border bg-border sm:grid-cols-[1fr_auto_1fr]">
-            <div className="bg-background p-6">
+          {/* * Wire ledger — reads like a protocol trace: what crosses the
+              network during an OPAQUE login, row by row. The struck-through
+              password row IS the argument. */}
+          <div className="mt-10 max-w-4xl border border-border">
+            <div className="grid grid-cols-[1fr_2.5rem_1fr] items-center gap-x-4 border-b border-border bg-card px-5 py-3 sm:px-6">
               <p className="font-mono text-xs text-muted-foreground">Your device</p>
-              <ul className="mt-4 space-y-2 font-mono text-xs">
-                <li className="text-foreground">password stays here</li>
-                <li className="text-muted-foreground">runs the OPAQUE key exchange locally</li>
-                <li className="text-muted-foreground">produces a proof of knowledge</li>
-              </ul>
+              <p
+                className="text-center font-mono text-xs text-muted-foreground"
+                aria-hidden="true"
+              >
+                ···
+              </p>
+              <p className="text-right font-mono text-xs text-muted-foreground">Ciphera server</p>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2 bg-background px-8 py-6">
-              <span className="font-mono text-[11px] text-primary" aria-hidden="true">
-                proof &rarr;
-              </span>
-              <span className="font-mono text-[11px] text-muted-foreground" aria-hidden="true">
-                &larr; session key
-              </span>
-              <span className="font-mono text-[11px] text-muted-foreground line-through decoration-primary/70">
+            <div className="grid grid-cols-[1fr_2.5rem_1fr] items-center gap-x-4 border-b border-border px-5 py-4 sm:px-6">
+              <p className="font-mono text-xs text-foreground">proof of knowledge</p>
+              <p className="text-center font-mono text-sm text-primary" aria-hidden="true">
+                &rarr;
+              </p>
+              <p className="text-right text-sm leading-relaxed text-muted-foreground">
+                verified against the stored OPAQUE record
+              </p>
+            </div>
+            <div className="grid grid-cols-[1fr_2.5rem_1fr] items-center gap-x-4 border-b border-border px-5 py-4 sm:px-6">
+              <p className="font-mono text-xs text-foreground">session key</p>
+              <p className="text-center font-mono text-sm text-muted-foreground" aria-hidden="true">
+                &harr;
+              </p>
+              <p className="text-right text-sm leading-relaxed text-muted-foreground">
+                derived independently on both sides
+              </p>
+            </div>
+            <div className="grid grid-cols-[1fr_2.5rem_1fr] items-center gap-x-4 px-5 py-4 sm:px-6">
+              <p className="font-mono text-xs text-foreground line-through decoration-primary/70">
                 password
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
-                never on the wire
-              </span>
-            </div>
-            <div className="bg-background p-6">
-              <p className="font-mono text-xs text-muted-foreground">Ciphera server</p>
-              <ul className="mt-4 space-y-2 font-mono text-xs">
-                <li className="text-muted-foreground">verifies the proof</li>
-                <li className="text-muted-foreground">stores an OPAQUE record</li>
-                <li className="text-foreground">never sees the password</li>
-              </ul>
+              </p>
+              <p className="text-center font-mono text-sm text-primary" aria-hidden="true">
+                &#10005;
+              </p>
+              <p className="text-right text-sm leading-relaxed text-muted-foreground">
+                never transmitted — stays on your device
+              </p>
             </div>
           </div>
 
