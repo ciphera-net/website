@@ -80,6 +80,20 @@ const timeline = [
   },
 ] as const
 
+// * Company facts — the registered legal entity, so an owned page answers the
+// * exact-name query "Ciphera BV". Every value is verifiable in the Belgian
+// * enterprise register (KBO/BCE), linked below.
+const companyFacts: { term: string; detail: string }[] = [
+  { term: 'Legal name', detail: 'Ciphera BV' },
+  { term: 'Enterprise number (KBO/BCE)', detail: '1013.721.660' },
+  { term: 'VAT number', detail: 'BE1013721660' },
+  { term: 'Founded', detail: '18 September 2024' },
+  { term: 'Headquarters', detail: 'De Kleetlaan 2, 1831 Diegem, Belgium' },
+]
+
+const KBO_URL =
+  'https://kbopub.economie.fgov.be/kbopub/toonondernemingps.html?ondernemingsnummer=1013721660&lang=en'
+
 // * JSON-LD structured data for organization
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -140,6 +154,12 @@ export default function AboutPage() {
               users in control of their data. We believe encryption should be the default, not an
               add-on.
             </p>
+            <p className="mt-6 font-mono text-xs text-muted-foreground">
+              New here?{' '}
+              <Link href="/what-is-ciphera" className="text-primary hover:underline">
+                Start with What is Ciphera →
+              </Link>
+            </p>
           </div>
           <div className="relative min-h-[440px] border-t border-border lg:border-l lg:border-t-0">
             <Image
@@ -166,6 +186,35 @@ export default function AboutPage() {
               <div className="mt-2 font-mono text-xs text-muted-foreground">{s.label}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Company facts — the registered legal entity, so this owned page ranks
+          for the exact-name query "Ciphera BV" */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-20">
+          <p className="font-mono text-xs text-muted-foreground">Company facts</p>
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Ciphera BV, on the record
+          </h2>
+          <dl className="mt-8 grid max-w-4xl gap-x-12 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+            {companyFacts.map((f) => (
+              <div key={f.term} className="border-t border-border pt-3">
+                <dt className="font-mono text-xs text-muted-foreground">{f.term}</dt>
+                <dd className="mt-1.5 text-sm text-foreground">{f.detail}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-8 max-w-2xl font-mono text-xs text-muted-foreground">
+            <a
+              href={KBO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Look us up in the Belgian enterprise register →
+            </a>
+          </p>
         </div>
       </section>
 

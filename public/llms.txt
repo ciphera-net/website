@@ -11,6 +11,7 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - [Ciphera ID](https://ciphera.net/products/id): Zero-knowledge identity and authentication provider using OPAQUE (RFC 9807) — passwords never reach the server.
 - [Ciphera Captcha](https://ciphera.net/products/captcha): Privacy-first bot protection using adaptive proof-of-work and behavioral analysis — no cookies, no cross-site tracking.
 - [Ciphera Relay](https://ciphera.net/products/relay): Privacy-first transactional email infrastructure with TLS 1.3, DKIM, SPF, and DMARC — no tracking pixels.
+- [Tessera](https://ciphera.net/products/tessera): Open-source OPAQUE (RFC 9807) authentication library (Apache-2.0): Rust core and sidecar, Go server SDK, and browser SDK — the password never reaches the server.
 
 ## Key facts
 - Founded: 2024, Diegem, Belgium (Ciphera BV)
@@ -23,6 +24,8 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - Carbon footprint: published with a full life-cycle assessment
 
 ## Reference
+- [What is Ciphera?](https://ciphera.net/what-is-ciphera): a plain-language definition of the company and its products
+- [Press & media kit](https://ciphera.net/press): company boilerplate, fact sheet, and brand assets
 - [Glossary](https://ciphera.net/glossary): definitions of privacy and cryptography terms
 - [Learn](https://ciphera.net/learn): in-depth articles per product
 - [Blog](https://ciphera.net/blog): articles on privacy, security, and infrastructure

@@ -455,6 +455,12 @@ const productLinks: LinkItem[] = [
         description: 'Secure email infrastructure',
         image: relayIcon,
     },
+    {
+        title: 'Tessera',
+        href: '/products/tessera',
+        description: 'Open-source OPAQUE auth library',
+        icon: Lock,
+    },
 ];
 
 const companyLinks: LinkItem[] = [
