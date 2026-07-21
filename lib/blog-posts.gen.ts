@@ -24,6 +24,16 @@ export const blogPosts: BlogPostSummary[] = [
     "image": "/blog/og/do-you-need-a-cookie-banner-for-analytics.png"
   },
   {
+    "slug": "how-to-migrate-off-google-analytics",
+    "title": "How to Migrate Off Google Analytics: A 2026 Guide",
+    "description": "A practical, honest guide to leaving Google Analytics for a privacy-first tool in 2026 — the timeline you need to know, why teams are switching, what you genuinely gain and lose, and the step-by-step migration (including the historical-data trap nobody warns you about).",
+    "category": "Comparison",
+    "date": "2026-07-22",
+    "dateModified": "2026-07-22",
+    "readTime": "11 min read",
+    "image": "/blog/og/how-to-migrate-off-google-analytics.png"
+  },
+  {
     "slug": "is-your-analytics-gdpr-compliant",
     "title": "Is Your Website Analytics GDPR-Compliant? A 2026 Checklist",
     "description": "GDPR applies to your analytics the moment it processes personal data — and an IP address usually counts. A practical, source-backed 2026 checklist: lawful basis, data minimisation, retention, international transfers, and the one design choice that collapses most of it.",
@@ -59,7 +69,7 @@ export const blogPosts: BlogPostSummary[] = [
     "description": "Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.",
     "category": "Privacy",
     "date": "2026-04-12",
-    "dateModified": "2026-07-03",
+    "dateModified": "2026-07-22",
     "readTime": "10 min read",
     "image": "/blog/og/what-we-see-about-you-what-we-dont.png"
   },
@@ -69,7 +79,7 @@ export const blogPosts: BlogPostSummary[] = [
     "description": "The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.",
     "category": "Privacy",
     "date": "2026-04-04",
-    "dateModified": "2026-07-19",
+    "dateModified": "2026-07-22",
     "readTime": "10 min read",
     "image": "/blog/og/eu-us-data-privacy-framework-executive-order.png"
   },
@@ -119,7 +129,7 @@ export const blogPosts: BlogPostSummary[] = [
     "description": "Side-by-side comparison of Pulse, Google Analytics, Plausible, and Fathom on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.",
     "category": "Comparison",
     "date": "2026-02-14",
-    "dateModified": "2026-07-19",
+    "dateModified": "2026-07-22",
     "readTime": "14 min read",
     "image": "/blog/og/pulse-vs-google-analytics-plausible-fathom.png"
   },
