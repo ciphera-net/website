@@ -1,0 +1,110 @@
+---
+title: "Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)"
+description: "The rule behind cookie banners isn't about cookies — it's about storing and reading information on a visitor's device. Here's what EU law actually requires for web analytics in 2026, why 'first-party' doesn't exempt you, and how a genuinely cookieless tool changes the question."
+category: Privacy
+date: "2026-07-22"
+readTime: "14 min read"
+image: "/blog/og/do-you-need-a-cookie-banner-for-analytics.png"
+faqs:
+  - question: "Is a cookie banner legally required for Google Analytics in the EU?"
+    answer: "In practice, yes. Google Analytics sets cookies that are not classed as strictly necessary, so under the ePrivacy Directive (as transposed nationally) a website needs prior consent before those cookies are set. That is separate from Google Analytics' well-documented data-transfer problems, which several EU regulators ruled unlawful in 2022. Both issues point the same way: GA deployments in the EU generally need a consent banner and a lawful transfer mechanism."
+  - question: "Does cookieless analytics always mean no cookie banner is needed?"
+    answer: "No. The consent rule is triggered by storing or reading information on a visitor's device, and the European Data Protection Board reads gaining access broadly — it can cover tracking pixels, browser fingerprinting, and even IP-based tracking, not just cookies. Many tools marketed as cookieless still run a client-side script that reads device signals to build an identifier, which triggers the same consent requirement even though no cookie is set. Whether a specific tool needs a banner depends on what it actually does on the device."
+  - question: "Will the ePrivacy Regulation finally get rid of cookie banners?"
+    answer: "No. The proposed ePrivacy Regulation, which many expected to modernise this area, was formally withdrawn by the European Commission in 2025 after roughly eight years of stalled negotiations — it is a closed legislative file, not a delayed one. The 2002 ePrivacy Directive and its national implementing laws remain the governing rules. The Commission's current reform vehicle, the Digital Omnibus, would move cookie rules into the GDPR itself, but it is still a proposal and not yet law."
+  - question: "Does Belgium have a special exemption for analytics cookies like France does?"
+    answer: "No. France's CNIL runs a narrow, conditional no-consent regime for audience-measurement cookies, but that is a national exception, not an EU-wide rule. Belgium's Data Protection Authority states in its official cookie checklist that visitor counting does not fall within the strictly-necessary exemption, so first-party analytics cookies require consent in Belgium by default."
+  - question: "Does Ciphera Pulse need a cookie banner?"
+    answer: "Pulse sets no cookie on the sites it measures and stores no visitor identifier — it removes the device-storage-and-identifier mechanism that cookie consent exists to govern, and retains no personal data. That gives a site operator the strongest available starting position. But because the law's scope is broad and fact-specific, the final determination for any given site rests with its operator and their data protection officer. This post is an engineering explainer, not legal advice."
+---
+
+If you run a website in the EU, you have almost certainly clicked "Accept" on more cookie banners than you can count — and you have probably wondered whether the one on your own site is actually required, or just something everyone copied from everyone else.
+
+The honest answer is that most people ask the wrong question. They ask "do I need a cookie banner?" when the law never mentions banners, or consent buttons, or even a management platform. It mentions something much more specific — and once you see what the rule actually governs, the question of whether *your* analytics needs a banner gets a lot clearer, and a lot more interesting.
+
+<BlogBlockquote variant="tldr">
+
+The EU consent rule behind cookie banners is triggered by storing or reading information on a visitor's device — not by the word "cookie." First-party analytics cookies are not "strictly necessary," so in most of the EU, Belgium included, they require consent. The ePrivacy Regulation that was supposed to fix banner fatigue is dead — the Commission withdrew it in 2025. "Cookieless" is not a magic exemption, because regulators read "gaining access" broadly. But a tool that sets no cookie, stores no identifier, and retains no personal data removes the mechanism consent exists to govern. That is what Pulse is built to do — and this post shows the code that proves it.
+
+</BlogBlockquote>
+
+## The cookie banner isn't about cookies
+
+The law everyone calls "the cookie law" is Article 5(3) of the [ePrivacy Directive](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02002L0058-20091219) (Directive 2002/58/EC, as amended in 2009). Its operative sentence is worth reading slowly, because almost every misunderstanding starts by skipping it:
+
+> "…the storing of information, or the gaining of access to information already stored, in the terminal equipment of a subscriber or user is only allowed on condition that the subscriber or user concerned has given his or her consent…"
+
+Notice what is not in that sentence. The word "cookie" does not appear. Neither does "banner", "tracking", or "advertising". The trigger is a technical action — **storing information on, or gaining access to information already on, a device** — with two narrow exemptions: doing it purely to carry out a transmission, or when it is *strictly necessary* to provide a service the user explicitly asked for.
+
+Cookies are simply the most common way to do the triggering thing. A cookie is a small file written to your device and read back on later requests. That is textbook "storing" and "gaining access." But the rule is defined by the action, not the technology — which is why the [European Data Protection Board](https://www.edpb.europa.eu/system/files/2024-10/edpb_guidelines_202302_technical_scope_art_53_eprivacydirective_v2_en_0.pdf) (the body that coordinates EU data regulators) adopted guidelines in October 2024 confirming that Article 5(3) also covers tracking pixels, link decoration, browser fingerprinting, some kinds of local processing, and even certain IP-based tracking. If a technique stores or reads information on the device, it is in scope, cookie or not.
+
+One more thing that catches people out: this consent requirement is independent of whether any *personal data* is involved. In [Planet49](https://curia.europa.eu/juris/document/document.jsf?docid=218462) (Case C-673/17), the Court of Justice held that a pre-ticked consent checkbox is invalid, and that the consent obligation for cookies applies **regardless of whether the stored information is personal data**. So "our cookie doesn't contain personal data" is not a defence to the cookie rule. It is answering a different exam question.
+
+## Why analytics cookies need consent — and "first-party" doesn't save you
+
+The most common escape hatch people reach for is: *our analytics is first-party, so it's essential and exempt.* It is a comforting story. It is also, as a general EU rule, wrong.
+
+Back in 2012 the Article 29 Working Party — the EDPB's predecessor — looked at exactly this question in [Opinion 04/2012](https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2012/wp194_en.pdf) and concluded that first-party analytics cookies are **not** covered by the strictly-necessary exemption. Their reasoning was blunt: a visitor "can access all the functionalities provided by the website when such cookies are disabled." The site works fine without counting you. Measuring the audience is valuable to the *operator*, but it is not a service the *user* requested — so it does not clear the "strictly necessary" bar.
+
+That position is still the mainstream one. The UK's [ICO](https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/cookies-and-similar-technologies/) says analytics cookies require consent. Belgium's Data Protection Authority ([Autorité de protection des données / Gegevensbeschermingsautoriteit](https://www.autoriteprotectiondonnees.be/publications/checklist-cookies.pdf)) says the same in its official cookie checklist, which states plainly that visitor counting does *not* fall within the strictly-necessary functional-cookie exemption, citing that 2012 opinion directly.
+
+There is exactly one well-developed exception, and it proves the rule. France's [CNIL](https://www.cnil.fr/en/sheet-ndeg16-use-analytics-your-websites-and-applications) operates a conditional no-consent regime for audience-measurement cookies — but only if the tool clears a demanding list: used solely to measure audience, output that is anonymous only, no cross-site tracking, no combining with other processing, a cookie lifetime capped at 13 months, and data retention capped at 25 months, with users still informed and able to object. Even then, CNIL warns that most large analytics products do not qualify regardless of how they are configured. And crucially, this is a *French* carve-out. It is not EU law, and — this matters for a Belgian company writing this post — **Belgium has not adopted it.** If your reasoning is "France allows it," you are quoting the wrong regulator for most of Europe.
+
+So for the ordinary case — a first-party analytics tool that sets a cookie, in most EU member states — the answer to "do I need consent?" is yes. Not because of some aggressive interpretation, but because of the plain text and twelve years of consistent guidance.
+
+## The regulation that was supposed to fix this is dead
+
+Here is where a lot of otherwise-current advice goes stale. For years, the standard reassurance was: *don't worry too much, the ePrivacy Regulation is coming and it will sort out banner fatigue.* You may still read that in articles written as recently as last year.
+
+It is no longer true. The proposed ePrivacy Regulation — the instrument meant to replace the 2002 Directive — was **formally withdrawn** by the European Commission. It appeared on the withdrawal list in the Commission's 2025 Work Programme, and the withdrawal was published in the Official Journal as notice [C/2025/5423](https://eur-lex.europa.eu/eli/C/2025/5423/oj) on 6 October 2025. The European Parliament's own [legislative observatory](https://oeil.europarl.europa.eu/oeil/en/procedure-file?reference=2017%2F0003%28COD%29) now records the file's status as "Procedure lapsed or withdrawn." After roughly eight years of deadlock, it is not a delayed bill awaiting passage. It is a closed file.
+
+The practical consequence: the 2002 ePrivacy Directive, as transposed into each member state's national law, **is** the operative cookie law in 2026, and will be for the foreseeable future. There is no modernised successor waiting in the wings to relax it.
+
+There is a new reform effort — the Commission's "Digital Omnibus" package, tabled in late 2025 — but it is a different beast. Rather than reviving a standalone regulation, it proposes to fold storage-and-access rules into the GDPR itself via new articles, including a limited carve-out for first-party audience measurement. Legal analysts covering the draft, such as [Osborne Clarke](https://www.osborneclarke.com/insights/digital-omnibus-reshapes-eu-cookie-rules-leaves-banner-fatigue-largely-intact), note two things worth holding onto: it is a *proposal*, still working through Parliament and Council with no adoption in sight, and even as drafted, the Commission's own explanatory text cautions that common commercial analytics tools are "unlikely to fall within the scope" of the exemption. Betting your compliance posture on a bill that might pass in some form, sometime, is not a plan.
+
+## What "cookieless" actually has to mean
+
+So if the rule is about device storage and access — could you just not touch the device, and sidestep the whole thing?
+
+In principle, yes. If a method genuinely never stores anything on the device and never reads anything from it, Article 5(3) is not engaged, and no consent question arises for that step. That is the logic behind the entire "cookieless analytics" category.
+
+But this is exactly where honest engineering has to part ways with marketing copy, because the EDPB's 2024 guidelines read "gaining access" much more broadly than most vendors admit:
+
+- **A client-side script that reads device attributes and sends them to a server is "gaining access."** The guidelines are explicit that when JavaScript instructs the browser to send information back, that transmission itself counts — even if nothing was ever *stored*. A tool that builds a "cookieless" fingerprint from your screen size, timezone, fonts, and user-agent is doing precisely this. No cookie, still in scope.
+- **Tracking pixels are in scope** through caching alone, with no persistent storage required.
+- **Even IP-based tracking is presumed in scope.** The guidelines say that gaining access to an IP address triggers Article 5(3) "in cases where this information originates from the terminal equipment" — and that unless an operator can affirmatively show the IP does *not* originate from the user's device, it should assume the rule applies. That is a hard thing to guarantee for a whole site's worth of visitors.
+
+The takeaway is uncomfortable for the "cookieless = free pass" pitch: most tools that call themselves cookieless still run a script that reads and transmits device signals, and that reading is the trigger. Dropping the cookie while keeping the fingerprint changes the *technology* and not the *legal action*. And separately — even in the rare case where Article 5(3) genuinely does not apply, if the tool processes personal data such as an IP address, the GDPR still requires a lawful basis for that. Clearing the cookie bar is not the same as clearing every privacy obligation. (We will dig into the GDPR side — lawful basis, minimisation, international transfers — in a companion post.)
+
+Genuinely consent-free analytics, then, is a narrower category than the label suggests. It means: no storage on the device, no client-side reading of device signals to build an identifier, and no retained personal data downstream. That is a high bar. It is also, deliberately, the bar we built Pulse to clear.
+
+## How Pulse answers the question
+
+[Pulse](/products/pulse) is our own analytics product, and it powers this very site. Rather than ask you to trust that it is cookieless, here is what the code actually does — because "receipts, not promises" only means something if we show the receipts.
+
+**It sets no cookie on your site.** The tracking script that runs on a measured website sets zero cookies. Its own header comment says so, and more importantly, the server endpoint the script posts to is registered with no cookie or CSRF middleware at all — only rate limiting. There is no code path that could set a tracking cookie on a visitor, because none is wired up.
+
+**It stores no visitor identifier.** This is the part that separates Pulse from most "cookieless" tools. Pulse does not run a fingerprinting script. It does not read your canvas, your fonts, or your screen dimensions to synthesise an ID. There is no persistent visitor identifier anywhere — not in a cookie, not in local storage, not on the server.
+
+**Unique visitors are counted server-side, from data your browser sends anyway.** When a pageview arrives, the backend computes a session identifier as a salted hash of the request's IP address, user-agent, and the site's domain — roughly `SHA-256(daily_salt + domain + ip + user_agent)`. The `daily_salt` itself rotates every day (derived through a monthly key so that a compromise has a bounded blast radius). The effect: the same visitor on the same day produces the same hash, so repeat pageviews collapse into one visitor — but tomorrow the salt changes and the same person produces a completely unrelated hash, with no way to link the two. There is no cross-day, cross-site, or cross-device thread to pull. "Unique visitors" in the dashboard is then just a plain database `COUNT(DISTINCT session_id)` — a real aggregate, not a profile.
+
+**The raw IP is used for a moment, then wiped.** Computing that hash needs the IP, and so does an optional country lookup (done in-process against a local geo database — your IP is never sent to a third-party geolocation service). But the raw IP is never persisted, never logged, and never forwarded: a dedicated middleware scrubs it from the request context immediately after the derived values are computed. The events table has no column for an IP address or a raw user-agent to live in. What survives is a rotating hash and coarse, aggregate attributes — a country, a device category — nothing that singles out a person.
+
+Now the honest caveats, because a post about honesty that hides its own footnotes would be self-refuting:
+
+- **The tracker does touch two tiny local values.** Despite the script's own "no local storage" comment, it writes two throwaway flags to your browser's local storage: a personal opt-out toggle (so you can exclude your own visits) and a five-second timestamp that stops a page refresh from being double-counted in the same tab. Neither is an identifier, neither can follow you anywhere, and neither leaves your browser — but they exist, and pretending they don't would be exactly the kind of overclaim this post is arguing against. (The script's comment is stricter than the code; we're tightening that wording.)
+- **The Pulse dashboard uses login cookies — like any product you log into.** When *you*, the site owner, sign in to view your stats, that dashboard sets a normal authenticated-session cookie. That is a strictly-necessary login cookie for a service you explicitly requested, and it is completely separate from the tracking script that runs on your visitors' browsers. The cookieless claim is about the tracker, not about logging in to read your own charts.
+
+If you want the deeper accounting of what Pulse and our other systems can and cannot see, we wrote it all out — including the exact session-hash mechanics — in [what we see about you, and what we don't](/blog/what-we-see-about-you-what-we-dont). And because the counting and storage all happen on infrastructure hosted in Switzerland rather than a US cloud, the data-transfer questions that sink so many analytics tools mostly don't arise — a point we made the case for in [why Swiss infrastructure matters for data privacy](/blog/why-swiss-infrastructure-matters-for-data-privacy).
+
+## So — do you actually need a banner?
+
+Here is the honest synthesis, without the marketing gloss.
+
+If you run a cookie-based analytics tool — Google Analytics and most of its mainstream competitors — on a site aimed at EU visitors, then yes, you almost certainly need consent before those cookies are set, and in most member states, including Belgium, "it's first-party" will not exempt you. (For Google Analytics specifically there is a second, independent problem: several EU regulators ruled its US data transfers unlawful in 2022. You can see how badly the numbers work against cookie-gated measurement in our [comparison of Pulse, GA, Plausible, and Fathom](/blog/pulse-vs-google-analytics-plausible-fathom).)
+
+If you run a tool that sets no cookie, stores no identifier, and retains no personal data, you have removed the *mechanism* that cookie consent exists to govern. There is no stored identifier to consent to, and nothing personal being kept. That is a categorically stronger position — but I am not going to tell you it is a guaranteed, universal exemption, because the law is broad and fact-specific and no regulator has issued a ruling blessing any particular vendor's exact model. What I can tell you is that Pulse is built to give you the least to worry about: it takes the storing-and-reading action off the table, keeps nothing that identifies your visitors, and hosts the result in the EU's neighbourhood rather than shipping it across the Atlantic. The final call for your specific site — and any notice you choose to give — belongs to you and your data protection officer. We publish our own architecture openly at [/trust](/trust) and describe exactly what runs on this site in our [privacy policy](/privacy) precisely so that call is an informed one.
+
+The cookie banner became the symbol of privacy law because, for two decades, the dominant way to measure a website was to leave something on the visitor's machine and read it back later. The banner is the price of that choice. The more interesting move is not to negotiate a better banner. It is to stop needing one — by not touching the device in the first place.
+
+*This post is an engineering and legal-landscape explainer, not legal advice. Cookie and data-protection obligations depend on your specific setup, jurisdiction, and how a given tool is deployed; consult a qualified adviser or your supervisory authority for a determination about your own site.*

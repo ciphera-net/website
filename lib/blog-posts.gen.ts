@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "do-you-need-a-cookie-banner-for-analytics",
+    "title": "Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)",
+    "description": "The rule behind cookie banners isn't about cookies — it's about storing and reading information on a visitor's device. Here's what EU law actually requires for web analytics in 2026, why 'first-party' doesn't exempt you, and how a genuinely cookieless tool changes the question.",
+    "category": "Privacy",
+    "date": "2026-07-22",
+    "dateModified": "2026-07-22",
+    "readTime": "14 min read",
+    "image": "/blog/og/do-you-need-a-cookie-banner-for-analytics.png"
+  },
+  {
     "slug": "ciphera-captcha-vs-recaptcha-vs-turnstile",
     "title": "Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha (2026)",
     "description": "The bot-protection widget you add to a form often watches your visitors more than it protects them. A privacy- and jurisdiction-first comparison of reCAPTCHA, Turnstile, hCaptcha, and Ciphera Captcha's proof-of-work, cookieless approach.",
