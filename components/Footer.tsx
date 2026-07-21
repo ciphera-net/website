@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="mx-auto w-full max-w-6xl sm:border-x sm:border-border">
       {/* Link grid */}
       <div className="px-6 py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+        <div className="grid gap-x-10 gap-y-12 lg:grid-cols-[1.7fr_1fr_1fr_1fr_1fr]">
           {/* Brand column */}
           <div>
             <div className="flex items-center gap-2">
@@ -94,16 +94,6 @@ export default function Footer() {
                   Tessera
                 </Link>
               </li>
-              <li>
-                <a
-                  href="https://pulse.ciphera.net"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground"
-                >
-                  Pulse Analytics
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -129,6 +119,20 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/sustainability" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Sustainability
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="text-xs text-muted-foreground">
+              Resources
+            </h3>
+            <ul className="mt-4 space-y-3">
+              <li>
                 <Link href="/blog" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Blog
                 </Link>
@@ -152,11 +156,6 @@ export default function Footer() {
                 >
                   Help Center
                 </a>
-              </li>
-              <li>
-                <Link href="/sustainability" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
-                  Sustainability
-                </Link>
               </li>
             </ul>
           </div>

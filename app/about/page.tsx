@@ -4,10 +4,12 @@ import {
   ArrowRightIcon,
   CheckIcon,
   GlobeIcon,
+  GithubIcon,
   LockIcon,
   EyeOffIcon,
   LayoutDashboardIcon,
 } from '@ciphera-net/facet'
+import { Fingerprint, Key } from '@phosphor-icons/react/dist/ssr'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import {
   zurichPhoto,
@@ -55,14 +57,17 @@ const values = [
   },
 ] as const
 
+// * Brand marks (Go/Next.js/PostgreSQL) are monochrome Simple Icons on the CDN;
+// * the three crypto primitives have no logo, so they take a line icon rather
+// * than a faked mark.
 const techStack = [
-  { name: 'Go (Gin)', description: 'High-performance backend services' },
-  { name: 'Next.js', description: 'Modern React framework for frontends' },
-  { name: 'PostgreSQL', description: 'Reliable database for metadata' },
-  { name: 'OPAQUE (RFC 9807)', description: 'Zero-knowledge password authentication' },
-  { name: 'PBKDF2-SHA256', description: 'Client-side key derivation (1M iterations)' },
-  { name: 'AES-256-GCM', description: 'Client-side vault encryption' },
-] as const
+  { name: 'Go (Gin)', description: 'High-performance backend services', logo: cdnUrl('/icons/tech/go.svg') },
+  { name: 'Next.js', description: 'Modern React framework for frontends', logo: cdnUrl('/icons/tech/nextdotjs.svg') },
+  { name: 'PostgreSQL', description: 'Reliable database for metadata', logo: cdnUrl('/icons/tech/postgresql.svg') },
+  { name: 'OPAQUE (RFC 9807)', description: 'Zero-knowledge password authentication', icon: Fingerprint },
+  { name: 'PBKDF2-SHA256', description: 'Client-side key derivation (1M iterations)', icon: Key },
+  { name: 'AES-256-GCM', description: 'Client-side vault encryption', icon: LockIcon },
+]
 
 const architecture = [
   { image: authIcon, name: 'Ciphera ID', detail: 'Identity & authentication' },
@@ -333,15 +338,30 @@ export default function AboutPage() {
                 <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
               </Link>
               <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6">
-                {techStack.map((tech) => (
-                  <div key={tech.name} className="flex items-start gap-3 border-t border-border pt-4">
-                    <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
-                    <div>
-                      <div className="text-sm font-semibold text-foreground">{tech.name}</div>
-                      <div className="text-xs text-muted-foreground">{tech.description}</div>
+                {techStack.map((tech) => {
+                  const Icon = tech.icon
+                  return (
+                    <div key={tech.name} className="flex items-start gap-3 border-t border-border pt-4">
+                      {tech.logo ? (
+                        <Image
+                          src={tech.logo}
+                          alt=""
+                          width={18}
+                          height={18}
+                          unoptimized
+                          aria-hidden="true"
+                          className="mt-0.5 h-[18px] w-[18px] shrink-0 object-contain"
+                        />
+                      ) : Icon ? (
+                        <Icon aria-hidden="true" className="mt-0.5 h-[18px] w-[18px] shrink-0 text-muted-foreground" />
+                      ) : null}
+                      <div>
+                        <div className="text-sm font-semibold text-foreground">{tech.name}</div>
+                        <div className="text-xs text-muted-foreground">{tech.description}</div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
 
@@ -425,19 +445,21 @@ export default function AboutPage() {
                 href="https://www.linkedin.com/company/ciphera/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
               >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-3.5 w-3.5">
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z" />
+                </svg>
                 LinkedIn
-                <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
               </a>
               <a
                 href="https://github.com/ciphera-net"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
               >
+                <GithubIcon aria-hidden="true" className="h-3.5 w-3.5" />
                 GitHub
-                <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
               </a>
             </div>
           </div>

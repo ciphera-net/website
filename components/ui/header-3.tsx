@@ -194,6 +194,14 @@ export function Header() {
                                             ))}
                                         </ul>
                                     </div>
+                                    <div className="p-2">
+                                        <p className="text-muted-foreground text-sm">
+                                            Interested?{' '}
+                                            <a href="/contact" className="text-foreground font-medium hover:underline">
+                                                Get in touch
+                                            </a>
+                                        </p>
+                                    </div>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
@@ -216,6 +224,14 @@ export function Header() {
                                                 hello@ciphera.net →
                                             </a>
                                         </div>
+                                    </div>
+                                    <div className="p-2">
+                                        <p className="text-muted-foreground text-sm">
+                                            Interested?{' '}
+                                            <a href="/contact" className="text-foreground font-medium hover:underline">
+                                                Get in touch
+                                            </a>
+                                        </p>
                                     </div>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
