@@ -131,11 +131,11 @@ const organizationSchema = {
   ],
 }
 
-// * Founder — name taken EXACTLY as registered in the Belgian enterprise
-// * register (KBO/BCE 1013.721.660): "Muhammad Baig", director since the
-// * 2024-09-18 founding date. worksFor references the Organization by @id;
-// * sameAs points to the company profiles (no personal profiles are used).
-const FOUNDER_NAME = 'Muhammad Baig'
+// * Founder — public name "Usman Baig" (owner's choice); the KBO/BCE register
+// * (1013.721.660) lists the director under his full registered name, appointed
+// * on the 2024-09-18 founding date. worksFor references the Organization by
+// * @id; sameAs points to the company profiles (no personal profiles are used).
+const FOUNDER_NAME = 'Usman Baig'
 
 const founderSchema = {
   '@context': 'https://schema.org',
