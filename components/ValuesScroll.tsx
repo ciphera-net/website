@@ -6,7 +6,7 @@ import {
   ArrowRightIcon,
   LockIcon,
   EyeOffIcon,
-  LayoutDashboardIcon,
+  EyeIcon,
   GlobeIcon,
 } from '@ciphera-net/facet'
 import { cn } from '@/lib/utils'
@@ -16,29 +16,29 @@ import { cn } from '@/lib/utils'
 const VALUES = [
   {
     icon: LockIcon,
-    title: 'Privacy by design',
+    title: 'We can’t read your data',
     description:
-      'Every component is built with privacy as the foundation — end-to-end encryption, zero-knowledge architecture, and minimal data collection.',
+      'Your vault is encrypted on your device before it reaches us, and your password is proven with OPAQUE — never sent. We store ciphertext, not your keys, so we couldn’t read your data if we tried. Not even under a court order.',
   },
   {
     icon: EyeOffIcon,
-    title: 'Zero-knowledge',
+    title: 'We collect almost nothing',
     description:
-      'Your password never reaches our servers, and your vault is encrypted on your own device. We verify who you are without ever seeing your secrets.',
+      'Pulse counts visitors with no cookies, no fingerprinting, and no cross-visit identifiers. There’s no profile to leak, sell, or hand over — because we never build one. Collecting less is the default, not a setting.',
   },
   {
-    icon: LayoutDashboardIcon,
-    title: 'Transparency',
+    icon: EyeIcon,
+    title: 'You can check our work',
     description:
-      'Our code is open for anyone to inspect — and we’re opening more of it. We publish a warrant canary and a transparency report. Trust is earned, not marketed.',
+      'Our cryptographic core is open source, our warrant canary is public, and we publish a transparency report. Don’t take the claims on faith — read the code and the receipts.',
     href: '/trust',
     linkLabel: 'See the trust hub',
   },
   {
     icon: GlobeIcon,
-    title: 'User control',
+    title: 'You can walk away',
     description:
-      'You own your encryption keys and can delete your data at any time. We can’t decrypt your vault — not even under a court order.',
+      'You own your keys and your data. Export it or delete it whenever you want — there’s no lock-in and nothing for us to hold hostage, because we can’t read it in the first place.',
   },
 ] as const
 
