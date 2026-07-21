@@ -416,7 +416,7 @@ export default function AboutPage() {
               {FOUNDER_NAME}
             </h3>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              {FOUNDER_NAME} founded Ciphera BV in 2024 and leads it from Belgium. Ciphera&rsquo;s
+              {FOUNDER_NAME}{' '}founded Ciphera BV in 2024 and leads it from Belgium. Ciphera&rsquo;s
               privacy-first products — Pulse, Ciphera ID, Captcha, and Relay — and its open-source
               Tessera authentication library were built under that direction.
             </p>
