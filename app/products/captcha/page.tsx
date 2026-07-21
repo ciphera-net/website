@@ -123,7 +123,7 @@ export default function CipheraCaptchaPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">Ciphera Captcha</p>
+          <p className="text-xs text-muted-foreground">Ciphera Captcha</p>
           <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Stop bots without{' '}<br className="hidden sm:inline" />compromising privacy.
           </h1>
@@ -133,7 +133,7 @@ export default function CipheraCaptchaPage() {
             self-hosted, and GDPR compliant by design.
           </p>
           {/* Trust badges */}
-          <div className="mt-8 flex flex-wrap items-center gap-y-3 font-mono text-xs text-muted-foreground">
+          <div className="mt-8 flex flex-wrap items-center gap-y-3 text-xs text-muted-foreground">
             {[
               { icon: Lightning, label: 'Adaptive PoW' },
               { icon: EyeSlash, label: 'No tracking' },
@@ -164,7 +164,7 @@ export default function CipheraCaptchaPage() {
         <div className="grid lg:grid-cols-2">
           {/* Copy cell */}
           <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
-            <p className="font-mono text-xs text-muted-foreground">01 · Bot defense</p>
+            <p className="text-xs text-muted-foreground">01 · Bot defense</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Invisible to humans. Expensive for bots.
             </h2>
@@ -202,7 +202,7 @@ export default function CipheraCaptchaPage() {
       {/* ─── 02 · Features — everything in Ciphera Captcha ───────────── */}
       <section id="features" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">02 · Features</p>
+          <p className="text-xs text-muted-foreground">02 · Features</p>
           <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             Everything in Ciphera Captcha.
           </h2>
@@ -279,7 +279,7 @@ export default function CipheraCaptchaPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">03 · Stateless</p>
+            <p className="text-xs text-muted-foreground">03 · Stateless</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               No database. No sessions. No state.
             </h2>
@@ -335,7 +335,7 @@ export default function CipheraCaptchaPage() {
                   <item.icon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                   <div>
                     <p className="text-xs font-semibold text-foreground">{item.title}</p>
-                    <p className="font-mono text-[11px] text-muted-foreground">{item.desc}</p>
+                    <p className="text-[11px] text-muted-foreground">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -344,7 +344,7 @@ export default function CipheraCaptchaPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">04 · Data residency</p>
+            <p className="text-xs text-muted-foreground">04 · Data residency</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Hosted in Switzerland. Zero telemetry.
             </h2>
@@ -376,7 +376,7 @@ export default function CipheraCaptchaPage() {
       {/* ─── 05 · Compare ────────────────────────────────────────────────── */}
       <section id="comparison" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">05 · Compare</p>
+          <p className="text-xs text-muted-foreground">05 · Compare</p>
           <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             How Ciphera Captcha compares.
           </h2>
@@ -409,7 +409,7 @@ export default function CipheraCaptchaPage() {
                 </div>
                 <div>
                   <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Ciphera Captcha</h3>
-                  <p className="font-mono text-xs text-muted-foreground">Privacy-first bot protection</p>
+                  <p className="text-xs text-muted-foreground">Privacy-first bot protection</p>
                 </div>
               </div>
               <ul className="space-y-1">
@@ -439,7 +439,7 @@ export default function CipheraCaptchaPage() {
                 </div>
                 <div>
                   <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Traditional Captchas</h3>
-                  <p className="font-mono text-xs text-muted-foreground">reCAPTCHA, hCaptcha, Turnstile</p>
+                  <p className="text-xs text-muted-foreground">reCAPTCHA, hCaptcha, Turnstile</p>
                 </div>
               </div>
               <ul className="space-y-1">
@@ -487,7 +487,7 @@ export default function CipheraCaptchaPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">06 · Get started</p>
+          <p className="text-xs text-muted-foreground">06 · Get started</p>
           <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Interested in Ciphera Captcha?
           </h2>
