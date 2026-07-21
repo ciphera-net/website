@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { GithubIcon } from '@ciphera-net/facet'
+import { GithubIcon, LockIcon } from '@ciphera-net/facet'
 import { cdnUrl } from '@/lib/cdn'
 
 export default function Footer() {
@@ -61,6 +61,36 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
+
+            {/* Zero-knowledge trust badge — a diamond lock seal (ties to the brand
+                mark, stays sharp), our own verifiable claim, links to /trust */}
+            <Link
+              href="/trust"
+              className="group mt-8 flex max-w-sm items-center gap-4 border border-border p-4 transition-colors duration-fast hover:border-line-hover"
+            >
+              <span className="relative flex h-12 w-12 shrink-0 items-center justify-center">
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0.5 rotate-45 border border-primary/40 bg-primary/[0.06]"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-[7px] rotate-45 border border-primary/20"
+                />
+                <LockIcon aria-hidden="true" className="relative h-4 w-4 text-primary" />
+              </span>
+              <span>
+                <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                  Zero-knowledge
+                </span>
+                <span className="mt-1 block text-sm font-semibold leading-snug text-foreground">
+                  We hold the ciphertext, never your keys.
+                </span>
+                <span className="mt-1 block text-xs text-primary group-hover:underline">
+                  Verified on our trust hub &rarr;
+                </span>
+              </span>
+            </Link>
           </div>
 
           {/* Products */}
