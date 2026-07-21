@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRightIcon } from '@ciphera-net/facet'
+import Image from 'next/image'
+import { ArrowRightIcon, LockIcon } from '@ciphera-net/facet'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { cdnUrl } from '@/lib/cdn'
+import { officeHq, pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 
 export const metadata: Metadata = {
   title: 'What is Ciphera?',
@@ -35,30 +37,35 @@ export const metadata: Metadata = {
 const products = [
   {
     name: 'Pulse',
+    image: pulseIcon,
     href: '/products/pulse',
     detail:
       'Privacy-first, cookieless web analytics — no cookies, no fingerprinting, no cross-visit tracking. Open source under AGPL-3.0, and GDPR compliant by design.',
   },
   {
     name: 'Ciphera ID',
+    image: authIcon,
     href: '/products/id',
     detail:
       'A zero-knowledge identity provider. One account works across every Ciphera service, and your password is proven with OPAQUE (RFC 9807) — it never reaches our servers.',
   },
   {
     name: 'Ciphera Captcha',
+    image: captchaIcon,
     href: '/products/captcha',
     detail:
       'Bot protection built on adaptive proof-of-work and puzzle challenges. Stateless, self-hosted, and free of third-party trackers.',
   },
   {
     name: 'Ciphera Relay',
+    image: relayIcon,
     href: '/products/relay',
     detail:
       'Transactional email infrastructure that runs on our own mail servers, so no third-party email provider sees who we write to or why.',
   },
   {
     name: 'Tessera',
+    image: null,
     href: '/products/tessera',
     detail:
       'Our open-source OPAQUE authentication library — a Rust core plus Go and browser SDKs, published under Apache-2.0. It is the cryptography behind Ciphera ID and Pulse auth.',
@@ -105,34 +112,48 @@ export default function WhatIsCipheraPage() {
       />
       <Breadcrumbs items={[{ label: 'What is Ciphera?' }]} />
 
-      {/* Hero — statement definition, liftable by answer engines */}
+      {/* Hero — statement definition, liftable by answer engines; editorial
+          split with the HQ photo, mirroring the About hero. */}
       <section className="border-b border-border">
-        <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">Definition</p>
-          <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
-            What is Ciphera?
-          </h1>
-          <p className="mt-8 max-w-3xl text-lg leading-relaxed text-foreground">
-            <strong className="font-semibold text-foreground">
-              Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge
-              infrastructure and applications — software where your data is encrypted before it
-              reaches our servers, so we can run the service without being able to read what you
-              store.
-            </strong>
-          </p>
-          <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
-            The company is registered in Belgium as Ciphera BV (KBO/BCE 1013.721.660, De Kleetlaan 2,
-            1831 Diegem) and answers under EU law — GDPR and NIS2 — while hosting its services on
-            Swiss infrastructure. Everything below can be checked against our{' '}
-            <Link href="/trust" className="text-primary underline">
-              trust hub
-            </Link>{' '}
-            and{' '}
-            <Link href="/about" className="text-primary underline">
-              about page
-            </Link>
-            .
-          </p>
+        <div className="grid lg:grid-cols-2">
+          <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
+            <p className="font-mono text-xs text-muted-foreground">Definition</p>
+            <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+              What is Ciphera?
+            </h1>
+            <p className="mt-8 max-w-3xl text-lg leading-relaxed text-foreground">
+              <strong className="font-semibold text-foreground">
+                Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge
+                infrastructure and applications — software where your data is encrypted before it
+                reaches our servers, so we can run the service without being able to read what you
+                store.
+              </strong>
+            </p>
+            <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
+              The company is registered in Belgium as Ciphera BV (KBO/BCE 1013.721.660, De Kleetlaan
+              2, 1831 Diegem) and answers under EU law — GDPR and NIS2 — while hosting its services
+              on Swiss infrastructure. Everything below can be checked against our{' '}
+              <Link href="/trust" className="text-primary underline">
+                trust hub
+              </Link>{' '}
+              and{' '}
+              <Link href="/about" className="text-primary underline">
+                about page
+              </Link>
+              .
+            </p>
+          </div>
+          <div className="relative min-h-[440px] border-t border-border lg:border-l lg:border-t-0">
+            <Image
+              src={officeHq}
+              alt="The Ciphera headquarters in Diegem, Belgium"
+              fill
+              unoptimized
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover grayscale"
+            />
+          </div>
         </div>
       </section>
 
@@ -151,9 +172,24 @@ export default function WhatIsCipheraPage() {
           <div className="mt-12 grid gap-x-14 gap-y-10 sm:grid-cols-2">
             {products.map((p, i) => (
               <div key={p.name} className="border-t border-border pt-6">
-                <span className="font-mono text-xs text-muted-foreground">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs text-muted-foreground">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {p.image ? (
+                    <Image
+                      src={p.image}
+                      alt=""
+                      width={28}
+                      height={28}
+                      unoptimized
+                      aria-hidden="true"
+                      className="h-7 w-7 object-contain"
+                    />
+                  ) : (
+                    <LockIcon aria-hidden="true" className="h-6 w-6 text-muted-foreground" />
+                  )}
+                </div>
                 <h3 className="mt-3 font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl">
                   {p.name}
                 </h3>
