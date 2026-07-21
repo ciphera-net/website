@@ -16,8 +16,7 @@ export const metadata: Metadata = {
     default: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
     template: '%s | Ciphera',
   },
-  description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Built for privacy.',
-  keywords: ['secure file sharing', 'zero-knowledge encryption', 'end-to-end encryption', 'encrypted file transfer', 'privacy-first', 'GDPR compliant file sharing', 'anonymous file upload', 'encrypted cloud storage', 'private file sharing', 'secure file transfer'],
+  description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Ciphera ID zero-knowledge auth, Captcha bot protection, Relay email, and open-source Tessera.',
   authors: [{ name: 'Ciphera' }],
   creator: 'Ciphera',
   publisher: 'Ciphera',
@@ -44,7 +43,7 @@ export const metadata: Metadata = {
     url: 'https://ciphera.net',
     siteName: 'Ciphera',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-    description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Built for privacy.',
+    description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Ciphera ID zero-knowledge auth, Captcha bot protection, Relay email, and open-source Tessera.',
     images: [
       {
         url: cdnUrl('/og-homepage.png'),
@@ -58,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@CipheraNET',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-    description: 'Privacy-first infrastructure with zero-knowledge encryption. Secure file sharing, analytics, and authentication. Built for privacy.',
+    description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Ciphera ID zero-knowledge auth, Captcha bot protection, Relay email, and open-source Tessera.',
     images: [cdnUrl('/og-homepage.png')],
   },
   alternates: {

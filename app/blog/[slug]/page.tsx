@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       canonical: `https://ciphera.net/blog/${slug}`,
     },
     openGraph: {
-      title: post.title,
+      title: `${post.title} | Ciphera`,
       description: post.description,
       url: `https://ciphera.net/blog/${slug}`,
       siteName: 'Ciphera',
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
+      title: `${post.title} | Ciphera`,
       description: post.description,
       images: [cdnUrl(post.image)],
     },
@@ -77,7 +77,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description,
-    image: cdnUrl('/ciphera_logo_no_margins.png'),
+    image: cdnUrl(post.image),
     datePublished: post.date,
     dateModified: post.dateModified,
     wordCount: post.content.split(/\s+/).length,

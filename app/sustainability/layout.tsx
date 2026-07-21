@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     canonical: 'https://ciphera.net/sustainability',
   },
   openGraph: {
-    title: 'Environmental Impact — Ciphera',
+    title: 'Environmental Impact | Ciphera',
     description:
       'Receipts, not promises. Ciphera runs on one of Europe’s lowest-carbon grids — Swiss hydro and nuclear, ~12 gCO₂e/kWh. See every server, every lifecycle phase, every gram of CO₂.',
     url: 'https://ciphera.net/sustainability',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Environmental Impact — Ciphera',
+    title: 'Environmental Impact | Ciphera',
     description:
       'Receipts, not promises. Ciphera runs on one of Europe’s lowest-carbon grids — Swiss hydro and nuclear.',
   },
@@ -36,11 +36,7 @@ export default function SustainabilityLayout({
     url: 'https://ciphera.net/sustainability',
     description:
       "Ciphera's environmental impact measured with life-cycle assessment, powered by one of Europe's lowest-carbon grids (Swiss hydro and nuclear, ~12 gCO₂e/kWh).",
-    publisher: {
-      '@type': 'Organization',
-      name: 'Ciphera',
-      url: 'https://ciphera.net',
-    },
+    publisher: { '@id': 'https://ciphera.net/#organization' },
   }
   return (
     <>

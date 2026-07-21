@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     canonical: 'https://ciphera.net/learn',
   },
   openGraph: {
-    title: 'Learn - Technical Guides & Reference',
+    title: 'Learn - Technical Guides & Reference | Ciphera',
     description: 'Guides, references, and technical deep-dives across Ciphera products.',
     url: 'https://ciphera.net/learn',
     siteName: 'Ciphera',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Learn - Technical Guides & Reference',
+    title: 'Learn - Technical Guides & Reference | Ciphera',
     description: 'Guides, references, and technical deep-dives across Ciphera products.',
     images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
@@ -31,7 +31,7 @@ const schema = [
     name: 'Learn - Technical Guides & Reference',
     description: 'Guides, references, and technical deep-dives across Ciphera products.',
     url: 'https://ciphera.net/learn',
-    publisher: { '@type': 'Organization', name: 'Ciphera', url: 'https://ciphera.net' },
+    publisher: { '@id': 'https://ciphera.net/#organization' },
   },
   {
     '@context': 'https://schema.org',

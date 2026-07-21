@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     canonical: 'https://ciphera.net/products/pulse',
   },
   openGraph: {
-    title: 'Pulse - Privacy-First Website Analytics',
+    title: 'Pulse - Privacy-First Website Analytics | Ciphera',
     description:
       'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. Under 2KB tracking script.',
     url: 'https://ciphera.net/products/pulse',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pulse - Privacy-First Website Analytics',
+    title: 'Pulse - Privacy-First Website Analytics | Ciphera',
     description:
       'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design.',
     images: [cdnUrl('/og-pulse.png')],
@@ -65,11 +65,7 @@ const pulseSchema = [
     operatingSystem: 'Web',
     url: 'https://pulse.ciphera.net',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    provider: {
-      '@type': 'Organization',
-      name: 'Ciphera',
-      url: 'https://ciphera.net',
-    },
+    provider: { '@id': 'https://ciphera.net/#organization' },
   },
   {
     '@context': 'https://schema.org',
@@ -85,7 +81,7 @@ const pulseSchema = [
         '@type': 'ListItem',
         position: 2,
         name: 'Products',
-        item: 'https://ciphera.net/products',
+        item: 'https://ciphera.net/#products',
       },
       { '@type': 'ListItem', position: 3, name: 'Pulse' },
     ],

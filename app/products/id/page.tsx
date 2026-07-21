@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     canonical: 'https://ciphera.net/products/id',
   },
   openGraph: {
-    title: 'Ciphera ID - Secure Identity Provider',
+    title: 'Ciphera ID - Secure Identity Provider | Ciphera',
     description:
       'Enterprise-grade authentication with zero-knowledge password authentication (OPAQUE), passkeys, 2FA, and OAuth 2.0 with PKCE.',
     url: 'https://ciphera.net/products/id',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ciphera ID - Secure Identity Provider',
+    title: 'Ciphera ID - Secure Identity Provider | Ciphera',
     description:
       'Enterprise-grade authentication with zero-knowledge password authentication (OPAQUE), passkeys, and OAuth 2.0 with PKCE.',
     images: [cdnUrl('/id_icon_no_margins.png')],
@@ -56,11 +56,7 @@ const idSchema = [
     applicationCategory: 'SecurityApplication',
     operatingSystem: 'Web',
     url: 'https://ciphera.net/products/id',
-    provider: {
-      '@type': 'Organization',
-      name: 'Ciphera',
-      url: 'https://ciphera.net',
-    },
+    provider: { '@id': 'https://ciphera.net/#organization' },
   },
   {
     '@context': 'https://schema.org',
@@ -76,7 +72,7 @@ const idSchema = [
         '@type': 'ListItem',
         position: 2,
         name: 'Products',
-        item: 'https://ciphera.net/products',
+        item: 'https://ciphera.net/#products',
       },
       { '@type': 'ListItem', position: 3, name: 'Ciphera ID' },
     ],

@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `https://ciphera.net/glossary/${term.slug}`,
     },
     openGraph: {
-      title: `What is ${term.term}?`,
+      title: `What is ${term.term}? | Ciphera`,
       description: term.short,
       url: `https://ciphera.net/glossary/${term.slug}`,
       siteName: 'Ciphera',

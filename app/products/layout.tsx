@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'Explore Ciphera\'s privacy-first product suite: Pulse for cookie-free analytics, ID, Captcha, and Relay infrastructure.',
   keywords: ['ciphera products', 'pulse analytics', 'privacy analytics', 'privacy tools', 'GDPR compliant tools', 'end-to-end encryption'],
   openGraph: {
-    title: 'Privacy-First Products & Applications',
+    title: 'Privacy-First Products & Applications | Ciphera',
     description: 'Explore Ciphera\'s privacy-first product suite: Pulse for cookie-free analytics, ID, Captcha, and Relay infrastructure.',
     url: 'https://ciphera.net',
     siteName: 'Ciphera',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Privacy-First Products & Applications',
+    title: 'Privacy-First Products & Applications | Ciphera',
     description: 'Explore Ciphera\'s privacy-first product suite: Pulse, ID, Captcha, and Relay.',
     images: [cdnUrl('/ciphera_logo_no_margins.png')],
   },
