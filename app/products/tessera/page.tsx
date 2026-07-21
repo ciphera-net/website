@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, GithubIcon } from '@ciphera-net/facet'
-import { authShowcaseBg } from '@/lib/images'
+import { authShowcaseBg, authIcon, pulseIcon } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
 
 export const metadata: Metadata = {
@@ -284,6 +284,43 @@ export default function TesseraPage() {
             server verifies you know the password without ever receiving it. The server stores only
             an OPAQUE record — not a password, and not a password hash.
           </p>
+
+          {/* * Wire diagram — what actually crosses the network in an OPAQUE
+              login. Built from the border/mono grammar; the struck-through
+              "password" in the middle column IS the argument. */}
+          <div className="mt-10 grid max-w-4xl gap-px border border-border bg-border sm:grid-cols-[1fr_auto_1fr]">
+            <div className="bg-background p-6">
+              <p className="font-mono text-xs text-muted-foreground">Your device</p>
+              <ul className="mt-4 space-y-2 font-mono text-xs">
+                <li className="text-foreground">password stays here</li>
+                <li className="text-muted-foreground">runs the OPAQUE key exchange locally</li>
+                <li className="text-muted-foreground">produces a proof of knowledge</li>
+              </ul>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2 bg-background px-8 py-6">
+              <span className="font-mono text-[11px] text-primary" aria-hidden="true">
+                proof &rarr;
+              </span>
+              <span className="font-mono text-[11px] text-muted-foreground" aria-hidden="true">
+                &larr; session key
+              </span>
+              <span className="font-mono text-[11px] text-muted-foreground line-through decoration-primary/70">
+                password
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
+                never on the wire
+              </span>
+            </div>
+            <div className="bg-background p-6">
+              <p className="font-mono text-xs text-muted-foreground">Ciphera server</p>
+              <ul className="mt-4 space-y-2 font-mono text-xs">
+                <li className="text-muted-foreground">verifies the proof</li>
+                <li className="text-muted-foreground">stores an OPAQUE record</li>
+                <li className="text-foreground">never sees the password</li>
+              </ul>
+            </div>
+          </div>
+
           <ul className="mt-8 max-w-3xl space-y-3">
             {[
               'The password is never transmitted, so a compromised server cannot leak it',
@@ -326,7 +363,30 @@ export default function TesseraPage() {
             . The same open code you can read is the code that verifies real Ciphera logins — the
             cryptographic core our whole platform depends on.
           </p>
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+          <div className="mt-8 flex flex-wrap gap-2.5">
+            {[
+              { image: authIcon, label: 'Ciphera ID', href: '/products/id' },
+              { image: pulseIcon, label: 'Pulse', href: '/products/pulse' },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="inline-flex items-center gap-2.5 border border-border px-4 py-2.5 transition-colors duration-fast hover:border-line-hover"
+              >
+                <Image
+                  src={item.image}
+                  alt=""
+                  width={20}
+                  height={20}
+                  unoptimized
+                  aria-hidden="true"
+                  className="h-5 w-5 object-contain"
+                />
+                <span className="font-mono text-xs text-foreground">{item.label}</span>
+              </Link>
+            ))}
+          </div>
+          <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
             For how this fits the wider architecture, see the{' '}
             <Link href="/trust#the-zero-knowledge-architecture" className="text-primary underline">
               zero-knowledge architecture
