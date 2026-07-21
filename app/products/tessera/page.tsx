@@ -75,6 +75,7 @@ const packages = [
     body: 'The cryptographic core — an OPAQUE (RFC 9807) implementation and an HTTP sidecar. Configuration #1: ristretto255-SHA-512, 3DH, Argon2id.',
     repo: 'https://github.com/ciphera-net/tessera',
     registryLabel: 'crates.io',
+    registryIcon: '/icons/registries/rust.png',
     registry: 'https://crates.io/crates/ciphera-tessera',
     pkg: 'ciphera-tessera',
   },
@@ -85,6 +86,7 @@ const packages = [
     body: 'The Go server SDK — the registration and login flows a backend needs to speak OPAQUE, with the crypto handled by the Rust core.',
     repo: 'https://github.com/ciphera-net/tessera-go',
     registryLabel: 'pkg.go.dev',
+    registryIcon: '/icons/registries/go.png',
     registry: 'https://pkg.go.dev/github.com/ciphera-net/tessera-go',
     pkg: 'github.com/ciphera-net/tessera-go',
   },
@@ -95,6 +97,7 @@ const packages = [
     body: 'The browser SDK that runs the client half of OPAQUE in the user’s browser. Published on npm as @ciphera-net/tessera.',
     repo: 'https://github.com/ciphera-net/tessera-ts',
     registryLabel: 'npm',
+    registryIcon: '/icons/registries/npm.png',
     registry: 'https://www.npmjs.com/package/@ciphera-net/tessera',
     pkg: '@ciphera-net/tessera',
   },
@@ -230,8 +233,17 @@ export default function TesseraPage() {
                     href={p.registry}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-mono text-xs text-primary hover:underline"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs text-primary hover:underline"
                   >
+                    <Image
+                      src={cdnUrl(p.registryIcon)}
+                      alt=""
+                      width={14}
+                      height={14}
+                      unoptimized
+                      aria-hidden="true"
+                      className="h-3.5 w-3.5 rounded-[2px]"
+                    />
                     {p.registryLabel}
                     <span aria-hidden="true"> &rarr;</span>
                   </a>

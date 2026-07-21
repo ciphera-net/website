@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRightIcon } from '@ciphera-net/facet'
+import { ArrowRightIcon, GithubIcon, XIcon } from '@ciphera-net/facet'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { cdnUrl } from '@/lib/cdn'
 
@@ -77,15 +77,36 @@ const assets: { label: string; note: string; file: string }[] = [
   { label: 'Ciphera Relay icon (PNG)', note: 'Product mark', file: '/relay_icon_no_margins.png' },
 ]
 
-const links: { label: string; href: string }[] = [
+const links: { label: string; href: string; icon?: 'linkedin' | 'github' | 'x' }[] = [
   {
     label: 'Belgian enterprise register (KBO/BCE)',
     href: 'https://kbopub.economie.fgov.be/kbopub/toonondernemingps.html?ondernemingsnummer=1013721660&lang=en',
   },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/ciphera/' },
-  { label: 'GitHub', href: 'https://github.com/ciphera-net' },
-  { label: 'X (Twitter)', href: 'https://x.com/CipheraNET' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/ciphera/', icon: 'linkedin' },
+  { label: 'GitHub', href: 'https://github.com/ciphera-net', icon: 'github' },
+  { label: 'X (Twitter)', href: 'https://x.com/CipheraNET', icon: 'x' },
 ]
+
+// * Brand marks for the profile links; LinkedIn has no facet icon, so the
+// * footer's inline path is reused to keep the two renderings identical.
+function ProfileLinkIcon({ icon }: { icon?: 'linkedin' | 'github' | 'x' }) {
+  if (icon === 'github')
+    return <GithubIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
+  if (icon === 'x')
+    return <XIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
+  if (icon === 'linkedin')
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        className="h-4 w-4 shrink-0 text-muted-foreground"
+      >
+        <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z" />
+      </svg>
+    )
+  return null
+}
 
 const BOILERPLATE =
   'Ciphera BV is a Belgian privacy-software company founded in 2024. It builds zero-knowledge infrastructure and applications — including Pulse (cookieless web analytics), Ciphera ID (a zero-knowledge identity provider), Ciphera Captcha (privacy-first bot protection), Ciphera Relay (transactional email), and the open-source Tessera authentication library. Ciphera’s products encrypt user data before it reaches the company’s servers, and run on Swiss infrastructure under EU (GDPR and NIS2) jurisdiction. Ciphera is headquartered at De Kleetlaan 2, 1831 Diegem, Belgium. Learn more at ciphera.net.'
@@ -236,7 +257,10 @@ export default function PressPage() {
                   rel="noopener noreferrer"
                   className="group flex items-center justify-between gap-4 py-4"
                 >
-                  <span className="text-sm font-medium text-foreground">{l.label}</span>
+                  <span className="flex items-center gap-2.5 text-sm font-medium text-foreground">
+                    <ProfileLinkIcon icon={l.icon} />
+                    {l.label}
+                  </span>
                   <span className="flex items-center gap-1 font-mono text-xs text-primary group-hover:underline">
                     Open
                     <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
