@@ -76,6 +76,7 @@ const packages = [
     repo: 'https://github.com/ciphera-net/tessera',
     registryLabel: 'crates.io',
     registryIcon: '/icons/registries/rust.png',
+    langIcon: '/icons/langs/rust.png',
     registry: 'https://crates.io/crates/ciphera-tessera',
     pkg: 'ciphera-tessera',
   },
@@ -87,6 +88,7 @@ const packages = [
     repo: 'https://github.com/ciphera-net/tessera-go',
     registryLabel: 'pkg.go.dev',
     registryIcon: '/icons/registries/go.png',
+    langIcon: '/icons/langs/go-wordmark.png',
     registry: 'https://pkg.go.dev/github.com/ciphera-net/tessera-go',
     pkg: 'github.com/ciphera-net/tessera-go',
   },
@@ -98,6 +100,7 @@ const packages = [
     repo: 'https://github.com/ciphera-net/tessera-ts',
     registryLabel: 'npm',
     registryIcon: '/icons/registries/npm.png',
+    langIcon: '/icons/langs/typescript.png',
     registry: 'https://www.npmjs.com/package/@ciphera-net/tessera',
     pkg: '@ciphera-net/tessera',
   },
@@ -213,7 +216,18 @@ export default function TesseraPage() {
           <div className="mt-14 grid gap-px border border-border bg-border lg:grid-cols-3">
             {packages.map((p) => (
               <div key={p.name} className="flex flex-col bg-background p-8">
-                <p className="font-mono text-xs text-muted-foreground">{p.lang}</p>
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={cdnUrl(p.langIcon)}
+                    alt=""
+                    width={24}
+                    height={16}
+                    unoptimized
+                    aria-hidden="true"
+                    className="h-4 w-auto max-w-[28px] object-contain grayscale"
+                  />
+                  <p className="font-mono text-xs text-muted-foreground">{p.lang}</p>
+                </div>
                 <h3 className="mt-3 font-mono text-lg font-bold tracking-tight text-foreground">
                   {p.name}
                 </h3>
@@ -243,18 +257,14 @@ export default function TesseraPage() {
                     <Image
                       src={cdnUrl(p.registryIcon)}
                       alt=""
-                      width={16}
+                      width={24}
                       height={16}
                       unoptimized
                       aria-hidden="true"
-                      className="h-4 w-4 object-contain grayscale transition-[filter] duration-fast group-hover:grayscale-0"
+                      className="h-4 w-6 object-contain grayscale transition-[filter] duration-fast group-hover:grayscale-0"
                     />
                   </a>
-                  <span className="ml-1 font-mono text-xs text-muted-foreground">
-                    {p.registryLabel}
-                  </span>
                 </div>
-                <p className="mt-3 break-all font-mono text-[11px] text-muted-foreground">{p.pkg}</p>
               </div>
             ))}
           </div>
