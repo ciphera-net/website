@@ -59,7 +59,7 @@ export default function GlossaryPage() {
       {/* Hero */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">Reference</p>
+          <p className="text-xs text-muted-foreground">Reference</p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
             The privacy glossary.
           </h1>
@@ -74,7 +74,7 @@ export default function GlossaryPage() {
               <a
                 key={c}
                 href={`#${categoryAnchor(c)}`}
-                className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                className="text-xs text-muted-foreground transition-colors hover:text-foreground"
               >
                 {c} ({termsByCategory(c).length})
               </a>
@@ -94,7 +94,7 @@ export default function GlossaryPage() {
             className="scroll-mt-24 border-b border-border"
           >
             <div className="px-6 py-14 sm:py-16">
-              <p className="font-mono text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {String(i + 1).padStart(2, '0')} · {category}
               </p>
               <div className="mt-6 grid grid-cols-1 gap-px border border-border bg-border md:grid-cols-2">

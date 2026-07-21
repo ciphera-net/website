@@ -117,7 +117,7 @@ export default function WhatIsCipheraPage() {
       <section className="border-b border-border">
         <div className="grid lg:grid-cols-2">
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
-            <p className="font-mono text-xs text-muted-foreground">Definition</p>
+            <p className="text-xs text-muted-foreground">Definition</p>
             <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
               What is Ciphera?
             </h1>
@@ -160,7 +160,7 @@ export default function WhatIsCipheraPage() {
       {/* Products */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">01 · What Ciphera builds</p>
+          <p className="text-xs text-muted-foreground">01 · What Ciphera builds</p>
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Five things, one principle
           </h2>
@@ -173,7 +173,7 @@ export default function WhatIsCipheraPage() {
             {products.map((p, i) => (
               <div key={p.name} className="border-t border-border pt-6">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   {p.image ? (
@@ -196,7 +196,7 @@ export default function WhatIsCipheraPage() {
                 <p className="mt-3 leading-relaxed text-muted-foreground">{p.detail}</p>
                 <Link
                   href={p.href}
-                  className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+                  className="mt-4 inline-flex items-center gap-1 text-xs text-primary hover:underline"
                 >
                   {p.name === 'Tessera' ? 'See Tessera' : `Explore ${p.name}`}
                   <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
@@ -210,7 +210,7 @@ export default function WhatIsCipheraPage() {
       {/* Not to be confused with */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">02 · Not to be confused with</p>
+          <p className="text-xs text-muted-foreground">02 · Not to be confused with</p>
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Others share the name
           </h2>
@@ -229,7 +229,7 @@ export default function WhatIsCipheraPage() {
       {/* FAQ — visible answers that mirror the FAQPage structured data */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">03 · Common questions</p>
+          <p className="text-xs text-muted-foreground">03 · Common questions</p>
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Frequently asked
           </h2>
@@ -249,10 +249,10 @@ export default function WhatIsCipheraPage() {
       {/* Footer nav */}
       <section className="border-b border-border">
         <div className="flex items-center justify-between px-6 py-8">
-          <Link href="/" className="font-mono text-xs text-primary hover:underline">
+          <Link href="/" className="text-xs text-primary hover:underline">
             <span aria-hidden="true">&larr; </span>Back to Home
           </Link>
-          <Link href="/about" className="font-mono text-xs text-primary hover:underline">
+          <Link href="/about" className="text-xs text-primary hover:underline">
             About Ciphera<span aria-hidden="true"> &rarr;</span>
           </Link>
         </div>

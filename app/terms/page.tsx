@@ -95,13 +95,13 @@ export default function TermsOfServicePage() {
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
-              <p className="font-mono text-xs text-muted-foreground">Contents</p>
+              <p className="text-xs text-muted-foreground">Contents</p>
               <ContentsList />
             </nav>
 
             <nav aria-label="Contents" className="mb-12 md:hidden">
               <details className="group border border-border bg-card p-6">
-                <summary className="cursor-pointer list-none font-mono text-xs text-muted-foreground">Contents</summary>
+                <summary className="cursor-pointer list-none text-xs text-muted-foreground">Contents</summary>
                 <ContentsList />
               </details>
             </nav>
@@ -559,16 +559,16 @@ export default function TermsOfServicePage() {
                       { term: 'Privacy inquiries', email: 'privacy@ciphera.net' },
                     ].map((c) => (
                       <div key={c.term} className="border-t border-border pt-3">
-                        <dt className="font-mono text-xs text-muted-foreground">{c.term}</dt>
-                        <dd className="mt-1.5"><a href={`mailto:${c.email}`} className="font-mono text-sm text-primary hover:underline">{c.email}</a></dd>
+                        <dt className="text-xs text-muted-foreground">{c.term}</dt>
+                        <dd className="mt-1.5"><a href={`mailto:${c.email}`} className="text-sm text-primary hover:underline">{c.email}</a></dd>
                       </div>
                     ))}
                     <div className="border-t border-border pt-3">
-                      <dt className="font-mono text-xs text-muted-foreground">Phone</dt>
-                      <dd className="mt-1.5"><a href="tel:+3278480710" className="font-mono text-sm text-primary hover:underline">+32 78 48 07 10</a></dd>
+                      <dt className="text-xs text-muted-foreground">Phone</dt>
+                      <dd className="mt-1.5"><a href="tel:+3278480710" className="text-sm text-primary hover:underline">+32 78 48 07 10</a></dd>
                     </div>
                     <div className="border-t border-border pt-3">
-                      <dt className="font-mono text-xs text-muted-foreground">Address</dt>
+                      <dt className="text-xs text-muted-foreground">Address</dt>
                       <dd className="mt-1.5 text-sm text-foreground">Ciphera BV (KBO/BCE: 1013.721.660), De Kleetlaan 2, 1831 Diegem, Belgium</dd>
                     </div>
                   </dl>

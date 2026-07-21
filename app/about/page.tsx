@@ -167,7 +167,7 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="grid lg:grid-cols-2">
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
-            <p className="font-mono text-xs text-muted-foreground">About Ciphera</p>
+            <p className="text-xs text-muted-foreground">About Ciphera</p>
             <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               Building the future of privacy.
             </h1>
@@ -176,7 +176,7 @@ export default function AboutPage() {
               users in control of their data. We believe encryption should be the default, not an
               add-on.
             </p>
-            <p className="mt-6 font-mono text-xs text-muted-foreground">
+            <p className="mt-6 text-xs text-muted-foreground">
               New here?{' '}
               <Link href="/what-is-ciphera" className="text-primary hover:underline">
                 Start with What is Ciphera →
@@ -205,7 +205,7 @@ export default function AboutPage() {
               <div className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 {s.value}
               </div>
-              <div className="mt-2 font-mono text-xs text-muted-foreground">{s.label}</div>
+              <div className="mt-2 text-xs text-muted-foreground">{s.label}</div>
             </div>
           ))}
         </div>
@@ -215,19 +215,19 @@ export default function AboutPage() {
           for the exact-name query "Ciphera BV" */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">Company facts</p>
+          <p className="text-xs text-muted-foreground">Company facts</p>
           <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
             Ciphera BV, on the record
           </h2>
           <dl className="mt-8 grid max-w-4xl gap-x-12 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
             {companyFacts.map((f) => (
               <div key={f.term} className="border-t border-border pt-3">
-                <dt className="font-mono text-xs text-muted-foreground">{f.term}</dt>
+                <dt className="text-xs text-muted-foreground">{f.term}</dt>
                 <dd className="mt-1.5 text-sm text-foreground">{f.detail}</dd>
               </div>
             ))}
           </dl>
-          <p className="mt-8 max-w-2xl font-mono text-xs text-muted-foreground">
+          <p className="mt-8 max-w-2xl text-xs text-muted-foreground">
             <a
               href={KBO_URL}
               target="_blank"
@@ -254,7 +254,7 @@ export default function AboutPage() {
             />
           </div>
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">01 · Mission</p>
+            <p className="text-xs text-muted-foreground">01 · Mission</p>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Encryption that works invisibly
             </h2>
@@ -264,7 +264,7 @@ export default function AboutPage() {
               it leaves your device, there’s nothing to track, profile, or compromise. That’s not a
               feature — it’s the foundation.
             </p>
-            <p className="mt-6 font-mono text-xs text-muted-foreground">
+            <p className="mt-6 text-xs text-muted-foreground">
               Data residency: Switzerland.{' '}
               <Link href="/privacy" className="text-primary hover:underline">
                 See our privacy policy →
@@ -277,7 +277,7 @@ export default function AboutPage() {
       {/* Values — editorial list */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">02 · Values</p>
+          <p className="text-xs text-muted-foreground">02 · Values</p>
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             What we stand for
           </h2>
@@ -287,7 +287,7 @@ export default function AboutPage() {
               return (
                 <div key={v.title} className="border-t border-border pt-6">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
+                    <span className="text-xs text-muted-foreground">0{i + 1}</span>
                     <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <h3 className="mt-5 font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl">
@@ -297,7 +297,7 @@ export default function AboutPage() {
                   {'href' in v && (
                     <Link
                       href={v.href}
-                      className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+                      className="mt-4 inline-flex items-center gap-1 text-xs text-primary hover:underline"
                     >
                       {v.linkLabel}
                       <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
@@ -313,7 +313,7 @@ export default function AboutPage() {
       {/* Technology — airy two-column */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">03 · Technology</p>
+          <p className="text-xs text-muted-foreground">03 · Technology</p>
           <div className="mt-8 grid gap-14 lg:grid-cols-2">
             <div>
               <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -327,7 +327,7 @@ export default function AboutPage() {
                 href="https://github.com/ciphera-net"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+                className="mt-6 inline-flex items-center gap-1 text-xs text-primary hover:underline"
               >
                 See our open-source code on GitHub
                 <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
@@ -385,7 +385,7 @@ export default function AboutPage() {
       {/* Journey — big editorial years */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">04 · Journey</p>
+          <p className="text-xs text-muted-foreground">04 · Journey</p>
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Building privacy, one step at a time
           </h2>
@@ -406,12 +406,12 @@ export default function AboutPage() {
           review before merge. Name is taken exactly from the KBO/BCE register. */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">Team</p>
+          <p className="text-xs text-muted-foreground">Team</p>
           <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Who&rsquo;s behind Ciphera
           </h2>
           <div className="mt-12 max-w-2xl border-t border-border pt-8">
-            <p className="font-mono text-xs text-muted-foreground">Founder</p>
+            <p className="text-xs text-muted-foreground">Founder</p>
             <h3 className="mt-3 font-display text-2xl font-bold tracking-tight text-foreground">
               {FOUNDER_NAME}
             </h3>
@@ -425,7 +425,7 @@ export default function AboutPage() {
                 href="https://www.linkedin.com/company/ciphera/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
               >
                 LinkedIn
                 <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
@@ -434,7 +434,7 @@ export default function AboutPage() {
                 href="https://github.com/ciphera-net"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
               >
                 GitHub
                 <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
@@ -459,7 +459,7 @@ export default function AboutPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">05 · Get started</p>
+          <p className="text-xs text-muted-foreground">05 · Get started</p>
           <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             One account. Every product.
           </h2>

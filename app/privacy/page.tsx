@@ -96,13 +96,13 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
-              <p className="font-mono text-xs text-muted-foreground">Contents</p>
+              <p className="text-xs text-muted-foreground">Contents</p>
               <ContentsList />
             </nav>
 
             <nav aria-label="Contents" className="mb-12 md:hidden">
               <details className="group border border-border bg-card p-6">
-                <summary className="cursor-pointer list-none font-mono text-xs text-muted-foreground">Contents</summary>
+                <summary className="cursor-pointer list-none text-xs text-muted-foreground">Contents</summary>
                 <ContentsList />
               </details>
             </nav>
@@ -327,7 +327,7 @@ export default function PrivacyPolicyPage() {
                 <p className="text-muted-foreground leading-relaxed mb-3">
                   The Ciphera marketing site (ciphera.net) sets no cookies or browser storage of its own. Our authenticated applications — Ciphera ID (id.ciphera.net) and Ciphera Pulse — use the minimum browser storage needed to keep you signed in, remember your interface preferences, and run features you ask for:
                 </p>
-                <p className="font-mono text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
+                <p className="text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-muted-foreground mt-2">
                     <thead>
@@ -497,7 +497,7 @@ export default function PrivacyPolicyPage() {
                 <p className="text-muted-foreground leading-relaxed mb-2">
                   We retain data only as long as necessary for the purpose it was collected:
                 </p>
-                <p className="font-mono text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
+                <p className="text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-muted-foreground mt-2">
                     <thead>
@@ -590,7 +590,7 @@ export default function PrivacyPolicyPage() {
                 <p className="text-muted-foreground leading-relaxed mb-3">
                   We minimize our reliance on third-party services. The services we use, and the data they may process, are listed below:
                 </p>
-                <p className="font-mono text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
+                <p className="text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
                 <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Subprocessor table, scrollable">
                   <table className="w-full text-sm text-muted-foreground mt-2">
                     <caption className="sr-only">Subprocessors — service, purpose, data processed, and location</caption>

@@ -253,7 +253,7 @@ export default function ContactPage() {
       {/* * Hero — A1 full-bleed section with A2 mono kicker + font-display h1 */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">Get in touch</p>
+          <p className="text-xs text-muted-foreground">Get in touch</p>
           <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             We&apos;re here to help
           </h1>
@@ -269,7 +269,7 @@ export default function ContactPage() {
         <div className="grid lg:grid-cols-2">
           {/* * Left — info + office photo + business hours */}
           <div className="flex flex-col px-6 py-16 sm:py-24 lg:pr-14 border-b border-border lg:border-b-0 lg:border-r">
-            <p className="font-mono text-xs text-muted-foreground">01 · Office</p>
+            <p className="text-xs text-muted-foreground">01 · Office</p>
             <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Send us a message
             </h2>
@@ -334,7 +334,7 @@ export default function ContactPage() {
                   </h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     Monday – Friday<br />
-                    <span className="font-mono tabular-nums text-foreground">08:00–12:00, 13:00–18:00 CET</span>
+                    <span className="tabular-nums text-foreground">08:00–12:00, 13:00–18:00 CET</span>
                   </p>
                 </div>
               </div>
@@ -451,7 +451,7 @@ export default function ContactPage() {
                     <label htmlFor="message" className="block text-sm font-medium text-foreground">
                       Message <span className="text-primary">*</span>
                     </label>
-                    <span className="font-mono text-xs text-muted-foreground">
+                    <span className="text-xs text-muted-foreground">
                       {formData.message.length}/{MESSAGE_MAX_LENGTH}
                     </span>
                   </div>
@@ -560,7 +560,7 @@ export default function ContactPage() {
       {/* * Contact methods — A1 section with A5 flat cards */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">02 · Contact</p>
+          <p className="text-xs text-muted-foreground">02 · Contact</p>
           <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Reach us directly
           </h2>
@@ -602,7 +602,7 @@ export default function ContactPage() {
                       )}
                     </button>
                   </div>
-                  <p className="mt-2 font-mono text-xs text-muted-foreground">
+                  <p className="mt-2 text-xs text-muted-foreground">
                     Response:{' '}
                     <span className="tabular-nums text-foreground">{method.responseTime}</span>
                   </p>
@@ -644,7 +644,7 @@ export default function ContactPage() {
                   )}
                 </button>
               </div>
-              <p className="mt-2 font-mono text-xs text-muted-foreground">
+              <p className="mt-2 text-xs text-muted-foreground">
                 Mon-Fri,{' '}
                 <span className="tabular-nums text-foreground">08:00–12:00, 13:00–18:00</span>
               </p>
@@ -653,7 +653,7 @@ export default function ContactPage() {
 
           {/* * Social links */}
           <div className="mt-10 flex items-center gap-2">
-            <p className="font-mono text-xs text-muted-foreground">Also on</p>
+            <p className="text-xs text-muted-foreground">Also on</p>
             <a
               href="https://github.com/ciphera-net"
               target="_blank"

@@ -91,12 +91,12 @@ export default async function GlossaryTermPage({ params }: Props) {
         <div className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
           <Link
             href="/glossary"
-            className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             &larr; All terms
           </Link>
 
-          <p className="mt-8 font-mono text-xs text-muted-foreground">
+          <p className="mt-8 text-xs text-muted-foreground">
             Glossary · {term.category}
           </p>
           <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
@@ -130,7 +130,7 @@ export default async function GlossaryTermPage({ params }: Props) {
 
           {term.see && term.see.length > 0 && (
             <section className="mt-12">
-              <h2 className="font-mono text-xs text-muted-foreground">See also</h2>
+              <h2 className="text-xs text-muted-foreground">See also</h2>
               <ul className="mt-4 space-y-2">
                 {term.see.map((s) => {
                   const external = s.href.startsWith('http')
@@ -164,13 +164,13 @@ export default async function GlossaryTermPage({ params }: Props) {
 
           {related.length > 0 && (
             <section className="mt-12">
-              <h2 className="font-mono text-xs text-muted-foreground">Related terms</h2>
+              <h2 className="text-xs text-muted-foreground">Related terms</h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {related.map((r) => (
                   <Link
                     key={r.slug}
                     href={`/glossary/${r.slug}`}
-                    className="border border-border bg-card px-3 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+                    className="border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
                   >
                     {r.term}
                   </Link>

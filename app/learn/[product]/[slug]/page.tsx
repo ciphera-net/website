@@ -102,7 +102,7 @@ export default async function LearnArticlePage({ params }: Props) {
             {/* Back link */}
             <Link
               href="/learn"
-              className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline mb-8"
+              className="inline-flex items-center gap-1 text-xs text-primary hover:underline mb-8"
             >
               <ArrowLeftIcon className="w-4 h-4" />
               Back to Learn
@@ -110,13 +110,13 @@ export default async function LearnArticlePage({ params }: Props) {
 
             {/* Product + Category badges */}
             <div className="flex items-center gap-2 mb-4">
-              <span className="inline-flex items-center gap-1.5 border border-border px-2 py-0.5 font-mono text-xs text-primary">
+              <span className="inline-flex items-center gap-1.5 border border-border px-2 py-0.5 text-xs text-primary">
                 {PRODUCT_ICONS[product] && (
                   <Image src={PRODUCT_ICONS[product]} alt="" width={14} height={14} unoptimized />
                 )}
                 {PRODUCT_LABELS[product] || product}
               </span>
-              <span className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+              <span className="border border-border px-2 py-0.5 text-xs text-muted-foreground">
                 {article.category}
               </span>
             </div>
@@ -129,7 +129,7 @@ export default async function LearnArticlePage({ params }: Props) {
               <p className="mb-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">{article.description}</p>
             )}
             {article.date && (
-              <time dateTime={article.date} className="mb-8 block font-mono text-xs tabular-nums text-muted-foreground">
+              <time dateTime={article.date} className="mb-8 block text-xs tabular-nums text-muted-foreground">
                 Published {new Date(article.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-')}
               </time>
             )}
