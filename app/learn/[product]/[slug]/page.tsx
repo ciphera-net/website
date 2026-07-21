@@ -34,8 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: article.title,
     description: article.description,
     alternates: { canonical: `https://ciphera.net/learn/${product}/${article.slug}` },
+    // The /learn/pulse cluster (Pulse audit-rule reference articles) is
+    // templated, thin near-duplicate content that dilutes crawl focus. Keep it
+    // reachable for users and link-followable, but out of the index and the
+    // sitemap (see app/sitemap.ts). This route serves only the pulse cluster.
+    robots: { index: false, follow: true },
     openGraph: {
-      title: article.title,
+      title: `${article.title} | Ciphera`,
       description: article.description,
       url: `https://ciphera.net/learn/${product}/${article.slug}`,
       siteName: 'Ciphera',
@@ -45,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.title,
+      title: `${article.title} | Ciphera`,
       description: article.description,
       images: [cdnUrl('/og-homepage.png')],
     },

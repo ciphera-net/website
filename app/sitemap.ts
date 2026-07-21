@@ -112,11 +112,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: post.dateModified,
   }))
 
-  // Dynamically add published learn articles
-  const learnPages: MetadataRoute.Sitemap = getLearnArticles().map((article) => ({
-    url: `${baseUrl}/learn/${article.product}/${article.slug}`,
-    lastModified: article.date,
-  }))
+  // Dynamically add published learn articles, excluding the /learn/pulse
+  // cluster: those are templated Pulse audit-rule reference pages, now
+  // noindex'd (app/learn/[product]/[slug]/page.tsx) so they stay out of the
+  // sitemap too. The /learn index, glossary, and blog entries remain.
+  const learnPages: MetadataRoute.Sitemap = getLearnArticles()
+    .filter((article) => article.product !== 'pulse')
+    .map((article) => ({
+      url: `${baseUrl}/learn/${article.product}/${article.slug}`,
+      lastModified: article.date,
+    }))
 
   return [...staticPages, ...trustPages, ...glossaryPages, ...blogPages, ...learnPages]
 }
