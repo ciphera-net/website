@@ -51,14 +51,14 @@ const features = [
 ] as const
 
 const proofLinkClass =
-  'mt-5 inline-flex items-center gap-1 font-mono text-xs text-brand transition-colors duration-fast hover:text-brand-hover'
+  'mt-5 inline-flex items-center gap-1 text-xs text-brand transition-colors duration-fast hover:text-brand-hover'
 
 export default function FeatureSection() {
   return (
     <section className="border-b border-border">
       <div className="px-6 py-16 sm:py-20">
         {/* Section header */}
-        <p className="font-mono text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           01 · Why Ciphera
         </p>
         <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

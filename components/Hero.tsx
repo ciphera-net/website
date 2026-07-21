@@ -27,7 +27,7 @@ export default function Hero() {
       />
 
       <div className="relative px-6 pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
-        <p className="font-mono text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           Zero-knowledge infrastructure
         </p>
 

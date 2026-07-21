@@ -65,7 +65,7 @@ export default function Footer() {
 
           {/* Products */}
           <div>
-            <h3 className="font-mono text-xs text-muted-foreground">
+            <h3 className="text-xs text-muted-foreground">
               Products
             </h3>
             <ul className="mt-4 space-y-3">
@@ -109,7 +109,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="font-mono text-xs text-muted-foreground">
+            <h3 className="text-xs text-muted-foreground">
               Company
             </h3>
             <ul className="mt-4 space-y-3">
@@ -163,7 +163,7 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="font-mono text-xs text-muted-foreground">
+            <h3 className="text-xs text-muted-foreground">
               Legal
             </h3>
             <ul className="mt-4 space-y-3">
@@ -212,7 +212,7 @@ export default function Footer() {
               &copy; 2024&ndash;{new Date().getFullYear()}{' '}
               Ciphera BV &middot; KBO/BCE 1013.721.660 &middot; De Kleetlaan 2, 1831 Diegem, Belgium
             </p>
-            <p className="font-mono text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Zero-knowledge &middot; Swiss hosted
             </p>
           </div>

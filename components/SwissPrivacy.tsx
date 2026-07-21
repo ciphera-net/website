@@ -60,7 +60,7 @@ export default function SwissPrivacy() {
 
           {/* RIGHT — copy */}
           <div>
-            <p className="font-mono text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               03 · Swiss privacy
             </p>
 

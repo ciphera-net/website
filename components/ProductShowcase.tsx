@@ -51,7 +51,7 @@ function ProductRow({
               height={24}
               className="h-6 w-6 object-contain"
             />
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground">
               {chip}
             </span>
           </div>
@@ -100,7 +100,7 @@ export default function ProductShowcase() {
   return (
     <section id="products" className="scroll-mt-16 border-b border-border">
       <div className="border-b border-border px-6 py-5">
-        <p className="font-mono text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           02 · Products
         </p>
       </div>

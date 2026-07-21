@@ -88,7 +88,7 @@ export function Methodology({ report }: MethodologyProps) {
     <section id="methodology" className="py-20 lg:py-32 border-b border-border bg-background">
       <div className="max-w-4xl mx-auto px-6">
         <div className="mb-12">
-          <p className="font-mono text-xs text-muted-foreground">04 · Methodology</p>
+          <p className="text-xs text-muted-foreground">04 · Methodology</p>
           <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             How we measure this
           </h2>
