@@ -143,10 +143,10 @@ export default function FAQ() {
   return (
     <section id="faq" className="border-b border-border">
       <div className="px-6 py-16 sm:py-20">
-        <p className="font-mono text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           04 · FAQ
         </p>
-        <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           Frequently Asked Questions
         </h2>
 
@@ -173,7 +173,7 @@ export default function FAQ() {
                   onClick={() => selectGroup(g.label)}
                   onKeyDown={(e) => handleTabKeyDown(e, i)}
                   className={cn(
-                    'flex items-baseline justify-between gap-3 py-1.5 text-left font-mono text-xs transition-colors duration-150 motion-reduce:transition-none',
+                    'flex items-baseline justify-between gap-3 py-1.5 text-left text-xs transition-colors duration-150 motion-reduce:transition-none',
                     isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
                   )}
                 >

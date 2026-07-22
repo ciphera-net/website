@@ -11,10 +11,10 @@ export default function ClosingCta() {
       {/* 1.3fr/1fr: text column leads, photo card sits a notch smaller but stays flush right */}
       <div className="grid items-center gap-12 px-6 py-20 sm:py-28 lg:grid-cols-[1.3fr_1fr]">
         <div>
-        <p className="font-mono text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           05 · Get started
         </p>
-        <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
+        <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-5xl">
           Own your data.
         </h2>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
@@ -32,7 +32,7 @@ export default function ClosingCta() {
             <Link href="/contact">Talk to us</Link>
           </Button>
         </div>
-        <p className="mt-8 font-mono text-xs text-muted-foreground">
+        <p className="mt-8 text-xs text-muted-foreground">
           Zero-knowledge &middot; No tracking &middot; Open source
         </p>
         </div>

@@ -5,6 +5,7 @@ import { ArrowRightIcon, LockIcon } from '@ciphera-net/facet'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { cdnUrl } from '@/lib/cdn'
 import { officeHq, pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
+import FAQAccordion from '@/components/FAQAccordion'
 
 export const metadata: Metadata = {
   title: 'What is Ciphera?',
@@ -77,21 +78,29 @@ const products = [
 const faqs = [
   {
     q: 'What is Ciphera?',
-    a: 'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications. Its products encrypt your data before it reaches Ciphera’s servers, so the company can run the service without being able to read what you store.',
+    a: 'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications. Its products encrypt your data before it reaches Ciphera’s servers, so the company can run each service without being able to read what you store.',
   },
   {
-    q: 'Where is Ciphera based?',
-    a: 'Ciphera BV is registered in Belgium (KBO/BCE enterprise number 1013.721.660), at De Kleetlaan 2, 1831 Diegem. It operates under EU law — GDPR and NIS2 — while hosting its services on Swiss infrastructure.',
+    q: 'Is Ciphera a company or a product?',
+    a: 'Both. Ciphera is the company — Ciphera BV — and it builds a family of privacy products under that name: Pulse, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the open-source Tessera library. When people say “Ciphera”, they usually mean the company or the platform as a whole.',
   },
   {
-    q: 'What is Ciphera Pulse?',
-    a: 'Pulse is Ciphera’s privacy-first, cookieless web analytics product. It measures traffic without cookies, fingerprinting, or cross-visit visitor tracking, and its engine is open source under AGPL-3.0.',
+    q: 'What can I use Ciphera for?',
+    a: 'Cookieless web analytics with no consent banner (Pulse), zero-knowledge login and account management (Ciphera ID), bot protection that doesn’t profile your visitors (Ciphera Captcha), and transactional email with no tracking pixels (Ciphera Relay). Tessera, the OPAQUE library underneath, is available to developers on its own.',
+  },
+  {
+    q: 'Where is Ciphera based, and where is my data stored?',
+    a: 'Ciphera BV is registered in Belgium (KBO/BCE 1013.721.660, De Kleetlaan 2, 1831 Diegem) and operates under EU law — GDPR and NIS2. Customer data is hosted on Swiss infrastructure, protected by the Federal Act on Data Protection (FADP) alongside the GDPR.',
+  },
+  {
+    q: 'Is Ciphera free to use?',
+    a: 'Pulse has a free tier and paid plans, and you can explore the live demo without signing up. Ciphera’s other products are paid. Nothing here is ad-funded — you are the customer, never the product, and there is no data resale.',
   },
   {
     q: 'Is Ciphera open source?',
-    a: 'Partly. Pulse, the analytics engine, is open source under AGPL-3.0, and Tessera, the OPAQUE authentication library behind Ciphera ID, is open source under Apache-2.0. The remaining services are not currently open source.',
+    a: 'Partly. Tessera — the OPAQUE authentication library behind Ciphera ID — is open source under Apache-2.0, and the Pulse analytics dashboard is open source under AGPL-3.0. The remaining services are not open source today, though more of the platform is being opened over time.',
   },
-] as const
+]
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -117,8 +126,8 @@ export default function WhatIsCipheraPage() {
       <section className="border-b border-border">
         <div className="grid lg:grid-cols-2">
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
-            <p className="font-mono text-xs text-muted-foreground">Definition</p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+            <p className="text-xs text-muted-foreground">Definition</p>
+            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
               What is Ciphera?
             </h1>
             <p className="mt-8 max-w-3xl text-lg leading-relaxed text-foreground">
@@ -160,8 +169,8 @@ export default function WhatIsCipheraPage() {
       {/* Products */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">01 · What Ciphera builds</p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">01 · What Ciphera builds</p>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Five things, one principle
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -173,7 +182,7 @@ export default function WhatIsCipheraPage() {
             {products.map((p, i) => (
               <div key={p.name} className="border-t border-border pt-6">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   {p.image ? (
@@ -190,13 +199,13 @@ export default function WhatIsCipheraPage() {
                     <LockIcon aria-hidden="true" className="h-6 w-6 text-muted-foreground" />
                   )}
                 </div>
-                <h3 className="mt-3 font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+                <h3 className="mt-3 font-display text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
                   {p.name}
                 </h3>
                 <p className="mt-3 leading-relaxed text-muted-foreground">{p.detail}</p>
                 <Link
                   href={p.href}
-                  className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+                  className="mt-4 inline-flex items-center gap-1 text-xs text-primary hover:underline"
                 >
                   {p.name === 'Tessera' ? 'See Tessera' : `Explore ${p.name}`}
                   <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
@@ -210,8 +219,8 @@ export default function WhatIsCipheraPage() {
       {/* Not to be confused with */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">02 · Not to be confused with</p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">02 · Not to be confused with</p>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Others share the name
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
@@ -229,30 +238,23 @@ export default function WhatIsCipheraPage() {
       {/* FAQ — visible answers that mirror the FAQPage structured data */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">03 · Common questions</p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">03 · Common questions</p>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Frequently asked
           </h2>
-          <dl className="mt-10 max-w-3xl divide-y divide-border border border-border">
-            {faqs.map((f) => (
-              <div key={f.q} className="bg-card p-6">
-                <dt className="font-display text-lg font-bold tracking-tight text-foreground">
-                  {f.q}
-                </dt>
-                <dd className="mt-2 leading-relaxed text-muted-foreground">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
+          <div className="mt-10 max-w-3xl">
+            <FAQAccordion items={faqs} idPrefix="what-is" />
+          </div>
         </div>
       </section>
 
       {/* Footer nav */}
       <section className="border-b border-border">
         <div className="flex items-center justify-between px-6 py-8">
-          <Link href="/" className="font-mono text-xs text-primary hover:underline">
+          <Link href="/" className="text-xs text-primary hover:underline">
             <span aria-hidden="true">&larr; </span>Back to Home
           </Link>
-          <Link href="/about" className="font-mono text-xs text-primary hover:underline">
+          <Link href="/about" className="text-xs text-primary hover:underline">
             About Ciphera<span aria-hidden="true"> &rarr;</span>
           </Link>
         </div>

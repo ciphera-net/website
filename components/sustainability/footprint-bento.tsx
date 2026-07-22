@@ -140,8 +140,8 @@ export function FootprintBento({ report }: FootprintBentoProps) {
     <section id="footprint" className="border-b border-border py-20 lg:py-32">
       <div className="max-w-6xl mx-auto px-6">
         <div className="mb-12">
-          <p className="font-mono text-xs text-muted-foreground">01 · Footprint</p>
-          <h2 className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight">
+          <p className="text-xs text-muted-foreground">01 · Footprint</p>
+          <h2 className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground leading-tight">
             Six ways your cloud footprint matters
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl">

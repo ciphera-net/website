@@ -30,7 +30,7 @@ export default function Error({
           </div>
 
           {/* * Error Message */}
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground mb-4">
             Something went wrong
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground mb-2 max-w-xl mx-auto leading-relaxed">

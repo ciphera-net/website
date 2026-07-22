@@ -70,8 +70,8 @@ export default function LearnPage() {
       {/* Hero */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">Learn</p>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <p className="text-xs text-muted-foreground">Learn</p>
+          <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Guides, References &amp; Deep-Dives
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -107,7 +107,7 @@ export default function LearnPage() {
               }`}
             >
               All
-              <span className="ml-2 font-mono text-xs tabular-nums opacity-70">{learnArticles.length}</span>
+              <span className="ml-2 text-xs tabular-nums opacity-70">{learnArticles.length}</span>
             </button>
             {productKeys.map((key) => {
               const config = PRODUCT_CONFIG[key]
@@ -124,7 +124,7 @@ export default function LearnPage() {
                 >
                   {config && <Image src={config.icon} alt="" width={16} height={16} unoptimized />}
                   {config?.label || key}
-                  <span className="font-mono text-xs tabular-nums opacity-70">{PRODUCT_COUNTS[key]}</span>
+                  <span className="text-xs tabular-nums opacity-70">{PRODUCT_COUNTS[key]}</span>
                 </button>
               )
             })}
@@ -132,7 +132,7 @@ export default function LearnPage() {
 
           {/* Results count + category jump links */}
           <div className="mb-8 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-            <p className="font-mono text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {filtered.length} {filtered.length === 1 ? 'article' : 'articles'}
             </p>
             {grouped.length > 1 && (
@@ -141,7 +141,7 @@ export default function LearnPage() {
                   <a
                     key={group.category}
                     href={`#cat-${group.category}`}
-                    className="flex items-baseline gap-2 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    className="flex items-baseline gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {CATEGORY_LABELS[group.category] ?? group.category}
                     <span className="tabular-nums">{group.articles.length}</span>
@@ -156,10 +156,10 @@ export default function LearnPage() {
             {grouped.map((group) => (
               <section key={group.category} id={`cat-${group.category}`}>
                 <div className="mb-6 flex items-baseline justify-between border-t border-border pt-4">
-                  <h2 className="font-display text-xl font-bold tracking-tight text-foreground">
+                  <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
                     {CATEGORY_LABELS[group.category] ?? group.category}
                   </h2>
-                  <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                  <span className="text-xs tabular-nums text-muted-foreground">
                     {group.articles.length} {group.articles.length === 1 ? 'article' : 'articles'}
                   </span>
                 </div>
@@ -171,13 +171,13 @@ export default function LearnPage() {
                       className="group flex flex-col p-5 border border-border bg-card hover:border-primary hover:bg-accent transition-colors duration-200"
                     >
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="inline-flex items-center gap-1.5 border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1.5 border border-border px-2 py-0.5 text-xs text-muted-foreground">
                           {PRODUCT_CONFIG[article.product] && (
                             <Image src={PRODUCT_CONFIG[article.product].icon} alt="" width={14} height={14} unoptimized />
                           )}
                           {PRODUCT_CONFIG[article.product]?.label || article.product}
                         </span>
-                        <span className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                        <span className="border border-border px-2 py-0.5 text-xs text-muted-foreground">
                           {article.category}
                         </span>
                       </div>
@@ -187,7 +187,7 @@ export default function LearnPage() {
                       <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
                         {article.description}
                       </p>
-                      <span className="mt-auto inline-flex items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-primary transition-colors">
+                      <span className="mt-auto inline-flex items-center gap-1 text-xs text-muted-foreground group-hover:text-primary transition-colors">
                         Read
                         <ArrowRightIcon className="w-3.5 h-3.5" />
                       </span>
@@ -199,7 +199,7 @@ export default function LearnPage() {
           </div>
 
           {filtered.length === 0 && (
-            <p className="font-mono text-xs text-muted-foreground py-12">No articles match your search.</p>
+            <p className="text-xs text-muted-foreground py-12">No articles match your search.</p>
           )}
         </div>
       </section>
