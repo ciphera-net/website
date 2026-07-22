@@ -116,8 +116,8 @@ export default function CipheraIDPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">Ciphera ID</p>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <p className="text-xs text-muted-foreground">Ciphera ID</p>
+          <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             One identity.{' '}<br className="hidden sm:inline" />Complete privacy.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
@@ -126,7 +126,7 @@ export default function CipheraIDPage() {
             and OAuth 2.0 — on infrastructure we run ourselves.
           </p>
           {/* Trust badges */}
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-muted-foreground">
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-2 text-foreground">
               <LockIcon aria-hidden="true" className="h-3.5 w-3.5" />
               Zero-knowledge
@@ -164,8 +164,8 @@ export default function CipheraIDPage() {
         <div className="grid lg:grid-cols-2">
           {/* Copy cell */}
           <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
-            <p className="font-mono text-xs text-muted-foreground">01 · Authentication</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <p className="text-xs text-muted-foreground">01 · Authentication</p>
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Your password never leaves your device.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -198,16 +198,16 @@ export default function CipheraIDPage() {
                 <div className="border border-border bg-card p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                    <span className="font-mono text-xs text-muted-foreground">Your device</span>
+                    <span className="text-xs text-muted-foreground">Your device</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex-1 border border-border bg-background px-3 py-2">
-                      <p className="font-mono text-[10px] text-muted-foreground mb-0.5">Your password</p>
+                      <p className="text-[10px] text-muted-foreground mb-0.5">Your password</p>
                       <p className="text-sm text-foreground tracking-widest">••••••••••</p>
                     </div>
                     <ArrowRightIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                     <div className="flex-1 border border-primary/30 bg-primary/5 px-3 py-2">
-                      <p className="font-mono text-[10px] text-primary/70 mb-0.5">Scrambled</p>
+                      <p className="text-[10px] text-primary/70 mb-0.5">Scrambled</p>
                       <p className="font-mono text-[11px] text-primary truncate">a7f3c8e1b9d2...</p>
                     </div>
                   </div>
@@ -218,7 +218,7 @@ export default function CipheraIDPage() {
                   <div className="h-px flex-1 bg-border" />
                   <div className="flex items-center gap-1.5 border border-border bg-background px-3 py-1">
                     <svg className="w-3 h-3 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                    <span className="font-mono text-[10px] text-muted-foreground">Encrypted in transit</span>
+                    <span className="text-[10px] text-muted-foreground">Encrypted in transit</span>
                   </div>
                   <div className="h-px flex-1 bg-border" />
                 </div>
@@ -227,16 +227,16 @@ export default function CipheraIDPage() {
                 <div className="border border-border bg-card p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" /></svg>
-                    <span className="font-mono text-xs text-muted-foreground">Our server</span>
+                    <span className="text-xs text-muted-foreground">Our server</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex-1 border border-primary/30 bg-primary/5 px-3 py-2">
-                      <p className="font-mono text-[10px] text-primary/70 mb-0.5">Received</p>
+                      <p className="text-[10px] text-primary/70 mb-0.5">Received</p>
                       <p className="font-mono text-[11px] text-primary truncate">a7f3c8e1b9d2...</p>
                     </div>
                     <ArrowRightIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                     <div className="flex-1 border border-border bg-background px-3 py-2">
-                      <p className="font-mono text-[10px] text-muted-foreground mb-0.5">Opaque record</p>
+                      <p className="text-[10px] text-muted-foreground mb-0.5">Opaque record</p>
                       <p className="font-mono text-[11px] text-muted-foreground truncate">9f2c4e8a…b1d7</p>
                     </div>
                   </div>
@@ -247,7 +247,7 @@ export default function CipheraIDPage() {
                   <div className="h-px flex-1 bg-border" />
                   <div className="flex items-center gap-1.5 border border-border bg-background px-3 py-1">
                     <svg className="w-3 h-3 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                    <span className="font-mono text-[10px] text-muted-foreground">Stored in database</span>
+                    <span className="text-[10px] text-muted-foreground">Stored in database</span>
                   </div>
                   <div className="h-px flex-1 bg-border" />
                 </div>
@@ -255,7 +255,7 @@ export default function CipheraIDPage() {
                 {/* Database */}
                 <div className="border border-border bg-background px-4 py-3 text-center">
                   <p className="font-mono text-[11px] text-muted-foreground truncate">opaque credential · 9f2c4e8a…b1d7</p>
-                  <p className="font-mono text-[11px] text-muted-foreground mt-1">Unreadable — even to us</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">Unreadable — even to us</p>
                 </div>
               </div>
             </div>
@@ -275,8 +275,8 @@ export default function CipheraIDPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">02 · SSO</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <p className="text-xs text-muted-foreground">02 · SSO</p>
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Passwords optional. Security mandatory.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -306,15 +306,15 @@ export default function CipheraIDPage() {
       {/* ─── 03 · Features — everything in Ciphera ID ────────────────── */}
       <section id="features" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">03 · Features</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">03 · Features</p>
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             Everything in Ciphera ID.
           </h2>
           <div className="mt-14 grid gap-px border border-border bg-border sm:grid-cols-2">
             {ID_FEATURES.map(({ icon: Icon, title, body }) => (
               <div key={title} className="flex flex-col bg-background p-8">
                 <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
-                <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground">{title}</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
               </div>
             ))}
@@ -348,8 +348,8 @@ export default function CipheraIDPage() {
                 >
                   <item.icon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" />
                   <div>
-                    <p className="font-mono text-xs text-muted-foreground">{item.title}</p>
-                    <p className="mt-1 font-mono text-sm tabular-nums text-foreground">{item.desc}</p>
+                    <p className="text-xs text-muted-foreground">{item.title}</p>
+                    <p className="mt-1 text-sm tabular-nums text-foreground">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -358,8 +358,8 @@ export default function CipheraIDPage() {
 
           {/* Copy cell */}
           <div className="flex flex-col justify-center px-6 py-16 sm:py-24 lg:pl-14">
-            <p className="font-mono text-xs text-muted-foreground">04 · Data residency</p>
-            <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+            <p className="text-xs text-muted-foreground">04 · Data residency</p>
+            <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
               Hosted in Switzerland. Blind by design.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
@@ -388,8 +388,8 @@ export default function CipheraIDPage() {
       {/* ─── 05 · Compare ────────────────────────────────────────────── */}
       <section id="comparison" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">05 · Compare</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">05 · Compare</p>
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             How Ciphera ID compares.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -412,8 +412,8 @@ export default function CipheraIDPage() {
                   />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">Ciphera ID</h3>
-                  <p className="font-mono text-xs text-primary">Self-hosted identity provider</p>
+                  <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Ciphera ID</h3>
+                  <p className="text-xs text-primary">Self-hosted identity provider</p>
                 </div>
               </div>
               <ul className="space-y-1">
@@ -443,8 +443,8 @@ export default function CipheraIDPage() {
                   <Password aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground">SaaS Auth Providers</h3>
-                  <p className="font-mono text-xs text-muted-foreground">Auth0, Clerk, Firebase Auth</p>
+                  <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">SaaS Auth Providers</h3>
+                  <p className="text-xs text-muted-foreground">Auth0, Clerk, Firebase Auth</p>
                 </div>
               </div>
               <ul className="space-y-1">
@@ -492,8 +492,8 @@ export default function CipheraIDPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">06 · Get started</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <p className="text-xs text-muted-foreground">06 · Get started</p>
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Interested in Ciphera ID?
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">

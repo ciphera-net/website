@@ -130,8 +130,8 @@ export default function TesseraPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">Tessera</p>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <p className="text-xs text-muted-foreground">Tessera</p>
+          <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Zero-knowledge auth,{' '}<br className="hidden sm:inline" />open source.
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
@@ -139,7 +139,7 @@ export default function TesseraPage() {
             their password without ever sending it — released under Apache-2.0 so the claim can be
             checked against code, not taken on trust.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-y-3 font-mono text-xs text-muted-foreground">
+          <div className="mt-8 flex flex-wrap items-center gap-y-3 text-xs text-muted-foreground">
             {['Apache-2.0', 'OPAQUE (RFC 9807)', 'Rust · Go · TypeScript'].map((label, i) => (
               <span key={label} className="flex items-center gap-2 whitespace-nowrap">
                 {i > 0 && (
@@ -171,8 +171,8 @@ export default function TesseraPage() {
       {/* 01 · What it is */}
       <section id="what-it-is" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">01 · What it is</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">01 · What it is</p>
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             An OPAQUE library you can read
           </h2>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
@@ -209,8 +209,8 @@ export default function TesseraPage() {
       {/* 02 · The three packages */}
       <section id="packages" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">02 · Packages</p>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">02 · Packages</p>
+          <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             Three packages, one protocol
           </h2>
           <div className="mt-14 grid gap-px border border-border bg-border lg:grid-cols-3">
@@ -226,7 +226,7 @@ export default function TesseraPage() {
                     aria-hidden="true"
                     className="h-4 w-auto max-w-[28px] object-contain grayscale"
                   />
-                  <p className="font-mono text-xs text-muted-foreground">{p.lang}</p>
+                  <p className="text-xs text-muted-foreground">{p.lang}</p>
                 </div>
                 <h3 className="mt-3 font-mono text-lg font-bold tracking-tight text-foreground">
                   {p.name}
@@ -274,8 +274,8 @@ export default function TesseraPage() {
       {/* 03 · Why OPAQUE */}
       <section id="why-opaque" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">03 · Why OPAQUE</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">03 · Why OPAQUE</p>
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             The password never reaches the server
           </h2>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
@@ -308,13 +308,13 @@ export default function TesseraPage() {
                       d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </svg>
-                  <span className="font-mono text-xs text-muted-foreground">Browser</span>
+                  <span className="text-xs text-muted-foreground">Browser</span>
                 </div>
                 <span className="font-mono text-[10px] text-muted-foreground">tessera-ts</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="min-w-0 flex-1 border border-border bg-background px-3 py-2">
-                  <p className="mb-0.5 font-mono text-[10px] text-muted-foreground">password</p>
+                  <p className="mb-0.5 text-[10px] text-muted-foreground">password</p>
                   <p className="tracking-widest text-foreground">••••••••</p>
                 </div>
                 <ArrowRightIcon
@@ -322,7 +322,7 @@ export default function TesseraPage() {
                   className="h-4 w-4 shrink-0 text-muted-foreground"
                 />
                 <div className="min-w-0 flex-1 border border-primary/30 bg-primary/5 px-3 py-2">
-                  <p className="mb-0.5 font-mono text-[10px] text-primary/70">proof</p>
+                  <p className="mb-0.5 text-[10px] text-primary/70">proof</p>
                   <p className="truncate font-mono text-[11px] text-primary">a7f3c8e1b9d2…</p>
                 </div>
               </div>
@@ -346,7 +346,7 @@ export default function TesseraPage() {
                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                   />
                 </svg>
-                <span className="font-mono text-[10px] text-muted-foreground">
+                <span className="text-[10px] text-muted-foreground">
                   only the proof crosses — never the password
                 </span>
               </div>
@@ -371,18 +371,18 @@ export default function TesseraPage() {
                       d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"
                     />
                   </svg>
-                  <span className="font-mono text-xs text-muted-foreground">Server</span>
+                  <span className="text-xs text-muted-foreground">Server</span>
                 </div>
                 <span className="font-mono text-[10px] text-muted-foreground">tessera-go</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="min-w-0 flex-1 border border-primary/30 bg-primary/5 px-3 py-2">
-                  <p className="mb-0.5 font-mono text-[10px] text-primary/70">proof</p>
+                  <p className="mb-0.5 text-[10px] text-primary/70">proof</p>
                   <p className="truncate font-mono text-[11px] text-primary">a7f3c8e1b9d2…</p>
                 </div>
                 <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />
                 <div className="min-w-0 flex-1 border border-border bg-background px-3 py-2">
-                  <p className="mb-0.5 font-mono text-[10px] text-muted-foreground">stored record</p>
+                  <p className="mb-0.5 text-[10px] text-muted-foreground">stored record</p>
                   <p className="truncate font-mono text-[11px] text-muted-foreground">
                     9f2c4e8a…b1d7
                   </p>
@@ -401,7 +401,7 @@ export default function TesseraPage() {
                 aria-hidden="true"
                 className="h-4 w-4 shrink-0 object-contain grayscale"
               />
-              <p className="font-mono text-[11px] text-muted-foreground">
+              <p className="text-[11px] text-muted-foreground">
                 tessera (Rust core) runs the OPAQUE math on both sides
               </p>
             </div>
@@ -433,8 +433,8 @@ export default function TesseraPage() {
       {/* 04 · Who uses it */}
       <section id="who-uses-it" className="border-b border-border scroll-mt-20">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">04 · Who uses it</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+          <p className="text-xs text-muted-foreground">04 · Who uses it</p>
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
             It runs in production at Ciphera
           </h2>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
@@ -468,7 +468,7 @@ export default function TesseraPage() {
                   aria-hidden="true"
                   className="h-5 w-5 object-contain"
                 />
-                <span className="font-mono text-xs text-foreground">{item.label}</span>
+                <span className="text-xs text-foreground">{item.label}</span>
               </Link>
             ))}
           </div>
@@ -497,8 +497,8 @@ export default function TesseraPage() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
         />
         <div className="relative px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-muted-foreground">05 · Get the code</p>
-          <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <p className="text-xs text-muted-foreground">05 · Get the code</p>
+          <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Read it, run it, build on it.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">

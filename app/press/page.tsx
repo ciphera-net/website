@@ -123,15 +123,15 @@ export default function PressPage() {
       {/* Hero */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24">
-          <p className="font-mono text-xs text-muted-foreground">Press &amp; Media Kit</p>
-          <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+          <p className="text-xs text-muted-foreground">Press &amp; Media Kit</p>
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
             Press &amp; media kit
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Facts, boilerplate, and brand assets for writing about Ciphera. Everything here is
             verifiable — the company details match the Belgian enterprise register, linked below.
           </p>
-          <p className="mt-6 font-mono text-xs text-muted-foreground">
+          <p className="mt-6 text-xs text-muted-foreground">
             Media enquiries:{' '}
             <Link href="/contact" className="text-primary hover:underline">
               contact us
@@ -147,8 +147,8 @@ export default function PressPage() {
       {/* Boilerplate */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">01 · Boilerplate</p>
-          <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <p className="text-xs text-muted-foreground">01 · Boilerplate</p>
+          <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Company description
           </h2>
           <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
@@ -163,20 +163,20 @@ export default function PressPage() {
       {/* Fact sheet */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">02 · Fact sheet</p>
-          <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <p className="text-xs text-muted-foreground">02 · Fact sheet</p>
+          <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             The essentials
           </h2>
           <dl className="mt-8 grid max-w-4xl gap-x-12 gap-y-6 sm:grid-cols-2">
             {facts.map((f) => (
               <div key={f.term} className="border-t border-border pt-3">
-                <dt className="font-mono text-xs text-muted-foreground">{f.term}</dt>
+                <dt className="text-xs text-muted-foreground">{f.term}</dt>
                 <dd className="mt-1.5 text-sm text-foreground">{f.detail}</dd>
               </div>
             ))}
           </dl>
 
-          <h3 className="mt-14 font-display text-lg font-bold tracking-tight text-foreground">
+          <h3 className="mt-14 font-display text-lg font-semibold tracking-tight text-foreground">
             Products
           </h3>
           <ul className="mt-6 max-w-3xl">
@@ -198,8 +198,8 @@ export default function PressPage() {
       {/* Brand assets */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">03 · Brand assets</p>
-          <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <p className="text-xs text-muted-foreground">03 · Brand assets</p>
+          <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Logos and marks
           </h2>
           <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
@@ -244,8 +244,8 @@ export default function PressPage() {
       {/* Links & contact */}
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="font-mono text-xs text-muted-foreground">04 · Official links</p>
-          <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <p className="text-xs text-muted-foreground">04 · Official links</p>
+          <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Verify and follow
           </h2>
           <ul className="mt-8 max-w-3xl">
@@ -261,7 +261,7 @@ export default function PressPage() {
                     <ProfileLinkIcon icon={l.icon} />
                     {l.label}
                   </span>
-                  <span className="flex items-center gap-1 font-mono text-xs text-primary group-hover:underline">
+                  <span className="flex items-center gap-1 text-xs text-primary group-hover:underline">
                     Open
                     <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
                   </span>
@@ -286,10 +286,10 @@ export default function PressPage() {
       {/* Footer nav */}
       <section className="border-b border-border">
         <div className="flex items-center justify-between px-6 py-8">
-          <Link href="/" className="font-mono text-xs text-primary hover:underline">
+          <Link href="/" className="text-xs text-primary hover:underline">
             <span aria-hidden="true">&larr; </span>Back to Home
           </Link>
-          <Link href="/about" className="font-mono text-xs text-primary hover:underline">
+          <Link href="/about" className="text-xs text-primary hover:underline">
             About Ciphera<span aria-hidden="true"> &rarr;</span>
           </Link>
         </div>

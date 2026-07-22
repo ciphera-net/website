@@ -58,9 +58,9 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
       />
 
       <div className="relative px-6 py-20 sm:py-28 lg:py-32">
-        <p className="font-mono text-xs text-muted-foreground">Environmental impact</p>
+        <p className="text-xs text-muted-foreground">Environmental impact</p>
 
-        <h1 className="mt-6 font-display text-5xl font-bold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+        <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.0] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
           Receipts, not promises.
         </h1>
 
@@ -68,14 +68,14 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
           <CountUpNumber
             value={displayAmount}
             decimals={decimals}
-            className="font-display text-7xl font-bold leading-none tabular-nums text-foreground sm:text-8xl"
+            className="font-display text-7xl font-semibold leading-none tabular-nums text-foreground sm:text-8xl"
           />
           <span className="text-2xl font-semibold text-muted-foreground sm:text-4xl">
             {displayUnit}
           </span>
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <p className="font-mono text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             CO₂ equivalent · {report.period.label}
           </p>
           <SourceBadge source={report.source} periodLabel={report.period.label} />

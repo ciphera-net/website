@@ -127,7 +127,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="mx-auto max-w-4xl">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline mb-8"
+            className="inline-flex items-center gap-1 text-xs text-primary hover:underline mb-8"
           >
             <ArrowLeftIcon className="w-4 h-4" />
             Back to Blog
@@ -146,7 +146,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold font-display text-foreground mb-12">
+          <h1 className="text-4xl sm:text-5xl font-semibold font-display text-foreground mb-12">
             {post.title}
           </h1>
 
@@ -163,8 +163,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               * FAQPage JSON-LD above from the same data. */}
             {post.faqs.length > 0 && (
               <section className="mt-16">
-                <p className="font-mono text-xs text-muted-foreground">FAQ</p>
-                <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                <p className="text-xs text-muted-foreground">FAQ</p>
+                <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                   Frequently Asked Questions
                 </h2>
                 <div className="mt-8">
@@ -179,8 +179,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* * Closing CTA */}
           <section className="border-t border-border">
             <div className="px-6 py-16 sm:py-20">
-              <p className="font-mono text-xs text-muted-foreground">Get started</p>
-              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground">
+              <p className="text-xs text-muted-foreground">Get started</p>
+              <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground">
                 Put this into practice.
               </h2>
               <p className="mt-4 max-w-2xl text-base text-muted-foreground">
@@ -204,7 +204,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="mt-12 pt-12 border-t border-border">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+              className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
             >
               <ArrowLeftIcon className="w-4 h-4" />
               Back to all posts

@@ -51,11 +51,11 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
   return (
     <section className="border-b border-border bg-background py-20 lg:py-32">
       <div className="max-w-6xl mx-auto px-6">
-        <p className="font-mono text-xs text-muted-foreground">03 · Lifecycle</p>
+        <p className="text-xs text-muted-foreground">03 · Lifecycle</p>
         <div className="mt-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — copy */}
           <div>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight mb-6">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground leading-tight mb-6">
               We count the whole lifecycle, not just the plug.
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
@@ -115,17 +115,17 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
                     />
                     <span className="text-sm font-medium text-foreground">{p.name}</span>
                   </div>
-                  <span className="font-mono text-sm tabular-nums text-foreground">
+                  <span className="text-sm tabular-nums text-foreground">
                     {p.pct.toFixed(0)}%
                   </span>
-                  <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                  <span className="text-xs tabular-nums text-muted-foreground">
                     {(p.amount * 1000).toFixed(0)} g CO₂e
                   </span>
                 </li>
               ))}
             </ol>
 
-            <p className="mt-4 font-mono text-xs text-muted-foreground">
+            <p className="mt-4 text-xs text-muted-foreground">
               Bar segments sized by share of total lifecycle GWP. Use phase highlighted
               because it is the only phase competitors typically report.
             </p>

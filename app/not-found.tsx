@@ -14,13 +14,13 @@ export default function NotFound() {
         <div className="max-w-2xl mx-auto text-center px-4">
           {/* * 404 Number */}
           <div className="mb-8">
-            <h1 className="font-display text-8xl sm:text-9xl md:text-[12rem] font-bold text-muted-foreground leading-none">
+            <h1 className="font-display text-8xl sm:text-9xl md:text-[12rem] font-semibold text-muted-foreground leading-none">
               <span className="gradient-text">404</span>
             </h1>
           </div>
 
           {/* * Message */}
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground mb-4">
             Page Not Found
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
