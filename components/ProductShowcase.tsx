@@ -89,7 +89,7 @@ function ProductRow({
             min-w-0 stops the mockups' min-content width from propagating up and
             stretching the page on narrow viewports. */}
         <div className={cn('min-w-0', mockupLeft && 'lg:order-first')}>
-          <div className="origin-top lg:scale-[1.18]">{mockup}</div>
+          {mockup}
         </div>
       </div>
     </div>

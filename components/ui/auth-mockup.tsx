@@ -8,10 +8,10 @@ export function AuthMockup() {
   return (
     <MacWindow>
       <Image
-        src={cdnUrl('/mockups/id-signin-2x.png')}
+        src={cdnUrl('/cta-id-login.png')}
         alt="The Ciphera ID sign-in screen — zero-knowledge OPAQUE authentication with passkey support"
-        width={2560}
-        height={1720}
+        width={992}
+        height={1072}
         className="block w-full"
         unoptimized
       />
