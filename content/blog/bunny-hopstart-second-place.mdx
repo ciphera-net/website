@@ -1,0 +1,57 @@
+---
+title: "Ciphera × Bunny: A Fully European Stack, Front to Back"
+description: "Every public Ciphera surface runs on Bunny, the Slovenia-based European CDN — because infrastructure jurisdiction is a privacy decision. Bunny's HopStart Cohort #3 just put $25,000 in credits behind that choice. Here's why the two fit."
+category: Privacy
+date: "2026-07-23"
+readTime: "5 min read"
+image: "/blog/og/bunny-hopstart-second-place.png"
+faqs:
+  - question: "Is Ciphera partnered with Bunny?"
+    answer: "Not in the formal, signed-agreement sense — and we won't pretend otherwise. Bunny is the CDN and DNS provider fronting every public Ciphera surface, we chose them in March 2026 before any program was involved, and Bunny's HopStart Cohort #3 has now awarded Ciphera $25,000 in credits. It's a real, ongoing relationship between two European infrastructure companies, not a press-release partnership."
+  - question: "What is Bunny's HopStart program?"
+    answer: "HopStart is bunny.net's startup program: quarterly cohorts of companies building on Bunny's network compete for credit awards toward continued use of the platform. Ciphera placed second in Cohort #3 and received $25,000 in Bunny credits backing the whole Ciphera privacy platform."
+  - question: "Why does a European CDN matter for a privacy company?"
+    answer: "Jurisdiction is a privacy decision. Bunny is headquartered in Slovenia, an EU member state, so GDPR applies to it natively rather than through a bolted-on agreement with a US parent company. For Ciphera — a Belgian company building a fully European stack — that makes the CDN choice part of the privacy architecture, not just a performance line item."
+  - question: "What will Ciphera use the Bunny credits for?"
+    answer: "Two things: making the platform's edge delivery even faster worldwide — Pulse's sub-2KB tracking script and dashboards already ride Bunny's global network — and evaluating more of Bunny's European edge platform, like storage and edge compute, for workloads that must stay EU-resident by architecture."
+---
+
+Most infrastructure stories are about a company picking a vendor. This one is about two companies making the same bet — that "European" can be a technical foundation, not a marketing adjective — and one of them backing the other for it.
+
+Ciphera runs its entire public edge on [Bunny](https://bunny.net), the Slovenia-based CDN and DNS provider. This site, Pulse's marketing pages, our documentation — all of it is delivered through Bunny's network. And this week, Bunny's [HopStart Cohort #3 winners announcement]([BUNNY_ANNOUNCEMENT_URL]) put $25,000 in credits behind that choice, with Ciphera placing second. The news is nice. The reason the two fit is the actual story.
+
+{/* TODO: replace [BUNNY_ANNOUNCEMENT_URL] above with the live Bunny HopStart Cohort #3 winners-announcement URL before this post ships. */}
+
+<BlogBlockquote variant="tldr">
+
+Ciphera's entire public edge — this site, Pulse, the docs — runs on Bunny, the Slovenia-based European CDN, because infrastructure jurisdiction is a privacy decision, not a performance line item. Bunny's HopStart Cohort #3 has now put $25,000 in credits behind that choice. It isn't a signed partnership; it's the network we already run on deciding to back a small European privacy company — and a concrete answer to whether a "fully European stack" is buildable or just a claim with an asterisk.
+
+</BlogBlockquote>
+
+## We Were on Bunny Long Before HopStart
+
+Bunny isn't a relationship we picked up chasing a credit program. It's infrastructure we were already standing on. Every public Ciphera surface — this website, Pulse's marketing pages, our documentation — runs through Bunny's CDN and DNS, and has for months. We wrote about [why we chose Bunny](/blog/why-we-chose-bunnycdn) back in March, well before this cohort entered the picture.
+
+The reasoning then was straightforward, and it's the same reasoning that makes the fit worth writing about now: Bunny is headquartered in Slovenia, an EU member state, so GDPR applies to it natively instead of through a bolted-on Data Processing Agreement with a US parent. For a company built on the idea that infrastructure jurisdiction *is* a privacy decision — not just a performance one — that mattered more than any feature checklist.
+
+## Two Companies, One Bet
+
+Ciphera is a Belgian company. GDPR isn't a compliance layer we bolt on top — it's the legal environment we operate in by default. Choosing a CDN and DNS provider that shares that footing, rather than a US company with a European sales office, follows the same logic that put our data in [Switzerland](/blog/why-swiss-infrastructure-matters-for-data-privacy) and our authentication on OPAQUE. Sovereignty isn't a slogan on a page; it's a list of vendor decisions, made one at a time, that either hold up under scrutiny or don't.
+
+Bunny made the same kind of bet from the other side of the wire — building a genuinely European edge network at a time when "the CDN" was a synonym for a handful of American giants. So when HopStart came around, the fit wasn't a stretch to explain. Cohort #3 recognized a privacy platform built end to end on European infrastructure, whose most visible piece is [Pulse](/products/pulse) — the analytics product we built because we didn't want to choose between having good traffic data and respecting the people generating it. Pulse doesn't set cookies, doesn't show a consent banner, and doesn't start [sampling your data](/blog/pulse-vs-google-analytics-plausible-fathom) once you cross an arbitrary event threshold. The tracking script comes in under 2KB. You can watch it running on real traffic right now at the [Pulse demo](https://pulse.ciphera.net/demo) — no account required.
+
+None of that works without fast, reliable edge delivery underneath it. That's Bunny.
+
+<BlogBlockquote>
+
+**Ciphera's founder:** "We're genuinely grateful to the Bunny team — not just for the credits, but for backing a small European privacy company the way they have. We chose Bunny long before HopStart because we believed a fully European stack was worth building on; having them turn around and invest in Ciphera means more than the placement itself."
+
+</BlogBlockquote>
+
+## Where the Credits Go
+
+Practically, the $25,000 in Bunny credits does two things. First, it goes toward making the platform's edge delivery even faster worldwide — Pulse's tracking script and dashboards already ride Bunny's global network, and there's room to push that further for visitors outside Europe without giving up anything on the jurisdiction side. Second, it funds evaluating more of Bunny's European edge platform — storage, edge compute — for the workloads that need to stay EU-resident by architecture, not by policy exception.
+
+We're not going to dress this up as more than it is: it's a credit award and an ongoing infrastructure relationship, not a signed partnership. But that's exactly why it's worth pointing at. Anyone building privacy-first infrastructure eventually hits the same question — is "fully European" a real option, or a marketing claim with an asterisk? Bunny fronting Ciphera's CDN and DNS, and now backing Ciphera through HopStart, is one honest answer: it's real, it's fast enough to build a product on, and it goes all the way down the stack.
+
+If you're curious what a cookie-free, GDPR-native analytics stack actually looks like running in production, the [Pulse demo](https://pulse.ciphera.net/demo) is public. No signup, no sales call — just the dashboard.

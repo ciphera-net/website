@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "bunny-hopstart-second-place",
+    "title": "Ciphera × Bunny: A Fully European Stack, Front to Back",
+    "description": "Every public Ciphera surface runs on Bunny, the Slovenia-based European CDN — because infrastructure jurisdiction is a privacy decision. Bunny's HopStart Cohort #3 just put $25,000 in credits behind that choice. Here's why the two fit.",
+    "category": "Privacy",
+    "date": "2026-07-23",
+    "dateModified": "2026-07-23",
+    "readTime": "5 min read",
+    "image": "/blog/og/bunny-hopstart-second-place.png"
+  },
+  {
     "slug": "do-you-need-a-cookie-banner-for-analytics",
     "title": "Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)",
     "description": "The rule behind cookie banners isn't about cookies — it's about storing and reading information on a visitor's device. Here's what EU law actually requires for web analytics in 2026, why 'first-party' doesn't exempt you, and how a genuinely cookieless tool changes the question.",
