@@ -33,7 +33,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: '2026-03-02',
+      lastModified: '2026-07-21',
+    },
+    {
+      url: `${baseUrl}/what-is-ciphera`,
+      lastModified: '2026-07-21',
+    },
+    {
+      url: `${baseUrl}/press`,
+      lastModified: '2026-07-21',
     },
     {
       url: `${baseUrl}/sustainability`,
@@ -59,6 +67,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/products/relay`,
       lastModified: '2026-03-02',
+    },
+    {
+      url: `${baseUrl}/products/tessera`,
+      lastModified: '2026-07-21',
     },
 
     // Legal pages

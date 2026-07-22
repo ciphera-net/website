@@ -29,6 +29,7 @@ import {
     FileText,
     Leaf,
     PaperPlaneTilt as Send,
+    Newspaper,
     Fingerprint,
     Scan as ScanLine,
     PuzzlePiece as Puzzle,
@@ -455,6 +456,12 @@ const productLinks: LinkItem[] = [
         description: 'Secure email infrastructure',
         image: relayIcon,
     },
+    {
+        title: 'Tessera',
+        href: '/products/tessera',
+        description: 'Open-source OPAQUE auth library',
+        icon: Lock,
+    },
 ];
 
 const companyLinks: LinkItem[] = [
@@ -475,6 +482,12 @@ const companyLinks: LinkItem[] = [
         href: '/trust',
         description: 'Architecture proofs, warrant canary & disclosure policy',
         icon: ShieldCheck,
+    },
+    {
+        title: 'Press',
+        href: '/press',
+        description: 'Media kit, company facts & brand assets',
+        icon: Newspaper,
     },
 ];
 
