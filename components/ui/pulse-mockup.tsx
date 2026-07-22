@@ -1,196 +1,21 @@
+import Image from 'next/image'
+import { cdnUrl } from '@/lib/cdn'
+import { MacWindow } from '@/components/ui/mac-window'
+
+// A retina screenshot of the live Pulse dashboard (real data, last 30 days —
+// same as /demo) inside a macOS window, matching the Pulse frontend hero.
+// Replaces the former hand-built CSS mockup.
 export function PulseMockup() {
   return (
-    <div className="relative w-full max-w-[440px] mx-auto" aria-hidden="true">
-      <div className="border border-border bg-card px-5 py-4 space-y-3">
-        {/* Header row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div>
-              <h3 className="text-sm font-bold text-foreground">Ciphera</h3>
-              <p className="text-[9px] text-muted-foreground">ciphera.net</p>
-            </div>
-            <div className="flex items-center gap-1.5 border border-border px-2.5 py-0.5">
-              <div className="w-1.5 h-1.5 bg-primary" />
-              <span className="text-[9px] text-muted-foreground font-medium">4 current visitors</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button tabIndex={-1} className="flex items-center gap-1.5 bg-primary px-2.5 py-1 text-[10px] font-medium text-primary-foreground cursor-default">
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Export
-            </button>
-            <div className="flex items-center gap-1 border border-border bg-card px-2.5 py-1 text-[10px] text-muted-foreground cursor-default">
-              Today
-              <svg className="w-2.5 h-2.5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        {/* Filter button */}
-        <div>
-          <button tabIndex={-1} className="flex items-center gap-1.5 border border-border bg-muted px-2.5 py-1 text-[10px] text-muted-foreground cursor-default">
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
-            Filter
-          </button>
-        </div>
-
-        {/* Stats row */}
-        <div className="grid grid-cols-4 gap-2">
-          {/* Unique Visitors — selected/highlighted */}
-          <div className="border border-border bg-muted p-2.5 relative">
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary" />
-            <p className="text-[7px] text-primary font-semibold uppercase tracking-wider">Unique Visitors</p>
-            <div className="flex items-baseline gap-1.5 mt-1">
-              <p className="text-base font-bold text-foreground leading-none">247</p>
-              <span className="text-[8px] text-muted-foreground font-medium flex items-center gap-0.5">
-                <svg className="w-2 h-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 14l-7 7m0 0l-7-7" />
-                </svg>
-                12%
-              </span>
-            </div>
-            <p className="text-[8px] text-muted-foreground mt-0.5">vs yesterday</p>
-          </div>
-
-          {/* Total Pageviews */}
-          <div className="border border-border bg-card p-2.5">
-            <p className="text-[7px] text-muted-foreground font-semibold uppercase tracking-wider">Total Pageviews</p>
-            <div className="flex items-baseline gap-1.5 mt-1">
-              <p className="text-base font-bold text-foreground leading-none">512</p>
-              <span className="text-[8px] text-muted-foreground font-medium flex items-center gap-0.5">
-                <svg className="w-2 h-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 14l-7 7m0 0l-7-7" />
-                </svg>
-                23%
-              </span>
-            </div>
-            <p className="text-[8px] text-muted-foreground mt-0.5">vs yesterday</p>
-          </div>
-
-          {/* Bounce Rate */}
-          <div className="border border-border bg-card p-2.5">
-            <p className="text-[7px] text-muted-foreground font-semibold uppercase tracking-wider">Bounce Rate</p>
-            <div className="flex items-baseline gap-1.5 mt-1">
-              <p className="text-base font-bold text-foreground leading-none">68%</p>
-              <span className="text-[8px] text-muted-foreground font-medium flex items-center gap-0.5">
-                <svg className="w-2 h-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 10l7-7m0 0l7 7" />
-                </svg>
-                8%
-              </span>
-            </div>
-            <p className="text-[8px] text-muted-foreground mt-0.5">vs yesterday</p>
-          </div>
-
-          {/* Visit Duration */}
-          <div className="border border-border bg-card p-2.5">
-            <p className="text-[7px] text-muted-foreground font-semibold uppercase tracking-wider">Visit Duration</p>
-            <div className="flex items-baseline gap-1.5 mt-1">
-              <p className="text-base font-bold text-foreground leading-none">3m 18s</p>
-              <span className="text-[8px] text-muted-foreground font-medium flex items-center gap-0.5">
-                <svg className="w-2 h-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 14l-7 7m0 0l-7-7" />
-                </svg>
-                15%
-              </span>
-            </div>
-            <p className="text-[8px] text-muted-foreground mt-0.5">vs yesterday</p>
-          </div>
-        </div>
-
-        {/* Chart area */}
-        <div className="border border-border bg-card p-3">
-          {/* Chart header */}
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[10px] text-foreground font-medium">Unique Visitors</span>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 border border-border bg-muted px-2 py-0.5 text-[9px] text-muted-foreground cursor-default">
-                1 hour
-                <svg className="w-2 h-2 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 border border-border bg-transparent" />
-                <span className="text-[9px] text-muted-foreground">Compare</span>
-                <svg className="w-3 h-3 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                <svg className="w-3 h-3 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* SVG Chart — step-style like the real dashboard */}
-          <div className="relative h-[120px] w-full">
-            {/* Y-axis labels */}
-            <div className="absolute left-0 top-0 bottom-4 flex flex-col justify-between text-[7px] text-muted-foreground w-5">
-              <span>8</span>
-              <span>6</span>
-              <span>4</span>
-              <span>2</span>
-              <span>0</span>
-            </div>
-
-            {/* Chart */}
-            <svg className="absolute left-6 right-0 top-0 bottom-4" viewBox="0 0 400 100" preserveAspectRatio="none">
-              {/* Grid lines */}
-              <line x1="0" y1="0" x2="400" y2="0" stroke="currentColor" className="text-border" />
-              <line x1="0" y1="25" x2="400" y2="25" stroke="currentColor" className="text-border" />
-              <line x1="0" y1="50" x2="400" y2="50" stroke="currentColor" className="text-border" />
-              <line x1="0" y1="75" x2="400" y2="75" stroke="currentColor" className="text-border" />
-              <line x1="0" y1="100" x2="400" y2="100" stroke="currentColor" className="text-border" />
-
-              {/* Area fill — step-style chart */}
-              <path
-                d="M0,62 L45,62 L45,62 L90,62 L90,100 L135,100 L135,100 L160,100 L160,62 L180,62 L180,50 L225,50 L225,25 L270,25 L270,25 L290,25 L290,50 L310,50 L310,62 L340,62 L340,62 L370,62 L370,55 L400,55 L400,100 L0,100 Z"
-                fill="url(#pulseMockupGradient)"
-              />
-
-              {/* Line — step-style */}
-              <path
-                d="M0,62 L45,62 L45,62 L90,62 L90,100 L135,100 L135,100 L160,100 L160,62 L180,62 L180,50 L225,50 L225,25 L270,25 L270,25 L290,25 L290,50 L310,50 L310,62 L340,62 L340,62 L370,62 L370,55 L400,55"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-primary"
-              />
-
-              <defs>
-                <linearGradient id="pulseMockupGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="currentColor" stopOpacity="0.25" className="text-primary" />
-                  <stop offset="100%" stopColor="currentColor" stopOpacity="0.02" className="text-primary" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-
-          {/* X-axis labels */}
-          <div className="flex justify-between pl-6 text-[7px] text-muted-foreground mt-0.5">
-            <span>01:00</span>
-            <span>04:00</span>
-            <span>07:00</span>
-            <span>10:00</span>
-            <span>13:00</span>
-            <span>16:00</span>
-            <span>19:00</span>
-          </div>
-        </div>
-
-        {/* Live indicator */}
-        <div className="flex items-center justify-end gap-1.5">
-          <div className="w-1.5 h-1.5 bg-primary" />
-          <span className="text-[9px] text-muted-foreground">Live · 27 seconds ago</span>
-        </div>
-      </div>
-    </div>
+    <MacWindow>
+      <Image
+        src={cdnUrl('/mockups/pulse-dashboard-2x.png')}
+        alt="The Pulse dashboard — 30 days of real visitor, pageview and engagement data"
+        width={2304}
+        height={2004}
+        className="block w-full"
+        unoptimized
+      />
+    </MacWindow>
   )
 }
