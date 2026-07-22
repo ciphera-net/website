@@ -90,6 +90,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/products/tessera" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Tessera
+                </Link>
+              </li>
+              <li>
                 <a
                   href="https://pulse.ciphera.net"
                   target="_blank"
@@ -116,6 +121,11 @@ export default function Footer() {
               <li>
                 <Link href="/contact" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Contact
+                </Link>
+              </li>
+              <li>
+                <Link href="/press" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Press
                 </Link>
               </li>
               <li>

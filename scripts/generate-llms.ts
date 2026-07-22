@@ -81,6 +81,20 @@ const PRODUCTS: ProductFact[] = [
       '99.8% deliverability',
     ],
   },
+  {
+    slug: 'tessera',
+    name: 'Tessera',
+    oneLiner:
+      'Open-source OPAQUE (RFC 9807) authentication library (Apache-2.0): Rust core and sidecar, Go server SDK, and browser SDK — the password never reaches the server.',
+    paragraph:
+      'Tessera is Ciphera\'s open-source implementation of OPAQUE, an asymmetric password-authenticated key exchange in which the password is proven to the server but never transmitted. It ships as three Apache-2.0 packages — a Rust core and sidecar, a Go server SDK, and a browser SDK (npm @ciphera-net/tessera) — and is the authentication layer behind Ciphera ID and Pulse.',
+    bullets: [
+      'OPAQUE (RFC 9807): the password never reaches the server',
+      'Apache-2.0, published to crates.io (ciphera-tessera), npm (@ciphera-net/tessera), and pkg.go.dev (tessera-go)',
+      'Rust core with a published self-audit and threat model',
+      'The authentication core behind Ciphera ID and Pulse',
+    ],
+  },
 ]
 
 function esc(text: string): string {
@@ -133,6 +147,8 @@ function buildLlmsTxt(): string {
   lines.push('')
 
   lines.push('## Reference')
+  lines.push(`- [What is Ciphera?](${SITE}/what-is-ciphera): a plain-language definition of the company and its products`)
+  lines.push(`- [Press & media kit](${SITE}/press): company boilerplate, fact sheet, and brand assets`)
   lines.push(`- [Glossary](${SITE}/glossary): definitions of privacy and cryptography terms`)
   lines.push(`- [Learn](${SITE}/learn): in-depth articles per product`)
   lines.push(`- [Blog](${SITE}/blog): articles on privacy, security, and infrastructure`)

@@ -49,6 +49,16 @@ Ciphera Relay delivers transactional email (verification, notifications, alerts)
 - Swiss hosted
 - 99.8% deliverability
 
+### Tessera
+URL: https://ciphera.net/products/tessera
+
+Tessera is Ciphera's open-source implementation of OPAQUE, an asymmetric password-authenticated key exchange in which the password is proven to the server but never transmitted. It ships as three Apache-2.0 packages — a Rust core and sidecar, a Go server SDK, and a browser SDK (npm @ciphera-net/tessera) — and is the authentication layer behind Ciphera ID and Pulse.
+
+- OPAQUE (RFC 9807): the password never reaches the server
+- Apache-2.0, published to crates.io (ciphera-tessera), npm (@ciphera-net/tessera), and pkg.go.dev (tessera-go)
+- Rust core with a published self-audit and threat model
+- The authentication core behind Ciphera ID and Pulse
+
 ## Glossary
 
 ### AES-256-GCM

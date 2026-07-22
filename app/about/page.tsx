@@ -80,6 +80,20 @@ const timeline = [
   },
 ] as const
 
+// * Company facts — the registered legal entity, so an owned page answers the
+// * exact-name query "Ciphera BV". Every value is verifiable in the Belgian
+// * enterprise register (KBO/BCE), linked below.
+const companyFacts: { term: string; detail: string }[] = [
+  { term: 'Legal name', detail: 'Ciphera BV' },
+  { term: 'Enterprise number (KBO/BCE)', detail: '1013.721.660' },
+  { term: 'VAT number', detail: 'BE1013721660' },
+  { term: 'Founded', detail: '18 September 2024' },
+  { term: 'Headquarters', detail: 'De Kleetlaan 2, 1831 Diegem, Belgium' },
+]
+
+const KBO_URL =
+  'https://kbopub.economie.fgov.be/kbopub/toonondernemingps.html?ondernemingsnummer=1013721660&lang=en'
+
 // * JSON-LD structured data for organization
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -117,6 +131,24 @@ const organizationSchema = {
   ],
 }
 
+// * Founder — public name "Usman Baig" (owner's choice); the KBO/BCE register
+// * (1013.721.660) lists the director under his full registered name, appointed
+// * on the 2024-09-18 founding date. worksFor references the Organization by
+// * @id; sameAs points to the company profiles (no personal profiles are used).
+const FOUNDER_NAME = 'Usman Baig'
+
+const founderSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: FOUNDER_NAME,
+  jobTitle: 'Founder',
+  worksFor: { '@id': 'https://ciphera.net/#organization' },
+  sameAs: [
+    'https://www.linkedin.com/company/ciphera/',
+    'https://github.com/ciphera-net',
+  ],
+}
+
 export default function AboutPage() {
   return (
     <>
@@ -124,6 +156,10 @@ export default function AboutPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(founderSchema) }}
       />
       <Breadcrumbs items={[{ label: 'About Us' }]} />
 
@@ -139,6 +175,12 @@ export default function AboutPage() {
               Ciphera is dedicated to creating privacy-first infrastructure and applications that put
               users in control of their data. We believe encryption should be the default, not an
               add-on.
+            </p>
+            <p className="mt-6 font-mono text-xs text-muted-foreground">
+              New here?{' '}
+              <Link href="/what-is-ciphera" className="text-primary hover:underline">
+                Start with What is Ciphera →
+              </Link>
             </p>
           </div>
           <div className="relative min-h-[440px] border-t border-border lg:border-l lg:border-t-0">
@@ -166,6 +208,35 @@ export default function AboutPage() {
               <div className="mt-2 font-mono text-xs text-muted-foreground">{s.label}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Company facts — the registered legal entity, so this owned page ranks
+          for the exact-name query "Ciphera BV" */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-20">
+          <p className="font-mono text-xs text-muted-foreground">Company facts</p>
+          <h2 className="mt-4 max-w-2xl font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Ciphera BV, on the record
+          </h2>
+          <dl className="mt-8 grid max-w-4xl gap-x-12 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+            {companyFacts.map((f) => (
+              <div key={f.term} className="border-t border-border pt-3">
+                <dt className="font-mono text-xs text-muted-foreground">{f.term}</dt>
+                <dd className="mt-1.5 text-sm text-foreground">{f.detail}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-8 max-w-2xl font-mono text-xs text-muted-foreground">
+            <a
+              href={KBO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Look us up in the Belgian enterprise register →
+            </a>
+          </p>
         </div>
       </section>
 
@@ -327,6 +398,48 @@ export default function AboutPage() {
                 <p className="mt-5 leading-relaxed text-muted-foreground">{item.event}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team — founder. Personal details; this section is held for owner
+          review before merge. Name is taken exactly from the KBO/BCE register. */}
+      <section className="border-b border-border">
+        <div className="px-6 py-16 sm:py-24">
+          <p className="font-mono text-xs text-muted-foreground">Team</p>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Who&rsquo;s behind Ciphera
+          </h2>
+          <div className="mt-12 max-w-2xl border-t border-border pt-8">
+            <p className="font-mono text-xs text-muted-foreground">Founder</p>
+            <h3 className="mt-3 font-display text-2xl font-bold tracking-tight text-foreground">
+              {FOUNDER_NAME}
+            </h3>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              {FOUNDER_NAME}{' '}founded Ciphera BV in 2024 and leads it from Belgium. Ciphera&rsquo;s
+              privacy-first products — Pulse, Ciphera ID, Captcha, and Relay — and its open-source
+              Tessera authentication library were built under that direction.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+              <a
+                href="https://www.linkedin.com/company/ciphera/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+              >
+                LinkedIn
+                <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
+              </a>
+              <a
+                href="https://github.com/ciphera-net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+              >
+                GitHub
+                <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
