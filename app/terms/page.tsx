@@ -87,7 +87,7 @@ export default function TermsOfServicePage() {
       <section className="pt-32 pb-24 sm:pb-32">
         <div>
           <div className="max-w-3xl mx-auto px-6">
-            <h1 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-4">
+            <h1 className="font-display text-4xl sm:text-5xl font-semibold text-foreground mb-4">
               Terms of Service
             </h1>
             <p className="text-muted-foreground mb-12">
@@ -95,13 +95,13 @@ export default function TermsOfServicePage() {
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
-              <p className="font-mono text-xs text-muted-foreground">Contents</p>
+              <p className="text-xs text-muted-foreground">Contents</p>
               <ContentsList />
             </nav>
 
             <nav aria-label="Contents" className="mb-12 md:hidden">
               <details className="group border border-border bg-card p-6">
-                <summary className="cursor-pointer list-none font-mono text-xs text-muted-foreground">Contents</summary>
+                <summary className="cursor-pointer list-none text-xs text-muted-foreground">Contents</summary>
                 <ContentsList />
               </details>
             </nav>
@@ -110,7 +110,7 @@ export default function TermsOfServicePage() {
 
               {/* 1. Acceptance of Terms */}
               <section>
-                <h2 id="acceptance-of-terms" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="acceptance-of-terms" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   1. Acceptance of Terms
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -123,7 +123,7 @@ export default function TermsOfServicePage() {
 
               {/* 2. Eligibility */}
               <section>
-                <h2 id="eligibility" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="eligibility" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   2. Eligibility
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -136,7 +136,7 @@ export default function TermsOfServicePage() {
 
               {/* 3. Description of Services */}
               <section>
-                <h2 id="description-of-services" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="description-of-services" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   3. Description of Services
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -155,7 +155,7 @@ export default function TermsOfServicePage() {
 
               {/* 4. User Accounts */}
               <section>
-                <h2 id="user-accounts" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="user-accounts" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   4. User Accounts
                 </h2>
 
@@ -178,7 +178,7 @@ export default function TermsOfServicePage() {
 
               {/* 5. Acceptable Use */}
               <section>
-                <h2 id="acceptable-use" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="acceptable-use" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   5. Acceptable Use
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
@@ -223,7 +223,7 @@ export default function TermsOfServicePage() {
 
               {/* 6. Encryption & Zero-Knowledge Architecture */}
               <section>
-                <h2 id="encryption-and-zero-knowledge-architecture" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="encryption-and-zero-knowledge-architecture" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   6. Encryption &amp; Zero-Knowledge Architecture
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
@@ -239,7 +239,7 @@ export default function TermsOfServicePage() {
 
               {/* 7. Service-Specific Terms */}
               <section>
-                <h2 id="service-specific-terms" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="service-specific-terms" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   7. Service-Specific Terms
                 </h2>
 
@@ -284,7 +284,7 @@ export default function TermsOfServicePage() {
 
               {/* 8. Intellectual Property */}
               <section>
-                <h2 id="intellectual-property" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="intellectual-property" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   8. Intellectual Property
                 </h2>
 
@@ -314,7 +314,7 @@ export default function TermsOfServicePage() {
 
               {/* 9. Privacy */}
               <section>
-                <h2 id="privacy" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="privacy" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   9. Privacy
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -331,7 +331,7 @@ export default function TermsOfServicePage() {
 
               {/* 10. Service Availability */}
               <section>
-                <h2 id="service-availability" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="service-availability" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   10. Service Availability
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -350,7 +350,7 @@ export default function TermsOfServicePage() {
 
               {/* 11. Disclaimer of Warranties */}
               <section>
-                <h2 id="disclaimer-of-warranties" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="disclaimer-of-warranties" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   11. Disclaimer of Warranties
                 </h2>
                 <p className="text-muted-foreground leading-relaxed font-semibold">
@@ -375,7 +375,7 @@ export default function TermsOfServicePage() {
 
               {/* 12. Limitation of Liability */}
               <section>
-                <h2 id="limitation-of-liability" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="limitation-of-liability" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   12. Limitation of Liability
                 </h2>
                 <p className="text-muted-foreground leading-relaxed font-semibold">
@@ -399,7 +399,7 @@ export default function TermsOfServicePage() {
 
               {/* 13. Indemnification */}
               <section>
-                <h2 id="indemnification" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="indemnification" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   13. Indemnification
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -419,7 +419,7 @@ export default function TermsOfServicePage() {
 
               {/* 14. Termination */}
               <section>
-                <h2 id="termination" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="termination" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   14. Termination
                 </h2>
 
@@ -459,7 +459,7 @@ export default function TermsOfServicePage() {
 
               {/* 15. Modifications to These Terms */}
               <section>
-                <h2 id="modifications-to-these-terms" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="modifications-to-these-terms" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   15. Modifications to These Terms
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -478,7 +478,7 @@ export default function TermsOfServicePage() {
 
               {/* 16. Force Majeure */}
               <section>
-                <h2 id="force-majeure" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="force-majeure" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   16. Force Majeure
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -488,7 +488,7 @@ export default function TermsOfServicePage() {
 
               {/* 17. Governing Law & Jurisdiction */}
               <section>
-                <h2 id="governing-law-and-jurisdiction" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="governing-law-and-jurisdiction" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   17. Governing Law &amp; Jurisdiction
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -506,7 +506,7 @@ export default function TermsOfServicePage() {
 
               {/* 18. Severability */}
               <section>
-                <h2 id="severability" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="severability" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   18. Severability
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -516,7 +516,7 @@ export default function TermsOfServicePage() {
 
               {/* 19. Assignment */}
               <section>
-                <h2 id="assignment" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="assignment" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   19. Assignment
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -526,7 +526,7 @@ export default function TermsOfServicePage() {
 
               {/* 20. Entire Agreement */}
               <section>
-                <h2 id="entire-agreement" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="entire-agreement" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   20. Entire Agreement
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -544,7 +544,7 @@ export default function TermsOfServicePage() {
 
               {/* 21. Contact */}
               <section>
-                <h2 id="contact" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="contact" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   21. Contact
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
@@ -559,16 +559,16 @@ export default function TermsOfServicePage() {
                       { term: 'Privacy inquiries', email: 'privacy@ciphera.net' },
                     ].map((c) => (
                       <div key={c.term} className="border-t border-border pt-3">
-                        <dt className="font-mono text-xs text-muted-foreground">{c.term}</dt>
-                        <dd className="mt-1.5"><a href={`mailto:${c.email}`} className="font-mono text-sm text-primary hover:underline">{c.email}</a></dd>
+                        <dt className="text-xs text-muted-foreground">{c.term}</dt>
+                        <dd className="mt-1.5"><a href={`mailto:${c.email}`} className="text-sm text-primary hover:underline">{c.email}</a></dd>
                       </div>
                     ))}
                     <div className="border-t border-border pt-3">
-                      <dt className="font-mono text-xs text-muted-foreground">Phone</dt>
-                      <dd className="mt-1.5"><a href="tel:+3278480710" className="font-mono text-sm text-primary hover:underline">+32 78 48 07 10</a></dd>
+                      <dt className="text-xs text-muted-foreground">Phone</dt>
+                      <dd className="mt-1.5"><a href="tel:+3278480710" className="text-sm text-primary hover:underline">+32 78 48 07 10</a></dd>
                     </div>
                     <div className="border-t border-border pt-3">
-                      <dt className="font-mono text-xs text-muted-foreground">Address</dt>
+                      <dt className="text-xs text-muted-foreground">Address</dt>
                       <dd className="mt-1.5 text-sm text-foreground">Ciphera BV (KBO/BCE: 1013.721.660), De Kleetlaan 2, 1831 Diegem, Belgium</dd>
                     </div>
                   </dl>

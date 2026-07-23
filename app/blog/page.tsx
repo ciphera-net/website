@@ -50,8 +50,8 @@ export default function BlogPage() {
       <section className="border-b border-border">
         <div className="px-6 py-16 sm:py-24 pt-32">
           <div className="max-w-4xl">
-            <p className="font-mono text-xs text-muted-foreground">Blog</p>
-            <h1 className="mt-6 font-display text-5xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            <p className="text-xs text-muted-foreground">Blog</p>
+            <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               Privacy &amp; Security Insights
             </h1>
             <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
@@ -101,7 +101,7 @@ export default function BlogPage() {
                     setActiveCategory(category)
                     track('blog_filter_category')
                   }}
-                  className={`inline-flex items-center min-h-9 border px-4 py-1.5 font-mono text-xs transition-colors ${
+                  className={`inline-flex items-center min-h-9 border px-4 py-1.5 text-xs transition-colors ${
                     activeCategory === category
                       ? 'border-primary bg-transparent text-primary'
                       : 'border-border bg-background text-muted-foreground hover:text-foreground'
@@ -136,8 +136,8 @@ export default function BlogPage() {
                   </div>
                   <div className="flex flex-col flex-1 p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">{post.category}</span>
-                      <span className="font-mono text-xs text-muted-foreground">{post.readTime}</span>
+                      <span className="border border-border px-2 py-0.5 text-xs text-muted-foreground">{post.category}</span>
+                      <span className="text-xs text-muted-foreground">{post.readTime}</span>
                     </div>
 
                     <h2 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
@@ -149,14 +149,14 @@ export default function BlogPage() {
                     </p>
 
                     <div className="flex items-center justify-between pt-4 border-t border-border">
-                      <span className="font-mono text-xs text-muted-foreground">
+                      <span className="text-xs text-muted-foreground">
                         {new Date(post.date).toLocaleDateString('en-GB', {
                           day: '2-digit',
                           month: '2-digit',
                           year: 'numeric',
                         }).replace(/\//g, '-')}
                       </span>
-                      <span className="inline-flex items-center gap-1 font-mono text-xs text-primary">
+                      <span className="inline-flex items-center gap-1 text-xs text-primary">
                         Read more
                         <ArrowRightIcon className="w-3.5 h-3.5" />
                       </span>

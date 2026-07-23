@@ -51,12 +51,12 @@ function ProductRow({
               height={24}
               className="h-6 w-6 object-contain"
             />
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground">
               {chip}
             </span>
           </div>
 
-          <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[40px] lg:leading-[1.1]">
+          <h2 className="mt-5 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-[40px] lg:leading-[1.1]">
             {heading}
           </h2>
 
@@ -89,7 +89,7 @@ function ProductRow({
             min-w-0 stops the mockups' min-content width from propagating up and
             stretching the page on narrow viewports. */}
         <div className={cn('min-w-0', mockupLeft && 'lg:order-first')}>
-          <div className="origin-top lg:scale-[1.18]">{mockup}</div>
+          {mockup}
         </div>
       </div>
     </div>
@@ -100,7 +100,7 @@ export default function ProductShowcase() {
   return (
     <section id="products" className="scroll-mt-16 border-b border-border">
       <div className="border-b border-border px-6 py-5">
-        <p className="font-mono text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           02 · Products
         </p>
       </div>

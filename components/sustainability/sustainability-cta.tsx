@@ -29,8 +29,8 @@ export function SustainabilityCTA() {
         className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45"
       />
       <div className="relative px-6 py-24 sm:py-32">
-        <p className="font-mono text-xs text-muted-foreground">06 · Get started</p>
-        <h2 className="mt-5 max-w-2xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+        <p className="text-xs text-muted-foreground">06 · Get started</p>
+        <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
           See what it looks like to pick a provider that measures itself.
         </h2>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">

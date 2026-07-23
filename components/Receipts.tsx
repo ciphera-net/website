@@ -56,7 +56,7 @@ export default async function Receipts() {
         {receipts.map((receipt) => {
           const inner = (
             <>
-              <span className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+              <span className="flex items-center justify-between text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
                 {receipt.label}
                 <ArrowUpRightIcon
                   aria-hidden="true"

@@ -29,6 +29,7 @@ import {
     FileText,
     Leaf,
     PaperPlaneTilt as Send,
+    Newspaper,
     Fingerprint,
     Scan as ScanLine,
     PuzzlePiece as Puzzle,
@@ -193,6 +194,14 @@ export function Header() {
                                             ))}
                                         </ul>
                                     </div>
+                                    <div className="p-2">
+                                        <p className="text-muted-foreground text-sm">
+                                            Interested?{' '}
+                                            <a href="/contact" className="text-foreground font-medium hover:underline">
+                                                Get in touch
+                                            </a>
+                                        </p>
+                                    </div>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
@@ -215,6 +224,14 @@ export function Header() {
                                                 hello@ciphera.net →
                                             </a>
                                         </div>
+                                    </div>
+                                    <div className="p-2">
+                                        <p className="text-muted-foreground text-sm">
+                                            Interested?{' '}
+                                            <a href="/contact" className="text-foreground font-medium hover:underline">
+                                                Get in touch
+                                            </a>
+                                        </p>
                                     </div>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
@@ -455,6 +472,12 @@ const productLinks: LinkItem[] = [
         description: 'Secure email infrastructure',
         image: relayIcon,
     },
+    {
+        title: 'Tessera',
+        href: '/products/tessera',
+        description: 'Open-source OPAQUE auth library',
+        icon: Lock,
+    },
 ];
 
 const companyLinks: LinkItem[] = [
@@ -475,6 +498,12 @@ const companyLinks: LinkItem[] = [
         href: '/trust',
         description: 'Architecture proofs, warrant canary & disclosure policy',
         icon: ShieldCheck,
+    },
+    {
+        title: 'Press',
+        href: '/press',
+        description: 'Media kit, company facts & brand assets',
+        icon: Newspaper,
     },
 ];
 

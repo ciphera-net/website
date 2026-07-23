@@ -38,7 +38,7 @@ export default function FAQAccordion({ items, startIndex = 0, idPrefix = 'faq' }
               onClick={() => setOpenId(isOpen ? null : n)}
               className="flex w-full items-center gap-5 px-5 py-4 text-left transition-colors duration-150 motion-reduce:transition-none hover:bg-accent"
             >
-              <span className="font-mono text-xs tabular-nums text-muted-foreground">{n}</span>
+              <span className="text-xs tabular-nums text-muted-foreground">{n}</span>
               <span className="flex-1 text-sm font-medium text-foreground">{item.q}</span>
               <PlusIcon
                 aria-hidden="true"

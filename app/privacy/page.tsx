@@ -88,7 +88,7 @@ export default function PrivacyPolicyPage() {
       <section className="pt-32 pb-24 sm:pb-32">
         <div>
           <div className="max-w-3xl mx-auto px-6">
-            <h1 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-4">
+            <h1 className="font-display text-4xl sm:text-5xl font-semibold text-foreground mb-4">
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
@@ -96,13 +96,13 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
-              <p className="font-mono text-xs text-muted-foreground">Contents</p>
+              <p className="text-xs text-muted-foreground">Contents</p>
               <ContentsList />
             </nav>
 
             <nav aria-label="Contents" className="mb-12 md:hidden">
               <details className="group border border-border bg-card p-6">
-                <summary className="cursor-pointer list-none font-mono text-xs text-muted-foreground">Contents</summary>
+                <summary className="cursor-pointer list-none text-xs text-muted-foreground">Contents</summary>
                 <ContentsList />
               </details>
             </nav>
@@ -111,7 +111,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 1. Our Commitment to Privacy */}
               <section>
-                <h2 id="our-commitment-to-privacy" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="our-commitment-to-privacy" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   1. Our Commitment to Privacy
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -126,7 +126,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 2. Legal Framework */}
               <section>
-                <h2 id="legal-framework" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="legal-framework" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   2. Legal Framework
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -145,7 +145,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 3. Data Controller */}
               <section>
-                <h2 id="data-controller" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="data-controller" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   3. Data Controller
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -175,7 +175,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 4. Data We Collect */}
               <section>
-                <h2 id="data-we-collect" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="data-we-collect" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   4. Data We Collect
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-6">
@@ -282,7 +282,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 5. Data We Do Not Collect */}
               <section>
-                <h2 id="data-we-do-not-collect" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="data-we-do-not-collect" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   5. Data We Do Not Collect
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
@@ -304,7 +304,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 6. IP Address Policy */}
               <section>
-                <h2 id="ip-address-policy" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="ip-address-policy" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   6. IP Address Policy
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -321,13 +321,13 @@ export default function PrivacyPolicyPage() {
 
               {/* 7. Cookies */}
               <section>
-                <h2 id="cookies-and-local-storage" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="cookies-and-local-storage" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   7. Cookies &amp; Local Storage
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
                   The Ciphera marketing site (ciphera.net) sets no cookies or browser storage of its own. Our authenticated applications — Ciphera ID (id.ciphera.net) and Ciphera Pulse — use the minimum browser storage needed to keep you signed in, remember your interface preferences, and run features you ask for:
                 </p>
-                <p className="font-mono text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
+                <p className="text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-muted-foreground mt-2">
                     <thead>
@@ -424,7 +424,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 8. Encryption & Security */}
               <section>
-                <h2 id="encryption-and-security-measures" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="encryption-and-security-measures" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   8. Encryption &amp; Security Measures
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
@@ -480,7 +480,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 9. Data Storage & Retention */}
               <section>
-                <h2 id="data-storage-and-retention" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="data-storage-and-retention" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   9. Data Storage &amp; Retention
                 </h2>
 
@@ -497,7 +497,7 @@ export default function PrivacyPolicyPage() {
                 <p className="text-muted-foreground leading-relaxed mb-2">
                   We retain data only as long as necessary for the purpose it was collected:
                 </p>
-                <p className="font-mono text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
+                <p className="text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-muted-foreground mt-2">
                     <thead>
@@ -560,7 +560,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 10. Legal Bases for Processing */}
               <section>
-                <h2 id="legal-bases-for-processing" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="legal-bases-for-processing" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   10. Legal Bases for Processing
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
@@ -584,13 +584,13 @@ export default function PrivacyPolicyPage() {
 
               {/* 11. Third-Party Processors */}
               <section>
-                <h2 id="third-party-services-and-data-processors" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="third-party-services-and-data-processors" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   11. Third-Party Services &amp; Data Processors
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
                   We minimize our reliance on third-party services. The services we use, and the data they may process, are listed below:
                 </p>
-                <p className="font-mono text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
+                <p className="text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
                 <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Subprocessor table, scrollable">
                   <table className="w-full text-sm text-muted-foreground mt-2">
                     <caption className="sr-only">Subprocessors — service, purpose, data processed, and location</caption>
@@ -627,7 +627,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 12. International Data Transfers */}
               <section>
-                <h2 id="international-data-transfers" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="international-data-transfers" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   12. International Data Transfers
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -644,7 +644,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 13. Open Source & Transparency */}
               <section>
-                <h2 id="open-source-and-transparency" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="open-source-and-transparency" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   13. Open Source &amp; Transparency
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -662,7 +662,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 14. Data Disclosure & Law Enforcement */}
               <section>
-                <h2 id="data-disclosure-and-law-enforcement" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="data-disclosure-and-law-enforcement" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   14. Data Disclosure &amp; Law Enforcement
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
@@ -685,7 +685,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 15. Children's Privacy */}
               <section>
-                <h2 id="childrens-privacy" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="childrens-privacy" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   15. Children&apos;s Privacy
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -697,7 +697,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 16. Automated Decision-Making */}
               <section>
-                <h2 id="automated-decision-making" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="automated-decision-making" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   16. Automated Decision-Making
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -715,7 +715,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 17. Data Breach Notification */}
               <section>
-                <h2 id="data-breach-notification" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="data-breach-notification" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   17. Data Breach Notification
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -733,7 +733,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 18. Your Rights */}
               <section>
-                <h2 id="your-rights-under-gdpr-and-fadp" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="your-rights-under-gdpr-and-fadp" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   18. Your Rights Under GDPR &amp; FADP
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
@@ -775,7 +775,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 19. Social Media & External Links */}
               <section>
-                <h2 id="social-media-and-external-links" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="social-media-and-external-links" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   19. Social Media &amp; External Links
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -785,7 +785,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 20. Changes to This Policy */}
               <section>
-                <h2 id="changes-to-this-policy" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="changes-to-this-policy" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   20. Changes to This Policy
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -803,7 +803,7 @@ export default function PrivacyPolicyPage() {
 
               {/* 21. Contact Us */}
               <section>
-                <h2 id="contact-us" className="font-display text-2xl font-bold text-foreground mb-4 scroll-mt-24">
+                <h2 id="contact-us" className="font-display text-2xl font-semibold text-foreground mb-4 scroll-mt-24">
                   21. Contact Us
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
