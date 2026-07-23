@@ -54,6 +54,7 @@ else
     "https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics"
     "https://ciphera.net/blog/is-your-analytics-gdpr-compliant"
     "https://ciphera.net/blog/how-to-migrate-off-google-analytics"
+    "https://ciphera.net/blog/bunny-hopstart-second-place"
   )
 fi
 
