@@ -34,6 +34,7 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - [Sustainability](https://ciphera.net/sustainability): measured carbon footprint and methodology
 
 ## Blog
+- [Ciphera × Bunny: A Fully European Stack, Front to Back](https://ciphera.net/blog/bunny-hopstart-second-place): Every public Ciphera surface runs on Bunny, the Slovenia-based European CDN — because infrastructure jurisdiction is a privacy decision. Bunny's HopStart Cohort #3 just put $25,000 in credits behind that choice. Here's why the two fit.
 - [Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)](https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics): The rule behind cookie banners isn't about cookies — it's about storing and reading information on a visitor's device. Here's what EU law actually requires for web analytics in 2026, why 'first-party' doesn't exempt you, and how a genuinely cookieless tool changes the question.
 - [How to Migrate Off Google Analytics: A 2026 Guide](https://ciphera.net/blog/how-to-migrate-off-google-analytics): A practical, honest guide to leaving Google Analytics for a privacy-first tool in 2026 — the timeline you need to know, why teams are switching, what you genuinely gain and lose, and the step-by-step migration (including the historical-data trap nobody warns you about).
 - [Is Your Website Analytics GDPR-Compliant? A 2026 Checklist](https://ciphera.net/blog/is-your-analytics-gdpr-compliant): GDPR applies to your analytics the moment it processes personal data — and an IP address usually counts. A practical, source-backed 2026 checklist: lawful basis, data minimisation, retention, international transfers, and the one design choice that collapses most of it.
@@ -43,7 +44,6 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.
 - [Why We Chose BunnyCDN as Ciphera's CDN](https://ciphera.net/blog/why-we-chose-bunnycdn): A CDN terminates TLS and sees every request. For a privacy company, choosing one is a trust decision. Here's the checklist we used, our actual setup, and what running it taught us.
 - [Zero-Knowledge Encryption Guide (2026)](https://ciphera.net/blog/zero-knowledge-encryption-guide): What zero-knowledge encryption actually means — explained through the system we run in production: OPAQUE authentication, blind indexes, and a vault key that never leaves your browser.
-- [EU AI Act Compliance Guide for 2026](https://ciphera.net/blog/eu-ai-act-compliance-guide-2026): The AI Act's high-risk deadline just moved to December 2027 — but transparency rules and EUR 35M fines still land August 2, 2026. Here's what changed and what to do with the extra runway.
 
 ## Policies
 - Privacy policy: https://ciphera.net/privacy
