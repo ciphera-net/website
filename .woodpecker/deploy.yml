@@ -1,3 +1,23 @@
+# MEASURED SHELL SEMANTICS this file depends on (verified 25-07-2026 in alpine:3.20
+# /bin/sh, i.e. BusyBox ash, which is what Woodpecker actually runs):
+#   - `cmd && { ... }` does NOT trip errexit when cmd is false. Safe.
+#   - a BARE `S=$(failing-cmd)` DOES abort the step (rc=1). Never assign an API read
+#     that way without an `|| { ...; }` arm.
+#   - `export S=$(failing-cmd)` does NOT abort (export is a builtin and the list takes
+#     the builtin's status) — so it SILENTLY yields an empty value. Every cross-step
+#     handoff is therefore validated explicitly below.
+#   - a `for` loop that ends without breaking exits 0 — every wait loop needs an
+#     explicit final-iteration arm or it silently falls through to the next command.
+#
+# WHY THE SECRETS ARE MOUNTED AS A DIRECTORY, NOT AS FILES:
+#   woodpecker-agent's token-sync publishes atomically (write .tmp, then `mv`). A
+#   rename swaps the inode, and a single-FILE bind mount is pinned to the inode that
+#   existed at container creation — so a file mount can never observe a refreshed
+#   token. Mounting the directory is what makes re-reading work (same reason
+#   Kubernetes' atomic writer projects directories).
+#   /opt/vault-agent/tls is mounted at a SEPARATE path rather than nested inside
+#   /run/ci, because Docker cannot create a nested mountpoint inside a :ro mount.
+
 depends_on:
   - push
 
@@ -6,11 +26,11 @@ when:
     branch: main
 
 steps:
-  deploy:
+  # Resolve the immutable digest ONCE and hand the same value to both targets, so
+  # the two origins can never drift apart. That is what makes the Bunny origin flip
+  # content-neutral in either direction.
+  digest:
     image: alpine:3.20
-    volumes:
-      - /opt/woodpecker/secrets/nomad-token:/run/ci/nomad-token:ro
-      - /opt/vault-agent/tls/ca.pem:/run/ci/nomad-ca.pem:ro
     environment:
       REGISTRY_USERNAME:
         from_secret: registry_username
@@ -18,54 +38,215 @@ steps:
         from_secret: registry_password
     commands:
       - apk add --no-cache curl jq >/dev/null
-      - export NOMAD_TOKEN=$(cat /run/ci/nomad-token)
       - export DEPLOY_SHA=${CI_COMMIT_SHA:0:7}
       - |
-        DIGEST=$(curl -sfI -u "$REGISTRY_USERNAME:$REGISTRY_PASSWORD" \
+        DIGEST=$(curl -sfI --max-time 60 -u "$REGISTRY_USERNAME:$REGISTRY_PASSWORD" \
           -H "Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json" \
           "https://registry.ops.ciphera.net/v2/ciphera-net/ciphera-frontend/manifests/sha-$DEPLOY_SHA" \
           | tr -d '\r' | awk 'tolower($1)=="docker-content-digest:"{print $2}')
-        test -n "$DIGEST"
+        case "$DIGEST" in
+          sha256:*) ;;
+          *) echo "digest resolution failed for sha-$DEPLOY_SHA (got [$DIGEST]) — did push finish?"; exit 1 ;;
+        esac
+        # /woodpecker is the per-workflow shared volume (verified live: the step
+        # container has wp_<pipeline>_<workflow>_default mounted there rw), so every
+        # step of THIS workflow sees these two files.
+        echo "$DIGEST"     > /woodpecker/digest
+        echo "$DEPLOY_SHA" > /woodpecker/deploy_sha
+      - echo "resolved sha-$DEPLOY_SHA -> $(cat /woodpecker/digest)"
+
+  deploy-k8s:
+    image: alpine:3.20
+    depends_on: [digest]
+    volumes:
+      # Short-lived ServiceAccount token from Vault's `kubernetes` secrets engine
+      # (role ci-deployer, 30m TTL), published to the host volume by the
+      # woodpecker-agent token-sync task — the same mechanism as nomad-token.
+      # kube-ca.pem is REQUIRED: ci-ops' system CA bundle does NOT trust the SKS
+      # control-plane CA (measured: ssl_verify=20 without it, 0 with it).
+      - /opt/woodpecker/secrets:/run/ci:ro
+    environment:
+      KUBE_API: https://5d353b06-e84e-4c25-98b7-c0ec883da332.sks-ch-dk-2.exo.io
+    commands:
+      - apk add --no-cache curl jq >/dev/null
+      # Validated cross-step handoff. `export X=$(cat missing)` would silently yield
+      # empty and PATCH `ciphera-net/ciphera-frontend@` into the live Deployment — the apiserver does NOT
+      # validate image-reference syntax, so that is accepted and the pod then fails
+      # InvalidImageName with the old pods still serving.
       - |
-        curl -sf --cacert /run/ci/nomad-ca.pem -H "X-Nomad-Token: $NOMAD_TOKEN" \
-          https://10.10.0.110:4646/v1/job/ciphera-website | jq \
+        DIGEST=$(cat /woodpecker/digest) || { echo "digest handoff missing"; exit 1; }
+        DEPLOY_SHA=$(cat /woodpecker/deploy_sha) || { echo "deploy_sha handoff missing"; exit 1; }
+        case "$DIGEST" in sha256:*) ;; *) echo "bad digest handoff [$DIGEST]"; exit 1 ;; esac
+        [ -n "$DEPLOY_SHA" ] || { echo "empty deploy_sha handoff"; exit 1; }
+        export DIGEST DEPLOY_SHA
+      # Strategic-merge PATCH of the image + a deploy-sha annotation (the analogue
+      # of Nomad's .Meta.deploy_sha). NOT `kubectl set image`: it records no
+      # provenance, and registry.k8s.io/kubectl is distroless so it cannot run a
+      # commands: block at all. fieldManager is set so a later `apply --server-side`
+      # reports an honest conflict on the image field instead of silently winning.
+      - |
+        BODY=$(jq -nc \
+          --arg img "registry.ops.ciphera.net/ciphera-net/ciphera-frontend@$DIGEST" \
+          --arg sha "$DEPLOY_SHA" \
+          '{spec:{template:{metadata:{annotations:{"ciphera.net/deploy-sha":$sha}},
+                            spec:{containers:[{name:"nextjs",image:$img}]}}}}')
+        curl -fsS --max-time 30 --cacert /run/ci/kube-ca.pem -X PATCH \
+          -H "Authorization: Bearer $(cat /run/ci/kube-token)" \
+          -H "Content-Type: application/strategic-merge-patch+json" \
+          -d "$BODY" \
+          "$KUBE_API/apis/apps/v1/namespaces/apps/deployments/ciphera-website?fieldManager=woodpecker-ci" >/dev/null
+      # Convergence gate.
+      #   observedGeneration  — without it a fast poll reads the PREVIOUS rollout's
+      #                         satisfied status and reports success immediately.
+      #   status.replicas == updatedReplicas — LOAD-BEARING. availableReplicas is
+      #                         summed across ALL ReplicaSets and updatedReplicas
+      #                         counts new-template pods that merely EXIST, so with
+      #                         maxSurge:1/maxUnavailable:0 there is a window where
+      #                         both match spec.replicas while an OLD pod is still
+      #                         serving. This clause is what "only the new
+      #                         ReplicaSet is left" actually means, and it is the
+      #                         precondition purge-cdn depends on.
+      #   // 0 defaults       — so absent counters cannot pass vacuously (null==null).
+      # The token is re-read every iteration: it is non-renewable with a 30m TTL and
+      # this loop may run ~6 minutes.
+      # ⚠️ ONLY plain $VAR here — never the dollar-brace form (a dollar sign followed
+      # by a braced name, with or without a :-default). Woodpecker runs its own
+      # substitution over the RAW FILE — comments included — before the YAML is even
+      # parsed, so the brace form is consumed everywhere it appears. Two ways it bit:
+      #   1. a shell-local flag written in the brace form with a :-0 default became the
+      #      literal `0`, so this failure branch rendered as `if [ "0" = "1" ]` and its
+      #      `exit 1` was dead code — a wedged rollout fell out of the loop at rc=0 and
+      #      reported GREEN (help pipeline 37);
+      #   2. writing the brace form inside THIS comment to warn about it made the
+      #      compiler reject the file outright: "unable to parse variable name"
+      #      (help pipelines 38-40).
+      # CI_COMMIT_SHA in the digest step is the one deliberate use of that form.
+      - |
+        CONVERGED=no
+        for i in $(seq 1 90); do
+          S=$(curl -fsS --max-time 15 --cacert /run/ci/kube-ca.pem \
+            -H "Authorization: Bearer $(cat /run/ci/kube-token)" \
+            "$KUBE_API/apis/apps/v1/namespaces/apps/deployments/ciphera-website") \
+            || { echo "api read failed (iter $i) — retrying"; S=''; }
+          echo "$S" | jq -e '
+            ((.status.observedGeneration // 0) >= .metadata.generation)
+            and ((.status.updatedReplicas // 0) == .spec.replicas)
+            and ((.status.replicas // 0) == (.status.updatedReplicas // 0))
+            and ((.status.availableReplicas // 0) == (.status.updatedReplicas // 0))' >/dev/null \
+            && { echo "k8s rollout converged"; CONVERGED=yes; break; }
+          echo "$S" | jq -e '.status.conditions[]? | select(.type=="Progressing" and .reason=="ProgressDeadlineExceeded")' >/dev/null \
+            && { echo "k8s rollout FAILED (ProgressDeadlineExceeded)"; break; }
+          sleep 4
+        done
+        # A `for` loop that ends without breaking exits 0, so this post-loop check is
+        # what actually fails the step. It must not depend on any flag Woodpecker could
+        # have substituted away.
+        if [ "$CONVERGED" != "yes" ]; then
+          echo "--- pods in apps (the ci-deployer Role grants get,list on pods+events for exactly this) ---"
+          curl -fsS --max-time 15 --cacert /run/ci/kube-ca.pem \
+            -H "Authorization: Bearer $(cat /run/ci/kube-token)" \
+            "$KUBE_API/api/v1/namespaces/apps/pods" \
+            | jq -r '.items[] | select(.metadata.name | startswith("ciphera-website")) | "\(.metadata.name) \(.status.phase) \([.status.containerStatuses[]?.state | keys[0]] | join(","))"' || true
+          echo "k8s rollout did NOT converge for ciphera-website"
+          exit 1
+        fi
+      # Assert what is ACTUALLY running. Two failure modes this catches that the gate
+      # cannot: (a) a strategic-merge PATCH keys containers on `name`, so a wrong
+      # nextjs returns 200 and ADDS a second container instead of failing;
+      # (b) a concurrent `kubectl apply` of the manifest reverts the image to the
+      # committed digest while leaving the annotation claiming the new commit.
+      - |
+        O=$(curl -fsS --max-time 15 --retry 3 --retry-all-errors --cacert /run/ci/kube-ca.pem \
+          -H "Authorization: Bearer $(cat /run/ci/kube-token)" \
+          "$KUBE_API/apis/apps/v1/namespaces/apps/deployments/ciphera-website")
+        echo "$O" | jq -e \
+          --arg img "registry.ops.ciphera.net/ciphera-net/ciphera-frontend@$DIGEST" \
+          --arg sha "$DEPLOY_SHA" '
+          ([.spec.template.spec.containers[].name] == ["nextjs"])
+          and ((.spec.template.spec.containers[] | select(.name=="nextjs") | .image) == $img)
+          and (.spec.template.metadata.annotations["ciphera.net/deploy-sha"] == $sha)' >/dev/null \
+          || { echo "POST-DEPLOY MISMATCH — running spec is not what we shipped:"; \
+               echo "$O" | jq '{containers:[.spec.template.spec.containers[]|{name,image}], sha:.spec.template.metadata.annotations["ciphera.net/deploy-sha"]}'; exit 1; }
+      - echo "Deployed ciphera-website to SKS ($DEPLOY_SHA)"
+
+  # The Nomad job is the ROLLBACK PATH during the parallel run. If it stops
+  # receiving deploys, reverting the Bunny origin would serve a stale build — so
+  # this step stays until the job is decommissioned, then it goes away with it.
+  # It deliberately does NOT gate purge-cdn: this target serves zero public traffic,
+  # so a rollback-path problem must not block the LIVE path's cache invalidation.
+  deploy-nomad:
+    image: alpine:3.20
+    depends_on: [digest]
+    volumes:
+      - /opt/woodpecker/secrets:/run/ci:ro
+      - /opt/vault-agent/tls:/run/vault-tls:ro
+    commands:
+      - apk add --no-cache curl jq >/dev/null
+      - |
+        DIGEST=$(cat /woodpecker/digest) || { echo "digest handoff missing"; exit 1; }
+        DEPLOY_SHA=$(cat /woodpecker/deploy_sha) || { echo "deploy_sha handoff missing"; exit 1; }
+        case "$DIGEST" in sha256:*) ;; *) echo "bad digest handoff [$DIGEST]"; exit 1 ;; esac
+        export DIGEST DEPLOY_SHA
+      - |
+        NOMAD_TOKEN=$(cat /run/ci/nomad-token)
+        J=$(curl -sf --max-time 30 --cacert /run/vault-tls/ca.pem -H "X-Nomad-Token: $NOMAD_TOKEN" \
+          https://10.10.0.110:4646/v1/job/ciphera-website) \
+          || { echo "ROLLBACK PATH IS STALE — could not read Nomad job ciphera-website"; exit 1; }
+        echo "$J" | jq -e '.ID' >/dev/null || { echo "ROLLBACK PATH IS STALE — empty job response"; exit 1; }
+        echo "$J" | jq \
           ".Meta.deploy_sha = \"$DEPLOY_SHA\" |
            .TaskGroups[0].Tasks[0].Config.image = \"registry.ops.ciphera.net/ciphera-net/ciphera-frontend@$DIGEST\" |
            .TaskGroups[0].Tasks[0].Config.force_pull = true" > /tmp/job.json
-      - |
-        curl -fsS --cacert /run/ci/nomad-ca.pem -X POST -H "X-Nomad-Token: $NOMAD_TOKEN" \
+        curl -fsS --max-time 30 --cacert /run/vault-tls/ca.pem -X POST -H "X-Nomad-Token: $NOMAD_TOKEN" \
           -H "Content-Type: application/json" \
           -d "{\"Job\": $(cat /tmp/job.json)}" \
-          https://10.10.0.110:4646/v1/jobs
-      - echo "Deployed ciphera-website ($DEPLOY_SHA)"
+          https://10.10.0.110:4646/v1/jobs >/dev/null
+      # Wait for THIS registration, version-bound. Nomad service jobs get a default
+      # Update{MaxParallel:1} even with no explicit `update` block, so a deployment
+      # object always exists — which is exactly the trap: an unbound poll reads the
+      # PREVIOUS rollout's "successful" and breaks on iteration 1, gating nothing.
+      # (Verified live 25-07: /v1/job/help-frontend/deployment returned
+      # Status=successful JobVersion=105 with the job already at Version 105.)
+      - |
+        NOMAD_TOKEN=$(cat /run/ci/nomad-token)
+        NEWV=$(curl -sf --max-time 30 --cacert /run/vault-tls/ca.pem -H "X-Nomad-Token: $NOMAD_TOKEN" \
+          https://10.10.0.110:4646/v1/job/ciphera-website | jq -r '.Version // empty')
+        [ -n "$NEWV" ] || { echo "ROLLBACK PATH IS STALE — could not read new job Version"; exit 1; }
+        echo "waiting for nomad job version $NEWV"
+        for i in $(seq 1 60); do
+          R=$(curl -sf --max-time 15 --cacert /run/vault-tls/ca.pem -H "X-Nomad-Token: $NOMAD_TOKEN" \
+            https://10.10.0.110:4646/v1/job/ciphera-website/deployment) || R=''
+          S=$(printf '%s' "$R" | jq -r '.Status // "unreachable"' 2>/dev/null); [ -n "$S" ] || S=unreachable
+          V=$(printf '%s' "$R" | jq -r '.JobVersion // -1' 2>/dev/null)
+          echo "nomad deployment: $S (v$V, want v$NEWV)"
+          [ "$S" = "successful" ] && [ "$V" = "$NEWV" ] && { echo "nomad rollout converged"; break; }
+          if [ "$V" = "$NEWV" ]; then
+            case "$S" in failed|cancelled) echo "ROLLBACK PATH IS STALE — nomad deploy $S"; exit 1 ;; esac
+          fi
+          [ "$i" = "60" ] && { echo "ROLLBACK PATH IS STALE — nomad never converged (last=$S v$V)"; exit 1; }
+          sleep 5
+        done
+      - echo "Deployed ciphera-website to Nomad (rollback path) ($DEPLOY_SHA)"
 
-  # After the rollout converges, purge the immutable /_next/static assets from the
-  # Bunny edge. Chunk hashes change per build; during the rollout window the edge can
-  # cache a 404 for a new-build chunk (pulled from the still-old alloc) and serve it
-  # for 30 days — blanking the site. Waiting for the deployment to be healthy first
-  # guarantees the edge re-populates from the NEW allocation.
+  # Purge AFTER the CLUSTER rollout converges (deploy-k8s asserts that only the new
+  # ReplicaSet is serving). Purging while the origin is half old / half new re-caches
+  # the old build's 404s for the new chunk paths, and /_next/static carries a 30-day
+  # max-age: that is exactly how the site blanks.
   purge-cdn:
     image: alpine:3.20
-    volumes:
-      - /opt/woodpecker/secrets/nomad-token:/run/ci/nomad-token:ro
-      - /opt/vault-agent/tls/ca.pem:/run/ci/nomad-ca.pem:ro
+    depends_on: [deploy-k8s]
     environment:
       BUNNY_API_KEY:
         from_secret: bunny_api_key
     commands:
-      - apk add --no-cache curl jq >/dev/null
-      - export NOMAD_TOKEN=$(cat /run/ci/nomad-token)
+      - apk add --no-cache curl >/dev/null
+      # Retry the purge rather than failing a deploy that already shipped on both
+      # targets; wildcard purges are the rate-limited kind. If it still fails, say
+      # precisely what to do, because the instinctive "re-run the deploy" would roll
+      # production again just to retry one HTTP POST.
       - |
-        for i in $(seq 1 60); do
-          S=$(curl -sf --cacert /run/ci/nomad-ca.pem -H "X-Nomad-Token: $NOMAD_TOKEN" \
-            https://10.10.0.110:4646/v1/job/ciphera-website/deployment | jq -r '.Status // "none"')
-          echo "deployment: $S"
-          [ "$S" = "successful" ] && break
-          case "$S" in failed|cancelled) echo "deploy not healthy ($S)"; exit 1 ;; esac
-          sleep 5
-        done
-      - |
-        curl -fsS -X POST \
+        curl -fsS --max-time 300 --retry 3 --retry-delay 10 --retry-all-errors -X POST \
           "https://api.bunny.net/purge?url=https://ciphera.net/_next/static/*&async=false" \
-          -H "AccessKey: $BUNNY_API_KEY"
+          -H "AccessKey: $BUNNY_API_KEY" \
+          || { echo "DEPLOY SHIPPED; CDN PURGE FAILED — re-run the purge only, do NOT re-deploy"; exit 1; }
       - echo "Purged ciphera.net /_next/static/*"
