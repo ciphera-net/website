@@ -110,14 +110,17 @@ const organizationSchema = {
   },
   // * Kept identical to the homepage node — a split sameAs set across two
   // * Organization nodes with the same @id is a contradiction, not extra
-  // * coverage. Every URL verified 200; crates.io/npm omitted (bot-blocked,
-  // * unconfirmed).
+  // * coverage. See app/page.tsx for how the bot-protected registry URLs
+  // * (crates.io, npmjs.com) were confirmed.
   sameAs: [
     'https://github.com/ciphera-net',
     'https://x.com/CipheraNET',
     'https://www.linkedin.com/company/ciphera/',
     'https://profiles.wordpress.org/ciphera/',
+    'https://crates.io/crates/ciphera-tessera',
+    'https://www.npmjs.com/package/@ciphera-net/tessera',
     'https://pkg.go.dev/github.com/ciphera-net/tessera-go',
+    'https://docs.rs/ciphera-tessera',
   ],
 }
 

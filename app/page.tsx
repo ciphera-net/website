@@ -50,16 +50,23 @@ const homepageSchemas = [
       email: 'hello@ciphera.net',
       contactType: 'customer service',
     },
-    // * Every URL here was checked to return 200 before being added — a sameAs
-    // * pointing at a dead or wrong page weakens the entity cluster rather than
-    // * corroborating it. crates.io and npmjs.com are deliberately absent: both
-    // * bot-block automated checks, so neither could be confirmed.
+    // * Every URL here was confirmed to exist before being added — a sameAs
+    // * pointing at a dead page weakens the entity cluster rather than
+    // * corroborating it. crates.io and npmjs.com both sit behind bot
+    // * protection (404 / Cloudflare "Just a moment..." to a plain fetch), so
+    // * they were confirmed two other ways: browser-header request returning
+    // * 200, and their registry APIs, which are the canonical source and are
+    // * never gated. Package registries are corroboration a namesake cannot
+    // * fake — they are tied to published artifacts, not to a claim.
     sameAs: [
       'https://github.com/ciphera-net',
       'https://x.com/CipheraNET',
       'https://www.linkedin.com/company/ciphera/',
       'https://profiles.wordpress.org/ciphera/',
+      'https://crates.io/crates/ciphera-tessera',
+      'https://www.npmjs.com/package/@ciphera-net/tessera',
       'https://pkg.go.dev/github.com/ciphera-net/tessera-go',
+      'https://docs.rs/ciphera-tessera',
     ],
   },
   {
