@@ -405,15 +405,6 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2 pr-4">Prevents counting a page refresh twice</td>
                         <td className="py-2">Tab session</td>
                       </tr>
-                      <tr>
-                        <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Support chat</td>
-                      </tr>
-                      <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-mono text-xs">cw_*</td>
-                        <td className="py-2 pr-4">Local storage</td>
-                        <td className="py-2 pr-4">Keeps your support-chat session and recent messages while you use our help widget</td>
-                        <td className="py-2">Persistent</td>
-                      </tr>
                     </tbody>
                   </table>
                 </div>
