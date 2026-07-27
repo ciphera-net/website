@@ -28,6 +28,29 @@ steps:
 
   push:
     image: woodpeckerci/plugin-kaniko:2.3.2@sha256:01e0e325efd8fd2b1a95d207e84780a85ed7f8eb9712d8e79888e0f42ff8b7b3
+    # 🔴 THIS STEP OVERRIDES THE NAMESPACE DEFAULT.
+    #
+    # woodpecker-builds carries a LimitRange of request==limit==1536Mi. Every
+    # Next.js build in the estate has now been measured to exceed it: id-frontend
+    # was OOM-killed at exactly 1535 MiB (exit 137) on 27-07-2026 and settled at
+    # 2046 MiB once given room; pulse-frontend peaks at 2841 MiB. This repo is the
+    # same shape and was the last one still relying on the 1536Mi default — i.e.
+    # one dependency bump away from the same silent exit 137.
+    #
+    # 3Gi, sized against measured FREE-per-node (4538 MiB on the 2 x standard.large
+    # pool), not against node allocatable. request == limit so the scheduler's own
+    # arithmetic bounds the node; raising only the limit reintroduces the overcommit
+    # that took a node NotReady twice on 27-07.
+    #
+    # Pairs with ENV NODE_OPTIONS=--max-old-space-size in the Dockerfile — raise
+    # both together or the pod is just killed at the other boundary.
+    backend_options:
+      kubernetes:
+        resources:
+          requests:
+            memory: 3Gi
+          limits:
+            memory: 3Gi
     # registry.ops.ciphera.net resolves to the cluster's own NLB; a pod dialling
     # its own load balancer hits the Exoscale hairpin (~1/node_count of
     # connections black-holed). Pin it at Traefik's ClusterIP.

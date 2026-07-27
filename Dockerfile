@@ -42,6 +42,21 @@ ENV NODE_ENV=production
 
 # prebuild runs scripts/generate-learn-articles.ts + generate-blog-posts.ts via tsx,
 # then next build
+# 🔴 CAP V8's HEAP. Added 27-07-2026 alongside the 3Gi step ceiling.
+#
+# V8 sizes its old-space from TOTAL MACHINE MEMORY, not from the container's cgroup
+# limit, so on standard.large (8 GiB) workers an UNCAPPED build self-selects roughly
+# 4 GiB of old space and grows to fill whatever node it lands on. Bigger nodes make
+# this flag MORE necessary, not less — that is the counter-intuitive part.
+#
+# ⚠️ CAPS OLD SPACE ONLY. RSS = old space + new space + code + native allocations,
+# plus kaniko in the same pod, so RSS lands well above this number. Measured on the
+# sibling pulse-frontend build: heap 1280 -> RSS 2229 MiB, and +384 MB of heap cost
+# +647 MB of RSS (~1.7x, not 1.0x) — budget increases accordingly.
+#
+# ⚠️ COUPLED to the 3Gi ceiling in .woodpecker/build.yml and push.yml.
+ENV NODE_OPTIONS=--max-old-space-size=1280
+
 RUN npm run build
 
 # Stage 3: runtime
