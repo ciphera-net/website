@@ -1,9 +1,9 @@
 import type { InventoryItem } from './types'
 
 /**
- * Static 10-instance inventory — the TypeScript twin of the Go
+ * Static 6-instance inventory — the TypeScript twin of the Go
  * StaticInventory() function in website-backend. Reconciled against the live
- * Exoscale compute API on 2026-07-27: 10 production instances, all in
+ * Exoscale compute API on 2026-07-27: 6 production instances, all in
  * CH-DK-2 (Zurich).
  *
  * RECONCILIATION NOTE — this list had drifted badly and was corrected in one
@@ -14,6 +14,11 @@ import type { InventoryItem } from './types'
  * (public-ops last, once ci.ciphera.net moved onto the cluster). ci-ops was
  * retired on 2026-07-27, once Woodpecker's server and agent both moved into the
  * cluster and CI stopped depending on a dedicated VM — 11 instances to 10.
+ * nomad-ops was retired later the same day, once Nomad itself was removed from
+ * the estate (Loki and Tempo moved into the cluster; Prometheus, Alertmanager,
+ * Grafana and the blackbox exporter became native systemd units on sentinel-ops).
+ * The SKS pool was simultaneously 6 -> 4 -> 2 nodes, changing every node name —
+ * 10 instances to 6.
  * Because this page is a transparency artifact, a stale entry is a factual
  * misstatement rather than cosmetic debt.
  *
@@ -33,43 +38,25 @@ import type { InventoryItem } from './types'
 export const STATIC_INVENTORY: InventoryItem[] = [
   // Kubernetes: the SKS node pool now runs every application workload, plus
   // the main PostgreSQL (CloudNativePG) and Redis.
+  //
+  // 2026-07-27: the pool was migrated 6 x Standard-Medium -> 4 x Standard-Large and
+  // then downscaled to 2 pre-launch. EVERY node name changed in that migration, so
+  // the five names previously listed here (czzuv, smewd, znohg, iztti, qnlmr) had all
+  // ceased to exist. Node names are ephemeral by design — re-read them from
+  // `exo compute instance list` whenever the pool is touched, never carry them forward.
   {
-    instance: 'pool-2a818-czzuv',
-    type: 'Standard-Medium',
-    vcpu: 2,
-    ramGb: 4,
+    instance: 'pool-2a818-jdatl',
+    type: 'Standard-Large',
+    vcpu: 4,
+    ramGb: 8,
     zone: 'CH-DK-2',
     purpose: 'Kubernetes node (SKS) — application workloads',
   },
   {
-    instance: 'pool-2a818-smewd',
-    type: 'Standard-Medium',
-    vcpu: 2,
-    ramGb: 4,
-    zone: 'CH-DK-2',
-    purpose: 'Kubernetes node (SKS) — application workloads',
-  },
-  {
-    instance: 'pool-2a818-znohg',
-    type: 'Standard-Medium',
-    vcpu: 2,
-    ramGb: 4,
-    zone: 'CH-DK-2',
-    purpose: 'Kubernetes node (SKS) — application workloads',
-  },
-  {
-    instance: 'pool-2a818-iztti',
-    type: 'Standard-Medium',
-    vcpu: 2,
-    ramGb: 4,
-    zone: 'CH-DK-2',
-    purpose: 'Kubernetes node (SKS) — application workloads',
-  },
-  {
-    instance: 'pool-2a818-qnlmr',
-    type: 'Standard-Medium',
-    vcpu: 2,
-    ramGb: 4,
+    instance: 'pool-2a818-yfciv',
+    type: 'Standard-Large',
+    vcpu: 4,
+    ramGb: 8,
     zone: 'CH-DK-2',
     purpose: 'Kubernetes node (SKS) — application workloads',
   },
@@ -89,7 +76,7 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     vcpu: 2,
     ramGb: 4,
     zone: 'CH-DK-2',
-    purpose: 'Observability: LGTM stack (Prometheus, Loki, Grafana, Tempo)',
+    purpose: 'Observability: Prometheus, Alertmanager, Grafana, blackbox probes',
   },
   {
     instance: 'gateway-ops',
@@ -106,13 +93,5 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     ramGb: 2,
     zone: 'CH-DK-2',
     purpose: 'HashiCorp Vault (Transit + Raft)',
-  },
-  {
-    instance: 'nomad-ops',
-    type: 'Standard-Small',
-    vcpu: 2,
-    ramGb: 2,
-    zone: 'CH-DK-2',
-    purpose: 'Nomad orchestration server',
   },
 ]
