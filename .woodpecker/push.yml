@@ -1,3 +1,15 @@
+# Routes this workflow to the in-cluster Kubernetes agent, which advertises
+# `!runner=k8s` — a MANDATORY label, so an agent is only eligible when the task
+# asks for it. Deleting this line sends the workflow back to the ci-ops Docker
+# agent; that is the rollback, and it is one line.
+#
+# buildx needs a PRIVILEGED container, and WOODPECKER_PLUGINS_PRIVILEGED — the
+# server-side grant that made that safe on Nomad — is a NO-OP on the Kubernetes
+# backend (woodpecker-ci/woodpecker#6484). kaniko builds rootless instead, so no
+# step needs privilege at all.
+labels:
+  runner: k8s
+
 depends_on:
   - build
 
@@ -15,10 +27,26 @@ steps:
       - printf '@ciphera-net:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s\nlegacy-peer-deps=true\n' "$NPM_TOKEN" > .npmrc-ci
 
   push:
-    image: woodpeckerci/plugin-docker-buildx:6.1.1
+    image: woodpeckerci/plugin-kaniko:2.3.2@sha256:01e0e325efd8fd2b1a95d207e84780a85ed7f8eb9712d8e79888e0f42ff8b7b3
+    # registry.ops.ciphera.net resolves to the cluster's own NLB; a pod dialling
+    # its own load balancer hits the Exoscale hairpin (~1/node_count of
+    # connections black-holed). Pin it at Traefik's ClusterIP.
+    extra_hosts:
+      - "registry.ops.ciphera.net:10.101.182.27"
+    environment:
+      NEXT_PUBLIC_CAPTCHA_API_URL:
+        from_secret: next_public_captcha_api_url
+      NEXT_PUBLIC_PULSE_SCRIPT_URL:
+        from_secret: next_public_pulse_script_url
+      NEXT_PUBLIC_PULSE_API_URL:
+        from_secret: next_public_pulse_api_url
+      NEXT_PUBLIC_WEBSITE_API_URL:
+        from_secret: next_public_website_api_url
+      NEXT_PUBLIC_CDN_URL:
+        from_secret: next_public_cdn_url
     settings:
       registry: registry.ops.ciphera.net
-      repo: registry.ops.ciphera.net/ciphera-net/ciphera-frontend
+      repo: ciphera-net/ciphera-frontend
       tags:
         - sha-${CI_COMMIT_SHA:0:7}
         - latest
@@ -26,19 +54,18 @@ steps:
         from_secret: registry_username
       password:
         from_secret: registry_password
-      cache_from:
-        - type=registry\,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache
-      cache_to: type=registry,ref=registry.ops.ciphera.net/ciphera-net/ciphera-frontend:buildcache,mode=max
-      secrets:
-        - id=npmrc\,src=.npmrc-ci
-      build_args:
-        NEXT_PUBLIC_CAPTCHA_API_URL:
-          from_secret: next_public_captcha_api_url
-        NEXT_PUBLIC_PULSE_SCRIPT_URL:
-          from_secret: next_public_pulse_script_url
-        NEXT_PUBLIC_PULSE_API_URL:
-          from_secret: next_public_pulse_api_url
-        NEXT_PUBLIC_WEBSITE_API_URL:
-          from_secret: next_public_website_api_url
-        NEXT_PUBLIC_CDN_URL:
-          from_secret: next_public_cdn_url
+      # buildx's registry cache is not ported: kaniko's `cache`/`cache-repo`
+      # semantics are unverified here and guessing silently creates a junk
+      # repository. Slower build, not a wrong one.
+      # `secrets:` removed — kaniko has no BuildKit --secret. The npm
+      # credential is COPY'd into a NON-FINAL Dockerfile stage instead, so it
+      # never reaches the published image. See the Dockerfile.
+      # kaniko takes build args from the step ENVIRONMENT (see the
+      # `environment:` block above) rather than an inline map, which keeps
+      # the `from_secret` indirection instead of inlining secret values.
+      build-args-from-env:
+        - NEXT_PUBLIC_CAPTCHA_API_URL
+        - NEXT_PUBLIC_PULSE_SCRIPT_URL
+        - NEXT_PUBLIC_PULSE_API_URL
+        - NEXT_PUBLIC_WEBSITE_API_URL
+        - NEXT_PUBLIC_CDN_URL
