@@ -74,8 +74,14 @@ const organizationSchema = {
   '@type': 'Organization',
   '@id': 'https://ciphera.net/#organization',
   name: 'Ciphera',
+  alternateName: ['Ciphera BV'],
   legalName: 'Ciphera BV',
   vatID: 'BE1013721660',
+  // * See app/page.tsx for why iso6523Code/naics are here: Google uses both to
+  // * disambiguate one organization from another, and "Ciphera" collides with
+  // * several unrelated entities. ICD 0208 = Belgian KBO/BCE.
+  iso6523Code: '0208:1013721660',
+  naics: '541511',
   url: 'https://ciphera.net',
   logo: {
     '@type': 'ImageObject',
@@ -85,6 +91,10 @@ const organizationSchema = {
   disambiguatingDescription:
     'Ciphera (Ciphera BV) is a Belgian privacy-infrastructure company behind Pulse cookieless analytics, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the open-source Tessera authentication library. Not affiliated with other companies, apps, or fictional characters sharing the Ciphera name.',
   foundingDate: '2024-09-18',
+  foundingLocation: {
+    '@type': 'Place',
+    address: { '@type': 'PostalAddress', addressCountry: 'BE' },
+  },
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'De Kleetlaan 2',
@@ -98,10 +108,16 @@ const organizationSchema = {
     email: 'hello@ciphera.net',
     contactType: 'customer service',
   },
+  // * Kept identical to the homepage node — a split sameAs set across two
+  // * Organization nodes with the same @id is a contradiction, not extra
+  // * coverage. Every URL verified 200; crates.io/npm omitted (bot-blocked,
+  // * unconfirmed).
   sameAs: [
     'https://github.com/ciphera-net',
     'https://x.com/CipheraNET',
     'https://www.linkedin.com/company/ciphera/',
+    'https://profiles.wordpress.org/ciphera/',
+    'https://pkg.go.dev/github.com/ciphera-net/tessera-go',
   ],
 }
 
