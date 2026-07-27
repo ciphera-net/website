@@ -1,19 +1,21 @@
 import type { InventoryItem } from './types'
 
 /**
- * Static 11-instance inventory — the TypeScript twin of the Go
+ * Static 10-instance inventory — the TypeScript twin of the Go
  * StaticInventory() function in website-backend. Reconciled against the live
- * Exoscale compute API on 2026-07-26 (late evening): 11 production instances,
- * all in CH-DK-2 (Zurich).
+ * Exoscale compute API on 2026-07-27: 10 production instances, all in
+ * CH-DK-2 (Zurich).
  *
  * RECONCILIATION NOTE — this list had drifted badly and was corrected in one
  * pass on 2026-07-26. It previously published FOUR instances that no longer
  * exist (db-ops, infra-ops, pulse-ops, envoy-ops-new, all deleted during the
  * Kubernetes migration) while omitting the five SKS nodes and ci-ops entirely.
  * internal-ops, registry-ops and public-ops were all retired the same day
- * (public-ops last, once ci.ciphera.net moved onto the cluster). Because this page
- * is a transparency artifact, a stale entry is a factual misstatement rather
- * than cosmetic debt.
+ * (public-ops last, once ci.ciphera.net moved onto the cluster). ci-ops was
+ * retired on 2026-07-27, once Woodpecker's server and agent both moved into the
+ * cluster and CI stopped depending on a dedicated VM — 11 instances to 10.
+ * Because this page is a transparency artifact, a stale entry is a factual
+ * misstatement rather than cosmetic debt.
  *
  * CH-GVA-2 (Geneva) holds one instance, personal-cloud-02, deliberately
  * EXCLUDED: it is not part of the Ciphera production estate.
@@ -88,14 +90,6 @@ export const STATIC_INVENTORY: InventoryItem[] = [
     ramGb: 4,
     zone: 'CH-DK-2',
     purpose: 'Observability: LGTM stack (Prometheus, Loki, Grafana, Tempo)',
-  },
-  {
-    instance: 'ci-ops',
-    type: 'Standard-Medium',
-    vcpu: 2,
-    ramGb: 4,
-    zone: 'CH-DK-2',
-    purpose: 'Continuous integration (Woodpecker server + agent)',
   },
   {
     instance: 'gateway-ops',
