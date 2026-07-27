@@ -5,6 +5,7 @@ import ProductShowcase from '../components/ProductShowcase'
 import SwissPrivacy from '../components/SwissPrivacy'
 import FAQ from '../components/FAQ'
 import ClosingCta from '../components/ClosingCta'
+import { cdnUrl } from '@/lib/cdn'
 
 // * JSON-LD structured data for homepage
 const homepageSchemas = [
@@ -13,17 +14,29 @@ const homepageSchemas = [
     '@type': 'Organization',
     '@id': 'https://ciphera.net/#organization',
     name: 'Ciphera',
+    alternateName: ['Ciphera BV'],
     legalName: 'Ciphera BV',
     vatID: 'BE1013721660',
+    // * Machine-readable company identifiers. Google names iso6523 and naics as
+    // * properties used "behind the scenes to disambiguate your organization from
+    // * other organizations" — which is the whole problem here, given the several
+    // * unrelated entities also called Ciphera. ICD 0208 is the Belgian KBO/BCE
+    // * scheme (Peppol code list); companyweb.be publishes the identical PEPPOL ID.
+    iso6523Code: '0208:1013721660',
+    naics: '541511',
     url: 'https://ciphera.net',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://ciphera.net/ciphera_logo_no_margins.png',
+      url: cdnUrl('/ciphera_logo_no_margins.png'),
     },
     description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
     disambiguatingDescription:
       'Ciphera (Ciphera BV) is a Belgian privacy-infrastructure company behind Pulse cookieless analytics, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the open-source Tessera authentication library. Not affiliated with other companies, apps, or fictional characters sharing the Ciphera name.',
     foundingDate: '2024-09-18',
+    foundingLocation: {
+      '@type': 'Place',
+      address: { '@type': 'PostalAddress', addressCountry: 'BE' },
+    },
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'De Kleetlaan 2',
@@ -37,10 +50,16 @@ const homepageSchemas = [
       email: 'hello@ciphera.net',
       contactType: 'customer service',
     },
+    // * Every URL here was checked to return 200 before being added — a sameAs
+    // * pointing at a dead or wrong page weakens the entity cluster rather than
+    // * corroborating it. crates.io and npmjs.com are deliberately absent: both
+    // * bot-block automated checks, so neither could be confirmed.
     sameAs: [
       'https://github.com/ciphera-net',
       'https://x.com/CipheraNET',
       'https://www.linkedin.com/company/ciphera/',
+      'https://profiles.wordpress.org/ciphera/',
+      'https://pkg.go.dev/github.com/ciphera-net/tessera-go',
     ],
   },
   {
