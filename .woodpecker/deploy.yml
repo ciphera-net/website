@@ -248,17 +248,19 @@ steps:
       # the image/font objects carrying a 30-day TTL, which nothing purges today,
       # and evicting them would be a miss stampede against a single-replica origin.
       # /feed.xml, /sitemap.xml and /sys/* are absent on purpose — they are not
-      # cached, so they must not be purged either.
+      # cached, so they must not be purged either. Same for /contact, /press and
+      # /sustainability: a Bunny edge rule allows at most 5 conditions of 5 patterns
+      # (25 total), the static exclusions already use 3 conditions, so the HTML
+      # allowlist is capped at 10 patterns and those three sections stay uncached.
       - |
         for TARGET in \
           "https://ciphera.net/_next/static/*" \
           "https://ciphera.net/" \
-          "https://ciphera.net/about*" "https://ciphera.net/blog*" \
-          "https://ciphera.net/contact*" "https://ciphera.net/glossary*" \
-          "https://ciphera.net/learn*" "https://ciphera.net/press*" \
-          "https://ciphera.net/privacy*" "https://ciphera.net/products*" \
-          "https://ciphera.net/sustainability*" "https://ciphera.net/terms*" \
-          "https://ciphera.net/trust*" "https://ciphera.net/what-is-ciphera*" ; do
+          "https://ciphera.net/blog*" "https://ciphera.net/learn*" \
+          "https://ciphera.net/glossary*" "https://ciphera.net/products*" \
+          "https://ciphera.net/about*" "https://ciphera.net/trust*" \
+          "https://ciphera.net/what-is-ciphera*" \
+          "https://ciphera.net/privacy*" "https://ciphera.net/terms*" ; do
           curl -fsS --max-time 300 --retry 3 --retry-delay 10 --retry-all-errors -X POST \
             "https://api.bunny.net/purge?url=$TARGET&async=false" \
             -H "AccessKey: $BUNNY_API_KEY" \
