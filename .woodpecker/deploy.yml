@@ -238,9 +238,32 @@ steps:
       # targets; wildcard purges are the rate-limited kind. If it still fails, say
       # precisely what to do, because the instinctive "re-run the deploy" would roll
       # production again just to retry one HTTP POST.
+      # Since 31-07-2026 the edge also caches marketing HTML (Bunny edge rule
+      # "Cache marketing HTML", Override Cache Time on the section prefixes below).
+      # Purging only /_next/static/* would leave the previous build's HTML at the
+      # edge pointing at chunk hashes this same deploy just evicted — the blanking
+      # failure, reached from the other side. These HTML patterns MUST stay in step
+      # with that rule's allowlist.
+      # Deliberately NOT a single https://ciphera.net/* wildcard: that also matches
+      # the image/font objects carrying a 30-day TTL, which nothing purges today,
+      # and evicting them would be a miss stampede against a single-replica origin.
+      # /feed.xml, /sitemap.xml and /sys/* are absent on purpose — they are not
+      # cached, so they must not be purged either. Same for /contact, /press and
+      # /sustainability: a Bunny edge rule allows at most 5 conditions of 5 patterns
+      # (25 total), the static exclusions already use 3 conditions, so the HTML
+      # allowlist is capped at 10 patterns and those three sections stay uncached.
       - |
-        curl -fsS --max-time 300 --retry 3 --retry-delay 10 --retry-all-errors -X POST \
-          "https://api.bunny.net/purge?url=https://ciphera.net/_next/static/*&async=false" \
-          -H "AccessKey: $BUNNY_API_KEY" \
-          || { echo "DEPLOY SHIPPED; CDN PURGE FAILED — re-run the purge only, do NOT re-deploy"; exit 1; }
-      - echo "Purged ciphera.net /_next/static/*"
+        for TARGET in \
+          "https://ciphera.net/_next/static/*" \
+          "https://ciphera.net/" \
+          "https://ciphera.net/blog*" "https://ciphera.net/learn*" \
+          "https://ciphera.net/glossary*" "https://ciphera.net/products*" \
+          "https://ciphera.net/about*" "https://ciphera.net/trust*" \
+          "https://ciphera.net/what-is-ciphera*" \
+          "https://ciphera.net/privacy*" "https://ciphera.net/terms*" ; do
+          curl -fsS --max-time 300 --retry 3 --retry-delay 10 --retry-all-errors -X POST \
+            "https://api.bunny.net/purge?url=$TARGET&async=false" \
+            -H "AccessKey: $BUNNY_API_KEY" \
+            || { echo "DEPLOY SHIPPED; CDN PURGE FAILED for $TARGET — re-run the purge only, do NOT re-deploy"; exit 1; }
+          echo "Purged $TARGET"
+        done
