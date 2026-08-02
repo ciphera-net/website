@@ -1,0 +1,45 @@
+CIPHERA WARRANT CANARY
+======================
+
+Period: August 2026
+Published: 02-08-2026 (DD-MM-YYYY)
+Next update: on or before 05-09-2026
+Company: Ciphera (Belgian company, jurisdiction: Belgium / European Union)
+
+As of the date above, Ciphera:
+
+  1. Has NOT received any National Security Letter, secret warrant, or
+     equivalent gag-ordered legal process from any government agency.
+  2. Has NOT received any request or order compelling disclosure of
+     cryptographic keys, decrypted user data, or plaintext user secrets.
+  3. Has NOT been compelled to install, modify, or weaken any security
+     mechanism, backdoor, or interception capability.
+  4. Has NOT received any order to modify source code or binaries in a
+     manner hostile to user security.
+  5. Has NOT handed over bulk user data to any third party absent specific,
+     legally-valid, narrowly-scoped process that Ciphera may lawfully
+     disclose.
+
+Proof of non-backdating (headlines from 02-08-2026):
+
+  - [BBC]: Trump says he is cancelling strikes on Iran subject to deal being made 'rapidly'
+    https://www.bbc.co.uk/news/articles/cjwx74qgld2o
+
+  - [NPR]: Idaho fast food restaurant shooting leaves 3 dead, city spokesman says
+    https://www.npr.org/2026/08/02/nx-s1-5917121/idaho-fast-food-restaurant-shooting-3-dead
+
+  - [RTÉ]: Three killed after bomb attack near Moscow restaurant
+    https://www.rte.ie/news/world/2026/0802/1586141-russia-bomb-world/
+
+  - [Tagesschau]: Feuer bei Athen: Waldbrände in Griechenland weiten sich aus
+    https://www.tagesschau.de/ausland/europa/waldbraende-griechenland-156.html
+
+This canary is signed with GPG key
+94E796164FF853902D89E46173011BE3BD5174AE, whose public key is published at
+https://ciphera.net/trust/canary-pubkey.asc.
+
+Verify:
+    gpg --import canary-pubkey.asc
+    gpg --verify canary-2026-08.txt.asc canary-2026-08.txt
+
+-- Usman Baig, founder, Ciphera
