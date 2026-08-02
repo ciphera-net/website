@@ -2,7 +2,7 @@ CIPHERA TRANSPARENCY REPORT STATUS
 ===================================
 
 Report: H1 2026
-Status: interim
+Status: final
 Period end: 30-06-2026 (DD-MM-YYYY)
-Published: 17-07-2026 (DD-MM-YYYY)
-Next update: on or before 31-07-2026
+Published: 02-08-2026 (DD-MM-YYYY)
+Next update: on or before 15-01-2027
