@@ -87,7 +87,19 @@ const nextConfig: NextConfig = {
       {
         source: '/(.*)',
         headers: [
-          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+          // ⚠️ AUTHORITATIVE COPY IS AT THE EDGE, NOT HERE.
+          // Traefik's `security-headers` middleware (applied to every router via
+          // `default-chain`, see Infra/Kubernetes/addons/20-traefik/middlewares.yaml)
+          // sets this header and OVERWRITES whatever the app sends. This value is kept
+          // in sync with it so the file does not describe a policy we do not ship; it is
+          // defence-in-depth for any path that ever bypasses that middleware.
+          //
+          // It previously read `max-age=63072000; includeSubDomains; preload`, which was
+          // dead config: the wire has always carried max-age=31536000 and no `preload`.
+          // 🔴 Do NOT re-add `preload` here. Preload is a one-way commitment recorded as
+          // an explicit owner decision at middlewares.yaml (`stsPreload: false`); adding
+          // it in this file changes nothing on the wire and only re-creates the illusion.
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
