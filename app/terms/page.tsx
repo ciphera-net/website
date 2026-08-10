@@ -249,6 +249,7 @@ export default function TermsOfServicePage() {
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li>Pulse collects only aggregated, anonymous data. No personally identifiable information is collected from website visitors.</li>
                   <li>Pulse does not use cookies, browser fingerprinting, or cross-site tracking. It does not require cookie consent banners.</li>
+                  <li><strong>Automated traffic.</strong> Pulse identifies traffic that appears to be automated and excludes it from your statistics. Excluded traffic is listed in your site&rsquo;s Bot &amp; Spam settings and can be restored by you at any time. Classification is automated and is not warranted to be free of error; if a real visitor is excluded, restoring the traffic returns it to your reports.</li>
                   <li>Analytics data belongs to the website owner who installed Pulse. Ciphera does not access, share, or sell analytics data collected by Pulse.</li>
                   <li>You are responsible for ensuring that your use of Pulse on your website complies with applicable privacy laws and your own privacy policy.</li>
                 </ul>

@@ -190,7 +190,7 @@ export default function PrivacyPolicyPage() {
                   When you visit our website, we collect:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                  <li><strong>Analytics data</strong> — Page views, referrer sources, UTM parameters, device type, browser, operating system, and country-level geographic data. Collected via our own Pulse analytics platform, which uses no cookies, no fingerprinting, and no personal identifiers. Data is aggregated and cannot be traced to individual visitors.</li>
+                  <li><strong>Analytics data</strong> — Page views, referrer sources, UTM parameters, device type, browser, operating system, and approximate location (country, region, and city). Collected via our own Pulse analytics platform, which uses no cookies, no fingerprinting, and no personal identifiers. Data is aggregated and cannot be traced to individual visitors.</li>
                   <li><strong>Contact form submissions</strong> — Name, email address, subject, and message content, submitted voluntarily through our contact page.</li>
                   <li><strong>Newsletter subscriptions</strong> — Email address only, submitted voluntarily with explicit consent.</li>
                 </ul>
@@ -229,7 +229,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Referrer sources</strong> — The website or search engine that directed visitors to the site.</li>
                   <li><strong>UTM parameters</strong> — Campaign tracking parameters from URLs (utm_source, utm_medium, etc.).</li>
                   <li><strong>Technical metadata</strong> — Device type (mobile, desktop, tablet), browser name, and operating system. Derived from the User-Agent string, which is not stored.</li>
-                  <li><strong>Country-level location</strong> — Determined from the IP address, which is then immediately discarded. We do not store IP addresses.</li>
+                  <li><strong>Approximate location</strong> — Country, and — where the site owner has enabled it — region and city. All three are determined from the IP address, which is then immediately discarded. We do not store IP addresses. New Pulse sites default to country only; a site owner can enable region and city, and five of our own sites have.</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   Pulse does not use cookies, does not use browser fingerprinting, does not track users across websites, and does not collect personally identifiable information by default. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
@@ -297,7 +297,7 @@ export default function PrivacyPolicyPage() {
                   <li>We do <strong>not</strong> serve advertisements of any kind</li>
                   <li>We do <strong>not</strong> build user profiles or behavioral profiles</li>
                   <li>We do <strong>not</strong> use tracking pixels in emails</li>
-                  <li>We do <strong>not</strong> collect location data beyond country-level (and that is derived, not stored)</li>
+                  <li>We do <strong>not</strong> collect location data more precise than a city, and we do <strong>not</strong> store the IP address it is derived from</li>
                   <li>We do <strong>not</strong> use any social media tracking widgets or embedded content that tracks visitors</li>
                 </ul>
               </section>
@@ -313,7 +313,7 @@ export default function PrivacyPolicyPage() {
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
                   <li><strong>No IP address storage</strong> — We do not store raw IP addresses in any database. All IP addresses are cryptographically hashed using HMAC-SHA256 before any persistence: for events tied to a signed-in account the hash is salted with a user-specific value, and for pre-authentication events (such as failed logins) it uses a server-side key. The original IP address is irreversibly discarded and cannot be recovered — not by us, not by anyone.</li>
                   <li><strong>Temporary processing</strong> — IP addresses may be temporarily held in server memory during active connections for rate limiting and abuse prevention. They are not written to persistent storage in their original form.</li>
-                  <li><strong>Pulse analytics</strong> — IP addresses are used solely to derive country-level location data, then immediately discarded. The IP address itself is never stored.</li>
+                  <li><strong>Pulse analytics</strong> — IP addresses are used solely to derive approximate location — country, and region and city where the site owner has enabled them — then immediately discarded. The IP address itself is never stored.</li>
                   <li><strong>Security audit logs</strong> — Security events (logins, password changes, 2FA changes) are logged with a cryptographic hash of the IP address, not the IP itself. This allows detection of patterns (e.g., same device logging in repeatedly) without storing personally identifiable information. Audit logs are retained for up to <span className="tabular-nums text-foreground">180 days</span>, then permanently deleted.</li>
                   <li><strong>Server logs</strong> — Operational server logs that may contain IP addresses are access-controlled and retained only as long as necessary for security and operational purposes.</li>
                 </ul>

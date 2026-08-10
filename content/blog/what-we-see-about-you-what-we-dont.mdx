@@ -85,7 +85,7 @@ A Ciphera operator with full database access sees: a UUID, a blind index, an OPA
 
 The session identifier is computed server-side: a SHA-256 hash of an HMAC daily salt, the site domain, the visitor's IP address, and their user-agent string. It rotates at midnight UTC. The same visitor on Monday and Tuesday produces two completely unlinked session hashes. There is no cookie, no localStorage token, no client-side visitor ID.
 
-The raw IP address is extracted from the request, used to compute the session hash and an optional country lookup, then actively deleted from the request context. It never reaches the database. The raw User-Agent string was dropped in a database migration whose comment reads: *"Storing the raw UA string serves no analytical purpose and contradicts the privacy policy."*
+The raw IP address is extracted from the request, used to compute the session hash and an optional location lookup — country, plus region and city if the site owner has turned those on — then actively deleted from the request context. It never reaches the database. The raw User-Agent string was dropped in a database migration whose comment reads: *"Storing the raw UA string serves no analytical purpose and contradicts the privacy policy."*
 
 Site owners using Pulse see only aggregates: top pages, referrer trends, device categories, engagement percentiles. There is no dashboard view that shows "visitor X visited pages A, B, C." That view doesn't exist because the data model makes it impossible to construct.
 
