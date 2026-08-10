@@ -232,7 +232,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Approximate location</strong> — Country, and — where the site owner has enabled it — region and city. All three are determined from the IP address, which is then immediately discarded. We do not store IP addresses. New Pulse sites default to country only; a site owner can enable region and city, and five of our own sites have.</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  Pulse does not use cookies, does not use browser fingerprinting, does not track users across websites, and does not collect personally identifiable information by default. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
+                  Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), does not track users across websites, and does not collect personally identifiable information by default. To recognise automated traffic, Pulse derives a coarse code from the settings your browser reports on every request &mdash; browser family, operating system, device type, language, timezone and window size. That code is scoped to a single website, is never compared across websites, and is deleted after 14 days. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   When website owners use Pulse on their websites, Ciphera BV acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
@@ -290,8 +290,8 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li>We do <strong>not</strong> use tracking cookies of any kind</li>
-                  <li>We do <strong>not</strong> use browser fingerprinting or cross-site device tracking</li>
-                  <li>We do <strong>not</strong> engage in cross-site tracking or retargeting</li>
+                  <li>We do <strong>not</strong> use browser fingerprinting techniques &mdash; no canvas, WebGL, audio, font, or hardware probing, and nothing is stored on your device</li>
+                  <li>We do <strong>not</strong> track individuals across websites, build cross-site profiles, or retarget</li>
                   <li>We do <strong>not</strong> sell, trade, rent, or share your personal data with third parties for advertising or marketing purposes</li>
                   <li>We do <strong>not</strong> use third-party analytics services (Google Analytics, Meta Pixel, etc.)</li>
                   <li>We do <strong>not</strong> serve advertisements of any kind</li>
