@@ -32,7 +32,7 @@ const PRODUCTS: ProductFact[] = [
     paragraph:
       'Pulse is cookie-free website analytics: real-time dashboards and geographic insights without tracking individual visitors. The tracking script is under 2KB and the product is open source.',
     bullets: [
-      'No cookies, no fingerprinting, no personal data collection',
+      'No cookies, no fingerprinting techniques, no personal data collection',
       'GDPR compliant by architecture, not policy',
       'Tracking script under 2KB',
       'Open source',

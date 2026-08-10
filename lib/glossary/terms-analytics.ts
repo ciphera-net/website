@@ -38,7 +38,7 @@ export const analyticsTerms: GlossaryTerm[] = [
     paragraphs: [
       'A fingerprint is built from characteristics the browser exposes to any page it visits: canvas and WebGL rendering quirks, audio stack behavior, installed fonts, screen resolution, timezone, language, and dozens of other data points. No single attribute is unique, but the combination often is — enough entropy to re-identify a specific device across sites and sessions with no cookie required.',
       'This is precisely what makes fingerprinting harder to govern than cookies: there is nothing stored on the device to delete, no consent prompt to decline, and no expiry date. A user who clears cookies, uses private browsing, or rejects a consent banner can still be re-identified on their next visit if the underlying signals have not changed. Regulators increasingly treat fingerprinting as functionally equivalent to a persistent identifier under cookie-consent law, even though no cookie exists.',
-      'Ciphera Pulse does not fingerprint devices — it collects no canvas, font, GPU, or other device-attribute signals, and builds no per-device signature.',
+      'Ciphera Pulse does not use fingerprinting techniques: it collects no canvas, font, GPU, or audio signals, and probes nothing. It does record the ordinary attributes a browser sends with every request — screen size, language, timezone, device type — and derives a coarse code from them to recognise automated traffic. That code is scoped to a single website, is never compared across websites, and is deleted after 14 days, so it is not a persistent cross-site identifier.',
     ],
     related: ['cookieless-analytics', 'third-party-cookies', 'do-not-track', 'personal-data'],
   },

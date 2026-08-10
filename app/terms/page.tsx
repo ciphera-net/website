@@ -143,7 +143,7 @@ export default function TermsOfServicePage() {
                   Ciphera provides privacy-first infrastructure and applications designed with zero-knowledge architecture:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
-                  <li><strong>Pulse:</strong> Privacy-respecting website analytics that operates without cookies, fingerprinting, or personal data collection.</li>
+                  <li><strong>Pulse:</strong> Privacy-respecting website analytics that operates without cookies, without fingerprinting techniques, and without personal data collection.</li>
                   <li><strong>Ciphera ID:</strong> Secure identity and authentication provider with zero-knowledge password handling.</li>
                   <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
                   <li><strong>Ciphera Relay:</strong> Secure transactional email infrastructure for delivering encrypted communications.</li>
@@ -248,7 +248,7 @@ export default function TermsOfServicePage() {
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li>Pulse collects only aggregated, anonymous data. No personally identifiable information is collected from website visitors.</li>
-                  <li>Pulse does not use cookies, browser fingerprinting, or cross-site tracking. It does not require cookie consent banners.</li>
+                  <li>Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), and does not track visitors across websites. It does not require cookie consent banners.</li>
                   <li><strong>Automated traffic.</strong> Pulse identifies traffic that appears to be automated and excludes it from your statistics. Excluded traffic is listed in your site&rsquo;s Bot &amp; Spam settings and can be restored by you at any time. Classification is automated and is not warranted to be free of error; if a real visitor is excluded, restoring the traffic returns it to your reports.</li>
                   <li>Analytics data belongs to the website owner who installed Pulse. Ciphera does not access, share, or sell analytics data collected by Pulse.</li>
                   <li>You are responsible for ensuring that your use of Pulse on your website complies with applicable privacy laws and your own privacy policy.</li>

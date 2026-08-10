@@ -13,7 +13,7 @@ URL: https://ciphera.net/products/pulse
 
 Pulse is cookie-free website analytics: real-time dashboards and geographic insights without tracking individual visitors. The tracking script is under 2KB and the product is open source.
 
-- No cookies, no fingerprinting, no personal data collection
+- No cookies, no fingerprinting techniques, no personal data collection
 - GDPR compliant by architecture, not policy
 - Tracking script under 2KB
 - Open source
@@ -107,7 +107,7 @@ URL: https://ciphera.net/glossary/bounce-rate
 Browser fingerprinting identifies a device by combining device and browser attributes — screen size, installed fonts, GPU details, timezone, and more — into a composite signature, without storing anything on the device.
 A fingerprint is built from characteristics the browser exposes to any page it visits: canvas and WebGL rendering quirks, audio stack behavior, installed fonts, screen resolution, timezone, language, and dozens of other data points. No single attribute is unique, but the combination often is — enough entropy to re-identify a specific device across sites and sessions with no cookie required.
 This is precisely what makes fingerprinting harder to govern than cookies: there is nothing stored on the device to delete, no consent prompt to decline, and no expiry date. A user who clears cookies, uses private browsing, or rejects a consent banner can still be re-identified on their next visit if the underlying signals have not changed. Regulators increasingly treat fingerprinting as functionally equivalent to a persistent identifier under cookie-consent law, even though no cookie exists.
-Ciphera Pulse does not fingerprint devices — it collects no canvas, font, GPU, or other device-attribute signals, and builds no per-device signature.
+Ciphera Pulse does not use fingerprinting techniques: it collects no canvas, font, GPU, or audio signals, and probes nothing. It does record the ordinary attributes a browser sends with every request — screen size, language, timezone, device type — and derives a coarse code from them to recognise automated traffic. That code is scoped to a single website, is never compared across websites, and is deleted after 14 days, so it is not a persistent cross-site identifier.
 URL: https://ciphera.net/glossary/fingerprinting
 
 ### Consent banner
@@ -198,7 +198,7 @@ URL: https://ciphera.net/glossary/end-to-end-encryption
 The ePrivacy Directive (2002/58/EC, amended 2009) is the EU law governing confidentiality of electronic communications, including the cookie-consent rule: storing or reading anything on a user’s device requires prior consent unless it is strictly necessary.
 Where the GDPR sets general rules for personal data, the ePrivacy Directive is a more specific, older instrument (first adopted 2002, amended by the 2009 "Cookie Directive" amendment) covering electronic communications: cookies and similar device storage, unsolicited marketing communications, and confidentiality of traffic and location data from telecom and online services. Its cookie provision, Article 5(3), is the actual legal basis for the consent banners seen across the web — not the GDPR itself, which is a common misconception.
 The rule is technology-neutral: it covers cookies, local storage, device fingerprinting, and any similar technique used to store or access information on a user’s terminal equipment. An exemption exists for storage that is strictly necessary to provide a service the user requested (a session cookie for a shopping cart, for instance) or for the sole purpose of carrying out the transmission — analytics and advertising cookies do not qualify, which is why they trigger a consent banner.
-A long-planned ePrivacy Regulation intended to replace the Directive and align its enforcement with the GDPR has been in negotiation for years without adoption, so the 2002/2009 Directive, as implemented into each member state’s national law, remains the operative rule. Ciphera’s own site uses Pulse, which does not set cookies or fingerprint visitors, so no consent banner is needed under Article 5(3)’s strictly-necessary logic.
+A long-planned ePrivacy Regulation intended to replace the Directive and align its enforcement with the GDPR has been in negotiation for years without adoption, so the 2002/2009 Directive, as implemented into each member state’s national law, remains the operative rule. Ciphera’s own site uses Pulse, which does not set cookies or store anything on your device, so no consent banner is needed under Article 5(3)’s strictly-necessary logic — that Article turns on storing or accessing information on terminal equipment, which Pulse does not do.
 URL: https://ciphera.net/glossary/eprivacy-directive
 
 ### EU-US Data Privacy Framework
