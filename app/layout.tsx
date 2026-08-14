@@ -101,10 +101,6 @@ export default async function RootLayout({
           data-domain="ciphera.net"
           src="https://js.ciphera.net/script.js"
         />
-        <Script
-          defer
-          src="https://js.ciphera.net/script.frustration.js"
-        />
         <Header />
         <main id="main-content" className="flex flex-1 flex-col">
           {/* Continuous vertical rails frame every page: the header nav, this
