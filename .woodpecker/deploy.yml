@@ -33,9 +33,11 @@ when:
     branch: main
 
 steps:
-  # Resolve the immutable digest ONCE and hand the same value to both targets, so
-  # the two origins can never drift apart. That is what makes the Bunny origin flip
-  # content-neutral in either direction.
+  # Resolve the immutable digest ONCE, then ship BY DIGEST. Until 17-08-2026 this
+  # fed two targets (the cluster and Bunny) so they could not drift; the cluster
+  # half is retired and Magic Containers is now the only one. Resolving the digest
+  # separately is still what lets bunny-push assert that MC converged on exactly
+  # the image this pipeline built, rather than on whatever `:sha-xxx` points at.
   # ⚠️ The Accept list MUST include application/vnd.oci.image.manifest.v1+json.
   # kaniko INHERITS THE BASE IMAGE'S manifest media type, so the format varies
   # per REPO, not per tool. With an incomplete Accept the registry can fall back
@@ -83,159 +85,27 @@ steps:
         echo "$DEPLOY_SHA" > /woodpecker/deploy_sha
       - echo "resolved sha-$DEPLOY_SHA -> $(cat /woodpecker/digest)"
 
-  deploy-k8s:
-    image: alpine:3.20
-    backend_options:
-      kubernetes:
-        resources:
-          requests: { memory: 128Mi, cpu: 100m }
-          limits: { memory: 512Mi }
-    # registry.ops.ciphera.net resolves to the cluster's own NLB. A pod dialling
-    # its own cluster's public load balancer hits the Exoscale NLB hairpin, and
-    # ~1/node_count of those connections are black-holed. Pin the name at
-    # Traefik's ClusterIP so the request never leaves the cluster.
-    extra_hosts:
-      - "registry.ops.ciphera.net:10.101.182.27"
-    depends_on: [digest]
-    # NO volume, deliberately — this is the whole point of running in-cluster.
-    #
-    # On ci-ops this step bind-mounted /opt/woodpecker/secrets:/run/ci:ro, a host
-    # directory into which the agent's `token-sync` task republished a 30-minute
-    # Vault-issued ServiceAccount token plus the SKS control-plane CA every 30s.
-    # All of that existed only because CI ran OUTSIDE the cluster and had no
-    # Kubernetes identity of its own.
-    #
-    # A step pod has one automatically: the kubelet projects a rotating token and
-    # the API server's CA at /var/run/secrets/kubernetes.io/serviceaccount/, and
-    # the API is reachable in-cluster at kubernetes.default.svc. So the token-sync
-    # mechanism, the host mount and the Vault round trip all disappear, and the
-    # credential is now bound to this pod instead of readable by anything sharing
-    # a VM. Permissions come from the ci-deployer RoleBinding
-    # (Infra/Kubernetes/workloads/_shared/ci-deployer.yaml), which binds
-    # woodpecker-builds/default.
-    environment:
-      KUBE_API: https://kubernetes.default.svc
-    commands:
-      - apk add --no-cache curl jq >/dev/null
-      # Validated cross-step handoff. `export X=$(cat missing)` would silently yield
-      # empty and PATCH `ciphera-net/ciphera-frontend@` into the live Deployment — the apiserver does NOT
-      # validate image-reference syntax, so that is accepted and the pod then fails
-      # InvalidImageName with the old pods still serving.
-      - |
-        DIGEST=$(cat /woodpecker/digest) || { echo "digest handoff missing"; exit 1; }
-        DEPLOY_SHA=$(cat /woodpecker/deploy_sha) || { echo "deploy_sha handoff missing"; exit 1; }
-        case "$DIGEST" in sha256:*) ;; *) echo "bad digest handoff [$DIGEST]"; exit 1 ;; esac
-        [ -n "$DEPLOY_SHA" ] || { echo "empty deploy_sha handoff"; exit 1; }
-        export DIGEST DEPLOY_SHA
-      # Strategic-merge PATCH of the image + a deploy-sha annotation (the analogue
-      # of Nomad's .Meta.deploy_sha). NOT `kubectl set image`: it records no
-      # provenance, and registry.k8s.io/kubectl is distroless so it cannot run a
-      # commands: block at all. fieldManager is set so a later `apply --server-side`
-      # reports an honest conflict on the image field instead of silently winning.
-      - |
-        BODY=$(jq -nc \
-          --arg img "registry.ops.ciphera.net/ciphera-net/ciphera-frontend@$DIGEST" \
-          --arg sha "$DEPLOY_SHA" \
-          '{spec:{template:{metadata:{annotations:{"ciphera.net/deploy-sha":$sha}},
-                            spec:{containers:[{name:"nextjs",image:$img}]}}}}')
-        curl -fsS --max-time 30 --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -X PATCH \
-          -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
-          -H "Content-Type: application/strategic-merge-patch+json" \
-          -d "$BODY" \
-          "$KUBE_API/apis/apps/v1/namespaces/apps/deployments/ciphera-website?fieldManager=woodpecker-ci" >/dev/null
-      # Convergence gate.
-      #   observedGeneration  — without it a fast poll reads the PREVIOUS rollout's
-      #                         satisfied status and reports success immediately.
-      #   status.replicas == updatedReplicas — LOAD-BEARING. availableReplicas is
-      #                         summed across ALL ReplicaSets and updatedReplicas
-      #                         counts new-template pods that merely EXIST, so with
-      #                         maxSurge:1/maxUnavailable:0 there is a window where
-      #                         both match spec.replicas while an OLD pod is still
-      #                         serving. This clause is what "only the new
-      #                         ReplicaSet is left" actually means, and it is the
-      #                         precondition purge-cdn depends on.
-      #   // 0 defaults       — so absent counters cannot pass vacuously (null==null).
-      # The token is re-read every iteration: it is non-renewable with a 30m TTL and
-      # this loop may run ~6 minutes.
-      # ⚠️ ONLY plain $VAR here — never the dollar-brace form (a dollar sign followed
-      # by a braced name, with or without a :-default). Woodpecker runs its own
-      # substitution over the RAW FILE — comments included — before the YAML is even
-      # parsed, so the brace form is consumed everywhere it appears. Two ways it bit:
-      #   1. a shell-local flag written in the brace form with a :-0 default became the
-      #      literal `0`, so this failure branch rendered as `if [ "0" = "1" ]` and its
-      #      `exit 1` was dead code — a wedged rollout fell out of the loop at rc=0 and
-      #      reported GREEN (help pipeline 37);
-      #   2. writing the brace form inside THIS comment to warn about it made the
-      #      compiler reject the file outright: "unable to parse variable name"
-      #      (help pipelines 38-40).
-      # CI_COMMIT_SHA in the digest step is the one deliberate use of that form.
-      - |
-        CONVERGED=no
-        for i in $(seq 1 90); do
-          S=$(curl -fsS --max-time 15 --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
-            -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
-            "$KUBE_API/apis/apps/v1/namespaces/apps/deployments/ciphera-website") \
-            || { echo "api read failed (iter $i) — retrying"; S=''; }
-          echo "$S" | jq -e '
-            ((.status.observedGeneration // 0) >= .metadata.generation)
-            and ((.status.updatedReplicas // 0) == .spec.replicas)
-            and ((.status.replicas // 0) == (.status.updatedReplicas // 0))
-            and ((.status.availableReplicas // 0) == (.status.updatedReplicas // 0))' >/dev/null \
-            && { echo "k8s rollout converged"; CONVERGED=yes; break; }
-          echo "$S" | jq -e '.status.conditions[]? | select(.type=="Progressing" and .reason=="ProgressDeadlineExceeded")' >/dev/null \
-            && { echo "k8s rollout FAILED (ProgressDeadlineExceeded)"; break; }
-          sleep 4
-        done
-        # A `for` loop that ends without breaking exits 0, so this post-loop check is
-        # what actually fails the step. It must not depend on any flag Woodpecker could
-        # have substituted away.
-        if [ "$CONVERGED" != "yes" ]; then
-          echo "--- pods in apps (the ci-deployer Role grants get,list on pods+events for exactly this) ---"
-          curl -fsS --max-time 15 --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
-            -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
-            "$KUBE_API/api/v1/namespaces/apps/pods" \
-            | jq -r '.items[] | select(.metadata.name | startswith("ciphera-website")) | "\(.metadata.name) \(.status.phase) \([.status.containerStatuses[]?.state | keys[0]] | join(","))"' || true
-          echo "k8s rollout did NOT converge for ciphera-website"
-          exit 1
-        fi
-      # Assert what is ACTUALLY running. Two failure modes this catches that the gate
-      # cannot: (a) a strategic-merge PATCH keys containers on `name`, so a wrong
-      # nextjs returns 200 and ADDS a second container instead of failing;
-      # (b) a concurrent `kubectl apply` of the manifest reverts the image to the
-      # committed digest while leaving the annotation claiming the new commit.
-      - |
-        O=$(curl -fsS --max-time 15 --retry 3 --retry-all-errors --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
-          -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
-          "$KUBE_API/apis/apps/v1/namespaces/apps/deployments/ciphera-website")
-        echo "$O" | jq -e \
-          --arg img "registry.ops.ciphera.net/ciphera-net/ciphera-frontend@$DIGEST" \
-          --arg sha "$DEPLOY_SHA" '
-          ([.spec.template.spec.containers[].name] == ["nextjs"])
-          and ((.spec.template.spec.containers[] | select(.name=="nextjs") | .image) == $img)
-          and (.spec.template.metadata.annotations["ciphera.net/deploy-sha"] == $sha)' >/dev/null \
-          || { echo "POST-DEPLOY MISMATCH — running spec is not what we shipped:"; \
-               echo "$O" | jq '{containers:[.spec.template.spec.containers[]|{name,image}], sha:.spec.template.metadata.annotations["ciphera.net/deploy-sha"]}'; exit 1; }
-      - echo "Deployed ciphera-website to SKS ($DEPLOY_SHA)"
-
   # ═══ THE MAGIC CONTAINERS DEPLOY PATH ═══
   # 🔴 SINCE 16-08-2026 THE CLUSTER IS NOT THE ORIGIN. ciphera.net is pull zone
   # 5440429, whose OriginUrl is https://mc-ghu9zkqynq.bunny.run — the Magic
   # Containers app (id in the `mc_app_id` secret). This step is what makes a merge
   # to main reach production.
   #
-  # ⚠️ UNLIKE sigil AND help, `deploy-k8s` ABOVE IS DELIBERATELY KEPT. The
-  # in-cluster Deployment stays as the rollback path — rolling back is one field
-  # (the zone's OriginUrl, back to https://website-sks.ciphera.net) — and that is
-  # only true while the cluster copy is still being deployed to. Owner decision
-  # 16-08-2026: ciphera.net is the estate's highest-visibility surface at ~154
-  # real req/h, so the one-field rollback is worth the second deploy target.
-  # 🔴 DO NOT REMOVE `deploy-k8s` WITHOUT RETIRING THE ROLLBACK PATH FIRST. A
-  # stale cluster copy is a rollback to an old build that nobody notices is old.
+  # 🔴 THIS IS THE ONLY DEPLOY PATH. There is no `deploy-k8s` step any more and no
+  # in-cluster copy of this site — Deployment, Service, Ingress, PDB, SA and
+  # NetworkPolicy were all deleted 17-08-2026, one day after the cutover, along
+  # with the `website-sks-tls` certificate (owned by that Ingress).
   #
-  # The two targets take the SAME digest, resolved once by the `digest` step, so
-  # the origin flip is content-neutral in either direction. Both hang off `digest`
-  # rather than off each other: neither is a precondition for the other, and
-  # serialising them would only make a deploy slower.
+  # ⚠️ SO A FAILURE HERE IS NOT ABSORBED BY ANYTHING. It leaves Magic Containers
+  # on the PREVIOUS image, serving a stale ciphera.net, until someone re-runs this
+  # pipeline. `McImageBehindMain` is what notices, after 30 minutes.
+  #
+  # ⛔ ROLLING BACK IS NO LONGER AN API CALL. Between 16-08 and 17-08 the cluster
+  # copy was deliberately kept so the zone's OriginUrl could be flipped back — it
+  # was used, once, when the first cutover attempt 508'd. That option is gone:
+  # website-sks.ciphera.net now answers nothing. Restoring it is a rebuild from
+  # Infra/Kubernetes/workloads/_shared/snapshots/17-08-2026-ciphera-website-retirement/
+  # (that restore HAS been rehearsed — see the snapshot README).
   #
   # ⚠️ THE OPS IMAGE REPO IS `ciphera-net/ciphera-frontend`, NOT `ciphera-net/website`.
   # The name predates the repo rename and matches neither the Git repo nor the
@@ -463,9 +333,13 @@ steps:
           echo "--- invariants after:  $A_INV"
           if [ "$A_INV" != "$WANT" ]; then
             echo "🔴 THE PATCH CHANGED SOMETHING IT DID NOT SEND."
-            echo "🔴 If endpoints or pullZoneId moved, $MC_HOSTNAME is GONE — and it is the ORIGIN of"
-            echo "🔴 ciphera.net (pull zone 5440429). Restore per Infra/MagicContainers/website/README.md,"
-            echo "🔴 or roll back immediately by pointing that zone at https://website-sks.ciphera.net."
+            echo "🔴 If endpoints or pullZoneId moved, $MC_HOSTNAME is GONE — and it is the ONLY ORIGIN"
+            echo "🔴 of ciphera.net (pull zone 5440429). THE SITE IS DOWN, not degraded."
+            echo "🔴 There is no in-cluster fallback since 17-08-2026: website-sks.ciphera.net answers"
+            echo "🔴 nothing, so repointing the zone at it makes things worse, not better."
+            echo "🔴 Rebuild the endpoint per Infra/MagicContainers/website/README.md -> 'Teardown /"
+            echo "🔴 rebuilding the endpoint', then set the zone's OriginUrl AND OriginHostHeader to the"
+            echo "🔴 NEW mc-*.bunny.run host — both, or the edge 404s on a Host it does not own."
           fi
           echo "FAIL: MC did not converge on the shipped image with its configuration intact"
           exit 1
@@ -478,18 +352,24 @@ steps:
   # ⚠️ THIS PURGE NARROWS THE WINDOW; IT DOES NOT CLOSE IT.
   #
   # It was written when the CLUSTER was the origin, and it was EXACT then: it hung
-  # off `deploy-k8s`, which asserts that only the new ReplicaSet is serving, so a
-  # purge after it could only ever re-cache the new build. Since the 16-08-2026
-  # cutover the origin is Magic Containers, and an MC rollout is PROGRESSIVE (~10
-  # min for 42 regions) — so there is no instant at which "the origin serves the
-  # new build" is true everywhere, and a purge fired here can still re-cache the
-  # old build at some PoPs. Measured on help 15-08-2026: a purge fired immediately
-  # after the MC PATCH did not stick.
+  # off `deploy-k8s`, which asserted that only the new ReplicaSet was serving, so a
+  # purge after it could only ever re-cache the new build. BOTH halves of that
+  # precondition are now gone — the origin became Magic Containers on 16-08-2026
+  # and the step that provided the guarantee was deleted on 17-08. An MC rollout is
+  # PROGRESSIVE (~10 min for 42 regions), so there is no instant at which "the
+  # origin serves the new build" is true everywhere, and a purge fired here can
+  # still re-cache the old build at some PoPs. Measured on help 15-08-2026: a purge
+  # fired immediately after the MC PATCH did not stick.
   #
-  # It now depends on BOTH deploy targets, which is the best ordering available:
-  # it cannot fire before MC has been told about the new image. What actually
-  # makes the new build visible everywhere is the 300s HTML TTL on zone 5440429
-  # once the rollout converges, so a deploy is live within ~15-20 minutes.
+  # It is kept, chained behind bunny-push, because that is at least ordered against
+  # the real origin — it cannot fire before MC has been told about the new image.
+  # What actually makes the new build visible everywhere is the 300s HTML TTL on
+  # zone 5440429 once the rollout converges, so a deploy is live within ~15-20 min.
+  #
+  # 🔵 OPEN QUESTION, deliberately not decided here: whether this step earns its
+  # keep at all. Making it correct means polling MC for convergence before purging.
+  # Deleting it costs nothing measurable. The identical question is open on `help`
+  # (15-08 open item 3.2) — decide both together, not one at a time.
   #
   # 🔵 It is NOT necessary to purge the inner MC pull zone. That zone carries one
   # edge rule overriding cache time to 0 for everything except /_next/static/*, so
@@ -502,7 +382,7 @@ steps:
         resources:
           requests: { memory: 128Mi, cpu: 100m }
           limits: { memory: 512Mi }
-    depends_on: [deploy-k8s, bunny-push]
+    depends_on: [bunny-push]
     environment:
       BUNNY_API_KEY:
         from_secret: bunny_api_key
