@@ -1,3 +1,29 @@
+# 🔴 THIS WORKFLOW IS PULL-REQUEST ONLY (20-08-2026). It used to also run on
+# push/main, where it was PURE WASTE — measured and removed.
+#
+# WHAT IT WAS. The build.yml -> push.yml split is a recorded owner decision
+# (Infra/docs/plans/10-07-2026-woodpecker-ci-migration-design.md §10): under
+# buildx, build.yml ran `dry_run: true` AND EXPORTED A REGISTRY CACHE, and
+# push.yml then did a warm-cache assemble+push. The second build was nearly free
+# by design, and the accepted cost was one extra clone, bought in exchange for a
+# separate GitHub check per file.
+#
+# WHAT BROKE IT. The 27-07-2026 kaniko port dropped the cache and left the split
+# standing. kaniko's plugin.sh sets `CACHE=""` whenever `dry-run: true`, so a
+# dry-run build CANNOT warm anything — the main-branch build became a full
+# rebuild of the identical Dockerfile whose output is thrown away, sitting on the
+# critical path via push.yml's `depends_on`.
+#
+# MEASURED: 153s mean per affected pipeline across ten repos, 5.34 h/month,
+# 12.3% of ALL CI wall-clock. Here: build 160s + push 151s.
+# Proven on website-backend #54 first: 190s -> 105s, -45%.
+#
+# ⚠️ THE PR GATE IS THE POINT AND IT STAYS. `build-pr` still validates the
+# Dockerfile on every pull request, with NO registry credentials, so a broken
+# Dockerfile is caught before merge — which is where it should be caught. What
+# was deleted is only the re-validation of an already-validated Dockerfile on
+# the way to a build that happens seconds later anyway.
+# See Infra/docs/audits/20-08-2026-ci-latency-audit.md §5.1.
 # Routes this workflow to the in-cluster Kubernetes agent, which advertises
 # `!runner=k8s` — a MANDATORY label, so an agent is only eligible when the task
 # asks for it. Deleting this line sends the workflow back to the ci-ops Docker
@@ -11,30 +37,9 @@ labels:
   runner: k8s
 
 when:
-  - event: push
-    branch: main
   - event: pull_request
 
 steps:
-  write-npmrc:
-    image: alpine:3.20
-    # Resources declared 29-07-2026 — without them the step pod is QoS BestEffort, first
-    # evicted under node memory pressure. Estate-wide sweep after two pulse-backend steps
-    # were SIGKILLed (exit 137) mid-download, presenting as a test failure (see
-    # pulse-backend #147/#148). Sized by step class.
-    backend_options:
-      kubernetes:
-        resources:
-          requests: { memory: 128Mi, cpu: 100m }
-          limits: { memory: 512Mi }
-    environment:
-      NPM_TOKEN:
-        from_secret: npm_token
-    commands:
-      - printf '@ciphera-net:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s\nlegacy-peer-deps=true\n' "$NPM_TOKEN" > .npmrc-ci
-    when:
-      - event: push
-
   write-npmrc-pr:
     image: alpine:3.20
     backend_options:
@@ -49,71 +54,6 @@ steps:
       - printf '@ciphera-net:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s\nlegacy-peer-deps=true\n' "$NPM_TOKEN" > .npmrc-ci
     when:
       - event: pull_request
-
-  build:
-    image: woodpeckerci/plugin-kaniko:2.3.2@sha256:01e0e325efd8fd2b1a95d207e84780a85ed7f8eb9712d8e79888e0f42ff8b7b3
-    # 🔴 THIS STEP OVERRIDES THE NAMESPACE DEFAULT.
-    #
-    # woodpecker-builds carries a LimitRange of request==limit==1536Mi. Every
-    # Next.js build in the estate has now been measured to exceed it: id-frontend
-    # was OOM-killed at exactly 1535 MiB (exit 137) on 27-07-2026 and settled at
-    # 2046 MiB once given room; pulse-frontend peaks at 2841 MiB. This repo is the
-    # same shape and was the last one still relying on the 1536Mi default — i.e.
-    # one dependency bump away from the same silent exit 137.
-    #
-    # 3Gi, sized against measured FREE-per-node (4538 MiB on the 2 x standard.large
-    # pool), not against node allocatable. request == limit so the scheduler's own
-    # arithmetic bounds the node; raising only the limit reintroduces the overcommit
-    # that took a node NotReady twice on 27-07.
-    #
-    # Pairs with ENV NODE_OPTIONS=--max-old-space-size in the Dockerfile — raise
-    # both together or the pod is just killed at the other boundary.
-    backend_options:
-      kubernetes:
-        resources:
-          requests:
-            memory: 3Gi
-          limits:
-            memory: 3Gi
-    environment:
-      NEXT_PUBLIC_CAPTCHA_API_URL:
-        from_secret: next_public_captcha_api_url
-      NEXT_PUBLIC_PULSE_SCRIPT_URL:
-        from_secret: next_public_pulse_script_url
-      NEXT_PUBLIC_PULSE_API_URL:
-        from_secret: next_public_pulse_api_url
-      NEXT_PUBLIC_WEBSITE_API_URL:
-        from_secret: next_public_website_api_url
-      NEXT_PUBLIC_CDN_URL:
-        from_secret: next_public_cdn_url
-    settings:
-      dry-run: true
-      registry: registry.ops.ciphera.net
-      repo: ciphera-net/ciphera-frontend
-      tags:
-        - sha-${CI_COMMIT_SHA:0:7}
-        - latest
-      username:
-        from_secret: registry_username
-      password:
-        from_secret: registry_password
-      # buildx's registry cache is not ported: kaniko's `cache`/`cache-repo`
-      # semantics are unverified here and guessing silently creates a junk
-      # repository. Slower build, not a wrong one.
-      # `secrets:` removed — kaniko has no BuildKit --secret. The npm
-      # credential is COPY'd into a NON-FINAL Dockerfile stage instead, so it
-      # never reaches the published image. See the Dockerfile.
-      # kaniko takes build args from the step ENVIRONMENT (see the
-      # `environment:` block above) rather than an inline map, which keeps
-      # the `from_secret` indirection instead of inlining secret values.
-      build-args-from-env:
-        - NEXT_PUBLIC_CAPTCHA_API_URL
-        - NEXT_PUBLIC_PULSE_SCRIPT_URL
-        - NEXT_PUBLIC_PULSE_API_URL
-        - NEXT_PUBLIC_WEBSITE_API_URL
-        - NEXT_PUBLIC_CDN_URL
-    when:
-      - event: push
 
   build-pr:
     image: woodpeckerci/plugin-kaniko:2.3.2@sha256:01e0e325efd8fd2b1a95d207e84780a85ed7f8eb9712d8e79888e0f42ff8b7b3
