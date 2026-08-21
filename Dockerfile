@@ -1,88 +1,31 @@
-# Stage 1: dependencies
-FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY package.json package-lock.json* ./
-# ⚠️ UPDATED 21-08-2026: this said "kaniko has NO BuildKit --mount=type=secret".
-# kaniko is gone; the builder is BuildKit and it DOES support secret mounts. The
-# COPY is kept for now anyway, deliberately: switching it in the same change as
-# the builder swap would make any regression impossible to attribute. Converting
-# this to `RUN --mount=type=secret` is a tracked follow-up.
-# The COPY remains safe for the same reason as before — this is NOT the final
-# stage, only the last stage is published, and the file is deleted in the same
-# layer that uses it.
-# ⚠️ If this stage is ever made the FINAL stage, the token ships. Check before
-# reordering stages.
-# ⚠️ .npmrc-ci is written by the `write-npmrc` / `write-npmrc-pr` steps in
-# .woodpecker/build.yml, so it always exists in CI. A local `docker build` needs
-# the file present too (`touch .npmrc-ci` if you only need public packages).
-COPY .npmrc-ci /root/.npmrc
-# --mount=type=cache keeps npm's download cache between builds, which kaniko could
-# NEVER do (kaniko #969, open since 2019). It is what makes a dependency install
-# fast even when the lockfile CHANGES — the layer cache only helps when the
-# lockfile is untouched, and this helps when it is not.
-# 🔴 `id=` IS LOAD-BEARING. Cache mounts are keyed by TARGET PATH by default, so
-# without a distinct id every frontend in the estate would share one /root/.npm.
-# Verified 21-08-2026 against the live daemon: same id accumulates across builds
-# (1 -> 2 -> 3 files), a different id starts empty.
-# `sharing=locked` serialises concurrent builds of THIS repo rather than letting
-# two npm processes write one cache dir; different repos never interact.
-RUN --mount=type=cache,target=/root/.npm,id=web-npm,sharing=locked \
-    npm ci --prefer-offline --no-audit --progress=false \
- && rm -f /root/.npmrc
-
-# Stage 2: builder
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-# NEXT_PUBLIC_* values must be present at build time — Next.js inlines them
-# into the client bundle during `next build`. Runtime env vars in Dokploy
-# have no effect on the client bundle, so we pass them as Docker build args
-# here. lib/env.ts (via @t3-oss/env-nextjs + Zod) validates every value at
-# module load and throws on missing/malformed input.
-ARG NEXT_PUBLIC_CAPTCHA_API_URL
-ARG NEXT_PUBLIC_PULSE_SCRIPT_URL
-ARG NEXT_PUBLIC_PULSE_API_URL
-ARG NEXT_PUBLIC_WEBSITE_API_URL
-ARG NEXT_PUBLIC_CDN_URL
-ENV NEXT_PUBLIC_CAPTCHA_API_URL=${NEXT_PUBLIC_CAPTCHA_API_URL}
-ENV NEXT_PUBLIC_PULSE_SCRIPT_URL=${NEXT_PUBLIC_PULSE_SCRIPT_URL}
-ENV NEXT_PUBLIC_PULSE_API_URL=${NEXT_PUBLIC_PULSE_API_URL}
-ENV NEXT_PUBLIC_WEBSITE_API_URL=${NEXT_PUBLIC_WEBSITE_API_URL}
-ENV NEXT_PUBLIC_CDN_URL=${NEXT_PUBLIC_CDN_URL}
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_ENV=production
-
-# prebuild runs scripts/generate-learn-articles.ts + generate-blog-posts.ts via tsx,
-# then next build
-# 🔴 CAP V8's HEAP. Added 27-07-2026 alongside the 3Gi step ceiling.
+# 🔴 THIS IMAGE IS ASSEMBLED, NOT COMPILED (21-08-2026).
 #
-# V8 sizes its old-space from TOTAL MACHINE MEMORY, not from the container's cgroup
-# limit, so on standard.large (8 GiB) workers an UNCAPPED build self-selects roughly
-# 4 GiB of old space and grows to fill whatever node it lands on. Bigger nodes make
-# this flag MORE necessary, not less — that is the counter-intuitive part.
+# `next build` used to run HERE, in a `builder` stage. It now runs in an ordinary
+# Woodpecker step (`next-build` in .woodpecker/) and this Dockerfile only COPYs the
+# artefacts it produced. Migration phase 4 of
+# Infra/docs/plans/20-08-2026-buildkit-rootless-migration.md.
 #
-# ⚠️ CAPS OLD SPACE ONLY. RSS = old space + new space + code + native allocations,
-# plus other builds in the shared daemon, so RSS lands above this. Measured on the
-# sibling pulse-frontend build: heap 1280 -> RSS 2229 MiB, and +384 MB of heap cost
-# +647 MB of RSS (~1.7x, not 1.0x) — budget increases accordingly.
+# WHY THE COMPILE MOVED OUT:
+#   Since the kaniko -> BuildKit migration, an image build runs inside a SHARED
+#   daemon (`buildkitd`, ns `buildkit`) used by every repo in the estate. Measured
+#   21-08: one Next.js compile takes that daemon from ~850Mi idle to 2.4-2.9Gi
+#   against a 4Gi limit. Two concurrent frontend builds would OOM it — and an OOM
+#   of the daemon kills EVERY in-flight build in the estate, not just this one.
+#   Measured after this change on help-frontend: daemon peak 2456Mi -> 1241Mi, and
+#   the image step 51s -> 6s.
 #
-# ⚠️ COUPLED to the 3Gi ceiling in .woodpecker/build.yml and push.yml.
-ENV NODE_OPTIONS=--max-old-space-size=1280
-
-# `.next/cache` holds the webpack module cache, the TypeScript .tsbuildinfo and the
-# SWC transform cache. Next.js's own docs say CI "will need to be configured to
-# correctly persist the cache between builds" — and until now we could not, because
-# `next build` runs INSIDE the image build and a containerised build starts from a
-# clean layer. A BuildKit cache mount is exactly that persistence, without moving
-# the compile out of the Dockerfile.
-# ⚠️ The mount exists only DURING this RUN. It is deliberately not in the shipped
-# image, and the final stage copies only .next/standalone and .next/static.
-RUN --mount=type=cache,target=/app/.next/cache,id=web-next,sharing=locked \
-    npm run build
-# Stage 3: runtime
+# ⚠️ CONSEQUENCE FOR LOCAL BUILDS: `docker build .` no longer works from a clean
+#   checkout — `.next/standalone` will not exist. Run `npm ci && npm run build`
+#   first, exactly as CI does.
+#
+# ⚠️ MOST NEXT_PUBLIC_* MOVED to the `next-build` STEP's `environment:`, because
+#   Next.js inlines them during `next build` and that is now the only place they
+#   can reach the bundle.
+#   🔑 NEXT_PUBLIC_CDN_URL BELOW IS DELIBERATELY STILL A BUILD ARG. It also
+#   populates a RUNTIME env var in this stage, which `lib/cdn.ts` reads
+#   (`process.env.NEXT_PUBLIC_CDN_URL || ''`). That `|| ''` fails OPEN: an unset
+#   value yields relative paths — a working-looking site serving wrong URLs. Do not
+#   "tidy" this ARG away along with the others.
 FROM node:20-alpine AS runner
 WORKDIR /app
 
@@ -99,9 +42,9 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
 # Copy the Next.js standalone output
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --chown=nextjs:nodejs public ./public
+COPY --chown=nextjs:nodejs .next/standalone ./
+COPY --chown=nextjs:nodejs .next/static ./.next/static
 
 USER nextjs
 
