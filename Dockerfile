@@ -3,17 +3,32 @@ FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json* ./
-# kaniko has NO BuildKit `--mount=type=secret`, so the npm credential is COPY'd
-# in instead of mounted. This is safe because this is NOT the final stage —
-# kaniko publishes only the last stage, so /root/.npmrc never reaches the shipped
-# image — and it is deleted in the same layer that uses it.
+# ⚠️ UPDATED 21-08-2026: this said "kaniko has NO BuildKit --mount=type=secret".
+# kaniko is gone; the builder is BuildKit and it DOES support secret mounts. The
+# COPY is kept for now anyway, deliberately: switching it in the same change as
+# the builder swap would make any regression impossible to attribute. Converting
+# this to `RUN --mount=type=secret` is a tracked follow-up.
+# The COPY remains safe for the same reason as before — this is NOT the final
+# stage, only the last stage is published, and the file is deleted in the same
+# layer that uses it.
 # ⚠️ If this stage is ever made the FINAL stage, the token ships. Check before
 # reordering stages.
 # ⚠️ .npmrc-ci is written by the `write-npmrc` / `write-npmrc-pr` steps in
 # .woodpecker/build.yml, so it always exists in CI. A local `docker build` needs
 # the file present too (`touch .npmrc-ci` if you only need public packages).
 COPY .npmrc-ci /root/.npmrc
-RUN npm ci --prefer-offline --no-audit --progress=false \
+# --mount=type=cache keeps npm's download cache between builds, which kaniko could
+# NEVER do (kaniko #969, open since 2019). It is what makes a dependency install
+# fast even when the lockfile CHANGES — the layer cache only helps when the
+# lockfile is untouched, and this helps when it is not.
+# 🔴 `id=` IS LOAD-BEARING. Cache mounts are keyed by TARGET PATH by default, so
+# without a distinct id every frontend in the estate would share one /root/.npm.
+# Verified 21-08-2026 against the live daemon: same id accumulates across builds
+# (1 -> 2 -> 3 files), a different id starts empty.
+# `sharing=locked` serialises concurrent builds of THIS repo rather than letting
+# two npm processes write one cache dir; different repos never interact.
+RUN --mount=type=cache,target=/root/.npm,id=web-npm,sharing=locked \
+    npm ci --prefer-offline --no-audit --progress=false \
  && rm -f /root/.npmrc
 
 # Stage 2: builder
@@ -50,15 +65,23 @@ ENV NODE_ENV=production
 # this flag MORE necessary, not less — that is the counter-intuitive part.
 #
 # ⚠️ CAPS OLD SPACE ONLY. RSS = old space + new space + code + native allocations,
-# plus kaniko in the same pod, so RSS lands well above this number. Measured on the
+# plus other builds in the shared daemon, so RSS lands above this. Measured on the
 # sibling pulse-frontend build: heap 1280 -> RSS 2229 MiB, and +384 MB of heap cost
 # +647 MB of RSS (~1.7x, not 1.0x) — budget increases accordingly.
 #
 # ⚠️ COUPLED to the 3Gi ceiling in .woodpecker/build.yml and push.yml.
 ENV NODE_OPTIONS=--max-old-space-size=1280
 
-RUN npm run build
-
+# `.next/cache` holds the webpack module cache, the TypeScript .tsbuildinfo and the
+# SWC transform cache. Next.js's own docs say CI "will need to be configured to
+# correctly persist the cache between builds" — and until now we could not, because
+# `next build` runs INSIDE the image build and a containerised build starts from a
+# clean layer. A BuildKit cache mount is exactly that persistence, without moving
+# the compile out of the Dockerfile.
+# ⚠️ The mount exists only DURING this RUN. It is deliberately not in the shipped
+# image, and the final stage copies only .next/standalone and .next/static.
+RUN --mount=type=cache,target=/app/.next/cache,id=web-next,sharing=locked \
+    npm run build
 # Stage 3: runtime
 FROM node:20-alpine AS runner
 WORKDIR /app
