@@ -1,38 +1,58 @@
-# 🔴 THIS WORKFLOW IS PULL-REQUEST ONLY (20-08-2026). It used to also run on
-# push/main, where it was PURE WASTE — measured and removed.
-#
-# WHAT IT WAS. The build.yml -> push.yml split is a recorded owner decision
-# (Infra/docs/plans/10-07-2026-woodpecker-ci-migration-design.md §10): under
-# buildx, build.yml ran `dry_run: true` AND EXPORTED A REGISTRY CACHE, and
-# push.yml then did a warm-cache assemble+push. The second build was nearly free
-# by design, and the accepted cost was one extra clone, bought in exchange for a
-# separate GitHub check per file.
-#
-# WHAT BROKE IT. The 27-07-2026 kaniko port dropped the cache and left the split
-# standing. kaniko's plugin.sh sets `CACHE=""` whenever `dry-run: true`, so a
-# dry-run build CANNOT warm anything — the main-branch build became a full
-# rebuild of the identical Dockerfile whose output is thrown away, sitting on the
-# critical path via push.yml's `depends_on`.
-#
-# MEASURED: 153s mean per affected pipeline across ten repos, 5.34 h/month,
-# 12.3% of ALL CI wall-clock. Here: build 160s + push 151s.
-# Proven on website-backend #54 first: 190s -> 105s, -45%.
-#
-# ⚠️ THE PR GATE IS THE POINT AND IT STAYS. `build-pr` still validates the
-# Dockerfile on every pull request, with NO registry credentials, so a broken
-# Dockerfile is caught before merge — which is where it should be caught. What
-# was deleted is only the re-validation of an already-validated Dockerfile on
-# the way to a build that happens seconds later anyway.
-# See Infra/docs/audits/20-08-2026-ci-latency-audit.md §5.1.
 # Routes this workflow to the in-cluster Kubernetes agent, which advertises
 # `!runner=k8s` — a MANDATORY label, so an agent is only eligible when the task
-# asks for it. Deleting this line sends the workflow back to the ci-ops Docker
-# agent; that is the rollback, and it is one line.
+# asks for it.
 #
-# buildx needs a PRIVILEGED container, and WOODPECKER_PLUGINS_PRIVILEGED — the
-# server-side grant that made that safe on Nomad — is a NO-OP on the Kubernetes
-# backend (woodpecker-ci/woodpecker#6484). kaniko builds rootless instead, so no
-# step needs privilege at all.
+# ⚠️ THE FILENAME IS LOAD-BEARING. `main` branch protection requires the status
+# check `ci/woodpecker/pr/build`, and Woodpecker names a check after the FILE, not the
+# step. Renaming or deleting this file leaves a required context that can never
+# report, which blocks EVERY future PR on this repo permanently. Step names and
+# step contents are free to change; the filename is not.
+# Verified 21-08-2026 against the live branch-protection API.
+#
+# ════════════════════════════════════════════════════════════════════════════════
+# BUILDER: rootless BuildKit, replacing kaniko (21-08-2026)
+# ════════════════════════════════════════════════════════════════════════════════
+# WHAT THIS USED TO BE. `woodpeckerci/plugin-kaniko:2.3.2` with `dry-run: true`. Google ARCHIVED
+# GoogleContainerTools/kaniko on 3 June 2025 — read-only, no CVE fixes — and the
+# plugin we ran was three forks deep, based on an individual's Docker Hub
+# namespace. Continuity, not speed, is why it is gone.
+# Plan: Infra/docs/plans/20-08-2026-buildkit-rootless-migration.md
+# As-built + measurements: Infra/docs/21-08-2026-buildkit-execution-record.md
+#
+# WHY BUILDKIT IS ALLOWED NOW WHEN plugin-docker-buildx WAS NOT (27-07-2026):
+# buildx needs a PRIVILEGED step container, and on the Kubernetes backend the only
+# route to that is repo-Trusted plus `privileged: true` in the step — i.e. exactly
+# the self-elevation path that decision refused. This step needs NO privilege: it
+# runs `buildctl`, a thin client that streams the build context to the SHARED
+# daemon (`buildkitd` in the `buildkit` namespace) and streams logs back. All
+# privilege lives in that daemon's manifest, which no committer can edit from here.
+#
+# ⚠️ THE DAEMON IS SHARED BY THE WHOLE ESTATE. A transport error here is an
+# estate-wide problem, not a repo problem — check the `BuildkitdDown` alert first.
+#
+# 🔑 THE npm CREDENTIAL STILL GOES IN VIA `.npmrc-ci` AND A NON-FINAL STAGE.
+# BuildKit supports `RUN --mount=type=secret`, which kaniko never did and which is
+# the proper fix for this — but changing the Dockerfile in the SAME change as the
+# builder swap would make any regression impossible to attribute. The credential
+# handling is unchanged here on purpose; the secret mount is a separate follow-up.
+# ⚠️ `.npmrc-ci` MUST NOT be added to .dockerignore — the builder needs it.
+#
+# ⚠️ `next build` NOW RUNS INSIDE THE SHARED DAEMON, NOT IN THIS POD. That is why
+# this step drops to 256Mi while the 3Gi that used to be here is not simply
+# reclaimed: the memory moved to buildkitd, which is sized 4Gi request == limit.
+# One Next.js build fits comfortably; several CONCURRENT ones are the case to
+# watch. `BuildkitdRestarting` fires on repeated OOM kills.
+#
+# 🔑 NO `--output` IS THE DRY RUN. kaniko had `dry-run: true`; buildctl's
+# equivalent is simply omitting the output. Verified 21-08-2026 against the live
+# daemon: every stage builds, `RUN` steps execute, and the command exits 0 with
+# nothing pushed and no image assembled. A broken Dockerfile still fails here,
+# before merge, which is the entire purpose of this gate.
+#
+# 🔑 THIS GATE IMPORTS THE CACHE BUT DELIBERATELY DOES NOT EXPORT IT.
+# Importing makes the PR gate fast. Exporting is left to `push.yml` on `main`
+# so the shared bucket only ever holds layers from merged code, and abandoned PR
+# branches cannot grow it without bound.
 labels:
   runner: k8s
 
@@ -54,33 +74,28 @@ steps:
       - printf '@ciphera-net:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s\nlegacy-peer-deps=true\n' "$NPM_TOKEN" > .npmrc-ci
     when:
       - event: pull_request
-
   build-pr:
-    image: woodpeckerci/plugin-kaniko:2.3.2@sha256:01e0e325efd8fd2b1a95d207e84780a85ed7f8eb9712d8e79888e0f42ff8b7b3
-    # 🔴 THIS STEP OVERRIDES THE NAMESPACE DEFAULT.
-    #
-    # woodpecker-builds carries a LimitRange of request==limit==1536Mi. Every
-    # Next.js build in the estate has now been measured to exceed it: id-frontend
-    # was OOM-killed at exactly 1535 MiB (exit 137) on 27-07-2026 and settled at
-    # 2046 MiB once given room; pulse-frontend peaks at 2841 MiB. This repo is the
-    # same shape and was the last one still relying on the 1536Mi default — i.e.
-    # one dependency bump away from the same silent exit 137.
-    #
-    # 3Gi, sized against measured FREE-per-node (4538 MiB on the 2 x standard.large
-    # pool), not against node allocatable. request == limit so the scheduler's own
-    # arithmetic bounds the node; raising only the limit reintroduces the overcommit
-    # that took a node NotReady twice on 27-07.
-    #
-    # Pairs with ENV NODE_OPTIONS=--max-old-space-size in the Dockerfile — raise
-    # both together or the pod is just killed at the other boundary.
+    image: moby/buildkit:v0.32.2@sha256:28a898719c18a33f4e8000685287fa36fd0dd9560c6440227d3a732d79bb41d8
+    # 🔑 Down from 3Gi request == 3Gi limit under kaniko. The work MOVED rather than shrank: kaniko
+    # compiled and snapshotted inside THIS pod, whereas buildctl only streams the
+    # context to the daemon and prints progress. The build memory now lives once in
+    # buildkitd instead of once per concurrent build pod — a straight win for
+    # cluster headroom and for the CSI/concurrency arithmetic in
+    # woodpecker-agent.yaml.
     backend_options:
       kubernetes:
         resources:
-          requests:
-            memory: 3Gi
-          limits:
-            memory: 3Gi
+          requests: { memory: 256Mi, cpu: 200m }
+          limits: { memory: 768Mi }
+    # NOTE: no `extra_hosts`. The registry hairpin pin moved to the DAEMON
+    # (hostAliases in buildkitd.yaml) because the daemon, not this client, talks to
+    # registry.ops.ciphera.net. This step never contacts it.
     environment:
+      BUILDKIT_HOST: tcp://buildkitd.buildkit.svc.cluster.local:1234
+      CACHE_ENDPOINT: https://sos-ch-dk-2.exo.io
+      CACHE_BUCKET: ciphera-build-cache
+      CACHE_REGION: ch-dk-2
+      CACHE_NAME: ciphera-website
       NEXT_PUBLIC_CAPTCHA_API_URL:
         from_secret: next_public_captcha_api_url
       NEXT_PUBLIC_PULSE_SCRIPT_URL:
@@ -91,23 +106,32 @@ steps:
         from_secret: next_public_website_api_url
       NEXT_PUBLIC_CDN_URL:
         from_secret: next_public_cdn_url
-    settings:
-      dry-run: true
-      repo: ciphera-net/ciphera-frontend
-      tags:
-        - sha-${CI_COMMIT_SHA:0:7}
-        - latest
-      # `secrets:` removed — kaniko has no BuildKit --secret. The npm
-      # credential is COPY'd into a NON-FINAL Dockerfile stage instead, so it
-      # never reaches the published image. See the Dockerfile.
-      # kaniko takes build args from the step ENVIRONMENT (see the
-      # `environment:` block above) rather than an inline map, which keeps
-      # the `from_secret` indirection instead of inlining secret values.
-      build-args-from-env:
-        - NEXT_PUBLIC_CAPTCHA_API_URL
-        - NEXT_PUBLIC_PULSE_SCRIPT_URL
-        - NEXT_PUBLIC_PULSE_API_URL
-        - NEXT_PUBLIC_WEBSITE_API_URL
-        - NEXT_PUBLIC_CDN_URL
-    when:
-      - event: pull_request
+    commands:
+      # 🔴 SOVEREIGNTY TRIPWIRE. BuildKit's s3 cache backend sets an explicit S3
+      # endpoint only when `endpoint_url` is non-empty
+      # (cache/remotecache/s3/s3.go: `if config.EndpointURL != ""`); otherwise the
+      # AWS SDK resolves its own default, which is AWS. A typo would ship our build
+      # cache to a US provider. The daemon carries AWS_ENDPOINT_URL_S3 as a
+      # backstop for the OMITTED case (measured: an endpoint-less export still
+      # landed in SOS), but an endpoint that is merely WRONG overrides that
+      # backstop — so assert it here, where the value is written.
+      - |
+        case "$CACHE_ENDPOINT" in
+          https://sos-*.exo.io) echo "cache endpoint OK: $CACHE_ENDPOINT" ;;
+          *) echo "REFUSING: cache endpoint '$CACHE_ENDPOINT' is not Exoscale SOS"; exit 1 ;;
+        esac
+      # No --output: build everything, assemble nothing, push nothing.
+      - |
+        buildctl build \
+          --frontend dockerfile.v0 \
+          --local context=. \
+          --local dockerfile=. \
+          --opt filename=Dockerfile \
+          --opt build-arg:NEXT_PUBLIC_CAPTCHA_API_URL="$NEXT_PUBLIC_CAPTCHA_API_URL" \
+          --opt build-arg:NEXT_PUBLIC_PULSE_SCRIPT_URL="$NEXT_PUBLIC_PULSE_SCRIPT_URL" \
+          --opt build-arg:NEXT_PUBLIC_PULSE_API_URL="$NEXT_PUBLIC_PULSE_API_URL" \
+          --opt build-arg:NEXT_PUBLIC_WEBSITE_API_URL="$NEXT_PUBLIC_WEBSITE_API_URL" \
+          --opt build-arg:NEXT_PUBLIC_CDN_URL="$NEXT_PUBLIC_CDN_URL" \
+          --import-cache "type=s3,region=$CACHE_REGION,bucket=$CACHE_BUCKET,endpoint_url=$CACHE_ENDPOINT,use_path_style=true,name=$CACHE_NAME" \
+          --progress plain
+      - echo "Dockerfile validated (no image produced, nothing pushed)"
