@@ -22,7 +22,7 @@ import {
 export const metadata: Metadata = {
   title: 'Ciphera Relay - Secure Email Infrastructure',
   description:
-    'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking, Swiss hosted. 99.8% deliverability.',
+    'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking, Swiss hosted.',
   alternates: {
     canonical: 'https://ciphera.net/products/relay',
   },
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
     description:
-      'Privacy-first transactional email with TLS 1.3, DKIM/SPF/DMARC. No tracking, 99.8% deliverability.',
+      'Privacy-first transactional email with TLS 1.3, DKIM/SPF/DMARC. No tracking, Swiss hosted.',
     images: [cdnUrl('/relay_icon_no_margins.png')],
   },
 }
@@ -58,7 +58,7 @@ const relaySchema = [
     '@type': 'SoftwareApplication',
     name: 'Ciphera Relay',
     description:
-      'Privacy-first transactional email delivery with TLS encryption. High deliverability rates for verification emails, notifications, and alerts.',
+      'Privacy-first transactional email delivery with TLS encryption, DKIM signing and a DMARC reject policy, for verification emails, notifications, and alerts.',
     applicationCategory: 'CommunicationApplication',
     operatingSystem: 'Web',
     url: 'https://ciphera.net/products/relay',
@@ -89,7 +89,7 @@ const RELAY_FEATURES = [
   {
     icon: ShieldCheck,
     title: 'Email authentication',
-    body: 'Per-domain DKIM keys, strict SPF, and a DMARC reject policy over TLS 1.3 — 99.8% inbox deliverability and zero spoofing, with reverse-DNS configured for HELO compliance.',
+    body: 'Per-domain DKIM keys, strict SPF, and a DMARC reject policy over TLS 1.3 — authenticated end to end, with reverse-DNS configured for HELO compliance.',
   },
   {
     icon: EyeSlash,
@@ -124,9 +124,8 @@ export default function CipheraRelayPage() {
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
             The email backbone behind every Ciphera service. TLS 1.3
-            encryption, DKIM signing, and zero tracking — verification
-            codes, security alerts, and notifications delivered in under
-            2 seconds.
+            encryption, DKIM signing, and zero tracking — for verification
+            codes, security alerts, and account notifications.
           </p>
           {/* Trust badges */}
           <div className="mt-8 flex flex-wrap items-center gap-y-3 text-xs text-muted-foreground">
@@ -134,7 +133,7 @@ export default function CipheraRelayPage() {
               { icon: Lock, label: 'TLS 1.3' },
               { icon: ShieldCheck, label: 'DKIM / SPF / DMARC' },
               { icon: EyeSlash, label: 'No tracking' },
-              { icon: EnvelopeSimple, label: '99.8% deliverability' },
+              { icon: EnvelopeSimple, label: 'Swiss hosted' },
             ].map((badge, i) => (
               <span key={badge.label} className="flex items-center gap-2 whitespace-nowrap">
                 {i > 0 && <span className="mx-2 text-muted-foreground" aria-hidden="true">·</span>}
@@ -154,8 +153,15 @@ export default function CipheraRelayPage() {
           </div>
           <dl className="mt-10 grid max-w-md grid-cols-2 gap-x-12">
             {[
-              { term: 'Deliverability', detail: '99.8%' },
-              { term: 'Send latency', detail: '< 2 s' },
+              // Both figures here are things we actually measure. The two
+              // they replaced — "Deliverability 99.8%" and "Send latency
+              // < 2 s" — were not: relay has no delivery feedback of any
+              // kind, and `relay_email_send_duration_seconds` is declared
+              // in relay-api and never observed, so Prometheus holds no
+              // series for it at all. Do not re-add a latency or
+              // deliverability number here until something measures it.
+              { term: 'Log retention', detail: '30 days' },
+              { term: 'Tracking pixels', detail: '0' },
             ].map((s) => (
               <div key={s.term} className="border-t border-border pt-3">
                 <dt className="text-xs text-muted-foreground">{s.term}</dt>
@@ -173,13 +179,14 @@ export default function CipheraRelayPage() {
           <div className="min-w-0 flex flex-col justify-center px-6 py-16 sm:py-24 lg:pr-14">
             <p className="text-xs text-muted-foreground">01 · Email</p>
             <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
-              Security-critical emails, delivered fast.
+              Security-critical emails, handed off fast.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               When someone tries to break into an account or a password
-              needs resetting, speed matters. Relay delivers verification
-              codes, security alerts, and lockout notifications in under
-              2 seconds — with TLS encryption from server to inbox.
+              needs resetting, speed matters. Relay hands verification
+              codes, security alerts, and lockout notifications straight
+              to the mail server — with TLS encryption on every hop it
+              controls.
             </p>
             <ul className="mt-8 space-y-3">
               {[
@@ -286,7 +293,7 @@ export default function CipheraRelayPage() {
                 'SMTP AUTH on port 587 (STARTTLS) or 465 (implicit TLS)',
                 'Per-service sender domains for email provenance',
                 'Works with Go, Node.js, Python, PHP — any SMTP client',
-                'Sub-2-second delivery for transactional emails',
+                'Direct SMTP handoff for transactional emails',
                 'No proprietary SDK or API lock-in',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-muted-foreground">
@@ -372,7 +379,7 @@ export default function CipheraRelayPage() {
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Most email services track opens, clicks, and recipient behavior.
-            Relay just delivers the email.
+            Relay just hands off the email.
           </p>
 
           <div className="mt-14 grid gap-px bg-border md:grid-cols-2 max-w-4xl">
@@ -403,7 +410,7 @@ export default function CipheraRelayPage() {
                   'Standard SMTP — no vendor lock-in',
                   '30-day metadata retention only',
                   'Transactional only — no marketing',
-                  'Sub-2-second delivery',
+                  'Direct SMTP handoff',
                 ].map((item) => (
                   <li key={item} className="-mx-4 px-4 py-2 flex items-center gap-3 text-foreground">
                     <CheckIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-foreground" />

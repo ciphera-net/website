@@ -146,7 +146,7 @@ export default function ProductShowcase() {
         icon={cdnUrl('/relay_icon_no_margins.png')}
         chip="Ciphera Relay"
         heading="Transactional email that just works."
-        body="The email backbone of the Ciphera ecosystem. Security alerts, verification codes, and account notifications — delivered in under 2 seconds with DKIM signing and 99.8% deliverability."
+        body="The email backbone of the Ciphera ecosystem. Security alerts, verification codes, and account notifications — handed straight to the mail server, with DKIM signing and no tracking of any kind."
         primaryLabel="Learn more"
         primaryHref="/products/relay"
         secondaryLabel="Explore Relay"

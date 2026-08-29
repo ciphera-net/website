@@ -78,7 +78,7 @@ const PRODUCTS: ProductFact[] = [
       'TLS 1.3, DKIM, SPF, and DMARC',
       'No tracking pixels, no open tracking',
       'Swiss hosted',
-      '99.8% deliverability',
+      '30-day metadata retention',
     ],
   },
   {
