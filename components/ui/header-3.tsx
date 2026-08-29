@@ -65,7 +65,9 @@ const productFeatures: Record<string, FeatureLink[]> = {
         { title: 'Dashboard', href: '#dashboard', icon: BarChart3, description: 'Real-time traffic overview' },
         { title: 'Visitor Insights', href: '#visitors', icon: Eye, description: 'Browser, device & geo data' },
         { title: 'Conversion Funnels', href: '#funnels', icon: Funnel, description: 'Multi-step drop-off analysis' },
-        { title: 'Email Reports', href: '#reports', icon: Send, description: 'Scheduled inbox summaries' },
+        // "Email Reports / Scheduled inbox summaries" until 29-08-2026 — the
+        // feature was removed from Pulse by migration 155 on 24-08-2026.
+        { title: 'Uptime Alerts', href: '#alerts', icon: Send, description: 'Email, Slack, Discord or webhook' },
     ],
     '/products/id': [
         { title: 'Zero-knowledge auth', href: '#zero-knowledge-auth', icon: Lock, description: 'OPAQUE — password never sent' },
