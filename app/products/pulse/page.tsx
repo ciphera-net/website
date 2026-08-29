@@ -88,24 +88,37 @@ const pulseSchema = [
   },
 ]
 
+// `anchor` backs the per-product mega-menu links in components/ui/header-3.tsx.
+// Before 29-08-2026 three of its four Pulse entries pointed at #visitors,
+// #funnels and #reports — none of which existed on this page, so they scrolled
+// nowhere. The ids are emitted on the cards below; keep the two lists in step.
 const PULSE_FEATURES = [
   {
     icon: Globe,
+    anchor: 'visitors',
     title: 'Visitor insights',
     body: 'Top pages, referrer sources, browser breakdowns, geographic maps, and peak-hour traffic — the full picture, no personal data collected.',
   },
   {
     icon: Funnel,
+    anchor: 'funnels',
     title: 'Conversion funnels',
     body: 'Multi-step funnels with drop-off analysis between each step, conversion trends over time, and breakdowns by device, country, or referrer.',
   },
   {
+    // Was "Scheduled reports" until 29-08-2026. pulse-backend migration 155
+    // (24-08-2026) removed scheduled analytics reports outright — the API now
+    // 400s any purpose that is not 'alert'. Wording ported verbatim from
+    // pulse-frontend's own app/features/page.tsx:139, which was corrected in
+    // the same window; this page and the Help docs were missed by that sweep.
     icon: EnvelopeSimple,
-    title: 'Scheduled reports',
-    body: 'Daily, weekly, or monthly email summaries with period-over-period comparison — or webhook delivery for custom integrations.',
+    anchor: 'alerts',
+    title: 'Uptime alerts',
+    body: 'Uptime monitors with downtime and recovery alerts to email, Slack, Discord, or a webhook of yours.',
   },
   {
     icon: Code,
+    anchor: 'configuration',
     title: 'Modular configuration',
     body: 'Toggle only the features you use — scroll depth, outbound links, downloads, 404s, rage-click tracking — with setup guides for 10+ frameworks.',
   },
@@ -228,8 +241,8 @@ export default function PulsePage() {
             Everything in Pulse.
           </h2>
           <div className="mt-14 grid gap-px border border-border bg-border sm:grid-cols-2">
-            {PULSE_FEATURES.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="flex flex-col bg-background p-8">
+            {PULSE_FEATURES.map(({ icon: Icon, anchor, title, body }) => (
+              <div key={title} id={anchor} className="flex flex-col bg-background p-8 scroll-mt-20">
                 <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
                 <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
