@@ -385,7 +385,7 @@ export default function PulsePage() {
               {[
                 'Data never leaves Swiss jurisdiction',
                 'IP addresses discarded after geo lookup',
-                'Aggregated metrics only — no individual records',
+                'Aggregate-first — visitor-level views are off by default and month-scoped',
                 'No cookies, no fingerprinting, no personal data',
                 'No Data Processing Agreement required',
               ].map((item) => (
