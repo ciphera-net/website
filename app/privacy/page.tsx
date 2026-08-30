@@ -190,7 +190,7 @@ export default function PrivacyPolicyPage() {
                   When you visit our website, we collect:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                  <li><strong>Analytics data</strong> — Page views, referrer sources, UTM parameters, device type, browser, operating system, and approximate location (country, region, and city). Collected via our own Pulse analytics platform, which uses no cookies, no fingerprinting, and no personal identifiers. Data is aggregated and cannot be traced to individual visitors.</li>
+                  <li><strong>Analytics data</strong> — Page views, referrer sources, UTM parameters, device type, browser, operating system, and approximate location (country, region, and city). Collected via our own Pulse analytics platform, which uses no cookies, no fingerprinting, and no personal identifiers. It cannot be traced to you as a person: there is no name, no email, no account and no identifier that survives the calendar month or reaches another website.</li>
                   <li><strong>Contact form submissions</strong> — Name, email address, subject, and message content, submitted voluntarily through our contact page.</li>
                   <li><strong>Newsletter subscriptions</strong> — Email address only, submitted voluntarily with explicit consent.</li>
                 </ul>
@@ -225,7 +225,7 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li><strong>Page views</strong> — Aggregated page view counts per URL, not tied to individual visitors.</li>
-                  <li><strong>Unique visitor estimates</strong> — Calculated using a privacy-safe hashing method that rotates daily. No persistent identifiers are stored.</li>
+                  <li><strong>Unique visitor estimates</strong> — Calculated server-side from two privacy-safe hashes derived from the same inputs: one that rotates every day, and one that rotates every calendar month in the site&rsquo;s own timezone. The monthly hash is what makes a returning reader count once rather than once per day. Both are computed from an IP address that is discarded immediately and never stored, neither can be reversed, and no persistent identifier is kept — at the end of the month the monthly hash is gone and the same reader is a new one. A site owner may switch on visitor-level views, which group one month&rsquo;s pageviews under one of those hashes; it is off by default.</li>
                   <li><strong>Referrer sources</strong> — The website or search engine that directed visitors to the site.</li>
                   <li><strong>UTM parameters</strong> — Campaign tracking parameters from URLs (utm_source, utm_medium, etc.).</li>
                   <li><strong>Technical metadata</strong> — Device type (mobile, desktop, tablet), browser name, and operating system. Derived from the User-Agent string, which is not stored.</li>
@@ -295,7 +295,7 @@ export default function PrivacyPolicyPage() {
                   <li>We do <strong>not</strong> sell, trade, rent, or share your personal data with third parties for advertising or marketing purposes</li>
                   <li>We do <strong>not</strong> use third-party analytics services (Google Analytics, Meta Pixel, etc.)</li>
                   <li>We do <strong>not</strong> serve advertisements of any kind</li>
-                  <li>We do <strong>not</strong> build user profiles or behavioral profiles</li>
+                  <li>We do <strong>not</strong> build persistent or cross-site profiles &mdash; nothing we hold about a visitor outlives a calendar month or follows them to another website</li>
                   <li>We do <strong>not</strong> use tracking pixels in emails</li>
                   <li>We do <strong>not</strong> collect location data more precise than a city, and we do <strong>not</strong> store the IP address it is derived from</li>
                   <li>We do <strong>not</strong> use any social media tracking widgets or embedded content that tracks visitors</li>
