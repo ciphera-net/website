@@ -24,14 +24,14 @@ import {
 export const metadata: Metadata = {
   title: 'Pulse - Privacy-First Website Analytics',
   description:
-    'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. Under 2KB tracking script. Open source.',
+    'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 5 KB tracking script — measured, not rounded. Open source.',
   alternates: {
     canonical: 'https://ciphera.net/products/pulse',
   },
   openGraph: {
     title: 'Pulse - Privacy-First Website Analytics | Ciphera',
     description:
-      'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. Under 2KB tracking script.',
+      'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 5 KB tracking script — measured, not rounded.',
     url: 'https://ciphera.net/products/pulse',
     siteName: 'Ciphera',
     images: [
@@ -64,7 +64,7 @@ const pulseSchema = [
     applicationCategory: 'AnalyticsApplication',
     operatingSystem: 'Web',
     url: 'https://pulse.ciphera.net',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
     provider: { '@id': 'https://ciphera.net/#organization' },
   },
   {
@@ -163,7 +163,7 @@ export default function PulsePage() {
               { icon: Cookie, label: 'Cookie-free' },
               { icon: Code, label: 'Open source client' },
               { icon: ShieldCheck, label: 'GDPR compliant' },
-              { icon: Lightning, label: 'Under 2KB' },
+              { icon: Lightning, label: '5 KB script' },
             ].map((badge, i) => (
               <span key={badge.label} className="flex items-center gap-2 whitespace-nowrap">
                 {i > 0 && <span className="mx-2 text-muted-foreground" aria-hidden="true">·</span>}
@@ -315,8 +315,9 @@ export default function PulsePage() {
               One script tag. That&apos;s it.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Add a single script tag to your site and you&apos;re done. Under
-              2KB gzipped — that&apos;s 20x smaller than Google Analytics.
+              Add a single script tag to your site and you&apos;re done. 5 KB
+              gzipped — measured, not rounded — about 25x lighter than Google
+              Analytics.
               Loads asynchronously, never blocks page rendering, works with
               any framework.
             </p>
@@ -449,7 +450,7 @@ export default function PulsePage() {
                   'GDPR compliant by default',
                   'No consent banner needed',
                   'Open source client',
-                  'Script under 2KB',
+                  '5 KB script — measured',
                   'No cross-site tracking',
                   'Free tier available',
                   'Real-time dashboard',
