@@ -24,7 +24,7 @@ import {
 export const metadata: Metadata = {
   title: 'Pulse - Privacy-First Website Analytics',
   description:
-    'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 5 KB tracking script — measured, not rounded. Open source.',
+    'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 5 KB tracking script — measured, not rounded. Open-source client.',
   alternates: {
     canonical: 'https://ciphera.net/products/pulse',
   },
