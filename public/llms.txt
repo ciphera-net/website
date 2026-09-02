@@ -34,6 +34,7 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - [Sustainability](https://ciphera.net/sustainability): measured carbon footprint and methodology
 
 ## Blog
+- [Pulse Is Free for Open-Source Projects and Nonprofits](https://ciphera.net/blog/free-analytics-for-open-source): Pulse's Team tier at €0 for OSI-licensed projects and registered nonprofits — five sites, 100,000 pageviews a month, every feature. The deal is printed on the page: we get to say you use Pulse.
 - [Ciphera × Bunny: A Fully European Stack, Front to Back](https://ciphera.net/blog/bunny-hopstart-second-place): Every public Ciphera surface runs on Bunny, the Slovenia-based European CDN — because infrastructure jurisdiction is a privacy decision. Bunny's HopStart Cohort #3 just put $25,000 in credits behind that choice. Here's why the two fit.
 - [Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)](https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics): The rule behind cookie banners isn't about cookies — it's about storing and reading information on a visitor's device. Here's what EU law actually requires for web analytics in 2026, why 'first-party' doesn't exempt you, and how a genuinely cookieless tool changes the question.
 - [How to Migrate Off Google Analytics: A 2026 Guide](https://ciphera.net/blog/how-to-migrate-off-google-analytics): A practical, honest guide to leaving Google Analytics for a privacy-first tool in 2026 — the timeline you need to know, why teams are switching, what you genuinely gain and lose, and the step-by-step migration (including the historical-data trap nobody warns you about).
@@ -43,7 +44,6 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - [What We See About You, What We Don't, and Why It Matters](https://ciphera.net/blog/what-we-see-about-you-what-we-dont): Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.
 - [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.
 - [Why We Chose BunnyCDN as Ciphera's CDN](https://ciphera.net/blog/why-we-chose-bunnycdn): A CDN terminates TLS and sees every request. For a privacy company, choosing one is a trust decision. Here's the checklist we used, our actual setup, and what running it taught us.
-- [Zero-Knowledge Encryption Guide (2026)](https://ciphera.net/blog/zero-knowledge-encryption-guide): What zero-knowledge encryption actually means — explained through the system we run in production: OPAQUE authentication, blind indexes, and a vault key that never leaves your browser.
 
 ## Policies
 - Privacy policy: https://ciphera.net/privacy
