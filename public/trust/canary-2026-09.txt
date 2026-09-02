@@ -1,0 +1,45 @@
+CIPHERA WARRANT CANARY
+======================
+
+Period: September 2026
+Published: 02-09-2026 (DD-MM-YYYY)
+Next update: on or before 05-10-2026
+Company: Ciphera (Belgian company, jurisdiction: Belgium / European Union)
+
+As of the date above, Ciphera:
+
+  1. Has NOT received any National Security Letter, secret warrant, or
+     equivalent gag-ordered legal process from any government agency.
+  2. Has NOT received any request or order compelling disclosure of
+     cryptographic keys, decrypted user data, or plaintext user secrets.
+  3. Has NOT been compelled to install, modify, or weaken any security
+     mechanism, backdoor, or interception capability.
+  4. Has NOT received any order to modify source code or binaries in a
+     manner hostile to user security.
+  5. Has NOT handed over bulk user data to any third party absent specific,
+     legally-valid, narrowly-scoped process that Ciphera may lawfully
+     disclose.
+
+Proof of non-backdating (headlines from 02-09-2026):
+
+  - [BBC]: Zelensky says airlines should avoid Russian airspace as Ukraine escalates drone operations
+    https://www.bbc.co.uk/news/articles/c9v9yydy2wvo
+
+  - [NPR]: Israel bars U.S. citizens over criticism and ties to Palestinian activists, lawyers say
+    https://www.npr.org/2026/09/02/nx-s1-5950449/israel-bars-americans-over-palestinian-ties
+
+  - [RTÉ]: EU summons Russian envoy over Leipzig 'hybrid attack'
+    https://www.rte.ie/news/2026/0902/1590018-foreign-ministers-meeting/
+
+  - [Tagesschau]: Reform im Kabinett: Das soll sich bei der Einkommensteuer ändern
+    https://www.tagesschau.de/inland/innenpolitik/einkommensteuer-reform-folgen-100.html
+
+This canary is signed with GPG key
+94E796164FF853902D89E46173011BE3BD5174AE, whose public key is published at
+https://ciphera.net/trust/canary-pubkey.asc.
+
+Verify:
+    gpg --import canary-pubkey.asc
+    gpg --verify canary-2026-09.txt.asc canary-2026-09.txt
+
+-- Usman Baig, founder, Ciphera
