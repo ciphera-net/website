@@ -572,6 +572,7 @@ URL: https://ciphera.net/glossary/zero-knowledge-authentication
 
 ## Blog
 
+- [Pulse Is Free for Open-Source Projects and Nonprofits](https://ciphera.net/blog/free-analytics-for-open-source): Pulse's Team tier at €0 for OSI-licensed projects and registered nonprofits — five sites, 100,000 pageviews a month, every feature. The deal is printed on the page: we get to say you use Pulse.
 - [Ciphera × Bunny: A Fully European Stack, Front to Back](https://ciphera.net/blog/bunny-hopstart-second-place): Every public Ciphera surface runs on Bunny, the Slovenia-based European CDN — because infrastructure jurisdiction is a privacy decision. Bunny's HopStart Cohort #3 just put $25,000 in credits behind that choice. Here's why the two fit.
 - [Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)](https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics): The rule behind cookie banners isn't about cookies — it's about storing and reading information on a visitor's device. Here's what EU law actually requires for web analytics in 2026, why 'first-party' doesn't exempt you, and how a genuinely cookieless tool changes the question.
 - [How to Migrate Off Google Analytics: A 2026 Guide](https://ciphera.net/blog/how-to-migrate-off-google-analytics): A practical, honest guide to leaving Google Analytics for a privacy-first tool in 2026 — the timeline you need to know, why teams are switching, what you genuinely gain and lose, and the step-by-step migration (including the historical-data trap nobody warns you about).

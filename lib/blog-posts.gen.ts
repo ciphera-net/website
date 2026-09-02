@@ -14,6 +14,16 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    "slug": "free-analytics-for-open-source",
+    "title": "Pulse Is Free for Open-Source Projects and Nonprofits",
+    "description": "Pulse's Team tier at €0 for OSI-licensed projects and registered nonprofits — five sites, 100,000 pageviews a month, every feature. The deal is printed on the page: we get to say you use Pulse.",
+    "category": "Privacy",
+    "date": "2026-09-03",
+    "dateModified": "2026-09-03",
+    "readTime": "7 min read",
+    "image": "/blog/og/free-analytics-for-open-source.png"
+  },
+  {
     "slug": "bunny-hopstart-second-place",
     "title": "Ciphera × Bunny: A Fully European Stack, Front to Back",
     "description": "Every public Ciphera surface runs on Bunny, the Slovenia-based European CDN — because infrastructure jurisdiction is a privacy decision. Bunny's HopStart Cohort #3 just put $25,000 in credits behind that choice. Here's why the two fit.",

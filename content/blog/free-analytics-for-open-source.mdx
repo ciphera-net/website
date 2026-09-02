@@ -1,0 +1,95 @@
+---
+title: "Pulse Is Free for Open-Source Projects and Nonprofits"
+description: "Pulse's Team tier at €0 for OSI-licensed projects and registered nonprofits — five sites, 100,000 pageviews a month, every feature. The deal is printed on the page: we get to say you use Pulse."
+category: Privacy
+date: "2026-09-03"
+readTime: "7 min read"
+image: "/blog/og/free-analytics-for-open-source.png"
+faqs:
+  - question: "What does Pulse get out of the free open-source plan?"
+    answer: "The right to name the project or organisation as a Pulse user, with permission to use the name and logo. That is the entire consideration. There is no data collection beyond Pulse's normal cookieless analytics, no advertising, and no tracking of the project's visitors."
+  - question: "What counts as an open-source project here?"
+    answer: "A project under an OSI-approved license with real users beyond the maintainer. Projects that fall somewhere between the two doors are read too — every application is reviewed by a human."
+  - question: "Can nonprofits that don't build software apply?"
+    answer: "Yes. Registered nonprofits and NGOs qualify from any country, for any cause. Software is not required."
+  - question: "Do I need a Pulse account before applying?"
+    answer: "No. Apply first; approval sends a link that attaches the plan to whichever workspace you claim it from. The free Hobby tier works without a card in the meantime."
+  - question: "Is the €0 plan time-limited?"
+    answer: "No. It is a grant of the Team tier at €0 with five sites and 100,000 pageviews per month. The two-year figure on the page is the plan's data retention window, not an expiry date, and the pageview ceiling can be raised per grant."
+---
+
+If you maintain an open-source project, your analytics options are bad in an instructive way. Google Analytics is free because your visitors are the payment. The privacy-friendly tools are honest, but they cost money that a donation-funded project usually doesn't have. So most maintainers run nothing at all, and have no idea whether anyone reads the documentation they spend their weekends writing.
+
+Yesterday we opened a third option. Pulse now has a real €0 tier for OSI-licensed projects and registered nonprofits — the same Team tier our paying customers get, granted instead of sold. The application lives at [pulse.ciphera.net/open-source](https://pulse.ciphera.net/open-source). This post is the full deal, including our side of it.
+
+<BlogBlockquote variant="tldr">
+
+Open-source projects with real users and registered nonprofits get Pulse's Team tier at €0: five sites, 100,000 pageviews a month, two-year data retention, every feature including the API. No card, no account needed to apply. A human reads every application and answers within days. In return, we get to say you use Pulse — and that's the entire price.
+
+</BlogBlockquote>
+
+## The deal, in full
+
+The grant is the Team tier — the plan in the middle of our [pricing page](https://pulse.ciphera.net/pricing) — at €0, permanently. Not a trial, not a stripped "community edition."
+
+| Term | What you get |
+|---|---|
+| Price | €0/month, permanently |
+| Sites | 5 — docs, main site, and three more |
+| Pageviews | 100,000/month, raisable per grant |
+| Data retention | 2 years |
+| Features | All of them |
+
+That last row matters more than it looks. Pulse doesn't gate features by plan — funnels, visitor journeys, uptime monitoring, performance checks, the read API and CSV export ship on every tier, including this one and including the ordinary free tier. Plans differ on sites, pageview volume and retention, nothing else. So the grant isn't a teaser for an upsell that unlocks the good parts. There are no locked parts.
+
+For scale: our regular free Hobby tier covers one site and 5,000 pageviews a month. The grant is twenty times the traffic, five sites and four times the retention — sized for a project with a real user base, where the docs alone can clear 5,000 views in a week.
+
+## Who qualifies
+
+Two doors, and deliberately a third for everything in between.
+
+**Door one: open-source projects.** A project under an [OSI-approved license](https://opensource.org/licenses), with real users beyond the maintainer. That second clause is doing honest work: the grant exists for projects that serve people, not as free infrastructure for parked repos. If your project has users who visit its site or read its docs, you're who this is for.
+
+**Door two: nonprofits.** Registered nonprofits and NGOs, from any country, for any cause. Software involvement is not required — an animal shelter qualifies exactly as much as a software foundation.
+
+**The third door:** something in between? A project that's source-available but not OSI, a collective that isn't formally registered, a nonprofit-ish thing that doesn't fit either box cleanly. Apply anyway. Every application is read by a human, and the page says so because it's true — there is no scoring model on the other end, just someone reading what you wrote.
+
+The only preference we express: applications sent from the project's own domain are easier to verify than ones from a personal address. It isn't a requirement. It just shortens the conversation.
+
+## What a maintainer actually learns
+
+Analytics has a reputation as a marketing tool, which is why so many maintainers never consider it. But the questions it answers for an open-source project are engineering questions.
+
+Which documentation pages do people actually read? There's usually a docs section the maintainers are proud of that users never open, and a half-finished page that turns out to be the most-visited thing on the site. Top pages and entry pages settle that argument with numbers instead of feelings — and tell you where the next weekend of writing effort actually belongs.
+
+Where do readers come from? When your project lands on Hacker News, gets named in a conference talk, or starts appearing in some LLM's answers, the referrers card shows it. That last one isn't hypothetical — [our own public dashboard](https://pulse.ciphera.net/demo) currently attributes more traffic to ChatGPT than to LinkedIn, and you can go check. A release announcement that drove nobody to the install page is worth knowing about too.
+
+And because the grant is the full Team tier, the infrastructure half is included: uptime monitoring with incident history tells you whether the docs site survived release day, and the daily Lighthouse checks catch it when a new theme quietly doubles your page weight. For a project whose "ops team" is one volunteer, having those checks run themselves is arguably worth more than the pageview counts.
+
+The API deserves its own sentence, because open-source projects are exactly who automates things. Every plan — this one included — ships the public read API and CSV/JSON/Excel export, and the API carries a published guarantee: it stays additive for at least 24 months, so fields get added but never removed or renamed. Pipe weekly numbers into your project's chat, build a stats badge for the README, script whatever a dashboard doesn't do. Your numbers are yours to take, which also means the exit is real: if you ever stop using Pulse, the data leaves with you.
+
+## What your project's visitors get
+
+A free plan would be a bad trade if your users paid for it with their privacy — that's the Google Analytics deal, and declining it is presumably part of why you don't run analytics today.
+
+Pulse sets no cookies and loads no fingerprinting scripts on your pages. Identifiers are computed server-side as one-way hashes and rotate on fixed schedules; raw IP addresses are discarded immediately after the hash is computed and never reach the database. The [Do Not Track and Global Privacy Control](/blog/what-we-see-about-you-what-we-dont) browser signals are respected — visitors who send them aren't counted at all. The practical consequence for your project: [no cookie banner is needed for the analytics](/blog/do-you-need-a-cookie-banner-for-analytics), because there is nothing on the page that requires consent.
+
+Your users' experience of your site doesn't change. The script is under 2 KB, loads asynchronously, and does nothing but count.
+
+## Why we print the price of free
+
+The page states our side of the deal in one sentence: *"In return, we get to say you use Pulse."* We want to explain why that sentence is on the page instead of buried in terms nobody reads.
+
+"Free analytics" has historically meant one thing: the visitors are the product. The tool costs nothing because the data it collects is worth more than the subscription it replaces. We can't run that model — Pulse [sets no cookies and stores nothing about individual visitors](/blog/what-we-see-about-you-what-we-dont), which means there is no visitor data to monetise even if we wanted to. Your project's readers don't pay for this grant in any currency, visible or not.
+
+So what do we get? Named users. Pulse is young, and a young product's hardest problem is that nobody can see who trusts it. A grant costs us server capacity we can spare; a real open-source project willing to be named as a user is worth more to us than a small invoice would be. That's the trade, and we'd rather write it on the page than have you wonder about the catch. The naming itself is bounded and consensual: your name and logo in the places where we list who uses Pulse, with your permission on both — not a case study you never agreed to, and not a quote somebody writes for you.
+
+There's also a simpler reason: we're on the other side of this exchange ourselves. Our authentication library [Tessera](https://github.com/ciphera-net/tessera) is open source, the [Pulse dashboard and tracking script](https://github.com/ciphera-net/pulse) are AGPL, and the [CLI](https://github.com/ciphera-net/pulse-cli) is Apache-2.0 — while the backend runs as a managed service, which we say plainly wherever the question comes up. We've been the maintainers hoping someone notices the work. Giving working analytics to projects in that position is the least complicated decision we've made this year.
+
+## How to apply, and what happens next
+
+You don't need a Pulse account to apply. The [form](https://pulse.ciphera.net/open-source) asks for four things: the project or organisation, its repository or website, a contact email, and a few sentences about it. If you'd rather write a plain email, hello@ciphera.net reaches the same person.
+
+A human reads it — expect an answer at your contact address within a few days. Approval sends a link that attaches the plan to whichever Pulse workspace you claim it from, so you can sign up before or after applying, in either order. If you want numbers today, the free Hobby tier works without a card while you wait.
+
+And if you're not sure you qualify: apply anyway. The worst case is a polite no and five minutes spent; the best case is knowing, for the first time, that people actually read the docs.
