@@ -41,7 +41,7 @@ export const blogPosts: BlogPostSummary[] = [
     "date": "2026-07-22",
     "dateModified": "2026-07-22",
     "readTime": "14 min read",
-    "image": "/blog/og/do-you-need-a-cookie-banner-for-analytics.png"
+    "image": "/blog/og/eu-analytics-law-2026.png"
   },
   {
     "slug": "how-to-migrate-off-google-analytics",
