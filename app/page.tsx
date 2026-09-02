@@ -31,7 +31,7 @@ const homepageSchemas = [
     },
     description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
     disambiguatingDescription:
-      'Ciphera (Ciphera BV) is a Belgian privacy-infrastructure company behind Pulse cookieless analytics, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the open-source Tessera authentication library. Not affiliated with other companies, apps, or fictional characters sharing the Ciphera name.',
+      'Ciphera (Ciphera BV) is a Belgian privacy-infrastructure company behind Pulse cookieless analytics, Ciphera Captcha, Ciphera Relay, the open-source Tessera authentication library, and Ciphera ID — the zero-knowledge sign-in for its own applications. Not affiliated with other companies, apps, or fictional characters sharing the Ciphera name.',
     foundingDate: '2024-09-18',
     foundingLocation: {
       '@type': 'Place',

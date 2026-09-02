@@ -2,16 +2,18 @@
 
 > Privacy-first infrastructure: cookieless analytics, zero-knowledge authentication, private bot protection, and tracking-free transactional email. Belgian company with Swiss-hosted infrastructure.
 
-Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), zero-knowledge authentication using OPAQUE (Ciphera ID — passwords never reach the server), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection.
+Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Signing in to them runs through Ciphera ID, an internal zero-knowledge sign-in using OPAQUE — passwords never reach the server — which Ciphera does not sell or license to third parties. Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection.
 
 Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affiliated with ciphera.co (a security consultancy), ciphera.org, ciphera.uk, the Ciphera mobile apps, or any fictional character sharing the name.
 
 ## Products
 - [Pulse](https://ciphera.net/products/pulse): Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.
-- [Ciphera ID](https://ciphera.net/products/id): Zero-knowledge identity and authentication provider using OPAQUE (RFC 9807) — passwords never reach the server.
 - [Ciphera Captcha](https://ciphera.net/products/captcha): Privacy-first bot protection using adaptive proof-of-work and behavioral analysis — no cookies, no cross-site tracking.
 - [Ciphera Relay](https://ciphera.net/products/relay): Privacy-first transactional email infrastructure with TLS 1.3, DKIM, SPF, and DMARC — no tracking pixels.
 - [Tessera](https://ciphera.net/products/tessera): Open-source OPAQUE (RFC 9807) authentication library (Apache-2.0): Rust core and sidecar, Go server SDK, and browser SDK — the password never reaches the server.
+
+## Infrastructure (not sold)
+- [Ciphera ID](https://ciphera.net/products/id): Internal, not for sale: the zero-knowledge sign-in behind Ciphera’s own applications, using OPAQUE (RFC 9807) — passwords never reach the server.
 
 ## Key facts
 - Founded: 2024, Diegem, Belgium (Ciphera BV)
@@ -40,7 +42,7 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - [How to Migrate Off Google Analytics: A 2026 Guide](https://ciphera.net/blog/how-to-migrate-off-google-analytics): A practical, honest guide to leaving Google Analytics for a privacy-first tool in 2026 — the timeline you need to know, why teams are switching, what you genuinely gain and lose, and the step-by-step migration (including the historical-data trap nobody warns you about).
 - [Is Your Website Analytics GDPR-Compliant? A 2026 Checklist](https://ciphera.net/blog/is-your-analytics-gdpr-compliant): GDPR applies to your analytics the moment it processes personal data — and an IP address usually counts. A practical, source-backed 2026 checklist: lawful basis, data minimisation, retention, international transfers, and the one design choice that collapses most of it.
 - [Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha (2026)](https://ciphera.net/blog/ciphera-captcha-vs-recaptcha-vs-turnstile): The bot-protection widget you add to a form often watches your visitors more than it protects them. A privacy- and jurisdiction-first comparison of reCAPTCHA, Turnstile, hCaptcha, and Ciphera Captcha's proof-of-work, cookieless approach.
-- [Ciphera ID vs Auth0 vs Clerk (2026)](https://ciphera.net/blog/ciphera-id-vs-auth0-vs-clerk): An honest architectural comparison of three approaches to authentication: Auth0 and Clerk as developer platforms, and Ciphera ID's zero-knowledge model built on the open-source Tessera stack — where your users' passwords and data actually live, and who can read them.
+- [Why We Built Our Own Sign-In Instead of Buying Auth0 or Clerk](https://ciphera.net/blog/ciphera-id-vs-auth0-vs-clerk): A build-versus-buy postmortem. Auth0 and Clerk are good products and buying one would have been the sane call. We wrote our own OPAQUE sign-in instead — here is the requirement that forced it, and the bill we are still paying for it.
 - [What We See About You, What We Don't, and Why It Matters](https://ciphera.net/blog/what-we-see-about-you-what-we-dont): Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.
 - [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.
 - [Why We Chose BunnyCDN as Ciphera's CDN](https://ciphera.net/blog/why-we-chose-bunnycdn): A CDN terminates TLS and sees every request. For a privacy company, choosing one is a trust decision. Here's the checklist we used, our actual setup, and what running it taught us.

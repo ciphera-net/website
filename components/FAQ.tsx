@@ -20,7 +20,7 @@ const GROUPS: FAQGroup[] = [
     items: [
       {
         q: 'What is Ciphera?',
-        a: 'Ciphera is a privacy platform: Pulse for cookieless web analytics, Ciphera ID for zero-knowledge authentication, Ciphera Captcha for bot protection without tracking, and Ciphera Relay for transactional email that nobody reads along the way. We’re a Belgian company, and all customer data resides on Swiss infrastructure. Every product is built on the same principle — we shouldn’t have to see your data to serve you.',
+        a: 'Ciphera is a privacy platform: Pulse for cookieless web analytics, Ciphera Captcha for bot protection without tracking, and Ciphera Relay for transactional email that nobody reads along the way. Signing in to any of them runs through Ciphera ID, our zero-knowledge sign-in. We’re a Belgian company, and all customer data resides on Swiss infrastructure. Every product is built on the same principle — we shouldn’t have to see your data to serve you.',
       },
       {
         q: 'What does zero-knowledge mean at Ciphera?',
@@ -77,8 +77,8 @@ const GROUPS: FAQGroup[] = [
         a: 'Relay sends transactional email — password resets, verification codes, security alerts — through self-hosted Swiss infrastructure with no tracking pixels, no open-rate beacons, and no click-tracking redirects. Our delivery log records which template was sent and whether it succeeded; it has no column for the recipient address or the message body.',
       },
       {
-        q: 'Do I need a Ciphera ID to use the products?',
-        a: 'Yes — one Ciphera ID signs you into every Ciphera product: one password we never see, one encrypted vault. We don’t currently offer Ciphera ID as a standalone identity provider for third-party apps; today it is the identity layer behind the Ciphera platform.',
+        q: 'What is Ciphera ID, and can I use it for my own app?',
+        a: 'Ciphera ID is the sign-in behind our own applications — one account for all of them, one password we never see, one encrypted vault. It is infrastructure, not a product: there is no self-serve client registration, no OpenID Connect discovery endpoint and no SDK, so you cannot point a third-party app at it. If you want to build on the same zero-knowledge model, the reusable piece is Tessera, our OPAQUE implementation, published open-source under Apache-2.0.',
       },
     ],
   },

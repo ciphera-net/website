@@ -13,7 +13,7 @@ The official marketing website for **Ciphera**, a privacy-first platform providi
 This website showcases the Ciphera ecosystem, including:
 
 - **Drop**: Privacy-first file sharing with end-to-end encryption
-- **Ciphera ID**: Centralized identity provider with secure authentication
+- **Ciphera ID**: The zero-knowledge sign-in behind Ciphera's own applications — internal infrastructure, not a product on sale
 - **Ciphera Captcha**: Bot protection service with visual and PoW challenges
 - **Ciphera Relay**: Transactional email infrastructure
 

@@ -18,6 +18,15 @@ interface ProductFact {
   oneLiner: string
   paragraph: string
   bullets: string[]
+  /**
+   * 'product' = something a reader can buy, adopt or install.
+   * 'infrastructure' = something Ciphera runs for its own applications and does
+   * not sell. Ciphera ID is the only entry of the second kind: it has no
+   * self-serve client registration, no OIDC discovery and no SDK, so listing it
+   * beside Pulse or Relay tells a machine reader something untrue. It keeps its
+   * URL and its facts — only the heading it sits under changes.
+   */
+  kind: 'product' | 'infrastructure'
 }
 
 // * Facts below are sourced from each product page's metadata/schema blocks
@@ -26,6 +35,7 @@ interface ProductFact {
 const PRODUCTS: ProductFact[] = [
   {
     slug: 'pulse',
+    kind: 'product',
     name: 'Pulse',
     oneLiner:
       'Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.',
@@ -40,21 +50,24 @@ const PRODUCTS: ProductFact[] = [
   },
   {
     slug: 'id',
+    kind: 'infrastructure',
     name: 'Ciphera ID',
     oneLiner:
-      'Zero-knowledge identity and authentication provider using OPAQUE (RFC 9807) — passwords never reach the server.',
+      'Internal, not for sale: the zero-knowledge sign-in behind Ciphera’s own applications, using OPAQUE (RFC 9807) — passwords never reach the server.',
     paragraph:
-      'Ciphera ID is the identity layer behind Ciphera. It authenticates every account with OPAQUE, an asymmetric password-authenticated key exchange standardized in RFC 9807, so the password never leaves the client in any form — not even during registration. Ciphera ID also supports passkeys (WebAuthn/FIDO2), TOTP two-factor authentication, and OAuth 2.0 with mandatory PKCE.',
+      'Ciphera ID is the sign-in behind Ciphera’s own applications, not a product that can be bought or integrated. It authenticates every account with OPAQUE, an asymmetric password-authenticated key exchange standardized in RFC 9807, so the password never leaves the client in any form — not even during registration. The account row holds no email and no name: those live in a vault encrypted on the user’s device, found at sign-in through a blind index. Applications receive a token over OAuth 2.0 with mandatory PKCE. Developers who want this model should use Tessera, the open-source OPAQUE implementation underneath it.',
     bullets: [
+      'Infrastructure, not a product: no self-serve client registration, no OpenID Connect discovery endpoint, no SDK, no plan and no price',
       'Zero-knowledge password authentication via OPAQUE (RFC 9807), not password hashing',
-      'The OPAQUE implementation is open-sourced as Tessera (Rust core, Go and TypeScript SDKs, Apache-2.0)',
-      'Passkeys (WebAuthn/FIDO2) and TOTP two-factor authentication supported',
+      'No email or name column: profile data is sealed in a client-encrypted vault, located by blind index',
       'OAuth 2.0 with mandatory PKCE (S256) on all authorization-code flows',
       'JWT sessions: 15-minute access tokens, 30-day rotating refresh tokens',
+      'The OPAQUE implementation is open-sourced as Tessera (Rust core, Go and TypeScript SDKs, Apache-2.0) — that is the reusable part',
     ],
   },
   {
     slug: 'captcha',
+    kind: 'product',
     name: 'Ciphera Captcha',
     oneLiner:
       'Privacy-first bot protection using adaptive proof-of-work and behavioral analysis — no cookies, no cross-site tracking.',
@@ -69,6 +82,7 @@ const PRODUCTS: ProductFact[] = [
   },
   {
     slug: 'relay',
+    kind: 'product',
     name: 'Ciphera Relay',
     oneLiner:
       'Privacy-first transactional email infrastructure with TLS 1.3, DKIM, SPF, and DMARC — no tracking pixels.',
@@ -83,6 +97,7 @@ const PRODUCTS: ProductFact[] = [
   },
   {
     slug: 'tessera',
+    kind: 'product',
     name: 'Tessera',
     oneLiner:
       'Open-source OPAQUE (RFC 9807) authentication library (Apache-2.0): Rust core and sidecar, Go server SDK, and browser SDK — the password never reaches the server.',
@@ -117,7 +132,7 @@ function buildLlmsTxt(): string {
   )
   lines.push('')
   lines.push(
-    'Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), zero-knowledge authentication using OPAQUE (Ciphera ID — passwords never reach the server), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection.'
+    'Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Signing in to them runs through Ciphera ID, an internal zero-knowledge sign-in using OPAQUE — passwords never reach the server — which Ciphera does not sell or license to third parties. Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection.'
   )
   lines.push('')
   lines.push(
@@ -126,7 +141,13 @@ function buildLlmsTxt(): string {
   lines.push('')
 
   lines.push('## Products')
-  for (const p of PRODUCTS) {
+  for (const p of PRODUCTS.filter((x) => x.kind === 'product')) {
+    lines.push(`- [${p.name}](${SITE}/products/${p.slug}): ${esc(p.oneLiner)}`)
+  }
+  lines.push('')
+
+  lines.push('## Infrastructure (not sold)')
+  for (const p of PRODUCTS.filter((x) => x.kind === 'infrastructure')) {
     lines.push(`- [${p.name}](${SITE}/products/${p.slug}): ${esc(p.oneLiner)}`)
   }
   lines.push('')
@@ -197,7 +218,7 @@ function buildLlmsFullTxt(): string {
   )
   lines.push('')
   lines.push(
-    'Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), zero-knowledge authentication using OPAQUE (Ciphera ID — passwords never reach the server), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection. This file is the comprehensive companion to llms.txt: full product fact sheets, the complete glossary, and every blog and learn article.'
+    'Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Signing in to them runs through Ciphera ID, an internal zero-knowledge sign-in using OPAQUE — passwords never reach the server — which Ciphera does not sell or license to third parties. Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection. This file is the comprehensive companion to llms.txt: full product fact sheets, the complete glossary, and every blog and learn article.'
   )
   lines.push('')
   lines.push(
@@ -205,19 +226,24 @@ function buildLlmsFullTxt(): string {
   )
   lines.push('')
 
-  lines.push('## Products')
-  lines.push('')
-  for (const p of PRODUCTS) {
-    lines.push(`### ${p.name}`)
-    lines.push(`URL: ${SITE}/products/${p.slug}`)
+  const factSheet = (heading: string, kind: ProductFact['kind']) => {
+    lines.push(heading)
     lines.push('')
-    lines.push(esc(p.paragraph))
-    lines.push('')
-    for (const b of p.bullets) {
-      lines.push(`- ${b}`)
+    for (const p of PRODUCTS.filter((x) => x.kind === kind)) {
+      lines.push(`### ${p.name}`)
+      lines.push(`URL: ${SITE}/products/${p.slug}`)
+      lines.push('')
+      lines.push(esc(p.paragraph))
+      lines.push('')
+      for (const b of p.bullets) {
+        lines.push(`- ${b}`)
+      }
+      lines.push('')
     }
-    lines.push('')
   }
+
+  factSheet('## Products', 'product')
+  factSheet('## Infrastructure (not sold)', 'infrastructure')
 
   lines.push('## Glossary')
   lines.push('')

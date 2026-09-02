@@ -114,7 +114,7 @@ export default function TermsOfServicePage() {
                   1. Acceptance of Terms
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  By accessing or using any Ciphera service — including Pulse, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera BV, a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
+                  By accessing or using any Ciphera service — including Pulse, Ciphera Captcha, Ciphera Relay, the Ciphera ID sign-in used to access them, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera BV, a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
                   If you do not agree to these Terms, you must not access or use the Services. If you are accepting these Terms on behalf of an organization, you represent and warrant that you have the authority to bind that organization.
@@ -144,10 +144,12 @@ export default function TermsOfServicePage() {
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
                   <li><strong>Pulse:</strong> Privacy-respecting website analytics that operates without cookies, without fingerprinting techniques, and without personal data collection.</li>
-                  <li><strong>Ciphera ID:</strong> Secure identity and authentication provider with zero-knowledge password handling.</li>
                   <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
                   <li><strong>Ciphera Relay:</strong> Secure transactional email infrastructure for delivering encrypted communications.</li>
                 </ul>
+                <p className="text-muted-foreground leading-relaxed mt-3">
+                  Access to these Services is authenticated by <strong>Ciphera ID</strong>, our zero-knowledge sign-in. Ciphera ID is internal infrastructure rather than a separately offered Service: it is not licensed, sold, or made available for third-party applications to integrate.
+                </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
                   Service features, capabilities, and availability may change over time. We will provide reasonable notice of material changes where possible.
                 </p>

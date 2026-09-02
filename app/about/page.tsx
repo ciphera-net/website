@@ -89,7 +89,7 @@ const organizationSchema = {
   },
   description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
   disambiguatingDescription:
-    'Ciphera (Ciphera BV) is a Belgian privacy-infrastructure company behind Pulse cookieless analytics, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the open-source Tessera authentication library. Not affiliated with other companies, apps, or fictional characters sharing the Ciphera name.',
+    'Ciphera (Ciphera BV) is a Belgian privacy-infrastructure company behind Pulse cookieless analytics, Ciphera Captcha, Ciphera Relay, the open-source Tessera authentication library, and Ciphera ID — the zero-knowledge sign-in for its own applications. Not affiliated with other companies, apps, or fictional characters sharing the Ciphera name.',
   foundingDate: '2024-09-18',
   foundingLocation: {
     '@type': 'Place',
@@ -394,8 +394,8 @@ export default function AboutPage() {
                 </h3>
                 <p className="mt-4 leading-relaxed text-muted-foreground">
                   {FOUNDER_NAME}{' '}founded Ciphera BV in 2024 and leads it from Belgium. Ciphera&rsquo;s
-                  privacy-first products — Pulse, Ciphera ID, Captcha, and Relay — and its open-source
-                  Tessera authentication library were built under that direction.
+                  privacy-first products — Pulse, Captcha, and Relay — the Ciphera ID sign-in behind them,
+                  and its open-source Tessera authentication library were built under that direction.
                 </p>
                 <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
                   <a
@@ -455,16 +455,19 @@ export default function AboutPage() {
             One account. Every product.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            One Ciphera ID works across every product we build — a single, zero-knowledge account
-            whose password never reaches our servers. Create yours in seconds.
+            Every product we build shares one account, and its password never reaches our
+            servers. Pulse is where most people start.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-5">
-            <Link href="https://id.ciphera.net/signup" className="btn-primary">
-              Create your Ciphera ID
+            {/* Ciphera ID is the sign-in underneath our own applications, not a
+                product on the shelf — so the account story links to the
+                explanation, and the signup goes to the product itself. */}
+            <Link href="https://pulse.ciphera.net" className="btn-primary">
+              Get started with Pulse
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>
-            <Link href="/#products" className="btn-secondary">
-              Explore products
+            <Link href="/products/id" className="btn-secondary">
+              How sign-in works
             </Link>
           </div>
         </div>

@@ -58,7 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/products/id`,
-      lastModified: '2026-04-17',
+      lastModified: '2026-09-03',
     },
     {
       url: `${baseUrl}/products/captcha`,

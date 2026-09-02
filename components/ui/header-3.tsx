@@ -53,7 +53,9 @@ type LinkItem = {
 
 const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string; ctaLabel?: string; ctaHref?: string }> = {
     '/products/pulse': { logo: pulseIcon, name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
-    '/products/id': { logo: authIcon, name: 'Ciphera ID', ctaLabel: 'Contact Sales', ctaHref: '/contact' },
+    // No sales CTA: Ciphera ID cannot be bought or integrated. Sign-in is the
+    // only action available here, and Pulse is the product it signs you in to.
+    '/products/id': { logo: authIcon, name: 'Ciphera ID', signIn: 'https://id.ciphera.net/login', ctaLabel: 'Explore Pulse', ctaHref: '/products/pulse' },
     '/products/captcha': { logo: captchaIcon, name: 'Ciphera Captcha', ctaLabel: 'Contact Sales', ctaHref: '/contact' },
     '/products/relay': { logo: relayIcon, name: 'Ciphera Relay', ctaLabel: 'Contact Sales', ctaHref: '/contact' },
 };
@@ -70,10 +72,10 @@ const productFeatures: Record<string, FeatureLink[]> = {
         { title: 'Uptime Alerts', href: '#alerts', icon: Send, description: 'Email, Slack, Discord or webhook' },
     ],
     '/products/id': [
+        { title: 'What it is', href: '#what-it-is', icon: ScanLine, description: 'One account for our applications' },
         { title: 'Zero-knowledge auth', href: '#zero-knowledge-auth', icon: Lock, description: 'OPAQUE — password never sent' },
-        { title: 'Passkeys & 2FA', href: '#passkeys', icon: Fingerprint, description: 'WebAuthn, TOTP & recovery' },
-        { title: 'Unified Login', href: '#oauth', icon: ScanLine, description: 'OAuth 2.0 with PKCE' },
-        { title: 'Security Dashboard', href: '#security', icon: ShieldCheck, description: 'Audit log & device trust' },
+        { title: 'The vault', href: '#vault', icon: Fingerprint, description: 'Your name and email, sealed' },
+        { title: 'Sessions', href: '#sessions', icon: ShieldCheck, description: 'OAuth 2.0, PKCE & audit log' },
     ],
     '/products/captcha': [
         { title: 'Proof-of-Work', href: '#proof-of-work', icon: Activity, description: 'Invisible adaptive challenges' },
@@ -242,10 +244,10 @@ export function Header() {
                 </div>
                 <div className="hidden items-center gap-2 md:flex">
                     <Button variant="outline" asChild>
-                        <a href={branding?.signIn || "https://id.ciphera.net"} onClick={() => track('header_sign_in')}>Sign In</a>
+                        <a href={branding?.signIn || "https://id.ciphera.net/login"} onClick={() => track('header_sign_in')}>Sign In</a>
                     </Button>
                     <Button asChild>
-                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://id.ciphera.net/signup")} onClick={() => track('header_cta_get_started')}>{branding?.ctaLabel ?? 'Get Started'}</a>
+                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://pulse.ciphera.net")} onClick={() => track('header_cta_get_started')}>{branding?.ctaLabel ?? 'Get Started'}</a>
                     </Button>
                 </div>
                 <div className="flex items-center gap-2 md:hidden">
@@ -294,12 +296,12 @@ export function Header() {
                 </NavigationMenu>
                 <div className="flex flex-col gap-2">
                     <Button variant="outline" className="w-full bg-transparent" asChild>
-                        <a href={branding?.signIn || "https://id.ciphera.net"} onClick={() => track('header_sign_in_mobile')}>
+                        <a href={branding?.signIn || "https://id.ciphera.net/login"} onClick={() => track('header_sign_in_mobile')}>
                             Sign In
                         </a>
                     </Button>
                     <Button className="w-full" asChild>
-                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://id.ciphera.net/signup")} onClick={() => track('header_cta_get_started_mobile')}>
+                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://pulse.ciphera.net")} onClick={() => track('header_cta_get_started_mobile')}>
                             {branding?.ctaLabel ?? 'Get Started'}
                         </a>
                     </Button>
@@ -457,12 +459,6 @@ const productLinks: LinkItem[] = [
         image: pulseIcon,
     },
     {
-        title: 'Ciphera ID',
-        href: '/products/id',
-        description: 'Zero-knowledge identity provider',
-        image: authIcon,
-    },
-    {
         title: 'Ciphera Captcha',
         href: '/products/captcha',
         description: 'Privacy-respecting bot protection',
@@ -540,6 +536,15 @@ const resourcesLinks: LinkItem[] = [
         href: '/glossary',
         description: 'Privacy & cryptography terms, defined precisely',
         icon: FileText,
+    },
+    {
+        // Ciphera ID is the sign-in behind our own applications, not a product
+        // on the shelf — it lives here, next to the glossary, rather than in the
+        // Products menu. The URL is permanent; only its placement changed.
+        title: 'Ciphera ID',
+        href: '/products/id',
+        description: 'How signing in to Ciphera works',
+        image: authIcon,
     },
     {
         title: 'Contact',

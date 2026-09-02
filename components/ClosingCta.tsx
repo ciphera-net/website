@@ -18,18 +18,22 @@ export default function ClosingCta() {
           Own your data.
         </h2>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-          One Ciphera ID for every service. Your password never leaves your device &mdash;
-          we authenticate you without ever seeing your credentials.
+          Start with Pulse. One account signs you in to every Ciphera application,
+          and your password never leaves your device &mdash; we authenticate you
+          without ever seeing your credentials.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
+          {/* Pulse is the product a visitor can actually start using. Ciphera ID
+              is the sign-in underneath it, so it gets an explanatory link rather
+              than a signup CTA of its own. */}
           <Button asChild size="lg">
-            <a href="https://id.ciphera.net/signup">
-              Create your Ciphera ID
+            <a href="https://pulse.ciphera.net">
+              Get started with Pulse
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </a>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="/contact">Talk to us</Link>
+            <Link href="/products/id">How sign-in works</Link>
           </Button>
         </div>
         <p className="mt-8 text-xs text-muted-foreground">

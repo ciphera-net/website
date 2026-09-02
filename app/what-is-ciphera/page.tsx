@@ -10,14 +10,14 @@ import FAQAccordion from '@/components/FAQAccordion'
 export const metadata: Metadata = {
   title: 'What is Ciphera?',
   description:
-    'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse analytics, Ciphera ID, Captcha, Relay, and the open-source Tessera authentication library.',
+    'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse analytics, Captcha, Relay, the Ciphera ID sign-in behind them, and the open-source Tessera authentication library.',
   alternates: {
     canonical: 'https://ciphera.net/what-is-ciphera',
   },
   openGraph: {
     title: 'What is Ciphera? | Ciphera',
     description:
-      'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse, Ciphera ID, Captcha, Relay, and the open-source Tessera library.',
+      'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse, Captcha, Relay, the Ciphera ID sign-in, and the open-source Tessera library.',
     url: 'https://ciphera.net/what-is-ciphera',
     siteName: 'Ciphera',
     images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
@@ -34,7 +34,10 @@ export const metadata: Metadata = {
   },
 }
 
-// * Products, each linking to its own page. One factual line apiece.
+// * What Ciphera builds, each linking to its own page. One factual line apiece.
+// * The last two entries are deliberately not products: Ciphera ID is the
+// * sign-in behind our own applications (it cannot be bought or integrated) and
+// * Tessera is a library. Their link labels say so.
 const products = [
   {
     name: 'Pulse',
@@ -42,13 +45,7 @@ const products = [
     href: '/products/pulse',
     detail:
       'Privacy-first, cookieless web analytics — no cookies, no fingerprinting, no cross-visit tracking. Open source under AGPL-3.0, and GDPR compliant by design.',
-  },
-  {
-    name: 'Ciphera ID',
-    image: authIcon,
-    href: '/products/id',
-    detail:
-      'A zero-knowledge identity provider. One account works across every Ciphera service, and your password is proven with OPAQUE (RFC 9807) — it never reaches our servers.',
+    cta: null,
   },
   {
     name: 'Ciphera Captcha',
@@ -56,6 +53,7 @@ const products = [
     href: '/products/captcha',
     detail:
       'Bot protection built on adaptive proof-of-work and puzzle challenges. Stateless, self-hosted, and free of third-party trackers.',
+    cta: null,
   },
   {
     name: 'Ciphera Relay',
@@ -63,6 +61,15 @@ const products = [
     href: '/products/relay',
     detail:
       'Transactional email infrastructure that runs on our own mail servers, so no third-party email provider sees who we write to or why.',
+    cta: null,
+  },
+  {
+    name: 'Ciphera ID',
+    image: authIcon,
+    href: '/products/id',
+    detail:
+      'Not a product — the sign-in behind the three above. Your password is proven with OPAQUE (RFC 9807) and never reaches our servers, and your name and email sit in a vault we cannot read. There is no way to buy it or point a third-party app at it.',
+    cta: 'How sign-in works',
   },
   {
     name: 'Tessera',
@@ -70,6 +77,7 @@ const products = [
     href: '/products/tessera',
     detail:
       'Our open-source OPAQUE authentication library — a Rust core plus Go and browser SDKs, published under Apache-2.0. It is the cryptography behind Ciphera ID and Pulse auth.',
+    cta: 'See Tessera',
   },
 ] as const
 
@@ -82,11 +90,11 @@ const faqs = [
   },
   {
     q: 'Is Ciphera a company or a product?',
-    a: 'Both. Ciphera is the company — Ciphera BV — and it builds a family of privacy products under that name: Pulse, Ciphera ID, Ciphera Captcha, Ciphera Relay, and the open-source Tessera library. When people say “Ciphera”, they usually mean the company or the platform as a whole.',
+    a: 'Both. Ciphera is the company — Ciphera BV — and it builds a family of privacy products under that name: Pulse, Ciphera Captcha, Ciphera Relay, plus the Ciphera ID sign-in that runs underneath them and the open-source Tessera library. When people say “Ciphera”, they usually mean the company or the platform as a whole.',
   },
   {
     q: 'What can I use Ciphera for?',
-    a: 'Cookieless web analytics with no consent banner (Pulse), zero-knowledge login and account management (Ciphera ID), bot protection that doesn’t profile your visitors (Ciphera Captcha), and transactional email with no tracking pixels (Ciphera Relay). Tessera, the OPAQUE library underneath, is available to developers on its own.',
+    a: 'Cookieless web analytics with no consent banner (Pulse), bot protection that doesn’t profile your visitors (Ciphera Captcha), and transactional email with no tracking pixels (Ciphera Relay). Signing in to any of them runs through Ciphera ID, our zero-knowledge sign-in — that is internal infrastructure, not something you can buy or integrate. Tessera, the OPAQUE library underneath it, is available to developers on its own.',
   },
   {
     q: 'Where is Ciphera based, and where is my data stored?',
@@ -94,7 +102,7 @@ const faqs = [
   },
   {
     q: 'Is Ciphera free to use?',
-    a: 'Pulse has a free tier and paid plans, and you can explore the live demo without signing up. Ciphera’s other products are paid. Nothing here is ad-funded — you are the customer, never the product, and there is no data resale.',
+    a: 'Pulse has a free tier and paid plans, and you can explore the live demo without signing up. Ciphera’s other products are paid; Ciphera ID is not sold at all, because it is the sign-in behind those products rather than one of them. Nothing here is ad-funded — you are the customer, never the product, and there is no data resale.',
   },
   {
     q: 'Is Ciphera open source?',
@@ -174,9 +182,9 @@ export default function WhatIsCipheraPage() {
             Five things, one principle
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
-            Ciphera ships four privacy-first products and one open-source library. They share a
-            single design rule: collect as little as possible, and encrypt what remains before it
-            leaves your device.
+            Ciphera ships three privacy-first products, the zero-knowledge sign-in behind them, and
+            one open-source library. They share a single design rule: collect as little as possible,
+            and encrypt what remains before it leaves your device.
           </p>
           <div className="mt-12 grid gap-x-14 gap-y-10 sm:grid-cols-2">
             {products.map((p, i) => (
@@ -207,7 +215,7 @@ export default function WhatIsCipheraPage() {
                   href={p.href}
                   className="mt-4 inline-flex items-center gap-1 text-xs text-primary hover:underline"
                 >
-                  {p.name === 'Tessera' ? 'See Tessera' : `Explore ${p.name}`}
+                  {p.cta ?? `Explore ${p.name}`}
                   <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
                 </Link>
               </div>

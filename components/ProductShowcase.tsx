@@ -4,7 +4,6 @@ import { ArrowRightIcon, ArrowUpRightIcon, Button } from '@ciphera-net/facet'
 import { cdnUrl } from '@/lib/cdn'
 import { cn } from '@/lib/utils'
 import { PulseMockup } from '@/components/ui/pulse-mockup'
-import { AuthMockup } from '@/components/ui/auth-mockup'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
 import { RelayMockup } from '@/components/ui/relay-mockup'
 
@@ -117,16 +116,11 @@ export default function ProductShowcase() {
         mockup={<PulseMockup />}
       />
 
-      <ProductRow
-        icon={cdnUrl('/id_icon_no_margins.png')}
-        chip="Ciphera ID"
-        heading="One identity. Every Ciphera service."
-        body="Create a single Ciphera ID to access all services. Your password never leaves your device — we authenticate you without ever seeing your credentials."
-        primaryLabel="Explore ID"
-        primaryHref="/products/id"
-        mockup={<AuthMockup />}
-        divider
-      />
+      {/* Ciphera ID is deliberately absent from this shelf. It is the sign-in
+          behind our own applications, not something a visitor can buy or
+          integrate — there is no self-serve client registration, no OIDC
+          discovery and no SDK. It keeps its page at /products/id, reached from
+          the closing section below, the Resources nav and the footer. */}
 
       <ProductRow
         icon={cdnUrl('/captcha_icon_no_margins.png')}

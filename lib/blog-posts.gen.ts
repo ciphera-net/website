@@ -75,12 +75,12 @@ export const blogPosts: BlogPostSummary[] = [
   },
   {
     "slug": "ciphera-id-vs-auth0-vs-clerk",
-    "title": "Ciphera ID vs Auth0 vs Clerk (2026)",
-    "description": "An honest architectural comparison of three approaches to authentication: Auth0 and Clerk as developer platforms, and Ciphera ID's zero-knowledge model built on the open-source Tessera stack — where your users' passwords and data actually live, and who can read them.",
-    "category": "Comparison",
+    "title": "Why We Built Our Own Sign-In Instead of Buying Auth0 or Clerk",
+    "description": "A build-versus-buy postmortem. Auth0 and Clerk are good products and buying one would have been the sane call. We wrote our own OPAQUE sign-in instead — here is the requirement that forced it, and the bill we are still paying for it.",
+    "category": "Security",
     "date": "2026-07-19",
-    "dateModified": "2026-07-19",
-    "readTime": "12 min read",
+    "dateModified": "2026-09-03",
+    "readTime": "14 min read",
     "image": "/blog/og/ciphera-id-vs-auth0-vs-clerk.png?v=2"
   },
   {

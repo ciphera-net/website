@@ -86,11 +86,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/products/id" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
-                  Ciphera ID
-                </Link>
-              </li>
-              <li>
                 <Link href="/products/captcha" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Ciphera Captcha
                 </Link>
@@ -156,6 +151,14 @@ export default function Footer() {
               <li>
                 <Link href="/glossary" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
                   Glossary
+                </Link>
+              </li>
+              {/* Ciphera ID sits here, not under Products: it is the sign-in
+                  behind our own applications and cannot be bought or integrated.
+                  The URL is unchanged and permanent. */}
+              <li>
+                <Link href="/products/id" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Ciphera ID
                 </Link>
               </li>
               <li>
