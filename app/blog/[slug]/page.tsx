@@ -18,11 +18,15 @@ import { cdnUrl } from '@/lib/cdn'
 /**
  * Primary CTA target by post category — falls back to the products section for
  * anything unmapped. A post can override this with a frontmatter `cta` object
- * ({ label, href }) — e.g. a Comparison post about Ciphera ID pointing at
- * /products/id instead of the category default.
+ * ({ label, href }) — e.g. a post that should route to a specific product page
+ * instead of the category default.
+ *
+ * Security routes to Tessera, not Ciphera ID: ID is the sign-in behind our own
+ * applications and cannot be bought or integrated, so it must never sit at the
+ * end of a conversion path.
  */
 const CATEGORY_CTA: Record<string, { label: string; href: string }> = {
-  Security: { label: 'Explore Ciphera ID', href: '/products/id' },
+  Security: { label: 'Explore Tessera', href: '/products/tessera' },
   Privacy: { label: 'Explore Pulse', href: '/products/pulse' },
   Comparison: { label: 'Explore Pulse', href: '/products/pulse' },
 }

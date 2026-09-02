@@ -61,9 +61,11 @@ const facts: { term: string; detail: string }[] = [
 
 const productLines: { name: string; href: string; line: string }[] = [
   { name: 'Pulse', href: '/products/pulse', line: 'Privacy-first, cookieless web analytics. Open source under AGPL-3.0.' },
-  { name: 'Ciphera ID', href: '/products/id', line: 'Zero-knowledge identity provider; passwords proven with OPAQUE, never sent.' },
   { name: 'Ciphera Captcha', href: '/products/captcha', line: 'Stateless, privacy-first bot protection with adaptive proof-of-work.' },
   { name: 'Ciphera Relay', href: '/products/relay', line: 'Transactional email on Ciphera’s own mail servers.' },
+  // Not products. Ciphera ID is internal infrastructure — there is no way for a
+  // third party to buy it or integrate it — and Tessera is a library.
+  { name: 'Ciphera ID', href: '/products/id', line: 'Internal, not sold: the zero-knowledge sign-in behind Ciphera’s own applications. Passwords proven with OPAQUE, never sent.' },
   { name: 'Tessera', href: '/products/tessera', line: 'Open-source OPAQUE authentication library (Apache-2.0).' },
 ]
 
@@ -72,7 +74,7 @@ const assets: { label: string; note: string; file: string }[] = [
   { label: 'Wordmark logo (PNG)', note: 'Full Ciphera logo, transparent background', file: '/ciphera_logo_no_margins.png' },
   { label: 'App icon (PNG)', note: 'Square Ciphera mark', file: '/ciphera_icon.png' },
   { label: 'Pulse icon (PNG)', note: 'Product mark', file: '/pulse_icon_no_margins.png' },
-  { label: 'Ciphera ID icon (PNG)', note: 'Product mark', file: '/id_icon_no_margins.png' },
+  { label: 'Ciphera ID icon (PNG)', note: 'Sign-in mark', file: '/id_icon_no_margins.png' },
   { label: 'Ciphera Captcha icon (PNG)', note: 'Product mark', file: '/captcha_icon_no_margins.png' },
   { label: 'Ciphera Relay icon (PNG)', note: 'Product mark', file: '/relay_icon_no_margins.png' },
 ]
@@ -109,7 +111,7 @@ function ProfileLinkIcon({ icon }: { icon?: 'linkedin' | 'github' | 'x' }) {
 }
 
 const BOILERPLATE =
-  'Ciphera BV is a Belgian privacy-software company founded in 2024. It builds zero-knowledge infrastructure and applications — including Pulse (cookieless web analytics), Ciphera ID (a zero-knowledge identity provider), Ciphera Captcha (privacy-first bot protection), Ciphera Relay (transactional email), and the open-source Tessera authentication library. Ciphera’s products encrypt user data before it reaches the company’s servers, and run on Swiss infrastructure under EU (GDPR and NIS2) jurisdiction. Ciphera is headquartered at De Kleetlaan 2, 1831 Diegem, Belgium. Learn more at ciphera.net.'
+  'Ciphera BV is a Belgian privacy-software company founded in 2024. It builds zero-knowledge infrastructure and applications — including Pulse (cookieless web analytics), Ciphera Captcha (privacy-first bot protection), Ciphera Relay (transactional email), the internal Ciphera ID sign-in that authenticates them, and the open-source Tessera authentication library. Ciphera’s products encrypt user data before it reaches the company’s servers, and run on Swiss infrastructure under EU (GDPR and NIS2) jurisdiction. Ciphera is headquartered at De Kleetlaan 2, 1831 Diegem, Belgium. Learn more at ciphera.net.'
 
 export default function PressPage() {
   return (

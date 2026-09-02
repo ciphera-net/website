@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     default: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
     template: '%s | Ciphera',
   },
-  description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Ciphera ID zero-knowledge auth, Captcha bot protection, Relay email, and open-source Tessera.',
+  description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Captcha bot protection, Relay email, the zero-knowledge Ciphera ID sign-in behind them, and open-source Tessera.',
   authors: [{ name: 'Ciphera' }],
   creator: 'Ciphera',
   publisher: 'Ciphera',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     url: 'https://ciphera.net',
     siteName: 'Ciphera',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-    description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Ciphera ID zero-knowledge auth, Captcha bot protection, Relay email, and open-source Tessera.',
+    description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Captcha bot protection, Relay email, the zero-knowledge Ciphera ID sign-in behind them, and open-source Tessera.',
     images: [
       {
         url: cdnUrl('/og-homepage.png'),
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@CipheraNET',
     title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-    description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Ciphera ID zero-knowledge auth, Captcha bot protection, Relay email, and open-source Tessera.',
+    description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Captcha bot protection, Relay email, the zero-knowledge Ciphera ID sign-in behind them, and open-source Tessera.',
     images: [cdnUrl('/og-homepage.png')],
   },
   alternates: {

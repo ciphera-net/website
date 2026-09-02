@@ -187,7 +187,7 @@ export const cryptoTerms: GlossaryTerm[] = [
       'Ciphera ID supports passkeys alongside OPAQUE passwords and TOTP — the password path itself is already unphishable-by-server since the server never receives it, and passkeys extend that property against lookalike-site phishing.',
     ],
     related: ['zero-knowledge-authentication', 'totp', 'opaque'],
-    see: [{ label: 'Ciphera ID — passkeys & 2FA', href: '/products/id' }],
+    see: [{ label: 'Ciphera ID — how signing in to Ciphera works', href: '/products/id' }],
   },
   {
     slug: 'pkce',
