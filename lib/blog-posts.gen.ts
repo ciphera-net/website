@@ -18,8 +18,8 @@ export const blogPosts: BlogPostSummary[] = [
     "title": "Pulse Is Free for Open-Source Projects and Nonprofits",
     "description": "Pulse's Team tier at €0 for OSI-licensed projects and registered nonprofits — five sites, 100,000 pageviews a month, every feature. The deal is printed on the page: we get to say you use Pulse.",
     "category": "Privacy",
-    "date": "2026-09-03",
-    "dateModified": "2026-09-03",
+    "date": "2026-09-02",
+    "dateModified": "2026-09-02",
     "readTime": "7 min read",
     "image": "/blog/og/free-analytics-for-open-source.png"
   },
