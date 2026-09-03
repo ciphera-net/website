@@ -106,13 +106,16 @@ test('the blog post route declares the card size, not something else', () => {
   )
 })
 
-test('the OG generation recipe still specifies the size this guard enforces', () => {
-  // Ties the guard to the document that owns the decision, so changing one
-  // without the other is caught rather than silently diverging.
-  const recipe = readFileSync(join(root, '..', 'docs', 'og-image-generation.md'), 'utf8')
-  assert.match(
-    recipe,
-    new RegExp(`${OG_WIDTH}\\s*[×x]\\s*${OG_HEIGHT}`),
-    'og-image-generation.md no longer states 1200×630 — decide which is right before changing either',
-  )
-})
+/**
+ * ⚠️ THERE IS NO TEST HERE TYING THIS TO `og-image-generation.md`, AND THAT IS
+ * NOT AN OVERSIGHT. The first version of this file had one, and it passed
+ * locally and failed in CI: that recipe lives in `Public/docs/`, a SIBLING
+ * DIRECTORY of this repo in the monorepo workspace — it is not tracked in
+ * `ciphera-net/website` and CI checks out only the repo. The test was reading a
+ * file that exists on a developer's disk and nowhere else, which is a test that
+ * passes because of workspace layout rather than because the code is right.
+ *
+ * The recipe still owns the decision and still says 1200×630. Keeping the two in
+ * step is a human job across two repos; a guard that cannot see its subject is
+ * worse than an honest comment saying so.
+ */
