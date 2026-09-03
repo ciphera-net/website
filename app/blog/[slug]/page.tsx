@@ -58,7 +58,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: 'Ciphera',
       type: 'article',
       locale: 'en_US',
-      images: [{ url: cdnUrl(post.image), width: 1376, height: 768, alt: post.title }],
+      // 🔴 1200×630, which is what the cards ACTUALLY are. This route declared
+      // 1376×768 until 03-09-2026 — the only route on the site that did; every
+      // other page already said 1200×630, and the OG generation recipe
+      // (Public/docs/og-image-generation.md) mandates 1200×630 as the spec the
+      // compositor screenshots at.
+      //
+      // The dimensions are not decoration: a scraper lays the card out from the
+      // DECLARED size before the image arrives, so a wrong pair reserves the
+      // wrong box and the unfurl letterboxes or crops. It is invisible in
+      // review — the HTML is well-formed and the image loads — and only shows
+      // up in somebody else's Slack.
+      images: [{ url: cdnUrl(post.image), width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: 'summary_large_image',
