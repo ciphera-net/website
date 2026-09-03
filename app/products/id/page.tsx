@@ -300,7 +300,7 @@ export default function CipheraIDPage() {
                 'OPAQUE (RFC 9807) — your password is never sent to our servers',
                 'On-device Argon2id key stretching',
                 'We store only an opaque credential record — no password, hash, or verifier',
-                'No password reset: recovery uses your 24-word phrase, which we never hold',
+                'No password reset — and account recovery is switched off while we finish it',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-muted-foreground">
                   <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
@@ -308,6 +308,14 @@ export default function CipheraIDPage() {
                 </li>
               ))}
             </ul>
+            <p className="mt-8 text-sm leading-relaxed text-muted-foreground">
+              To be precise about the last one: account recovery is unavailable
+              today. We are completing a change to the recovery ceremony, and
+              until it ships your password is the only way into your account —
+              lose it and the account is gone. The 24-word phrase minted at
+              signup is still worth keeping; it becomes the way back in once
+              recovery is switched on.
+            </p>
           </div>
         </div>
       </section>

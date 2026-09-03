@@ -1,0 +1,43 @@
+# Routes to the in-cluster Kubernetes agent, which advertises `!runner=k8s` — a
+# MANDATORY label, so an agent is only eligible when the task asks for it. A
+# workflow WITHOUT this label is ineligible everywhere and queues PENDING
+# FOREVER rather than failing: silent, not loud.
+#
+# WHY THIS FILE EXISTS (03-09-2026): this repo had no test workflow, because it
+# had no tests. The copy-honesty guard in `__tests__/` needs one — it exists to
+# stop /terms, /privacy, the FAQ, /products/id and the blog drifting back into
+# promising an account recovery that is currently switched off, and a guard that
+# never runs is exactly the failure it was written about. id-frontend has
+# carried the same guard since 11-08-2026 and could not see this repo.
+#
+# ⚠️ The check is named after the FILE, not the step (`ci/woodpecker/pr/test`).
+# It is NOT in branch protection's required list today — build.yml's
+# `ci/woodpecker/pr/build` is the required context. Add this one there once it
+# has a few green runs; do not rename the file after that.
+#
+# 🔑 No npm token and no `npm ci`. These tests are plain `node:test` ESM that
+# read source text off disk — zero dependencies, so the step needs no registry
+# credential at all. Keep it that way: this workflow's job is to be too cheap
+# and too dependency-free to ever be the reason a PR is blocked.
+labels:
+  runner: k8s
+
+when:
+  - event: push
+    branch: main
+  - event: pull_request
+
+steps:
+  test:
+    image: node:22-alpine
+    # Resources declared explicitly — without them the step pod is QoS
+    # BestEffort and is the first thing evicted under node memory pressure,
+    # which presents as a test failure rather than an eviction (see
+    # pulse-backend #147/#148).
+    backend_options:
+      kubernetes:
+        resources:
+          requests: { memory: 256Mi, cpu: 200m }
+          limits: { memory: 768Mi }
+    commands:
+      - npm test

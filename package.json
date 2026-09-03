@@ -8,6 +8,7 @@
     "build": "next build",
     "prebuild": "npm run generate:learn && npm run generate:blog && npm run sync:transparency && npm run generate:llms",
     "start": "next start",
+    "test": "node --test \"__tests__/**/*.test.mjs\"",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "generate:learn": "npx tsx scripts/generate-learn-articles.ts",

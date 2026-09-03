@@ -119,7 +119,7 @@ export const blogPosts: BlogPostSummary[] = [
     "description": "What zero-knowledge encryption actually means — explained through the system we run in production: OPAQUE authentication, blind indexes, and a vault key that never leaves your browser.",
     "category": "Security",
     "date": "2026-03-10",
-    "dateModified": "2026-07-19",
+    "dateModified": "2026-09-03",
     "readTime": "9 min read",
     "image": "/blog/og/zero-knowledge-encryption-guide.png"
   },
