@@ -5,7 +5,7 @@ import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 19-07-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 03-09-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -26,7 +26,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-07-19',
+  dateModified: '2026-09-03',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 19-07-2026
+              Last updated: 03-09-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -437,7 +437,7 @@ export default function PrivacyPolicyPage() {
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li><strong>Zero-knowledge authentication (OPAQUE):</strong> We use the OPAQUE protocol (RFC 9807), an asymmetric password-authenticated key exchange. Your password is stretched on your device with Argon2id and is never transmitted to our servers. Signing in proves knowledge of your password cryptographically, without sending it.</li>
                   <li><strong>What we store:</strong> Only an OPAQUE credential record that cannot be reversed into your password. We hold no password, no password hash, and no password-equivalent verifier.</li>
-                  <li><strong>No password reset:</strong> Because we never hold your password, we cannot reset it. Account recovery requires the 24-word recovery phrase shown to you when you created your account. If you lose both your password and your recovery phrase, your account data cannot be recovered — by us or anyone else.</li>
+                  <li><strong>No password reset:</strong> Because we never hold your password, we cannot reset it. <strong>Account recovery is currently unavailable</strong> while we complete a security improvement to the recovery ceremony, so your password is at present the only way into your account: if you lose it, your account data cannot be recovered — by us or anyone else. Keep the 24-word recovery phrase shown to you when you created your account; it will work once recovery is re-enabled.</li>
                 </ul>
 
                 <h3 className="font-display text-lg font-semibold text-foreground mb-2 mt-4">

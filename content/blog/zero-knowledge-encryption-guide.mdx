@@ -3,7 +3,7 @@ title: "Zero-Knowledge Encryption Guide (2026)"
 description: "What zero-knowledge encryption actually means — explained through the system we run in production: OPAQUE authentication, blind indexes, and a vault key that never leaves your browser."
 category: Security
 date: "2026-03-10"
-dateModified: "2026-07-19"
+dateModified: "2026-09-03"
 readTime: "9 min read"
 image: "/blog/og/zero-knowledge-encryption-guide.png"
 faqs:
@@ -12,7 +12,7 @@ faqs:
   - question: "What is the difference between zero-knowledge encryption and zero-knowledge proofs?"
     answer: "They share a name but are different things. Zero-knowledge proofs (ZKPs) are a cryptographic protocol where one party proves knowledge of something without revealing it — used in blockchain and authentication research. Zero-knowledge encryption describes a service architecture where the provider has no access to your plaintext data. OPAQUE, the protocol we use for login, borrows ideas from this family: the server verifies you know your password without ever learning it."
   - question: "What happens if I forget my Ciphera password?"
-    answer: "You recover access with your 24-word recovery phrase, which was generated on your device when you signed up. The phrase unwraps the same vault key your password did, and you can then set a new password. Without either the password or the phrase, nobody can restore access — including us. That is not a support limitation; it is the security property working as designed."
+    answer: "Account recovery is unavailable at the moment: we are completing a change to the recovery ceremony, and until it ships your password is the only way into your account. Lose it today and nobody can restore access, including us. The 24-word recovery phrase your device generated at signup is still worth keeping — its wrapped key is stored, so the phrase becomes the way back in once recovery is switched on. That is not a support limitation; it is the security property working as designed, and the honest version of it."
   - question: "Can Ciphera reset my password for me?"
     answer: "No. There is no password stored anywhere to reset, and no server-side key that can decrypt your vault. A password change is your device re-running the OPAQUE registration and re-wrapping your vault key — it requires you. Any vendor that CAN reset your password without you holds keys to your data, which is exactly what the zero-knowledge test in this guide checks for."
   - question: "What would a breach of Ciphera's database actually expose?"
@@ -30,6 +30,8 @@ Zero-knowledge encryption means the service storing your data structurally canno
 </BlogBlockquote>
 
 *Update, 19-07-2026 — this guide was rewritten. The previous version misdescribed our own authentication as layered password hashing. The real system is OPAQUE, a password-authenticated key exchange: no password-derived value is ever transmitted to our servers in any form. The corrected walkthrough is below.*
+
+*Update, 03-09-2026 — account recovery is currently switched off, and earlier versions of this post said otherwise. The server ceremony that proves you hold the recovery phrase shipped in August; the browser half of it has not, so no phrase can currently open an account and no account has enrolled one. Until that ships, **your password is the only way into your account** — losing it alone is terminal, not "losing both". The 24-word phrase is still worth keeping: its wrapped vault key is already stored, so the phrase becomes the way back in the moment recovery is re-enabled. Every claim below has been corrected to say that.*
 
 ## What "Zero-Knowledge" Actually Means (and What It Doesn't)
 
@@ -95,7 +97,7 @@ No encryption system protects against everything, and vendors who skip this sect
 
 **Metadata.** Zero-knowledge applies to content. A server still observes that an account exists, when it authenticates, and how large its ciphertext is. We minimize this (blind indexes exist precisely to take email addresses out of that picture), but minimized is not zero.
 
-**User error.** Losing both your password and your recovery phrase means losing your data — there is no backdoor for us to helpfully use. That trade-off is the entire point, and you should walk into it with open eyes.
+**User error.** Losing your password means losing your data — there is no backdoor for us to helpfully use, and with recovery switched off there is no second key either. That trade-off is the entire point, and you should walk into it with open eyes. When recovery is back on, the 24-word phrase becomes the second key and the sentence becomes "losing both".
 
 <BlogBlockquote>
 
@@ -118,7 +120,7 @@ One disclosure we make prominently, because a receipts-driven post cuts both way
 Four questions expose most pretenders in five minutes:
 
 1. **Can they reset your password without you?** If yes, a key exists outside your control. (We can't — a password change requires your device re-running OPAQUE registration.)
-2. **Does account recovery work without a recovery secret *you* generated?** If yes, that's a backdoor with a friendlier name. (Ours requires the 24-word phrase your device minted at signup.)
+2. **Does account recovery work without a recovery secret *you* generated?** If yes, that's a backdoor with a friendlier name. (Ours will require the 24-word phrase your device minted at signup. It is switched off today, which is the fail-closed direction: no recovery at all rather than one we could drive ourselves.)
 3. **Can support access your data "for troubleshooting"?** Then it isn't zero-knowledge, whatever the marketing page says.
 4. **Are the clients closed-source?** Client-side encryption you can't inspect is client-side encryption you're taking on faith.
 

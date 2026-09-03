@@ -25,7 +25,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-07-19',
+  dateModified: '2026-09-03',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -91,7 +91,7 @@ export default function TermsOfServicePage() {
               Terms of Service
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 19-07-2026
+              Last updated: 03-09-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -232,10 +232,10 @@ export default function TermsOfServicePage() {
                   Our Services use client-side encryption and zero-knowledge architecture. This has important implications that you must understand:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                  <li><strong>No data recovery:</strong> Your account is protected by zero-knowledge encryption: encryption keys are derived on your device and never transmitted to our servers. If you lose your account password and your recovery phrase, your encrypted account data <strong>cannot be recovered</strong> by Ciphera or anyone else.</li>
+                  <li><strong>No data recovery:</strong> Your account is protected by zero-knowledge encryption: encryption keys are derived on your device and never transmitted to our servers. If you lose your account password, your encrypted account data <strong>cannot be recovered</strong> by Ciphera or anyone else.</li>
                   <li><strong>No content inspection:</strong> We cannot view, read, or analyze the contents of encrypted files stored on our servers. Content moderation of encrypted data is technically impossible in a zero-knowledge system.</li>
                   <li><strong>Your responsibility:</strong> You are solely responsible for maintaining access to your account credentials and recovery phrase. We strongly recommend keeping your recovery phrase and password in a secure location.</li>
-                  <li><strong>Password limitations:</strong> Because we use the OPAQUE protocol, your password never reaches our servers, and we store no password, password hash, or verifier. We therefore cannot reset or recover your password. Account recovery requires the 24-word recovery phrase shown to you when you created your account. If you lose both your password and your recovery phrase, your account cannot be recovered. Email-based password reset is not available by design.</li>
+                  <li><strong>Password limitations:</strong> Because we use the OPAQUE protocol, your password never reaches our servers, and we store no password, password hash, or verifier. We therefore cannot reset or recover your password. <strong>Account recovery is currently unavailable</strong> while we complete a security improvement to the recovery ceremony: your password is at present the only way into your account, and if you lose it your account cannot be recovered. Keep the 24-word recovery phrase shown to you when you created your account &mdash; it will work once recovery is re-enabled. Email-based password reset is not available by design.</li>
                 </ul>
               </section>
 

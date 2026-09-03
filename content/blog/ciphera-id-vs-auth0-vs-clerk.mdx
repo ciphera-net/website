@@ -21,7 +21,7 @@ We wanted a login where a Ciphera operator with full database access cannot read
 
 </BlogBlockquote>
 
-*Update, 03-09-2026 — this post was published in July 2026 as a three-way product comparison, which implied Ciphera ID was a thing you could adopt. It never was. Rewritten as the build-versus-buy story it always should have been; the URL is unchanged. See [how signing in to Ciphera works](/products/id) for the current, non-marketing description.*
+*Update, 03-09-2026 — this post was published in July 2026 as a three-way product comparison, which implied Ciphera ID was a thing you could adopt. It never was. Rewritten as the build-versus-buy story it always should have been; the URL is unchanged. See [how signing in to Ciphera works](/products/id) for the current, non-marketing description. Corrected the same day: account recovery is switched off while we finish the ceremony, so the bill for building this ourselves is currently higher than the post first said — there is no password reset **and** no working recovery, which makes the password the only way in.*
 
 ## What we would have been buying
 
@@ -62,7 +62,7 @@ None of that is a knock on Auth0 or Clerk. It is a property neither is trying to
 
 Building your own authentication is famously a bad idea, and the standard warning is about getting the cryptography wrong. That was not the expensive part. The expensive part was everything the cryptography then makes impossible.
 
-**There is no password reset.** There cannot be. A reset link works by proving control of an email address the provider can read, then letting the user set a new password the provider stores. We hold neither side of that. Recovery runs on a 24-word phrase generated on the user's device at signup, which we never hold — lose it and lose the account. Every hosted platform would have handed us the familiar flow for free.
+**There is no password reset.** There cannot be. A reset link works by proving control of an email address the provider can read, then letting the user set a new password the provider stores. We hold neither side of that. Recovery is meant to run on a 24-word phrase generated on the user's device at signup, which we never hold. Account recovery is switched off while we finish it, so today the password is the only way in and losing it alone loses the account. Every hosted platform would have handed us the familiar flow for free.
 
 **There is no admin console, and there never will be.** Support cannot look up a user by email, because there is no email to look up. This is not a missing feature we are getting to; it is the same design decision as the one above, seen from the support desk. It is also the single hardest thing to explain to anyone evaluating an identity system on a feature grid.
 
