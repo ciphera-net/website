@@ -24,14 +24,14 @@ import {
 export const metadata: Metadata = {
   title: 'Pulse - Privacy-First Website Analytics',
   description:
-    'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 5 KB tracking script — measured, not rounded. Open-source client.',
+    'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.6 KB tracking script — measured, not rounded. Open-source client.',
   alternates: {
     canonical: 'https://ciphera.net/products/pulse',
   },
   openGraph: {
     title: 'Pulse - Privacy-First Website Analytics | Ciphera',
     description:
-      'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 5 KB tracking script — measured, not rounded.',
+      'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.6 KB tracking script — measured, not rounded.',
     url: 'https://ciphera.net/products/pulse',
     siteName: 'Ciphera',
     images: [
@@ -163,7 +163,7 @@ export default function PulsePage() {
               { icon: Cookie, label: 'Cookie-free' },
               { icon: Code, label: 'Open source client' },
               { icon: ShieldCheck, label: 'GDPR compliant' },
-              { icon: Lightning, label: '5 KB script' },
+              { icon: Lightning, label: '2.6 KB script' },
             ].map((badge, i) => (
               <span key={badge.label} className="flex items-center gap-2 whitespace-nowrap">
                 {i > 0 && <span className="mx-2 text-muted-foreground" aria-hidden="true">·</span>}
@@ -298,7 +298,7 @@ export default function PulsePage() {
                   </code>
                 </pre>
                 <div className="mt-4 flex items-center justify-between text-[10px] text-muted-foreground border-t border-border pt-3">
-                  <span>1.6 KB gzipped</span>
+                  <span>2.6 KB gzipped</span>
                   <span className="flex items-center gap-1">
                     <div className="w-1.5 h-1.5 bg-primary" />
                     Non-blocking, async
@@ -315,8 +315,8 @@ export default function PulsePage() {
               One script tag. That&apos;s it.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Add a single script tag to your site and you&apos;re done. 5 KB
-              gzipped — measured, not rounded — about 25x lighter than Google
+              Add a single script tag to your site and you&apos;re done. 2.6 KB
+              gzipped — measured, not rounded — about 55x lighter than Google
               Analytics.
               Loads asynchronously, never blocks page rendering, works with
               any framework.
@@ -414,7 +414,7 @@ export default function PulsePage() {
 
           <dl className="mb-10 grid max-w-3xl gap-x-12 gap-y-6 sm:grid-cols-2">
             {[
-              { term: 'Script size', detail: 'Pulse 1.6 KB gzipped · GA 45+ KB' },
+              { term: 'Script size', detail: 'Pulse 2.6 KB gzipped · GA 145 KB' },
               { term: 'Cookies', detail: 'Pulse none · GA required' },
             ].map((s) => (
               <div key={s.term} className="border-t border-border pt-3">
@@ -450,7 +450,7 @@ export default function PulsePage() {
                   'GDPR compliant by default',
                   'No consent banner needed',
                   'Open source client',
-                  '5 KB script — measured',
+                  '2.6 KB script — measured',
                   'No cross-site tracking',
                   'Free tier available',
                   'Real-time dashboard',
@@ -486,7 +486,7 @@ export default function PulsePage() {
                   { feature: 'GDPR requires configuration', has: false },
                   { feature: 'Consent banner required', has: false },
                   { feature: 'Closed source', has: false },
-                  { feature: 'Script over 45KB', has: false },
+                  { feature: 'Script over 100 KB', has: false },
                   { feature: 'US infrastructure', has: false },
                   { feature: 'Cross-site tracking', has: false },
                   { feature: 'Free tier available', has: true },

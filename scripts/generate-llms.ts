@@ -40,11 +40,11 @@ const PRODUCTS: ProductFact[] = [
     oneLiner:
       'Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.',
     paragraph:
-      'Pulse is cookie-free website analytics: real-time dashboards and geographic insights without tracking individual visitors. The tracking script is 5 KB gzipped (measured) and the client — dashboard and tracking script — is open source; the managed cloud backend is not.',
+      'Pulse is cookie-free website analytics: real-time dashboards and geographic insights without tracking individual visitors. The tracking script is 2.6 KB gzipped (measured) and the client — dashboard and tracking script — is open source; the managed cloud backend is not.',
     bullets: [
       'No cookies, no fingerprinting techniques, no personal data collection',
       'GDPR compliant by architecture, not policy',
-      'Tracking script: 5 KB gzipped (measured)',
+      'Tracking script: 2.6 KB gzipped (measured)',
       'Open-source client (dashboard + tracking script)',
     ],
   },
