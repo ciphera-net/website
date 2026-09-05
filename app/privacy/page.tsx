@@ -325,7 +325,7 @@ export default function PrivacyPolicyPage() {
                   7. Cookies &amp; Local Storage
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
-                  The Ciphera marketing site (ciphera.net) sets no cookies or browser storage of its own. Our authenticated applications — Ciphera ID (id.ciphera.net) and Ciphera Pulse — use the minimum browser storage needed to keep you signed in, remember your interface preferences, and run features you ask for:
+                  The Ciphera marketing site (ciphera.net) sets no cookies or browser storage of its own. Our authenticated applications — Ciphera ID (id.ciphera.net), Ciphera Pulse (pulse.ciphera.net) and the Discord account link (link.ciphera.net) — use the minimum browser storage needed to keep you signed in, remember your interface preferences, and run features you ask for. Each application now holds its own separate session, so signing out of one does not sign you out of the others:
                 </p>
                 <p className="text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
                 <div className="overflow-x-auto">
@@ -340,31 +340,55 @@ export default function PrivacyPolicyPage() {
                     </thead>
                     <tbody>
                       <tr>
-                        <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Authentication</td>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Signing in to Ciphera ID (id.ciphera.net)</td>
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4 font-mono text-xs">access_token</td>
-                        <td className="py-2 pr-4">HTTP-only cookie</td>
-                        <td className="py-2 pr-4">Keeps you signed in</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, across ciphera.net</td>
+                        <td className="py-2 pr-4">Keeps you signed in to the account pages</td>
                         <td className="py-2 tabular-nums text-foreground">15 minutes</td>
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4 font-mono text-xs">refresh_token</td>
-                        <td className="py-2 pr-4">HTTP-only cookie</td>
-                        <td className="py-2 pr-4">Renews your session without re-entering your password</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, across ciphera.net</td>
+                        <td className="py-2 pr-4">Renews that session without re-entering your password</td>
                         <td className="py-2 tabular-nums text-foreground">30 days</td>
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4 font-mono text-xs">csrf_token</td>
-                        <td className="py-2 pr-4">Cookie (app-readable)</td>
+                        <td className="py-2 pr-4">Cookie (app-readable), across ciphera.net</td>
                         <td className="py-2 pr-4">Protects against cross-site request forgery</td>
                         <td className="py-2 tabular-nums text-foreground">30 days</td>
                       </tr>
+                      <tr>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Signing in to Ciphera Pulse (pulse.ciphera.net)</td>
+                      </tr>
                       <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-mono text-xs">ciphera_pii</td>
-                        <td className="py-2 pr-4">Cookie (across ciphera.net)</td>
-                        <td className="py-2 pr-4">Carries your decrypted name and email between Ciphera apps after login, so they display without our servers storing them</td>
-                        <td className="py-2">Cleared on logout</td>
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_access</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, this site only</td>
+                        <td className="py-2 pr-4">Keeps you signed in to Pulse</td>
+                        <td className="py-2 tabular-nums text-foreground">15 minutes</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_refresh</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, this site only</td>
+                        <td className="py-2 pr-4">Renews your Pulse session without re-entering your password</td>
+                        <td className="py-2 tabular-nums text-foreground">30 days</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_csrf</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, this site only</td>
+                        <td className="py-2 pr-4">Lets Pulse end your session properly when you sign out</td>
+                        <td className="py-2 tabular-nums text-foreground">30 days</td>
+                      </tr>
+                      <tr>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Linking a Discord account (link.ciphera.net)</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">clink_session</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, this site only</td>
+                        <td className="py-2 pr-4">Holds the short session that carries you through linking your Discord account. Contains an account reference and an expiry, never a Ciphera token</td>
+                        <td className="py-2 tabular-nums text-foreground">15 minutes</td>
                       </tr>
                       <tr>
                         <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Your profile</td>
@@ -385,10 +409,19 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2">Persistent</td>
                       </tr>
                       <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-mono text-xs">oauth_state, oauth_code_verifier</td>
+                        <td className="py-2 pr-4 font-mono text-xs">oauth_state, oauth_code_verifier, oauth_pending</td>
                         <td className="py-2 pr-4">Local storage</td>
                         <td className="py-2 pr-4">Secure the login redirect (PKCE)</td>
-                        <td className="py-2">Cleared after login</td>
+                        <td className="py-2">Cleared after login, or 10 minutes after an abandoned attempt</td>
+                      </tr>
+                      <tr>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Password-protected shared dashboards</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_share_session</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, one dashboard only</td>
+                        <td className="py-2 pr-4">Remembers that you entered the password for one shared dashboard, so you are not asked again on every page</td>
+                        <td className="py-2 tabular-nums text-foreground">1 hour</td>
                       </tr>
                       <tr>
                         <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Analytics (on websites that use Pulse)</td>
