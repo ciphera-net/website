@@ -37,6 +37,7 @@ skip_clone: true
 
 depends_on:
   - push
+  - test
 
 when:
   - event: push
