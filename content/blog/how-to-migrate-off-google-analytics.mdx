@@ -88,7 +88,7 @@ The mechanics are less scary than the decision. Here's the sequence practitioner
 <script defer data-domain="yoursite.com" src="https://js.ciphera.net/script.js"></script>
 ```
 
-That's the whole install. It's a **~2 KB gzipped script** (the build fails if it ever exceeds a 3 KB ceiling), it sets no cookies, and for teams that want tamper-proofing there's an optional versioned, Subresource-Integrity-pinned URL. If you use Next.js, WordPress, or another framework, there's a matching setup path — but the raw tag above works anywhere you can edit the `<head>`.
+That's the whole install. It's a **2.6 KB gzipped script** (CI fails the build if it ever exceeds a 3 KB ceiling), it sets no cookies, and for teams that want tamper-proofing there's an optional versioned, Subresource-Integrity-pinned URL. If you use Next.js, WordPress, or another framework, there's a matching setup path — but the raw tag above works anywhere you can edit the `<head>`.
 
 **Your GA goals become Pulse events.** Where GA4 has key events, Pulse has a `pulse.track()` call and a Goals screen. You fire an event from your frontend — `pulse.track('signup_click')`, optionally with properties and a revenue value — and create a matching Goal (display name plus event name) in the dashboard. Multi-step funnels are available on the Team plan. The revenue argument maps cleanly to what GA4 calls a conversion value.
 

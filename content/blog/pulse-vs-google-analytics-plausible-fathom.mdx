@@ -61,7 +61,11 @@ With [172 countries now having data privacy laws](https://papers.ssrn.com/sol3/p
 
 ## How Does Script Size Affect Page Speed?
 
-Google Analytics' gtag.js weighs approximately 135 KB gzipped ([Plausible](https://plausible.io/google-analytics-script-size)). Plausible's own script is 2.5 KB gzipped, and Fathom's is roughly 2 KB. Pulse ships at 2.3 KB gzipped (versioned build) — served from `js.ciphera.net/v1.0.0/script.js` with Subresource Integrity, so the browser checks the script's hash before running it and refuses to execute anything that doesn't match. None of the other three tools in this comparison pin a script hash. Size-wise, GA4's script is roughly 55-60x heavier than Pulse's — a real gap, even without rounding up for effect.
+We measured all four with `curl` on 5 September 2026. Google Analytics' gtag.js is 145 KB gzipped. Plausible's script is 1.2 KB, Fathom's is 2.0 KB, and Pulse's is 2.6 KB.
+
+Pulse is the largest of the three privacy-first scripts, and we'd rather say so than round in our own favour. At this scale the gap between them is noise: a visitor will not feel 1.4 KB. The gap that does matter is Google Analytics, which is 55x heavier than Pulse and 115x heavier than Plausible.
+
+Pulse's script is also served with Subresource Integrity from a versioned URL, so the browser checks its hash before running it and refuses anything that doesn't match. None of the other three tools pin a script hash.
 
 Does that gap matter in practice? On mobile connections, every kilobyte adds to Time to Interactive, and a script that runs before the page paints can also fail, mis-fire, or get blocked by an ad blocker mid-load. A few kilobytes with a pinned hash removes most of that failure surface.
 
@@ -88,7 +92,7 @@ Your analytics tool choice isn't invisible to your users. A consent banner askin
 But what do you actually lose by switching from GA to a privacy-first alternative? Less than you'd think. Here's what each tool offers:
 
 - <ToolLogo src="/blog/tools/google-analytics.png" /> **Google Analytics:** Page views, sessions, user journeys, conversion funnels, audience demographics, event tracking, cross-site tracking, remarketing audiences, attribution modeling. Requires cookie consent and complex setup.
-- <ToolLogo src="/blog/tools/plausible.png" /> **Plausible:** Page views, unique visitors, bounce rate, visit duration, referrer sources, countries, devices, browsers, UTM tracking, custom events, goals. No cookies, 2.5 KB script.
+- <ToolLogo src="/blog/tools/plausible.png" /> **Plausible:** Page views, unique visitors, bounce rate, visit duration, referrer sources, countries, devices, browsers, UTM tracking, custom events, goals. No cookies, 1.2 KB script.
 - <ToolLogo src="/blog/tools/fathom.png" /> **Fathom:** Page views, unique visitors, referrers, countries, devices, browsers, UTM tracking, custom events, uptime monitoring included. No cookies, EU visitor isolation.
 - <ToolLogo src="/blog/tools/pulse.png" /> **Pulse:** Page views, unique visitors, bounce rate, session duration, referrer sources, countries, devices, browsers, UTM tracking, aggregate user journeys with a Sankey flow view, funnels (up to 8 steps), automatic 404 detection, page rules for grouping or excluding paths, a Google Search Console integration on every plan including free, a 75-integration directory, and a BunnyCDN integration. No cookies, open-source client and script with versioned builds and SRI, Swiss infrastructure.
 
@@ -127,10 +131,10 @@ There isn't one right answer for every team. Here's a decision framework based o
 
 ## The Bottom Line
 
-Google Analytics remains powerful, but it carries growing legal risk, loses the majority of EU visitor data to consent rejection, samples data above modest thresholds, and ships a script roughly 55-60x heavier than Pulse's versioned build (and in a similar range against Plausible's and Fathom's). Pulse, Plausible, and Fathom each offer a genuine alternative with different strengths:
+Google Analytics remains powerful, but it carries growing legal risk, loses the majority of EU visitor data to consent rejection, samples data above modest thresholds, and ships a script 55x heavier than Pulse's, and heavier still against Plausible's and Fathom's. Pulse, Plausible, and Fathom each offer a genuine alternative with different strengths:
 
-- <ToolLogo src="/blog/tools/pulse.png" /> **Pulse:** Free tier (5,000 pageviews/mo), open-source client and script (AGPL-3.0), Swiss data residency (FADP), 2.3 KB gzipped versioned script with SRI
-- <ToolLogo src="/blog/tools/plausible.png" /> **Plausible:** Self-hostable, 2.5 KB script, German data residency, 19,000+ paying subscribers
+- <ToolLogo src="/blog/tools/pulse.png" /> **Pulse:** Free tier (5,000 pageviews/mo), open-source client and script (AGPL-3.0), Swiss data residency (FADP), 2.6 KB gzipped script, SRI-pinned
+- <ToolLogo src="/blog/tools/plausible.png" /> **Plausible:** Self-hostable, 1.2 KB script, German data residency, 19,000+ paying subscribers
 - <ToolLogo src="/blog/tools/fathom.png" /> **Fathom:** EU visitor isolation, included uptime monitoring, simple dashboard
 
 The privacy-first analytics market is growing at 25.3% CAGR for a reason. Businesses are realizing that accurate, compliant analytics doesn't require tracking individual users across the web — and the receipts here, from script weight to data residency to open-source code, hold up to scrutiny in a way "trust us" tracking scripts don't.
