@@ -81,7 +81,7 @@ export const blogPosts: BlogPostSummary[] = [
     "date": "2026-07-19",
     "dateModified": "2026-09-03",
     "readTime": "14 min read",
-    "image": "/blog/og/ciphera-id-vs-auth0-vs-clerk.png?v=2"
+    "image": "/blog/og/ciphera-id-vs-auth0-vs-clerk.png?v=3"
   },
   {
     "slug": "what-we-see-about-you-what-we-dont",

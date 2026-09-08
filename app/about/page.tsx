@@ -462,7 +462,8 @@ export default function AboutPage() {
             {/* Ciphera ID is the sign-in underneath our own applications, not a
                 product on the shelf — so the account story links to the
                 explanation, and the signup goes to the product itself. */}
-            <Link href="https://pulse.ciphera.net" className="btn-primary">
+            {/* /signup, not the app root — see products/pulse. */}
+            <Link href="https://pulse.ciphera.net/signup" className="btn-primary">
               Get started with Pulse
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>

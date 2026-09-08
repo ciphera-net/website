@@ -27,7 +27,8 @@ export default function ClosingCta() {
               is the sign-in underneath it, so it gets an explanatory link rather
               than a signup CTA of its own. */}
           <Button asChild size="lg">
-            <a href="https://pulse.ciphera.net">
+            {/* /signup, not the app root — see products/pulse. */}
+            <a href="https://pulse.ciphera.net/signup">
               Get started with Pulse
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </a>
