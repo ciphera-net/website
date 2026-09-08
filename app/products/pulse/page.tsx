@@ -173,7 +173,13 @@ export default function PulsePage() {
             ))}
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-5">
-            <Link href="https://pulse.ciphera.net" className="btn-primary">
+            {/* 🔴 /signup, NOT the bare app root. "Get started" is read by somebody
+                with no account; the root is the Pulse marketing homepage, whose
+                own hero button used to open the SIGN-IN form — so this CTA took
+                a first-timer two hops to a screen saying "Welcome back" and
+                asking for a password they never set. The header's own CTA on
+                this page has always pointed at /signup (header-3.tsx:55). */}
+            <Link href="https://pulse.ciphera.net/signup" className="btn-primary">
               Get Started Free
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>
@@ -217,7 +223,7 @@ export default function PulsePage() {
               ))}
             </ul>
             <div className="mt-8">
-              <Link href="https://pulse.ciphera.net" className="btn-primary">
+              <Link href="https://pulse.ciphera.net/signup" className="btn-primary">
                 Get Started Free
                 <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
@@ -537,7 +543,7 @@ export default function PulsePage() {
             seconds. Free forever for personal sites.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-5">
-            <Link href="https://pulse.ciphera.net" className="btn-primary">
+            <Link href="https://pulse.ciphera.net/signup" className="btn-primary">
               Get Started Free
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>
