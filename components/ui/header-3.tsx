@@ -246,8 +246,15 @@ export function Header() {
                     <Button variant="outline" asChild>
                         <a href={branding?.signIn || "https://id.ciphera.net/login"} onClick={() => track('header_sign_in')}>Sign In</a>
                     </Button>
+                    {/* 🔴 THE FALLBACK IS /signup, NOT THE APP ROOT. "Get Started" is
+                        read by somebody with no account. The Pulse product page sets
+                        `signUp` explicitly, so this default only ever renders on the
+                        OTHER pages — which is exactly why it was missed when the
+                        in-body CTAs were fixed (#2, 08-09-2026): the one it still
+                        pointed at was the marketing homepage, whose own hero button
+                        opened the sign-in form. */}
                     <Button asChild>
-                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://pulse.ciphera.net")} onClick={() => track('header_cta_get_started')}>{branding?.ctaLabel ?? 'Get Started'}</a>
+                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://pulse.ciphera.net/signup")} onClick={() => track('header_cta_get_started')}>{branding?.ctaLabel ?? 'Get Started'}</a>
                     </Button>
                 </div>
                 <div className="flex items-center gap-2 md:hidden">
@@ -301,7 +308,7 @@ export function Header() {
                         </a>
                     </Button>
                     <Button className="w-full" asChild>
-                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://pulse.ciphera.net")} onClick={() => track('header_cta_get_started_mobile')}>
+                        <a href={branding?.ctaHref ?? (branding?.signUp || "https://pulse.ciphera.net/signup")} onClick={() => track('header_cta_get_started_mobile')}>
                             {branding?.ctaLabel ?? 'Get Started'}
                         </a>
                     </Button>
