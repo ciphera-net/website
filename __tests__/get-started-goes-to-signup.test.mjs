@@ -33,6 +33,20 @@ for (const [path, expected] of SURFACES) {
   })
 }
 
+test('the header default CTA — every page that is not the Pulse page — goes to signup', () => {
+  // 🔴 FOUND ON PRODUCTION, after the first fix deployed. The in-body CTAs were
+  // all correct and /about still served one bare app-root link: the header's
+  // OWN fallback, which renders on every page that does not set `signUp`. The
+  // Pulse page sets it, so the surface under test was the one place the bug
+  // could not be seen. Verified by counting hrefs in the SERVED html, not by
+  // reading the source — the source looked fine.
+  const src = read('components/ui/header-3.tsx')
+  const bare = [...src.matchAll(/"https:\/\/pulse\.ciphera\.net"/g)].length
+  assert.equal(bare, 0, 'the header still falls back to the bare app root')
+  const fallbacks = [...src.matchAll(/branding\?\.signUp \|\| "https:\/\/pulse\.ciphera\.net\/signup"/g)].length
+  assert.equal(fallbacks, 2, 'desktop and mobile headers must both fall back to signup')
+})
+
 test('the Pulse page header still offers a real sign-in', () => {
   // Not a blanket swap: somebody who already has an account needs the other door.
   const src = read('components/ui/header-3.tsx')
