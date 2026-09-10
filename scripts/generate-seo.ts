@@ -36,7 +36,20 @@ const OUT = path.join(process.cwd(), 'lib', 'seo.gen.ts')
  */
 const EXPECTED_ROUTES = 14
 
+/**
+ * 🔴 THE WATERMARK SPANS BOTH CONTENT TYPES, AND THE COUNTS SHIP WITH IT.
+ * A watermark is a MAXIMUM, and maxima only move forward: unpublish the newest post
+ * and WordPress's max falls BELOW the live site's, so `desired > actual` is false and
+ * the site serves deleted content for ever with every alert green. Behind-ness is
+ * therefore a PAIR — (watermark, count) — and this file is where the count is minted.
+ * ⚠️ Three-part change: this query, /sys/seo-state's payload, and the publish
+ * watcher's own query move in ONE commit, or the watcher reads a key the live build
+ * does not serve and reports behind for ever.
+ */
 const QUERY = `{
+  blogPosts(first: 200, where: { status: PUBLISH }) {
+    nodes { modifiedGmt routeSites { nodes { slug } } }
+  }
   routeStubs(first: 100, where: { status: PUBLISH }) {
     nodes {
       cipheraPath
@@ -159,8 +172,12 @@ async function main() {
     }
   }
 
-  // Newest stub modification consumed by this build — see SEO_WATERMARK above.
-  const watermark = [...seen.values()]
+  // Newest modification consumed by this build, ACROSS BOTH TYPES — see SEO_WATERMARK.
+  const postNodes: { modifiedGmt: string | null; routeSites: { nodes: { slug: string }[] } | null }[] =
+    body?.data?.blogPosts?.nodes ?? []
+  const sitePosts = postNodes.filter((n) => (n.routeSites?.nodes ?? []).some((t) => t.slug === SITE))
+
+  const watermark = [...[...seen.values()], ...sitePosts]
     .map((n) => n.modifiedGmt ?? '')
     .filter(Boolean)
     .sort()
@@ -190,6 +207,12 @@ export const SEO_ROUTE_COUNT = ${seen.size}
  * an image rolled back by hand — not merely a publish a webhook happened to witness.
  */
 export const SEO_WATERMARK = ${JSON.stringify(watermark)}
+
+/**
+ * 🔴 THE HALF A WATERMARK CANNOT EXPRESS. A maximum only moves forward, so a deletion
+ * is invisible to it — the count is what makes an unpublish detectable at all.
+ */
+export const SEO_POST_COUNT = ${sitePosts.length}
 
 export const routeSeo: Record<string, RouteSeo> = ${JSON.stringify(out, null, 2)}
 `,
