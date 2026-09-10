@@ -10,6 +10,7 @@ import { BlogBlockquote } from '@/components/blog/blog-blockquote'
 import { ToolLogo } from '@/components/blog/tool-logo'
 import FAQAccordion from '@/components/FAQAccordion'
 import { MDXTable } from '@/components/mdx-table'
+import { WpBody } from '@/components/blog/wp-body'
 import TableOfContents from '../../../components/TableOfContents'
 import RelatedPosts from '../../../components/RelatedPosts'
 import ReadingProgress from '../../../components/ReadingProgress'
@@ -95,7 +96,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     image: cdnUrl(post.image),
     datePublished: post.date,
     dateModified: post.dateModified,
-    wordCount: post.content.split(/\s+/).length,
+    // 🔴 `post.content.split(/\s+/).length` UNTIL 10-09-2026, WHICH COUNTS TAGS ON AN
+    // HTML BODY. lib/blog.ts computes this per source — verbatim the old expression for
+    // MDX, so the sixteen existing posts emit an identical number, and from prose text
+    // for WordPress. A wrong wordCount is invisible on the page and visible to every
+    // crawler that reads the BlogPosting schema.
+    wordCount: post.wordCount,
     articleSection: post.category,
     author: {
       '@type': 'Organization',
@@ -169,7 +175,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className="max-w-3xl mx-auto">
             <div className="prose prose-invert max-w-none">
-              <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+              {/* 🔴 A DISCRIMINATED UNION, NOT A FLAG. MDX and WordPress bodies are not
+                * interchangeable strings: MDX parses raw HTML as JSX, so `class=` throws,
+                * HTML comments throw, and any `{` in prose becomes an expression. The 16
+                * posts in content/blog/ take the MDXRemote branch they always took, byte
+                * for byte; WordPress takes the sanitising rehype pipeline.
+                * Design §24.7. */}
+              {post.body.kind === 'mdx' ? (
+                <MDXRemote source={post.body.content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+              ) : (
+                <WpBody html={post.body.content} />
+              )}
             </div>
 
             {/* * FAQ — rendered from frontmatter with the shared house accordion
