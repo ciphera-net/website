@@ -4,6 +4,12 @@
 User-agent: *
 Allow: /
 
+# The CMS draft-preview surface. On ciphera.net every /preview/ path 404s — the route
+# ships in the image and is inert without WORDPRESS_GRAPHQL_URL, which is set only on
+# the gated in-cluster preview Deployment. This line is belt and braces, not the
+# control: it costs nothing and it means a crawler never asks.
+Disallow: /preview/
+
 # Sitemap location
 Sitemap: https://ciphera.net/sitemap.xml
 

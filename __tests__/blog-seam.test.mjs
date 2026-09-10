@@ -54,7 +54,10 @@ test('a slug in both sources is a build failure, not a precedence rule', () => {
 })
 
 test('the post page branches on the body discriminant, not on a boolean', () => {
-  const page = code('app/blog/[slug]/page.tsx')
+  // ⚠️ THIS LIVES IN post-view.tsx, NOT THE ROUTE. The route only routes; the page is
+  // one shared component so that /preview renders the REAL page rather than a
+  // lookalike that can drift from it (§24.9).
+  const page = code('components/blog/post-view.tsx')
   assert.match(page, /post\.body\.kind === 'mdx'/, 'the MDX branch must be selected by the discriminant')
   assert.match(page, /MDXRemote source=\{post\.body\.content\}/, 'MDX must render from the discriminated body')
   assert.match(page, /<WpBody html=\{post\.body\.content\}/, 'WordPress must render through the sanitising pipeline')
@@ -66,7 +69,7 @@ test('the post page branches on the body discriminant, not on a boolean', () => 
 })
 
 test('the BlogPosting wordCount does not count HTML tags', () => {
-  const page = code('app/blog/[slug]/page.tsx')
+  const page = code('components/blog/post-view.tsx')
   assert.doesNotMatch(
     page,
     /wordCount:\s*post\.content\.split/,
@@ -102,13 +105,16 @@ test('the converter canonicalises hast\'s camelCased data attributes', () => {
 })
 
 test('every build-time gate the blog depends on is present', () => {
-  const gen = code('scripts/generate-blog-posts.ts')
+  // ⚠️ The content checks moved into the SHARED transform when the preview landed, so
+  // the preview reports exactly what the build refuses. Both files are read here on
+  // purpose: the gate is the pair, and splitting them was how it could regress.
+  const gen = code('scripts/generate-blog-posts.ts') + code('lib/blog-transform.ts')
   for (const [needle, why] of [
     [/exists in BOTH/, 'slug collision between MDX and WordPress'],
     [/duplicate published post/, 'two published posts sharing a slug'],
-    [/has no category/, 'a post with no category has no call-to-action'],
+    [/no category/, 'a post with no category has no call-to-action'],
     [/has no call-to-action/, 'a category with no CTA silently shows the generic button'],
-    [/has no description/, 'an empty meta description reaches the SERP'],
+    [/no meta description/, 'an empty meta description reaches the SERP'],
     [/OG card/, 'a missing OG card unfurls broken where nobody looks'],
     [/ALLOW_POST_COUNT_DECREASE/, 'the shrink guard, once WordPress holds the only copy'],
   ]) {
@@ -130,7 +136,35 @@ test('the committed WordPress-bodies stub is empty', () => {
   // lands in it, the repository has quietly become a second source of truth for what
   // the CMS says — and the stale copy is the one that wins an argument nobody knew
   // was happening. A build overwrites it; a commit must not.
-  const stub = read('lib/blog-wp.gen.ts')
+  // ⚠️ COMMENT-STRIPPED, because the file's own warning NAMES the forbidden string in
+  // prose — the same trap this suite's `code()` helper exists for, met from the other
+  // direction: here it was the warning, not the rule, that matched.
+  const stub = code('lib/blog-wp.gen.ts')
   assert.match(stub, /export const wpPosts: WpBlogPost\[\] = \[\]/, 'lib/blog-wp.gen.ts must be committed empty')
   assert.doesNotMatch(stub, /localhost|127\.0\.0\.1/, 'a local port-forward URL must never be committed as the blog\'s source')
+})
+
+test('the preview route is inert without its environment variable', () => {
+  const preview = code('app/preview/[slug]/page.tsx')
+  // 🔴 A 404, NOT AN ERROR PAGE. On ciphera.net this route must be indistinguishable
+  // from a path that does not exist — an error page would advertise that a preview
+  // surface exists and invite somebody to go looking for it.
+  assert.match(preview, /if \(!WP\) notFound\(\)/, 'the route must 404 when WORDPRESS_GRAPHQL_URL is unset')
+  assert.match(preview, /export const dynamic = 'force-dynamic'/)
+  assert.match(preview, /robots: \{ index: false, follow: false \}/, 'a preview must never be indexable')
+  assert.doesNotMatch(preview, /NODE_ENV/, 'the guard must be the env var, not a build-time flag — the same artefact runs in both places')
+  assert.match(read('public/robots.txt'), /Disallow: \/preview\//)
+})
+
+test('the preview and the build share ONE transform', () => {
+  // A preview built from a second copy of the transform would eventually disagree with
+  // the published page — which is the failure a preview exists to prevent, and the one
+  // nobody notices until a post ships looking wrong.
+  for (const f of ['scripts/generate-blog-posts.ts', 'app/preview/[slug]/page.tsx']) {
+    assert.match(code(f), /transformWpPost/, `${f} must use lib/blog-transform.ts, not its own copy`)
+  }
+  // The post page too: a preview that renders a lookalike layout is a page an editor
+  // trusts that visitors never see.
+  assert.match(code('app/preview/[slug]/page.tsx'), /BlogPostView/)
+  assert.match(code('app/blog/[slug]/page.tsx'), /BlogPostView/)
 })
