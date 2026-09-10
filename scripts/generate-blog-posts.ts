@@ -135,6 +135,25 @@ async function main() {
     // ⚠️ It lives HERE and not in the shared transform because it costs a network
     // round trip per post — which is right for a build and wrong for a preview an
     // editor is waiting on.
+    // 🔴 EVERY IMAGE A POST REFERENCES MUST ACTUALLY BE ON THE CDN (design §29).
+    // Images are uploaded at cms.ciphera.net/upload, which writes to the CDN and hands
+    // back a finished URL — so a post referencing one that is not there means the URL
+    // was typed or pasted rather than produced. That is a broken image on a published
+    // page, and this is what makes it a red build naming the file instead.
+    // ⚠️ Needs NO credential: the CDN is public, and that is the whole reason no CDN
+    // write credential lives in this pipeline.
+    for (const src of new Set([...post.html.matchAll(/src="([^"]+)"/g)].map((m) => m[1]))) {
+      if (!src.startsWith(`${CDN}/blog/media/`)) continue
+      const imgStatus = await head(src)
+      if (imgStatus !== 200) {
+        fail(
+          `${post.slug}: image ${src} returned HTTP ${imgStatus}.\n` +
+            `   The post references it but it is not on the CDN. Upload it at\n` +
+            `   https://cms.ciphera.net/upload, or correct the address in the post.`
+        )
+      }
+    }
+
     const status = await head(`${CDN}${post.image}`)
     if (status !== 200) {
       fail(

@@ -186,3 +186,24 @@ test('the preview reads drafts through the CONNECTION, not the single-node looku
   assert.match(preview, /blogPosts\(first: 1, where: \{ name: \$slug \}\)/)
   assert.doesNotMatch(preview, /blogPost\(id: \$slug/, 'the single-node SLUG lookup cannot see a draft')
 })
+
+test('uploaded media is rewritten to the CDN and never left on WordPress', () => {
+  const t = code('lib/blog-transform.ts')
+  // ⚠️ `\/` NOT `/`. The needle lives inside a REGEX LITERAL, where the slashes are
+  // escaped — so a source-text guard has to match the source's own escaping, not the
+  // string it happens to describe. This assertion failed on its first run for exactly
+  // that reason, which is the comment-stripping trap wearing yet another hat.
+  assert.match(t, /wp-content\\?\/uploads/, 'the transform must rewrite uploads URLs to the CDN')
+  assert.match(t, /blog\/media\//, 'the mapping is the identity path under a prefix — it is the contract with wordpress-media-mirror')
+
+  // 🔴 THE REWRITE ALONE IS AN ASSUMPTION. Without the HEAD check a post can reference
+  // an image the mirror has not copied yet, and the page ships with a hole.
+  const gen = code('scripts/generate-blog-posts.ts')
+  assert.match(gen, /blog\/media\//, 'the build must HEAD-check every rewritten image')
+
+  // And the write credentials must NOT be here: three of them, in a pipeline that runs
+  // on pull_request. That is the trade this design exists to avoid.
+  for (const forbidden of [/STORAGE_PASSWORD/, /BUNNY_API_KEY/, /SOS_SECRET/]) {
+    assert.doesNotMatch(gen, forbidden, 'CDN write credentials must never enter the website build')
+  }
+})

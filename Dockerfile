@@ -37,6 +37,18 @@ ENV HOSTNAME=0.0.0.0
 ARG NEXT_PUBLIC_CDN_URL
 ENV NEXT_PUBLIC_CDN_URL=${NEXT_PUBLIC_CDN_URL}
 
+# 🔴 WHICH COMMIT THIS IMAGE IS, SERVED AT /sys/seo-state.
+# Added 10-09-2026 because the in-cluster `blog-preview` Deployment runs THIS image
+# pinned BY HAND — nothing patches it, unlike every other workload, because
+# ciphera.net's pipeline PATCHes a Magic Containers app rather than a Deployment. A
+# preview rendering last month's engine shows an editor a page that is not the page
+# visitors will get, and says nothing. Without a build stamp there is no fact to
+# compare, so there was no way to detect it at all.
+# ⚠️ Unset is not fatal: it reports "unknown", and the drift checker treats that as
+# UNKNOWN rather than as agreement.
+ARG CIPHERA_BUILD_SHA=unknown
+ENV CIPHERA_BUILD_SHA=${CIPHERA_BUILD_SHA}
+
 # Create a non-root user
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
