@@ -135,6 +135,26 @@ async function main() {
     // ⚠️ It lives HERE and not in the shared transform because it costs a network
     // round trip per post — which is right for a build and wrong for a preview an
     // editor is waiting on.
+    // 🔴 EVERY MIRRORED IMAGE MUST ACTUALLY BE THERE (design §28.3).
+    // The transform rewrote `wp-content/uploads/…` to a CDN path; this is what turns
+    // that from an assumption into a fact. `wordpress-media-mirror` copies within five
+    // minutes of an upload, so the only way to reach this is publishing faster than the
+    // mirror runs — which is exactly the race that would otherwise ship a broken image.
+    // ⚠️ Needs NO credential: the CDN is public, and that is the whole reason the write
+    // could stay out of this pipeline.
+    for (const src of new Set([...post.html.matchAll(/src="([^"]+)"/g)].map((m) => m[1]))) {
+      if (!src.startsWith(`${CDN}/blog/media/`)) continue
+      const imgStatus = await head(src)
+      if (imgStatus !== 200) {
+        fail(
+          `${post.slug}: image ${src} returned HTTP ${imgStatus}.\n` +
+            `   It is referenced by the post but is not on the CDN yet. The media mirror\n` +
+            `   runs every 5 minutes — if this persists, check:\n` +
+            `     kubectl -n apps logs job/<latest wordpress-media-mirror>`
+        )
+      }
+    }
+
     const status = await head(`${CDN}${post.image}`)
     if (status !== 200) {
       fail(

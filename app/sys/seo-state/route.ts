@@ -21,7 +21,17 @@ export function GET() {
   // ever, with the watcher reporting healthy. The counts are what make a deletion
   // detectable at all, and generate-blog-posts.ts's shrink guard reads `posts` too.
   return Response.json(
-    { watermark: SEO_WATERMARK, routes: SEO_ROUTE_COUNT, posts: SEO_POST_COUNT },
+    {
+      watermark: SEO_WATERMARK,
+      routes: SEO_ROUTE_COUNT,
+      posts: SEO_POST_COUNT,
+      // 🔑 WHICH COMMIT IS RENDERING THIS. The content fields above answer "is the
+      // site up to date with the CMS"; this answers "is this instance up to date with
+      // the CODE" — a different question, and the only way to catch the in-cluster
+      // preview Deployment drifting behind production, since it is pinned by hand and
+      // nothing patches it.
+      build: process.env.CIPHERA_BUILD_SHA ?? 'unknown',
+    },
     { headers: { 'Cache-Control': 'no-store' } }
   )
 }

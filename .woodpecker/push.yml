@@ -221,6 +221,7 @@ steps:
           --local dockerfile=. \
           --opt filename=Dockerfile \
           --opt build-arg:NEXT_PUBLIC_CDN_URL="$NEXT_PUBLIC_CDN_URL" \
+          --opt build-arg:CIPHERA_BUILD_SHA="${CI_COMMIT_SHA:0:7}" \
           --import-cache "type=s3,region=$CACHE_REGION,bucket=$CACHE_BUCKET,endpoint_url=$CACHE_ENDPOINT,use_path_style=true,name=$CACHE_NAME" \
           --export-cache "type=s3,region=$CACHE_REGION,bucket=$CACHE_BUCKET,endpoint_url=$CACHE_ENDPOINT,use_path_style=true,name=$CACHE_NAME,mode=max" \
           --output "type=image,\"name=$REGISTRY/$IMAGE_REPO:$IMAGE_TAG,$REGISTRY/$IMAGE_REPO:latest\",push=true" \

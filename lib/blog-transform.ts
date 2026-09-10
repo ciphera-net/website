@@ -143,7 +143,18 @@ export function transformWpPost(
     })
   }
 
-  const { html, faqs } = extractFaqs(n.content ?? '')
+  // 🔴 UPLOADS ARE REWRITTEN TO THE CDN, DETERMINISTICALLY, AND NOTHING HERE UPLOADS.
+  // The estate's CDN rule is a DUAL-WRITE needing three write credentials, and putting
+  // those into ciphera.net's PR-triggerable pipeline is the trade §24.8 was about to
+  // make and should not (§28.3). `wordpress-media-mirror` does the copying in-cluster;
+  // this only renames, by preserving the path under a prefix so there is nothing to
+  // remember on either side. The BUILD then HEAD-checks the result — public, no
+  // credential — so a missing image is a red build with a name, not a hole in a page.
+  const { html: rawHtml, faqs } = extractFaqs(n.content ?? '')
+  const html = rawHtml.replace(
+    /(?:https?:\/\/[^"'\s]*)?\/?wp-content\/uploads\/([A-Za-z0-9._/-]+\.(?:png|jpe?g|gif|webp|svg|avif))/g,
+    (_m, path: string) => `${cdn}/blog/media/${path}`
+  )
   const words = textOf(html).split(/\s+/).filter(Boolean).length
   if (words === 0) problems.push({ field: 'body', message: 'the body is empty' })
 
