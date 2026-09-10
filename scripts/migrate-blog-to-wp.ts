@@ -23,7 +23,9 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 
-const CONTENT_DIR = path.join(process.cwd(), 'content', 'blog')
+// ⚠️ Overridable so the converter can be re-run while the MDX files are moved aside
+// for the comparison build — the acceptance loop needs both states at once.
+const CONTENT_DIR = process.env.MDX_DIR ?? path.join(process.cwd(), 'content', 'blog')
 const OUT = path.join(process.cwd(), 'migration.json')
 const LIVE = process.env.LIVE_SITE ?? 'https://ciphera.net'
 
@@ -52,8 +54,20 @@ function inline(md: string): string {
   // markup in the middle of a sentence.
   const codes: string[] = []
   const logos: string[] = []
+  const raws: string[] = []
 
-  let s = md.replace(/HOLDCODE|HOLDLOGO/g, (m) => m + '_LITERAL')
+  let s = md.replace(/HOLDCODE|HOLDLOGO|HOLDRAW/g, (m) => m + '_LITERAL')
+
+  // 🔴 THE CORPUS MIXES MARKDOWN WITH RAW INLINE HTML, and esc() destroyed it.
+  // Measured: 3 raw <a href=…> anchors, 2 <br />, and one &nbsp;. Each showed up in
+  // the migration diff as VISIBLE MARKUP in the middle of a sentence — the reader would
+  // have seen `<a href="/glossary/opaque">OPAQUE</a>` as text. Protect the small set
+  // the corpus actually uses; anything else still gets escaped, which is the safe way
+  // round for content an external agency will later write.
+  s = s.replace(/<\/?(?:a|br|em|strong|code|sup|sub)\b[^>]*>|&(?:nbsp|amp|lt|gt|quot|hellip|mdash|ndash|#\d+|#x[0-9a-fA-F]+);/g, (m) => {
+    raws.push(m)
+    return `HOLDRAW${raws.length - 1}END`
+  })
   s = s.replace(/<ToolLogo\s+src="([^"]+)"\s*\/>/g, (_m, src: string) => {
     logos.push(src)
     return `HOLDLOGO${logos.length - 1}END`
@@ -68,17 +82,45 @@ function inline(md: string): string {
   s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_m, t: string, href: string) =>
     `<a href="${escAttr(href)}">${t}</a>`
   )
-  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+  // ⚠️ `[^*]+` was too strict. The corpus writes `**4. Decide what *never* goes…**`,
+  // and a strong that stops at the first asterisk simply did not match — leaving the
+  // literal `**` in the rendered page. Non-greedy, and asterisks allowed inside.
+  s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
   // ⚠️ `[^*\n]+` was too strict: the corpus writes *a phrase with **bold** inside*, and
   // an em that stops at the first asterisk swallowed the wrapper and dropped four <em>s
   // in one post. Allow an inner ** pair, and require a non-space at each boundary so a
   // bare `2 * 3` is left alone.
   s = s.replace(/(^|[^*\w])\*(\S(?:[^*\n]|\*\*)*?\S|\S)\*(?![*\w])/g, '$1<em>$2</em>')
+  // Underscore emphasis. `_Trump v. Slaughter_` appears in the DPF post and was being
+  // rendered as literal underscores. Word boundaries keep snake_case identifiers alone.
+  s = s.replace(/(^|[^\w_])_([^_\n]+)_(?![\w_])/g, '$1<em>$2</em>')
 
   s = s.replace(/HOLDCODE(\d+)END/g, (_m, i: string) => `<code>${esc(codes[Number(i)])}</code>`)
   s = s.replace(/HOLDLOGO(\d+)END/g, (_m, i: string) =>
     `<span data-ciphera-block="tool-logo" data-src="${escAttr(logos[Number(i)])}"></span>`)
-  return s.replace(/(HOLDCODE|HOLDLOGO)_LITERAL/g, '$1')
+  // 🔴 GFM AUTOLINKS BARE EMAILS AND URLS. WORDPRESS DOES NOT.
+  // `hello@ciphera.net` written as plain text in the MDX renders as a real mailto
+  // anchor, because the blog pipeline runs remark-gfm. Two posts lost a contact link
+  // that way — and losing a "reach out at …" link is the kind of regression that costs
+  // a real conversation and shows up in no test.
+  // ⚠️ Applied only OUTSIDE existing anchors, or it would rewrite the inside of an
+  // href it had just produced.
+  s = s
+    .split(/(<a\b[^>]*>.*?<\/a>)/g)
+    .map((seg) =>
+      seg.startsWith('<a ')
+        ? seg
+        : seg
+            .replace(/(^|[\s(])((?:https?:\/\/|www\.)[^\s<)]+[^\s<).,;:])/g,
+              (_m, pre: string, url: string) =>
+                `${pre}<a href="${escAttr(url.startsWith('www.') ? 'http://' + url : url)}">${url}</a>`)
+            .replace(/(^|[\s(])([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g,
+              (_m, pre: string, mail: string) => `${pre}<a href="mailto:${escAttr(mail)}">${mail}</a>`)
+    )
+    .join('')
+
+  s = s.replace(/HOLDRAW(\d+)END/g, (_m, i: string) => raws[Number(i)])
+  return s.replace(/(HOLDCODE|HOLDLOGO|HOLDRAW)_LITERAL/g, '$1')
 }
 
 interface Faq { question: string; answer: string }
@@ -138,8 +180,13 @@ function blocksFor(body: string): { blocks: string[]; problems: string[] } {
       const quoted: string[] = []
       while (i < lines.length && /^>\s?/.test(lines[i])) { quoted.push(lines[i].replace(/^>\s?/, '')); i++ }
       const paras = quoted.join('\n').split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean)
+      // 🔑 NO is-style-tldr AND NO ciphera marker: a markdown `>` quote renders in MDX
+      // as a PLAIN <blockquote>, not through BlogBlockquote. Mapping every blockquote to
+      // the component added its wrapper div and its border to a quote that never had
+      // one. The corpus has 28 BlogBlockquote (16 tldr, 12 default) and one markdown
+      // quote — three cases, and they are not the same element.
       out.push(
-        '<!-- wp:quote -->\n<blockquote class="wp-block-quote">' +
+        '<!-- wp:quote {"className":"is-plain-quote"} -->\n<blockquote class="wp-block-quote is-plain-quote">' +
           paras.map((x) => `<!-- wp:paragraph --><p>${inline(x.replace(/\n/g, ' '))}</p><!-- /wp:paragraph -->`).join('') +
           '</blockquote>\n<!-- /wp:quote -->'
       )
@@ -155,11 +202,19 @@ function blocksFor(body: string): { blocks: string[]; problems: string[] } {
 
     if (line.startsWith('```')) {
       endPara()
+      // ⚠️ THE LANGUAGE IS PART OF THE RENDERED OUTPUT. MDX emits
+      // `<code class="language-html">`; dropping the fence's info string changed the
+      // one code block in the corpus.
+      const lang = line.slice(3).trim()
       const code: string[] = []
       i++
       while (i < lines.length && !lines[i].startsWith('```')) { code.push(lines[i]); i++ }
       i++
-      out.push(`<!-- wp:code -->\n<pre class="wp-block-code"><code>${esc(code.join('\n'))}</code></pre>\n<!-- /wp:code -->`)
+      const cls = lang ? ` class="language-${escAttr(lang)}"` : ''
+      // ⚠️ THE TRAILING NEWLINE IS PART OF THE OUTPUT. A markdown fence keeps the
+      // newline before its closing ```; MDX renders it inside <code>. Dropping it was
+      // the last remaining byte of difference across all sixteen posts.
+      out.push(`<!-- wp:code -->\n<pre class="wp-block-code"><code${cls}>${esc(code.join('\n') + '\n')}</code></pre>\n<!-- /wp:code -->`)
       continue
     }
 

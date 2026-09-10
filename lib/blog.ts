@@ -98,7 +98,14 @@ export function getBlogPosts(): BlogPostMeta[] {
 
   for (const p of wpPosts) posts.push(metaFromWp(p))
 
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  // 🔴 A DATE ALONE IS NOT A TOTAL ORDER, AND THE CORPUS HAS THREE POSTS ON 2026-07-22.
+  // Until the migration, ties were broken by `readdirSync` order — alphabetical by
+  // accident, on this filesystem, on this machine. WordPress returns them in its own
+  // order, and the sitemap and llms.txt shuffled. The slug is a stable, meaningful
+  // tiebreak and it reproduces exactly what the filesystem was doing.
+  return posts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime() || a.slug.localeCompare(b.slug)
+  )
 }
 
 export function getBlogPost(slug: string): BlogPost | null {

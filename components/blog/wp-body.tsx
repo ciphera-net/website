@@ -87,10 +87,17 @@ function cipheraBlocks() {
       }
 
       if (node.tagName === 'blockquote') {
-        // A plain core/quote is still a blockquote, and BlogBlockquote's default
-        // variant is what the MDX corpus uses for one — so it maps too, without a
-        // marker. `is-style-tldr` is the only thing that changes the variant, and it
-        // is read HERE, before the sanitiser strips every class.
+        // 🔴 THREE CASES, NOT TWO, AND CONFLATING THEM WAS A REAL DIFFERENCE.
+        // The corpus has 16 `<BlogBlockquote variant="tldr">`, 12 plain
+        // `<BlogBlockquote>`, and one MARKDOWN `>` quote — and the last renders as a
+        // bare <blockquote>, with none of the component's wrapper, border or padding.
+        // Mapping every blockquote to BlogBlockquote gave that quote a card it never
+        // had. `is-plain-quote` is what the migration marks it with; anything without
+        // that marker is the component.
+        if (className.includes('is-plain-quote')) {
+          node.properties = {}
+          return
+        }
         node.properties = {
           ...props,
           'data-ciphera-block': 'callout',
@@ -118,6 +125,18 @@ const schema: SanitizeSchema = {
     img: ['src', 'alt', 'width', 'height'],
     th: ['colSpan', 'rowSpan', 'scope'],
     td: ['colSpan', 'rowSpan'],
+    // 🔴 THE ONE CLASS THAT SURVIVES, AND ONLY BY EXPLICIT VALUE.
+    // MDX emits `<code class="language-html">` for a fenced block's info string, and
+    // stripping every class silently changed the corpus's one code block. rehype-sanitize
+    // takes [attribute, ...allowedValues], so this is a value allowlist rather than a
+    // hole: an author cannot smuggle an arbitrary class through `code`.
+    // ⚠️ Adding a language means adding it HERE. That is deliberate — it keeps the
+    // "no classes from the CMS" rule true, with a named, reviewable exception.
+    code: [
+      ['className', 'language-html', 'language-js', 'language-ts', 'language-json',
+        'language-bash', 'language-sh', 'language-css', 'language-go', 'language-php',
+        'language-sql', 'language-yaml', 'language-tsx', 'language-jsx'],
+    ],
   },
   protocols: {
     // ⚠️ `src` allows NO protocol at all. Every image is rewritten to a CDN path by the
