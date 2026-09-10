@@ -51,7 +51,18 @@ async function fetchDraft(slug: string): Promise<{ node: WpNode | null; error: s
       headers,
       cache: 'no-store',
       body: JSON.stringify({
-        query: `query Preview($slug: ID!) { blogPost(id: $slug, idType: SLUG, asPreview: false) { ${WP_POST_FIELDS} } }`,
+        // 🔴 THE CONNECTION, NOT `blogPost(idType: SLUG)`. Measured 10-09-2026 with a
+        // fully authorised reader: the single-node SLUG resolver returns **null** for a
+        // draft, because WPGraphQL restricts that lookup to published posts and the
+        // `graphql_post_object_connection_query_args` filter that widens the statuses
+        // only reaches CONNECTIONS. The same credential, on the same request, gets the
+        // draft from `blogPosts(where: { name: … })` and nothing from `blogPost`.
+        // ⚠️ It fails by returning null, not by erroring — so it reads exactly like
+        // "that post does not exist", which is the wrong diagnosis and the reason this
+        // took a live query to find rather than a careful read.
+        query: `query Preview($slug: String!) {
+          blogPosts(first: 1, where: { name: $slug }) { nodes { ${WP_POST_FIELDS} } }
+        }`,
         variables: { slug },
       }),
     })
@@ -61,7 +72,7 @@ async function fetchDraft(slug: string): Promise<{ node: WpNode | null; error: s
     // service account's password having been rotated, and "the post is missing" is a
     // very misleading way to report that.
     if (body.errors?.length) return { node: null, error: body.errors[0]?.message ?? 'GraphQL error' }
-    return { node: body?.data?.blogPost ?? null, error: null }
+    return { node: body?.data?.blogPosts?.nodes?.[0] ?? null, error: null }
   } catch (e) {
     return { node: null, error: (e as Error).message }
   }

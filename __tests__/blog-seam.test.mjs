@@ -168,3 +168,13 @@ test('the preview and the build share ONE transform', () => {
   assert.match(code('app/preview/[slug]/page.tsx'), /BlogPostView/)
   assert.match(code('app/blog/[slug]/page.tsx'), /BlogPostView/)
 })
+
+test('the preview reads drafts through the CONNECTION, not the single-node lookup', () => {
+  const preview = code('app/preview/[slug]/page.tsx')
+  // 🔴 MEASURED, NOT REASONED. With a fully authorised reader, `blogPost(idType: SLUG)`
+  // returns null for a draft — WPGraphQL restricts that lookup to published posts, and
+  // the filter that widens the statuses only reaches connections. It fails by returning
+  // NULL rather than erroring, so it reads exactly like "that post does not exist".
+  assert.match(preview, /blogPosts\(first: 1, where: \{ name: \$slug \}\)/)
+  assert.doesNotMatch(preview, /blogPost\(id: \$slug/, 'the single-node SLUG lookup cannot see a draft')
+})
