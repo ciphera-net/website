@@ -135,22 +135,21 @@ async function main() {
     // ⚠️ It lives HERE and not in the shared transform because it costs a network
     // round trip per post — which is right for a build and wrong for a preview an
     // editor is waiting on.
-    // 🔴 EVERY MIRRORED IMAGE MUST ACTUALLY BE THERE (design §28.3).
-    // The transform rewrote `wp-content/uploads/…` to a CDN path; this is what turns
-    // that from an assumption into a fact. `wordpress-media-mirror` copies within five
-    // minutes of an upload, so the only way to reach this is publishing faster than the
-    // mirror runs — which is exactly the race that would otherwise ship a broken image.
-    // ⚠️ Needs NO credential: the CDN is public, and that is the whole reason the write
-    // could stay out of this pipeline.
+    // 🔴 EVERY IMAGE A POST REFERENCES MUST ACTUALLY BE ON THE CDN (design §29).
+    // Images are uploaded at cms.ciphera.net/upload, which writes to the CDN and hands
+    // back a finished URL — so a post referencing one that is not there means the URL
+    // was typed or pasted rather than produced. That is a broken image on a published
+    // page, and this is what makes it a red build naming the file instead.
+    // ⚠️ Needs NO credential: the CDN is public, and that is the whole reason no CDN
+    // write credential lives in this pipeline.
     for (const src of new Set([...post.html.matchAll(/src="([^"]+)"/g)].map((m) => m[1]))) {
       if (!src.startsWith(`${CDN}/blog/media/`)) continue
       const imgStatus = await head(src)
       if (imgStatus !== 200) {
         fail(
           `${post.slug}: image ${src} returned HTTP ${imgStatus}.\n` +
-            `   It is referenced by the post but is not on the CDN yet. The media mirror\n` +
-            `   runs every 5 minutes — if this persists, check:\n` +
-            `     kubectl -n apps logs job/<latest wordpress-media-mirror>`
+            `   The post references it but it is not on the CDN. Upload it at\n` +
+            `   https://cms.ciphera.net/upload, or correct the address in the post.`
         )
       }
     }

@@ -143,13 +143,14 @@ export function transformWpPost(
     })
   }
 
-  // 🔴 UPLOADS ARE REWRITTEN TO THE CDN, DETERMINISTICALLY, AND NOTHING HERE UPLOADS.
-  // The estate's CDN rule is a DUAL-WRITE needing three write credentials, and putting
-  // those into ciphera.net's PR-triggerable pipeline is the trade §24.8 was about to
-  // make and should not (§28.3). `wordpress-media-mirror` does the copying in-cluster;
-  // this only renames, by preserving the path under a prefix so there is nothing to
-  // remember on either side. The BUILD then HEAD-checks the result — public, no
-  // credential — so a missing image is a red build with a name, not a hole in a page.
+  // 🔴 A wp-content/uploads URL CANNOT COME FROM AN UPLOAD — WordPress physically
+  // cannot accept one (read-only docroot, §9.1). It can only come from somebody pasting
+  // one by hand, which is exactly the case worth catching: the path would 404 for every
+  // visitor. Rewriting it to the CDN and then HEAD-checking below turns that into a red
+  // build naming the file, rather than a hole in a published page.
+  // 🔑 Images are uploaded at cms.ciphera.net/upload, which writes to the CDN directly
+  // and hands back a finished URL (design §29). Nothing in this build holds a CDN
+  // credential, and that is the property that let the write live somewhere else.
   const { html: rawHtml, faqs } = extractFaqs(n.content ?? '')
   const html = rawHtml.replace(
     /(?:https?:\/\/[^"'\s]*)?\/?wp-content\/uploads\/([A-Za-z0-9._/-]+\.(?:png|jpe?g|gif|webp|svg|avif))/g,
