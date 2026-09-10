@@ -124,3 +124,13 @@ test('the OG gate is NOT in the deliberately network-free test', () => {
   const og = read('__tests__/og-image-dimensions.test.mjs')
   assert.doesNotMatch(og, /fetch\(|https:\/\/cdn\.ciphera\.net/, 'this guard must stay source-level')
 })
+
+test('the committed WordPress-bodies stub is empty', () => {
+  // 🔴 IT IS COMMITTED ONLY SO THE MODULE RESOLVES ON A FRESH CLONE. If a real post
+  // lands in it, the repository has quietly become a second source of truth for what
+  // the CMS says — and the stale copy is the one that wins an argument nobody knew
+  // was happening. A build overwrites it; a commit must not.
+  const stub = read('lib/blog-wp.gen.ts')
+  assert.match(stub, /export const wpPosts: WpBlogPost\[\] = \[\]/, 'lib/blog-wp.gen.ts must be committed empty')
+  assert.doesNotMatch(stub, /localhost|127\.0\.0\.1/, 'a local port-forward URL must never be committed as the blog\'s source')
+})
