@@ -41,3 +41,12 @@ next-env.d.ts
 # for what the CMS says, and the stale one always wins an argument nobody knew was
 # happening. The build fails loudly if WordPress is unreachable (generate-seo.ts).
 /lib/seo.gen.ts
+
+# Same rule, same reason, for the blog's bodies once WordPress is a source of them.
+# ⚠️ A CONSEQUENCE WORTH KNOWING BEFORE YOU MEET IT: `npm run dev` on a fresh clone
+# needs these generated first, and generate:blog reads a CLUSTER-INTERNAL endpoint.
+#     kubectl -n apps port-forward svc/wordpress 8088:80
+#     WORDPRESS_GRAPHQL_URL=http://localhost:8088/graphql npm run generate:blog
+# lib/blog-wp.gen.ts is checked in ONLY as an empty stub so the module resolves; every
+# build overwrites it.
+/lib/blog-posts.gen.ts
