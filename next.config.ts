@@ -1,4 +1,8 @@
 import type { NextConfig } from 'next'
+// 🔴 TIER-2 REDIRECTS COME FROM WORDPRESS (design §6.4, §34). Build output, written by
+// `npm run generate:redirects` in prebuild and committed as an empty stub so this
+// config resolves on a fresh clone — the same convention as lib/blog-wp.gen.ts.
+import { REDIRECTS } from './lib/redirects.gen'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -17,32 +21,22 @@ const nextConfig: NextConfig = {
   // * Performance optimizations
   compress: true,
   poweredByHeader: false,
-  // * Permanent redirects for removed blog posts (corpus purge 19-07-2026, see
-  // * Public/docs/audits/19-07-2026-blog-corpus-audit.md). Deleted URLs keep
-  // * receiving search/backlink traffic for months — every removal must land here,
-  // * never on a 404 (the Drop post leaked 17 visits/90d into a 404 after its
-  // * redirect-less removal).
+  // * Redirects come from TWO places since 10-09-2026 (design §6.4, §34):
+  // *   Tier 1 — structural, in this file, permanent, not editable by the agency.
+  // *   Tier 2 — retired content, from WordPress, via the REDIRECTS import above.
+  // * 🔴 A removal must ALWAYS land somewhere. Deleted URLs keep receiving search and
+  // * backlink traffic for months — the Drop post leaked 17 visits/90d into a 404
+  // * after its redirect-less removal (corpus purge 19-07-2026, see
+  // * Public/docs/audits/19-07-2026-blog-corpus-audit.md). A retired POST now goes in
+  // * the CMS under Redirects; a retired structural path goes here, in a PR.
   async redirects() {
-    const gone: Array<[string, string]> = [
-      ['ai-assistant-data-collection-chatgpt-gemini-meta', '/blog/what-we-see-about-you-what-we-dont'],
-      ['basic-fit-data-breach-1-million-members', '/blog'],
-      ['biggest-data-breaches-2025-2026', '/blog/why-privacy-cant-be-an-afterthought'],
-      ['bot-account-farming-defense-zero-knowledge-auth', '/blog/zero-knowledge-encryption-guide'],
-      ['cdn-performance-monitoring-bunnycdn-analytics', '/blog/why-we-chose-bunnycdn'],
-      ['darksword-iphone-exploit-how-to-protect-yourself', '/blog/zero-knowledge-encryption-guide'],
-      ['data-brokers-10000-data-points-how-to-delete', '/blog/what-we-see-about-you-what-we-dont'],
-      ['data-privacy-audit-guide-startups', '/blog/why-privacy-cant-be-an-afterthought'],
-      ['drop-vs-wetransfer-google-drive-dropbox-encrypted-file-sharing', '/blog/zero-knowledge-encryption-guide'],
-      ['google-search-console-privacy-first-analytics', '/blog/pulse-vs-google-analytics-plausible-fathom'],
-      ['instagram-drops-end-to-end-encryption', '/blog/zero-knowledge-encryption-guide'],
-      ['passkeys-vs-passwords-2026', '/blog/zero-knowledge-encryption-guide'],
-      ['privacy-statistics-2026', '/blog'],
-      ['recaptcha-privacy-liability-alternatives-2026', '/blog/ciphera-captcha-vs-recaptcha-vs-turnstile'],
-      ['uk-age-verification-apple-iphone', '/blog/what-we-see-about-you-what-we-dont'],
-      ['vercel-data-breach-2026', '/blog'],
-      ['why-european-businesses-should-use-european-software', '/blog/why-swiss-infrastructure-matters-for-data-privacy'],
-      ['why-most-analytics-tools-skip-user-journeys', '/blog/pulse-vs-google-analytics-plausible-fathom'],
-    ]
+    // 🔁 THE 18 RETIRED BLOG SLUGS MOVED INTO WORDPRESS ON 10-09-2026 (design §34).
+    // They were a `gone` array right here. They are Tier 2 — content redirects the
+    // agency owns — and they now arrive through `REDIRECTS` below, regenerated from
+    // the CMS on every build by `npm run generate:redirects`. They were seeded
+    // verbatim, and the generator refuses to ship fewer than 18.
+    //
+    // 🔴 WHAT REMAINS IN THIS FILE IS TIER 1 AND MUST NEVER MOVE.
     // * Removed site pages (GSC 404 report, 19-07-2026): the old /products
     // * landing (removed 31-03), the pre-rename Auth product page, the retired
     // * Drop product page, and two dead marketing pages from the March cleanup.
@@ -67,18 +61,19 @@ const nextConfig: NextConfig = {
       { source: '/security', destination: '/trust', permanent: true },
       { source: '/transparency/:path*', destination: '/trust/:path*', permanent: true },
     ]
+    // 🔴 TIER 1 IS SPREAD FIRST SO IT ALWAYS WINS. Next applies redirects in order,
+    // and a CMS row must never be able to shadow the /transparency rules — their URLs
+    // are cited INSIDE GPG-signed canary plaintext that cannot be edited without
+    // invalidating the signatures. `generate-redirects.ts` refuses such a collision
+    // too; this ordering is the half that holds even if the generator is bypassed.
     return [
-      ...gone.map(([slug, destination]) => ({
-        source: `/blog/${slug}`,
-        destination,
-        permanent: true,
-      })),
       ...goneSite.map(([source, destination]) => ({
         source,
         destination,
         permanent: true,
       })),
       ...trustHub,
+      ...REDIRECTS,
     ]
   },
   // * Security headers

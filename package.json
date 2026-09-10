@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prebuild": "npm run generate:seo && npm run generate:learn && npm run generate:blog && npm run sync:transparency && npm run generate:llms",
+    "prebuild": "npm run generate:seo && npm run generate:redirects && npm run generate:learn && npm run generate:blog && npm run sync:transparency && npm run generate:llms",
     "start": "next start",
     "test": "node --test \"__tests__/**/*.test.mjs\"",
     "lint": "next lint",
@@ -15,7 +15,8 @@
     "generate:blog": "npx tsx scripts/generate-blog-posts.ts",
     "sync:transparency": "npx tsx scripts/sync-transparency.ts",
     "generate:llms": "npx tsx scripts/generate-llms.ts",
-    "generate:seo": "npx tsx scripts/generate-seo.ts"
+    "generate:seo": "npx tsx scripts/generate-seo.ts",
+    "generate:redirects": "npx tsx scripts/generate-redirects.ts"
   },
   "dependencies": {
     "@ciphera-net/facet": "^0.4.1",
