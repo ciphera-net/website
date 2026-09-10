@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AuthMockup } from '@/components/ui/auth-mockup'
@@ -12,38 +13,38 @@ import {
 } from '@ciphera-net/facet'
 import { ShieldCheck, Key, Timer, Vault } from '@phosphor-icons/react/dist/ssr'
 
-export const metadata: Metadata = {
-  title: 'Ciphera ID - How Signing In to Ciphera Works',
-  description:
-    'Ciphera ID is the sign-in behind Ciphera’s own applications — not a product you buy. Zero-knowledge OPAQUE authentication (RFC 9807), an encrypted profile vault the server cannot read, and Swiss-hosted infrastructure.',
-  alternates: {
-    canonical: 'https://ciphera.net/products/id',
-  },
-  openGraph: {
-    title: 'Ciphera ID - How Signing In to Ciphera Works | Ciphera',
+export const metadata: Metadata = seoFor('/products/id', {
+    title: 'Ciphera ID - How Signing In to Ciphera Works',
     description:
-      'The sign-in behind Ciphera’s own applications: zero-knowledge OPAQUE authentication (RFC 9807), an encrypted profile vault the server cannot read, and Swiss-hosted infrastructure.',
-    url: 'https://ciphera.net/products/id',
-    siteName: 'Ciphera',
-    images: [
-      {
-        url: cdnUrl('/id_icon_no_margins.png'),
-        width: 512,
-        height: 512,
-        alt: 'Ciphera ID - the sign-in behind Ciphera',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Ciphera ID - How Signing In to Ciphera Works | Ciphera',
-    description:
-      'The sign-in behind Ciphera’s own applications: zero-knowledge OPAQUE authentication (RFC 9807) and an encrypted profile vault the server cannot read.',
-    images: [cdnUrl('/id_icon_no_margins.png')],
-  },
-}
+      'Ciphera ID is the sign-in behind Ciphera’s own applications — not a product you buy. Zero-knowledge OPAQUE authentication (RFC 9807), an encrypted profile vault the server cannot read, and Swiss-hosted infrastructure.',
+    alternates: {
+      canonical: 'https://ciphera.net/products/id',
+    },
+    openGraph: {
+      title: 'Ciphera ID - How Signing In to Ciphera Works | Ciphera',
+      description:
+        'The sign-in behind Ciphera’s own applications: zero-knowledge OPAQUE authentication (RFC 9807), an encrypted profile vault the server cannot read, and Swiss-hosted infrastructure.',
+      url: 'https://ciphera.net/products/id',
+      siteName: 'Ciphera',
+      images: [
+        {
+          url: cdnUrl('/id_icon_no_margins.png'),
+          width: 512,
+          height: 512,
+          alt: 'Ciphera ID - the sign-in behind Ciphera',
+        },
+      ],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Ciphera ID - How Signing In to Ciphera Works | Ciphera',
+      description:
+        'The sign-in behind Ciphera’s own applications: zero-knowledge OPAQUE authentication (RFC 9807) and an encrypted profile vault the server cannot read.',
+      images: [cdnUrl('/id_icon_no_margins.png')],
+    },
+  })
 
 // * Ciphera ID is internal infrastructure, not something on the shelf: there is
 // * no self-serve client registration, no OIDC discovery document and no

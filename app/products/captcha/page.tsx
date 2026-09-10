@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
@@ -20,38 +21,38 @@ import {
   PuzzlePiece,
 } from '@phosphor-icons/react/dist/ssr'
 
-export const metadata: Metadata = {
-  title: 'Ciphera Captcha - Privacy-First Bot Protection',
-  description:
-    'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking, fully stateless.',
-  alternates: {
-    canonical: 'https://ciphera.net/products/captcha',
-  },
-  openGraph: {
-    title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
+export const metadata: Metadata = seoFor('/products/captcha', {
+    title: 'Ciphera Captcha - Privacy-First Bot Protection',
     description:
-      'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking.',
-    url: 'https://ciphera.net/products/captcha',
-    siteName: 'Ciphera',
-    images: [
-      {
-        url: cdnUrl('/captcha_icon_no_margins.png'),
-        width: 512,
-        height: 512,
-        alt: 'Ciphera Captcha - Privacy-First Bot Protection',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
-    description:
-      'Adaptive proof-of-work, puzzle challenges, and 5-signal risk scoring. No tracking, fully stateless.',
-    images: [cdnUrl('/captcha_icon_no_margins.png')],
-  },
-}
+      'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking, fully stateless.',
+    alternates: {
+      canonical: 'https://ciphera.net/products/captcha',
+    },
+    openGraph: {
+      title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
+      description:
+        'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking.',
+      url: 'https://ciphera.net/products/captcha',
+      siteName: 'Ciphera',
+      images: [
+        {
+          url: cdnUrl('/captcha_icon_no_margins.png'),
+          width: 512,
+          height: 512,
+          alt: 'Ciphera Captcha - Privacy-First Bot Protection',
+        },
+      ],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Ciphera Captcha - Privacy-First Bot Protection | Ciphera',
+      description:
+        'Adaptive proof-of-work, puzzle challenges, and 5-signal risk scoring. No tracking, fully stateless.',
+      images: [cdnUrl('/captcha_icon_no_margins.png')],
+    },
+  })
 
 const captchaSchema = [
   {

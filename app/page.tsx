@@ -7,6 +7,28 @@ import FAQ from '../components/FAQ'
 import ClosingCta from '../components/ClosingCta'
 import { cdnUrl } from '@/lib/cdn'
 
+import type { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
+
+/**
+ * 🔴 THE HOMEPAGE HAD NO METADATA OBJECT OF ITS OWN. It inherited the root layout's
+ * wholesale, which is why this export is an addition rather than a one-line wrap like
+ * the other twelve routes. The fallback below is exactly what app/layout.tsx renders
+ * today, so with or without a WordPress stub the served <head> is unchanged.
+ *
+ * ⚠️ Do NOT move this to the root layout to "share" it — that layout renders every
+ * page on the site, so a title set there is a title set everywhere.
+ */
+export const metadata: Metadata = seoFor('/', {
+  title: {
+    absolute: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
+  },
+  description:
+    'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Captcha bot protection, Relay email, the zero-knowledge Ciphera ID sign-in behind them, and open-source Tessera.',
+  alternates: {
+    canonical: 'https://ciphera.net',
+  },
+})
 // * JSON-LD structured data for homepage
 const homepageSchemas = [
   {
