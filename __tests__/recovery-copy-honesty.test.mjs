@@ -3,6 +3,9 @@ import assert from 'node:assert/strict'
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import {
+  FORBIDDEN, QUALIFIED, QUALIFIER, QUALIFIER_WINDOW, PASSWORD_IS_THE_ONLY_WAY,
+} from '../lib/recovery-copy-rules.mjs'
 
 /**
  * Account recovery is switched off. The server ceremony that proves possession
@@ -31,48 +34,24 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => readFileSync(join(root, p), 'utf8')
 
 /** Every public surface that talks about account recovery. */
+// 🔴 TWO SURFACES LEFT THIS LIST ON 10-09-2026 AND THE GUARD DID NOT SHRINK.
+// `content/blog/zero-knowledge-encryption-guide.mdx` and
+// `content/blog/ciphera-id-vs-auth0-vs-clerk.mdx` moved into WordPress with the rest of
+// the blog (design D13), so a repository test cannot read them any more. This file's own
+// header says what that would mean: *a guard narrower than its subject reads as coverage
+// and is not.* So the rules moved to `lib/recovery-copy-rules.mjs`, and
+// `scripts/generate-blog-posts.ts` runs THE SAME ONES over every WordPress body at build
+// time. The subject did not shrink; the guard grew a second half.
+// ⚠️ If that build gate is ever removed, this list is silently four surfaces wide again.
+// The last test in this file is what makes that loud.
 const SURFACES = [
   'app/terms/page.tsx',
   'app/privacy/page.tsx',
   'components/FAQ.tsx',
   'app/products/id/page.tsx',
-  'content/blog/zero-knowledge-encryption-guide.mdx',
-  'content/blog/ciphera-id-vs-auth0-vs-clerk.mdx',
 ]
 
-/**
- * Claims that are false however they are qualified. "Lose BOTH" is the exact
- * word the audit singled out: it is the part a reader relies on, and it is
- * wrong in the direction that costs them the account.
- */
-const FORBIDDEN = [
-  /lose both your password and your recovery phrase/i,
-  /losing both your password and your recovery phrase/i,
-  /recover it with your recovery phrase/i,
-]
-
-/**
- * Claims that are true of the design and false of today's deployment. They may
- * appear only with an availability qualifier close enough to be read in the
- * same breath — a caveat three sections away does not qualify anything.
- */
-const QUALIFIED = [
-  /recovery uses your 24-word/i,
-  /recovery requires the 24-word/i,
-  /requires? the 24-word recovery phrase/i,
-  /you recover access with your 24-word/i,
-]
-
-/** How far from a qualified claim the caveat may sit, in characters. */
-const QUALIFIER_WINDOW = 400
-
-const QUALIFIER =
-  /recovery is (?:currently |at present |at the moment |today )?(?:unavailable|switched off|paused|turned off)|(?:currently|at the moment) (?:unavailable|switched off|paused)/i
-
-/** The honest statement each surface has to make while recovery is off. */
-const PASSWORD_IS_THE_ONLY_WAY =
-  /\b(?:the|your) password is (?:currently |at present |today |now )?the only way (?:in\b|into your account)/i
-
+// The rules themselves live in lib/recovery-copy-rules.mjs — see the SURFACES note.
 test('the surface list is not stale', () => {
   for (const file of SURFACES) {
     assert.ok(
@@ -162,5 +141,19 @@ test('no unguarded surface talks about the recovery phrase', () => {
     unguarded,
     [],
     `these files mention the recovery phrase but are not in SURFACES, so nothing checks them: ${unguarded.join(', ')}`,
+  )
+})
+
+test('the blog half of this guard is enforced at build time', () => {
+  // 🔴 THE BLOG IS NO LONGER IN THIS REPOSITORY, so these rules can only reach it in
+  // the build. If that gate is deleted, this list quietly stops covering two of the six
+  // surfaces it was written for — with every test still green. This assertion is the
+  // only thing standing between that and nobody noticing.
+  const gen = readFileSync(join(root, 'scripts/generate-blog-posts.ts'), 'utf8')
+  assert.match(
+    gen,
+    /checkRecoveryCopy/,
+    'generate-blog-posts.ts must run the recovery-copy rules over every WordPress body — ' +
+      'the blog posts that used to be in SURFACES live there now',
   )
 })

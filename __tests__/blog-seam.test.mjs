@@ -80,11 +80,19 @@ test('the BlogPosting wordCount does not count HTML tags', () => {
 
 test('the sanitiser strips every class and allows no image protocol', () => {
   const body = code('components/blog/wp-body.tsx')
-  assert.doesNotMatch(
-    body,
-    /'className'|"className"/,
-    'no class may survive sanitising — WordPress emits wp-block-* classes that mean nothing here, and allowing them lets the CMS make styling decisions'
+  // The ONE exception, and it is a VALUE allowlist rather than a hole: MDX emits
+  // `<code class="language-html">` for a fenced block's info string, and stripping it
+  // silently changed the corpus's only code block. rehype-sanitize takes
+  // [attribute, ...allowedValues], so an author cannot smuggle an arbitrary class
+  // through `code`. Anything else claiming className is the thing this forbids.
+  const classNameUses = [...body.matchAll(/'className'/g)]
+  assert.equal(
+    classNameUses.length,
+    1,
+    'className may appear exactly once in the sanitiser schema — on `code`, as a value allowlist. ' +
+      'WordPress emits wp-block-* classes that mean nothing here, and allowing them lets the CMS make styling decisions'
   )
+  assert.match(body, /code: \[\s*\[\s*'className', 'language-/, 'the one className exception must be value-allowlisted')
   // Semantics travel on data-* instead, so those must be allowed.
   assert.match(body, /'data-ciphera-block'/)
   // An `src` with any scheme is an image the build's CDN mirror did not handle.

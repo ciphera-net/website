@@ -17,6 +17,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { WP_POST_FIELDS, transformWpPost, type WpNode } from '../lib/blog-transform'
 import type { WpBlogPost } from '../lib/blog-types'
+import { checkRecoveryCopy } from '../lib/recovery-copy-rules.mjs'
 
 const WP = process.env.WORDPRESS_GRAPHQL_URL ?? 'http://wordpress.apps.svc.cluster.local/graphql'
 const SITE = 'ciphera-net'
@@ -37,6 +38,11 @@ const QUERY = `{
 function fail(msg: string): never {
   console.error(`\n🔴 generate-blog-posts: ${msg}\n`)
   process.exit(1)
+}
+
+/** Tags stripped, for a check that reads PROSE rather than markup. */
+function textOfBody(html: string): string {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ')
 }
 
 async function head(url: string): Promise<number> {
@@ -138,6 +144,25 @@ async function main() {
       )
     }
 
+    // 🔴 THE RECOVERY-COPY GUARD, MOVED HERE BECAUSE THE CONTENT MOVED.
+    // Two of that guard's six surfaces were blog posts. They are in WordPress now, so a
+    // repository test cannot see them — and the guard's own header says a guard narrower
+    // than its subject reads as coverage and is not. Same rules, run where the copy is.
+    // ⚠️ It checks the FULL body INCLUDING the FAQ answers, which is where one of the
+    // false claims lived.
+    const copyProblems = checkRecoveryCopy(
+      textOfBody(post.html) + ' ' + post.faqs.map((f) => `${f.question} ${f.answer}`).join(' '),
+      post.slug
+    )
+    if (copyProblems.length > 0) {
+      fail(
+        `${post.slug} makes a false or unqualified claim about account recovery:\n` +
+          copyProblems.map((x) => `   • ${x}`).join('\n') +
+          `\n   No recovery phrase can open an account today; losing the password alone is\n` +
+          `   terminal. Fix the copy at https://cms.ciphera.net → Blog.`
+      )
+    }
+
     const { html: _html, faqs: _faqs, wordCount: _wc, cta: _cta, ...summary } = post
     summaries.push(summary)
     wp.push(post)
@@ -175,7 +200,16 @@ async function main() {
     }
   }
 
-  summaries.sort((a, b) => new Date(b.date as string).getTime() - new Date(a.date as string).getTime())
+  // 🔴 A DATE ALONE IS NOT A TOTAL ORDER, AND THE CORPUS HAS THREE POSTS ON 2026-07-22.
+  // Until the migration, ties were broken by `readdirSync` order — alphabetical by
+  // accident, on this filesystem, on this machine. WordPress returns them in its own
+  // order, and the sitemap and llms.txt shuffled. The slug is a stable, meaningful
+  // tiebreak and it reproduces exactly what the filesystem was doing.
+  summaries.sort(
+    (a, b) =>
+      new Date(b.date as string).getTime() - new Date(a.date as string).getTime() ||
+      (a.slug as string).localeCompare(b.slug as string)
+  )
 
   fs.writeFileSync(
     SUMMARY_OUT,
