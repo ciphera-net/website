@@ -1,43 +1,44 @@
 import type { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, GithubIcon } from '@ciphera-net/facet'
 import { authShowcaseBg, authIcon, pulseIcon } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
 
-export const metadata: Metadata = {
-  title: 'Tessera - Open-Source OPAQUE Authentication',
-  description:
-    'Tessera is Ciphera’s open-source OPAQUE authentication library (Apache-2.0): a Rust core and sidecar, a Go server SDK, and a browser SDK. Zero-knowledge auth where the password never reaches the server.',
-  alternates: {
-    canonical: 'https://ciphera.net/products/tessera',
-  },
-  openGraph: {
-    title: 'Tessera - Open-Source OPAQUE Authentication | Ciphera',
+export const metadata: Metadata = seoFor('/products/tessera', {
+    title: 'Tessera - Open-Source OPAQUE Authentication',
     description:
-      'Ciphera’s open-source OPAQUE authentication library (Apache-2.0): Rust core + sidecar, Go server SDK, and browser SDK. The password never reaches the server.',
-    url: 'https://ciphera.net/products/tessera',
-    siteName: 'Ciphera',
-    images: [
-      {
-        url: cdnUrl('/ciphera_logo_no_margins.png'),
-        width: 1200,
-        height: 630,
-        alt: 'Tessera - Open-Source OPAQUE Authentication',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@CipheraNET',
-    title: 'Tessera - Open-Source OPAQUE Authentication | Ciphera',
-    description:
-      'Ciphera’s open-source OPAQUE authentication library (Apache-2.0): Rust core + sidecar, Go server SDK, and browser SDK.',
-    images: [cdnUrl('/ciphera_logo_no_margins.png')],
-  },
-}
+      'Tessera is Ciphera’s open-source OPAQUE authentication library (Apache-2.0): a Rust core and sidecar, a Go server SDK, and a browser SDK. Zero-knowledge auth where the password never reaches the server.',
+    alternates: {
+      canonical: 'https://ciphera.net/products/tessera',
+    },
+    openGraph: {
+      title: 'Tessera - Open-Source OPAQUE Authentication | Ciphera',
+      description:
+        'Ciphera’s open-source OPAQUE authentication library (Apache-2.0): Rust core + sidecar, Go server SDK, and browser SDK. The password never reaches the server.',
+      url: 'https://ciphera.net/products/tessera',
+      siteName: 'Ciphera',
+      images: [
+        {
+          url: cdnUrl('/ciphera_logo_no_margins.png'),
+          width: 1200,
+          height: 630,
+          alt: 'Tessera - Open-Source OPAQUE Authentication',
+        },
+      ],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: '@CipheraNET',
+      title: 'Tessera - Open-Source OPAQUE Authentication | Ciphera',
+      description:
+        'Ciphera’s open-source OPAQUE authentication library (Apache-2.0): Rust core + sidecar, Go server SDK, and browser SDK.',
+      images: [cdnUrl('/ciphera_logo_no_margins.png')],
+    },
+  })
 
 const tesseraSchema = [
   {

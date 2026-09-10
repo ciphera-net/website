@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { RelayMockup } from '@/components/ui/relay-mockup'
@@ -19,38 +20,38 @@ import {
   EnvelopeSimple,
 } from '@phosphor-icons/react/dist/ssr'
 
-export const metadata: Metadata = {
-  title: 'Ciphera Relay - Secure Email Infrastructure',
-  description:
-    'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking, Swiss hosted.',
-  alternates: {
-    canonical: 'https://ciphera.net/products/relay',
-  },
-  openGraph: {
-    title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
+export const metadata: Metadata = seoFor('/products/relay', {
+    title: 'Ciphera Relay - Secure Email Infrastructure',
     description:
-      'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking.',
-    url: 'https://ciphera.net/products/relay',
-    siteName: 'Ciphera',
-    images: [
-      {
-        url: cdnUrl('/relay_icon_no_margins.png'),
-        width: 512,
-        height: 512,
-        alt: 'Ciphera Relay - Secure Email Infrastructure',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
-    description:
-      'Privacy-first transactional email with TLS 1.3, DKIM/SPF/DMARC. No tracking, Swiss hosted.',
-    images: [cdnUrl('/relay_icon_no_margins.png')],
-  },
-}
+      'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking, Swiss hosted.',
+    alternates: {
+      canonical: 'https://ciphera.net/products/relay',
+    },
+    openGraph: {
+      title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
+      description:
+        'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking.',
+      url: 'https://ciphera.net/products/relay',
+      siteName: 'Ciphera',
+      images: [
+        {
+          url: cdnUrl('/relay_icon_no_margins.png'),
+          width: 512,
+          height: 512,
+          alt: 'Ciphera Relay - Secure Email Infrastructure',
+        },
+      ],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Ciphera Relay - Secure Email Infrastructure | Ciphera',
+      description:
+        'Privacy-first transactional email with TLS 1.3, DKIM/SPF/DMARC. No tracking, Swiss hosted.',
+      images: [cdnUrl('/relay_icon_no_margins.png')],
+    },
+  })
 
 const relaySchema = [
   {

@@ -3,6 +3,7 @@ import { getLearnArticles } from '@/lib/learn'
 import { getBlogPosts } from '@/lib/blog'
 import { glossaryTerms } from '@/lib/glossary'
 import { getCurrentCanary, getCurrentReport } from '@/lib/transparency'
+import { routeSeo } from '@/lib/seo'
 
 /**
  * Sitemap for ciphera.net
@@ -135,5 +136,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: article.date,
     }))
 
-  return [...staticPages, ...trustPages, ...glossaryPages, ...blogPages, ...learnPages]
+  const all = [...staticPages, ...trustPages, ...glossaryPages, ...blogPages, ...learnPages]
+
+  // 🔴 THE SITEMAP MUST HONOUR THE SAME `robots` VALUE THE PAGE DOES (design §6.7).
+  // Level 1 hands the agency a noindex toggle in the CMS. Without this, the first
+  // page they hide would still be listed here — the page saying "do not index me"
+  // while the sitemap says "here, index this". That contradiction is exactly what an
+  // SEO audit opens with, and it would have been introduced BY the feature meant to
+  // improve SEO.
+  //
+  // 🔑 `lastModified` also prefers the stub's own WordPress timestamp. The hardcoded
+  // dates below stay as the fallback for every route without a stub — the /trust hub
+  // in particular must keep deriving its date from the published canary and report,
+  // not from a CMS edit, and the /learn/pulse cluster keeps its own exclusion.
+  return all
+    .map((entry) => {
+      const path = entry.url.replace(baseUrl, '') || '/'
+      const seo = routeSeo[path]
+      if (!seo) return entry
+      if (seo.noindex) return null
+      return seo.modified
+        ? { ...entry, lastModified: new Date(seo.modified) }
+        : entry
+    })
+    .filter((e): e is MetadataRoute.Sitemap[number] => e !== null)
 }

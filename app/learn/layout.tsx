@@ -1,28 +1,29 @@
 import { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import { cdnUrl } from '@/lib/cdn'
 
-export const metadata: Metadata = {
-  title: 'Learn - Technical Guides & Reference',
-  description: 'Guides, references, and technical deep-dives across Ciphera products. Web performance, security, encryption, analytics, and more.',
-  alternates: {
-    canonical: 'https://ciphera.net/learn',
-  },
-  openGraph: {
-    title: 'Learn - Technical Guides & Reference | Ciphera',
-    description: 'Guides, references, and technical deep-dives across Ciphera products.',
-    url: 'https://ciphera.net/learn',
-    siteName: 'Ciphera',
-    images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera Learn' }],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Learn - Technical Guides & Reference | Ciphera',
-    description: 'Guides, references, and technical deep-dives across Ciphera products.',
-    images: [cdnUrl('/ciphera_logo_no_margins.png')],
-  },
-}
+export const metadata: Metadata = seoFor('/learn', {
+    title: 'Learn - Technical Guides & Reference',
+    description: 'Guides, references, and technical deep-dives across Ciphera products. Web performance, security, encryption, analytics, and more.',
+    alternates: {
+      canonical: 'https://ciphera.net/learn',
+    },
+    openGraph: {
+      title: 'Learn - Technical Guides & Reference | Ciphera',
+      description: 'Guides, references, and technical deep-dives across Ciphera products.',
+      url: 'https://ciphera.net/learn',
+      siteName: 'Ciphera',
+      images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera Learn' }],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Learn - Technical Guides & Reference | Ciphera',
+      description: 'Guides, references, and technical deep-dives across Ciphera products.',
+      images: [cdnUrl('/ciphera_logo_no_margins.png')],
+    },
+  })
 
 const schema = [
   {

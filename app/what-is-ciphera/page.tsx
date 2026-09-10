@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, LockIcon } from '@ciphera-net/facet'
@@ -7,32 +8,32 @@ import { cdnUrl } from '@/lib/cdn'
 import { officeHq, pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 import FAQAccordion from '@/components/FAQAccordion'
 
-export const metadata: Metadata = {
-  title: 'What is Ciphera?',
-  description:
-    'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse analytics, Captcha, Relay, the Ciphera ID sign-in behind them, and the open-source Tessera authentication library.',
-  alternates: {
-    canonical: 'https://ciphera.net/what-is-ciphera',
-  },
-  openGraph: {
-    title: 'What is Ciphera? | Ciphera',
+export const metadata: Metadata = seoFor('/what-is-ciphera', {
+    title: 'What is Ciphera?',
     description:
-      'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse, Captcha, Relay, the Ciphera ID sign-in, and the open-source Tessera library.',
-    url: 'https://ciphera.net/what-is-ciphera',
-    siteName: 'Ciphera',
-    images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@CipheraNET',
-    title: 'What is Ciphera? | Ciphera',
-    description:
-      'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications.',
-    images: [cdnUrl('/og-homepage.png')],
-  },
-}
+      'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse analytics, Captcha, Relay, the Ciphera ID sign-in behind them, and the open-source Tessera authentication library.',
+    alternates: {
+      canonical: 'https://ciphera.net/what-is-ciphera',
+    },
+    openGraph: {
+      title: 'What is Ciphera? | Ciphera',
+      description:
+        'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse, Captcha, Relay, the Ciphera ID sign-in, and the open-source Tessera library.',
+      url: 'https://ciphera.net/what-is-ciphera',
+      siteName: 'Ciphera',
+      images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: '@CipheraNET',
+      title: 'What is Ciphera? | Ciphera',
+      description:
+        'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications.',
+      images: [cdnUrl('/og-homepage.png')],
+    },
+  })
 
 // * What Ciphera builds, each linking to its own page. One factual line apiece.
 // * The last two entries are deliberately not products: Ciphera ID is the

@@ -1,36 +1,37 @@
 import type { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, GithubIcon, XIcon } from '@ciphera-net/facet'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { cdnUrl } from '@/lib/cdn'
 
-export const metadata: Metadata = {
-  title: 'Press & Media Kit',
-  description:
-    'Press and media resources for Ciphera BV: company boilerplate, fact sheet, logo and brand assets, and press contact. Belgian privacy-software company, KBO/BCE 1013.721.660.',
-  alternates: {
-    canonical: 'https://ciphera.net/press',
-  },
-  openGraph: {
-    title: 'Press & Media Kit | Ciphera',
+export const metadata: Metadata = seoFor('/press', {
+    title: 'Press & Media Kit',
     description:
-      'Company boilerplate, fact sheet, logo and brand assets, and press contact for Ciphera BV — a Belgian privacy-software company.',
-    url: 'https://ciphera.net/press',
-    siteName: 'Ciphera',
-    images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera' }],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@CipheraNET',
-    title: 'Press & Media Kit | Ciphera',
-    description:
-      'Company boilerplate, fact sheet, logo and brand assets, and press contact for Ciphera BV.',
-    images: [cdnUrl('/ciphera_logo_no_margins.png')],
-  },
-}
+      'Press and media resources for Ciphera BV: company boilerplate, fact sheet, logo and brand assets, and press contact. Belgian privacy-software company, KBO/BCE 1013.721.660.',
+    alternates: {
+      canonical: 'https://ciphera.net/press',
+    },
+    openGraph: {
+      title: 'Press & Media Kit | Ciphera',
+      description:
+        'Company boilerplate, fact sheet, logo and brand assets, and press contact for Ciphera BV — a Belgian privacy-software company.',
+      url: 'https://ciphera.net/press',
+      siteName: 'Ciphera',
+      images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera' }],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: '@CipheraNET',
+      title: 'Press & Media Kit | Ciphera',
+      description:
+        'Company boilerplate, fact sheet, logo and brand assets, and press contact for Ciphera BV.',
+      images: [cdnUrl('/ciphera_logo_no_margins.png')],
+    },
+  })
 
 const pressSchema = {
   '@context': 'https://schema.org',

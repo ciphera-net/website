@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PulseMockup } from '@/components/ui/pulse-mockup'
@@ -21,38 +22,38 @@ import {
   XIcon,
 } from '@ciphera-net/facet'
 
-export const metadata: Metadata = {
-  title: 'Pulse - Privacy-First Website Analytics',
-  description:
-    'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.6 KB tracking script — measured, not rounded. Open-source client.',
-  alternates: {
-    canonical: 'https://ciphera.net/products/pulse',
-  },
-  openGraph: {
-    title: 'Pulse - Privacy-First Website Analytics | Ciphera',
+export const metadata: Metadata = seoFor('/products/pulse', {
+    title: 'Pulse - Privacy-First Website Analytics',
     description:
-      'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.6 KB tracking script — measured, not rounded.',
-    url: 'https://ciphera.net/products/pulse',
-    siteName: 'Ciphera',
-    images: [
-      {
-        url: cdnUrl('/og-pulse.png'),
-        width: 1200,
-        height: 630,
-        alt: 'Pulse - Privacy-First Website Analytics',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Pulse - Privacy-First Website Analytics | Ciphera',
-    description:
-      'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design.',
-    images: [cdnUrl('/og-pulse.png')],
-  },
-}
+      'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.6 KB tracking script — measured, not rounded. Open-source client.',
+    alternates: {
+      canonical: 'https://ciphera.net/products/pulse',
+    },
+    openGraph: {
+      title: 'Pulse - Privacy-First Website Analytics | Ciphera',
+      description:
+        'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.6 KB tracking script — measured, not rounded.',
+      url: 'https://ciphera.net/products/pulse',
+      siteName: 'Ciphera',
+      images: [
+        {
+          url: cdnUrl('/og-pulse.png'),
+          width: 1200,
+          height: 630,
+          alt: 'Pulse - Privacy-First Website Analytics',
+        },
+      ],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Pulse - Privacy-First Website Analytics | Ciphera',
+      description:
+        'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design.',
+      images: [cdnUrl('/og-pulse.png')],
+    },
+  })
 
 const pulseSchema = [
   {

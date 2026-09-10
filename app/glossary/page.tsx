@@ -1,26 +1,27 @@
 import type { Metadata } from 'next'
+import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import { cdnUrl } from '@/lib/cdn'
 import { GLOSSARY_CATEGORIES, glossaryTerms, termsByCategory } from '@/lib/glossary'
 
-export const metadata: Metadata = {
-  title: 'Glossary - Privacy, Cryptography & Analytics Terms',
-  description:
-    'Precise definitions of the cryptography, privacy-regulation, analytics, and email-infrastructure terms behind Ciphera — written from implementations we run in production.',
-  alternates: {
-    canonical: 'https://ciphera.net/glossary',
-  },
-  openGraph: {
-    title: 'Glossary - Privacy, Cryptography & Analytics Terms | Ciphera',
+export const metadata: Metadata = seoFor('/glossary', {
+    title: 'Glossary - Privacy, Cryptography & Analytics Terms',
     description:
-      'Precise definitions of the cryptography, privacy-regulation, analytics, and email-infrastructure terms behind Ciphera.',
-    url: 'https://ciphera.net/glossary',
-    siteName: 'Ciphera',
-    locale: 'en_US',
-    type: 'website',
-    images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
-  },
-}
+      'Precise definitions of the cryptography, privacy-regulation, analytics, and email-infrastructure terms behind Ciphera — written from implementations we run in production.',
+    alternates: {
+      canonical: 'https://ciphera.net/glossary',
+    },
+    openGraph: {
+      title: 'Glossary - Privacy, Cryptography & Analytics Terms | Ciphera',
+      description:
+        'Precise definitions of the cryptography, privacy-regulation, analytics, and email-infrastructure terms behind Ciphera.',
+      url: 'https://ciphera.net/glossary',
+      siteName: 'Ciphera',
+      locale: 'en_US',
+      type: 'website',
+      images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
+    },
+  })
 
 // * DefinedTermSet — the machine-readable index AI engines and rich results
 // * consume. Each term page carries its own DefinedTerm pointing back here.
