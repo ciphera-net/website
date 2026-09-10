@@ -1,4 +1,4 @@
-import { SEO_WATERMARK, SEO_ROUTE_COUNT } from '@/lib/seo'
+import { SEO_WATERMARK, SEO_ROUTE_COUNT, SEO_POST_COUNT } from '@/lib/seo'
 
 /**
  * The ACTUAL half of the level-triggered deploy check (design D9).
@@ -15,8 +15,13 @@ import { SEO_WATERMARK, SEO_ROUTE_COUNT } from '@/lib/seo'
 export const dynamic = 'force-static'
 
 export function GET() {
+  // 🔴 `posts` IS NOT COSMETIC. A watermark is a maximum and maxima only move
+  // forward, so unpublishing the newest entry makes WordPress's max fall BELOW this
+  // one and `desired > actual` goes false — the site would serve deleted content for
+  // ever, with the watcher reporting healthy. The counts are what make a deletion
+  // detectable at all, and generate-blog-posts.ts's shrink guard reads `posts` too.
   return Response.json(
-    { watermark: SEO_WATERMARK, routes: SEO_ROUTE_COUNT },
+    { watermark: SEO_WATERMARK, routes: SEO_ROUTE_COUNT, posts: SEO_POST_COUNT },
     { headers: { 'Cache-Control': 'no-store' } }
   )
 }
