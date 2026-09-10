@@ -1,12 +1,10 @@
 // Auto-generated from WordPress at build time — do not edit manually.
-// Run: npm run generate:blog
+// Run: npm run generate:blog   (source: http://localhost:8088/graphql)
 //
-// 🔴 THIS FILE IS BUILD OUTPUT, NOT SOURCE. It is git-ignored for the same reason
-// lib/seo.gen.ts is: a committed copy would be a second source of truth for what the
-// CMS says, and the stale one always wins an argument nobody knew was happening.
-//
-// This checked-in stub exists only so the module resolves on a fresh clone before the
-// first `npm run generate:blog`. Every build overwrites it.
+// 🔴 BUILD OUTPUT, NOT SOURCE. See lib/blog-posts.gen.ts.
+// The HTML here is WordPress's rendered output with FAQ blocks lifted out. It is
+// SANITISED AT RENDER TIME by components/blog/wp-body.tsx, not here — one allowlist,
+// applied where the markup becomes elements.
 
 import type { WpBlogPost } from './blog-types'
 

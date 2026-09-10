@@ -43,14 +43,44 @@ function cipheraBlocks() {
       const props = node.properties ?? {}
       const className = Array.isArray(props.className) ? props.className.map(String) : []
 
-      if (node.tagName === 'blockquote' && className.includes('is-style-tldr')) {
-        node.properties = { ...props, 'data-ciphera-block': 'callout', 'data-variant': 'tldr' }
+      // 🔴 hast CAMEL-CASES EVERY data-* ATTRIBUTE, AND THAT SILENTLY EMPTIED THE BLOCK.
+      // `<span data-src="…">` parses to `properties.dataSrc`, never `properties['data-src']`.
+      // A rehype-sanitize allowlist written with hyphens therefore matches nothing,
+      // strips the attribute, and leaves a well-formed `<span></span>` — no error, no
+      // warning, and a ToolLogo that renders as an empty inline element. Measured
+      // exactly that way on the first WordPress-authored post.
+      // 🔑 The blockquote branch below HID the bug: it assigns literal hyphenated keys
+      // itself, so the callout worked while everything parsed from HTML did not.
+      // Canonicalising here means the sanitiser's allowlist and the component props
+      // agree on one spelling, in one place.
+      const kind = props.dataCipheraBlock ?? props['data-ciphera-block']
+      if (kind) {
+        node.properties = {
+          ...props,
+          'data-ciphera-block': String(kind),
+          ...(props.dataSrc || props['data-src']
+            ? { 'data-src': String(props.dataSrc ?? props['data-src']) }
+            : {}),
+          ...(props.dataVariant || props['data-variant']
+            ? { 'data-variant': String(props.dataVariant ?? props['data-variant']) }
+            : {}),
+        }
+        delete node.properties.dataCipheraBlock
+        delete node.properties.dataSrc
+        delete node.properties.dataVariant
         return
       }
-      // A plain core/quote is still a blockquote, and BlogBlockquote's default variant
-      // is what the MDX corpus uses for one — so it maps too, without a marker.
+
       if (node.tagName === 'blockquote') {
-        node.properties = { ...props, 'data-ciphera-block': 'callout' }
+        // A plain core/quote is still a blockquote, and BlogBlockquote's default
+        // variant is what the MDX corpus uses for one — so it maps too, without a
+        // marker. `is-style-tldr` is the only thing that changes the variant, and it
+        // is read HERE, before the sanitiser strips every class.
+        node.properties = {
+          ...props,
+          'data-ciphera-block': 'callout',
+          ...(className.includes('is-style-tldr') ? { 'data-variant': 'tldr' } : {}),
+        }
       }
     })
   }

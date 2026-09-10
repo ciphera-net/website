@@ -87,3 +87,40 @@ test('the sanitiser strips every class and allows no image protocol', () => {
   // An `src` with any scheme is an image the build's CDN mirror did not handle.
   assert.doesNotMatch(body, /src:\s*\[\s*'https?'/, 'src must allow no protocol — every image is rewritten to a CDN path before this runs')
 })
+
+test('the converter canonicalises hast\'s camelCased data attributes', () => {
+  const body = code('components/blog/wp-body.tsx')
+  // 🔴 THE BUG THIS PINS, MEASURED ON THE FIRST WORDPRESS-AUTHORED POST.
+  // hast camel-cases every data-* attribute: `<span data-src="…">` parses to
+  // `properties.dataSrc`, never `properties['data-src']`. A rehype-sanitize allowlist
+  // written with hyphens therefore matches nothing and strips the attribute, leaving a
+  // well-formed `<span></span>` — no error, no warning, and a ToolLogo that renders as
+  // an empty inline element. The blockquote branch hid it, because that one assigns
+  // literal hyphenated keys itself.
+  assert.match(body, /dataCipheraBlock/, 'the transformer must read hast\'s camelCased spelling')
+  assert.match(body, /dataSrc/, 'data-src arrives as dataSrc and must be canonicalised before sanitising')
+})
+
+test('every build-time gate the blog depends on is present', () => {
+  const gen = code('scripts/generate-blog-posts.ts')
+  for (const [needle, why] of [
+    [/exists in BOTH/, 'slug collision between MDX and WordPress'],
+    [/duplicate published post/, 'two published posts sharing a slug'],
+    [/has no category/, 'a post with no category has no call-to-action'],
+    [/has no call-to-action/, 'a category with no CTA silently shows the generic button'],
+    [/has no description/, 'an empty meta description reaches the SERP'],
+    [/OG card/, 'a missing OG card unfurls broken where nobody looks'],
+    [/ALLOW_POST_COUNT_DECREASE/, 'the shrink guard, once WordPress holds the only copy'],
+  ]) {
+    assert.match(gen, needle, `generate-blog-posts.ts lost its gate for: ${why}`)
+  }
+})
+
+test('the OG gate is NOT in the deliberately network-free test', () => {
+  // og-image-dimensions.test.mjs says in its own header that it must not depend on the
+  // network, or it becomes a test that fails when the CDN is slow rather than when the
+  // code is wrong. The 404 check belongs in the build, where the network is already a
+  // hard dependency.
+  const og = read('__tests__/og-image-dimensions.test.mjs')
+  assert.doesNotMatch(og, /fetch\(|https:\/\/cdn\.ciphera\.net/, 'this guard must stay source-level')
+})
