@@ -385,8 +385,8 @@ export default function PulsePage() {
               Hosted in Switzerland. Discarded at the edge.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              All analytics data is processed and stored under the <Link href="/glossary/fadp" className="text-primary hover:underline">Federal Act on Data Protection (FADP)</Link>. IP addresses are used only for country-level
-              geolocation at the edge and immediately discarded — never
+              All analytics data is processed and stored under the <Link href="/glossary/fadp" className="text-primary hover:underline">Federal Act on Data Protection (FADP)</Link>. IP addresses are used only to derive an approximate
+              location at the edge and immediately discarded — never
               stored, never logged.
             </p>
             <ul className="mt-8 space-y-3">
