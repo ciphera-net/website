@@ -71,6 +71,21 @@ function cipheraBlocks() {
         return
       }
 
+      // 🔴 UNWRAP core/table's <figure>. WordPress renders a table as
+      // `<figure class="wp-block-table"><table>…`, and MDX renders a bare `<table>`
+      // through MDXTable — which already provides its own scroll container. Left in,
+      // the figure is a second wrapper the MDX corpus never had, and it showed up as
+      // the ONLY structural difference in 11 of the 16 migrated posts.
+      if (node.tagName === 'figure' && className.includes('wp-block-table')) {
+        const table = node.children.find((c) => c.type === 'element' && c.tagName === 'table')
+        if (table && table.type === 'element') {
+          node.tagName = 'table'
+          node.properties = {}
+          node.children = table.children
+        }
+        return
+      }
+
       if (node.tagName === 'blockquote') {
         // A plain core/quote is still a blockquote, and BlogBlockquote's default
         // variant is what the MDX corpus uses for one — so it maps too, without a
