@@ -1,0 +1,373 @@
+{
+ "cookieless-analytics": {
+  "title": "What is Cookieless analytics? - Glossary | Ciphera",
+  "description": "Cookieless analytics measures website traffic without setting cookies or any other persistent client-side identifier — counts are derived from request-level signals, not a stored ID that follows a browser over time.",
+  "h1": "Cookieless analytics",
+  "canonical": "https://ciphera.net/glossary/cookieless-analytics",
+  "ogtitle": "What is Cookieless analytics? | Ciphera"
+ },
+ "third-party-cookies": {
+  "title": "What is Third-party cookies? - Glossary | Ciphera",
+  "description": "A third-party cookie is set by a domain other than the one the user is visiting — typically an ad or analytics vendor embedded via script — letting that vendor recognize the same browser across unrelated sites.",
+  "h1": "Third-party cookies",
+  "canonical": "https://ciphera.net/glossary/third-party-cookies",
+  "ogtitle": "What is Third-party cookies? | Ciphera"
+ },
+ "fingerprinting": {
+  "title": "What is Browser fingerprinting? - Glossary | Ciphera",
+  "description": "Browser fingerprinting identifies a device by combining device and browser attributes — screen size, installed fonts, GPU details, timezone, and more — into a composite signature, without storing anything on the device.",
+  "h1": "Browser fingerprinting",
+  "canonical": "https://ciphera.net/glossary/fingerprinting",
+  "ogtitle": "What is Browser fingerprinting? | Ciphera"
+ },
+ "tracking-pixel": {
+  "title": "What is Tracking pixel? - Glossary | Ciphera",
+  "description": "A tracking pixel is a tiny, invisible image embedded in a page or email whose load request signals to the hosting server that the content was opened, along with the viewer’s IP and client details.",
+  "h1": "Tracking pixel",
+  "canonical": "https://ciphera.net/glossary/tracking-pixel",
+  "ogtitle": "What is Tracking pixel? | Ciphera"
+ },
+ "bounce-rate": {
+  "title": "What is Bounce rate? - Glossary | Ciphera",
+  "description": "Bounce rate is the share of visits in which a user views a single page and leaves without any further interaction or navigation — a rough signal of whether a landing page held attention.",
+  "h1": "Bounce rate",
+  "canonical": "https://ciphera.net/glossary/bounce-rate",
+  "ogtitle": "What is Bounce rate? | Ciphera"
+ },
+ "unique-visitors": {
+  "title": "What is Unique visitors? - Glossary | Ciphera",
+  "description": "Unique visitors counts distinct people (or devices) visiting a site over a period, as opposed to pageviews, which counts every page load — the same visitor loading ten pages is one unique visitor and ten pageviews.",
+  "h1": "Unique visitors",
+  "canonical": "https://ciphera.net/glossary/unique-visitors",
+  "ogtitle": "What is Unique visitors? | Ciphera"
+ },
+ "session": {
+  "title": "What is Session (analytics)? - Glossary | Ciphera",
+  "description": "In web analytics, a session is a group of interactions — pageviews, events — from one visitor treated as a single continuous visit, typically closed out after a period of inactivity (commonly 30 minutes).",
+  "h1": "Session (analytics)",
+  "canonical": "https://ciphera.net/glossary/session",
+  "ogtitle": "What is Session (analytics)? | Ciphera"
+ },
+ "referrer": {
+  "title": "What is Referrer? - Glossary | Ciphera",
+  "description": "The referrer is the URL of the page a visitor was on immediately before arriving at the current one, sent by the browser in the HTTP Referer header (or omitted, per the page’s referrer policy).",
+  "h1": "Referrer",
+  "canonical": "https://ciphera.net/glossary/referrer",
+  "ogtitle": "What is Referrer? | Ciphera"
+ },
+ "utm-parameters": {
+  "title": "What is UTM parameters? - Glossary | Ciphera",
+  "description": "UTM parameters are standardized query-string tags (utm_source, utm_medium, utm_campaign, and related fields) appended to a URL so analytics tools can attribute traffic to a specific campaign, channel, or link.",
+  "h1": "UTM parameters",
+  "canonical": "https://ciphera.net/glossary/utm-parameters",
+  "ogtitle": "What is UTM parameters? | Ciphera"
+ },
+ "do-not-track": {
+  "title": "What is Do Not Track (DNT)? - Glossary | Ciphera",
+  "description": "Do Not Track was an HTTP header and browser setting, standardized as DNT, that signaled a user’s preference not to be tracked across sites — largely abandoned because sites were never legally required to honor it.",
+  "h1": "Do Not Track (DNT)",
+  "canonical": "https://ciphera.net/glossary/do-not-track",
+  "ogtitle": "What is Do Not Track (DNT)? | Ciphera"
+ },
+ "global-privacy-control": {
+  "title": "What is Global Privacy Control (GPC)? - Glossary | Ciphera",
+  "description": "Global Privacy Control is a browser-sent HTTP signal (Sec-GPC: 1) expressing a user’s opt-out of sale and sharing of personal data — legally binding in California and other US states, unlike Do Not Track.",
+  "h1": "Global Privacy Control (GPC)",
+  "canonical": "https://ciphera.net/glossary/global-privacy-control",
+  "ogtitle": "What is Global Privacy Control (GPC)? | Ciphera"
+ },
+ "opaque": {
+  "title": "What is OPAQUE? - Glossary | Ciphera",
+  "description": "OPAQUE is an asymmetric password-authenticated key exchange (aPAKE) protocol, standardized in RFC 9807, that lets a server verify a password without ever seeing it — the password never leaves the client, even during registration.",
+  "h1": "OPAQUE",
+  "canonical": "https://ciphera.net/glossary/opaque",
+  "ogtitle": "What is OPAQUE? | Ciphera"
+ },
+ "pake": {
+  "title": "What is PAKE (password-authenticated key exchange)? - Glossary | Ciphera",
+  "description": "A PAKE is a cryptographic protocol in which two parties use a shared password to establish a strong session key — without ever transmitting the password or exposing it to offline guessing from intercepted traffic.",
+  "h1": "PAKE (password-authenticated key exchange)",
+  "canonical": "https://ciphera.net/glossary/pake",
+  "ogtitle": "What is PAKE (password-authenticated key exchange)? | Ciphera"
+ },
+ "oprf": {
+  "title": "What is OPRF (oblivious pseudorandom function)? - Glossary | Ciphera",
+  "description": "An OPRF is a two-party protocol where a server holding a secret key helps a client evaluate a pseudorandom function on the client’s input — without the server learning the input or the output, and without the client learning the key.",
+  "h1": "OPRF (oblivious pseudorandom function)",
+  "canonical": "https://ciphera.net/glossary/oprf",
+  "ogtitle": "What is OPRF (oblivious pseudorandom function)? | Ciphera"
+ },
+ "zero-knowledge": {
+  "title": "What is Zero-knowledge? - Glossary | Ciphera",
+  "description": "In applied privacy engineering, zero-knowledge describes systems designed so the service operator cannot read user data or secrets — verification and storage work without the server ever holding the plaintext.",
+  "h1": "Zero-knowledge",
+  "canonical": "https://ciphera.net/glossary/zero-knowledge",
+  "ogtitle": "What is Zero-knowledge? | Ciphera"
+ },
+ "zero-knowledge-authentication": {
+  "title": "What is Zero-knowledge authentication? - Glossary | Ciphera",
+  "description": "Authentication in which the server verifies you know your password without ever receiving it — during signup or login, in any form. The standard construction today is an aPAKE such as OPAQUE (RFC 9807).",
+  "h1": "Zero-knowledge authentication",
+  "canonical": "https://ciphera.net/glossary/zero-knowledge-authentication",
+  "ogtitle": "What is Zero-knowledge authentication? | Ciphera"
+ },
+ "blind-index": {
+  "title": "What is Blind index? - Glossary | Ciphera",
+  "description": "A blind index is a keyed, deterministic hash of a field (such as an email address) stored in place of the plaintext, so a database can look records up by exact match without holding — or leaking — the value itself.",
+  "h1": "Blind index",
+  "canonical": "https://ciphera.net/glossary/blind-index",
+  "ogtitle": "What is Blind index? | Ciphera"
+ },
+ "key-stretching": {
+  "title": "What is Key stretching? - Glossary | Ciphera",
+  "description": "Key stretching turns a low-entropy secret like a password into a stronger key by making each derivation deliberately expensive — thousands to millions of iterations, or memory-hard computation — so brute-force guessing becomes uneconomical.",
+  "h1": "Key stretching",
+  "canonical": "https://ciphera.net/glossary/key-stretching",
+  "ogtitle": "What is Key stretching? | Ciphera"
+ },
+ "argon2id": {
+  "title": "What is Argon2id? - Glossary | Ciphera",
+  "description": "Argon2id is the recommended variant of Argon2, winner of the Password Hashing Competition: a memory-hard key-derivation function that makes password guessing expensive on GPUs and custom hardware, while resisting side-channel attacks.",
+  "h1": "Argon2id",
+  "canonical": "https://ciphera.net/glossary/argon2id",
+  "ogtitle": "What is Argon2id? | Ciphera"
+ },
+ "hkdf": {
+  "title": "What is HKDF? - Glossary | Ciphera",
+  "description": "HKDF (HMAC-based key derivation function, RFC 5869) expands one strong secret into any number of independent, purpose-bound keys via extract-then-expand — the standard way to turn a shared secret into separate encryption, signing, and session keys.",
+  "h1": "HKDF",
+  "canonical": "https://ciphera.net/glossary/hkdf",
+  "ogtitle": "What is HKDF? | Ciphera"
+ },
+ "end-to-end-encryption": {
+  "title": "What is End-to-end encryption (E2EE)? - Glossary | Ciphera",
+  "description": "End-to-end encryption means data is encrypted on the sender’s device and decrypted only on the recipient’s — every intermediary, including the service operator, handles ciphertext it cannot read.",
+  "h1": "End-to-end encryption (E2EE)",
+  "canonical": "https://ciphera.net/glossary/end-to-end-encryption",
+  "ogtitle": "What is End-to-end encryption (E2EE)? | Ciphera"
+ },
+ "aes-256-gcm": {
+  "title": "What is AES-256-GCM? - Glossary | Ciphera",
+  "description": "AES-256-GCM is authenticated encryption: the AES block cipher with 256-bit keys in Galois/Counter Mode, providing confidentiality and integrity in one pass — tampered ciphertext fails authentication instead of decrypting to garbage.",
+  "h1": "AES-256-GCM",
+  "canonical": "https://ciphera.net/glossary/aes-256-gcm",
+  "ogtitle": "What is AES-256-GCM? | Ciphera"
+ },
+ "passkeys": {
+  "title": "What is Passkeys (WebAuthn / FIDO2)? - Glossary | Ciphera",
+  "description": "Passkeys are public-key login credentials based on the FIDO2/WebAuthn standards: your device holds a private key and signs a per-site challenge, so there is no shared secret to phish, leak, or reuse across sites.",
+  "h1": "Passkeys (WebAuthn / FIDO2)",
+  "canonical": "https://ciphera.net/glossary/passkeys",
+  "ogtitle": "What is Passkeys (WebAuthn / FIDO2)? | Ciphera"
+ },
+ "pkce": {
+  "title": "What is PKCE? - Glossary | Ciphera",
+  "description": "PKCE (Proof Key for Code Exchange, RFC 7636) hardens the OAuth 2.0 authorization-code flow: the client commits to a one-time secret up front, so an intercepted authorization code is useless without it.",
+  "h1": "PKCE",
+  "canonical": "https://ciphera.net/glossary/pkce",
+  "ogtitle": "What is PKCE? | Ciphera"
+ },
+ "jwt": {
+  "title": "What is JWT (JSON Web Token)? - Glossary | Ciphera",
+  "description": "A JWT is a compact, signed token carrying claims (user ID, expiry, scopes) that services can verify statelessly — any holder of the verification key can check authenticity without a database lookup.",
+  "h1": "JWT (JSON Web Token)",
+  "canonical": "https://ciphera.net/glossary/jwt",
+  "ogtitle": "What is JWT (JSON Web Token)? | Ciphera"
+ },
+ "totp": {
+  "title": "What is TOTP (time-based one-time password)? - Glossary | Ciphera",
+  "description": "TOTP (RFC 6238) generates six-digit codes from a shared secret and the current time, giving accounts a second factor that changes every 30 seconds and works fully offline in any authenticator app.",
+  "h1": "TOTP (time-based one-time password)",
+  "canonical": "https://ciphera.net/glossary/totp",
+  "ogtitle": "What is TOTP (time-based one-time password)? | Ciphera"
+ },
+ "srp": {
+  "title": "What is SRP (Secure Remote Password)? - Glossary | Ciphera",
+  "description": "SRP is a 1990s password-authenticated key exchange that lets clients log in without sending the password. It was the workhorse aPAKE for two decades and is now superseded by OPAQUE (RFC 9807).",
+  "h1": "SRP (Secure Remote Password)",
+  "canonical": "https://ciphera.net/glossary/srp",
+  "ogtitle": "What is SRP (Secure Remote Password)? | Ciphera"
+ },
+ "transactional-email": {
+  "title": "What is Transactional email? - Glossary | Ciphera",
+  "description": "Transactional email is a message triggered by a specific user action or system event — password resets, receipts, verification codes, shipping notices — as opposed to marketing email sent to a list on a schedule.",
+  "h1": "Transactional email",
+  "canonical": "https://ciphera.net/glossary/transactional-email",
+  "ogtitle": "What is Transactional email? | Ciphera"
+ },
+ "dkim": {
+  "title": "What is DKIM? - Glossary | Ciphera",
+  "description": "DKIM (DomainKeys Identified Mail, RFC 6376) lets a sending domain cryptographically sign outgoing email — a public key published in DNS verifies the signature, proving headers and body were not altered in transit.",
+  "h1": "DKIM",
+  "canonical": "https://ciphera.net/glossary/dkim",
+  "ogtitle": "What is DKIM? | Ciphera"
+ },
+ "spf": {
+  "title": "What is SPF? - Glossary | Ciphera",
+  "description": "SPF (Sender Policy Framework, RFC 7208) is a DNS TXT record listing which mail servers may send email for a domain — receiving servers check the connecting IP against it to catch spoofed sender addresses.",
+  "h1": "SPF",
+  "canonical": "https://ciphera.net/glossary/spf",
+  "ogtitle": "What is SPF? | Ciphera"
+ },
+ "dmarc": {
+  "title": "What is DMARC? - Glossary | Ciphera",
+  "description": "DMARC (RFC 7489) is a DNS policy record tying SPF and DKIM together: it requires one to align with the visible From address, tells receivers what to do on failure, and requests reporting on the results.",
+  "h1": "DMARC",
+  "canonical": "https://ciphera.net/glossary/dmarc",
+  "ogtitle": "What is DMARC? | Ciphera"
+ },
+ "mta-sts": {
+  "title": "What is MTA-STS? - Glossary | Ciphera",
+  "description": "MTA-STS (RFC 8461) lets a domain require TLS for all inbound email delivery, published and fetched over HTTPS rather than trusted opportunistically — closing the downgrade attack that plain SMTP TLS leaves open.",
+  "h1": "MTA-STS",
+  "canonical": "https://ciphera.net/glossary/mta-sts",
+  "ogtitle": "What is MTA-STS? | Ciphera"
+ },
+ "open-tracking": {
+  "title": "What is Email open tracking? - Glossary | Ciphera",
+  "description": "Email open tracking records when a recipient views a message, typically via an embedded tracking pixel that silently reports back to the sender the moment the email client loads remote images.",
+  "h1": "Email open tracking",
+  "canonical": "https://ciphera.net/glossary/open-tracking",
+  "ogtitle": "What is Email open tracking? | Ciphera"
+ },
+ "proof-of-work": {
+  "title": "What is Proof-of-work challenge? - Glossary | Ciphera",
+  "description": "A proof-of-work challenge requires a client to perform a small, verifiable computation before a request is accepted — cheap for one user, expensive enough at scale to make bulk automated abuse uneconomical.",
+  "h1": "Proof-of-work challenge",
+  "canonical": "https://ciphera.net/glossary/proof-of-work",
+  "ogtitle": "What is Proof-of-work challenge? | Ciphera"
+ },
+ "bot-detection": {
+  "title": "What is Bot detection? - Glossary | Ciphera",
+  "description": "Bot detection distinguishes automated traffic from genuine human visitors before allowing an action — form submission, login, checkout — to prevent spam, credential stuffing, and scraping at scale.",
+  "h1": "Bot detection",
+  "canonical": "https://ciphera.net/glossary/bot-detection",
+  "ogtitle": "What is Bot detection? | Ciphera"
+ },
+ "honeypot": {
+  "title": "What is Honeypot? - Glossary | Ciphera",
+  "description": "A honeypot, in bot detection, is a form field hidden from human view but present in the page’s HTML — automated submitters that fill in every field reveal themselves, while real visitors never see it to fill in.",
+  "h1": "Honeypot",
+  "canonical": "https://ciphera.net/glossary/honeypot",
+  "ogtitle": "What is Honeypot? | Ciphera"
+ },
+ "gdpr": {
+  "title": "What is GDPR? - Glossary | Ciphera",
+  "description": "The GDPR (General Data Protection Regulation, EU 2016/679) is the European Union’s data protection law, in force since 25 May 2018, governing how personal data of people in the EU/EEA is collected, processed, and transferred.",
+  "h1": "GDPR",
+  "canonical": "https://ciphera.net/glossary/gdpr",
+  "ogtitle": "What is GDPR? | Ciphera"
+ },
+ "fadp": {
+  "title": "What is FADP / nFADP? - Glossary | Ciphera",
+  "description": "The FADP (Federal Act on Data Protection) is Switzerland’s national data protection law; its fully revised version (nFADP) took effect 1 September 2023, modernizing Swiss law to align closely — though not identically — with the GDPR.",
+  "h1": "FADP / nFADP",
+  "canonical": "https://ciphera.net/glossary/fadp",
+  "ogtitle": "What is FADP / nFADP? | Ciphera"
+ },
+ "eprivacy-directive": {
+  "title": "What is ePrivacy Directive? - Glossary | Ciphera",
+  "description": "The ePrivacy Directive (2002/58/EC, amended 2009) is the EU law governing confidentiality of electronic communications, including the cookie-consent rule: storing or reading anything on a user’s device requires prior consent unless it is strictly necessary.",
+  "h1": "ePrivacy Directive",
+  "canonical": "https://ciphera.net/glossary/eprivacy-directive",
+  "ogtitle": "What is ePrivacy Directive? | Ciphera"
+ },
+ "consent-banner": {
+  "title": "What is Consent banner? - Glossary | Ciphera",
+  "description": "A consent banner is the on-page prompt asking a visitor to accept or decline non-essential cookies and tracking, required under the EU ePrivacy Directive whenever a site stores or reads anything on the visitor’s device that isn’t strictly necessary.",
+  "h1": "Consent banner",
+  "canonical": "https://ciphera.net/glossary/consent-banner",
+  "ogtitle": "What is Consent banner? | Ciphera"
+ },
+ "data-processing-agreement": {
+  "title": "What is DPA (data processing agreement)? - Glossary | Ciphera",
+  "description": "A data processing agreement (DPA) is the contract required by GDPR Article 28 between a data controller and a data processor, setting out the scope, purpose, and security obligations governing the processor’s handling of personal data on the controller’s behalf.",
+  "h1": "DPA (data processing agreement)",
+  "canonical": "https://ciphera.net/glossary/data-processing-agreement",
+  "ogtitle": "What is DPA (data processing agreement)? | Ciphera"
+ },
+ "sub-processor": {
+  "title": "What is Sub-processor? - Glossary | Ciphera",
+  "description": "A sub-processor is a third party a data processor engages to help process personal data on a controller’s behalf — a cloud host, for example. GDPR requires the controller’s prior authorization and a flow-down contract.",
+  "h1": "Sub-processor",
+  "canonical": "https://ciphera.net/glossary/sub-processor",
+  "ogtitle": "What is Sub-processor? | Ciphera"
+ },
+ "standard-contractual-clauses": {
+  "title": "What is SCCs (standard contractual clauses)? - Glossary | Ciphera",
+  "description": "Standard contractual clauses (SCCs) are European Commission-approved contract templates that legalize personal-data transfers from the EU/EEA to countries without an adequacy decision by extending GDPR-equivalent protections.",
+  "h1": "SCCs (standard contractual clauses)",
+  "canonical": "https://ciphera.net/glossary/standard-contractual-clauses",
+  "ogtitle": "What is SCCs (standard contractual clauses)? | Ciphera"
+ },
+ "eu-us-data-privacy-framework": {
+  "title": "What is EU-US Data Privacy Framework? - Glossary | Ciphera",
+  "description": "The EU-US Data Privacy Framework (DPF) is a 2023 adequacy decision permitting personal-data transfers to US companies that self-certify to its principles — successor to the invalidated Privacy Shield and Safe Harbor.",
+  "h1": "EU-US Data Privacy Framework",
+  "canonical": "https://ciphera.net/glossary/eu-us-data-privacy-framework",
+  "ogtitle": "What is EU-US Data Privacy Framework? | Ciphera"
+ },
+ "data-residency": {
+  "title": "What is Data residency? - Glossary | Ciphera",
+  "description": "Data residency is the physical or jurisdictional location where an organization’s data is stored — a deliberate infrastructure choice, distinct from data sovereignty, which concerns whose laws govern that data regardless of where it sits.",
+  "h1": "Data residency",
+  "canonical": "https://ciphera.net/glossary/data-residency",
+  "ogtitle": "What is Data residency? | Ciphera"
+ },
+ "data-sovereignty": {
+  "title": "What is Data sovereignty? - Glossary | Ciphera",
+  "description": "Data sovereignty is the principle that data is subject to the laws of the jurisdiction that governs it — broader than data residency, since a legal claim can reach across borders regardless of where servers physically sit.",
+  "h1": "Data sovereignty",
+  "canonical": "https://ciphera.net/glossary/data-sovereignty",
+  "ogtitle": "What is Data sovereignty? | Ciphera"
+ },
+ "privacy-by-design": {
+  "title": "What is Privacy by design? - Glossary | Ciphera",
+  "description": "Privacy by design is the principle — codified as a legal obligation in GDPR Article 25 — that data protection must be built into a system’s architecture from the outset, not added afterward as a policy or a configuration toggle.",
+  "h1": "Privacy by design",
+  "canonical": "https://ciphera.net/glossary/privacy-by-design",
+  "ogtitle": "What is Privacy by design? | Ciphera"
+ },
+ "data-controller": {
+  "title": "What is Data controller? - Glossary | Ciphera",
+  "description": "A data controller is the natural or legal person that determines the purposes and means of processing personal data — under GDPR, the controller bears primary responsibility for lawful processing and for honoring data subjects’ rights.",
+  "h1": "Data controller",
+  "canonical": "https://ciphera.net/glossary/data-controller",
+  "ogtitle": "What is Data controller? | Ciphera"
+ },
+ "data-processor": {
+  "title": "What is Data processor? - Glossary | Ciphera",
+  "description": "A data processor is the natural or legal person that processes personal data on behalf of, and under the instructions of, a data controller — without independently deciding why or how that data is used.",
+  "h1": "Data processor",
+  "canonical": "https://ciphera.net/glossary/data-processor",
+  "ogtitle": "What is Data processor? | Ciphera"
+ },
+ "personal-data": {
+  "title": "What is Personal data? - Glossary | Ciphera",
+  "description": "Personal data, under GDPR, is any information relating to an identified or identifiable natural person — a deliberately broad definition covering not just names and IDs but anything that can be linked back to someone, directly or in combination with other data.",
+  "h1": "Personal data",
+  "canonical": "https://ciphera.net/glossary/personal-data",
+  "ogtitle": "What is Personal data? | Ciphera"
+ },
+ "pseudonymization": {
+  "title": "What is Pseudonymization? - Glossary | Ciphera",
+  "description": "Pseudonymization is processing personal data so it can no longer be attributed to a specific person without additional information, which is kept separately and secured — a GDPR-recognized risk-reduction measure, but the data remains personal data in scope.",
+  "h1": "Pseudonymization",
+  "canonical": "https://ciphera.net/glossary/pseudonymization",
+  "ogtitle": "What is Pseudonymization? | Ciphera"
+ },
+ "anonymization": {
+  "title": "What is Anonymization? - Glossary | Ciphera",
+  "description": "Anonymization is processing data such that the individual it once related to can no longer be identified by any means reasonably likely to be used — done correctly, the result falls entirely outside GDPR’s scope, unlike pseudonymized data.",
+  "h1": "Anonymization",
+  "canonical": "https://ciphera.net/glossary/anonymization",
+  "ogtitle": "What is Anonymization? | Ciphera"
+ },
+ "warrant-canary": {
+  "title": "What is Warrant canary? - Glossary | Ciphera",
+  "description": "A warrant canary is a regularly published statement that an organization has not received a secret government order — its disappearance warns users implicitly, since a gag order would forbid saying so directly.",
+  "h1": "Warrant canary",
+  "canonical": "https://ciphera.net/glossary/warrant-canary",
+  "ogtitle": "What is Warrant canary? | Ciphera"
+ }
+}
