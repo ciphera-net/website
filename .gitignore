@@ -50,3 +50,11 @@ next-env.d.ts
 # lib/blog-wp.gen.ts is checked in ONLY as an empty stub so the module resolves; every
 # build overwrites it.
 /lib/blog-posts.gen.ts
+
+# The glossary's 53 terms, once WordPress is the source of them (design §38).
+# 🔴 NOT a committed stub, unlike lib/redirects.gen.ts. A shipped empty stub there put
+# 18 retired URLs back on 404 with every check green; here it would 404 all 53 term
+# pages AND drop them from the sitemap — 61% of the indexed site — so a stub must not be
+# possible. prebuild runs generate:glossary, which fails loudly if WordPress is
+# unreachable, and /sys/seo-state's `glossary` count is what the watcher compares.
+/lib/glossary.gen.ts

@@ -1,5 +1,6 @@
 import { SEO_WATERMARK, SEO_ROUTE_COUNT, SEO_POST_COUNT } from '@/lib/seo'
 import { REDIRECT_COUNT, REDIRECT_WATERMARK } from '@/lib/redirects.gen'
+import { GLOSSARY_COUNT, GLOSSARY_WATERMARK } from '@/lib/glossary.gen'
 
 /**
  * The ACTUAL half of the level-triggered deploy check (design D9).
@@ -26,7 +27,8 @@ export function GET() {
       // 🔴 THE WATERMARK SPANS ALL THREE TYPES. A redirect created in the CMS has to
       // trigger a rebuild like anything else, or the agency publishes one and watches
       // nothing happen — so its newest modification joins the maximum here.
-      watermark: [SEO_WATERMARK, REDIRECT_WATERMARK].filter(Boolean).sort().at(-1) ?? '',
+      watermark:
+        [SEO_WATERMARK, REDIRECT_WATERMARK, GLOSSARY_WATERMARK].filter(Boolean).sort().at(-1) ?? '',
       routes: SEO_ROUTE_COUNT,
       posts: SEO_POST_COUNT,
       // 🔴 `redirects` IS WHAT CATCHES A SHIPPED STUB. lib/redirects.gen.ts is
@@ -34,6 +36,13 @@ export function GET() {
       // shipped that stub, 18 retired URLs would go back to 404 with everything green.
       // The publish watcher compares this against what WordPress holds.
       redirects: REDIRECT_COUNT,
+      // 🔴 THE FOURTH CONTENT TYPE, AND THE WATCHER IS BLIND WITHOUT IT.
+      // The glossary is 54 of the sitemap's 88 URLs. Its watermark joins the maximum
+      // above so a published term triggers a rebuild at all; this count is what makes an
+      // UNPUBLISHED one detectable, since a maximum only moves forward.
+      // ⚠️ Three-part change (§23.4): this key, the watcher's query, and
+      // generate-glossary.ts's EXPECTED_TERMS move together.
+      glossary: GLOSSARY_COUNT,
       // 🔑 WHICH COMMIT IS RENDERING THIS. The content fields above answer "is the
       // site up to date with the CMS"; this answers "is this instance up to date with
       // the CODE" — a different question, and the only way to catch the in-cluster
