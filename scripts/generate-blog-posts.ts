@@ -201,12 +201,53 @@ async function main() {
       if (live.ok) {
         const state = (await live.json()) as { posts?: number }
         const servingNow = typeof state.posts === 'number' ? state.posts : null
-        if (servingNow !== null && summaries.length < servingNow) {
+
+        // 🔴 A DROP WARNS; ONLY A COLLAPSE BLOCKS. THIS GUARD WAS WRONG TWICE.
+        //
+        // v1 blocked on ANY decrease and demanded ALLOW_POST_COUNT_DECREASE=1 — an env
+        // var only a human can set, while the thing retrying every five minutes is the
+        // publish watcher, which never can. Trashing one post therefore blocked every
+        // UNRELATED deploy in a loop until somebody intervened by hand. That happened.
+        //
+        // v2 tried to tell a deliberate removal from a silent one by asking WordPress
+        // which posts were parked. It cannot: WPGraphQL does not expose trashed or
+        // private posts to an UNAUTHENTICATED caller, and this build deliberately holds
+        // no credential. The query returned 16 of 16 published and nothing else — so
+        // every trash read as "unaccounted for", which is precisely what v2 existed to
+        // stop doing.
+        //
+        // 🔑 SO THE DISCRIMINATOR IS SIZE, WHICH IS THE ONE THING THIS BUILD CAN
+        // ACTUALLY KNOW. Editors trash and unpublish posts; that is ordinary work and
+        // must not stop the site deploying. Losing a QUARTER of the blog at once is not
+        // ordinary, and is worth refusing to ship until a human looks.
+        //
+        // ⚠️ And detection was never this gate's job in the end:
+        // `WordpressBlogPostsDropped` watches the count directly. The original
+        // justification — "nothing else in the estate can see that" — stopped being
+        // true the same day it was written.
+        const liveCount = servingNow
+        const shortfall = liveCount === null ? 0 : liveCount - summaries.length
+        const collapse =
+          liveCount !== null && shortfall > Math.max(2, Math.floor(liveCount * 0.25))
+
+        if (liveCount === null || shortfall <= 0) {
+          // Nothing to say: the live build predates the `posts` field, or the corpus
+          // grew. Both are the normal case.
+        } else if (!collapse) {
+          console.log(
+            `⚠️  publishing ${summaries.length} posts; the live site serves ${liveCount}. ` +
+              `${shortfall} fewer.\n` +
+              `   Shipping: unpublishing a post is ordinary editorial work, and a content ` +
+              `decision must not\n   block an unrelated deploy. WordpressBlogPostsDropped is ` +
+              `what watches this.`
+          )
+        } else {
           fail(
-            `this build would publish ${summaries.length} posts; ${LIVE_STATE} reports ${servingNow} live.\n` +
-              `   A post was unpublished, trashed, or lost its site term. Nothing else in the\n` +
-              `   estate can see that — the build only knows what WordPress tells it.\n` +
-              `   If the removal was intended, rebuild with ALLOW_POST_COUNT_DECREASE=1.`
+            `this build would publish ${summaries.length} posts; ${LIVE_STATE} reports ${liveCount} live.\n` +
+              `   That is ${shortfall} gone at once — too many to be ordinary editing, and the\n` +
+              `   shape of a real loss: a restore that dropped rows, or posts that silently lost\n` +
+              `   their site term and fell out of the build's filter.\n` +
+              `   If it really was intended, rebuild with ALLOW_POST_COUNT_DECREASE=1.`
           )
         }
       } else {
