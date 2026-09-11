@@ -101,6 +101,13 @@ export default async function RootLayout({
           data-domain="ciphera.net"
           src="https://js.ciphera.net/script.js"
         />
+        {/* Interaction capture — the optional companion (11-09-2026). Records the
+            label of a clicked control, how MUCH was copied (never the text) and a
+            form's field count (never a value, never a field name). It carries no
+            data-domain and no data-api: it reads nothing of its own and calls the
+            core through window.pulse, so the two tags work in either order.
+            What it collects is described at /privacy §4.3, which went live first. */}
+        <Script defer src="https://js.ciphera.net/script.interactions.js" />
         <Header />
         <main id="main-content" className="flex flex-1 flex-col">
           {/* Continuous vertical rails frame every page: the header nav, this
