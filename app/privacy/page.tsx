@@ -5,7 +5,7 @@ import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 03-09-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 11-09-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 03-09-2026
+              Last updated: 11-09-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -229,10 +229,11 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Referrer sources</strong> — The website or search engine that directed visitors to the site.</li>
                   <li><strong>UTM parameters</strong> — Campaign tracking parameters from URLs (utm_source, utm_medium, etc.).</li>
                   <li><strong>Technical metadata</strong> — Device type (mobile, desktop, tablet), browser name, and operating system. Derived from the User-Agent string, which is not stored.</li>
+                  <li><strong>Interactions, only if the site owner adds a second script</strong> — Pulse ships an optional companion script that a site owner must add to their pages deliberately; it is not part of the standard tag and is absent unless they paste it. Where it is used, it records: the visible label of a button or link that was clicked, shortened to 60 characters and with email addresses and long digit sequences removed <em>in your browser</em> before anything is sent; how many characters were copied and the kind of element they came from, <strong>never the copied text itself</strong>; and, for a submitted form, its name and how many fields it had — <strong>never a field&rsquo;s value and never a field&rsquo;s name</strong>. It records nothing you type, no keystrokes, and nothing about where an element sits on the screen. A site owner can switch off each of the three kinds separately, and can mark any part of a page so that nothing in it is ever recorded.</li>
                   <li><strong>Approximate location</strong> — Country, region and city, unless the site owner has narrowed it. All three are determined from the IP address, which is then immediately discarded. We do not store IP addresses. A new Pulse site collects all three; a site owner can cap the detail at country only, or switch geographic collection off altogether.</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), does not track users across websites, and does not collect personally identifiable information by default. To recognise automated traffic, Pulse derives a coarse code from the settings your browser reports on every request &mdash; browser family, operating system, device type, language, timezone and window size. That code is scoped to a single website, is never compared across websites, and is deleted after 14 days. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
+                  Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), does not track users across websites, and does not collect personally identifiable information by default. To recognise automated traffic, Pulse derives a coarse code from the settings your browser reports on every request &mdash; browser family, operating system, device type, language, timezone and window size. That code is scoped to a single website, is never compared across websites, and is deleted after 14 days. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. The same applies to the interaction companion described above: a button&rsquo;s label is text the website owner wrote, so where that script is used it is the owner&rsquo;s responsibility to ensure their own interface labels do not contain personal data — Pulse shortens and redacts what it sends, but it cannot know that a label is a person&rsquo;s name. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   When website owners use Pulse on their websites, Ciphera BV acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
