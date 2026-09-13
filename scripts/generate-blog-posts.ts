@@ -177,8 +177,9 @@ async function main() {
       fail(
         `${post.slug} makes a false or unqualified claim about account recovery:\n` +
           copyProblems.map((x) => `   • ${x}`).join('\n') +
-          `\n   No recovery phrase can open an account today; losing the password alone is\n` +
-          `   terminal. Fix the copy at https://cms.ciphera.net → Blog.`
+          `\n   Recovery has been live since 03-09-2026: the 24-word phrase opens an enrolled account,\n` +
+          `   older accounts set it up from Security settings, and there is no backfill. Fix the\n` +
+          `   copy at https://cms.ciphera.net → Blog.`
       )
     }
 

@@ -301,7 +301,7 @@ export default function CipheraIDPage() {
                 'OPAQUE (RFC 9807) — your password is never sent to our servers',
                 'On-device Argon2id key stretching',
                 'We store only an opaque credential record — no password, hash, or verifier',
-                'No password reset — and account recovery is switched off while we finish it',
+                'No password reset — recovery runs on a 24-word phrase we never see',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-muted-foreground">
                   <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
@@ -310,12 +310,15 @@ export default function CipheraIDPage() {
               ))}
             </ul>
             <p className="mt-8 text-sm leading-relaxed text-muted-foreground">
-              To be precise about the last one: account recovery is unavailable
-              today. We are completing a change to the recovery ceremony, and
-              until it ships your password is the only way into your account —
-              lose it and the account is gone. The 24-word phrase minted at
-              signup is still worth keeping; it becomes the way back in once
-              recovery is switched on.
+              To be precise about the last one: there is no email reset, because
+              there is nothing on our side to reset. Recovery runs on the
+              24-word phrase shown at the end of signup — it enrols a second
+              identity that we cannot read, and it is the only thing besides your
+              password that can open the account. Accounts created before
+              7 September 2026 set it up from Security settings, which needs the
+              password, so do it while you still have it. Lose the password with
+              no phrase enrolled and the account is gone — for us as much as for
+              anyone.
             </p>
           </div>
         </div>
