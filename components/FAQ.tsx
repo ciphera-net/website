@@ -49,7 +49,7 @@ const GROUPS: FAQGroup[] = [
       },
       {
         q: 'What if I forget my password?',
-        a: 'We can’t send it to you or reset it for you — we never have it. Account recovery is currently unavailable while we finish a security improvement to the recovery ceremony, so today your password is the only way into your account. Keep the 24-word recovery phrase generated when you created your Ciphera ID: it will work once recovery is re-enabled. Zero-knowledge cuts both ways — the same design that keeps us out of your data means there is no back door for anyone else either.',
+        a: 'We can’t send it to you or reset it for you — we never have it. What gets you back in is the 24-word recovery phrase shown when you created your Ciphera ID: it enrols a second identity we cannot read, and it is the only thing besides your password that can open the account. If your account is from before 7 September 2026, set up recovery from Security settings while you still have the password. Lose the password with no phrase enrolled and nobody can restore access, including us. Zero-knowledge cuts both ways — the same design that keeps us out of your data means there is no back door for anyone else either.',
       },
       {
         q: 'How does Captcha block bots without tracking people?',

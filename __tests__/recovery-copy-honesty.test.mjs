@@ -3,31 +3,24 @@ import assert from 'node:assert/strict'
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import {
-  FORBIDDEN, QUALIFIED, QUALIFIER, QUALIFIER_WINDOW, PASSWORD_IS_THE_ONLY_WAY,
-} from '../lib/recovery-copy-rules.mjs'
+import { STALE, REQUIRED, MENTIONS_RECOVERY } from '../lib/recovery-copy-rules.mjs'
 
 /**
- * Account recovery is switched off. The server ceremony that proves possession
- * of a recovery phrase shipped on 08-08-2026; the browser half never did, and
- * `recovery_opaque_record` is null on every account in production. So no phrase
- * can currently open an account, and losing the PASSWORD alone is terminal.
+ * Account recovery is LIVE. It has been since 03-09-2026 19:47, when id-frontend flipped
+ * `RECOVERY_CEREMONY_PENDING = false` — ten hours after this repo's copy was written to say
+ * it was switched off. The recovery ceremony runs on the 24-word phrase, which enrols a
+ * second OPAQUE identity; signup has enrolled it automatically since 07-09-2026; older
+ * accounts set it up from Security settings, which needs their password; there is no
+ * backfill. Plan: Public/docs/plans/13-09-2026-recovery-copy-correction.md.
  *
- * id-frontend has carried a copy-honesty guard since 11-08-2026, and it held
- * — signup has said "recovery is paused" ever since. It could not hold here:
- * it scopes its surface list to id-frontend files and cannot see this repo at
- * all. Meanwhile /terms, /privacy, the FAQ, /products/id and the zero-knowledge
- * guide each went on promising that the phrase was a working way back in, one
- * of them inside JSON-LD. A guard narrower than its subject reads as coverage
- * and is not, so this is that guard's sibling, in the repo that owns the copy.
- *
- * Plan: Infra/Auth/docs/plans/03-09-2026-recovery-ceremony-completion.md §2.1.
- *
- * ⚠️ WHEN RECOVERY IS RE-ENABLED (plan R7, and only after every account has
- * enrolled) this guard inverts rather than being deleted: the QUALIFIED claims
- * become true, and the honest-statement assertion below becomes the thing that
- * must go. Delete it in the same commit that flips id-frontend's
- * RECOVERY_CEREMONY_PENDING, never before.
+ * This guard was written on 03-09-2026 to keep the copy honest while recovery was OFF, and
+ * its own header promised it would INVERT rather than be deleted when recovery came back.
+ * It inverted on 13-09-2026, ten days late: for those ten days it enforced the wrong claim
+ * on four public pages and, through the build gate, on two blog posts. The lesson stands
+ * either way — a guard narrower than its subject reads as coverage and is not, and a guard
+ * that lives in a different repo from the fact it depends on can be right and then silently
+ * wrong. If the constant in id-frontend ever flips back, this file flips with it, in the
+ * same change.
  */
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -36,12 +29,10 @@ const read = (p) => readFileSync(join(root, p), 'utf8')
 /** Every public surface that talks about account recovery. */
 // 🔴 TWO SURFACES LEFT THIS LIST ON 10-09-2026 AND THE GUARD DID NOT SHRINK.
 // `content/blog/zero-knowledge-encryption-guide.mdx` and
-// `content/blog/ciphera-id-vs-auth0-vs-clerk.mdx` moved into WordPress with the rest of
-// the blog (design D13), so a repository test cannot read them any more. This file's own
-// header says what that would mean: *a guard narrower than its subject reads as coverage
-// and is not.* So the rules moved to `lib/recovery-copy-rules.mjs`, and
-// `scripts/generate-blog-posts.ts` runs THE SAME ONES over every WordPress body at build
-// time. The subject did not shrink; the guard grew a second half.
+// `content/blog/ciphera-id-vs-auth0-vs-clerk.mdx` moved into WordPress with the rest of the
+// blog (design D13), so a repository test cannot read them any more. The rules moved to
+// `lib/recovery-copy-rules.mjs`, and `scripts/generate-blog-posts.ts` runs THE SAME ONES over
+// every WordPress body at build time. The subject did not shrink; the guard grew a second half.
 // ⚠️ If that build gate is ever removed, this list is silently four surfaces wide again.
 // The last test in this file is what makes that loud.
 const SURFACES = [
@@ -51,7 +42,6 @@ const SURFACES = [
   'app/products/id/page.tsx',
 ]
 
-// The rules themselves live in lib/recovery-copy-rules.mjs — see the SURFACES note.
 test('the surface list is not stale', () => {
   for (const file of SURFACES) {
     assert.ok(
@@ -61,54 +51,36 @@ test('the surface list is not stale', () => {
   }
 })
 
-test('no surface makes a claim that is false however it is qualified', () => {
+test('no surface describes the 11-08 → 03-09 outage as the present', () => {
   for (const file of SURFACES) {
     const src = read(file)
-    for (const claim of FORBIDDEN) {
+    for (const claim of STALE) {
       const match = claim.exec(src)
-      assert.equal(
-        match,
-        null,
-        match
-          ? `${file}: "${match[0]}" — losing the password ALONE is terminal today, so "both" is the wrong word`
-          : '',
-      )
-    }
-  }
-})
-
-test('every design-tense recovery claim carries an availability qualifier', () => {
-  for (const file of SURFACES) {
-    const src = read(file)
-    for (const claim of QUALIFIED) {
-      for (const match of src.matchAll(new RegExp(claim.source, claim.flags + 'g'))) {
-        const from = Math.max(0, match.index - QUALIFIER_WINDOW)
-        const to = Math.min(src.length, match.index + match[0].length + QUALIFIER_WINDOW)
-        assert.ok(
-          QUALIFIER.test(src.slice(from, to)),
-          `${file}: "${match[0]}" promises working recovery with no "unavailable"/"paused"/` +
-            `"switched off" within ${QUALIFIER_WINDOW} characters — no phrase can open an account today`,
-        )
-      }
+      assert.equal(match, null, match ? `${file}: "${match[0]}" — recovery has been live since 03-09-2026` : '')
     }
   }
 })
 
 /**
- * Absence checks alone are vacuous: deleting the whole paragraph passes every
- * one of them. Each surface has to positively say what is true instead.
+ * Absence checks alone are vacuous: deleting the whole paragraph passes every one of them.
+ * Each surface that raises recovery has to positively say what is true instead — what gets
+ * a reader back in, what an older account must do first, and what happens if they do neither.
  */
-test('every surface says what is true while recovery is off', () => {
+test('every surface that mentions recovery says what is true now', () => {
   for (const file of SURFACES) {
     const src = read(file)
-    assert.ok(
-      QUALIFIER.test(src),
-      `${file} must state that account recovery is currently unavailable`,
-    )
-    assert.ok(
-      PASSWORD_IS_THE_ONLY_WAY.test(src),
-      `${file} must state that the password is currently the only way in`,
-    )
+    if (!MENTIONS_RECOVERY.test(src)) continue
+    for (const { name, re } of REQUIRED) {
+      assert.ok(re.test(src), `${file} must ${name}`)
+    }
+  }
+})
+
+test('every listed surface still raises the subject at all', () => {
+  // A surface that stops mentioning recovery passes the two tests above for free. These
+  // four pages each owe the reader the recovery facts; going silent is not honesty.
+  for (const file of SURFACES) {
+    assert.ok(MENTIONS_RECOVERY.test(read(file)), `${file} no longer mentions the recovery phrase at all`)
   }
 })
 
@@ -119,7 +91,6 @@ test('every surface says what is true while recovery is off', () => {
  * on the list above, so adding a sixth surface fails here instead of shipping.
  */
 test('no unguarded surface talks about the recovery phrase', () => {
-  const MENTIONS = /24-word|recovery phrase/i
   const SKIP = new Set(['node_modules', '.next', '.git'])
   const found = []
 
@@ -129,7 +100,7 @@ test('no unguarded surface talks about the recovery phrase', () => {
       const rel = join(dir, entry)
       if (statSync(join(root, rel)).isDirectory()) {
         walk(rel)
-      } else if (/\.(tsx?|mdx?|json)$/.test(entry) && MENTIONS.test(readFileSync(join(root, rel), 'utf8'))) {
+      } else if (/\.(tsx?|mdx?|json)$/.test(entry) && MENTIONS_RECOVERY.test(readFileSync(join(root, rel), 'utf8'))) {
         found.push(rel.split(sep).join('/'))
       }
     }
