@@ -256,13 +256,13 @@ export default function CipheraRelayPage() {
                     <span className="text-primary">587</span>{'\n'}
                     <span className="text-foreground">SMTP_USER</span>
                     <span className="text-muted-foreground">=</span>
-                    <span className="text-primary">authnoreply</span>{'\n'}
+                    <span className="text-primary">idnoreply</span>{'\n'}
                     <span className="text-foreground">SMTP_FROM</span>
                     <span className="text-muted-foreground">=</span>
                     <span className="text-primary">noreply@id.ciphera.net</span>{'\n'}
                     {'\n'}
                     <span className="text-muted-foreground"># Per-service sender domains</span>{'\n'}
-                    <span className="text-muted-foreground/60"># Auth  → noreply@id.ciphera.net</span>{'\n'}
+                    <span className="text-muted-foreground/60"># ID    → noreply@id.ciphera.net</span>{'\n'}
                     <span className="text-muted-foreground/60"># Pulse → noreply@pulse.ciphera.net</span>
                   </code>
                 </pre>
