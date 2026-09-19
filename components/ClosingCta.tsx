@@ -56,13 +56,18 @@ export default function ClosingCta() {
             {/* scrim only — sharp blocks stay sharp; the dim does the quieting */}
             <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/45" />
             <div className="absolute inset-0 flex items-center justify-center">
-              {/* Captured from the live id.ciphera.net sign-in (retina 2x) —
-                  re-capture when the ID UI changes so this never drifts. */}
+              {/* Captured from the live id.ciphera.net sign-in (retina 2x).
+                  🔑 The capture date is IN THE FILENAME: these are served from a
+                  path-keyed immutable CDN, so re-uploading over a name leaves the
+                  edge serving the old bytes until a purge lands — and the purge
+                  races a 14-region replication. A dated path moves the URL with
+                  the pixels. The one this replaces said "Sign In" and "Sign in
+                  with Passkey"; the live screen says "Sign in" / "with passkey". */}
               <Image
-                src={cdnUrl('/cta-id-login.png')}
-                alt="Ciphera ID sign-in form"
-                width={496}
-                height={536}
+                src={cdnUrl('/mockups/id-signin-19-09-2026-2x.png')}
+                alt="The Ciphera ID sign-in screen — email and password fields, a Sign in button, and Sign in with passkey beneath it"
+                width={992}
+                height={1074}
                 className="w-[64%] border border-border"
               />
             </div>

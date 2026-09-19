@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
-import { PulseMockup } from '@/components/ui/pulse-mockup'
+import { PulseMockupTall } from '@/components/ui/pulse-mockup'
 import PulseFAQ from '@/components/PulseFAQ'
 import { pulseShowcaseBg, pulseIcon, zurichPhoto } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
@@ -234,7 +234,7 @@ export default function PulsePage() {
           {/* Visual cell — right on desktop */}
           <div className="relative min-h-[400px] min-w-0 overflow-hidden border-t border-border lg:border-l lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card mockup-cell">
             <div className="w-full max-w-md min-w-0">
-              <PulseMockup />
+              <PulseMockupTall />
             </div>
           </div>
         </div>
@@ -291,10 +291,19 @@ export default function PulsePage() {
                     <span className="text-primary">{'yoursite.com'}</span>
                     <span className="text-muted-foreground">{'"'}</span>
                     {'\n'}
+                    {/* 🔴 js.ciphera.net IS THE CANONICAL LOADER, and this is a
+                        COPY-ABLE value, not decoration. This block read
+                        https://pulse.ciphera.net/js/script.js until 19-09-2026 —
+                        a host that 307s to /login?returnTo=/js/script.js, so
+                        anybody who pasted the snippet off this page installed a
+                        script that could never load and saw no events, with
+                        nothing on our side failing. pulse-frontend fixed the same
+                        string in its own snippet on 06-08-2026; this copy was
+                        missed. Verified live: js.ciphera.net/script.js → 200. */}
                     <span className="text-foreground">{'  src'}</span>
                     <span className="text-muted-foreground">{'="'}</span>
                     <span className="text-primary">
-                      {'https://pulse.ciphera.net/js/script.js'}
+                      {'https://js.ciphera.net/script.js'}
                     </span>
                     <span className="text-muted-foreground">{'"'}</span>
                     {'\n'}
