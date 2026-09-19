@@ -51,7 +51,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
     {
       question: "Does Pulse slow down my website?",
-      answer: "No. The Pulse script is under 3 KB gzipped — about 55x smaller than Google Analytics. It loads asynchronously with the defer attribute, meaning it never blocks page rendering or affects your Core Web Vitals scores.",
+      answer: "No. The Pulse script is under 3 KB gzipped — about 54x smaller than Google Analytics. It loads asynchronously with the defer attribute, meaning it never blocks page rendering or affects your Core Web Vitals scores.",
     },
   ],
   privacy: [
