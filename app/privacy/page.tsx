@@ -218,7 +218,7 @@ export default function PrivacyPolicyPage() {
 
                 {/* 4.4 Pulse */}
                 <h3 className="font-display text-xl font-semibold text-foreground mb-3 mt-8">
-                  4.3. Ciphera Pulse (Privacy-First Analytics)
+                  4.3. Pulse Analytics (Privacy-First Analytics)
                 </h3>
                 <p className="text-muted-foreground leading-relaxed mb-2">
                   Pulse is our self-hosted analytics platform, designed as a privacy-first alternative to Google Analytics. For websites using Pulse, we collect:
@@ -326,7 +326,7 @@ export default function PrivacyPolicyPage() {
                   7. Cookies &amp; Local Storage
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-3">
-                  The Ciphera marketing site (ciphera.net) sets no cookies or browser storage of its own. Our authenticated applications — Ciphera ID (id.ciphera.net), Ciphera Pulse (pulse.ciphera.net) and the Discord account link (link.ciphera.net) — use the minimum browser storage needed to keep you signed in, remember your interface preferences, and run features you ask for. Each application now holds its own separate session, so signing out of one does not sign you out of the others:
+                  The Ciphera marketing site (ciphera.net) sets no cookies or browser storage of its own. Our authenticated applications — Ciphera ID (id.ciphera.net), Pulse Analytics (pulse.ciphera.net) and the Discord account link (link.ciphera.net) — use the minimum browser storage needed to keep you signed in, remember your interface preferences, and run features you ask for. Each application now holds its own separate session, so signing out of one does not sign you out of the others:
                 </p>
                 <p className="text-[10px] text-muted-foreground md:hidden" aria-hidden="true">scroll &rarr;</p>
                 <div className="overflow-x-auto">
@@ -362,7 +362,7 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2 tabular-nums text-foreground">30 days</td>
                       </tr>
                       <tr>
-                        <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Signing in to Ciphera Pulse (pulse.ciphera.net)</td>
+                        <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Signing in to Pulse Analytics (pulse.ciphera.net)</td>
                       </tr>
                       <tr className="border-b border-border">
                         <td className="py-2 pr-4 font-mono text-xs">pulse_access</td>

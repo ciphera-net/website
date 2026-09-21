@@ -23,14 +23,14 @@ import {
 } from '@ciphera-net/facet'
 
 export const metadata: Metadata = seoFor('/products/pulse', {
-    title: 'Pulse - Privacy-First Website Analytics',
+    title: 'Pulse Analytics - Privacy-First Website Analytics',
     description:
       'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded. Open-source client.',
     alternates: {
       canonical: 'https://ciphera.net/products/pulse',
     },
     openGraph: {
-      title: 'Pulse - Privacy-First Website Analytics | Ciphera',
+      title: 'Pulse Analytics - Privacy-First Website Analytics | Ciphera',
       description:
         'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded.',
       url: 'https://ciphera.net/products/pulse',
@@ -40,7 +40,7 @@ export const metadata: Metadata = seoFor('/products/pulse', {
           url: cdnUrl('/og-pulse.png'),
           width: 1200,
           height: 630,
-          alt: 'Pulse - Privacy-First Website Analytics',
+          alt: 'Pulse Analytics - Privacy-First Website Analytics',
         },
       ],
       locale: 'en_US',
@@ -48,7 +48,7 @@ export const metadata: Metadata = seoFor('/products/pulse', {
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Pulse - Privacy-First Website Analytics | Ciphera',
+      title: 'Pulse Analytics - Privacy-First Website Analytics | Ciphera',
       description:
         'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design.',
       images: [cdnUrl('/og-pulse.png')],
@@ -59,7 +59,7 @@ const pulseSchema = [
   {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Pulse',
+    name: 'Pulse Analytics',
     description:
       'Privacy-respecting website analytics that gives you insights without compromising user privacy. GDPR compliant, no cookies, no tracking.',
     applicationCategory: 'AnalyticsApplication',
@@ -84,7 +84,7 @@ const pulseSchema = [
         name: 'Products',
         item: 'https://ciphera.net/#products',
       },
-      { '@type': 'ListItem', position: 3, name: 'Pulse' },
+      { '@type': 'ListItem', position: 3, name: 'Pulse Analytics' },
     ],
   },
 ]
