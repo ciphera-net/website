@@ -36,7 +36,7 @@ const PRODUCTS: ProductFact[] = [
   {
     slug: 'pulse',
     kind: 'product',
-    name: 'Pulse',
+    name: 'Pulse Analytics',
     oneLiner:
       'Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.',
     paragraph:

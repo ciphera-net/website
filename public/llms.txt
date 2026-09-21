@@ -7,7 +7,7 @@ Ciphera builds privacy-first infrastructure and applications on zero-knowledge p
 Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affiliated with ciphera.co (a security consultancy), ciphera.org, ciphera.uk, the Ciphera mobile apps, or any fictional character sharing the name.
 
 ## Products
-- [Pulse](https://ciphera.net/products/pulse): Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.
+- [Pulse Analytics](https://ciphera.net/products/pulse): Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.
 - [Ciphera Captcha](https://ciphera.net/products/captcha): Privacy-first bot protection using adaptive proof-of-work and behavioral analysis — no cookies, no cross-site tracking.
 - [Ciphera Relay](https://ciphera.net/products/relay): Privacy-first transactional email infrastructure with TLS 1.3, DKIM, SPF, and DMARC — no tracking pixels.
 - [Tessera](https://ciphera.net/products/tessera): Open-source OPAQUE (RFC 9807) authentication library (Apache-2.0): Rust core and sidecar, Go server SDK, and browser SDK — the password never reaches the server.

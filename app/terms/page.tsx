@@ -114,7 +114,7 @@ export default function TermsOfServicePage() {
                   1. Acceptance of Terms
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  By accessing or using any Ciphera service — including Pulse, Ciphera Captcha, Ciphera Relay, the Ciphera ID sign-in used to access them, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera BV, a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
+                  By accessing or using any Ciphera service — including Pulse Analytics, Ciphera Captcha, Ciphera Relay, the Ciphera ID sign-in used to access them, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera BV, a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-3">
                   If you do not agree to these Terms, you must not access or use the Services. If you are accepting these Terms on behalf of an organization, you represent and warrant that you have the authority to bind that organization.
@@ -143,7 +143,7 @@ export default function TermsOfServicePage() {
                   Ciphera provides privacy-first infrastructure and applications designed with zero-knowledge architecture:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
-                  <li><strong>Pulse:</strong> Privacy-respecting website analytics that operates without cookies, without fingerprinting techniques, and without personal data collection.</li>
+                  <li><strong>Pulse Analytics:</strong> Privacy-respecting website analytics that operates without cookies, without fingerprinting techniques, and without personal data collection.</li>
                   <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
                   <li><strong>Ciphera Relay:</strong> Secure transactional email infrastructure for delivering encrypted communications.</li>
                 </ul>
@@ -246,7 +246,7 @@ export default function TermsOfServicePage() {
                 </h2>
 
                 <h3 className="font-display text-lg font-semibold text-foreground mb-2">
-                  7.1. Pulse (Analytics)
+                  7.1. Pulse Analytics
                 </h3>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li>Pulse collects only aggregated, anonymous data. No personally identifiable information is collected from website visitors.</li>
