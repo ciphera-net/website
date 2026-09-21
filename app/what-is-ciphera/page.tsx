@@ -41,7 +41,7 @@ export const metadata: Metadata = seoFor('/what-is-ciphera', {
 // * Tessera is a library. Their link labels say so.
 const products = [
   {
-    name: 'Pulse',
+    name: 'Pulse Analytics',
     image: pulseIcon,
     href: '/products/pulse',
     detail:

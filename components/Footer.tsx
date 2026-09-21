@@ -82,7 +82,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-3">
               <li>
                 <Link href="/products/pulse" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
-                  Pulse
+                  Pulse Analytics
                 </Link>
               </li>
               <li>

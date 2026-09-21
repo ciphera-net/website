@@ -244,7 +244,7 @@ export default async function TrustPage() {
               </a>.
             </li>
             <li>
-              <strong className="text-foreground">Pulse</strong> — cookieless analytics. No
+              <strong className="text-foreground">Pulse Analytics</strong> — cookieless analytics. No
               cookies, no fingerprinting, no cross-visit visitor
               tracking, no third-party trackers on your site or ours.
             </li>

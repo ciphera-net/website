@@ -106,7 +106,7 @@ export default function ProductShowcase() {
 
       <ProductRow
         icon={cdnUrl('/pulse_icon_no_margins.png')}
-        chip="Pulse"
+        chip="Pulse Analytics"
         heading="Analytics without the surveillance."
         body="Privacy-first web analytics that gives you the insights you need without tracking your visitors. No cookies, no fingerprinting, no personal data collected. GDPR compliant by design."
         primaryLabel="Try Pulse"

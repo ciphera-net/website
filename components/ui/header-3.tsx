@@ -52,7 +52,7 @@ type LinkItem = {
 };
 
 const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string; ctaLabel?: string; ctaHref?: string }> = {
-    '/products/pulse': { logo: pulseIcon, name: 'Pulse', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
+    '/products/pulse': { logo: pulseIcon, name: 'Pulse Analytics', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
     // No sales CTA: Ciphera ID cannot be bought or integrated. Sign-in is the
     // only action available here, and Pulse is the product it signs you in to.
     '/products/id': { logo: authIcon, name: 'Ciphera ID', signIn: 'https://id.ciphera.net/login', ctaLabel: 'Explore Pulse', ctaHref: '/products/pulse' },
@@ -460,7 +460,7 @@ function ListItem({
 
 const productLinks: LinkItem[] = [
     {
-        title: 'Pulse',
+        title: 'Pulse Analytics',
         href: '/products/pulse',
         description: 'Privacy-first web analytics',
         image: pulseIcon,

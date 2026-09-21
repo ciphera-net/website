@@ -190,7 +190,7 @@ export default function PrivacyPolicyPage() {
                   When you visit our website, we collect:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                  <li><strong>Analytics data</strong> — Page views, referrer sources, UTM parameters, device type, browser, operating system, and approximate location (country, region, and city). Collected via our own Pulse analytics platform, which uses no cookies, no fingerprinting, and no personal identifiers. It cannot be traced to you as a person: there is no name, no email, no account and no identifier that survives the calendar month or reaches another website.</li>
+                  <li><strong>Analytics data</strong> — Page views, referrer sources, UTM parameters, device type, browser, operating system, and approximate location (country, region, and city). Collected via our own Pulse Analytics platform, which uses no cookies, no fingerprinting, and no personal identifiers. It cannot be traced to you as a person: there is no name, no email, no account and no identifier that survives the calendar month or reaches another website.</li>
                   <li><strong>Contact form submissions</strong> — Name, email address, subject, and message content, submitted voluntarily through our contact page.</li>
                   <li><strong>Newsletter subscriptions</strong> — Email address only, submitted voluntarily with explicit consent.</li>
                 </ul>
@@ -218,7 +218,7 @@ export default function PrivacyPolicyPage() {
 
                 {/* 4.4 Pulse */}
                 <h3 className="font-display text-xl font-semibold text-foreground mb-3 mt-8">
-                  4.3. Pulse Analytics (Privacy-First Analytics)
+                  4.3. Pulse Analytics
                 </h3>
                 <p className="text-muted-foreground leading-relaxed mb-2">
                   Pulse is our self-hosted analytics platform, designed as a privacy-first alternative to Google Analytics. For websites using Pulse, we collect:
@@ -676,7 +676,7 @@ export default function PrivacyPolicyPage() {
                   We believe transparency is essential to trust. The following are open source, allowing independent verification of our privacy claims:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-3">
-                  <li><strong>Pulse</strong> — Our privacy-first analytics platform is open source (AGPL-3.0), enabling independent audit of our analytics approach.</li>
+                  <li><strong>Pulse Analytics</strong> — Our privacy-first analytics platform is open source (AGPL-3.0), enabling independent audit of our analytics approach.</li>
                   <li><strong>This website</strong> — The source code for this website is publicly available.</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-3">

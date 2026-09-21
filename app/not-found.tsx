@@ -53,7 +53,7 @@ export default function NotFound() {
                 href="/products/pulse"
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                Pulse
+                Pulse Analytics
               </Link>
               <Link
                 href="/contact"

@@ -40,7 +40,7 @@ const techStack = [
 
 const architecture = [
   { image: authIcon, name: 'Ciphera ID', detail: 'Identity & authentication' },
-  { image: pulseIcon, name: 'Pulse', detail: 'Privacy-first analytics' },
+  { image: pulseIcon, name: 'Pulse Analytics', detail: 'Privacy-first analytics' },
   { image: captchaIcon, name: 'Ciphera Captcha', detail: 'Bot protection' },
   { image: relayIcon, name: 'Ciphera Relay', detail: 'Transactional email' },
 ] as const

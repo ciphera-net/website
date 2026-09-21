@@ -61,7 +61,7 @@ const facts: { term: string; detail: string }[] = [
 ]
 
 const productLines: { name: string; href: string; line: string }[] = [
-  { name: 'Pulse', href: '/products/pulse', line: 'Privacy-first, cookieless web analytics. Open source under AGPL-3.0.' },
+  { name: 'Pulse Analytics', href: '/products/pulse', line: 'Privacy-first, cookieless web analytics. Open source under AGPL-3.0.' },
   { name: 'Ciphera Captcha', href: '/products/captcha', line: 'Stateless, privacy-first bot protection with adaptive proof-of-work.' },
   { name: 'Ciphera Relay', href: '/products/relay', line: 'Transactional email on Ciphera’s own mail servers.' },
   // Not products. Ciphera ID is internal infrastructure — there is no way for a
@@ -112,7 +112,7 @@ function ProfileLinkIcon({ icon }: { icon?: 'linkedin' | 'github' | 'x' }) {
 }
 
 const BOILERPLATE =
-  'Ciphera BV is a Belgian privacy-software company founded in 2024. It builds zero-knowledge infrastructure and applications — including Pulse (cookieless web analytics), Ciphera Captcha (privacy-first bot protection), Ciphera Relay (transactional email), the internal Ciphera ID sign-in that authenticates them, and the open-source Tessera authentication library. Ciphera’s products encrypt user data before it reaches the company’s servers, and run on Swiss infrastructure under EU (GDPR and NIS2) jurisdiction. Ciphera is headquartered at De Kleetlaan 2, 1831 Diegem, Belgium. Learn more at ciphera.net.'
+  'Ciphera BV is a Belgian privacy-software company founded in 2024. It builds zero-knowledge infrastructure and applications — including Pulse Analytics (cookieless web analytics), Ciphera Captcha (privacy-first bot protection), Ciphera Relay (transactional email), the internal Ciphera ID sign-in that authenticates them, and the open-source Tessera authentication library. Ciphera’s products encrypt user data before it reaches the company’s servers, and run on Swiss infrastructure under EU (GDPR and NIS2) jurisdiction. Ciphera is headquartered at De Kleetlaan 2, 1831 Diegem, Belgium. Learn more at ciphera.net.'
 
 export default function PressPage() {
   return (
