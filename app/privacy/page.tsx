@@ -5,7 +5,7 @@ import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 11-09-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 25-09-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 11-09-2026
+              Last updated: 25-09-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">

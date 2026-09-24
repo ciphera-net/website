@@ -91,7 +91,7 @@ export default function TermsOfServicePage() {
               Terms of Service
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 03-09-2026
+              Last updated: 25-09-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
