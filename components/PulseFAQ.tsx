@@ -61,7 +61,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
     {
       question: "Is Pulse GDPR compliant?",
-      answer: "Yes, by architecture — not by configuration. Pulse doesn't collect any personal data as defined by GDPR Article 4. There are no data subjects in the dataset, so DSAR requests don't apply. No DPA is required.",
+      answer: "Yes, by architecture — not by configuration. Pulse doesn't collect any personal data as defined by GDPR Article 4. There are no data subjects in the dataset, so DSAR requests don't apply. A Data Processing Agreement is available on request.",
     },
     {
       question: "What happens to IP addresses?",
@@ -69,7 +69,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
     {
       question: "Where is my analytics data stored?",
-      answer: "All data is processed and stored in Switzerland, protected by the Federal Act on Data Protection (FADP). It never leaves that jurisdiction.",
+      answer: "All data is processed and stored in Switzerland, protected by the Federal Act on Data Protection (FADP). We never move it out of that jurisdiction. It leaves only if you export it, or connect a tool you choose, such as an AI assistant.",
     },
     {
       question: "Can Pulse identify individual users?",

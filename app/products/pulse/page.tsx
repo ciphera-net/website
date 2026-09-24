@@ -400,11 +400,11 @@ export default function PulsePage() {
             </p>
             <ul className="mt-8 space-y-3">
               {[
-                'Data never leaves Swiss jurisdiction',
+                'We never move your data out of Switzerland',
                 'IP addresses discarded after geo lookup',
                 'Aggregate-first — visitor-level views are off by default and month-scoped',
                 'No cookies, no fingerprinting, no personal data',
-                'No Data Processing Agreement required',
+                'Data Processing Agreement available on request',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-muted-foreground">
                   <CheckIcon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
