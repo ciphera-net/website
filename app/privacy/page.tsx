@@ -240,6 +240,9 @@ export default function PrivacyPolicyPage() {
                   <a href="mailto:privacy@ciphera.net" className="text-primary hover:underline">privacy@ciphera.net</a>.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
+                  Website owners can connect tools of their choice &mdash; such as an AI assistant &mdash; to their own Pulse analytics. When they do, Pulse provides aggregated statistics about their website to that tool on their instruction. The tool&rsquo;s provider receives the data as the website owner&rsquo;s recipient, not as Ciphera&rsquo;s sub-processor, and it may be located outside the European Union. Ciphera does not connect any such tool itself, and never sends analytics to an AI provider on its own initiative.
+                </p>
+                <p className="text-muted-foreground leading-relaxed mt-2">
                   <strong>Legal basis:</strong> Legitimate interest (anonymous website analytics).
                 </p>
 
