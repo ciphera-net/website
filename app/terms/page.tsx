@@ -91,7 +91,7 @@ export default function TermsOfServicePage() {
               Terms of Service
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 03-09-2026
+              Last updated: 25-09-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -253,6 +253,7 @@ export default function TermsOfServicePage() {
                   <li>Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), and does not track visitors across websites. It does not require cookie consent banners.</li>
                   <li><strong>Automated traffic.</strong> Pulse identifies traffic that appears to be automated and excludes it from your statistics. Excluded traffic is listed in your site&rsquo;s Bot &amp; Spam settings and can be restored by you at any time. Classification is automated and is not warranted to be free of error; if a real visitor is excluded, restoring the traffic returns it to your reports.</li>
                   <li>Analytics data belongs to the website owner who installed Pulse. Ciphera does not access, share, or sell analytics data collected by Pulse.</li>
+                  <li><strong>Tools you connect.</strong> You can export your analytics, read them through the Pulse API, or connect an AI assistant or other tool to them, for example through the Pulse Analytics MCP server. Each of these acts on your instruction: Pulse sends the data you or your tool request to the tool you connected, and that tool&rsquo;s provider receives it under your own agreement with them. Ciphera has no agreement with that provider, does not choose where it processes data, and is not responsible for what it does with the data it receives. You can revoke a connected tool at any time in Settings &rarr; MCP; it loses access on its next request.</li>
                   <li>You are responsible for ensuring that your use of Pulse on your website complies with applicable privacy laws and your own privacy policy.</li>
                 </ul>
 

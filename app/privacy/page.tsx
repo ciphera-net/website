@@ -5,7 +5,7 @@ import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 11-09-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 25-09-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 11-09-2026
+              Last updated: 25-09-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -238,6 +238,9 @@ export default function PrivacyPolicyPage() {
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   When website owners use Pulse on their websites, Ciphera BV acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
                   <a href="mailto:privacy@ciphera.net" className="text-primary hover:underline">privacy@ciphera.net</a>.
+                </p>
+                <p className="text-muted-foreground leading-relaxed mt-2">
+                  Website owners can connect tools of their choice &mdash; such as an AI assistant &mdash; to their own Pulse analytics. When they do, Pulse provides aggregated statistics about their website to that tool on their instruction. The tool&rsquo;s provider receives the data as the website owner&rsquo;s recipient, not as Ciphera&rsquo;s sub-processor, and it may be located outside the European Union. Ciphera does not connect any such tool itself, and never sends analytics to an AI provider on its own initiative.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   <strong>Legal basis:</strong> Legitimate interest (anonymous website analytics).
