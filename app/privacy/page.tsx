@@ -5,7 +5,7 @@ import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 25-09-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 26-09-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 25-09-2026
+              Last updated: 26-09-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -242,6 +242,16 @@ export default function PrivacyPolicyPage() {
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   Website owners can connect tools of their choice &mdash; such as an AI assistant &mdash; to their own Pulse analytics. When they do, Pulse provides aggregated statistics about their website to that tool on their instruction. The tool&rsquo;s provider receives the data as the website owner&rsquo;s recipient, not as Ciphera&rsquo;s sub-processor, and it may be located outside the European Union. Ciphera does not connect any such tool itself, and never sends analytics to an AI provider on its own initiative.
                 </p>
+                <p className="text-muted-foreground leading-relaxed mt-2">
+                  <strong>Data you connect to or import into Pulse.</strong> Pulse can connect to Google Search Console, and can import a website&rsquo;s history from Google Analytics and from other analytics tools the website owner chooses. We process this data as the website owner&rsquo;s processor, like the rest of their Pulse analytics.
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-2">
+                  <li><strong>What we access</strong> &mdash; Read-only access to the sites or properties the website owner selects. We keep only aggregated statistics, such as daily visitors, pages, referrers, countries and devices. Where a tool exports individual page views, we turn them into daily totals as we read the file and discard the rest. We never receive the names, email addresses or IP addresses of the website&rsquo;s visitors.</li>
+                  <li><strong>How long we keep access</strong> &mdash; For an import, the access the website owner grants, or the API key they give us, is used only while the import runs; it is then revoked where the service allows it, and deleted. A file they upload is read once and deleted. For Search Console, we keep an encrypted token until they disconnect it.</li>
+                  <li><strong>What we do with it</strong> &mdash; We show it in the website owner&rsquo;s Pulse dashboard, their Pulse API and the tools they connect, and nowhere else. We do not sell or share it or use it for advertising, and our staff do not read it except where security or the law requires it. Deleting an import, a site or an account deletes the imported data.</li>
+                  <li><strong>Google</strong> &mdash; Pulse&rsquo;s use and transfer of information received from Google APIs adheres to the{' '}
+                    <a href="https://developers.google.com/terms/api-services-user-data-policy" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>, including the Limited Use requirements.</li>
+                </ul>
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   <strong>Legal basis:</strong> Legitimate interest (anonymous website analytics).
                 </p>
