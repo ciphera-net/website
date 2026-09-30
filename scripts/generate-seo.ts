@@ -116,12 +116,17 @@ async function main() {
   const seen = new Map<string, Node>()
 
   for (const n of nodes) {
+    // 🔴 SITE FIRST, then everything else. Pulse's stubs live in the same
+    // WordPress (Phase 4), and a malformed one must fail Pulse's build — never
+    // this one. Validating before filtering let one tenant's editing mistake
+    // block the other tenant's deploys: a Pulse stub published without a path
+    // would have failed every ciphera.net build.
+    const sites = n.routeSites?.nodes?.map((t) => t.slug) ?? []
+    if (!sites.includes(SITE)) continue
+
     const p = (n.cipheraPath ?? '').trim()
     if (!p) fail('a published stub has an empty path — it can never match a route, and looks correct in wp-admin')
     if (!p.startsWith('/')) fail(`path "${p}" does not start with "/"`)
-
-    const sites = n.routeSites?.nodes?.map((t) => t.slug) ?? []
-    if (!sites.includes(SITE)) continue // Pulse's stubs (Phase 4) live in the same WordPress
 
     // The application-level guard in the mu-plugin catches the common case; this is
     // the guarantee. A duplicate must not be able to ship whatever put it there —
