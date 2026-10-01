@@ -246,5 +246,15 @@ test('the preview and the generator share ONE site-filter rule, not two copies',
     assert.match(src, /nodeSites/, `${f} must read a node's sites through the shared helper, not its own copy`)
     assert.match(src, /BLOG_SITE/, `${f} must compare against the shared site constant, not a local one`)
     assert.doesNotMatch(src, /const SITE = /, `${f} must not declare its own site constant alongside the shared one`)
+    // 🔴 AN IMPORT IS NOT A CALL. The two checks above pass as long as both names appear
+    // anywhere in the file — including just the import line — so deleting the actual
+    // guard and leaving the import behind satisfies them. This asserts the real shape:
+    // a nodeSites(...) call feeding an .includes(BLOG_SITE) check, which only exists
+    // where the filter is genuinely applied.
+    assert.match(
+      src,
+      /nodeSites\([^)]+\)[\s\S]{0,120}\.includes\(BLOG_SITE\)/,
+      `${f} must actually call nodeSites(...).includes(BLOG_SITE) — not just import the names`
+    )
   }
 })
