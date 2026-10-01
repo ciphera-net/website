@@ -15,12 +15,11 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { WP_POST_FIELDS, transformWpPost, type WpNode } from '../lib/blog-transform'
+import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode } from '../lib/blog-transform'
 import type { WpBlogPost } from '../lib/blog-types'
 import { checkRecoveryCopy } from '../lib/recovery-copy-rules.mjs'
 
 const WP = process.env.WORDPRESS_GRAPHQL_URL ?? 'http://wordpress.apps.svc.cluster.local/graphql'
-const SITE = 'ciphera-net'
 const CDN = process.env.NEXT_PUBLIC_CDN_URL ?? 'https://cdn.ciphera.net/website'
 /** The live site's own report of what it is serving — see the shrink guard below. */
 const LIVE_STATE = process.env.LIVE_SEO_STATE_URL ?? 'https://ciphera.net/sys/seo-state'
@@ -96,8 +95,8 @@ async function main() {
   const seen = new Set<string>()
 
   for (const n of nodes) {
-    const sites = n.routeSites?.nodes?.map((t) => t.slug) ?? []
-    if (!sites.includes(SITE)) continue // Pulse's posts (Phase 4) live in the same WordPress
+    const sites = nodeSites(n)
+    if (!sites.includes(BLOG_SITE)) continue // Pulse's posts (Phase 4) live in the same WordPress
 
     // 🔴 THE SAME TRANSFORM THE PREVIEW RUNS (lib/blog-transform.ts). Two copies would
     // eventually disagree, and a preview that disagrees with the published page is
