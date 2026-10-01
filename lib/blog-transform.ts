@@ -56,6 +56,22 @@ export const WP_POST_FIELDS = `
   routeSites { nodes { slug } }
 `
 
+/**
+ * ciphera.net's tenant slug in the `ciphera_site` taxonomy. Pulse's blog posts
+ * (Phase 4, Pulse/docs/plans/30-09-2026-pulse-headless-cms-phase-4-design.md §7)
+ * live in the same WordPress, tagged `pulse`.
+ */
+export const BLOG_SITE = 'ciphera-net'
+
+/**
+ * The `routeSites` slugs a node carries, or none. ONE DEFINITION for the generator
+ * and the preview — see the file header. Both must agree on which site a post
+ * belongs to, or the preview can show a post the build would never publish here.
+ */
+export function nodeSites(node: Pick<WpNode, 'routeSites'>): string[] {
+  return node.routeSites?.nodes?.map((t) => t.slug) ?? []
+}
+
 /** Strip tags for anything that counts or measures PROSE rather than markup. */
 export function textOf(html: string): string {
   return html

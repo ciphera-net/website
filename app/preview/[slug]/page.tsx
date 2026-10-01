@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { BlogPostView } from '@/components/blog/post-view'
 import { getBlogPosts } from '@/lib/blog'
-import { WP_POST_FIELDS, transformWpPost, type WpNode, type TransformProblem } from '@/lib/blog-transform'
+import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode, type TransformProblem } from '@/lib/blog-transform'
 
 /**
  * Draft preview for the CMS.
@@ -120,6 +120,13 @@ export default async function PreviewPage({ params }: { params: Promise<{ slug: 
     )
   }
   if (!node) notFound()
+
+  // 🔴 SITE FIRST, before the transform — exactly the order PULSE-157 proved matters
+  // (scripts/generate-seo.ts). Pulse's blog posts (Phase 4,
+  // Pulse/docs/plans/30-09-2026-pulse-headless-cms-phase-4-design.md §7) live in the
+  // same WordPress. Without this, a Pulse draft would render inside ciphera.net's own
+  // chrome — a 404 here is correct, not a bug: this preview serves ciphera.net only.
+  if (!nodeSites(node).includes(BLOG_SITE)) notFound()
 
   const { post, problems } = transformWpPost(node, CDN)
   if (!post) notFound()

@@ -207,3 +207,44 @@ test('uploaded media is rewritten to the CDN and never left on WordPress', () =>
     assert.doesNotMatch(gen, forbidden, 'CDN write credentials must never enter the website build')
   }
 })
+
+test('the preview refuses a post not tagged for this site, before it transforms anything', () => {
+  // Pulse's blog posts (Phase 4, Pulse/docs/plans/
+  // 30-09-2026-pulse-headless-cms-phase-4-design.md §7) live in the same WordPress as
+  // ciphera.net's. Without a site filter this preview would happily render a Pulse
+  // draft inside ciphera.net's own chrome — the exact cross-tenant leak PULSE-157 found
+  // in the route-stub generator, one surface later.
+  const src = code('app/preview/[slug]/page.tsx')
+  const body = src.slice(src.indexOf('export default async function PreviewPage'))
+
+  const nodeCheck = body.indexOf('if (!node) notFound()')
+  const siteCheck = body.indexOf('if (!nodeSites(node).includes(BLOG_SITE)) notFound()')
+  const transformCall = body.indexOf('transformWpPost(node, CDN)')
+
+  assert.ok(nodeCheck > -1, 'the preview no longer guards against a missing node')
+  assert.ok(siteCheck > -1, 'the preview no longer filters a draft by its ciphera_site term')
+  assert.ok(transformCall > -1, 'the preview no longer runs the shared transform')
+  assert.ok(
+    nodeCheck < siteCheck && siteCheck < transformCall,
+    'the site filter must run after the node is known to exist and before anything is transformed or rendered — ' +
+      'PULSE-157 is what site-after-validation costs'
+  )
+})
+
+test('the preview and the generator share ONE site-filter rule, not two copies', () => {
+  // scripts/generate-blog-posts.ts used to declare its own `const SITE = 'ciphera-net'`
+  // and its own inline `routeSites` walk. A preview written against a second copy of
+  // that rule would eventually disagree with the build's — which is the same failure
+  // the file header's "ONE TRANSFORM, TWO CALLERS" already exists to prevent, one
+  // definition short.
+  const transform = code('lib/blog-transform.ts')
+  assert.match(transform, /export const BLOG_SITE = 'ciphera-net'/, 'lib/blog-transform.ts must own the site slug')
+  assert.match(transform, /export function nodeSites/, 'lib/blog-transform.ts must own the routeSites lookup')
+
+  for (const f of ['scripts/generate-blog-posts.ts', 'app/preview/[slug]/page.tsx']) {
+    const src = code(f)
+    assert.match(src, /nodeSites/, `${f} must read a node's sites through the shared helper, not its own copy`)
+    assert.match(src, /BLOG_SITE/, `${f} must compare against the shared site constant, not a local one`)
+    assert.doesNotMatch(src, /const SITE = /, `${f} must not declare its own site constant alongside the shared one`)
+  }
+})
