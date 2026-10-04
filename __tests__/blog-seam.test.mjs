@@ -78,29 +78,64 @@ test('the BlogPosting wordCount does not count HTML tags', () => {
   assert.match(page, /wordCount:\s*post\.wordCount/)
 })
 
-test('the sanitiser strips every class and allows no image protocol', () => {
-  const body = code('components/blog/wp-body.tsx')
+test('the sanitiser strips every class and merges (never replaces) the protocol map (WEB-16, mirrors PULSE-243)', () => {
+  // 🔴 SPLIT 04-10-2026: the schema and cipheraBlocks moved from wp-body.tsx into
+  // lib/blog-html.ts (WEB-16, mirrors pulse-website@edcb673) so scripts/generate-blog-posts.ts
+  // can run the exact same chain at build time. wp-body.tsx now only imports and wires it.
+  const html = code('lib/blog-html.ts')
   // The ONE exception, and it is a VALUE allowlist rather than a hole: MDX emits
   // `<code class="language-html">` for a fenced block's info string, and stripping it
   // silently changed the corpus's only code block. rehype-sanitize takes
   // [attribute, ...allowedValues], so an author cannot smuggle an arbitrary class
   // through `code`. Anything else claiming className is the thing this forbids.
-  const classNameUses = [...body.matchAll(/'className'/g)]
+  const classNameUses = [...html.matchAll(/'className'/g)]
   assert.equal(
     classNameUses.length,
     1,
     'className may appear exactly once in the sanitiser schema — on `code`, as a value allowlist. ' +
       'WordPress emits wp-block-* classes that mean nothing here, and allowing them lets the CMS make styling decisions'
   )
-  assert.match(body, /code: \[\s*\[\s*'className', 'language-/, 'the one className exception must be value-allowlisted')
+  assert.match(html, /code: \[\s*\[\s*'className', 'language-/, 'the one className exception must be value-allowlisted')
   // Semantics travel on data-* instead, so those must be allowed.
-  assert.match(body, /'data-ciphera-block'/)
-  // An `src` with any scheme is an image the build's CDN mirror did not handle.
-  assert.doesNotMatch(body, /src:\s*\[\s*'https?'/, 'src must allow no protocol — every image is rewritten to a CDN path before this runs')
+  assert.match(html, /'data-ciphera-block'/)
+
+  // 🔴 THE PULSE-243 ROOT CAUSE. `protocols: { href: [...] }` — written straight after
+  // `...defaultSchema` — REPLACES the whole protocols map rather than merging it, and
+  // defaultSchema.protocols already carries `src: ['http', 'https']`. Replacing it meant
+  // `src` had NO protocol check at all: javascript:, data: and any off-CDN https image
+  // rendered. The fix spreads `...defaultSchema.protocols` into the new map.
+  assert.match(
+    html,
+    /protocols:\s*\{\s*\.\.\.defaultSchema\.protocols,/,
+    'protocols must spread defaultSchema.protocols — writing a bare { href: [...] } here silently drops the check on src entirely'
+  )
+  // And `src` must be restricted to https — never absent (no check) and never bare
+  // 'http'/'https?' (which would also admit a plain http image).
+  assert.match(html, /src:\s*\['https'\]/, 'img src must be restricted to exactly https')
+
+  // The second, independent backstop: a scheme check alone cannot catch
+  // https://cdn.ciphera.net.evil.example/x.png (an allowed scheme, the wrong host).
+  assert.match(html, /export function cdnImagesOnly/, 'a scheme check alone cannot catch a confused host — cdnImagesOnly must exist')
+  assert.match(html, /startsWith\(CDN_IMAGE_ORIGIN\)/, 'cdnImagesOnly must reject anything not starting with the exact CDN origin')
 })
 
-test('the converter canonicalises hast\'s camelCased data attributes', () => {
+test('wp-body.tsx wires the shared schema, cdnImagesOnly and toolLogosValidated into one pipeline (WEB-16)', () => {
   const body = code('components/blog/wp-body.tsx')
+  assert.match(body, /from '@\/lib\/blog-html'/, 'wp-body.tsx must import the shared pipeline, not keep its own copy')
+  assert.match(body, /\.use\(rehypeSanitize, schema\)/)
+  assert.match(body, /\.use\(cdnImagesOnly\)/, 'an img that fails the protocol/host check must still be removed from the rendered tree')
+  assert.match(body, /\.use\(toolLogosValidated\)/, 'a tool-logo mark must be validated the same way an <img> is')
+  // cdnImagesOnly and toolLogosValidated must run AFTER sanitize, never before — a
+  // pre-sanitize check would be validating markup the sanitizer has not finished with.
+  const sanitizeAt = body.indexOf('.use(rehypeSanitize, schema)')
+  const cdnAt = body.indexOf('.use(cdnImagesOnly)')
+  const toolLogoAt = body.indexOf('.use(toolLogosValidated)')
+  assert.ok(sanitizeAt > -1 && cdnAt > sanitizeAt, 'cdnImagesOnly must run after rehype-sanitize')
+  assert.ok(toolLogoAt > cdnAt, 'toolLogosValidated must run after cdnImagesOnly')
+})
+
+test('the converter canonicalises hast\'s camelCased data attributes (lib/blog-html.ts, WEB-16)', () => {
+  const html = code('lib/blog-html.ts')
   // 🔴 THE BUG THIS PINS, MEASURED ON THE FIRST WORDPRESS-AUTHORED POST.
   // hast camel-cases every data-* attribute: `<span data-src="…">` parses to
   // `properties.dataSrc`, never `properties['data-src']`. A rehype-sanitize allowlist
@@ -108,8 +143,41 @@ test('the converter canonicalises hast\'s camelCased data attributes', () => {
   // well-formed `<span></span>` — no error, no warning, and a ToolLogo that renders as
   // an empty inline element. The blockquote branch hid it, because that one assigns
   // literal hyphenated keys itself.
-  assert.match(body, /dataCipheraBlock/, 'the transformer must read hast\'s camelCased spelling')
-  assert.match(body, /dataSrc/, 'data-src arrives as dataSrc and must be canonicalised before sanitising')
+  assert.match(html, /dataCipheraBlock/, 'the transformer must read hast\'s camelCased spelling')
+  assert.match(html, /dataSrc/, 'data-src arrives as dataSrc and must be canonicalised before sanitising')
+})
+
+test('a tool-logo mark is shape-checked and HEAD-checked like every other image (WEB-16, mirrors PULSE-243)', () => {
+  const html = code('lib/blog-html.ts')
+  // 🔴 data-src IS A '*' ATTRIBUTE, SO IT IS NEVER SHAPE-CHECKED BY SANITIZE ITSELF.
+  assert.match(html, /export const TOOL_LOGO_SRC\s*=\s*\/\^\\\/blog\\\/tools\\\//, 'TOOL_LOGO_SRC must anchor to /blog/tools/')
+  assert.match(html, /export function toolLogosValidated/)
+  // Only span/div become a <ToolLogo> — any other tag must keep its text and lose only
+  // the data-* attributes, never be deleted outright (that would delete editor prose).
+  assert.match(
+    html,
+    /node\.tagName !== 'span' && node\.tagName !== 'div'/,
+    'a tool-logo block on any tag but span/div must not be treated as an image'
+  )
+  assert.match(html, /TOOL_LOGO_SRC\.test\(src\)/)
+
+  const gen = code('scripts/generate-blog-posts.ts')
+  assert.match(gen, /renderableImageSources/, 'the generator must import the shared renderableImageSources, not its own regex')
+  assert.match(
+    gen,
+    /renderableImageSources\(post\.html,\s*\{\s*toolLogoBase:\s*CDN\s*\}\)/,
+    'the generator must HEAD-check a tool-logo mark too, resolved the same way ToolLogo itself resolves it (cdnUrl() against NEXT_PUBLIC_CDN_URL)'
+  )
+})
+
+test('NEXT_PUBLIC_CDN_URL being unset is a build failure once a WordPress post ships (WEB-16, mirrors PULSE-243)', () => {
+  const gen = code('scripts/generate-blog-posts.ts')
+  assert.match(
+    gen,
+    /wp\.length > 0 && !process\.env\.NEXT_PUBLIC_CDN_URL/,
+    'an unset NEXT_PUBLIC_CDN_URL must fail the build once it is publishing at least one WordPress post — ' +
+      'left unset, cdnUrl() resolves every tool-logo mark and card image relative to this app\'s own origin instead of the CDN'
+  )
 })
 
 test('every build-time gate the blog depends on is present', () => {
@@ -198,8 +266,12 @@ test('uploaded media is rewritten to the CDN and never left on WordPress', () =>
 
   // 🔴 THE REWRITE ALONE IS AN ASSUMPTION. Without the HEAD check a post can reference
   // an image the mirror has not copied yet, and the page ships with a hole.
+  // ⚠️ SINCE WEB-16 (mirrors PULSE-243) THE CHECK IS renderableImageSources(), NOT A
+  // HAND-WRITTEN `${CDN}/blog/media/` REGEX — it runs the exact sanitize → cdnImagesOnly
+  // chain the page renders with, so it also catches a tool-logo mark, which the old regex
+  // never did. See the "tool-logo mark is shape-checked and HEAD-checked" test above.
   const gen = code('scripts/generate-blog-posts.ts')
-  assert.match(gen, /blog\/media\//, 'the build must HEAD-check every rewritten image')
+  assert.match(gen, /renderableImageSources/, 'the build must HEAD-check every rendered image AND tool-logo mark')
 
   // And the write credentials must NOT be here: three of them, in a pipeline that runs
   // on pull_request. That is the trade this design exists to avoid.
@@ -257,4 +329,68 @@ test('the preview and the generator share ONE site-filter rule, not two copies',
       `${f} must actually call nodeSites(...).includes(BLOG_SITE) — not just import the names`
     )
   }
+})
+
+test('every blog ld+json script is escaped through jsonLdHtml, never a bare JSON.stringify (WEB-16, mirrors PULSE-243)', () => {
+  // 🔴 CMS-AUTHORED VALUES (title, description, category, FAQ text) reach this script
+  // tag. A plain JSON.stringify does not know it is sitting inside <script>, so a title
+  // or FAQ answer containing `</script>` or `<!--` breaks out of the tag — whatever
+  // follows in the source becomes ordinary page markup. jsonLdHtml() escapes exactly
+  // those characters as JSON unicode escapes, which a JSON parser decodes back to the
+  // same value: the crawler sees the same structured data, the HTML parser never sees
+  // the raw `<`.
+  for (const f of ['components/blog/post-view.tsx', 'app/blog/page.tsx']) {
+    const src = code(f)
+    assert.match(src, /from '@\/lib\/json-ld'/, `${f} must import jsonLdHtml`)
+    assert.match(
+      src,
+      /dangerouslySetInnerHTML=\{\{\s*__html:\s*jsonLdHtml\(/,
+      `${f}'s ld+json script must be built with jsonLdHtml(), not a bare JSON.stringify`
+    )
+    assert.doesNotMatch(
+      src,
+      /dangerouslySetInnerHTML=\{\{\s*__html:\s*JSON\.stringify\(/,
+      `${f} must not feed a bare JSON.stringify(...) into a <script> tag`
+    )
+  }
+})
+
+test('jsonLdHtml escapes the script-breakout and comment-opener characters and round-trips through JSON.parse', () => {
+  const src = code('lib/json-ld.ts')
+  // The three characters that matter to an HTML parser reading script CONTENT.
+  for (const needle of ["'<': '\\\\u003c'", "'>': '\\\\u003e'", "'&': '\\\\u0026'"]) {
+    assert.ok(src.includes(needle), `lib/json-ld.ts must escape ${needle}`)
+  }
+  // The line/paragraph separator escapes — not an HTML concern, but valid JS string
+  // characters some JSON-in-<script> tooling treats as a line terminator.
+  assert.match(src, /\\u2028/)
+  assert.match(src, /\\u2029/)
+  assert.match(src, /export function jsonLdHtml/)
+})
+
+test('a slug WordPress could not have produced is refused, in the shape WPGraphQL actually returns (WEB-16, mirrors PULSE-243)', () => {
+  const t = code('lib/blog-transform.ts')
+  // WPGraphQL returns urldecode(post_name) — a percent-encoded byte never reaches this
+  // build, so the shape check must accept DECODED non-ASCII (café), not re-encoded
+  // percent octets (caf%c3%a9), or every non-ASCII title would fail every build.
+  assert.match(t, /export const WP_SLUG\s*=\s*\/\^/, 'WP_SLUG must be exported for the generator and preview to share')
+  assert.match(t, /WP_SLUG\.test\(slug\)/, 'transformWpPost must reject a slug WordPress could not have produced')
+  assert.match(t, /not a shape WordPress could have produced/)
+})
+
+test('the feed escapes the full post URL, not just the slug (WEB-16, mirrors PULSE-243)', () => {
+  const feed = code('app/feed.xml/route.ts')
+  // 🔴 DEFENCE IN DEPTH: lib/blog-transform.ts's WP_SLUG check keeps a malformed slug
+  // out of the build entirely, but this route reads whatever lib/blog-posts.gen.ts
+  // hands it — the same reasoning that already applies escapeXml to title/description.
+  assert.match(
+    feed,
+    /const url = escapeXml\(`https:\/\/ciphera\.net\/blog\/\$\{post\.slug\}`\)/,
+    'the full URL must be escaped, not interpolated raw into <link>/<guid>'
+  )
+  assert.doesNotMatch(
+    feed,
+    /<link>https:\/\/ciphera\.net\/blog\/\$\{post\.slug\}<\/link>/,
+    'the slug must never be interpolated unescaped directly into <link>'
+  )
 })

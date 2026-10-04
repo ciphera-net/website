@@ -11,11 +11,20 @@
  * 🔴 FAIL LOUDLY, NEVER EMIT A PARTIAL. Every check below exits non-zero. A blog that
  * silently ships fifteen of sixteen posts, or one post with no description, is worse
  * than a red pipeline — nothing anywhere would report it.
+ *
+ * 🔑 THE IMAGE/TOOL-LOGO HEAD CHECK AND THE STRICT NEXT_PUBLIC_CDN_URL CROSS-CHECK BELOW
+ * ARE PORTED FROM pulse-website@edcb673 / 70a90da (PULSE-243): the old check regex-matched
+ * only `${CDN}/blog/media/` images (never a tool-logo mark) and NEXT_PUBLIC_CDN_URL being
+ * unset was never fatal, so a post could ship with a tool-logo mark or card image that
+ * renders relative to this app's own origin instead of the CDN, with a green build. Both
+ * were re-measured against the live corpus before being tightened — see lib/blog-html.ts's
+ * TOOL_LOGO_SRC comment.
  */
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode } from '../lib/blog-transform'
+import { renderableImageSources } from '../lib/blog-html'
 import type { WpBlogPost } from '../lib/blog-types'
 import { checkRecoveryCopy } from '../lib/recovery-copy-rules.mjs'
 
@@ -134,15 +143,23 @@ async function main() {
     // ⚠️ It lives HERE and not in the shared transform because it costs a network
     // round trip per post — which is right for a build and wrong for a preview an
     // editor is waiting on.
-    // 🔴 EVERY IMAGE A POST REFERENCES MUST ACTUALLY BE ON THE CDN (design §29).
-    // Images are uploaded at cms.ciphera.net/upload, which writes to the CDN and hands
-    // back a finished URL — so a post referencing one that is not there means the URL
-    // was typed or pasted rather than produced. That is a broken image on a published
-    // page, and this is what makes it a red build naming the file instead.
+    // 🔴 EVERY IMAGE AND TOOL-LOGO MARK THE PAGE WILL ACTUALLY RENDER MUST BE ON THE CDN
+    // (design §29). Images are uploaded at cms.ciphera.net/upload, which writes to the
+    // CDN and hands back a finished URL — so a post referencing one that is not there
+    // means the URL was typed or pasted rather than produced. That is a broken image on
+    // a published page, and this is what makes it a red build naming the file instead.
+    // 🔑 `renderableImageSources` (lib/blog-html.ts) runs the EXACT SAME
+    // parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated chain the
+    // page renders with, so this checks exactly the set of `<img>` sources AND tool-logo
+    // marks that will reach a reader's browser — never a hand-written regex, which
+    // misses whatever quoting or markup shape it was not written to expect (a
+    // single-quoted `src='…'`, for one), and never HEAD-checked a tool logo at all
+    // before this (ported from pulse-website@edcb673 / 70a90da, PULSE-243).
+    // `toolLogoBase: CDN` is the same resolution ToolLogo itself does in production
+    // (`cdnUrl()` against `NEXT_PUBLIC_CDN_URL`).
     // ⚠️ Needs NO credential: the CDN is public, and that is the whole reason no CDN
     // write credential lives in this pipeline.
-    for (const src of new Set([...post.html.matchAll(/src="([^"]+)"/g)].map((m) => m[1]))) {
-      if (!src.startsWith(`${CDN}/blog/media/`)) continue
+    for (const src of renderableImageSources(post.html, { toolLogoBase: CDN })) {
       const imgStatus = await head(src)
       if (imgStatus !== 200) {
         fail(
@@ -185,6 +202,26 @@ async function main() {
     const { html: _html, faqs: _faqs, wordCount: _wc, cta: _cta, ...summary } = post
     summaries.push(summary)
     wp.push(post)
+  }
+
+  // 🔴 THE STRICT NEXT_PUBLIC_CDN_URL CHECK, once there is at least one WordPress post to
+  // publish. Ported from pulse-website@70a90da (PULSE-243).
+  // ⚠️ DELIBERATELY READS THE RAW process.env VALUE, NOT THE `CDN` CONSTANT ABOVE — `CDN`
+  // already falls back to the production default when NEXT_PUBLIC_CDN_URL is unset (so
+  // this build's own HEAD checks keep passing against the real CDN), but lib/cdn.ts's
+  // `cdnUrl()` has NO such fallback (`process.env.NEXT_PUBLIC_CDN_URL || ''`) — it resolves
+  // every tool-logo mark and post card image RELATIVE TO THIS APP'S OWN ORIGIN whenever the
+  // env var is actually unset at runtime. Before this check, that state was invisible: the
+  // generator's own default silently masked it and the build stayed green while production
+  // pages would have served broken images. Zero posts has nothing to resolve, so an unset
+  // value is not fatal on its own — never fail a build that ships nothing.
+  if (wp.length > 0 && !process.env.NEXT_PUBLIC_CDN_URL) {
+    fail(
+      `NEXT_PUBLIC_CDN_URL is unset but this build is publishing ${wp.length} WordPress post(s). ` +
+        `Pages resolve tool-logo marks and post card images through cdnUrl() (NEXT_PUBLIC_CDN_URL); ` +
+        `left unset, both would render relative to this app's own origin instead of the CDN. Fix the ` +
+        `secret, not this file.`
+    )
   }
 
   // 🔴 THE SHRINK GUARD. After the migration WordPress holds the ONLY live copy of the
