@@ -41,30 +41,51 @@ const CDN = process.env.NEXT_PUBLIC_CDN_URL ?? 'https://cdn.ciphera.net/website'
  */
 const WP_AUTH = process.env.WORDPRESS_PREVIEW_AUTH
 
-async function fetchDraft(slug: string): Promise<{ node: WpNode | null; error: string | null }> {
+/**
+ * A WordPress `databaseId`, exactly as the Ready-to-publish box's "Preview this draft"
+ * link carries it (`?id=<databaseId>`, plan §10.3). No leading zero, 1-10 digits —
+ * `databaseId` is a Postgres-free MySQL `bigint`, never negative, never zero.
+ * Rejected BEFORE any fetch: an invalid `id` must not reach WordPress as a GraphQL
+ * variable at all.
+ */
+const DATABASE_ID = /^[1-9][0-9]{0,9}$/
+
+async function fetchDraft(slug: string, id: number | null): Promise<{ node: WpNode | null; error: string | null }> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
   if (WP_AUTH) headers.Authorization = `Basic ${Buffer.from(WP_AUTH).toString('base64')}`
+
+  // 🔴 THE CONNECTION, NOT `blogPost(idType: SLUG)`. Measured: the single-node SLUG
+  // resolver returns **null** for a draft — not because WPGraphQL restricts that
+  // lookup, but because the `WP_Query` built for `idType: SLUG` never sets
+  // `post_status` at all (WordPress's own public-status default), upstream of
+  // WPGraphQL's visibility layer entirely. The same credential, on the same
+  // request, gets the draft from `blogPosts(where: { name: … })` and nothing from
+  // `blogPost`. A block-editor draft also carries `post_name ""` until publish
+  // (WEB-17), so a name lookup alone can never find one regardless of this
+  // mechanism — which is what the `id` lookup below exists for.
+  // ⚠️ It fails by returning null, not by erroring — so it reads exactly like "that
+  // post does not exist", which is the wrong diagnosis and the reason this took a
+  // live query to find rather than a careful read.
+  const query =
+    id !== null
+      ? `query Preview($id: Int!) {
+          blogPosts(first: 1, where: { id: $id }) { nodes { ${WP_POST_FIELDS} } }
+        }`
+      : `query Preview($slug: String!) {
+          blogPosts(first: 1, where: { name: $slug }) { nodes { ${WP_POST_FIELDS} } }
+        }`
+  const variables = id !== null ? { id } : { slug }
 
   try {
     const res = await fetch(WP as string, {
       method: 'POST',
       headers,
       cache: 'no-store',
-      body: JSON.stringify({
-        // 🔴 THE CONNECTION, NOT `blogPost(idType: SLUG)`. Measured 10-09-2026 with a
-        // fully authorised reader: the single-node SLUG resolver returns **null** for a
-        // draft, because WPGraphQL restricts that lookup to published posts and the
-        // `graphql_post_object_connection_query_args` filter that widens the statuses
-        // only reaches CONNECTIONS. The same credential, on the same request, gets the
-        // draft from `blogPosts(where: { name: … })` and nothing from `blogPost`.
-        // ⚠️ It fails by returning null, not by erroring — so it reads exactly like
-        // "that post does not exist", which is the wrong diagnosis and the reason this
-        // took a live query to find rather than a careful read.
-        query: `query Preview($slug: String!) {
-          blogPosts(first: 1, where: { name: $slug }) { nodes { ${WP_POST_FIELDS} } }
-        }`,
-        variables: { slug },
-      }),
+      // 🔴 10s CEILING. An editor is sitting in front of this waiting for a page to
+      // load — a hung WordPress connection must end in the "Preview unavailable"
+      // state below, not hang the request forever.
+      signal: AbortSignal.timeout(10_000),
+      body: JSON.stringify({ query, variables }),
     })
     if (!res.ok) return { node: null, error: `WordPress returned HTTP ${res.status}` }
     const body = await res.json()
@@ -97,14 +118,32 @@ function Banner({ status, problems }: { status: string; problems: TransformProbl
   )
 }
 
-export default async function PreviewPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PreviewPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ id?: string | string[] }>
+}) {
   // 🔴 NOT AN ERROR PAGE — A 404. On ciphera.net this route must be indistinguishable
   // from a path that does not exist. An error page would advertise that a preview
   // surface exists and invite somebody to go looking for it.
   if (!WP) notFound()
 
   const { slug } = await params
-  const { node, error } = await fetchDraft(slug)
+  const { id: idParam } = await searchParams
+  const rawId = Array.isArray(idParam) ? idParam[0] : idParam
+
+  // 🔴 REJECTED BEFORE ANY FETCH. A present-but-malformed `id` 404s here, without
+  // ever reaching `fetchDraft` — the shape pulse-website's own route follows too
+  // (plan §10.2, "exactly as pulse-website will").
+  let id: number | null = null
+  if (rawId !== undefined) {
+    if (!DATABASE_ID.test(rawId)) notFound()
+    id = Number(rawId)
+  }
+
+  const { node, error } = await fetchDraft(slug, id)
 
   if (error) {
     return (
