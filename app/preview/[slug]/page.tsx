@@ -50,6 +50,45 @@ const WP_AUTH = process.env.WORDPRESS_PREVIEW_AUTH
  */
 const DATABASE_ID = /^[1-9][0-9]{0,9}$/
 
+/**
+ * 🔴 THE QUERY DECLARES `$id: Int!` (see `fetchDraft` below) — a GraphQL `Int` is a
+ * signed 32-bit integer, not WordPress's MySQL `bigint`. `DATABASE_ID`'s 10-digit shape
+ * alone lets '9999999999' through: it then reaches `fetchDraft`, WPGraphQL's variable
+ * coercion rejects it server-side, and the page renders "Preview unavailable" instead of
+ * a 404 — the wrong outcome for an id that was never going to resolve to anything. Reject
+ * it here, pre-fetch, same as the shape check.
+ */
+const GRAPHQL_INT32_MAX = 2147483647
+
+/**
+ * Decode a preview URL's own path segment EXACTLY ONCE.
+ *
+ * 🔴 WHY THIS EXISTS: a block-editor draft carries `post_name ""` until publish (WEB-17),
+ * so `node.slug` comes back `null` and the shared transform refuses it outright ("the
+ * post has no slug and can never have a URL") — 404ing the exact case the `id` lookup was
+ * built for. The CMS's "Preview this draft" link already carries a usable slug in the URL
+ * ITSELF: the og-gate's derived slug (`sanitize_title(post_name ?: post_title)`,
+ * `'untitled'` if even the title is empty — `mu-plugins/ciphera-og-gate.php`). So on the id
+ * path, a slug-less node renders under that segment instead of 404ing.
+ *
+ * ⚠️ DECODED EXACTLY ONCE, NEVER ASSUMED. Measured against a real `next start` (WEB-17
+ * follow-up proof): this route's dynamic segment arrives through `params` already decoded
+ * by Next's router — `café` hits this function as `café`, not `caf%C3%A9`. Calling
+ * `decodeURIComponent` unconditionally would be a SECOND decode and would corrupt any
+ * segment containing a literal, non-encoding `%` that happened to look like an escape.
+ * Decoding only when the segment still carries a `%XX` run makes this correct whichever
+ * way a future Next release hands it through, instead of hard-coding today's measurement.
+ * A segment that fails to decode (malformed escape) returns `null` — the caller 404s.
+ */
+function decodeSegmentOnce(raw: string): string | null {
+  if (!/%[0-9A-Fa-f]{2}/.test(raw)) return raw
+  try {
+    return decodeURIComponent(raw)
+  } catch {
+    return null
+  }
+}
+
 async function fetchDraft(slug: string, id: number | null): Promise<{ node: WpNode | null; error: string | null }> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
   if (WP_AUTH) headers.Authorization = `Basic ${Buffer.from(WP_AUTH).toString('base64')}`
@@ -130,6 +169,15 @@ export default async function PreviewPage({
   // surface exists and invite somebody to go looking for it.
   if (!WP) notFound()
 
+  // 🔴 MEASURED (WEB-17 follow-up, real `next start` against a fixture): a path segment
+  // with a malformed percent-escape (e.g. `%E0%A4%A`) 500s here — NOT a regression from
+  // this change. Next's own dynamic-segment resolution throws before this component's
+  // code runs at all, and a try/catch around this very `await params` does not catch it
+  // either (tried, measured, reverted) — the throw happens outside this function's frame.
+  // Reproduced identically on `/blog/[slug]` and `/glossary/[slug]`, which this change
+  // never touched, so it is a pre-existing, framework-wide Next.js 16 behaviour. Fixing it
+  // would mean intercepting the request before Next's own router (a proxy/middleware
+  // layer), which is a site-wide change outside this route's scope — out of scope here.
   const { slug } = await params
   const { id: idParam } = await searchParams
   const rawId = Array.isArray(idParam) ? idParam[0] : idParam
@@ -141,6 +189,8 @@ export default async function PreviewPage({
   if (rawId !== undefined) {
     if (!DATABASE_ID.test(rawId)) notFound()
     id = Number(rawId)
+    // 🔴 THE INT32 CEILING — see GRAPHQL_INT32_MAX above. Still before any fetch.
+    if (id > GRAPHQL_INT32_MAX) notFound()
   }
 
   const { node, error } = await fetchDraft(slug, id)
@@ -167,7 +217,23 @@ export default async function PreviewPage({
   // chrome — a 404 here is correct, not a bug: this preview serves ciphera.net only.
   if (!nodeSites(node).includes(BLOG_SITE)) notFound()
 
-  const { post, problems } = transformWpPost(node, CDN)
+  // 🔴 THE ID-PATH SLUG FALLBACK (WEB-17 follow-up). See decodeSegmentOnce above for why.
+  // Only on the id lookup, and only when the node itself has no slug: when it has one,
+  // the node's slug wins and this URL's own segment is ignored (unchanged from before).
+  // The no-id (name) path never reaches this branch — WordPress cannot resolve a name
+  // lookup to a blank-slug draft in the first place, and this fallback must not widen
+  // what that path accepts.
+  let renderNode = node
+  if (id !== null && !(node.slug ?? '').trim()) {
+    const decoded = decodeSegmentOnce(slug)
+    if (decoded === null) notFound()
+    // A COPY, never a mutation — the shared transform still runs its own WP_SLUG check
+    // against this value (lib/blog-transform.ts), so a segment that is not a shape
+    // WordPress could have produced 404s there, exactly like any other slug.
+    renderNode = { ...node, slug: decoded }
+  }
+
+  const { post, problems } = transformWpPost(renderNode, CDN)
   if (!post) notFound()
 
   // ⚠️ The transform reports problems rather than throwing them, so the preview can

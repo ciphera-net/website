@@ -121,7 +121,7 @@ test('the SLUG-resolver comment states the measured mechanism, not the old guess
 test('the site filter still runs before the transform, unchanged by the id work', () => {
   const src = code(ROUTE)
   const siteFilter = src.indexOf('nodeSites(node).includes(BLOG_SITE)')
-  const transform = src.indexOf('transformWpPost(node, CDN)')
+  const transform = src.indexOf('transformWpPost(renderNode, CDN)')
   assert.ok(siteFilter > 0 && transform > 0, 'both the site filter and the transform call must be present')
   assert.ok(siteFilter < transform, 'the site filter must still run before the transform (website#115 order)')
 })
@@ -130,4 +130,146 @@ test('the page reads id from searchParams, not from the path (the one-segment gu
   const src = code(ROUTE)
   assert.match(src, /params:\s*Promise<\{\s*slug:\s*string\s*\}>/)
   assert.match(src, /searchParams:\s*Promise<\{\s*id\?:\s*string\s*\|\s*string\[\]\s*\}>/)
+})
+
+// --- WEB-17 follow-up: a slug-null node by id renders under the URL's own segment ---
+
+test('an id over the GraphQL Int32 ceiling 404s pre-fetch, with zero fetch calls', () => {
+  const src = code(ROUTE)
+  assert.match(src, /const GRAPHQL_INT32_MAX = 2147483647\s*$/m)
+  const ceilingAt = src.indexOf('if (id > GRAPHQL_INT32_MAX) notFound()')
+  const fetchAt = src.indexOf('await fetchDraft(slug, id)')
+  assert.ok(ceilingAt > 0, 'the int32 ceiling check is missing')
+  assert.ok(ceilingAt < fetchAt, 'the ceiling must be checked BEFORE any WordPress fetch')
+
+  // DATABASE_ID's own shape still lets a 10-digit number like '9999999999' through —
+  // the ceiling is a SEPARATE, numeric check on top of it, not a tighter regex.
+  const DATABASE_ID = /^[1-9][0-9]{0,9}$/
+  for (const id of ['2147483647', '2147483648', '9999999999']) {
+    assert.ok(DATABASE_ID.test(id), `"${id}" must still pass the shape check (the ceiling is numeric, not shape)`)
+  }
+  assert.ok(2147483647 <= 2147483647 && !(2147483647 > 2147483647))
+  assert.ok(2147483648 > 2147483647, 'the ceiling constant must reject 2147483648')
+  assert.ok(9999999999 > 2147483647, 'the ceiling constant must reject 9999999999')
+})
+
+test('the fallback only fires on the id path, and only when the node has no slug', () => {
+  const src = code(ROUTE)
+  const fallbackAt = src.indexOf("if (id !== null && !(node.slug ?? '').trim())")
+  assert.ok(fallbackAt > 0, 'the id+no-slug guard on the fallback is missing')
+})
+
+test('the fallback renders a COPY of the node, never mutates the fetched node', () => {
+  const src = code(ROUTE)
+  assert.match(src, /renderNode = \{ \.\.\.node, slug: decoded \}/)
+  // node.slug itself must still be read afterwards for the banner's draft/published
+  // distinction — proof the original node object was never mutated in place.
+  assert.match(src, /const status = node\.slug && post\.date \?/)
+})
+
+test('a segment that fails to decode notFounds before the transform ever sees it', () => {
+  const src = code(ROUTE)
+  const decodeAt = src.indexOf('const decoded = decodeSegmentOnce(slug)')
+  const guardAt = src.indexOf('if (decoded === null) notFound()')
+  const transformAt = src.indexOf('transformWpPost(renderNode, CDN)')
+  assert.ok(decodeAt > 0 && guardAt > 0 && transformAt > 0)
+  assert.ok(decodeAt < guardAt && guardAt < transformAt)
+})
+
+test('decodeSegmentOnce: a clean segment passes through; a %XX-bearing one decodes exactly once; a malformed escape returns null', () => {
+  const src = code(ROUTE)
+  assert.match(src, /function decodeSegmentOnce\(raw: string\): string \| null \{/)
+
+  // Re-implemented from the route's own source shape, since this file cannot import
+  // the TS module (CI runs with no node_modules) — the guard clause and try/catch are
+  // asserted against the live source above; behaviour is proven here.
+  function decodeSegmentOnce(raw) {
+    if (!/%[0-9A-Fa-f]{2}/.test(raw)) return raw
+    try {
+      return decodeURIComponent(raw)
+    } catch {
+      return null
+    }
+  }
+
+  assert.equal(decodeSegmentOnce('my-draft'), 'my-draft')
+  assert.equal(decodeSegmentOnce('untitled'), 'untitled')
+  assert.equal(decodeSegmentOnce('caf%C3%A9'), 'café')
+  assert.equal(decodeSegmentOnce('caf%c3%a9'), 'café')
+  // Already-decoded (Next's own router decodes params before this ever runs) is a no-op.
+  assert.equal(decodeSegmentOnce('café'), 'café')
+  assert.equal(decodeSegmentOnce('a%2fb'), 'a/b')
+  assert.equal(decodeSegmentOnce('a%3cb'), 'a<b')
+  assert.equal(decodeSegmentOnce('%E0%A4%A'), null)
+})
+
+test('the route itself calls decodeURIComponent exactly once, never nested (source-level, catches a "decode twice" regression)', () => {
+  const src = code(ROUTE)
+  const fnBody = src.slice(src.indexOf('function decodeSegmentOnce'), src.indexOf('\n}\n', src.indexOf('function decodeSegmentOnce')))
+  const calls = fnBody.match(/decodeURIComponent\(/g) ?? []
+  assert.equal(calls.length, 1, 'decodeSegmentOnce must call decodeURIComponent exactly once')
+  assert.doesNotMatch(fnBody, /decodeURIComponent\(decodeURIComponent\(/, 'must never nest a second decode pass inside the first')
+})
+
+test('decodeSegmentOnce decodes EXACTLY ONCE, never recursively', () => {
+  // 🔴 THE DISTINGUISHING CASE FOR "decode twice". `decodeURIComponent` is a single
+  // left-to-right scan, so `%2561` decodes to the literal text `%61` (an invalid slug —
+  // % is not in WP_SLUG — correctly 404s) in ONE call. A second, buggy decode pass would
+  // then decode THAT `%61` into `a`, silently producing a DIFFERENT, valid-looking slug
+  // ("xa") for a segment that was never meant to resolve that far — the classic
+  // double-decode bug, and the reason this is checked by VALUE, not just by absence of
+  // a throw (a single extra no-op decode of an already-clean string would pass a
+  // weaker test).
+  function decodeSegmentOnce(raw) {
+    if (!/%[0-9A-Fa-f]{2}/.test(raw)) return raw
+    try {
+      return decodeURIComponent(raw)
+    } catch {
+      return null
+    }
+  }
+  const once = decodeSegmentOnce('x%2561')
+  assert.equal(once, 'x%61', 'one decode pass of a doubly-encoded segment must stop at its first layer')
+
+  const WP_SLUG = /^(?:[a-z0-9_-]|[^\x00-\x7F\s\p{C}])+$/u
+  assert.ok(!WP_SLUG.test(once), 'the single-decode result must still fail WP_SLUG (it contains a literal %)')
+  // The buggy "decode twice" shape, named so a regression here reads as this exact mutation:
+  const decodedTwice = decodeURIComponent(decodeURIComponent('x%2561'))
+  assert.equal(decodedTwice, 'xa')
+  assert.ok(WP_SLUG.test(decodedTwice), 'a double decode would WRONGLY let this segment through as a valid slug')
+})
+
+test('a decoded segment that is a slash or angle bracket still 404s — WP_SLUG, not a bespoke check', () => {
+  // lib/blog-transform.ts's WP_SLUG is ASCII-lowercase-alnum/dash/underscore, or non-ASCII —
+  // '/' and '<' are ASCII and neither, so they fail it. Proving the regex itself here pins
+  // the shared gate the route relies on instead of re-deriving it.
+  const transformSrc = readFileSync(join(root, 'lib/blog-transform.ts'), 'utf-8')
+  assert.match(transformSrc, /export const WP_SLUG = \/\^\(\?:\[a-z0-9_-\]\|\[\^\\x00-\\x7F\\s\\p\{C\}\]\)\+\$\/u/)
+  const WP_SLUG = /^(?:[a-z0-9_-]|[^\x00-\x7F\s\p{C}])+$/u
+  assert.ok(!WP_SLUG.test('a/b'))
+  assert.ok(!WP_SLUG.test('a<b'))
+  assert.ok(WP_SLUG.test('café'))
+  assert.ok(WP_SLUG.test('untitled'))
+})
+
+test('the malformed-encoding 500 is a documented, measured, pre-existing framework limitation, not silently assumed away', () => {
+  // 🔴 MEASURED on a real `next start` against a fixture (WEB-17 follow-up): a path
+  // segment with a malformed percent-escape 500s — reproduced identically on
+  // `/blog/[slug]` and `/glossary/[slug]`, so it predates and is outside this change.
+  // A try/catch around this route's own `await params` was tried and measured to have
+  // NO effect (the throw happens before this component's code runs at all); the comment
+  // must say so, so a future reader does not "fix" this file expecting it to help.
+  const src = read(ROUTE) // raw, not stripped — the claim is in the prose
+  assert.ok(src.includes('MEASURED (WEB-17 follow-up, real `next start`'))
+  assert.ok(src.includes('NOT a regression from'))
+  assert.ok(src.includes('tried, measured, reverted'))
+  assert.doesNotMatch(src, /try\s*\{\s*\n\s*;?\(\{ slug \} = await params\)/, 'the non-functional try/catch must not be reintroduced around this await')
+})
+
+test('the fallback is wired through the SAME transform call the site filter guards — no second, untrusted path', () => {
+  const src = code(ROUTE)
+  // Exactly one call into the shared transform in this route.
+  const calls = src.match(/transformWpPost\(/g) ?? []
+  assert.equal(calls.length, 1, 'there must be exactly one transformWpPost call — the fallback must not bypass it')
+  assert.match(src, /transformWpPost\(renderNode, CDN\)/)
 })

@@ -291,7 +291,11 @@ test('the preview refuses a post not tagged for this site, before it transforms 
 
   const nodeCheck = body.indexOf('if (!node) notFound()')
   const siteCheck = body.indexOf('if (!nodeSites(node).includes(BLOG_SITE)) notFound()')
-  const transformCall = body.indexOf('transformWpPost(node, CDN)')
+  // 🔑 WEB-17 follow-up: the id path now runs the slug-null node through a fallback
+  // (app/preview/[slug]/page.tsx) before the shared transform, so the call site reads
+  // `transformWpPost(renderNode, CDN)` rather than `transformWpPost(node, CDN)` — same
+  // single shared transform, same node, just possibly with its slug filled in first.
+  const transformCall = body.indexOf('transformWpPost(renderNode, CDN)')
 
   assert.ok(nodeCheck > -1, 'the preview no longer guards against a missing node')
   assert.ok(siteCheck > -1, 'the preview no longer filters a draft by its ciphera_site term')
