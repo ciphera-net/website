@@ -13,6 +13,7 @@ import TableOfContents from '../TableOfContents'
 import RelatedPosts from '../RelatedPosts'
 import ReadingProgress from '../ReadingProgress'
 import { cdnUrl } from '@/lib/cdn'
+import { jsonLdHtml } from '@/lib/json-ld'
 
 /**
  * The blog post page, as one component.
@@ -107,7 +108,32 @@ export function BlogPostView({ post, allPosts }: { post: BlogPost; allPosts: Blo
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema, ...(post.faqs.length > 0 ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: post.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) }] : [])]) }} />
+      <script
+        type="application/ld+json"
+        // 🔴 CMS-AUTHORED VALUES GO INTO THIS BLOCK (title, description, category, FAQ
+        // text), so plain JSON.stringify is not safe here — see lib/json-ld.ts's own
+        // header for why a title or FAQ answer containing `</script>` or `<!--` would
+        // otherwise break out of the tag. Ported from pulse-website@fa3d590 (PULSE-243).
+        dangerouslySetInnerHTML={{
+          __html: jsonLdHtml([
+            articleSchema,
+            breadcrumbSchema,
+            ...(post.faqs.length > 0
+              ? [
+                  {
+                    '@context': 'https://schema.org',
+                    '@type': 'FAQPage',
+                    mainEntity: post.faqs.map((faq) => ({
+                      '@type': 'Question',
+                      name: faq.question,
+                      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+                    })),
+                  },
+                ]
+              : []),
+          ]),
+        }}
+      />
       <ReadingProgress />
       {/* * Hero */}
       <section className="px-6 pt-32 pb-16 sm:pb-24">

@@ -1,6 +1,25 @@
 import type { WpBlogPost, BlogPostFaq } from './blog-types'
 
 /**
+ * The shape of a slug AS GRAPHQL HANDS IT TO THIS BUILD — measured, not assumed
+ * (04-10-2026, all 16 live ciphera.net slugs). Ported from pulse-website@1c08fa7 /
+ * ef2bf0e (PULSE-243).
+ *
+ * WordPress stores `post_name` as lowercase ASCII letters, digits, `-`, `_` and
+ * lowercase percent-octets: `sanitize_title_with_dashes` percent-encodes multibyte
+ * characters and then lowercases everything (wp-includes/formatting.php, `utf8_uri_encode`
+ * then `strtolower`). But WPGraphQL 2.23.1 returns `urldecode( post_name )` for `slug`
+ * (src/Model/Post.php:709), so a post titled "Café" arrives here as `café`, never as
+ * `caf%c3%a9`. Hence: ASCII only from `[a-z0-9_-]`, and any non-ASCII character that is
+ * not whitespace or a control/format character (bidi marks, zero-width, U+2028/9 all
+ * fail).
+ * 🔴 The case this exists for: `sanitize_title_with_dashes` PRESERVES a literal `%xx`
+ * typed into a title, so a title containing "%2f" or "%3c" decodes to a slug containing
+ * `/` or `<`. Such a slug is refused here, loudly, instead of reaching a URL path or XML.
+ */
+export const WP_SLUG = /^(?:[a-z0-9_-]|[^\x00-\x7F\s\p{C}])+$/u
+
+/**
  * WordPress node → the shape the site renders.
  *
  * Design: Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md §24.12, §24.9
@@ -125,6 +144,19 @@ export function transformWpPost(
   const slug = (n.slug ?? '').trim()
   if (!slug) {
     problems.push({ field: 'slug', message: 'the post has no slug and can never have a URL' })
+    return { post: null, problems }
+  }
+
+  // 🔴 A SLUG WORDPRESS COULD NOT HAVE PRODUCED IS A PROBLEM, NOT A STRING TO TRUST.
+  // The slug reaches a URL path (/blog/<slug>), the sitemap, the feed's <link>/<guid>,
+  // JSON-LD and the preview route, unescaped in most of those places — protecting it
+  // HERE protects every consumer at once. See WP_SLUG for the exact shape and why.
+  // Ported from pulse-website@1c08fa7 / ef2bf0e (PULSE-243).
+  if (!WP_SLUG.test(slug)) {
+    problems.push({
+      field: 'slug',
+      message: `the slug "${slug}" is not a shape WordPress could have produced`,
+    })
     return { post: null, problems }
   }
 

@@ -20,16 +20,22 @@ export function GET() {
   )
 
   const items = sortedPosts
-    .map(
-      (post) => `    <item>
+    .map((post) => {
+      // 🔴 THE SLUG IS ESCAPED HERE TOO, IN ADDITION TO lib/blog-transform.ts's WP_SLUG
+      // shape check. That check keeps a malformed slug out of the build entirely, but
+      // this route reads whatever lib/blog-posts.gen.ts hands it — defence in depth,
+      // same reasoning as title/description/category already getting escapeXml below.
+      // Ported from pulse-website@1c08fa7 (PULSE-243).
+      const url = escapeXml(`https://ciphera.net/blog/${post.slug}`)
+      return `    <item>
       <title>${escapeXml(post.title)}</title>
       <description>${escapeXml(post.description)}</description>
-      <link>https://ciphera.net/blog/${post.slug}</link>
-      <guid isPermaLink="true">https://ciphera.net/blog/${post.slug}</guid>
+      <link>${url}</link>
+      <guid isPermaLink="true">${url}</guid>
       <pubDate>${toRFC822(post.date)}</pubDate>
       <category>${escapeXml(post.category)}</category>
     </item>`
-    )
+    })
     .join('\n')
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>

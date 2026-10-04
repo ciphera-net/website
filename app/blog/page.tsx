@@ -6,6 +6,7 @@ import { ArrowRightIcon } from '@ciphera-net/facet'
 import { blogPosts } from '../../lib/blog-posts.gen'
 import { track } from '../../lib/pulse'
 import { cdnUrl } from '@/lib/cdn'
+import { jsonLdHtml } from '@/lib/json-ld'
 
 const blogSchema = [
   {
@@ -44,7 +45,11 @@ export default function BlogPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
+      {/* 🔑 blogSchema is hardcoded today (no CMS field reaches it), but every blog
+        * ld+json block uses jsonLdHtml() for defense in depth — this page is under
+        * app/blog/**, and a future field sourced from the CMS must not have to
+        * remember to add escaping. Ported from pulse-website@fa3d590 (PULSE-243). */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(blogSchema) }} />
 
       {/* Hero */}
       <section className="border-b border-border">
