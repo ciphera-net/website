@@ -246,6 +246,12 @@ export function toolLogosValidated() {
   }
 }
 
+/** Same first two steps as `sanitizePipeline`, stopping BEFORE sanitize/cdnImagesOnly/
+ * toolLogosValidated — see `rawMediaRefs`, the only thing that runs this. */
+const rawParsePipeline = unified()
+  .use(rehypeParse, { fragment: true })
+  .use(cipheraBlocks)
+
 const sanitizePipeline = unified()
   .use(rehypeParse, { fragment: true })
   .use(cipheraBlocks)
@@ -300,6 +306,39 @@ export function renderableImageSources(html: string, opts: { toolLogoBase?: stri
     }
   })
   return sources
+}
+
+/**
+ * The SAME parse → cipheraBlocks pass `renderableImageSources` runs, with NEITHER
+ * `cdnImagesOnly` NOR `toolLogosValidated` applied — every `<img src>` and tool-logo
+ * `data-src` the editor actually wrote, unfiltered, including ones those two steps would
+ * silently remove for being off-CDN or malformed-shape.
+ *
+ * 🔴 EXISTS ONLY TO DIFF AGAINST `renderableImageSources`'S SURVIVING SET (P1-a verifier
+ * finding, 07-10-2026). `renderableImageSources` never returns an off-CDN image or a
+ * malformed tool-logo mark in the first place — `cdnImagesOnly`/`toolLogosValidated`
+ * already dropped it from the tree before this function would ever see it — so
+ * scripts/generate-blog-posts.ts's repair loop, which only iterates that surviving set,
+ * never recorded this class of drop at all. Diffing this raw list against the surviving
+ * one is how it is recorded: a `tool-logo` entry's `value` is the bare `data-src` (NOT
+ * prefixed with `toolLogoBase`), matching what `TOOL_LOGO_SRC` validates against — the
+ * caller re-applies its own CDN base when comparing.
+ */
+export function rawMediaRefs(html: string): Array<{ kind: 'img' | 'tool-logo'; value: string }> {
+  const tree = rawParsePipeline.runSync(rawParsePipeline.parse(html)) as Root
+  const out: Array<{ kind: 'img' | 'tool-logo'; value: string }> = []
+  visit(tree, 'element', (node: Element) => {
+    if (node.tagName === 'img') {
+      const src = node.properties?.src
+      if (typeof src === 'string' && src) out.push({ kind: 'img', value: src })
+      return
+    }
+    if (node.properties?.['data-ciphera-block'] === 'tool-logo') {
+      const dataSrc = node.properties?.['data-src']
+      if (typeof dataSrc === 'string' && dataSrc) out.push({ kind: 'tool-logo', value: dataSrc })
+    }
+  })
+  return out
 }
 
 /**

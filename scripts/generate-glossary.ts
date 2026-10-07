@@ -28,6 +28,7 @@ import fs from 'fs'
 import path from 'path'
 import { extractFaqs, textOf, truncateAtWordBoundary } from '../lib/blog-transform'
 import { checkRecoveryCopy } from '../lib/recovery-copy-rules.mjs'
+import { normalizeGlossaryCategory, KNOWN_GLOSSARY_CATEGORIES } from '../lib/glossary-category-rules.mjs'
 import { recordContentRepairs } from '../lib/content-repair-log'
 import type { ContentRepairEntry } from '../lib/content-repair-types'
 
@@ -145,6 +146,26 @@ async function main() {
       continue
     }
 
+    // 🔑 P1-a REPAIR/FLAG: `GlossaryCategory` is a free-text WordPress taxonomy value
+    // now (lib/glossary/types.ts), not a closed set this codebase enforces. A near-match
+    // of one of the four known categories (a typo, stray whitespace, "&" vs "and") is
+    // REPAIRED to that category's exact string; anything else ships as given and is
+    // FLAGGED — there is no field-level repair that can guess which heading an unknown
+    // category belongs under, and bucketing it under the wrong one would misplace the
+    // term silently, which is worse than shipping its own name under review.
+    const normalizedCategory = normalizeGlossaryCategory(cat.name)
+    if (!normalizedCategory.matched) {
+      repair(
+        ref,
+        'category',
+        'flagged',
+        `${ref}: category "${cat.name}" does not match any of the site's known glossary ` +
+          `categories (${KNOWN_GLOSSARY_CATEGORIES.join(', ')}) — shipped as given, needs review`
+      )
+    } else if (normalizedCategory.changed) {
+      repair(ref, 'category', 'repaired', `${ref}: category "${cat.name}" normalized to "${normalizedCategory.name}"`)
+    }
+
     const termName = (n.title ?? '').trim()
     const seoTitle = (n.cipheraTitle ?? '').trim()
     if (!termName && !seoTitle) {
@@ -195,7 +216,7 @@ async function main() {
       description = cut
     }
 
-    if (!categories.has(cat.slug)) categories.set(cat.slug, { name: cat.name, order: cat.cipheraOrder ?? 999 })
+    if (!categories.has(cat.slug)) categories.set(cat.slug, { name: normalizedCategory.name, order: cat.cipheraOrder ?? 999 })
 
     // 🔴 THE RECOVERY-COPY GUARD, run where the copy now lives (§27.5).
     // 🔑 P1-a point 3: an honesty-rule violation ships UNCHANGED and is FLAGGED
@@ -219,7 +240,7 @@ async function main() {
       term: {
         slug: n.slug,
         term: n.title,
-        category: cat.name,
+        category: normalizedCategory.name,
         categorySlug: cat.slug,
         short: definition,
         html,

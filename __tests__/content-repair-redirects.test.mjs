@@ -93,3 +93,18 @@ test('generate-redirects.ts records its repairs/skips through the shared ledger'
   assert.match(src, /recordContentRepairs\(\[REPAIR_TYPE\], repairs\)/)
   assert.match(src, /REPAIR_TYPE = 'redirect'/)
 })
+
+test('validPath delegates to the shared, real-execution-tested allowlist (verifier finding)', () => {
+  const src = code('scripts/generate-redirects.ts')
+  assert.match(
+    src,
+    /import \{ validRedirectPath \} from '\.\.\/lib\/redirect-path-rules\.mjs'/,
+    'generate-redirects.ts must import the zero-dependency allowlist, not re-denylist characters inline'
+  )
+  assert.match(src, /function validPath\(p: string\): boolean \{\s*return validRedirectPath\(p\)/)
+  // The old denylist must actually be gone, not merely supplemented.
+  assert.ok(
+    !src.includes(String.raw`[\s<>"'\\]`),
+    'the character denylist this verifier finding was about must be removed, not kept alongside the allowlist'
+  )
+})

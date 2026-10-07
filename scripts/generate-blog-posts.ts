@@ -30,7 +30,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode } from '../lib/blog-transform'
-import { renderableImageSources, dropUnreachableMedia } from '../lib/blog-html'
+import { renderableImageSources, rawMediaRefs, dropUnreachableMedia } from '../lib/blog-html'
 import type { WpBlogPost } from '../lib/blog-types'
 import { checkRecoveryCopy } from '../lib/recovery-copy-rules.mjs'
 import { recordContentRepairs } from '../lib/content-repair-log'
@@ -239,9 +239,44 @@ async function main() {
     // 🔴 P1-a REPAIR: an unreachable image or tool-logo mark no longer fails the build —
     // it is dropped from the body, the same contract `cdnImagesOnly`/`toolLogosValidated`
     // already apply to a malformed one.
+    const survivingSources = renderableImageSources(post.html, { toolLogoBase: CDN })
+
+    // 🔑 P1-a REPAIR, LEDGER GAP CLOSED (verifier finding, 07-10-2026): an off-CDN <img>
+    // or a malformed tool-logo mark is silently stripped by cdnImagesOnly/
+    // toolLogosValidated BEFORE renderableImageSources ever sees it, so the loop below —
+    // which only iterates the surviving set — never recorded this drop at all.
+    // `rawMediaRefs` reads the same body with neither of those two sanitizers applied;
+    // anything it finds that renderableImageSources does NOT is exactly what was
+    // removed for being off-CDN or wrong-shape, and is recorded here instead of
+    // vanishing unseen.
+    const survivedSet = new Set(survivingSources)
+    const sanitizerDropped = new Set<string>()
+    for (const ref of rawMediaRefs(post.html)) {
+      if (ref.kind === 'img') {
+        if (survivedSet.has(ref.value) || sanitizerDropped.has(`img:${ref.value}`)) continue
+        sanitizerDropped.add(`img:${ref.value}`)
+        repair(
+          post.slug,
+          'image',
+          'repaired',
+          `image ${ref.value} is not on the CDN (or is otherwise invalid) — dropped from the post body`
+        )
+      } else {
+        const absolute = `${CDN}${ref.value}`
+        if (survivedSet.has(absolute) || sanitizerDropped.has(`tool-logo:${ref.value}`)) continue
+        sanitizerDropped.add(`tool-logo:${ref.value}`)
+        repair(
+          post.slug,
+          'image',
+          'repaired',
+          `tool-logo mark "${ref.value}" does not match the required shape — dropped from the post body`
+        )
+      }
+    }
+
     const badImgSrcs = new Set<string>()
     const badToolLogoDataSrcs = new Set<string>()
-    for (const src of renderableImageSources(post.html, { toolLogoBase: CDN })) {
+    for (const src of survivingSources) {
       const imgStatus = await head(src)
       if (imgStatus !== 200) {
         const isToolLogo = src.startsWith(CDN) && src.slice(CDN.length).includes('/blog/tools/')

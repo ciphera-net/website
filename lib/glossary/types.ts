@@ -9,11 +9,19 @@
  * https://cms.ciphera.net → Glossary, not here.
  */
 
-export type GlossaryCategory =
-  | 'Cryptography & authentication'
-  | 'Privacy & regulation'
-  | 'Analytics & web'
-  | 'Email & infrastructure'
+/**
+ * 🔴 WIDENED FROM A 4-MEMBER LITERAL UNION TO `string` (P1-a verifier finding,
+ * 07-10-2026). `glossaryCategories` is a WordPress taxonomy — CMS content the agency
+ * administers, not a closed set this codebase controls — so a rename, a typo, or a new
+ * category an editor creates must not fail `next build`'s type-check the way the old
+ * literal union did (`category: cat.name` straight from WordPress, checked against four
+ * exact strings). `scripts/generate-glossary.ts` normalizes near-matches of the four
+ * categories the site renders section headings for and FLAGS anything that does not
+ * match at all (see `lib/glossary-category-rules.mjs`); the type itself no longer
+ * enforces it, matching `BlogPost.category`'s own `string` (lib/blog-types.ts), which
+ * never had this problem.
+ */
+export type GlossaryCategory = string
 
 export interface GlossaryTerm {
   /** URL slug under /glossary/ — kebab-case, stable forever. */

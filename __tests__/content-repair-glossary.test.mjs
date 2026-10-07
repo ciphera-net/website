@@ -103,3 +103,25 @@ test('generate-glossary.ts records its repairs/skips/flags through the shared le
   assert.match(src, /REPAIR_TYPE = 'glossary-term'/)
   assert.match(src, /import \{ extractFaqs, textOf, truncateAtWordBoundary \} from '\.\.\/lib\/blog-transform'/, 'the glossary must reuse the SAME truncation helper the blog uses — one definition, not two that drift')
 })
+
+test('a category name is normalized/flagged through the shared, real-execution-tested module, never trusted as a closed set (verifier finding)', () => {
+  const src = code('scripts/generate-glossary.ts')
+  assert.match(
+    src,
+    /import \{ normalizeGlossaryCategory, KNOWN_GLOSSARY_CATEGORIES \} from '\.\.\/lib\/glossary-category-rules\.mjs'/
+  )
+  assert.match(src, /const normalizedCategory = normalizeGlossaryCategory\(cat\.name\)/)
+  assert.match(src, /if \(!normalizedCategory\.matched\) \{/)
+  assert.match(src, /'category',\s*\n\s*'flagged'/)
+  assert.match(src, /category: normalizedCategory\.name/, 'the written term must carry the NORMALIZED name, not the raw CMS string')
+  assert.doesNotMatch(src, /category: cat\.name/, 'the raw taxonomy string must never reach lib/glossary.gen.ts unnormalized')
+
+  // The type this defect was actually about must be widened, not left a closed union.
+  const types = code('lib/glossary/types.ts')
+  assert.match(types, /export type GlossaryCategory = string/)
+  assert.doesNotMatch(
+    types,
+    /export type GlossaryCategory =\s*\n\s*\| 'Cryptography & authentication'/,
+    'GlossaryCategory must no longer be a 4-member literal union — that IS the type error the verifier reproduced'
+  )
+})

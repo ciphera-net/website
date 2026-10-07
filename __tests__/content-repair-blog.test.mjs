@@ -112,3 +112,21 @@ test('dropUnreachableMedia removes exactly the unreachable <img> or tool-logo ma
   // tool-logo removal keys off `data-ciphera-block="tool-logo"` + the exact `data-src`.
   assert.match(html, /data-ciphera-block=\["'\]tool-logo\["'\]/)
 })
+
+test('an off-CDN image or malformed tool-logo mark that cdnImagesOnly/toolLogosValidated silently strip is still recorded (verifier finding, ledger gap closed)', () => {
+  const html = code('lib/blog-html.ts')
+  // rawMediaRefs reads the body with neither sanitizer applied, so it sees exactly what
+  // renderableImageSources's surviving set does not.
+  assert.match(html, /export function rawMediaRefs/)
+  assert.match(html, /rawParsePipeline = unified\(\)/)
+  assert.doesNotMatch(
+    html,
+    /rawParsePipeline = unified\(\)\s*\.use\(rehypeParse, \{ fragment: true \}\)\.use\(cipheraBlocks\)\.use\(rehypeSanitize/,
+    'rawParsePipeline must stop before sanitize — otherwise it sees the same set renderableImageSources does'
+  )
+
+  const gen = code('scripts/generate-blog-posts.ts')
+  assert.match(gen, /rawMediaRefs/, 'generate-blog-posts.ts must diff the raw refs against the surviving set')
+  assert.match(gen, /is not on the CDN \(or is otherwise invalid\) — dropped from the post body/)
+  assert.match(gen, /tool-logo mark "\$\{ref\.value\}" does not match the required shape — dropped from the post body/)
+})

@@ -19,6 +19,12 @@ export function GET() {
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   )
 
+  // 🔑 P1-a GUARD: `blogPosts` can legitimately be empty now — every post individually
+  // unshippable in the same build, or the generator's one live-site escape hatch
+  // (/sys/seo-state) itself unreachable. Before P1-a a single bad post failed the whole
+  // build, which made `sortedPosts[0]` always safe; it no longer is.
+  const lastBuildDate = sortedPosts.length > 0 ? toRFC822(sortedPosts[0].date) : new Date().toUTCString()
+
   const items = sortedPosts
     .map((post) => {
       // 🔴 THE SLUG IS ESCAPED HERE TOO, IN ADDITION TO lib/blog-transform.ts's WP_SLUG
@@ -46,7 +52,7 @@ export function GET() {
     <link>https://ciphera.net/blog</link>
     <language>en</language>
     <atom:link href="https://ciphera.net/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>${toRFC822(sortedPosts[0].date)}</lastBuildDate>
+    <lastBuildDate>${lastBuildDate}</lastBuildDate>
 ${items}
   </channel>
 </rss>`

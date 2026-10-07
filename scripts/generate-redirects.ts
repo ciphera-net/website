@@ -29,6 +29,7 @@
  */
 import fs from 'fs'
 import path from 'path'
+import { validRedirectPath } from '../lib/redirect-path-rules.mjs'
 import { recordContentRepairs } from '../lib/content-repair-log'
 import type { ContentRepairEntry } from '../lib/content-repair-types'
 
@@ -129,14 +130,17 @@ function staticRoutes(dir: string, prefix = ''): string[] {
   return out
 }
 
-/** The same shape rule the CMS enforces, restated where it can be relied on. */
+/**
+ * The same shape rule the CMS enforces, restated where it can be relied on.
+ *
+ * 🔴 ALLOWLISTED, NOT DENYLISTED (P1-a verifier finding, 07-10-2026) — see
+ * lib/redirect-path-rules.mjs's own header for why a denylist here let a
+ * path-to-regexp-significant character (`*`, `+`, `(`, `)`, …) reach Next's build-time
+ * redirect validator unguarded, and why the actual check lives in that zero-dependency
+ * module rather than here.
+ */
 function validPath(p: string): boolean {
-  if (!p.startsWith('/')) return false
-  if (p.startsWith('//')) return false
-  if (p.length > 200) return false
-  if (/[\s<>"'\\]/.test(p)) return false
-  if (p.includes('?') || p.includes('#')) return false
-  return true
+  return validRedirectPath(p)
 }
 
 const norm = (p: string) => (p.length > 1 ? p.replace(/\/+$/, '') : p)
