@@ -1,6 +1,7 @@
 import { SEO_WATERMARK, SEO_ROUTE_COUNT, SEO_POST_COUNT } from '@/lib/seo'
 import { REDIRECT_COUNT, REDIRECT_WATERMARK } from '@/lib/redirects.gen'
 import { GLOSSARY_COUNT, GLOSSARY_WATERMARK } from '@/lib/glossary.gen'
+import { CONTENT_REPAIRS } from '@/lib/content-repairs.gen'
 
 /**
  * The ACTUAL half of the level-triggered deploy check (design D9).
@@ -49,6 +50,13 @@ export function GET() {
       // preview Deployment drifting behind production, since it is pinned by hand and
       // nothing patches it.
       build: process.env.CIPHERA_BUILD_SHA ?? 'unknown',
+      // 🔑 P1-a ("repair, don't refuse"): every content-state repair, skip and flag
+      // this build recorded instead of failing — lib/content-repair-log.ts writes
+      // lib/content-repairs.gen.ts, one CONTENT-REPAIR build-log line per entry.
+      // `repairs_detail` is capped at 50 so this endpoint stays small on a bad day;
+      // `repairs` is the full count regardless.
+      repairs: CONTENT_REPAIRS.length,
+      repairs_detail: CONTENT_REPAIRS.slice(0, 50),
     },
     { headers: { 'Cache-Control': 'no-store' } }
   )

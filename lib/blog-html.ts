@@ -246,6 +246,12 @@ export function toolLogosValidated() {
   }
 }
 
+/** Same first two steps as `sanitizePipeline`, stopping BEFORE sanitize/cdnImagesOnly/
+ * toolLogosValidated — see `rawMediaRefs`, the only thing that runs this. */
+const rawParsePipeline = unified()
+  .use(rehypeParse, { fragment: true })
+  .use(cipheraBlocks)
+
 const sanitizePipeline = unified()
   .use(rehypeParse, { fragment: true })
   .use(cipheraBlocks)
@@ -300,4 +306,78 @@ export function renderableImageSources(html: string, opts: { toolLogoBase?: stri
     }
   })
   return sources
+}
+
+/**
+ * The SAME parse → cipheraBlocks pass `renderableImageSources` runs, with NEITHER
+ * `cdnImagesOnly` NOR `toolLogosValidated` applied — every `<img src>` and tool-logo
+ * `data-src` the editor actually wrote, unfiltered, including ones those two steps would
+ * silently remove for being off-CDN or malformed-shape.
+ *
+ * 🔴 EXISTS ONLY TO DIFF AGAINST `renderableImageSources`'S SURVIVING SET (P1-a verifier
+ * finding, 07-10-2026). `renderableImageSources` never returns an off-CDN image or a
+ * malformed tool-logo mark in the first place — `cdnImagesOnly`/`toolLogosValidated`
+ * already dropped it from the tree before this function would ever see it — so
+ * scripts/generate-blog-posts.ts's repair loop, which only iterates that surviving set,
+ * never recorded this class of drop at all. Diffing this raw list against the surviving
+ * one is how it is recorded: a `tool-logo` entry's `value` is the bare `data-src` (NOT
+ * prefixed with `toolLogoBase`), matching what `TOOL_LOGO_SRC` validates against — the
+ * caller re-applies its own CDN base when comparing.
+ */
+export function rawMediaRefs(html: string): Array<{ kind: 'img' | 'tool-logo'; value: string }> {
+  const tree = rawParsePipeline.runSync(rawParsePipeline.parse(html)) as Root
+  const out: Array<{ kind: 'img' | 'tool-logo'; value: string }> = []
+  visit(tree, 'element', (node: Element) => {
+    if (node.tagName === 'img') {
+      const src = node.properties?.src
+      if (typeof src === 'string' && src) out.push({ kind: 'img', value: src })
+      return
+    }
+    if (node.properties?.['data-ciphera-block'] === 'tool-logo') {
+      const dataSrc = node.properties?.['data-src']
+      if (typeof dataSrc === 'string' && dataSrc) out.push({ kind: 'tool-logo', value: dataSrc })
+    }
+  })
+  return out
+}
+
+/**
+ * P1-a's repair for a surviving `<img>` or tool-logo mark whose URL HEAD-checks as
+ * unreachable (deleted from the CDN, a wrong path typed by hand — `renderableImageSources`
+ * already guarantees the SHAPE is CDN-origin / a valid tool-logo path; this is strictly
+ * about the asset not actually being THERE). scripts/generate-blog-posts.ts used to fail
+ * the whole build on this; now it drops just that element, the same contract
+ * `cdnImagesOnly`/`toolLogosValidated` already apply to a malformed one — removed outright,
+ * never left as a bare, borderless `<img>` or an empty styled `<span>`.
+ *
+ * 🔑 STRING SURGERY, NOT A SECOND PARSE/SERIALIZE ROUND-TRIP. `post.html` here is the
+ * RAW (pre-sanitize) body — sanitizing happens again at render time
+ * (components/blog/wp-body.tsx) — and this repo has no HTML serializer dependency to
+ * round-trip a mutated hast tree back to a string without adding one (out of scope for a
+ * build-safety fix). A literal-match replace on the exact `src`/`data-src` value already
+ * computed by `renderableImageSources` is unambiguous: both are build-generated absolute
+ * CDN strings, not hand-typed prose that could coincidentally collide.
+ */
+export function dropUnreachableMedia(
+  html: string,
+  badImgSrcs: ReadonlySet<string>,
+  badToolLogoDataSrcs: ReadonlySet<string>
+): string {
+  let out = html
+  if (badImgSrcs.size > 0) {
+    out = out.replace(/<img\b[^>]*\/?>/gi, (tag) => {
+      const m = /\bsrc=["']([^"']*)["']/i.exec(tag)
+      const src = m?.[1]
+      return src && badImgSrcs.has(src) ? '' : tag
+    })
+  }
+  if (badToolLogoDataSrcs.size > 0) {
+    out = out.replace(/<(span|div)\b([^>]*)>([\s\S]*?)<\/\1>/gi, (full, _tag, attrs: string) => {
+      if (!/data-ciphera-block=["']tool-logo["']/.test(attrs)) return full
+      const m = /data-src=["']([^"']*)["']/.exec(attrs)
+      const dataSrc = m?.[1]
+      return dataSrc && badToolLogoDataSrcs.has(dataSrc) ? '' : full
+    })
+  }
+  return out
 }

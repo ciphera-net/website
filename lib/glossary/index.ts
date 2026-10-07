@@ -21,9 +21,11 @@ export type { GlossaryCategory, GlossaryTerm } from './types'
 /**
  * Category display order — mirrors the site's product story, and now comes from the
  * CMS's own term meta rather than from a literal here.
- * ⚠️ The cast is the seam's one honest compromise: the generated file carries strings,
- * and the union type is what every caller already expects. The generator fails the build
- * if a term has no category at all, which is the case that would actually break a page.
+ * ⚠️ CORRECTED (P1-a, 07-10-2026): `GlossaryCategory` is `string` now, so the cast below
+ * is no longer bridging a literal union — it is just naming the generated array's
+ * element type for callers. A term with no category at all is SKIPPED (not a build
+ * failure); an unrecognized category name is normalized or flagged, never fatal — see
+ * `scripts/generate-glossary.ts` and `lib/glossary-category-rules.mjs`.
  */
 export const GLOSSARY_CATEGORIES = GLOSSARY_CATEGORY_NAMES as GlossaryCategory[]
 
