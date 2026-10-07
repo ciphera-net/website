@@ -58,3 +58,8 @@ next-env.d.ts
 # possible. prebuild runs generate:glossary, which fails loudly if WordPress is
 # unreachable, and /sys/seo-state's `glossary` count is what the watcher compares.
 /lib/glossary.gen.ts
+
+# P1-a content-repair ledger's cross-process scratch file (lib/content-repair-log.ts).
+# lib/content-repairs.gen.ts itself IS committed, as an empty-array stub — same
+# convention as lib/redirects.gen.ts and lib/blog-wp.gen.ts above.
+/lib/.content-repairs.scratch.json

@@ -2,6 +2,7 @@
  * generate-redirects.ts — Tier-2 content redirects, pulled from WordPress at BUILD time.
  *
  * Design: Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md §6.4, §34
+ * Design: Public/docs/plans/07-10-2026-cms-made-easy-design.md §4.1 P1-a
  *
  * 🔴 TIER 1 NEVER COMES FROM HERE, AND THIS SCRIPT REFUSES TO SHADOW IT.
  * `next.config.ts` keeps seven rules for ever. The trust-hub pair is the load-bearing
@@ -17,9 +18,19 @@
  * with ZERO per-request middleware invocation, on a site that has no middleware at
  * all. Middleware would only earn its cost if redirects had to change without a
  * deploy — and in this architecture nothing changes without a deploy.
+ *
+ * 🔴 P1-a: NO CMS CONTENT STATE MAY FAIL THIS BUILD, WITH EXACTLY ONE EXCEPTION. A
+ * redirect missing a half, malformed, pointing at itself, shadowing a live page, or
+ * duplicated is now SKIPPED (and recorded) rather than failing the build — the real
+ * page or the lowest-databaseId redirect wins, and the agency sees the drop in the CMS
+ * review queue rather than a red pipeline. A CHAIN (A→B→C) is REPAIRED by flattening A
+ * to point straight at C. The ONE THING THAT STAYS A HARD FAILURE is a Tier-1 collision
+ * — it is load-bearing (see above), not a content state this build may repair around.
  */
 import fs from 'fs'
 import path from 'path'
+import { recordContentRepairs } from '../lib/content-repair-log'
+import type { ContentRepairEntry } from '../lib/content-repair-types'
 
 const WP = process.env.WORDPRESS_GRAPHQL_URL ?? 'http://wordpress.apps.svc.cluster.local/graphql'
 const SITE = 'ciphera-net'
@@ -27,15 +38,11 @@ const OUT = path.join(process.cwd(), 'lib', 'redirects.gen.ts')
 const APP = path.join(process.cwd(), 'app')
 
 /**
- * 🔴 THE EXPECTED COUNT IS A COMMITTED CONSTANT AND A BUILD GATE.
- * A redirect silently disappearing restores a 404 on a URL that still receives search
- * and backlink traffic — the exact failure the corpus purge's own note warns about
- * ("the Drop post leaked 17 visits/90d into a 404 after its redirect-less removal").
- * The build stays green and nobody finds out until a rankings report.
- *
- * ⚠️ THREE-PART CHANGE. This number, the `WordpressRedirectsDropped` threshold in
- * Infra/Kubernetes/workloads/prometheus/rules/wordpress.yml, and the redirects
- * themselves move IN ONE COMMIT — or the alert fires on a change that was correct.
+ * ⚠️ NO LONGER A BUILD GATE (P1-a). This used to be an exact-equality fail() — a
+ * redirect silently unpublished, for ANY reason, failed the whole site.
+ * `WordpressRedirectsDropped` (Infra/Kubernetes/workloads/prometheus/rules/wordpress.yml)
+ * already alerts on the same condition independently. Kept as a constant purely for
+ * this comment's own arithmetic; nothing compares against it any more.
  */
 const EXPECTED_REDIRECTS = 18
 
@@ -59,6 +66,7 @@ const TIER1_PREFIX = ['/transparency']
 const QUERY = `{
   redirects(first: 200, where: { status: PUBLISH }) {
     nodes {
+      databaseId
       cipheraFrom
       cipheraTo
       modifiedGmt
@@ -71,15 +79,23 @@ const QUERY = `{
 }`
 
 type Node = {
+  databaseId: number | null
   cipheraFrom: string | null
   cipheraTo: string | null
   modifiedGmt: string | null
   routeSites?: { nodes?: Array<{ slug: string }> }
 }
 
+/** Still fatal: this is an INFRASTRUCTURE failure, not a CMS content state (P1-a). */
 function fail(msg: string): never {
   console.error(`\n✖ generate:redirects — ${msg}\n`)
   process.exit(1)
+}
+
+const REPAIR_TYPE = 'redirect'
+const repairs: ContentRepairEntry[] = []
+function repair(ref: string, field: string, action: ContentRepairEntry['action'], detail: string): void {
+  repairs.push({ type: REPAIR_TYPE, ref, field, action, detail })
 }
 
 /**
@@ -136,7 +152,8 @@ async function main() {
   const body = await res.json()
 
   // 🔴 A PARTIAL RESPONSE IS WORSE THAN NO RESPONSE — WPGraphQL can return HTTP 200
-  // with a populated `errors` array and partial `data`.
+  // with a populated `errors` array and partial `data`. Infrastructure, not content —
+  // stays fatal.
   if (body.errors?.length) fail(`GraphQL errors: ${JSON.stringify(body.errors)}`)
 
   const mine = (nodes: Node[]) =>
@@ -148,23 +165,39 @@ async function main() {
   )
   const liveStatic = new Set(staticRoutes(APP).map(norm))
 
-  const bySource = new Map<string, { source: string; destination: string; modified: string }>()
+  // ── Pass 1: per-redirect shape checks — an unusable key is SKIPPED, not failed ──
+  const byFrom = new Map<string, Array<{ source: string; destination: string; modified: string; databaseId: number | null }>>()
 
   for (const n of nodes) {
+    const ref = n.databaseId != null ? `wp-db-${n.databaseId}` : '(unknown)'
     const from = norm((n.cipheraFrom ?? '').trim())
     const to = norm((n.cipheraTo ?? '').trim())
 
     if (!from || !to) {
-      fail(`a published redirect is missing one half — from="${from}" to="${to}". It looks complete in wp-admin.`)
+      repair(from || ref, 'from/to', 'skipped', `a published redirect is missing one half — from="${from}" to="${to}". It looks complete in wp-admin.`)
+      console.log(`SKIP redirect ${from || ref}: missing from or to`)
+      continue
     }
-    if (!validPath(from)) fail(`redirect source "${from}" is not a site-relative path`)
-    if (!validPath(to)) fail(`redirect destination "${to}" is not a site-relative path`)
-    if (from === to) fail(`redirect "${from}" points at itself`)
+    if (!validPath(from)) {
+      repair(from, 'from', 'skipped', `redirect source "${from}" is not a site-relative path`)
+      console.log(`SKIP redirect ${from}: source is not a site-relative path`)
+      continue
+    }
+    if (!validPath(to)) {
+      repair(from, 'to', 'skipped', `redirect destination "${to}" is not a site-relative path`)
+      console.log(`SKIP redirect ${from}: destination "${to}" is not a site-relative path`)
+      continue
+    }
+    if (from === to) {
+      repair(from, 'to', 'skipped', `redirect "${from}" points at itself`)
+      console.log(`SKIP redirect ${from}: points at itself`)
+      continue
+    }
 
-    if (bySource.has(from)) fail(`two published redirects both claim "${from}" — one of them silently never fires`)
-
-    // 🔴 TIER 1 WINS AND THIS SAYS SO OUT LOUD. Shadowed rules are worse than absent
-    // ones: the agency creates one, sees it published, and it never fires.
+    // 🔴 TIER 1 WINS AND THIS SAYS SO OUT LOUD. THE ONE HARD FAILURE P1-a KEEPS.
+    // Shadowed rules are worse than absent ones: the agency creates one, sees it
+    // published, and it never fires — but a Tier-1 collision is not that case, it is a
+    // cryptographic commitment at risk, so it stays load-bearing and refuses the build.
     if (TIER1_EXACT.includes(from) || TIER1_PREFIX.some((p) => from === p || from.startsWith(`${p}/`))) {
       fail(
         `redirect source "${from}" collides with a Tier-1 rule in next.config.ts.\n` +
@@ -174,41 +207,89 @@ async function main() {
       )
     }
 
-    // A redirect over a real page takes that page off the site.
+    // 🔑 P1-a REPAIR: a redirect over a real page used to fail the whole build. It is
+    // SKIPPED instead — the real page keeps serving, which is what the agency actually
+    // wants more often than not (a redirect created before a page was unpublished, or a
+    // slug reused by mistake), and the drop surfaces in the CMS review queue.
     if (liveStatic.has(from)) {
-      fail(`redirect source "${from}" is a LIVE page on this site — publishing it would hide that page`)
+      repair(from, 'from', 'skipped', `redirect source "${from}" is a LIVE page on this site — publishing it would hide that page`)
+      console.log(`SKIP redirect ${from}: shadows a live page`)
+      continue
     }
     if (livePosts.has(from)) {
-      fail(`redirect source "${from}" is a LIVE blog post — publishing it would hide that post`)
+      repair(from, 'from', 'skipped', `redirect source "${from}" is a LIVE blog post — publishing it would hide that post`)
+      console.log(`SKIP redirect ${from}: shadows a live blog post`)
+      continue
     }
 
-    bySource.set(from, { source: from, destination: to, modified: n.modifiedGmt ?? '' })
+    const list = byFrom.get(from) ?? []
+    list.push({ source: from, destination: to, modified: n.modifiedGmt ?? '', databaseId: n.databaseId })
+    byFrom.set(from, list)
   }
 
-  // 🔴 CHAINS LEAK PageRank SILENTLY and are the classic WordPress redirect-plugin
-  // failure: A→B where B→C means every visitor and every crawler takes two hops, and
-  // the second hop is invisible in the CMS because the two rows look unrelated.
-  for (const { source, destination } of bySource.values()) {
-    if (bySource.has(destination)) {
-      fail(
-        `redirect chain: "${source}" → "${destination}" → "${bySource.get(destination)!.destination}".\n` +
-          `   Point "${source}" at the final destination instead.`
+  // ── Duplicate `from`: keep the lowest WordPress databaseId, skip the rest (P1-a) ──
+  const bySource = new Map<string, { source: string; destination: string; modified: string }>()
+  for (const [from, group] of byFrom) {
+    const sorted = [...group].sort((a, b) => (a.databaseId ?? Infinity) - (b.databaseId ?? Infinity))
+    bySource.set(from, { source: sorted[0].source, destination: sorted[0].destination, modified: sorted[0].modified })
+    for (const loser of sorted.slice(1)) {
+      repair(
+        from,
+        'from',
+        'skipped',
+        `two published redirects both claim "${from}" (databaseId ${loser.databaseId ?? 'unknown'}) — ` +
+          `one of them would silently never fire; kept the lowest databaseId (${sorted[0].databaseId ?? 'unknown'})`
       )
+      console.log(`SKIP redirect ${from}: duplicate source, keeping the lowest databaseId`)
     }
   }
 
-  if (bySource.size !== EXPECTED_REDIRECTS) {
-    fail(
-      `expected ${EXPECTED_REDIRECTS} ${SITE} redirects, found ${bySource.size}.\n` +
-        `   Found: ${[...bySource.keys()].sort().join(', ')}\n` +
-        `   A redirect was deleted, unpublished or trashed — that URL would go back to\n` +
-        `   returning 404 while it is still receiving search and backlink traffic. If the\n` +
-        `   change was intended, update EXPECTED_REDIRECTS **and** the\n` +
-        `   WordpressRedirectsDropped threshold in the same commit.`
+  // 🔑 P1-a REPAIR: a chain (A→B→C) leaks PageRank silently and used to fail the build.
+  // It is flattened instead — A is repointed straight at the chain's final destination
+  // — unless that would form an actual CYCLE (A→B→A), which has no final destination
+  // to flatten to and is SKIPPED entirely (every member of the cycle).
+  const flattened = new Map(bySource)
+  const cyclic = new Set<string>()
+  for (const [source, entry] of bySource) {
+    if (cyclic.has(source)) continue
+    const chain = [source]
+    let dest = entry.destination
+    let isCycle = false
+    while (bySource.has(dest)) {
+      if (chain.includes(dest)) {
+        isCycle = true
+        break
+      }
+      chain.push(dest)
+      dest = bySource.get(dest)!.destination
+    }
+    if (isCycle) {
+      for (const node of chain) cyclic.add(node)
+    } else if (dest !== entry.destination) {
+      repair(
+        source,
+        'destination',
+        'repaired',
+        `chain: "${chain.join('" → "')}" → "${dest}" — repointed "${source}" straight at "${dest}"`
+      )
+      flattened.set(source, { ...entry, destination: dest })
+    }
+  }
+  for (const source of cyclic) {
+    repair(source, 'from', 'skipped', `redirect "${source}" is part of a CYCLE (it eventually points back to itself) — unusable, dropped`)
+    console.log(`SKIP redirect ${source}: part of a redirect cycle`)
+    flattened.delete(source)
+  }
+
+  // ⚠️ NO LONGER A BUILD GATE (P1-a) — see EXPECTED_REDIRECTS's comment above.
+  if (flattened.size !== EXPECTED_REDIRECTS) {
+    console.log(
+      `⚠️  publishing ${flattened.size} ${SITE} redirects; ${EXPECTED_REDIRECTS} expected. ` +
+        `WordpressRedirectsDropped watches this independently.`
     )
   }
 
-  const sorted = [...bySource.values()].sort((a, b) => a.source.localeCompare(b.source))
+  const sorted = [...flattened.values()].sort((a, b) => a.source.localeCompare(b.source))
   const watermark = sorted.reduce((m, r) => (r.modified > m ? r.modified : m), '')
 
   const file = `// Auto-generated from WordPress at build time — do not edit manually.
@@ -233,7 +314,9 @@ ${sorted.map((r) => `  { source: ${JSON.stringify(r.source)}, destination: ${JSO
 `
 
   fs.writeFileSync(OUT, file)
+  recordContentRepairs([REPAIR_TYPE], repairs)
   console.log(`generate:redirects — wrote ${sorted.length} redirects to lib/redirects.gen.ts`)
+  if (repairs.length > 0) console.log(`  ${repairs.length} content repair(s)/skip(s)/flag(s) — see lib/content-repairs.gen.ts`)
 }
 
 main()

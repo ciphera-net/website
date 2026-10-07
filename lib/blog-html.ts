@@ -301,3 +301,44 @@ export function renderableImageSources(html: string, opts: { toolLogoBase?: stri
   })
   return sources
 }
+
+/**
+ * P1-a's repair for a surviving `<img>` or tool-logo mark whose URL HEAD-checks as
+ * unreachable (deleted from the CDN, a wrong path typed by hand — `renderableImageSources`
+ * already guarantees the SHAPE is CDN-origin / a valid tool-logo path; this is strictly
+ * about the asset not actually being THERE). scripts/generate-blog-posts.ts used to fail
+ * the whole build on this; now it drops just that element, the same contract
+ * `cdnImagesOnly`/`toolLogosValidated` already apply to a malformed one — removed outright,
+ * never left as a bare, borderless `<img>` or an empty styled `<span>`.
+ *
+ * 🔑 STRING SURGERY, NOT A SECOND PARSE/SERIALIZE ROUND-TRIP. `post.html` here is the
+ * RAW (pre-sanitize) body — sanitizing happens again at render time
+ * (components/blog/wp-body.tsx) — and this repo has no HTML serializer dependency to
+ * round-trip a mutated hast tree back to a string without adding one (out of scope for a
+ * build-safety fix). A literal-match replace on the exact `src`/`data-src` value already
+ * computed by `renderableImageSources` is unambiguous: both are build-generated absolute
+ * CDN strings, not hand-typed prose that could coincidentally collide.
+ */
+export function dropUnreachableMedia(
+  html: string,
+  badImgSrcs: ReadonlySet<string>,
+  badToolLogoDataSrcs: ReadonlySet<string>
+): string {
+  let out = html
+  if (badImgSrcs.size > 0) {
+    out = out.replace(/<img\b[^>]*\/?>/gi, (tag) => {
+      const m = /\bsrc=["']([^"']*)["']/i.exec(tag)
+      const src = m?.[1]
+      return src && badImgSrcs.has(src) ? '' : tag
+    })
+  }
+  if (badToolLogoDataSrcs.size > 0) {
+    out = out.replace(/<(span|div)\b([^>]*)>([\s\S]*?)<\/\1>/gi, (full, _tag, attrs: string) => {
+      if (!/data-ciphera-block=["']tool-logo["']/.test(attrs)) return full
+      const m = /data-src=["']([^"']*)["']/.exec(attrs)
+      const dataSrc = m?.[1]
+      return dataSrc && badToolLogoDataSrcs.has(dataSrc) ? '' : full
+    })
+  }
+  return out
+}

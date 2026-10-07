@@ -2,6 +2,7 @@
  * generate-seo.ts — pull Level 1 SEO fields from WordPress at BUILD time.
  *
  * Design: Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md §5, §6
+ * Design: Public/docs/plans/07-10-2026-cms-made-easy-design.md §4.1 P1-a
  *
  * 🔴 CONTENT REACHES THIS SITE AT BUILD TIME, NOT AT REQUEST TIME, AND THAT IS THE
  * WHOLE ARCHITECTURE (D1). ciphera.net runs as 42 independent Magic Containers
@@ -12,46 +13,43 @@
  *
  * ⚠️ THE ENDPOINT IS CLUSTER-INTERNAL. This runs on a Woodpecker agent inside the
  * cluster, which is why WordPress needs no public read surface at all.
+ *
+ * 🔴 P1-a: NO CMS CONTENT STATE MAY FAIL THIS BUILD. An empty title/description ships
+ * empty — `lib/seo.ts`'s `seoFor()` already merges WordPress over a page's hardcoded
+ * fallback FIELD BY FIELD (`if (wp.title) …`), so an empty field there is exactly what
+ * makes that route's existing in-code metadata apply, same as a route with no stub at
+ * all. An OG image not on the CDN is dropped the same way. A duplicate path keeps the
+ * lowest WordPress databaseId. What still fails this build is INFRASTRUCTURE, not
+ * content: WordPress unreachable, a non-200 response, or a populated GraphQL `errors[]`.
  */
 import fs from 'fs'
 import path from 'path'
+import { recordContentRepairs } from '../lib/content-repair-log'
+import type { ContentRepairEntry } from '../lib/content-repair-types'
 
 const WP = process.env.WORDPRESS_GRAPHQL_URL ?? 'http://wordpress.apps.svc.cluster.local/graphql'
 const SITE = 'ciphera-net'
 const OUT = path.join(process.cwd(), 'lib', 'seo.gen.ts')
 
 /**
- * 🔴 THE EXPECTED COUNT IS A COMMITTED CONSTANT AND A BUILD GATE.
- * A stub silently disappearing is the failure this whole feature can suffer without
- * anyone noticing: the route falls back to its hardcoded metadata, the build stays
- * green, and a page the agency believes they control quietly reverts.
- *
- * ⚠️ THREE-PART CHANGE. This number, the `WordpressSeoStubsDropped` alert threshold
- * in Infra/Kubernetes/workloads/prometheus/rules/wordpress.yml, and the routes
- * themselves move IN ONE COMMIT — or the alert fires on a change that was correct.
- *
- * 14, not 23: of the site's 23 routes, 5 are Level 0 by decision (/trust,
- * /trust/canary, /trust/report, /privacy, /terms — design §2), 3 are dynamic and take
- * their metadata from content, and /sys/ping is internal.
+ * ⚠️ NO LONGER A BUILD GATE (P1-a). This used to be an exact-equality fail() — a stub
+ * silently unpublished, for ANY reason, failed the whole site. `WordpressSeoStubsDropped`
+ * (Infra/Kubernetes/workloads/prometheus/rules/wordpress.yml) already alerts on the same
+ * condition independently, and a missing stub's route falls back to its own in-code
+ * metadata (lib/seo.ts's `seoFor()`) rather than losing its SEO fields silently — so a
+ * drop is detectable AND harmless, which is what made the build-time refusal redundant.
+ * Kept as a constant purely for this comment's own arithmetic; nothing compares against
+ * it any more.
  */
 const EXPECTED_ROUTES = 14
 
-/**
- * 🔴 THE WATERMARK SPANS BOTH CONTENT TYPES, AND THE COUNTS SHIP WITH IT.
- * A watermark is a MAXIMUM, and maxima only move forward: unpublish the newest post
- * and WordPress's max falls BELOW the live site's, so `desired > actual` is false and
- * the site serves deleted content for ever with every alert green. Behind-ness is
- * therefore a PAIR — (watermark, count) — and this file is where the count is minted.
- * ⚠️ Three-part change: this query, /sys/seo-state's payload, and the publish
- * watcher's own query move in ONE commit, or the watcher reads a key the live build
- * does not serve and reports behind for ever.
- */
 const QUERY = `{
   blogPosts(first: 200, where: { status: PUBLISH }) {
     nodes { modifiedGmt routeSites { nodes { slug } } }
   }
   routeStubs(first: 100, where: { status: PUBLISH }) {
     nodes {
+      databaseId
       cipheraPath
       cipheraTitle
       cipheraDescription
@@ -77,6 +75,8 @@ const QUERY = `{
  * in ciphera-routes.php rather than a rewrite of this file.
  */
 interface Node {
+  /** WordPress's own row id — lower created first. The P1-a duplicate tie-break. */
+  databaseId: number | null
   cipheraPath: string | null
   cipheraTitle: string | null
   cipheraDescription: string | null
@@ -92,9 +92,16 @@ interface Node {
   routeSites: { nodes: { slug: string }[] } | null
 }
 
+/** Still fatal: this is an INFRASTRUCTURE failure, not a CMS content state (P1-a). */
 function fail(msg: string): never {
   console.error(`\n🔴 generate-seo: ${msg}\n`)
   process.exit(1)
+}
+
+const REPAIR_TYPE = 'route-seo'
+const repairs: ContentRepairEntry[] = []
+function repair(ref: string, field: string, action: ContentRepairEntry['action'], detail: string): void {
+  repairs.push({ type: REPAIR_TYPE, ref, field, action, detail })
 }
 
 async function main() {
@@ -109,62 +116,91 @@ async function main() {
 
   // 🔴 A PARTIAL RESPONSE IS WORSE THAN NO RESPONSE. WPGraphQL can return HTTP 200
   // with a populated `errors` array and partial `data`; shipping half the SEO is the
-  // one outcome worse than not shipping.
+  // one outcome worse than not shipping. Infrastructure, not content — stays fatal.
   if (body.errors?.length) fail(`GraphQL errors: ${JSON.stringify(body.errors)}`)
 
-  const nodes: Node[] = body?.data?.routeStubs?.nodes ?? []
-  const seen = new Map<string, Node>()
+  const allNodes: Node[] = body?.data?.routeStubs?.nodes ?? []
 
+  // 🔴 SITE FIRST, then everything else. Pulse's stubs live in the same WordPress
+  // (Phase 4), and a malformed one must fail Pulse's build — never this one. Validating
+  // before filtering let one tenant's editing mistake block the other tenant's deploys.
+  const nodes = allNodes.filter((n) => (n.routeSites?.nodes?.map((t) => t.slug) ?? []).includes(SITE))
+
+  // ── Pass 1: an unusable key (empty path, or a shape that can never match a route) ──
+  const byPath = new Map<string, Node[]>()
   for (const n of nodes) {
-    // 🔴 SITE FIRST, then everything else. Pulse's stubs live in the same
-    // WordPress (Phase 4), and a malformed one must fail Pulse's build — never
-    // this one. Validating before filtering let one tenant's editing mistake
-    // block the other tenant's deploys: a Pulse stub published without a path
-    // would have failed every ciphera.net build.
-    const sites = n.routeSites?.nodes?.map((t) => t.slug) ?? []
-    if (!sites.includes(SITE)) continue
-
+    const ref = n.databaseId != null ? `wp-db-${n.databaseId}` : '(unknown)'
     const p = (n.cipheraPath ?? '').trim()
-    if (!p) fail('a published stub has an empty path — it can never match a route, and looks correct in wp-admin')
-    if (!p.startsWith('/')) fail(`path "${p}" does not start with "/"`)
 
-    // The application-level guard in the mu-plugin catches the common case; this is
-    // the guarantee. A duplicate must not be able to ship whatever put it there —
-    // an import, a revision restore, a direct SQL write.
-    if (seen.has(p)) fail(`duplicate stub for ${p} — two stubs for one route`)
-    seen.set(p, n)
+    if (!p) {
+      repair(ref, 'path', 'skipped', 'a published stub has an empty path — it can never match a route, and looks correct in wp-admin')
+      console.log(`SKIP route stub ${ref}: empty path`)
+      continue
+    }
+    if (!p.startsWith('/')) {
+      repair(p, 'path', 'skipped', `path "${p}" does not start with "/" — not a shape that can ever match a route`)
+      console.log(`SKIP route stub ${ref}: path "${p}" does not start with "/"`)
+      continue
+    }
+
+    const list = byPath.get(p) ?? []
+    list.push(n)
+    byPath.set(p, list)
   }
 
+  // ── Duplicate path: keep the lowest WordPress databaseId, skip the rest (P1-a) ──
+  const seen = new Map<string, Node>()
+  for (const [p, group] of byPath) {
+    const sorted = [...group].sort((a, b) => (a.databaseId ?? Infinity) - (b.databaseId ?? Infinity))
+    seen.set(p, sorted[0])
+    for (const loser of sorted.slice(1)) {
+      repair(
+        p,
+        'path',
+        'skipped',
+        `duplicate stub for ${p} (databaseId ${loser.databaseId ?? 'unknown'}) — two stubs for one route; ` +
+          `kept the lowest databaseId (${sorted[0].databaseId ?? 'unknown'})`
+      )
+      console.log(`SKIP route stub ${p}: duplicate stub, keeping the lowest databaseId`)
+    }
+  }
+
+  // ⚠️ NO LONGER A BUILD GATE (P1-a) — see EXPECTED_ROUTES's comment above.
   if (seen.size !== EXPECTED_ROUTES) {
-    fail(
-      `expected ${EXPECTED_ROUTES} ${SITE} stubs, found ${seen.size}.\n` +
-        `   Found: ${[...seen.keys()].sort().join(', ')}\n` +
-        `   A stub was deleted, unpublished or trashed — the affected route would\n` +
-        `   silently fall back to its hardcoded metadata. If the change was intended,\n` +
-        `   update EXPECTED_ROUTES **and** the WordpressSeoStubsDropped threshold in\n` +
-        `   the same commit.`
+    console.log(
+      `⚠️  publishing ${seen.size} ${SITE} route stubs; ${EXPECTED_ROUTES} expected. ` +
+        `A route with no stub renders its own in-code fallback metadata — WordpressSeoStubsDropped watches this.`
     )
   }
 
   const out: Record<string, unknown> = {}
   for (const [p, n] of [...seen.entries()].sort()) {
-    const ogImage = (n.cipheraOgImage ?? '').trim()
+    const ogImageRaw = (n.cipheraOgImage ?? '').trim()
 
-    // 🔴 THE CDN RULE IS A BUILD GATE, NOT A CONVENTION. Images live on
-    // cdn.ciphera.net; the WordPress media library must never become a second,
-    // unbacked image host (design §6.1, §8.3).
-    if (ogImage && !ogImage.startsWith('https://cdn.ciphera.net/')) {
-      fail(`${p}: OG image is not on cdn.ciphera.net — got "${ogImage}"`)
+    // 🔑 P1-a REPAIR: an OG image not on the CDN used to fail the whole build. It is
+    // dropped instead — `seoFor()`'s `wp.ogImage ? { … } : {}` falls back to the
+    // route's own hardcoded OG image when this is empty.
+    let ogImage = ''
+    if (ogImageRaw) {
+      if (ogImageRaw.startsWith('https://cdn.ciphera.net/')) {
+        ogImage = ogImageRaw
+      } else {
+        repair(p, 'ogImage', 'repaired', `OG image is not on cdn.ciphera.net — got "${ogImageRaw}"; dropped, route's own OG image applies`)
+      }
     }
 
-    // A stub with a title but no description, or vice versa, is a half-filled entry
-    // that looks complete in wp-admin. Both are load-bearing in a SERP.
-    if (!(n.cipheraTitle ?? '').trim()) fail(`${p}: stub has no title`)
-    if (!(n.cipheraDescription ?? '').trim()) fail(`${p}: stub has no meta description`)
+    // 🔑 P1-a REPAIR: an empty title or description used to fail the whole build.
+    // `seoFor()` merges WordPress over the page's hardcoded metadata FIELD BY FIELD
+    // (`if (wp.title) …`), so shipping these empty is exactly what makes the route's
+    // own in-code fallback apply — the same outcome as the route having no stub at all.
+    const title = (n.cipheraTitle ?? '').trim()
+    if (!title) repair(p, 'title', 'repaired', `${p}: stub has no title — the route's own in-code title applies`)
+    const description = (n.cipheraDescription ?? '').trim()
+    if (!description) repair(p, 'description', 'repaired', `${p}: stub has no meta description — the route's own in-code description applies`)
 
     out[p] = {
-      title: n.cipheraTitle ?? '',
-      description: n.cipheraDescription ?? '',
+      title,
+      description,
       canonical: (n.cipheraCanonical ?? '').trim(),
       ogTitle: n.cipheraOgTitle ?? '',
       ogDescription: n.cipheraOgDescription ?? '',
@@ -224,8 +260,11 @@ export const routeSeo: Record<string, RouteSeo> = ${JSON.stringify(out, null, 2)
     'utf-8'
   )
 
+  recordContentRepairs([REPAIR_TYPE], repairs)
+
   console.log(`Generated ${seen.size} route stubs → lib/seo.gen.ts`)
   for (const p of [...seen.keys()].sort()) console.log(`  ${p}`)
+  if (repairs.length > 0) console.log(`  ${repairs.length} content repair(s)/skip(s)/flag(s) — see lib/content-repairs.gen.ts`)
 }
 
 main()

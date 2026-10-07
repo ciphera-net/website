@@ -2,15 +2,21 @@
  * generate-blog-posts.ts — the blog's summary list, and the bodies WordPress holds.
  *
  * Design: Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md §24.12
+ * Design: Public/docs/plans/07-10-2026-cms-made-easy-design.md §4.1 P1-a
  *
  * 🔴 CONTENT REACHES THIS SITE AT BUILD TIME, NOT AT REQUEST TIME (D1). Same
  * architecture as generate-seo.ts, same reason: ciphera.net runs as 42 independent
  * Magic Containers instances behind a 300s HTML TTL, so a request-time read would mean
  * 42 unsynchronised copies of the blog.
  *
- * 🔴 FAIL LOUDLY, NEVER EMIT A PARTIAL. Every check below exits non-zero. A blog that
- * silently ships fifteen of sixteen posts, or one post with no description, is worse
- * than a red pipeline — nothing anywhere would report it.
+ * 🔴 P1-a: NO CMS CONTENT STATE MAY FAIL THIS BUILD. A bad post is REPAIRED where a safe
+ * substitute exists (lib/blog-transform.ts does most of that), SKIPPED when nothing safe
+ * exists (no slug, no title, an empty body, a duplicate), or shipped unchanged and
+ * FLAGGED when there is no clean field-level fix (a recovery-copy honesty violation).
+ * Every one of those is recorded in lib/content-repairs.gen.ts and printed as a
+ * `CONTENT-REPAIR` build-log line — see lib/content-repair-log.ts. What still fails this
+ * build is INFRASTRUCTURE, not content: WordPress unreachable, a non-200 response, a
+ * populated GraphQL `errors[]`, or the post-count collapse guard below (unchanged).
  *
  * 🔑 THE IMAGE/TOOL-LOGO HEAD CHECK AND THE STRICT NEXT_PUBLIC_CDN_URL CROSS-CHECK BELOW
  * ARE PORTED FROM pulse-website@edcb673 / 70a90da (PULSE-243): the old check regex-matched
@@ -24,14 +30,18 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode } from '../lib/blog-transform'
-import { renderableImageSources } from '../lib/blog-html'
+import { renderableImageSources, dropUnreachableMedia } from '../lib/blog-html'
 import type { WpBlogPost } from '../lib/blog-types'
 import { checkRecoveryCopy } from '../lib/recovery-copy-rules.mjs'
+import { recordContentRepairs } from '../lib/content-repair-log'
+import type { ContentRepairEntry } from '../lib/content-repair-types'
 
 const WP = process.env.WORDPRESS_GRAPHQL_URL ?? 'http://wordpress.apps.svc.cluster.local/graphql'
 const CDN = process.env.NEXT_PUBLIC_CDN_URL ?? 'https://cdn.ciphera.net/website'
 /** The live site's own report of what it is serving — see the shrink guard below. */
 const LIVE_STATE = process.env.LIVE_SEO_STATE_URL ?? 'https://ciphera.net/sys/seo-state'
+/** The site's own sitewide default OG image (app/layout.tsx) — the P1-a fallback card. */
+const DEFAULT_OG_IMAGE = '/og-homepage.png'
 
 const CONTENT_DIR = path.join(process.cwd(), 'content', 'blog')
 const SUMMARY_OUT = path.join(process.cwd(), 'lib', 'blog-posts.gen.ts')
@@ -43,9 +53,16 @@ const QUERY = `{
   }
 }`
 
+/** Still fatal: this is an INFRASTRUCTURE failure, not a CMS content state (P1-a). */
 function fail(msg: string): never {
   console.error(`\n🔴 generate-blog-posts: ${msg}\n`)
   process.exit(1)
+}
+
+const REPAIR_TYPE = 'blog-post'
+const repairs: ContentRepairEntry[] = []
+function repair(ref: string, field: string, action: ContentRepairEntry['action'], detail: string): void {
+  repairs.push({ type: REPAIR_TYPE, ref, field, action, detail })
 }
 
 /** Tags stripped, for a check that reads PROSE rather than markup. */
@@ -60,6 +77,11 @@ async function head(url: string): Promise<number> {
   } catch {
     return 0
   }
+}
+
+/** A stable, always-present ref for a node that may not even have a usable slug yet. */
+function refOf(n: WpNode): string {
+  return (n.slug ?? '').trim() || (n.databaseId != null ? `wp-db-${n.databaseId}` : '(unknown)')
 }
 
 async function main() {
@@ -94,109 +116,160 @@ async function main() {
 
   // 🔴 A PARTIAL RESPONSE IS WORSE THAN NO RESPONSE. WPGraphQL can return HTTP 200 with
   // a populated `errors` array and partial `data`; shipping half the blog is the one
-  // outcome worse than not shipping.
+  // outcome worse than not shipping. This is WordPress being unreachable in substance —
+  // infrastructure, not a content state — so it stays fatal (P1-a point 4).
   if (body.errors?.length) fail(`GraphQL errors: ${JSON.stringify(body.errors)}`)
 
-  const nodes: WpNode[] = body?.data?.blogPosts?.nodes ?? []
-  const wp: WpBlogPost[] = []
-  const summaries: Record<string, unknown>[] = [...mdx]
-  const mdxSlugs = new Set(mdx.map((p) => p.slug as string))
-  const seen = new Set<string>()
+  const allNodes: WpNode[] = body?.data?.blogPosts?.nodes ?? []
+  const nodes = allNodes.filter((n) => nodeSites(n).includes(BLOG_SITE)) // Pulse's posts (Phase 4) live in the same WordPress
+
+  // ── Pass 1: transform every candidate, skip what cannot ship, repair what can ──
+  type Candidate = { n: WpNode; post: WpBlogPost }
+  const candidates: Candidate[] = []
 
   for (const n of nodes) {
-    const sites = nodeSites(n)
-    if (!sites.includes(BLOG_SITE)) continue // Pulse's posts (Phase 4) live in the same WordPress
-
+    const ref = refOf(n)
     // 🔴 THE SAME TRANSFORM THE PREVIEW RUNS (lib/blog-transform.ts). Two copies would
     // eventually disagree, and a preview that disagrees with the published page is
     // worse than no preview — it is a preview nobody can trust and nobody knows to
-    // distrust. The build turns a problem into a red pipeline; the preview turns the
-    // same problem into a banner. Only that last step differs.
-    const { post, problems } = transformWpPost(n, CDN)
-    if (!post) fail(`${n.title ?? 'untitled post'}: ${problems.map((x) => x.message).join('; ')}`)
-    if (problems.length > 0) {
-      fail(
-        `${post.slug}:\n` +
-          problems.map((x) => `   • ${x.field}: ${x.message}`).join('\n') +
-          `\n   Fix it at https://cms.ciphera.net → Blog, then this build will pass.`
+    // distrust. P1-a: the transform now repairs what it can; what is left in `problems`
+    // is what this build SKIPS rather than fails on.
+    const { post, problems, repairs: fieldRepairs } = transformWpPost(n, CDN)
+
+    if (!post) {
+      // No slug, or a slug WordPress could not have produced — an unusable key, not a
+      // repairable field (P1-a point 2).
+      for (const p of problems) repair(ref, p.field, 'skipped', p.message)
+      console.log(`SKIP blog post ${ref}: ${problems.map((p) => p.message).join('; ')}`)
+      continue
+    }
+
+    const blocking = problems.filter((p) => p.field === 'title' || p.field === 'body')
+    if (blocking.length > 0) {
+      for (const p of blocking) repair(post.slug, p.field, 'skipped', p.message)
+      console.log(`SKIP blog post ${post.slug}: ${blocking.map((p) => p.message).join('; ')}`)
+      continue
+    }
+
+    for (const r of fieldRepairs) repair(post.slug, r.field, 'repaired', r.detail)
+    candidates.push({ n, post })
+  }
+
+  // ── Duplicate (site, slug): keep the lowest WordPress databaseId, skip the rest ──
+  const bySlug = new Map<string, Candidate[]>()
+  for (const c of candidates) {
+    const list = bySlug.get(c.post.slug) ?? []
+    list.push(c)
+    bySlug.set(c.post.slug, list)
+  }
+  const survivors: Candidate[] = []
+  for (const [slug, group] of bySlug) {
+    if (group.length === 1) {
+      survivors.push(group[0])
+      continue
+    }
+    const sorted = [...group].sort((a, b) => (a.n.databaseId ?? Infinity) - (b.n.databaseId ?? Infinity))
+    survivors.push(sorted[0])
+    for (const loser of sorted.slice(1)) {
+      repair(
+        slug,
+        'slug',
+        'skipped',
+        `duplicate published post for slug "${slug}" (databaseId ${loser.n.databaseId ?? 'unknown'}) — ` +
+          `kept the lowest databaseId (${sorted[0].n.databaseId ?? 'unknown'})`
       )
+      console.log(`SKIP blog post ${slug}: duplicate published post, keeping the lowest databaseId`)
     }
+  }
 
-    // 🔴 A SLUG IN BOTH SOURCES IS A BUILD FAILURE, NOT A PRECEDENCE RULE (design §8.0).
-    // lib/blog.ts throws on this too; catching it here names the post and the fix.
-    if (mdxSlugs.has(post.slug)) {
-      fail(
-        `slug "${post.slug}" exists in BOTH content/blog/${post.slug}.mdx and WordPress.\n` +
-          `   Delete one. A precedence rule would silently retire the other, and the next\n` +
-          `   person to edit it would see no effect at all.`
+  // ── A slug in both content/blog/*.mdx and WordPress: keep the git-tracked MDX one ──
+  // 🔴 P1-a REPAIR: this used to fail the build ("exists in BOTH … Delete one"). There is
+  // no field-level fix for two sources claiming one URL, so the WordPress side is
+  // skipped and the pre-existing MDX post keeps serving — never a coin flip, and never
+  // a post that silently disappears from both.
+  const mdxSlugs = new Set(mdx.map((p) => p.slug as string))
+  const wpSurvivors = survivors.filter((c) => {
+    if (mdxSlugs.has(c.post.slug)) {
+      repair(
+        c.post.slug,
+        'slug',
+        'skipped',
+        `slug "${c.post.slug}" exists in BOTH content/blog/${c.post.slug}.mdx and WordPress — ` +
+          'kept the git-tracked MDX post, skipped the WordPress one'
       )
+      console.log(`SKIP blog post ${c.post.slug}: exists in both content/blog/*.mdx and WordPress`)
+      return false
     }
-    if (seen.has(post.slug)) fail(`duplicate published post for slug "${post.slug}"`)
-    seen.add(post.slug)
+    return true
+  })
 
-    // 🔴 THE OG GATE, AND IT IS NOT IN A TEST FILE ON PURPOSE.
-    // __tests__/og-image-dimensions.test.mjs is deliberately network-free — its own
-    // header says so — because a test that fails when the CDN is slow stops meaning
-    // anything. Here the network is already a hard dependency and a failure is already
-    // a legitimate red build. Without this, a new post unfurls broken in exactly the
-    // place nobody checks: somebody else's Slack.
-    // ⚠️ It lives HERE and not in the shared transform because it costs a network
-    // round trip per post — which is right for a build and wrong for a preview an
-    // editor is waiting on.
-    // 🔴 EVERY IMAGE AND TOOL-LOGO MARK THE PAGE WILL ACTUALLY RENDER MUST BE ON THE CDN
-    // (design §29). Images are uploaded at cms.ciphera.net/upload, which writes to the
-    // CDN and hands back a finished URL — so a post referencing one that is not there
-    // means the URL was typed or pasted rather than produced. That is a broken image on
-    // a published page, and this is what makes it a red build naming the file instead.
-    // 🔑 `renderableImageSources` (lib/blog-html.ts) runs the EXACT SAME
-    // parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated chain the
-    // page renders with, so this checks exactly the set of `<img>` sources AND tool-logo
-    // marks that will reach a reader's browser — never a hand-written regex, which
-    // misses whatever quoting or markup shape it was not written to expect (a
-    // single-quoted `src='…'`, for one), and never HEAD-checked a tool logo at all
-    // before this (ported from pulse-website@edcb673 / 70a90da, PULSE-243).
-    // `toolLogoBase: CDN` is the same resolution ToolLogo itself does in production
-    // (`cdnUrl()` against `NEXT_PUBLIC_CDN_URL`).
-    // ⚠️ Needs NO credential: the CDN is public, and that is the whole reason no CDN
-    // write credential lives in this pipeline.
-    for (const src of renderableImageSources(post.html, { toolLogoBase: CDN })) {
-      const imgStatus = await head(src)
-      if (imgStatus !== 200) {
-        fail(
-          `${post.slug}: image ${src} returned HTTP ${imgStatus}.\n` +
-            `   The post references it but it is not on the CDN. Upload it at\n` +
-            `   https://cms.ciphera.net/upload, or correct the address in the post.`
-        )
-      }
-    }
+  // ── Pass 2: the network-dependent checks, only for what actually survives ──
+  const wp: WpBlogPost[] = []
+  const summaries: Record<string, unknown>[] = [...mdx]
 
-    const status = await head(`${CDN}${post.image}`)
-    if (status !== 200) {
-      fail(
-        `${post.slug}: OG card ${CDN}${post.image} returned HTTP ${status}.\n` +
-          `   Cards are produced by hand — Public/docs/og-image-generation.md — and this post\n` +
-          `   would unfurl broken everywhere it was shared. Generate and upload it, then rebuild.`
-      )
-    }
-
+  for (const { post } of wpSurvivors) {
     // 🔴 THE RECOVERY-COPY GUARD, MOVED HERE BECAUSE THE CONTENT MOVED.
     // Two of that guard's six surfaces were blog posts. They are in WordPress now, so a
     // repository test cannot see them — and the guard's own header says a guard narrower
     // than its subject reads as coverage and is not. Same rules, run where the copy is.
     // ⚠️ It checks the FULL body INCLUDING the FAQ answers, which is where one of the
     // false claims lived.
+    // 🔴 P1-a point 3: an honesty-rule violation on CMS content ships UNCHANGED and is
+    // FLAGGED (severity high) — the CMS-side review queue and the owner's review own
+    // this rule now, not a build refusal.
     const copyProblems = checkRecoveryCopy(
       textOfBody(post.html) + ' ' + post.faqs.map((f) => `${f.question} ${f.answer}`).join(' '),
       post.slug
     )
     if (copyProblems.length > 0) {
-      fail(
-        `${post.slug} makes a false or unqualified claim about account recovery:\n` +
-          copyProblems.map((x) => `   • ${x}`).join('\n') +
-          `\n   Recovery has been live since 03-09-2026: the 24-word phrase opens an enrolled account,\n` +
-          `   older accounts set it up from Security settings, and there is no backfill. Fix the\n` +
-          `   copy at https://cms.ciphera.net → Blog.`
+      repair(
+        post.slug,
+        'recovery-copy',
+        'flagged',
+        `severity=high — makes a false or unqualified claim about account recovery (shipped unchanged): ` +
+          copyProblems.join('; ')
       )
+    }
+
+    // 🔴 EVERY IMAGE AND TOOL-LOGO MARK THE PAGE WILL ACTUALLY RENDER MUST BE ON THE CDN
+    // (design §29), AND REACHABLE. `renderableImageSources` (lib/blog-html.ts) runs the
+    // EXACT SAME parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated
+    // chain the page renders with, so this checks exactly the set of `<img>` sources AND
+    // tool-logo marks that will reach a reader's browser.
+    // 🔴 P1-a REPAIR: an unreachable image or tool-logo mark no longer fails the build —
+    // it is dropped from the body, the same contract `cdnImagesOnly`/`toolLogosValidated`
+    // already apply to a malformed one.
+    const badImgSrcs = new Set<string>()
+    const badToolLogoDataSrcs = new Set<string>()
+    for (const src of renderableImageSources(post.html, { toolLogoBase: CDN })) {
+      const imgStatus = await head(src)
+      if (imgStatus !== 200) {
+        const isToolLogo = src.startsWith(CDN) && src.slice(CDN.length).includes('/blog/tools/')
+        if (isToolLogo) badToolLogoDataSrcs.add(src.slice(CDN.length))
+        else badImgSrcs.add(src)
+        repair(
+          post.slug,
+          'image',
+          'repaired',
+          `image ${src} returned HTTP ${imgStatus} — not on the CDN; dropped from the post body`
+        )
+      }
+    }
+    if (badImgSrcs.size > 0 || badToolLogoDataSrcs.size > 0) {
+      post.html = dropUnreachableMedia(post.html, badImgSrcs, badToolLogoDataSrcs)
+    }
+
+    // 🔑 P1-a REPAIR: the OG card gate. A per-post card that 404s no longer fails the
+    // build — it falls back to the site's own default OG image (app/layout.tsx).
+    const status = await head(`${CDN}${post.image}`)
+    if (status !== 200) {
+      repair(
+        post.slug,
+        'image',
+        'repaired',
+        `OG card ${CDN}${post.image} returned HTTP ${status} — repaired to the site default OG image`
+      )
+      post.image = DEFAULT_OG_IMAGE
     }
 
     const { html: _html, faqs: _faqs, wordCount: _wc, cta: _cta, ...summary } = post
@@ -205,7 +278,8 @@ async function main() {
   }
 
   // 🔴 THE STRICT NEXT_PUBLIC_CDN_URL CHECK, once there is at least one WordPress post to
-  // publish. Ported from pulse-website@70a90da (PULSE-243).
+  // publish. Ported from pulse-website@70a90da (PULSE-243). NOT a content check — this is
+  // a missing deploy secret, which stays fatal (P1-a point 4 only covers CMS content).
   // ⚠️ DELIBERATELY READS THE RAW process.env VALUE, NOT THE `CDN` CONSTANT ABOVE — `CDN`
   // already falls back to the production default when NEXT_PUBLIC_CDN_URL is unset (so
   // this build's own HEAD checks keep passing against the real CDN), but lib/cdn.ts's
@@ -224,10 +298,11 @@ async function main() {
     )
   }
 
-  // 🔴 THE SHRINK GUARD. After the migration WordPress holds the ONLY live copy of the
-  // corpus, so a build that publishes fewer posts than production is currently serving
-  // must not be able to go green. Desired and actual are both queryable — the same
-  // level-triggered shape as the publish watcher (D9) — so this stores nothing.
+  // 🔴 THE SHRINK GUARD. UNCHANGED BY P1-a (point 4: the one content-shaped check that
+  // STAYS a hard failure). After the migration WordPress holds the ONLY live copy of the
+  // corpus, so a build that publishes far fewer posts than production is currently
+  // serving must not be able to go green — that is the shape of a real loss (a bad
+  // restore, posts that silently lost their site term), not ordinary editing.
   // ⚠️ The escape hatch is explicit and appears in the pipeline log. A deliberate
   // unpublish sets it once; nothing sets it by accident.
   if (process.env.ALLOW_POST_COUNT_DECREASE === '1') {
@@ -355,9 +430,12 @@ export const wpPosts: WpBlogPost[] = ${JSON.stringify(wp, null, 2)}
     'utf-8'
   )
 
+  recordContentRepairs([REPAIR_TYPE], repairs)
+
   console.log(`Generated ${summaries.length} blog posts → lib/blog-posts.gen.ts`)
   console.log(`  ${mdx.length} from content/blog/*.mdx, ${wp.length} from WordPress`)
   for (const p of wp) console.log(`  WP: ${p.slug} (${p.wordCount} words, ${p.faqs.length} faqs)`)
+  if (repairs.length > 0) console.log(`  ${repairs.length} content repair(s)/skip(s)/flag(s) — see lib/content-repairs.gen.ts`)
 }
 
 main()

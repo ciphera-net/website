@@ -36,6 +36,13 @@ export const WP_SLUG = /^(?:[a-z0-9_-]|[^\x00-\x7F\s\p{C}])+$/u
  */
 
 export interface WpNode {
+  /**
+   * 🔑 THE TIE-BREAK FOR A DUPLICATE (P1-a). Two published posts sharing a slug can
+   * no longer fail the build — one is skipped instead, and `databaseId` (WordPress's
+   * own MySQL row id, lower = created first) is what decides which, deterministically,
+   * rather than whichever one happened to sort first in a GraphQL page.
+   */
+  databaseId: number | null
   slug: string | null
   title: string | null
   excerpt: string | null
@@ -59,6 +66,7 @@ export interface TransformProblem {
 }
 
 export const WP_POST_FIELDS = `
+  databaseId
   slug
   title
   excerpt
@@ -100,6 +108,27 @@ export function textOf(html: string): string {
     .trim()
 }
 
+/**
+ * Cut `text` to at most `max` characters, backing up to the last word boundary so the
+ * cut never lands mid-word, and append an ellipsis when it actually shortened anything.
+ *
+ * P1-a's repair for "meta description over 160 chars" and "missing description, falling
+ * back to the body" both resolve to this same shape — cut at the last word boundary
+ * ≤ (max - 3) chars, then append '…' — so there is one definition, not two that drift.
+ */
+export function truncateAtWordBoundary(text: string, max: number): string {
+  const trimmed = text.trim()
+  if (trimmed.length <= max) return trimmed
+  const ceiling = Math.max(1, max - 3) // room for the appended '…'
+  const slice = trimmed.slice(0, ceiling)
+  const lastSpace = slice.lastIndexOf(' ')
+  const cut = lastSpace > 0 ? slice.slice(0, lastSpace) : slice
+  return `${cut.trimEnd()}…`
+}
+
+/** `YYYY-MM-DD`, the one shape every date field on this site is stored and compared as. */
+export const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
+
 export function decodeEntities(s: string): string {
   return s
     .replace(/&amp;/g, '&')
@@ -136,15 +165,31 @@ export function readTimeOf(words: number): string {
   return `${Math.max(1, Math.round(words / 200))} min read`
 }
 
+/** A repair applied inline — the field shipped with a safe substitute, not a refusal. */
+export interface TransformRepair {
+  field: string
+  detail: string
+}
+
+/**
+ * WordPress node → the shape the site renders, repairing what P1-a allows and leaving
+ * only genuinely unrepairable issues in `problems` (no slug, no title, an empty body —
+ * see scripts/generate-blog-posts.ts, which skips an item on any of those instead of
+ * shipping it). Everything else that used to be a `problems` entry the BUILD then
+ * failed on is now fixed here and reported in `repairs` instead.
+ *
+ * Design: Public/docs/plans/07-10-2026-cms-made-easy-design.md §4.1 P1-a
+ */
 export function transformWpPost(
   n: WpNode,
   cdn: string
-): { post: WpBlogPost | null; problems: TransformProblem[] } {
+): { post: WpBlogPost | null; problems: TransformProblem[]; repairs: TransformRepair[] } {
   const problems: TransformProblem[] = []
+  const repairs: TransformRepair[] = []
   const slug = (n.slug ?? '').trim()
   if (!slug) {
     problems.push({ field: 'slug', message: 'the post has no slug and can never have a URL' })
-    return { post: null, problems }
+    return { post: null, problems, repairs }
   }
 
   // 🔴 A SLUG WORDPRESS COULD NOT HAVE PRODUCED IS A PROBLEM, NOT A STRING TO TRUST.
@@ -157,39 +202,11 @@ export function transformWpPost(
       field: 'slug',
       message: `the slug "${slug}" is not a shape WordPress could have produced`,
     })
-    return { post: null, problems }
+    return { post: null, problems, repairs }
   }
 
   const title = (n.cipheraTitle ?? '').trim() || (n.title ?? '').trim()
   if (!title) problems.push({ field: 'title', message: 'the post has no title' })
-
-  // The excerpt is WordPress's own field and arrives wrapped in <p>. The SEO
-  // description overrides it, because that is the string that reaches a SERP.
-  const description = (n.cipheraDescription ?? '').trim() || textOf(n.excerpt ?? '')
-  if (!description) {
-    problems.push({
-      field: 'description',
-      message: 'no meta description and no excerpt — search results would show whatever Google picks',
-    })
-  }
-
-  const cats = n.blogCategories?.nodes ?? []
-  const cat = cats[0]
-  if (!cat) {
-    problems.push({ field: 'category', message: 'no category — the closing call-to-action resolves from it' })
-  }
-
-  // 🔴 A CATEGORY WITH NO CTA IS THE TRAP §24.6 EXISTS TO CLOSE. Before the CTA moved
-  // onto the term, adding a category left every post in it silently falling back to a
-  // generic button, with a green build and no signal anywhere.
-  const catHref = (cat?.cipheraCtaHref ?? '').trim()
-  const catLabel = (cat?.cipheraCtaLabel ?? '').trim()
-  if (cat && (!catHref || !catLabel)) {
-    problems.push({
-      field: 'category',
-      message: `category "${cat.name}" has no call-to-action — every post in it would show the generic button`,
-    })
-  }
 
   // 🔴 A wp-content/uploads URL CANNOT COME FROM AN UPLOAD — WordPress physically
   // cannot accept one (read-only docroot, §9.1). It can only come from somebody pasting
@@ -207,20 +224,91 @@ export function transformWpPost(
   const words = textOf(html).split(/\s+/).filter(Boolean).length
   if (words === 0) problems.push({ field: 'body', message: 'the body is empty' })
 
+  // The excerpt is WordPress's own field and arrives wrapped in <p>. The SEO
+  // description overrides it, because that is the string that reaches a SERP.
+  // 🔑 P1-a REPAIR: no meta description and no excerpt used to fail the whole build.
+  // The code fallback (the excerpt) already ran; past that, the first ~155 chars of the
+  // post's own body text is the next safe substitute — never an empty <meta> tag.
+  let description = (n.cipheraDescription ?? '').trim() || textOf(n.excerpt ?? '')
+  if (!description) {
+    description = truncateAtWordBoundary(textOf(html), 155)
+    repairs.push({
+      field: 'description',
+      detail: description
+        ? 'no meta description and no excerpt — search results would show whatever Google picks; ' +
+          'repaired from the first ~155 chars of the post body'
+        : 'no meta description, no excerpt and an empty body — shipped with an empty description',
+    })
+  }
+
+  const cats = n.blogCategories?.nodes ?? []
+  const cat = cats[0]
+  if (!cat) {
+    repairs.push({
+      field: 'category',
+      detail: 'no category — the closing call-to-action resolves from it; falls back to the site default CTA',
+    })
+  }
+
+  // 🔴 A CATEGORY WITH NO CTA IS THE TRAP §24.6 EXISTS TO CLOSE. Before the CTA moved
+  // onto the term, adding a category left every post in it silently falling back to a
+  // generic button, with a green build and no signal anywhere.
+  // 🔑 P1-a REPAIR: this no longer fails the build. `cta` below is left `undefined`
+  // rather than a half-filled { label: '', href: '' } — components/blog/post-view.tsx
+  // already falls `post.cta ?? CATEGORY_CTA[post.category] ?? DEFAULT_CTA`, so an
+  // `undefined` cta is what makes that existing fallback chain actually run instead of
+  // being masked by a present-but-empty object. "No closing CTA block" never happens:
+  // DEFAULT_CTA is the site's own floor.
+  const catHref = (cat?.cipheraCtaHref ?? '').trim()
+  const catLabel = (cat?.cipheraCtaLabel ?? '').trim()
+  if (cat && (!catHref || !catLabel)) {
+    repairs.push({
+      field: 'category',
+      detail: `category "${cat.name}" has no call-to-action — every post in it would show the generic button; ` +
+        'falls back to the site default CTA at render time',
+    })
+  }
+
+  const postCtaLabel = (n.cipheraCtaLabel ?? '').trim()
+  const postCtaHref = (n.cipheraCtaHref ?? '').trim()
+  const ctaLabel = postCtaLabel || catLabel
+  const ctaHref = postCtaHref || catHref
+
   // ⚠️ A path, resolved through cdnUrl() at the point of use — exactly like the MDX
   // frontmatter's `image`. Deriving it from the slug is what makes the build's OG gate
   // meaningful: the URL is predictable, so its absence is detectable.
+  // 🔑 P1-a REPAIR: an OG image set but not on the CDN no longer fails the build — it
+  // is dropped (ignored) in favour of the same slug-derived default path every post
+  // without a custom card already uses.
   const ogRaw = (n.cipheraOgImage ?? '').trim()
   let image = `/blog/og/${slug}.png`
   if (ogRaw) {
     if (!ogRaw.startsWith(`${cdn}/`)) {
-      problems.push({ field: 'ogImage', message: `the OG image is not on the CDN — got "${ogRaw}"` })
+      repairs.push({
+        field: 'ogImage',
+        detail: `the OG image is not on the CDN — got "${ogRaw}"; repaired to the default-shaped card path for this slug`,
+      })
     } else {
       image = ogRaw.slice(cdn.length)
     }
   }
 
-  const date = (n.date ?? '').slice(0, 10)
+  // 🔑 P1-a REPAIR: a missing or malformed publish date falls back to the modified
+  // date rather than shipping an invalid or empty value into the feed, the sitemap and
+  // the BlogPosting JSON-LD.
+  const modified = (n.modifiedGmt ?? '').slice(0, 10)
+  let date = (n.date ?? '').slice(0, 10)
+  if (!ISO_DATE.test(date)) {
+    const fallback = ISO_DATE.test(modified) ? modified : ''
+    repairs.push({
+      field: 'date',
+      detail: date
+        ? `publish date "${date}" is not YYYY-MM-DD — repaired to the modified date`
+        : 'no publish date — repaired to the modified date',
+    })
+    date = fallback
+  }
+
   return {
     post: {
       slug,
@@ -228,17 +316,15 @@ export function transformWpPost(
       description,
       category: cat?.name ?? '',
       date,
-      dateModified: (n.modifiedGmt ?? '').slice(0, 10) || date,
+      dateModified: modified || date,
       readTime: (n.cipheraReadTime ?? '').trim() || readTimeOf(words),
       image,
       html,
       faqs,
-      cta: {
-        label: (n.cipheraCtaLabel ?? '').trim() || catLabel,
-        href: (n.cipheraCtaHref ?? '').trim() || catHref,
-      },
+      cta: ctaLabel && ctaHref ? { label: ctaLabel, href: ctaHref } : undefined,
       wordCount: words,
     },
     problems,
+    repairs,
   }
 }
