@@ -1,4 +1,4 @@
-import { blogPosts } from '../../lib/blog-posts.gen'
+import { getBlogPosts } from '../../lib/blog'
 
 function escapeXml(str: string): string {
   return str
@@ -14,7 +14,8 @@ function toRFC822(dateStr: string): string {
   return date.toUTCString()
 }
 
-export function GET() {
+export async function GET() {
+  const blogPosts = await getBlogPosts()
   const sortedPosts = [...blogPosts].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   )

@@ -244,7 +244,7 @@ export default async function PreviewPage({
       <Banner status={status} />
       <BlogPostView
         post={{ ...post, content: post.html, body: { kind: 'html', content: post.html } }}
-        allPosts={getBlogPosts()}
+        allPosts={await getBlogPosts()}
       />
     </>
   )

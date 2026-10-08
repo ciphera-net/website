@@ -131,7 +131,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   // Dynamically add published blog posts
-  const blogPages: MetadataRoute.Sitemap = getBlogPosts().map((post) => ({
+  const blogPosts = await getBlogPosts()
+  const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.dateModified,
   }))

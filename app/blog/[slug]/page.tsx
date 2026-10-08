@@ -1,12 +1,13 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getBlogPost, getBlogPosts } from '@/lib/blog'
+import { isRuntimeKind } from '@/lib/cms/runtime-config'
 import { BlogPostView } from '@/components/blog/post-view'
 import { cdnUrl } from '@/lib/cdn'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const post = getBlogPost(slug)
+  const post = await getBlogPost(slug)
   if (!post) return {}
 
   return {
@@ -46,12 +47,38 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = getBlogPost(slug)
+  const post = await getBlogPost(slug)
   if (!post) notFound()
 
-  return <BlogPostView post={post} allPosts={getBlogPosts()} />
+  return <BlogPostView post={post} allPosts={await getBlogPosts()} />
 }
 
 export async function generateStaticParams() {
-  return getBlogPosts().map((post) => ({ slug: post.slug }))
+  // 🔴 WEB-26: a runtime kind's params are NOT enumerated at build time — building the
+  // full param list would mean an async CDN read during `next build` for a kind whose
+  // entire point is to be resolved per-request. Every slug then renders on demand
+  // (`dynamicParams` defaults to true). Flag-off keeps today's full static list.
+  //
+  // ⚠️ MEASURED LIMITATION (round 2, against a real CMS_RUNTIME_KINDS=…,blog,… build):
+  // returning `[]` here does NOT by itself make a request-time slug render dynamically
+  // per request — Next still treats an unlisted param as "dynamicParams" ISR: render
+  // once on demand, then CACHE the result (measured: `x-nextjs-cache: HIT`,
+  // `Cache-Control: s-maxage=31536000` on the second hit), which would silently defeat
+  // the "live in about a minute" goal for every slug after its first render. Next
+  // requires `export const dynamic`/`revalidate` to be a literal, read statically at
+  // build time (confirmed: a computed `isRuntimeKind('blog') ? … : …` value fails the
+  // build outright — "Next.js can't recognize the exported `dynamic` field … It needs
+  // to be a static string"), so it cannot be flipped by this same env-driven constant.
+  // `app/glossary/[slug]/page.tsx` never has this problem because it has NO
+  // `generateStaticParams` at all (glossary has no flag-off static-list to preserve).
+  // The kind that actually CUTS OVER to runtime (editing DEFAULT_RUNTIME_KINDS, a
+  // real source commit — see lib/cms/runtime-config.ts) must, in that SAME commit,
+  // delete this function entirely and add a literal `export const dynamic =
+  // 'force-dynamic'`, the same shape glossary's own cutover (website#127/#128) took.
+  // Left as a dual-mode function here on purpose: CMS_RUNTIME_KINDS is an env-only
+  // override for proving the runtime path works (this round's task), not a production
+  // toggle — see runtime-config.ts's own header for why Magic Containers' env can't
+  // gain a variable through the deploy pipeline anyway.
+  if (isRuntimeKind('blog')) return []
+  return (await getBlogPosts()).map((post) => ({ slug: post.slug }))
 }

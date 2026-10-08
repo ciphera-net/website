@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import { cdnUrl } from '@/lib/cdn'
 
-export const metadata: Metadata = seoFor('/about', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/about', {
     title: 'About Us - Building Privacy-First Infrastructure',
     description: 'Ciphera is a Belgian privacy company building zero-knowledge infrastructure. Learn about our mission, values, technology stack, and journey since 2024.',
     keywords: ['about ciphera', 'privacy company', 'zero-knowledge', 'encryption', 'privacy-first', 'ciphera mission'],
@@ -32,6 +33,7 @@ export const metadata: Metadata = seoFor('/about', {
       canonical: 'https://ciphera.net/about',
     },
   })
+}
 
 export default function AboutLayout({
   children,

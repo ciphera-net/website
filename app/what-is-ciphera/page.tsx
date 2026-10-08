@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, LockIcon } from '@ciphera-net/facet'
@@ -8,7 +8,8 @@ import { cdnUrl } from '@/lib/cdn'
 import { officeHq, pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 import FAQAccordion from '@/components/FAQAccordion'
 
-export const metadata: Metadata = seoFor('/what-is-ciphera', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/what-is-ciphera', {
     title: 'What is Ciphera?',
     description:
       'Ciphera is a Belgian privacy-software company (Ciphera BV) that builds zero-knowledge infrastructure and applications: Pulse analytics, Captcha, Relay, the Ciphera ID sign-in behind them, and the open-source Tessera authentication library.',
@@ -34,6 +35,7 @@ export const metadata: Metadata = seoFor('/what-is-ciphera', {
       images: [cdnUrl('/og-homepage.png')],
     },
   })
+}
 
 // * What Ciphera builds, each linking to its own page. One factual line apiece.
 // * The last two entries are deliberately not products: Ciphera ID is the

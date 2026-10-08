@@ -1,9 +1,12 @@
-import { SEO_WATERMARK, SEO_ROUTE_COUNT, SEO_POST_COUNT } from '@/lib/seo'
+import { SEO_WATERMARK, SEO_ROUTE_COUNT, SEO_POST_COUNT, getRouteSeoRuntimeState } from '@/lib/seo'
 import { REDIRECT_COUNT, REDIRECT_WATERMARK } from '@/lib/redirects.gen'
 import { GLOSSARY_COUNT, GLOSSARY_WATERMARK } from '@/lib/glossary.gen'
+import { BLOG_WATERMARK } from '@/lib/blog-posts.gen'
 import { CONTENT_REPAIRS } from '@/lib/content-repairs.gen'
 import { CMS_RUNTIME_KINDS } from '@/lib/cms/runtime-config'
 import { getGlossaryRuntimeState } from '@/lib/glossary'
+import { getBlogRuntimeState } from '@/lib/blog'
+import { getRedirectRuntimeState } from '@/lib/cms/redirect-runtime'
 
 /**
  * The ACTUAL half of the level-triggered deploy check (design D9).
@@ -28,6 +31,9 @@ export const dynamic = 'force-dynamic'
 
 export async function GET() {
   const glossaryRuntime = await getGlossaryRuntimeState()
+  const blogRuntime = await getBlogRuntimeState()
+  const routeRuntime = await getRouteSeoRuntimeState()
+  const redirectRuntime = await getRedirectRuntimeState()
 
   // 🔴 `posts` IS NOT COSMETIC. A watermark is a maximum and maxima only move
   // forward, so unpublishing the newest entry makes WordPress's max fall BELOW this
@@ -71,15 +77,20 @@ export async function GET() {
       // 🔑 NEW (WEB-26): the same build-time numbers above, broken out per kind rather
       // than pre-collapsed into the single `watermark` maximum — "posts" becomes "seo"
       // here to match the kind name §4.1.3a's index uses, not SEO_POST_COUNT's name.
+      // 🔑 ROUND 2: `blog` joins the map — the watchers map kinds to these site keys
+      // exactly (route -> "seo", redirect -> "redirect", blog -> "blog", glossary ->
+      // "glossary"), so this key is named "blog", not "posts".
       watermarks: {
         seo: SEO_WATERMARK,
+        blog: BLOG_WATERMARK,
         redirect: REDIRECT_WATERMARK,
         glossary: GLOSSARY_WATERMARK,
       },
       // 🔑 NEW (WEB-26): what THIS INSTANCE is serving right now, per kind — distinct
       // from the build-time fields above, which describe what the image was built
-      // from. `source` can be 'seed' even when `enabled` is true: the kind is turned
-      // on, but this resolution fell back (an unreachable CDN, an unknown schema).
+      // from. `source` can be 'seed'/'off' even when `enabled` is true: the kind is
+      // turned on, but this resolution fell back (an unreachable CDN, an unknown
+      // schema). Round 2 adds blog, seo (route) and redirect alongside glossary.
       runtime: {
         kinds: [...CMS_RUNTIME_KINDS],
         glossary: {
@@ -87,6 +98,25 @@ export async function GET() {
           source: glossaryRuntime.source,
           index_watermark: glossaryRuntime.indexWatermark ?? null,
           published_at: glossaryRuntime.publishedAt ?? null,
+        },
+        blog: {
+          enabled: blogRuntime.enabled,
+          source: blogRuntime.source,
+          index_watermark: blogRuntime.indexWatermark ?? null,
+          published_at: blogRuntime.publishedAt ?? null,
+        },
+        seo: {
+          enabled: routeRuntime.enabled,
+          source: routeRuntime.source,
+          index_watermark: routeRuntime.indexWatermark ?? null,
+          published_at: routeRuntime.publishedAt ?? null,
+        },
+        redirect: {
+          enabled: redirectRuntime.enabled,
+          source: redirectRuntime.source,
+          index_watermark: redirectRuntime.indexWatermark ?? null,
+          published_at: redirectRuntime.publishedAt ?? null,
+          count: redirectRuntime.count ?? null,
         },
       },
     },

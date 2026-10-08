@@ -26,6 +26,10 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
 import { timingSafeEqual } from 'node:crypto'
 import { buildGlossary, type WpGlossaryTerm } from '../lib/cms/glossary-build'
+import { buildBlogPosts } from '../lib/cms/blog-build'
+import { buildRouteSeo, routeKey, type RouteSeoNode } from '../lib/cms/route-build'
+import { buildRedirects, type RedirectNode } from '../lib/cms/redirect-build'
+import { WP_POST_FIELDS, type WpNode } from '../lib/blog-transform'
 import { getContentIndex, type ContentIndex, type ContentIndexKind } from '../lib/cms/content-client'
 import { CONTENT_BASE } from '../lib/cms/runtime-config'
 import {
@@ -54,6 +58,9 @@ const BUILD = (process.env.CIPHERA_BUILD_SHA ?? 'unknown').slice(0, 7)
 const PURGE_SECOND_WAIT_MS = 20_000
 const UPLOAD_BATCH_SIZE = 100
 const WP_FETCH_TIMEOUT_MS = 15_000
+/** The ASSET cdn (cdn.ciphera.net) — only used by 'blog', to rewrite
+ * wp-content/uploads/... references, same default scripts/generate-blog-posts.ts uses. */
+const ASSET_CDN = process.env.NEXT_PUBLIC_CDN_URL ?? 'https://cdn.ciphera.net/website'
 
 function log(msg: string): void {
   console.log(`[cms-publisher:${SITE}] ${msg}`)
@@ -158,7 +165,50 @@ async function fetchGlossaryNodes(): Promise<WpGlossaryTerm[]> {
   return allNodes.filter((n) => (n.routeSites?.nodes ?? []).some((t) => t.slug === SITE))
 }
 
-// ── One kind's publish logic — only 'glossary' is wired this round ─────────────────
+async function wpQuery<T>(query: string): Promise<T> {
+  const res = await fetch(WP, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query }),
+    signal: AbortSignal.timeout(WP_FETCH_TIMEOUT_MS),
+  })
+  if (!res.ok) throw new Error(`cannot reach WordPress: HTTP ${res.status}`)
+  const body = await res.json()
+  if (body.errors?.length) throw new Error(`GraphQL errors: ${JSON.stringify(body.errors)}`)
+  return body.data as T
+}
+
+// 🔑 Reuses WP_POST_FIELDS from lib/blog-transform.ts — the SAME query shape
+// scripts/generate-blog-posts.ts sends, so there is one field list, not two that drift.
+const BLOG_QUERY = `{
+  blogPosts(first: 200, where: { status: PUBLISH }) {
+    nodes { ${WP_POST_FIELDS} }
+  }
+}`
+
+const ROUTE_QUERY = `{
+  routeStubs(first: 100, where: { status: PUBLISH }) {
+    nodes {
+      databaseId cipheraPath cipheraTitle cipheraDescription cipheraCanonical
+      cipheraOgTitle cipheraOgDescription cipheraOgImage
+      cipheraTwitterTitle cipheraTwitterDescription
+      cipheraNoindex cipheraNofollow modifiedGmt
+      routeSites { nodes { slug } }
+    }
+  }
+}`
+
+const REDIRECT_QUERY = `{
+  redirects(first: 200, where: { status: PUBLISH }) {
+    nodes { databaseId cipheraFrom cipheraTo modifiedGmt routeSites { nodes { slug } } }
+  }
+}`
+
+function mine<T extends { routeSites?: { nodes?: { slug: string }[] } }>(nodes: T[]): T[] {
+  return nodes.filter((n) => (n.routeSites?.nodes ?? []).some((t) => t.slug === SITE))
+}
+
+// ── One kind's publish logic ─────────────────────────────────────────────────────────
 interface KindPublishResult {
   indexKind: ContentIndexKind
   toUpload: { path: string; body: string }[]
@@ -197,8 +247,150 @@ async function publishGlossary(previousIndex: ContentIndex | null): Promise<Kind
   return { indexKind, toUpload, changed, pagePatterns: ['/glossary*', '/sitemap.xml'] }
 }
 
+/**
+ * 🔑 THE SHRINK-GUARD ANALOGUE (WEB-26 round 2). generate-blog-posts.ts's build-time
+ * shrink guard fetches a separate /sys/seo-state; this publisher already HOLDS the
+ * previous pass's own count (`previousIndex`), which is the more honest comparison —
+ * it is exactly what this pass is about to overwrite, not a second, possibly-stale
+ * source. Throwing here is caught by runPass()'s existing "a failed kind keeps its
+ * previous index entry" path (§4.1.3a) — the SAME mechanism, reused, not a new one.
+ */
+function assertNoCollapse(kind: string, previousCount: number | undefined, newCount: number): void {
+  if (previousCount === undefined) return
+  const shortfall = previousCount - newCount
+  const collapse = shortfall > Math.max(2, Math.floor(previousCount * 0.25))
+  if (collapse) {
+    throw new Error(
+      `${kind}: this pass would publish ${newCount} item(s); the previous index held ${previousCount} — ` +
+        `${shortfall} gone at once, too many to be ordinary editing. Keeping the previous index entry.`
+    )
+  }
+}
+
+async function publishBlog(previousIndex: ContentIndex | null): Promise<KindPublishResult> {
+  const data = await wpQuery<{ blogPosts: { nodes: WpNode[] } }>(BLOG_QUERY)
+  const nodes = data.blogPosts?.nodes ?? []
+  const publishedKeys = nodes.map((n) => (n.slug ?? '').trim()).filter(Boolean)
+  const { posts, watermark } = buildBlogPosts(nodes, ASSET_CDN)
+
+  const previousItems = previousIndex?.kinds?.blog?.items ?? null
+  assertNoCollapse('blog', previousIndex?.kinds?.blog?.count, posts.length)
+
+  const docsByKey: Record<string, { path: string; bytes: string }> = {}
+  for (const post of posts) {
+    const doc = buildDocument(SITE, 'blog', post.slug, post)
+    docsByKey[post.slug] = { path: doc.path, bytes: doc.bytes }
+  }
+  const newItems = Object.fromEntries(Object.entries(docsByKey).map(([k, v]) => [k, v.path]))
+  const mergedItems = mergeLastGood(publishedKeys, newItems, previousItems)
+
+  const toUpload = documentsToUpload(previousItems, mergedItems)
+    .map(({ key, path }) => {
+      const doc = docsByKey[key]
+      return doc && doc.path === path ? { path, body: doc.bytes } : null
+    })
+    .filter((w): w is { path: string; body: string } => w !== null)
+
+  const changed = kindChanged(previousItems, mergedItems)
+  const indexKind = buildIndexKind(1, watermark, mergedItems)
+
+  // §4.1.3a item 4: blog -> /blog*, /feed.xml, /sitemap.xml.
+  return { indexKind, toUpload, changed, pagePatterns: ['/blog*', '/feed.xml', '/sitemap.xml'] }
+}
+
+type RouteStubWireNode = RouteSeoNode & { routeSites?: { nodes?: { slug: string }[] } }
+
+async function publishRoute(previousIndex: ContentIndex | null): Promise<KindPublishResult> {
+  const data = await wpQuery<{ routeStubs: { nodes: RouteStubWireNode[] } }>(ROUTE_QUERY)
+  const nodes = mine(data.routeStubs?.nodes ?? [])
+  const built = buildRouteSeo(nodes)
+
+  const previousItems = previousIndex?.kinds?.route?.items ?? null
+
+  // Each path's content-addressed key is its slugified form (§4.1.3a "Paths"). Two
+  // distinct live paths colliding on one key would silently let one route's document
+  // overwrite the other's — pathologically unlikely across today's 14 routes (verified
+  // unique), but refused loudly rather than risked: the whole kind fails this pass
+  // (previous index entry kept), same as any other publish failure.
+  const keyToPath = new Map<string, string>()
+  for (const p of Object.keys(built.routes)) {
+    const key = routeKey(p)
+    const existing = keyToPath.get(key)
+    if (existing) throw new Error(`route: paths "${existing}" and "${p}" both slugify to key "${key}" — refusing to publish`)
+    keyToPath.set(key, p)
+  }
+
+  const docsByKey: Record<string, { path: string; bytes: string }> = {}
+  for (const [key, path] of keyToPath) {
+    const doc = buildDocument(SITE, 'route', key, built.routes[path])
+    docsByKey[key] = { path: doc.path, bytes: doc.bytes }
+  }
+  const newItems = Object.fromEntries(Object.entries(docsByKey).map(([k, v]) => [k, v.path]))
+  // No last-good merge here: an item WordPress stops publishing a stub for is simply a
+  // route with no stub — seoForAsync()'s own fallback (the page's in-code metadata) is
+  // the correct outcome, not resurrecting a stale CDN document (unlike blog/glossary,
+  // where the ITEM itself would otherwise vanish from the site).
+  const mergedItems = newItems
+
+  const toUpload = documentsToUpload(previousItems, mergedItems)
+    .map(({ key, path }) => {
+      const doc = docsByKey[key]
+      return doc && doc.path === path ? { path, body: doc.bytes } : null
+    })
+    .filter((w): w is { path: string; body: string } => w !== null)
+
+  const changed = kindChanged(previousItems, mergedItems)
+  const indexKind = buildIndexKind(1, built.watermark, mergedItems)
+
+  // §4.1.3a item 4: route -> each CHANGED path, exact + a `*` prefix for its _rsc
+  // variants (Next's React Server Component payload fetches vary the query string).
+  // ⚠️ KNOWN LIMITATION: the index stores key → document path, not key → original page
+  // path, so a stub that WordPress stops publishing entirely cannot be named here (its
+  // key has no path to recover once it is gone from `built.routes`). That path's edge
+  // cache self-heals within the existing 300s HTML TTL — the same bound every other
+  // un-purged edit already relied on before this kind existed — so this purges every
+  // CURRENTLY STUBBED path whose document actually changed, which is the common case
+  // (an edit, not an unpublish).
+  const changedPaths = Object.keys(built.routes).filter((p) => (previousItems ?? {})[routeKey(p)] !== mergedItems[routeKey(p)])
+  const pagePatterns = changedPaths.flatMap((p) => [p, `${p}*`])
+
+  return { indexKind, toUpload, changed, pagePatterns }
+}
+
+type RedirectWireNode = RedirectNode & { routeSites?: { nodes?: { slug: string }[] } }
+
+async function publishRedirect(previousIndex: ContentIndex | null): Promise<KindPublishResult> {
+  const data = await wpQuery<{ redirects: { nodes: RedirectWireNode[] } }>(REDIRECT_QUERY)
+  const nodes = mine(data.redirects?.nodes ?? [])
+  // Throws on a Tier-1 collision (lib/cms/redirect-build.ts) — caught by runPass(),
+  // which keeps the previous document in place, same as the build refuses to ship.
+  const built = buildRedirects(nodes)
+
+  const doc = buildDocument(SITE, 'redirect', 'all', { redirects: built.redirects })
+  const newItems = { all: doc.path }
+  const previousItems = previousIndex?.kinds?.redirect?.items ?? null
+  const changed = kindChanged(previousItems, newItems)
+  const toUpload = changed ? [{ path: doc.path, body: doc.bytes }] : []
+  const indexKind = buildIndexKind(1, built.watermark, newItems)
+
+  // §4.1.3a item 4: redirect -> each CHANGED source path. The document is one JSON
+  // blob (key "all"), so "changed" is whole-document; the previous document's own
+  // sources are not held across passes (no last-good merge needed — see publishGlossary
+  // for why that pattern exists at all: to protect an item WordPress still publishes but
+  // this pass could not read, which has no analogue for a single, always-fully-rebuilt
+  // document), so every CURRENT source is purged on any change — a superset of "only the
+  // ones that actually moved", safe because purging a redirect source that did not
+  // change is a no-op at the edge, never a correctness problem.
+  const pagePatterns = changed ? built.redirects.map((r) => r.source) : []
+
+  return { indexKind, toUpload, changed, pagePatterns }
+}
+
 const KIND_PUBLISHERS: Record<string, (previousIndex: ContentIndex | null) => Promise<KindPublishResult>> = {
   glossary: publishGlossary,
+  blog: publishBlog,
+  route: publishRoute,
+  redirect: publishRedirect,
 }
 
 // ── One full pass ────────────────────────────────────────────────────────────────────

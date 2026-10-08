@@ -29,10 +29,10 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode } from '../lib/blog-transform'
+import { WP_POST_FIELDS, type WpNode } from '../lib/blog-transform'
+import { buildBlogPosts } from '../lib/cms/blog-build'
 import { renderableImageSources, rawMediaRefs, dropUnreachableMedia } from '../lib/blog-html'
 import type { WpBlogPost } from '../lib/blog-types'
-import { checkRecoveryCopy } from '../lib/recovery-copy-rules.mjs'
 import { recordContentRepairs } from '../lib/content-repair-log'
 import type { ContentRepairEntry } from '../lib/content-repair-types'
 
@@ -65,11 +65,6 @@ function repair(ref: string, field: string, action: ContentRepairEntry['action']
   repairs.push({ type: REPAIR_TYPE, ref, field, action, detail })
 }
 
-/** Tags stripped, for a check that reads PROSE rather than markup. */
-function textOfBody(html: string): string {
-  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ')
-}
-
 async function head(url: string): Promise<number> {
   try {
     const r = await fetch(url, { method: 'HEAD' })
@@ -77,11 +72,6 @@ async function head(url: string): Promise<number> {
   } catch {
     return 0
   }
-}
-
-/** A stable, always-present ref for a node that may not even have a usable slug yet. */
-function refOf(n: WpNode): string {
-  return (n.slug ?? '').trim() || (n.databaseId != null ? `wp-db-${n.databaseId}` : '(unknown)')
 }
 
 async function main() {
@@ -120,84 +110,31 @@ async function main() {
   // infrastructure, not a content state — so it stays fatal (P1-a point 4).
   if (body.errors?.length) fail(`GraphQL errors: ${JSON.stringify(body.errors)}`)
 
-  const allNodes: WpNode[] = body?.data?.blogPosts?.nodes ?? []
-  const nodes = allNodes.filter((n) => nodeSites(n).includes(BLOG_SITE)) // Pulse's posts (Phase 4) live in the same WordPress
+  const nodes: WpNode[] = body?.data?.blogPosts?.nodes ?? [] // buildBlogPosts filters to this site's own routeSites
 
-  // ── Pass 1: transform every candidate, skip what cannot ship, repair what can ──
-  type Candidate = { n: WpNode; post: WpBlogPost }
-  const candidates: Candidate[] = []
-
-  for (const n of nodes) {
-    const ref = refOf(n)
-    // 🔴 THE SAME TRANSFORM THE PREVIEW RUNS (lib/blog-transform.ts). Two copies would
-    // eventually disagree, and a preview that disagrees with the published page is
-    // worse than no preview — it is a preview nobody can trust and nobody knows to
-    // distrust. P1-a: the transform now repairs what it can; what is left in `problems`
-    // is what this build SKIPS rather than fails on.
-    const { post, problems, repairs: fieldRepairs } = transformWpPost(n, CDN)
-
-    if (!post) {
-      // No slug, or a slug WordPress could not have produced — an unusable key, not a
-      // repairable field (P1-a point 2).
-      for (const p of problems) repair(ref, p.field, 'skipped', p.message)
-      console.log(`SKIP blog post ${ref}: ${problems.map((p) => p.message).join('; ')}`)
-      continue
-    }
-
-    const blocking = problems.filter((p) => p.field === 'title' || p.field === 'body')
-    if (blocking.length > 0) {
-      for (const p of blocking) repair(post.slug, p.field, 'skipped', p.message)
-      console.log(`SKIP blog post ${post.slug}: ${blocking.map((p) => p.message).join('; ')}`)
-      continue
-    }
-
-    for (const r of fieldRepairs) repair(post.slug, r.field, 'repaired', r.detail)
-    candidates.push({ n, post })
-  }
-
-  // ── Duplicate (site, slug): keep the lowest WordPress databaseId, skip the rest ──
-  const bySlug = new Map<string, Candidate[]>()
-  for (const c of candidates) {
-    const list = bySlug.get(c.post.slug) ?? []
-    list.push(c)
-    bySlug.set(c.post.slug, list)
-  }
-  const survivors: Candidate[] = []
-  for (const [slug, group] of bySlug) {
-    if (group.length === 1) {
-      survivors.push(group[0])
-      continue
-    }
-    const sorted = [...group].sort((a, b) => (a.n.databaseId ?? Infinity) - (b.n.databaseId ?? Infinity))
-    survivors.push(sorted[0])
-    for (const loser of sorted.slice(1)) {
-      repair(
-        slug,
-        'slug',
-        'skipped',
-        `duplicate published post for slug "${slug}" (databaseId ${loser.n.databaseId ?? 'unknown'}) — ` +
-          `kept the lowest databaseId (${sorted[0].n.databaseId ?? 'unknown'})`
-      )
-      console.log(`SKIP blog post ${slug}: duplicate published post, keeping the lowest databaseId`)
-    }
-  }
+  // ── Pass 1 (transform/skip/repair) and duplicate-slug dedupe — shared with the
+  // publisher via lib/cms/blog-build.ts; see that module's header for exactly what
+  // this build-only script still does on top (MDX collision, network checks, below).
+  const built = buildBlogPosts(nodes, CDN)
+  for (const r of built.repairs) repairs.push(r)
 
   // ── A slug in both content/blog/*.mdx and WordPress: keep the git-tracked MDX one ──
   // 🔴 P1-a REPAIR: this used to fail the build ("exists in BOTH … Delete one"). There is
   // no field-level fix for two sources claiming one URL, so the WordPress side is
   // skipped and the pre-existing MDX post keeps serving — never a coin flip, and never
-  // a post that silently disappears from both.
+  // a post that silently disappears from both. BUILD-ONLY: needs the filesystem — see
+  // lib/cms/blog-build.ts's header for why the runtime seam needs no equivalent.
   const mdxSlugs = new Set(mdx.map((p) => p.slug as string))
-  const wpSurvivors = survivors.filter((c) => {
-    if (mdxSlugs.has(c.post.slug)) {
+  const wpSurvivors = built.posts.filter((post) => {
+    if (mdxSlugs.has(post.slug)) {
       repair(
-        c.post.slug,
+        post.slug,
         'slug',
         'skipped',
-        `slug "${c.post.slug}" exists in BOTH content/blog/${c.post.slug}.mdx and WordPress — ` +
+        `slug "${post.slug}" exists in BOTH content/blog/${post.slug}.mdx and WordPress — ` +
           'kept the git-tracked MDX post, skipped the WordPress one'
       )
-      console.log(`SKIP blog post ${c.post.slug}: exists in both content/blog/*.mdx and WordPress`)
+      console.log(`SKIP blog post ${post.slug}: exists in both content/blog/*.mdx and WordPress`)
       return false
     }
     return true
@@ -207,29 +144,9 @@ async function main() {
   const wp: WpBlogPost[] = []
   const summaries: Record<string, unknown>[] = [...mdx]
 
-  for (const { post } of wpSurvivors) {
-    // 🔴 THE RECOVERY-COPY GUARD, MOVED HERE BECAUSE THE CONTENT MOVED.
-    // Two of that guard's six surfaces were blog posts. They are in WordPress now, so a
-    // repository test cannot see them — and the guard's own header says a guard narrower
-    // than its subject reads as coverage and is not. Same rules, run where the copy is.
-    // ⚠️ It checks the FULL body INCLUDING the FAQ answers, which is where one of the
-    // false claims lived.
-    // 🔴 P1-a point 3: an honesty-rule violation on CMS content ships UNCHANGED and is
-    // FLAGGED (severity high) — the CMS-side review queue and the owner's review own
-    // this rule now, not a build refusal.
-    const copyProblems = checkRecoveryCopy(
-      textOfBody(post.html) + ' ' + post.faqs.map((f) => `${f.question} ${f.answer}`).join(' '),
-      post.slug
-    )
-    if (copyProblems.length > 0) {
-      repair(
-        post.slug,
-        'recovery-copy',
-        'flagged',
-        `severity=high — makes a false or unqualified claim about account recovery (shipped unchanged): ` +
-          copyProblems.join('; ')
-      )
-    }
+  for (const post of wpSurvivors) {
+    // 🔑 The recovery-copy honesty check now runs inside lib/cms/blog-build.ts (shared
+    // with the publisher) — `built.repairs` above already carries any flag for this post.
 
     // 🔴 EVERY IMAGE AND TOOL-LOGO MARK THE PAGE WILL ACTUALLY RENDER MUST BE ON THE CDN
     // (design §29), AND REACHABLE. `renderableImageSources` (lib/blog-html.ts) runs the
@@ -439,6 +356,15 @@ export interface BlogPostSummary {
 }
 
 export const blogPosts: BlogPostSummary[] = ${JSON.stringify(summaries, null, 2)}
+
+/**
+ * 🔑 NEW (WEB-26 round 2): the max \`modifiedGmt\` this build consumed from WordPress's
+ * blog posts for this site — the 'blog' kind's own watermark, reported at
+ * /sys/seo-state under watermarks.blog. Computed from the surviving, deduped
+ * candidate set (lib/cms/blog-build.ts), before the MDX-collision drop — the same
+ * "surviving input" convention lib/seo.gen.ts's SEO_WATERMARK uses.
+ */
+export const BLOG_WATERMARK = ${JSON.stringify(built.watermark)}
 `,
     'utf-8'
   )

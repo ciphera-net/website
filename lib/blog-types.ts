@@ -16,6 +16,25 @@ export interface BlogPostFaq {
   answer: string
 }
 
+/**
+ * A post's list-view fields — what the blog index and feed render without needing the
+ * body. Lives here, not in `lib/blog.ts`, so a client component (which must never
+ * import that server-only module — it reads WordPress and the filesystem) can still
+ * type the prop it receives from its server parent (WEB-26 round 2,
+ * components/blog/blog-page-client.tsx).
+ */
+export interface BlogPostMeta {
+  slug: string
+  title: string
+  description: string
+  category: string
+  date: string
+  dateModified: string
+  readTime: string
+  /** Relative path (e.g. /blog/og/<slug>.png); resolve with cdnUrl() at the point of use. */
+  image: string
+}
+
 /** Optional per-post CTA override; when absent the template falls back to its category. */
 export interface BlogPostCta {
   label: string

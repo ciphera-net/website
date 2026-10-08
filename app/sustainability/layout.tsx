@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 
-export const metadata: Metadata = seoFor('/sustainability', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/sustainability', {
     title: 'Environmental Impact',
     description:
       "Ciphera's environmental impact — every server we run, measured with life-cycle assessment, powered by one of Europe's lowest-carbon grids (Swiss hydro and nuclear, ~12 gCO₂e/kWh). No offsets, no greenwashing, just receipts.",
@@ -24,6 +25,7 @@ export const metadata: Metadata = seoFor('/sustainability', {
         'Receipts, not promises. Ciphera runs on one of Europe’s lowest-carbon grids — Swiss hydro and nuclear.',
     },
   })
+}
 
 export default function SustainabilityLayout({
   children,

@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { RelayMockup } from '@/components/ui/relay-mockup'
@@ -20,7 +20,8 @@ import {
   EnvelopeSimple,
 } from '@phosphor-icons/react/dist/ssr'
 
-export const metadata: Metadata = seoFor('/products/relay', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/products/relay', {
     title: 'Ciphera Relay - Secure Email Infrastructure',
     description:
       'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking, Swiss hosted.',
@@ -52,6 +53,7 @@ export const metadata: Metadata = seoFor('/products/relay', {
       images: [cdnUrl('/relay_icon_no_margins.png')],
     },
   })
+}
 
 const relaySchema = [
   {

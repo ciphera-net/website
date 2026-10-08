@@ -30,7 +30,10 @@ const read = (p) => readFileSync(join(root, p), 'utf-8')
  */
 function code(p) {
   return read(p)
-    .replace(/\/\*[\s\S]*?\*\//g, '')
+    // (?!\.) — `content/blog/*.mdx` (quoted in several of these files) contains a
+    // literal `/*` that is not a comment opener; without the lookahead this regex
+    // treats it as one and non-greedily deletes everything up to an unrelated `*/`.
+    .replace(/\/\*(?!\.)[\s\S]*?\*\//g, '')
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
 }
@@ -182,9 +185,11 @@ test('NEXT_PUBLIC_CDN_URL being unset is a build failure once a WordPress post s
 
 test('every build-time gate the blog depends on is present', () => {
   // ⚠️ The content checks moved into the SHARED transform when the preview landed, so
-  // the preview reports exactly what the build refuses. Both files are read here on
-  // purpose: the gate is the pair, and splitting them was how it could regress.
-  const gen = code('scripts/generate-blog-posts.ts') + code('lib/blog-transform.ts')
+  // the preview reports exactly what the build refuses. All three files are read here
+  // on purpose: the gate is now a trio (generate-blog-posts.ts, blog-transform.ts, and
+  // — since WEB-26 round 2 — lib/cms/blog-build.ts, which cms-publisher.ts shares),
+  // and splitting any one of them out was how coverage could regress unnoticed.
+  const gen = code('scripts/generate-blog-posts.ts') + code('lib/blog-transform.ts') + code('lib/cms/blog-build.ts')
   for (const [needle, why] of [
     [/exists in BOTH/, 'slug collision between MDX and WordPress'],
     [/duplicate published post/, 'two published posts sharing a slug'],
@@ -236,9 +241,14 @@ test('the preview and the build share ONE transform', () => {
   // A preview built from a second copy of the transform would eventually disagree with
   // the published page — which is the failure a preview exists to prevent, and the one
   // nobody notices until a post ships looking wrong.
-  for (const f of ['scripts/generate-blog-posts.ts', 'app/preview/[slug]/page.tsx']) {
-    assert.match(code(f), /transformWpPost/, `${f} must use lib/blog-transform.ts, not its own copy`)
-  }
+  //
+  // 🔁 WEB-26 round 2: generate-blog-posts.ts no longer calls transformWpPost directly
+  // — it calls lib/cms/blog-build.ts's buildBlogPosts(), which is the one place that
+  // does (shared with cms-publisher.ts too). The preview still calls it directly, since
+  // it has no dedupe/recovery-copy pass to share.
+  assert.match(code('lib/cms/blog-build.ts'), /transformWpPost/, 'lib/cms/blog-build.ts must use lib/blog-transform.ts, not its own copy')
+  assert.match(code('scripts/generate-blog-posts.ts'), /buildBlogPosts/, 'generate-blog-posts.ts must call the shared transform, not re-implement it')
+  assert.match(code('app/preview/[slug]/page.tsx'), /transformWpPost/, 'the preview must use lib/blog-transform.ts, not its own copy')
   // The post page too: a preview that renders a lookalike layout is a page an editor
   // trusts that visitors never see.
   assert.match(code('app/preview/[slug]/page.tsx'), /BlogPostView/)
@@ -313,11 +323,17 @@ test('the preview and the generator share ONE site-filter rule, not two copies',
   // that rule would eventually disagree with the build's — which is the same failure
   // the file header's "ONE TRANSFORM, TWO CALLERS" already exists to prevent, one
   // definition short.
+  //
+  // 🔁 WEB-26 round 2: the actual filtering CALL moved into lib/cms/blog-build.ts
+  // (shared with cms-publisher.ts); generate-blog-posts.ts now only passes its raw,
+  // UNFILTERED nodes through to it.
   const transform = code('lib/blog-transform.ts')
   assert.match(transform, /export const BLOG_SITE = 'ciphera-net'/, 'lib/blog-transform.ts must own the site slug')
   assert.match(transform, /export function nodeSites/, 'lib/blog-transform.ts must own the routeSites lookup')
 
-  for (const f of ['scripts/generate-blog-posts.ts', 'app/preview/[slug]/page.tsx']) {
+  assert.doesNotMatch(code('scripts/generate-blog-posts.ts'), /const SITE = /, 'generate-blog-posts.ts must not declare its own site constant alongside the shared one')
+
+  for (const f of ['lib/cms/blog-build.ts', 'app/preview/[slug]/page.tsx']) {
     const src = code(f)
     assert.match(src, /nodeSites/, `${f} must read a node's sites through the shared helper, not its own copy`)
     assert.match(src, /BLOG_SITE/, `${f} must compare against the shared site constant, not a local one`)

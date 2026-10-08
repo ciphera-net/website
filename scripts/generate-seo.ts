@@ -24,6 +24,7 @@
  */
 import fs from 'fs'
 import path from 'path'
+import { buildRouteSeo, type RouteSeoNode } from '../lib/cms/route-build'
 import { recordContentRepairs } from '../lib/content-repair-log'
 import type { ContentRepairEntry } from '../lib/content-repair-types'
 
@@ -124,102 +125,33 @@ async function main() {
   // 🔴 SITE FIRST, then everything else. Pulse's stubs live in the same WordPress
   // (Phase 4), and a malformed one must fail Pulse's build — never this one. Validating
   // before filtering let one tenant's editing mistake block the other tenant's deploys.
-  const nodes = allNodes.filter((n) => (n.routeSites?.nodes?.map((t) => t.slug) ?? []).includes(SITE))
+  const nodes: RouteSeoNode[] = allNodes.filter((n) => (n.routeSites?.nodes?.map((t) => t.slug) ?? []).includes(SITE))
 
-  // ── Pass 1: an unusable key (empty path, or a shape that can never match a route) ──
-  const byPath = new Map<string, Node[]>()
-  for (const n of nodes) {
-    const ref = n.databaseId != null ? `wp-db-${n.databaseId}` : '(unknown)'
-    const p = (n.cipheraPath ?? '').trim()
-
-    if (!p) {
-      repair(ref, 'path', 'skipped', 'a published stub has an empty path — it can never match a route, and looks correct in wp-admin')
-      console.log(`SKIP route stub ${ref}: empty path`)
-      continue
-    }
-    if (!p.startsWith('/')) {
-      repair(p, 'path', 'skipped', `path "${p}" does not start with "/" — not a shape that can ever match a route`)
-      console.log(`SKIP route stub ${ref}: path "${p}" does not start with "/"`)
-      continue
-    }
-
-    const list = byPath.get(p) ?? []
-    list.push(n)
-    byPath.set(p, list)
+  // ── Shared with the publisher (lib/cms/route-build.ts): shape checks, the
+  // duplicate-path dedupe and the per-field repairs are ONE function now (P1-a). ──
+  const built = buildRouteSeo(nodes)
+  for (const r of built.repairs) {
+    repairs.push(r)
+    console.log(`${r.action === 'skipped' ? 'SKIP' : r.action.toUpperCase()} route stub ${r.ref}: ${r.detail}`)
   }
 
-  // ── Duplicate path: keep the lowest WordPress databaseId, skip the rest (P1-a) ──
-  const seen = new Map<string, Node>()
-  for (const [p, group] of byPath) {
-    const sorted = [...group].sort((a, b) => (a.databaseId ?? Infinity) - (b.databaseId ?? Infinity))
-    seen.set(p, sorted[0])
-    for (const loser of sorted.slice(1)) {
-      repair(
-        p,
-        'path',
-        'skipped',
-        `duplicate stub for ${p} (databaseId ${loser.databaseId ?? 'unknown'}) — two stubs for one route; ` +
-          `kept the lowest databaseId (${sorted[0].databaseId ?? 'unknown'})`
-      )
-      console.log(`SKIP route stub ${p}: duplicate stub, keeping the lowest databaseId`)
-    }
-  }
-
+  const seenCount = Object.keys(built.routes).length
   // ⚠️ NO LONGER A BUILD GATE (P1-a) — see EXPECTED_ROUTES's comment above.
-  if (seen.size !== EXPECTED_ROUTES) {
+  if (seenCount !== EXPECTED_ROUTES) {
     console.log(
-      `⚠️  publishing ${seen.size} ${SITE} route stubs; ${EXPECTED_ROUTES} expected. ` +
+      `⚠️  publishing ${seenCount} ${SITE} route stubs; ${EXPECTED_ROUTES} expected. ` +
         `A route with no stub renders its own in-code fallback metadata — WordpressSeoStubsDropped watches this.`
     )
   }
 
-  const out: Record<string, unknown> = {}
-  for (const [p, n] of [...seen.entries()].sort()) {
-    const ogImageRaw = (n.cipheraOgImage ?? '').trim()
-
-    // 🔑 P1-a REPAIR: an OG image not on the CDN used to fail the whole build. It is
-    // dropped instead — `seoFor()`'s `wp.ogImage ? { … } : {}` falls back to the
-    // route's own hardcoded OG image when this is empty.
-    let ogImage = ''
-    if (ogImageRaw) {
-      if (ogImageRaw.startsWith('https://cdn.ciphera.net/')) {
-        ogImage = ogImageRaw
-      } else {
-        repair(p, 'ogImage', 'repaired', `OG image is not on cdn.ciphera.net — got "${ogImageRaw}"; dropped, route's own OG image applies`)
-      }
-    }
-
-    // 🔑 P1-a REPAIR: an empty title or description used to fail the whole build.
-    // `seoFor()` merges WordPress over the page's hardcoded metadata FIELD BY FIELD
-    // (`if (wp.title) …`), so shipping these empty is exactly what makes the route's
-    // own in-code fallback apply — the same outcome as the route having no stub at all.
-    const title = (n.cipheraTitle ?? '').trim()
-    if (!title) repair(p, 'title', 'repaired', `${p}: stub has no title — the route's own in-code title applies`)
-    const description = (n.cipheraDescription ?? '').trim()
-    if (!description) repair(p, 'description', 'repaired', `${p}: stub has no meta description — the route's own in-code description applies`)
-
-    out[p] = {
-      title,
-      description,
-      canonical: (n.cipheraCanonical ?? '').trim(),
-      ogTitle: n.cipheraOgTitle ?? '',
-      ogDescription: n.cipheraOgDescription ?? '',
-      ogImage,
-      twitterTitle: n.cipheraTwitterTitle ?? '',
-      twitterDescription: n.cipheraTwitterDescription ?? '',
-      noindex: n.cipheraNoindex === true,
-      nofollow: n.cipheraNofollow === true,
-      modified: n.modifiedGmt ?? '',
-    }
-  }
+  const out = Object.fromEntries(Object.entries(built.routes).sort(([a], [b]) => a.localeCompare(b)))
 
   // Newest modification consumed by this build, ACROSS BOTH TYPES — see SEO_WATERMARK.
   const postNodes: { modifiedGmt: string | null; routeSites: { nodes: { slug: string }[] } | null }[] =
     body?.data?.blogPosts?.nodes ?? []
   const sitePosts = postNodes.filter((n) => (n.routeSites?.nodes ?? []).some((t) => t.slug === SITE))
 
-  const watermark = [...[...seen.values()], ...sitePosts]
-    .map((n) => n.modifiedGmt ?? '')
+  const watermark = [built.watermark, ...sitePosts.map((n) => n.modifiedGmt ?? '')]
     .filter(Boolean)
     .sort()
     .at(-1) ?? ''
@@ -237,7 +169,7 @@ async function main() {
     `${banner}
 import type { RouteSeo } from './seo'
 
-export const SEO_ROUTE_COUNT = ${seen.size}
+export const SEO_ROUTE_COUNT = ${seenCount}
 
 /**
  * 🔑 THE WATERMARK IS WHAT MAKES THE DEPLOY TRIGGER LEVEL-TRIGGERED (D9).
@@ -262,8 +194,8 @@ export const routeSeo: Record<string, RouteSeo> = ${JSON.stringify(out, null, 2)
 
   recordContentRepairs([REPAIR_TYPE], repairs)
 
-  console.log(`Generated ${seen.size} route stubs → lib/seo.gen.ts`)
-  for (const p of [...seen.keys()].sort()) console.log(`  ${p}`)
+  console.log(`Generated ${seenCount} route stubs → lib/seo.gen.ts`)
+  for (const p of Object.keys(out).sort()) console.log(`  ${p}`)
   if (repairs.length > 0) console.log(`  ${repairs.length} content repair(s)/skip(s)/flag(s) — see lib/content-repairs.gen.ts`)
 }
 

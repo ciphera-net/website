@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PulseMockupTall } from '@/components/ui/pulse-mockup'
@@ -22,7 +22,8 @@ import {
   XIcon,
 } from '@ciphera-net/facet'
 
-export const metadata: Metadata = seoFor('/products/pulse', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/products/pulse', {
     title: 'Pulse Analytics - Privacy-First Website Analytics',
     description:
       'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded. Open-source client.',
@@ -54,6 +55,7 @@ export const metadata: Metadata = seoFor('/products/pulse', {
       images: [cdnUrl('/og-pulse.png')],
     },
   })
+}
 
 const pulseSchema = [
   {
