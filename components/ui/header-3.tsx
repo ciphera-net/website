@@ -40,6 +40,7 @@ import {
 import Image from 'next/image';
 import { track } from '@/lib/pulse';
 import { pulseIcon, authIcon, captchaIcon, relayIcon, cipheraIcon } from '@/lib/images';
+import type { MenuDocument, MenuGroup } from '@/lib/cms/menu-build';
 
 type IconType = React.ComponentType<{ className?: string }>;
 
@@ -50,6 +51,33 @@ type LinkItem = {
     image?: string;
     description?: string;
 };
+
+// ── Media registry (M2, §4.2.2) ─────────────────────────────────────────────────────
+// Resolves a MenuItem's `media` key back to the icon component or image src the coded
+// menu used for it — the one place that mapping lives, so the three panels below never
+// hand-pick an icon again. Keys match `lib/cms/menu-seed.ts`'s `HEADER_MEDIA_KEYS`.
+type MediaEntry = { icon?: IconType; image?: string };
+const HEADER_MEDIA: Record<string, MediaEntry> = {
+    'pulse-logo': { image: pulseIcon },
+    'captcha-logo': { image: captchaIcon },
+    'relay-logo': { image: relayIcon },
+    'auth-logo': { image: authIcon },
+    lock: { icon: Lock },
+    users: { icon: Users },
+    leaf: { icon: Leaf },
+    'shield-check': { icon: ShieldCheck },
+    newspaper: { icon: Newspaper },
+    'file-text': { icon: FileText },
+    shield: { icon: Shield },
+    'book-open': { icon: BookOpen },
+    mail: { icon: Mail },
+};
+function mediaFor(key: string): MediaEntry {
+    return HEADER_MEDIA[key] ?? {};
+}
+function findGroup(doc: MenuDocument, label: string): MenuGroup | undefined {
+    return doc.groups.find((g) => g.label === label);
+}
 
 const productBranding: Record<string, { logo: string; name: string; signIn?: string; signUp?: string; ctaLabel?: string; ctaHref?: string }> = {
     '/products/pulse': { logo: pulseIcon, name: 'Pulse Analytics', signIn: 'https://pulse.ciphera.net/login', signUp: 'https://pulse.ciphera.net/signup' },
@@ -91,7 +119,7 @@ const productFeatures: Record<string, FeatureLink[]> = {
     ],
 };
 
-export function Header() {
+export function HeaderClient({ menuDocument }: { menuDocument: MenuDocument }) {
     const [open, setOpen] = React.useState(false);
     const closeMenu = React.useCallback(() => setOpen(false), []);
     const toggleRef = React.useRef<HTMLButtonElement>(null);
@@ -99,6 +127,16 @@ export function Header() {
     const pathname = usePathname();
     const branding = productBranding[pathname];
     const features = productFeatures[pathname];
+
+    // Everything below Features/branding/the two action buttons comes from the menu
+    // document (§4.2.2.6 "stays code" lists exactly what does not).
+    const productsGroup = findGroup(menuDocument, 'Products');
+    const companyGroup = findGroup(menuDocument, 'Company');
+    const resourcesGroup = findGroup(menuDocument, 'Resources & Support');
+    // The company panel's second, description-less column — an item with no
+    // description renders there (see lib/cms/menu-seed.ts's own comment on why).
+    const companyItemsCol1 = (companyGroup?.items ?? []).filter((it) => it.description !== '');
+    const companyItemsCol2 = (companyGroup?.items ?? []).filter((it) => it.description === '');
 
     React.useEffect(() => {
         if (open) {
@@ -154,19 +192,19 @@ export function Header() {
                                 </NavigationMenuItem>
                             )}
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger className="bg-transparent">{features ? 'All Products' : 'Products'}</NavigationMenuTrigger>
+                                <NavigationMenuTrigger className="bg-transparent">{features ? 'All Products' : (productsGroup?.label ?? 'Products')}</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5">
                                     <ul className="grid w-[32rem] grid-cols-2 gap-2 border border-border bg-card p-2">
-                                        {productLinks.map((item, i) => (
-                                            <li key={i}>
-                                                <ListItem {...item} />
+                                        {(productsGroup?.items ?? []).map((item) => (
+                                            <li key={item.label}>
+                                                <ListItem title={item.label} href={item.href} description={item.description} {...mediaFor(item.media)} />
                                             </li>
                                         ))}
                                     </ul>
                                     <div className="p-2">
                                         <p className="text-muted-foreground text-sm">
-                                            Interested?{' '}
-                                            <a href="/contact" className="text-foreground font-medium hover:underline">
+                                            {productsGroup?.note?.text ?? 'Interested?'}{' '}
+                                            <a href={productsGroup?.note?.href ?? '/contact'} className="text-foreground font-medium hover:underline">
                                                 Get in touch
                                             </a>
                                         </p>
@@ -174,34 +212,37 @@ export function Header() {
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger className="bg-transparent">Company</NavigationMenuTrigger>
+                                <NavigationMenuTrigger className="bg-transparent">{companyGroup?.label ?? 'Company'}</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5 pb-1.5">
                                     <div className="grid w-[32rem] grid-cols-2 gap-2">
                                         <ul className="space-y-2 border border-border bg-card p-2">
-                                            {companyLinks.map((item, i) => (
-                                                <li key={i}>
-                                                    <ListItem {...item} />
+                                            {companyItemsCol1.map((item) => (
+                                                <li key={item.label}>
+                                                    <ListItem title={item.label} href={item.href} description={item.description} {...mediaFor(item.media)} />
                                                 </li>
                                             ))}
                                         </ul>
                                         <ul className="space-y-2 p-3">
-                                            {companyLinks2.map((item, i) => (
-                                                <li key={i}>
-                                                    <NavigationMenuLink
-                                                        href={item.href}
-                                                        className="flex p-2 hover:bg-accent flex-row items-center gap-x-2 transition-colors"
-                                                    >
-                                                        {item.icon && <item.icon className="text-foreground size-4" />}
-                                                        <span className="text-sm font-medium">{item.title}</span>
-                                                    </NavigationMenuLink>
-                                                </li>
-                                            ))}
+                                            {companyItemsCol2.map((item) => {
+                                                const { icon: Icon } = mediaFor(item.media);
+                                                return (
+                                                    <li key={item.label}>
+                                                        <NavigationMenuLink
+                                                            href={item.href}
+                                                            className="flex p-2 hover:bg-accent flex-row items-center gap-x-2 transition-colors"
+                                                        >
+                                                            {Icon && <Icon className="text-foreground size-4" />}
+                                                            <span className="text-sm font-medium">{item.label}</span>
+                                                        </NavigationMenuLink>
+                                                    </li>
+                                                );
+                                            })}
                                         </ul>
                                     </div>
                                     <div className="p-2">
                                         <p className="text-muted-foreground text-sm">
-                                            Interested?{' '}
-                                            <a href="/contact" className="text-foreground font-medium hover:underline">
+                                            {companyGroup?.note?.text ?? 'Interested?'}{' '}
+                                            <a href={companyGroup?.note?.href ?? '/contact'} className="text-foreground font-medium hover:underline">
                                                 Get in touch
                                             </a>
                                         </p>
@@ -209,13 +250,13 @@ export function Header() {
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger className="bg-transparent">Resources & Support</NavigationMenuTrigger>
+                                <NavigationMenuTrigger className="bg-transparent">{resourcesGroup?.label ?? 'Resources & Support'}</NavigationMenuTrigger>
                                 <NavigationMenuContent className="bg-transparent p-1 pr-1.5 pb-1.5">
                                     <div className="grid w-[32rem] grid-cols-2 gap-2">
                                         <ul className="space-y-2 border border-border bg-card p-2">
-                                            {resourcesLinks.map((item, i) => (
-                                                <li key={i}>
-                                                    <ListItem {...item} />
+                                            {(resourcesGroup?.items ?? []).map((item) => (
+                                                <li key={item.label}>
+                                                    <ListItem title={item.label} href={item.href} description={item.description} {...mediaFor(item.media)} />
                                                 </li>
                                             ))}
                                         </ul>
@@ -231,8 +272,8 @@ export function Header() {
                                     </div>
                                     <div className="p-2">
                                         <p className="text-muted-foreground text-sm">
-                                            Interested?{' '}
-                                            <a href="/contact" className="text-foreground font-medium hover:underline">
+                                            {resourcesGroup?.note?.text ?? 'Interested?'}{' '}
+                                            <a href={resourcesGroup?.note?.href ?? '/contact'} className="text-foreground font-medium hover:underline">
                                                 Get in touch
                                             </a>
                                         </p>
@@ -284,20 +325,17 @@ export function Header() {
                                 ))}
                             </>
                         )}
-                        <span className="text-sm">{features ? 'All Products' : 'Products'}</span>
-                        {productLinks.map((link) => (
-                            <ListItem key={link.title} {...link} />
+                        <span className="text-sm">{features ? 'All Products' : (productsGroup?.label ?? 'Products')}</span>
+                        {(productsGroup?.items ?? []).map((item) => (
+                            <ListItem key={item.label} title={item.label} href={item.href} description={item.description} {...mediaFor(item.media)} />
                         ))}
-                        <span className="text-sm">Company</span>
-                        {companyLinks.map((link) => (
-                            <ListItem key={link.title} {...link} />
+                        <span className="text-sm">{companyGroup?.label ?? 'Company'}</span>
+                        {(companyGroup?.items ?? []).map((item) => (
+                            <ListItem key={item.label} title={item.label} href={item.href} description={item.description} {...mediaFor(item.media)} />
                         ))}
-                        {companyLinks2.map((link) => (
-                            <ListItem key={link.title} {...link} />
-                        ))}
-                        <span className="text-sm">Resources & Support</span>
-                        {resourcesLinks.map((link) => (
-                            <ListItem key={link.title} {...link} />
+                        <span className="text-sm">{resourcesGroup?.label ?? 'Resources & Support'}</span>
+                        {(resourcesGroup?.items ?? []).map((item) => (
+                            <ListItem key={item.label} title={item.label} href={item.href} description={item.description} {...mediaFor(item.media)} />
                         ))}
                     </div>
                 </NavigationMenu>
@@ -457,110 +495,6 @@ function ListItem({
         </NavigationMenuLink>
     );
 }
-
-const productLinks: LinkItem[] = [
-    {
-        title: 'Pulse Analytics',
-        href: '/products/pulse',
-        description: 'Privacy-first web analytics',
-        image: pulseIcon,
-    },
-    {
-        title: 'Ciphera Captcha',
-        href: '/products/captcha',
-        description: 'Privacy-respecting bot protection',
-        image: captchaIcon,
-    },
-    {
-        title: 'Ciphera Relay',
-        href: '/products/relay',
-        description: 'Secure email infrastructure',
-        image: relayIcon,
-    },
-    {
-        title: 'Tessera',
-        href: '/products/tessera',
-        description: 'Open-source OPAQUE auth library',
-        icon: Lock,
-    },
-];
-
-const companyLinks: LinkItem[] = [
-    {
-        title: 'About Us',
-        href: '/about',
-        description: 'Our mission for a more private internet',
-        icon: Users,
-    },
-    {
-        title: 'Sustainability',
-        href: '/sustainability',
-        description: 'Our carbon footprint, measured — see the real numbers',
-        icon: Leaf,
-    },
-    {
-        title: 'Trust & Security',
-        href: '/trust',
-        description: 'Architecture proofs, warrant canary & disclosure policy',
-        icon: ShieldCheck,
-    },
-    {
-        title: 'Press',
-        href: '/press',
-        description: 'Media kit, company facts & brand assets',
-        icon: Newspaper,
-    },
-];
-
-const companyLinks2: LinkItem[] = [
-    {
-        title: 'Terms of Service',
-        href: '/terms',
-        icon: FileText,
-    },
-    {
-        title: 'Privacy Policy',
-        href: '/privacy',
-        icon: Shield,
-    },
-];
-
-const resourcesLinks: LinkItem[] = [
-    {
-        title: 'Blog',
-        href: '/blog',
-        description: 'Privacy & security insights',
-        icon: Leaf,
-    },
-    {
-        title: 'Learn',
-        href: '/learn',
-        description: 'Guides & references for Ciphera products',
-        icon: BookOpen,
-    },
-    {
-        title: 'Glossary',
-        href: '/glossary',
-        description: 'Privacy & cryptography terms, defined precisely',
-        icon: FileText,
-    },
-    {
-        // Ciphera ID is the sign-in behind our own applications, not a product
-        // on the shelf — it lives here, next to the glossary, rather than in the
-        // Products menu. The URL is permanent; only its placement changed.
-        title: 'Ciphera ID',
-        href: '/products/id',
-        description: 'How signing in to Ciphera works',
-        image: authIcon,
-    },
-    {
-        title: 'Contact',
-        href: '/contact',
-        description: 'Get in touch with our team',
-        icon: Mail,
-    },
-];
-
 
 function useScroll(threshold: number) {
     const [scrolled, setScrolled] = React.useState(false);
