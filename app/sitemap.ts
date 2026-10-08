@@ -4,6 +4,7 @@ import { getBlogPosts } from '@/lib/blog'
 import { getGlossaryTerms } from '@/lib/glossary'
 import { getCurrentCanary, getCurrentReport } from '@/lib/transparency'
 import { routeSeoForAsync } from '@/lib/seo'
+import { getAllPages } from '@/lib/cms/page-runtime'
 
 /**
  * Sitemap for ciphera.net
@@ -148,7 +149,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: article.date,
     }))
 
-  const all = [...staticPages, ...trustPages, ...glossaryPages, ...blogPages, ...learnPages]
+  // Published CMS pages (§4.2.1: "the sitemap reads the same CDN index"). `[]` when
+  // 'page' is off (today's default) or nothing is published — a `ciphera_page` has
+  // no noindex field at all (unlike a route stub), so every one with a path is listed.
+  const cmsPages = await getAllPages()
+  const cmsPageEntries: MetadataRoute.Sitemap = cmsPages
+    .filter((p) => p.path !== '')
+    .map((p) => ({
+      url: `${baseUrl}${p.path}`,
+      lastModified: p.modifiedGmt ? new Date(p.modifiedGmt) : new Date(),
+    }))
+
+  const all = [...staticPages, ...trustPages, ...glossaryPages, ...blogPages, ...learnPages, ...cmsPageEntries]
 
   // 🔴 THE SITEMAP MUST HONOUR THE SAME `robots` VALUE THE PAGE DOES (design §6.7).
   // Level 1 hands the agency a noindex toggle in the CMS. Without this, the first

@@ -9,6 +9,7 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@ciphera-net/facet/dist/**/*.{js,mjs,cjs}',
+    './node_modules/@ciphera-net/facet-sections/dist/**/*.{js,mjs,cjs}',
   ],
   theme: {
   	extend: {
