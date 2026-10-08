@@ -3,7 +3,7 @@ import { getLearnArticles } from '@/lib/learn'
 import { getBlogPosts } from '@/lib/blog'
 import { getGlossaryTerms } from '@/lib/glossary'
 import { getCurrentCanary, getCurrentReport } from '@/lib/transparency'
-import { routeSeo } from '@/lib/seo'
+import { routeSeoForAsync } from '@/lib/seo'
 
 /**
  * Sitemap for ciphera.net
@@ -161,10 +161,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // dates below stay as the fallback for every route without a stub — the /trust hub
   // in particular must keep deriving its date from the published canary and report,
   // not from a CMS edit, and the /learn/pulse cluster keeps its own exclusion.
+  // The stub comes from the content zone when 'route' is a runtime kind, so a noindex or an
+  // edit reaches the sitemap without a build.
+  const stubs = await Promise.all(all.map((entry) => routeSeoForAsync(entry.url.replace(baseUrl, '') || '/')))
   return all
-    .map((entry) => {
-      const path = entry.url.replace(baseUrl, '') || '/'
-      const seo = routeSeo[path]
+    .map((entry, i) => {
+      const seo = stubs[i]
       if (!seo) return entry
       if (seo.noindex) return null
       return seo.modified
