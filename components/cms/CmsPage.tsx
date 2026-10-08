@@ -1,8 +1,29 @@
-import { MarketingSection, SeoHero, FaqBlock, RelatedLinks, SeoPageCta } from '@ciphera-net/facet-sections'
+import {
+  MarketingSection,
+  SeoHero,
+  FaqBlock,
+  RelatedLinks,
+  SeoPageCta,
+  ProductBanner,
+  FeatureSplit,
+  FeatureGrid,
+  ComparisonCards,
+  PackageGrid,
+  ContentBlock,
+  FaqTabs,
+} from '@ciphera-net/facet-sections'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { CmsRichText } from './CmsRichText'
+import { CmsRichText, cmsRichNodes } from './CmsRichText'
 import { CmsLink } from './CmsLink'
 import type { PageDocument, PageSection } from '@/lib/cms/page-build'
+import {
+  resolveIcon,
+  resolveVisual,
+  resolveLangIcon,
+  resolveRegistryIcon,
+  productBackgroundImage,
+  featurePhotoImage,
+} from '@/lib/cms/product-registries'
 
 /**
  * Renders a published CMS page's sections through the shared Facet section library
@@ -85,6 +106,135 @@ function Section({ section, index }: { section: PageSection; index: number }) {
           LinkComponent={CmsLink}
         />
       )
+
+    // ── Product-page section types (WEB-28 build task §2) ───────────────────────
+
+    case 'product-banner':
+      return (
+        <ProductBanner
+          variant={section.variant}
+          label={section.label}
+          heading={section.heading}
+          body={cmsRichNodes(section.body)}
+          backgroundImage={productBackgroundImage(section.backgroundImage, section.backgroundImageAlt)}
+          trustBadges={section.trustBadges.map((b) => ({ icon: b.icon ? resolveIcon(b.icon) : undefined, label: b.label }))}
+          stats={section.stats}
+          primaryButton={
+            section.primaryButtonLabel && section.primaryButtonHref
+              ? { label: section.primaryButtonLabel, href: section.primaryButtonHref, external: section.primaryButtonExternal }
+              : undefined
+          }
+          secondaryButton={
+            section.secondaryButtonLabel && section.secondaryButtonHref
+              ? { label: section.secondaryButtonLabel, href: section.secondaryButtonHref, external: section.secondaryButtonExternal }
+              : undefined
+          }
+          LinkComponent={CmsLink}
+        />
+      )
+
+    case 'feature-split':
+      return (
+        <FeatureSplit
+          label={section.label}
+          heading={section.heading}
+          text={cmsRichNodes(section.text)}
+          bullets={section.bullets}
+          bulletStyle={section.bulletStyle}
+          cta={section.ctaLabel && section.ctaHref ? { label: section.ctaLabel, href: section.ctaHref } : undefined}
+          visualSide={section.visualSide}
+          visualType={(section.visualType || 'photo') as 'mockup' | 'diagram' | 'code' | 'photo'}
+          visual={section.visualType !== 'photo' ? resolveVisual(section.visualKey) : undefined}
+          image={section.visualType === 'photo' ? featurePhotoImage(section.image, section.imageAlt) : undefined}
+          overlayBadges={section.overlayBadges.map((b) => ({
+            icon: b.icon ? resolveIcon(b.icon) : undefined,
+            title: b.title,
+            description: b.description,
+          }))}
+          LinkComponent={CmsLink}
+        />
+      )
+
+    case 'feature-grid':
+      return (
+        <FeatureGrid
+          label={section.label}
+          heading={section.heading}
+          dek={section.dek || undefined}
+          items={section.items.map((it) => ({ icon: resolveIcon(it.icon), title: it.title, body: it.body, anchor: it.anchor || undefined }))}
+          bullets={section.bullets.length > 0 ? section.bullets : undefined}
+        />
+      )
+
+    case 'comparison-cards':
+      return (
+        <ComparisonCards
+          label={section.label}
+          heading={section.heading}
+          intro={cmsRichNodes(section.intro)}
+          statsStrip={section.statsStrip.length > 0 ? section.statsStrip : undefined}
+          ours={{
+            icon: resolveIcon(section.ours.icon),
+            name: section.ours.name,
+            tagline: section.ours.tagline,
+            highlighted: section.ours.highlighted,
+            items: section.ours.items,
+          }}
+          theirs={{
+            icon: resolveIcon(section.theirs.icon),
+            name: section.theirs.name,
+            tagline: section.theirs.tagline,
+            items: section.theirs.items,
+          }}
+        />
+      )
+
+    case 'package-grid':
+      return (
+        <PackageGrid
+          label={section.label}
+          heading={section.heading}
+          items={section.items.map((it) => ({
+            langIcon: resolveLangIcon(it.langIcon),
+            lang: it.lang,
+            name: it.name,
+            role: it.role,
+            body: it.body,
+            repoHref: it.repoHref,
+            registryHref: it.registryHref,
+            registryIcon: resolveRegistryIcon(it.registryIcon),
+            registryLabel: it.registryLabel,
+          }))}
+          LinkComponent={CmsLink}
+        />
+      )
+
+    case 'content-block': {
+      const device =
+        section.device === 'diagram'
+          ? ({ type: 'diagram', diagram: resolveVisual(section.diagramKey) } as const)
+          : section.device === 'credential-table'
+            ? ({ type: 'credential-table', title: section.heading, subtitle: '', rows: section.rows } as const)
+            : section.device === 'chips'
+              ? ({ type: 'chips', items: section.chips.map((c) => ({ image: resolveIcon(c.image), label: c.label, href: c.href })) } as const)
+              : ({ type: 'none' } as const)
+      return (
+        <ContentBlock
+          label={section.label}
+          heading={section.heading}
+          text={cmsRichNodes(section.text)}
+          device={device}
+          bullets={section.bullets.length > 0 ? section.bullets : undefined}
+          note={section.note ? cmsRichNodes(section.note) : undefined}
+          LinkComponent={CmsLink}
+        />
+      )
+    }
+
+    case 'faq-tabs':
+      return section.categories.length > 0 && section.items.length > 0 ? (
+        <FaqTabs title={section.title || undefined} subtitle={section.subtitle || undefined} categories={section.categories} items={section.items} />
+      ) : null
 
     default:
       // Unreachable: lib/cms/page-build.ts already drops any section type it does

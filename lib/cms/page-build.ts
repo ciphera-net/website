@@ -541,7 +541,7 @@ function buildSections(
           variant,
           label: str(e.label),
           heading: str(e.heading),
-          body: str(e.body),
+          body: sanitizeRichText(str(e.body)),
           backgroundImage: str(e.backgroundImage),
           backgroundImageAlt: str(e.backgroundImageAlt),
           trustBadges: badges,
@@ -582,7 +582,7 @@ function buildSections(
           type: 'feature-split',
           label: str(e.label),
           heading: str(e.heading),
-          text: str(e.text),
+          text: sanitizeRichText(str(e.text)),
           bullets: coerceItems<{ text: string }>(e.bullets, ['text']).map((b) => b.text).filter((t) => t !== ''),
           bulletStyle: str(e.bulletStyle) === 'dash' ? 'dash' : 'check',
           ctaLabel: str(e.ctaLabel),
@@ -629,7 +629,7 @@ function buildSections(
           type: 'comparison-cards',
           label: str(e.label),
           heading: str(e.heading),
-          intro: str(e.intro),
+          intro: sanitizeRichText(str(e.intro)),
           statsStrip: coerceListItems<Stat>(e.statsStrip, ['term', 'detail'], ['term', 'detail'], (n) =>
             repair('comparison-cards', 'repaired', `dropped ${n} stat(s) missing a term or detail`)
           ),
@@ -690,7 +690,7 @@ function buildSections(
           type: 'content-block',
           label: str(e.label),
           heading: str(e.heading),
-          text: str(e.text),
+          text: sanitizeRichText(str(e.text)),
           device: (['none', 'diagram', 'credential-table', 'chips'].includes(device) ? device : 'none') as ContentBlockSection['device'],
           diagramKey,
           rows: coerceListItems<CredentialRow>(e.rows, ['key', 'value', 'note'], ['key', 'value'], (n) =>
@@ -699,7 +699,7 @@ function buildSections(
           chips,
           bullets: coerceItems<{ text: string }>(e.bullets, ['text']).map((b) => b.text).filter((t) => t !== ''),
           bulletStyle: str(e.bulletStyle) === 'dash' ? 'dash' : 'check',
-          note: str(e.note),
+          note: sanitizeRichText(str(e.note)),
         })
         break
       }
