@@ -1,0 +1,172 @@
+{
+  "site": "ciphera-net",
+  "location": "footer",
+  "title": "Footer",
+  "blocks": [
+    {
+      "name": "ciphera/menu-brand",
+      "attrs": {
+        "name": "Ciphera",
+        "blurb": "Privacy-first infrastructure and applications built on zero-knowledge principles. Your data is encrypted before it leaves your device.",
+        "social": [
+          {
+            "icon": "github",
+            "href": "https://github.com/ciphera-net"
+          },
+          {
+            "icon": "linkedin",
+            "href": "https://www.linkedin.com/company/ciphera/"
+          },
+          {
+            "icon": "x",
+            "href": "https://x.com/CipheraNET"
+          },
+          {
+            "icon": "discord",
+            "href": "https://discord.gg/XRSkHCDD4x"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/menu-group",
+      "attrs": {
+        "label": "Products",
+        "source": "manual",
+        "noteText": "",
+        "noteHref": "",
+        "items": [
+          {
+            "label": "Pulse Analytics",
+            "href": "/products/pulse",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Ciphera Captcha",
+            "href": "/products/captcha",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Ciphera Relay",
+            "href": "/products/relay",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Tessera",
+            "href": "/products/tessera",
+            "description": "",
+            "media": ""
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/menu-group",
+      "attrs": {
+        "label": "Company",
+        "source": "manual",
+        "noteText": "",
+        "noteHref": "",
+        "items": [
+          {
+            "label": "About",
+            "href": "/about",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Contact",
+            "href": "/contact",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Press",
+            "href": "/press",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Sustainability",
+            "href": "/sustainability",
+            "description": "",
+            "media": ""
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/menu-group",
+      "attrs": {
+        "label": "Resources",
+        "source": "manual",
+        "noteText": "",
+        "noteHref": "",
+        "items": [
+          {
+            "label": "Blog",
+            "href": "/blog",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Learn",
+            "href": "/learn",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Glossary",
+            "href": "/glossary",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Ciphera ID",
+            "href": "/products/id",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Help Center",
+            "href": "https://help.ciphera.net",
+            "description": "",
+            "media": ""
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/menu-group",
+      "attrs": {
+        "label": "Legal",
+        "source": "manual",
+        "noteText": "",
+        "noteHref": "",
+        "items": [
+          {
+            "label": "Privacy Policy",
+            "href": "/privacy",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Terms of Service",
+            "href": "/terms",
+            "description": "",
+            "media": ""
+          },
+          {
+            "label": "Trust & Security",
+            "href": "/trust",
+            "description": "",
+            "media": ""
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { GithubIcon } from '@ciphera-net/facet'
+import { cdnUrl } from '@/lib/cdn'
+
+export default function Footer() {
+  return (
+    <footer className="border-t border-border">
+      {/* Same column as the page rails so the vertical lines run through the footer */}
+      <div className="mx-auto w-full max-w-6xl sm:border-x sm:border-border">
+      {/* Link grid */}
+      <div className="px-6 py-16">
+        <div className="grid gap-x-10 gap-y-12 lg:grid-cols-[1.7fr_1fr_1fr_1fr_1fr]">
+          {/* Brand column */}
+          <div>
+            <div className="flex items-center gap-2">
+              <Image
+                src={cdnUrl('/ciphera_icon.png')}
+                alt=""
+                width={28}
+                height={28}
+                className="h-7 w-7 object-contain"
+              />
+              <span className="font-display text-lg font-semibold tracking-tight text-foreground">
+                Ciphera
+              </span>
+            </div>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+              Privacy-first infrastructure and applications built on zero-knowledge principles. Your data is encrypted before it leaves your device.
+            </p>
+            <div className="mt-6 flex items-center gap-2">
+              <a
+                href="https://github.com/ciphera-net"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ciphera on GitHub"
+                className="inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-fast hover:border-line-hover hover:text-foreground"
+              >
+                <GithubIcon className="h-4 w-4" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/ciphera/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ciphera on LinkedIn"
+                className="inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-fast hover:border-line-hover hover:text-foreground"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z" />
+                </svg>
+              </a>
+              <a
+                href="https://x.com/CipheraNET"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ciphera on X"
+                className="inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-fast hover:border-line-hover hover:text-foreground"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a
+                href="https://discord.gg/XRSkHCDD4x"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ciphera on Discord"
+                className="inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-fast hover:border-line-hover hover:text-foreground"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+                  <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Products */}
+          <div>
+            <h3 className="text-xs text-muted-foreground">
+              Products
+            </h3>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <Link href="/products/pulse" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Pulse Analytics
+                </Link>
+              </li>
+              <li>
+                <Link href="/products/captcha" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Ciphera Captcha
+                </Link>
+              </li>
+              <li>
+                <Link href="/products/relay" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Ciphera Relay
+                </Link>
+              </li>
+              <li>
+                <Link href="/products/tessera" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Tessera
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3 className="text-xs text-muted-foreground">
+              Company
+            </h3>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <Link href="/about" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link href="/press" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Press
+                </Link>
+              </li>
+              <li>
+                <Link href="/sustainability" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Sustainability
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="text-xs text-muted-foreground">
+              Resources
+            </h3>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <Link href="/blog" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="/learn" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Learn
+                </Link>
+              </li>
+              <li>
+                <Link href="/glossary" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Glossary
+                </Link>
+              </li>
+              {/* Ciphera ID sits here, not under Products: it is the sign-in
+                  behind our own applications and cannot be bought or integrated.
+                  The URL is unchanged and permanent. */}
+              <li>
+                <Link href="/products/id" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Ciphera ID
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://help.ciphera.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground"
+                >
+                  Help Center
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="text-xs text-muted-foreground">
+              Legal
+            </h3>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <Link href="/privacy" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/trust" className="inline-block py-1.5 text-sm text-foreground/80 transition-colors duration-fast hover:text-foreground">
+                  Trust &amp; Security
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Typographic signature — pre-baked outline path: Geist Bold 118px,
+          kerned, spacing-justified to exactly the 1104-unit rail (same result
+          as the old textLength trick), overlaps unioned. Stroking a live text
+          element is unsafe here: Geist's B/L/F/R outlines self-intersect, and
+          stroke renders those internal seams as visible slivers (fill hides
+          them). Regenerate the path if the wordmark or typeface changes. */}
+      <div className="px-6 py-4" aria-hidden="true">
+        <svg viewBox="0 0 1104 96" className="h-auto w-full select-none text-foreground/[0.16]" role="presentation">
+          <path
+            d="M460.14 91.89Q447.45 91.89 438.29 86.60Q429.13 81.32 424.25 71.52Q419.36 61.73 419.36 48.23Q419.36 34.73 424.25 24.88Q429.13 15.02 438.27 9.68Q447.41 4.33 460.14 4.33Q472.97 4.33 482.08 9.68Q491.20 15.02 496.08 24.88Q500.97 34.73 500.97 48.23Q500.97 61.73 496.08 71.52Q491.20 81.32 482.08 86.60Q472.97 91.89 460.14 91.89ZM8.73 90.00V6.22H41.35Q56.92 6.22 65.17 11.68Q73.42 17.15 73.42 28.97Q73.42 34.19 71.31 38.03Q69.20 41.88 65.11 44.11Q61.34 46.17 56.11 46.69Q66.02 47.50 71.37 52.63Q76.96 58.00 76.96 66.92Q76.96 78.58 68.75 84.29Q60.53 90.00 45.36 90.00ZM694.80 90.00V6.22H731.50Q740.70 6.22 747.46 9.29Q754.23 12.36 757.92 17.97Q761.61 23.59 761.61 31.24Q761.61 37.04 759.20 41.54Q756.80 46.03 752.60 48.84Q749.99 50.59 746.91 51.53Q752.16 52.26 755.33 54.89Q759.72 58.54 760.29 65.98L762.37 90.00H744.10L742.54 68.81Q742.21 63.97 739.57 61.67Q736.93 59.37 730.60 59.37H712.74V90.00ZM513.83 90.00V6.22H550.52Q559.73 6.22 566.49 9.29Q573.25 12.36 576.95 17.97Q580.64 23.59 580.64 31.24Q580.64 37.04 578.23 41.54Q575.82 46.03 571.62 48.84Q569.01 50.59 565.94 51.53Q571.19 52.26 574.36 54.89Q578.75 58.54 579.32 65.98L581.39 90.00H563.13L561.57 68.81Q561.24 63.97 558.60 61.67Q555.95 59.37 549.63 59.37H531.76V90.00ZM619.57 90.00V6.22H653.13Q668.23 6.22 676.76 13.51Q685.29 20.80 685.29 33.57Q685.29 42.02 681.44 48.22Q677.58 54.41 670.37 57.73Q663.16 61.04 653.13 61.04H637.50V90.00ZM870.44 90.00 900.65 6.22H921.91L952.12 90.00H933.52L927.34 72.18H895.15L888.97 90.00ZM122.74 91.89Q112.20 91.89 104.43 87.97Q96.66 84.05 92.44 76.82Q88.21 69.59 88.21 59.74V6.22H106.15V59.74Q106.15 67.90 110.44 72.35Q114.74 76.81 122.74 76.81Q130.76 76.81 135.06 72.35Q139.35 67.90 139.35 59.74V6.22H157.29V59.74Q157.29 69.59 153.06 76.82Q148.84 84.05 141.09 87.97Q133.33 91.89 122.74 91.89ZM992.00 91.89Q980.51 91.89 971.62 86.67Q962.74 81.46 957.70 71.70Q952.66 61.94 952.66 48.23Q952.66 34.87 957.52 25.02Q962.38 15.16 971.30 9.75Q980.22 4.33 992.28 4.33Q1008.71 4.33 1017.83 12.43Q1026.95 20.52 1029.62 35.44L1010.95 36.22Q1009.53 28.31 1004.81 23.86Q1000.09 19.41 992.28 19.41Q985.60 19.41 980.87 22.99Q976.14 26.56 973.64 33.04Q971.14 39.52 971.14 48.23Q971.14 57.08 973.71 63.50Q976.28 69.92 981.01 73.36Q985.75 76.81 992.14 76.81Q1000.64 76.81 1005.31 72.01Q1009.98 67.20 1011.23 58.68L1029.97 59.46Q1028.30 69.68 1023.46 76.91Q1018.62 84.15 1010.75 88.02Q1002.88 91.89 992.00 91.89ZM829.71 90.00 799.46 6.22H818.05L840.33 69.85L862.56 6.22H881.16L850.76 90.00ZM353.57 90.00V6.22H411.37V21.30H371.51V41.60H409.24V56.51H371.51V90.00ZM1057.81 90.00V57.48L1028.69 6.22H1048.52L1066.85 40.02L1085.05 6.22H1104.87L1075.82 57.48V90.00ZM277.02 90.00V21.30H251.93V6.22H320.11V21.30H295.03V90.00ZM460.13 76.81Q467.17 76.81 472.17 73.42Q477.16 70.04 479.83 63.66Q482.49 57.29 482.49 48.23Q482.49 39.17 479.82 32.73Q477.16 26.30 472.16 22.85Q467.16 19.41 460.11 19.41Q453.16 19.41 448.16 22.85Q443.17 26.30 440.50 32.73Q437.84 39.17 437.84 48.23Q437.84 57.29 440.51 63.66Q443.17 70.04 448.17 73.42Q453.17 76.81 460.13 76.81ZM206.70 90.00V6.22H224.63V74.92H263.27V90.00ZM173.00 90.00V6.22H190.94V90.00ZM775.34 90.00V6.22H793.28V90.00ZM637.50 45.96H652.07Q659.10 45.96 662.99 42.84Q666.89 39.71 666.89 33.57Q666.89 27.53 663.03 24.42Q659.17 21.30 652.07 21.30H637.50ZM531.76 44.29H548.50Q555.03 44.29 558.63 41.28Q562.23 38.27 562.23 32.77Q562.23 27.15 558.58 24.23Q554.94 21.30 547.98 21.30H531.76ZM712.74 44.29H729.47Q736.01 44.29 739.61 41.28Q743.20 38.27 743.20 32.77Q743.20 27.15 739.56 24.23Q735.91 21.30 728.95 21.30H712.74ZM26.67 75.42H44.44Q50.93 75.42 54.88 72.76Q58.83 70.11 58.83 64.77Q58.83 59.44 54.92 56.68Q51.00 53.92 44.44 53.92H26.67ZM26.67 40.89H40.78Q47.44 40.89 51.37 38.33Q55.29 35.77 55.29 30.86Q55.29 25.67 51.47 23.24Q47.65 20.80 40.78 20.80H26.67ZM900.20 57.46H922.36L911.32 25.05Z"
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth="1.25"
+          />
+        </svg>
+      </div>
+
+      {/* Bottom bar */}
+      <div>
+        <div className="px-6 py-6">
+          <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+            <p className="text-xs text-muted-foreground">
+              &copy; 2024&ndash;{new Date().getFullYear()}{' '}
+              Ciphera BV &middot; KBO/BCE 1013.721.660 &middot; De Kleetlaan 2, 1831 Diegem, Belgium
+            </p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </footer>
+  )
+}

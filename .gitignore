@@ -17,6 +17,7 @@
 
 # cms-publisher's esbuild bundle (WEB-26) — rebuilt in CI, same as .next
 /dist
+/__tests__/render/.out
 
 # misc
 .DS_Store
