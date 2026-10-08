@@ -161,6 +161,12 @@ steps:
       - npm ci --prefer-offline --no-audit --progress=false
       - rm -f /root/.npmrc
       - npm run build
+      # cms-publisher (WEB-26) — esbuild needs no npm dependency (the feature touches
+      # none), so this runs even though the npmrc credential above is already gone.
+      # The self-test loads the bundle and exits 0 with no port bound and no network
+      # call — it is what the PR gate can prove about a file the Dockerfile only COPYs.
+      - npm run build:cms-publisher
+      - npm run selftest:cms-publisher
       # Save AFTER a successful build only. A failed build must not publish its
       # cache — `commands` stop at the first non-zero exit, so reaching here means
       # `npm run build` succeeded.

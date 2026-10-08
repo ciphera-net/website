@@ -2,6 +2,8 @@ import { SEO_WATERMARK, SEO_ROUTE_COUNT, SEO_POST_COUNT } from '@/lib/seo'
 import { REDIRECT_COUNT, REDIRECT_WATERMARK } from '@/lib/redirects.gen'
 import { GLOSSARY_COUNT, GLOSSARY_WATERMARK } from '@/lib/glossary.gen'
 import { CONTENT_REPAIRS } from '@/lib/content-repairs.gen'
+import { CMS_RUNTIME_KINDS } from '@/lib/cms/runtime-config'
+import { getGlossaryRuntimeState } from '@/lib/glossary'
 
 /**
  * The ACTUAL half of the level-triggered deploy check (design D9).
@@ -12,12 +14,21 @@ import { CONTENT_REPAIRS } from '@/lib/content-repairs.gen'
  * a failed pipeline, a reverted commit, an image rolled back by hand. A webhook can
  * only ever know about publishes it happened to witness.
  *
- * ⚠️ These values are BAKED AT BUILD TIME. That is the point — this endpoint reports
- * what this image was built from, never what WordPress currently holds.
+ * ⚠️ THE TOP-LEVEL FIELDS BELOW ARE STILL BAKED AT BUILD TIME, unchanged (§3.1.3a's
+ * "R16 is staged per kind" — a watcher keeps comparing the BUILD watermark against
+ * WordPress for every kind not yet in `CMS_RUNTIME_KINDS`). `watermarks` and `runtime`
+ * are new (WEB-26): the former is those same build-time numbers broken out per kind
+ * instead of pre-collapsed into one maximum; the latter is what THIS INSTANCE is
+ * actually serving right now, which is why this route can no longer be
+ * `force-static` — a static response would report the seed forever, for every kind
+ * that has since moved to runtime, which is exactly the kind of report that is worse
+ * than no report at all.
  */
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 
-export function GET() {
+export async function GET() {
+  const glossaryRuntime = await getGlossaryRuntimeState()
+
   // 🔴 `posts` IS NOT COSMETIC. A watermark is a maximum and maxima only move
   // forward, so unpublishing the newest entry makes WordPress's max fall BELOW this
   // one and `desired > actual` goes false — the site would serve deleted content for
@@ -57,6 +68,27 @@ export function GET() {
       // `repairs` is the full count regardless.
       repairs: CONTENT_REPAIRS.length,
       repairs_detail: CONTENT_REPAIRS.slice(0, 50),
+      // 🔑 NEW (WEB-26): the same build-time numbers above, broken out per kind rather
+      // than pre-collapsed into the single `watermark` maximum — "posts" becomes "seo"
+      // here to match the kind name §4.1.3a's index uses, not SEO_POST_COUNT's name.
+      watermarks: {
+        seo: SEO_WATERMARK,
+        redirect: REDIRECT_WATERMARK,
+        glossary: GLOSSARY_WATERMARK,
+      },
+      // 🔑 NEW (WEB-26): what THIS INSTANCE is serving right now, per kind — distinct
+      // from the build-time fields above, which describe what the image was built
+      // from. `source` can be 'seed' even when `enabled` is true: the kind is turned
+      // on, but this resolution fell back (an unreachable CDN, an unknown schema).
+      runtime: {
+        kinds: [...CMS_RUNTIME_KINDS],
+        glossary: {
+          enabled: glossaryRuntime.enabled,
+          source: glossaryRuntime.source,
+          index_watermark: glossaryRuntime.indexWatermark ?? null,
+          published_at: glossaryRuntime.publishedAt ?? null,
+        },
+      },
     },
     { headers: { 'Cache-Control': 'no-store' } }
   )

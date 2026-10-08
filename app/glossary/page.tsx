@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { seoFor } from '@/lib/seo'
 import Link from 'next/link'
 import { cdnUrl } from '@/lib/cdn'
-import { GLOSSARY_CATEGORIES, glossaryTerms, termsByCategory } from '@/lib/glossary'
+import { getGlossaryCategories, getGlossaryTerms } from '@/lib/glossary'
 
 export const metadata: Metadata = seoFor('/glossary', {
     title: 'Glossary - Privacy, Cryptography & Analytics Terms',
@@ -23,33 +23,40 @@ export const metadata: Metadata = seoFor('/glossary', {
     },
   })
 
-// * DefinedTermSet — the machine-readable index AI engines and rich results
-// * consume. Each term page carries its own DefinedTerm pointing back here.
-const schema = {
-  '@context': 'https://schema.org',
-  '@type': 'DefinedTermSet',
-  '@id': 'https://ciphera.net/glossary',
-  name: 'Ciphera Privacy & Infrastructure Glossary',
-  description:
-    'Definitions of cryptography, privacy-regulation, analytics, and email-infrastructure terms, maintained by Ciphera.',
-  url: 'https://ciphera.net/glossary',
-  publisher: {
-    '@type': 'Organization',
-    name: 'Ciphera',
-    url: 'https://ciphera.net',
-  },
-  hasDefinedTerm: glossaryTerms.map((t) => ({
-    '@type': 'DefinedTerm',
-    name: t.term,
-    description: t.short,
-    url: `https://ciphera.net/glossary/${t.slug}`,
-  })),
-}
-
 const categoryAnchor = (category: string) =>
   category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
-export default function GlossaryPage() {
+export default async function GlossaryPage() {
+  const glossaryTerms = await getGlossaryTerms()
+  const GLOSSARY_CATEGORIES = await getGlossaryCategories()
+  // Resolved once, here — every category's terms derive from the SAME resolved array,
+  // never a second independent lookup, so a CDN item that failed and fell back for one
+  // category can't disagree with itself across the hero count and the section below.
+  const termsByCategory = (category: string) => glossaryTerms.filter((t) => t.category === category)
+
+  // * DefinedTermSet — the machine-readable index AI engines and rich results
+  // * consume. Each term page carries its own DefinedTerm pointing back here.
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    '@id': 'https://ciphera.net/glossary',
+    name: 'Ciphera Privacy & Infrastructure Glossary',
+    description:
+      'Definitions of cryptography, privacy-regulation, analytics, and email-infrastructure terms, maintained by Ciphera.',
+    url: 'https://ciphera.net/glossary',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Ciphera',
+      url: 'https://ciphera.net',
+    },
+    hasDefinedTerm: glossaryTerms.map((t) => ({
+      '@type': 'DefinedTerm',
+      name: t.term,
+      description: t.short,
+      url: `https://ciphera.net/glossary/${t.slug}`,
+    })),
+  }
+
   return (
     <>
       <script

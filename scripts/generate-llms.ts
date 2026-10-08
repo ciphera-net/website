@@ -1,6 +1,12 @@
 import fs from 'fs'
 import path from 'path'
-import { glossaryTerms } from '../lib/glossary'
+// 🔴 THE SEED, NOT THE SEAM (WEB-26). lib/glossary's accessors are async now (a
+// request-time CDN read behind CMS_RUNTIME_KINDS) and this is a build-time CLI script
+// with no request to serve — it reads the same build-time generated file
+// scripts/generate-glossary.ts just wrote, exactly as it did before the runtime seam
+// existed. public/llms.txt / llms-full.txt therefore stay a build-time snapshot: they
+// can lag a live CMS edit by up to a deploy cycle even after a kind moves to runtime.
+import { generatedGlossaryTerms as glossaryTerms } from '../lib/glossary.gen'
 import { getBlogPosts } from '../lib/blog'
 import { getLearnArticles } from '../lib/learn'
 

@@ -58,6 +58,21 @@ COPY --chown=nextjs:nodejs public ./public
 COPY --chown=nextjs:nodejs .next/standalone ./
 COPY --chown=nextjs:nodejs .next/static ./.next/static
 
+# 🔑 cms-publisher (WEB-26), SAME "assembled, not compiled" SHAPE AS THE SITE ABOVE.
+# `npm run build:cms-publisher` (esbuild, run in the SAME Woodpecker step as `npm run
+# build`, right after it — see .woodpecker/build.yml and push.yml) bundles
+# scripts/cms-publisher.ts and every file it imports (lib/cms/glossary-build.ts,
+# lib/cms/publisher-core.mjs, lib/blog-transform.ts, …) into ONE file with zero npm
+# dependencies — this feature touches no node_modules package, only Node builtins
+# (node:http, node:crypto) — so it runs on this runner's bare `node` with none of the
+# standalone output's node_modules in scope. It ships in the SAME image, on purpose
+# (§4.1.3a: "runs from the same image the site runs" — publisher and renderer share one
+# commit, which is what makes "they cannot disagree" true without a second repo or a
+# published package to drift). A separate Kubernetes Deployment runs this file with
+# `node /app/cms-publisher/publisher.mjs` instead of `node server.js`; nothing in THIS
+# repo starts it, and the main container's CMD below is unchanged.
+COPY --chown=nextjs:nodejs dist/cms-publisher ./cms-publisher
+
 USER nextjs
 
 EXPOSE 3000

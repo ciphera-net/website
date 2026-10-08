@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getLearnArticles } from '@/lib/learn'
 import { getBlogPosts } from '@/lib/blog'
-import { glossaryTerms } from '@/lib/glossary'
+import { getGlossaryTerms } from '@/lib/glossary'
 import { getCurrentCanary, getCurrentReport } from '@/lib/transparency'
 import { routeSeo } from '@/lib/seo'
 
@@ -110,12 +110,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/trust/report`, lastModified: report.publishedISO },
   ]
 
-  // Glossary index + every term page (all statically generated)
+  // Glossary index + every term page.
+  // 🔑 WEB-26: each row now uses the TERM'S OWN `modified` date, not a hardcoded one —
+  // the entire point of the runtime migration is that an edit goes live in about a
+  // minute, so a frozen sitemap date would be visibly wrong within that same minute.
+  // The index page itself has no single "modified" field of its own; it is bounded by
+  // the newest term, same reasoning as the blog index would use if it tracked one.
+  const glossaryTerms = await getGlossaryTerms()
+  // term.modified is WordPress's `modifiedGmt` (e.g. "2026-09-21T19:37:30", no zone
+  // suffix) — not a bare YYYY-MM-DD — so it is parsed the same way routeSeo's own
+  // `modified` field is, just below.
+  const glossaryWatermark = glossaryTerms.map((t) => t.modified).filter(Boolean).sort().at(-1)
+  const glossaryLastModified = glossaryWatermark ? new Date(glossaryWatermark) : '2026-07-10'
   const glossaryPages: MetadataRoute.Sitemap = [
-    { url: `${baseUrl}/glossary`, lastModified: '2026-07-10' },
+    { url: `${baseUrl}/glossary`, lastModified: glossaryLastModified },
     ...glossaryTerms.map((term) => ({
       url: `${baseUrl}/glossary/${term.slug}`,
-      lastModified: '2026-07-10',
+      lastModified: term.modified ? new Date(term.modified) : glossaryLastModified,
     })),
   ]
 

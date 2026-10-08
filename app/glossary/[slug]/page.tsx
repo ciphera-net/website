@@ -3,19 +3,22 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowUpRightIcon } from '@ciphera-net/facet'
 import { cdnUrl } from '@/lib/cdn'
-import { getTerm, glossaryTerms } from '@/lib/glossary'
+import { getTerm } from '@/lib/glossary'
 
 interface Props {
   params: Promise<{ slug: string }>
 }
 
-export function generateStaticParams() {
-  return glossaryTerms.map((t) => ({ slug: t.slug }))
-}
+// 🔴 NO generateStaticParams (WEB-26). A runtime-kind term page reads the CDN at
+// request time — a build-time param list would either miss a term published after
+// this image was built, or statically freeze one that was later unpublished.
+// `dynamicParams` stays its default `true`, so an unlisted slug still resolves through
+// the same lib/glossary seam (falling back to the seed when the CDN or the kind flag
+// says to) and 404s only when `getTerm` itself finds nothing.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const term = getTerm(slug)
+  const term = await getTerm(slug)
   if (!term) return {}
   /**
    * 🔴 THE TITLE AND DESCRIPTION COME FROM THE CMS, NOT FROM A TEMPLATE.
@@ -57,12 +60,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function GlossaryTermPage({ params }: Props) {
   const { slug } = await params
-  const term = getTerm(slug)
+  const term = await getTerm(slug)
   if (!term) notFound()
 
-  const related = term.related
-    .map((s) => getTerm(s))
-    .filter((t): t is NonNullable<typeof t> => Boolean(t))
+  const related = (await Promise.all(term.related.map((s) => getTerm(s)))).filter(
+    (t): t is NonNullable<typeof t> => Boolean(t)
+  )
 
   // * DefinedTerm + breadcrumbs; FAQPage only when the entry carries Q&A.
   const schema: Record<string, unknown>[] = [
