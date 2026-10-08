@@ -25,9 +25,11 @@ function code(p) {
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
 }
 
-test('CMS_RUNTIME_KINDS defaults to empty and is a code constant, not a required env var', () => {
+test('CMS_RUNTIME_KINDS is a code constant (glossary on since 08-10-2026), not a required env var', () => {
   const src = code('lib/cms/runtime-config.ts')
-  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \[\]/)
+  // A build-time constant: Next decides static vs dynamic when it builds, so the kinds served at
+  // request time must be on in the build. Rolling one back is removing it from this list.
+  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary'\]/)
   assert.match(src, /process\.env\.CMS_RUNTIME_KINDS/, 'an env override must exist for Phase 5, without being required')
 })
 
