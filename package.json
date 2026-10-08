@@ -17,7 +17,9 @@
     "sync:transparency": "npx tsx scripts/sync-transparency.ts",
     "generate:llms": "npx tsx scripts/generate-llms.ts",
     "generate:seo": "npx tsx scripts/generate-seo.ts",
-    "generate:redirects": "npx tsx scripts/generate-redirects.ts"
+    "generate:redirects": "npx tsx scripts/generate-redirects.ts",
+    "build:cms-publisher": "npx esbuild scripts/cms-publisher.ts --bundle --platform=node --format=esm --target=node20 --outfile=dist/cms-publisher/publisher.mjs",
+    "selftest:cms-publisher": "node dist/cms-publisher/publisher.mjs --self-test"
   },
   "dependencies": {
     "@ciphera-net/facet": "^0.4.1",

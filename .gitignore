@@ -15,6 +15,9 @@
 # production
 /build
 
+# cms-publisher's esbuild bundle (WEB-26) — rebuilt in CI, same as .next
+/dist
+
 # misc
 .DS_Store
 *.pem
