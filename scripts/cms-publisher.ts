@@ -30,6 +30,9 @@ import { buildBlogPosts } from '../lib/cms/blog-build'
 import { buildRouteSeo, routeKey, type RouteSeoNode } from '../lib/cms/route-build'
 import { buildRedirects, type RedirectNode } from '../lib/cms/redirect-build'
 import { buildPages, type WpPageNode } from '../lib/cms/page-build'
+import { ownedByCodedRoute } from '../lib/cms/page-build'
+import { buildMenus, type WpMenuNode, type MenuLocation, type MenuBuildOptions } from '../lib/cms/menu-build'
+import { HEADER_MEDIA_KEYS, FOOTER_MEDIA_KEYS } from '../lib/cms/menu-seed'
 import { WP_POST_FIELDS, type WpNode } from '../lib/blog-transform'
 import { getContentIndex, type ContentIndex, type ContentIndexKind } from '../lib/cms/content-client'
 import { CONTENT_BASE } from '../lib/cms/runtime-config'
@@ -202,6 +205,15 @@ const ROUTE_QUERY = `{
 const REDIRECT_QUERY = `{
   redirects(first: 200, where: { status: PUBLISH }) {
     nodes { databaseId cipheraFrom cipheraTo modifiedGmt routeSites { nodes { slug } } }
+  }
+}`
+
+const MENU_QUERY = `{
+  cipheraMenus(first: 10, where: { status: PUBLISH }) {
+    nodes {
+      databaseId cipheraMenuLocation cipheraMenu modifiedGmt
+      routeSites { nodes { slug } }
+    }
   }
 }`
 
@@ -455,12 +467,61 @@ async function publishPage(previousIndex: ContentIndex | null): Promise<KindPubl
   return { indexKind, toUpload, changed, pagePatterns }
 }
 
+type MenuWireNode = WpMenuNode & { routeSites?: { nodes?: { slug: string }[] } }
+
+const MENU_MEDIA_KEYS: Record<MenuLocation, ReadonlySet<string>> = { header: HEADER_MEDIA_KEYS, footer: FOOTER_MEDIA_KEYS }
+const menuOptsFor = (location: MenuLocation): MenuBuildOptions => ({
+  isKnownPath: (p) => ownedByCodedRoute(p),
+  allowedMedia: MENU_MEDIA_KEYS[location],
+})
+
+/**
+ * §4.2.2's `menu` kind — keyed by LOCATION ('header'/'footer'), not by path (two
+ * documents, not N). A menu is on every page, so a change purges the WHOLE site with one
+ * prefix pattern rather than enumerating pages, unlike every other kind above.
+ */
+async function publishMenu(previousIndex: ContentIndex | null): Promise<KindPublishResult> {
+  const data = await wpQuery<{ cipheraMenus: { nodes: MenuWireNode[] } }>(MENU_QUERY)
+  const nodes = mine(data.cipheraMenus?.nodes ?? [])
+  const built = buildMenus(nodes, menuOptsFor)
+
+  const previousItems = previousIndex?.kinds?.menu?.items ?? null
+
+  const docsByKey: Record<string, { path: string; bytes: string }> = {}
+  for (const location of Object.keys(built.menus) as MenuLocation[]) {
+    const doc = buildDocument(SITE, 'menu', location, built.menus[location])
+    docsByKey[location] = { path: doc.path, bytes: doc.bytes }
+  }
+  const newItems = Object.fromEntries(Object.entries(docsByKey).map(([k, v]) => [k, v.path]))
+  // No last-good merge (same reasoning as publishPage/publishRoute): a location WordPress
+  // stops publishing a menu for simply has no live document — the request-time seam's own
+  // seed (today's coded navigation) is the correct fallback, never a stale CDN copy.
+  const mergedItems = newItems
+
+  const toUpload = documentsToUpload(previousItems, mergedItems)
+    .map(({ key, path }) => {
+      const doc = docsByKey[key]
+      return doc && doc.path === path ? { path, body: doc.bytes } : null
+    })
+    .filter((w): w is { path: string; body: string } => w !== null)
+
+  const changed = kindChanged(previousItems, mergedItems)
+  const indexKind = buildIndexKind(1, built.watermark, mergedItems)
+
+  // A menu is on every page (§4.2.2's own words) — one prefix purge of the whole site
+  // rather than naming pages, unlike every path-keyed kind above.
+  const pagePatterns = changed ? ['/*'] : []
+
+  return { indexKind, toUpload, changed, pagePatterns }
+}
+
 const KIND_PUBLISHERS: Record<string, (previousIndex: ContentIndex | null) => Promise<KindPublishResult>> = {
   glossary: publishGlossary,
   blog: publishBlog,
   route: publishRoute,
   redirect: publishRedirect,
   page: publishPage,
+  menu: publishMenu,
 }
 
 // ── One full pass ────────────────────────────────────────────────────────────────────
