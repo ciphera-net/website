@@ -191,7 +191,198 @@ export interface ClosingCtaSection {
   title: string
   text: string
 }
-export type PageSection = HeroSection | TextSectionSection | FaqSection | RelatedLinksSection | ClosingCtaSection
+
+// ── Product-page section shapes (WEB-28 build task §2, contract 08-10-2026) ────────
+// Mirrors `mu-plugins/ciphera-pages.php`'s `ciphera_page_parse_sections()` switch for
+// these seven block types field-for-field — the published `cipheraSections` JSON is
+// already in this shape; this module trusts nothing about it (wire data) but does not
+// re-derive it.
+
+/** The closed select catalogs every `icon`/`visualKey`/`langIcon`/`registryIcon`/
+ * `diagramKey` field draws from (contract §3) — identical lists to WordPress's own
+ * `CIPHERA_PAGE_*_KEYS` constants, re-declared here (not imported: this module has no
+ * PHP dependency) so a key the site cannot resolve is repaired at THIS boundary too,
+ * never only trusted because WordPress already checked it. */
+export const ICON_KEYS = [
+  'puzzle-piece', 'shield-check', 'lightning', 'eye-slash', 'timer', 'robot', 'eye',
+  'key', 'vault', 'cookie', 'code', 'globe', 'funnel', 'envelope-simple', 'lock',
+  'globe-outline', 'lock-outline', 'check', 'x', 'arrow-right', 'github',
+] as const
+export const VISUAL_KEYS = [
+  'mockup-captcha', 'mockup-auth', 'mockup-relay', 'mockup-pulse-tall',
+  'diagram-captcha-stateless', 'diagram-id-zero-knowledge', 'diagram-tessera-opaque-handshake',
+  'code-relay-smtp-env', 'code-pulse-script-tag',
+] as const
+export const DIAGRAM_KEYS = [
+  'diagram-captcha-stateless', 'diagram-id-zero-knowledge', 'diagram-tessera-opaque-handshake',
+] as const
+export const LANG_ICON_KEYS = ['rust', 'go', 'ts'] as const
+export const REGISTRY_ICON_KEYS = ['crates-io', 'go-pkg', 'npm'] as const
+
+export type IconKey = (typeof ICON_KEYS)[number]
+export type VisualKey = (typeof VISUAL_KEYS)[number]
+
+function isIconKey(v: string): v is IconKey {
+  return (ICON_KEYS as readonly string[]).includes(v)
+}
+function isVisualKey(v: string): v is VisualKey {
+  return (VISUAL_KEYS as readonly string[]).includes(v)
+}
+function isDiagramKey(v: string): v is (typeof DIAGRAM_KEYS)[number] {
+  return (DIAGRAM_KEYS as readonly string[]).includes(v)
+}
+function isLangIconKey(v: string): v is (typeof LANG_ICON_KEYS)[number] {
+  return (LANG_ICON_KEYS as readonly string[]).includes(v)
+}
+function isRegistryIconKey(v: string): v is (typeof REGISTRY_ICON_KEYS)[number] {
+  return (REGISTRY_ICON_KEYS as readonly string[]).includes(v)
+}
+
+export interface TrustBadge {
+  icon: string
+  label: string
+}
+export interface Stat {
+  term: string
+  detail: string
+}
+export interface ProductBannerSection {
+  type: 'product-banner'
+  variant: 'hero' | 'band'
+  label: string
+  heading: string
+  body: string
+  backgroundImage: string
+  backgroundImageAlt: string
+  trustBadges: TrustBadge[]
+  stats: Stat[]
+  primaryButtonLabel: string
+  primaryButtonHref: string
+  primaryButtonExternal: boolean
+  secondaryButtonLabel: string
+  secondaryButtonHref: string
+  secondaryButtonExternal: boolean
+}
+
+export interface OverlayBadge {
+  icon: string
+  title: string
+  description: string
+}
+export interface FeatureSplitSection {
+  type: 'feature-split'
+  label: string
+  heading: string
+  text: string
+  bullets: string[]
+  bulletStyle: 'check' | 'dash'
+  ctaLabel: string
+  ctaHref: string
+  visualSide: 'left' | 'right'
+  visualType: 'mockup' | 'diagram' | 'code' | 'photo' | ''
+  visualKey: VisualKey | ''
+  image: string
+  imageAlt: string
+  overlayBadges: OverlayBadge[]
+}
+
+export interface FeatureGridItem {
+  icon: string
+  title: string
+  body: string
+  anchor: string
+}
+export interface FeatureGridSection {
+  type: 'feature-grid'
+  label: string
+  heading: string
+  dek: string
+  items: FeatureGridItem[]
+  bullets: string[]
+}
+
+export interface ComparisonCardsSection {
+  type: 'comparison-cards'
+  label: string
+  heading: string
+  intro: string
+  statsStrip: Stat[]
+  ours: { icon: string; name: string; tagline: string; highlighted: boolean; items: string[] }
+  theirs: { icon: string; name: string; tagline: string; items: { text: string; has: boolean }[] }
+}
+
+export interface PackageGridItem {
+  langIcon: string
+  lang: string
+  name: string
+  role: string
+  body: string
+  repoHref: string
+  registryHref: string
+  registryIcon: string
+  registryLabel: string
+}
+export interface PackageGridSection {
+  type: 'package-grid'
+  label: string
+  heading: string
+  items: PackageGridItem[]
+}
+
+export interface CredentialRow {
+  key: string
+  value: string
+  note: string
+}
+export interface Chip {
+  image: string
+  label: string
+  href: string
+}
+export interface ContentBlockSection {
+  type: 'content-block'
+  label: string
+  heading: string
+  text: string
+  device: 'none' | 'diagram' | 'credential-table' | 'chips'
+  diagramKey: string
+  rows: CredentialRow[]
+  chips: Chip[]
+  bullets: string[]
+  bulletStyle: 'check' | 'dash'
+  note: string
+}
+
+export interface FaqTabsCategory {
+  key: string
+  label: string
+}
+export interface FaqTabsItem {
+  categoryKey: string
+  question: string
+  answer: string
+}
+export interface FaqTabsSection {
+  type: 'faq-tabs'
+  title: string
+  subtitle: string
+  categories: FaqTabsCategory[]
+  items: FaqTabsItem[]
+}
+
+export type PageSection =
+  | HeroSection
+  | TextSectionSection
+  | FaqSection
+  | RelatedLinksSection
+  | ClosingCtaSection
+  | ProductBannerSection
+  | FeatureSplitSection
+  | FeatureGridSection
+  | ComparisonCardsSection
+  | PackageGridSection
+  | ContentBlockSection
+  | FaqTabsSection
 
 export interface PageSeo {
   title?: string
@@ -223,16 +414,37 @@ const str = (v: unknown): string => (typeof v === 'string' ? v : '')
 
 /** §4.2.1's items shape, defensively coerced — a non-array or non-object entry is
  * dropped rather than letting a malformed `cipheraSections` string crash the page. */
-function coerceItems<T extends Record<string, string>>(raw: unknown, fields: (keyof T)[]): T[] {
+function coerceItems<T>(raw: unknown, fields: (keyof T & string)[]): T[] {
   if (!Array.isArray(raw)) return []
   const out: T[] = []
   for (const entry of raw) {
     if (typeof entry !== 'object' || entry === null) continue
-    const item = {} as T
-    for (const f of fields) item[f] = str((entry as Record<string, unknown>)[f as string]) as T[typeof f]
-    out.push(item)
+    const item: Record<string, string> = {}
+    for (const f of fields) item[f] = str((entry as Record<string, unknown>)[f])
+    out.push(item as T)
   }
   return out
+}
+
+const boolAttr = (v: unknown): boolean => str(v) === '1' || v === true
+
+/**
+ * `ciphera_page_normalize_list()`'s TypeScript twin (WordPress mirrors this on save):
+ * coerce every listed string field, then drop an item missing ANY of `required`
+ * (after trimming) — never a crash on a malformed list, never a half-filled row
+ * reaching the page. Every drop is one `repair()` call, same contract as every other
+ * list-coercion in this file.
+ */
+function coerceListItems<T>(
+  raw: unknown,
+  fields: (keyof T & string)[],
+  required: (keyof T & string)[],
+  onDrop: (count: number) => void
+): T[] {
+  const all = coerceItems<T>(raw, fields)
+  const kept = all.filter((item) => required.every((f) => String((item as Record<string, string>)[f]).trim() !== ''))
+  if (kept.length !== all.length) onDrop(all.length - kept.length)
+  return kept
 }
 
 /**
@@ -304,6 +516,210 @@ function buildSections(
       case 'closing-cta':
         sections.push({ type: 'closing-cta', title: str(e.title), text: str(e.text) })
         break
+
+      // ── Product-page section types (WEB-28 build task §2) ──────────────────────
+      // Each key field (icon / visualKey / langIcon / registryIcon / diagramKey) is
+      // validated against this site's own closed registries (not merely trusted
+      // because WordPress already checked it — §4.2.1: "repaired here too"). §2's
+      // instruction is coarse-grained on purpose: an unresolvable key drops the
+      // WHOLE section with one repair, rather than silently rendering a part of it
+      // with a hole where the key should have been.
+
+      case 'product-banner': {
+        const variant = str(e.variant) === 'band' ? 'band' : 'hero'
+        const badges = coerceListItems<{ icon: string; label: string }>(
+          e.trustBadges, ['icon', 'label'], ['label'],
+          (n) => repair('product-banner', 'repaired', `dropped ${n} trust badge(s) with no label`)
+        )
+        const badIcon = badges.find((b) => b.icon !== '' && !isIconKey(b.icon))
+        if (badIcon) {
+          repair('product-banner', 'skipped', `dropped the whole section — trust badge icon "${badIcon.icon}" is not a known icon key`)
+          break
+        }
+        sections.push({
+          type: 'product-banner',
+          variant,
+          label: str(e.label),
+          heading: str(e.heading),
+          body: str(e.body),
+          backgroundImage: str(e.backgroundImage),
+          backgroundImageAlt: str(e.backgroundImageAlt),
+          trustBadges: badges,
+          stats: coerceListItems<Stat>(e.stats, ['term', 'detail'], ['term', 'detail'], (n) =>
+            repair('product-banner', 'repaired', `dropped ${n} stat(s) missing a term or detail`)
+          ),
+          primaryButtonLabel: str(e.primaryButtonLabel),
+          primaryButtonHref: str(e.primaryButtonHref),
+          primaryButtonExternal: boolAttr(e.primaryButtonExternal),
+          secondaryButtonLabel: str(e.secondaryButtonLabel),
+          secondaryButtonHref: str(e.secondaryButtonHref),
+          secondaryButtonExternal: boolAttr(e.secondaryButtonExternal),
+        })
+        break
+      }
+
+      case 'feature-split': {
+        const visualType = str(e.visualType)
+        const visualKey = str(e.visualKey)
+        if (visualKey !== '' && !isVisualKey(visualKey)) {
+          repair('feature-split', 'skipped', `dropped the whole section — visual key "${visualKey}" is not known`)
+          break
+        }
+        if (['mockup', 'diagram', 'code'].includes(visualType) && visualKey === '') {
+          repair('feature-split', 'skipped', `dropped the whole section — visual type "${visualType}" has no visual key`)
+          break
+        }
+        const overlayBadges = coerceListItems<OverlayBadge>(
+          e.overlayBadges, ['icon', 'title', 'description'], ['title'],
+          (n) => repair('feature-split', 'repaired', `dropped ${n} overlay badge(s) with no title`)
+        )
+        const badIcon = overlayBadges.find((b) => b.icon !== '' && !isIconKey(b.icon))
+        if (badIcon) {
+          repair('feature-split', 'skipped', `dropped the whole section — overlay badge icon "${badIcon.icon}" is not a known icon key`)
+          break
+        }
+        sections.push({
+          type: 'feature-split',
+          label: str(e.label),
+          heading: str(e.heading),
+          text: str(e.text),
+          bullets: coerceItems<{ text: string }>(e.bullets, ['text']).map((b) => b.text).filter((t) => t !== ''),
+          bulletStyle: str(e.bulletStyle) === 'dash' ? 'dash' : 'check',
+          ctaLabel: str(e.ctaLabel),
+          ctaHref: str(e.ctaHref),
+          visualSide: str(e.visualSide) === 'left' ? 'left' : 'right',
+          visualType: (['mockup', 'diagram', 'code', 'photo'].includes(visualType) ? visualType : '') as FeatureSplitSection['visualType'],
+          visualKey: (isVisualKey(visualKey) ? visualKey : '') as VisualKey | '',
+          image: str(e.image),
+          imageAlt: str(e.imageAlt),
+          overlayBadges,
+        })
+        break
+      }
+
+      case 'feature-grid': {
+        const items = coerceListItems<FeatureGridItem>(
+          e.items, ['icon', 'title', 'body', 'anchor'], ['icon', 'title', 'body'],
+          (n) => repair('feature-grid', 'repaired', `dropped ${n} item(s) missing an icon, title or body`)
+        )
+        const badIcon = items.find((it) => it.icon !== '' && !isIconKey(it.icon))
+        if (badIcon) {
+          repair('feature-grid', 'skipped', `dropped the whole section — item icon "${badIcon.icon}" is not a known icon key`)
+          break
+        }
+        sections.push({
+          type: 'feature-grid',
+          label: str(e.label),
+          heading: str(e.heading),
+          dek: str(e.dek),
+          items,
+          bullets: coerceItems<{ text: string }>(e.bullets, ['text']).map((b) => b.text).filter((t) => t !== ''),
+        })
+        break
+      }
+
+      case 'comparison-cards': {
+        const oursIcon = str(e.oursIcon)
+        const theirsIcon = str(e.theirsIcon)
+        if ((oursIcon !== '' && !isIconKey(oursIcon)) || (theirsIcon !== '' && !isIconKey(theirsIcon))) {
+          repair('comparison-cards', 'skipped', 'dropped the whole section — "ours" or "theirs" icon is not a known icon key')
+          break
+        }
+        sections.push({
+          type: 'comparison-cards',
+          label: str(e.label),
+          heading: str(e.heading),
+          intro: str(e.intro),
+          statsStrip: coerceListItems<Stat>(e.statsStrip, ['term', 'detail'], ['term', 'detail'], (n) =>
+            repair('comparison-cards', 'repaired', `dropped ${n} stat(s) missing a term or detail`)
+          ),
+          ours: {
+            icon: oursIcon,
+            name: str(e.oursName),
+            tagline: str(e.oursTagline),
+            highlighted: boolAttr(e.oursHighlighted),
+            items: coerceItems<{ text: string }>(e.oursItems, ['text']).map((it) => it.text).filter((t) => t !== ''),
+          },
+          theirs: {
+            icon: theirsIcon,
+            name: str(e.theirsName),
+            tagline: str(e.theirsTagline),
+            items: coerceItems<{ text: string; has: string }>(e.theirsItems, ['text', 'has'])
+              .filter((it) => it.text !== '')
+              .map((it) => ({ text: it.text, has: boolAttr(it.has) })),
+          },
+        })
+        break
+      }
+
+      case 'package-grid': {
+        const items = coerceListItems<PackageGridItem>(
+          e.items,
+          ['langIcon', 'lang', 'name', 'role', 'body', 'repoHref', 'registryHref', 'registryIcon', 'registryLabel'],
+          ['lang', 'name', 'body', 'repoHref'],
+          (n) => repair('package-grid', 'repaired', `dropped ${n} package(s) missing a language, name, body or repo link`)
+        )
+        const badKey = items.find(
+          (it) => (it.langIcon !== '' && !isLangIconKey(it.langIcon)) || (it.registryIcon !== '' && !isRegistryIconKey(it.registryIcon))
+        )
+        if (badKey) {
+          repair('package-grid', 'skipped', 'dropped the whole section — a package\'s language or registry icon is not a known key')
+          break
+        }
+        sections.push({ type: 'package-grid', label: str(e.label), heading: str(e.heading), items })
+        break
+      }
+
+      case 'content-block': {
+        const device = str(e.device)
+        const diagramKey = str(e.diagramKey)
+        if (device === 'diagram' && diagramKey !== '' && !isDiagramKey(diagramKey)) {
+          repair('content-block', 'skipped', `dropped the whole section — diagram key "${diagramKey}" is not known`)
+          break
+        }
+        const chips = coerceListItems<Chip>(
+          e.chips, ['image', 'label', 'href'], ['label'],
+          (n) => repair('content-block', 'repaired', `dropped ${n} chip(s) with no label`)
+        )
+        const badChip = chips.find((c) => c.image !== '' && !isIconKey(c.image))
+        if (badChip) {
+          repair('content-block', 'skipped', `dropped the whole section — chip image "${badChip.image}" is not a known icon key`)
+          break
+        }
+        sections.push({
+          type: 'content-block',
+          label: str(e.label),
+          heading: str(e.heading),
+          text: str(e.text),
+          device: (['none', 'diagram', 'credential-table', 'chips'].includes(device) ? device : 'none') as ContentBlockSection['device'],
+          diagramKey,
+          rows: coerceListItems<CredentialRow>(e.rows, ['key', 'value', 'note'], ['key', 'value'], (n) =>
+            repair('content-block', 'repaired', `dropped ${n} row(s) missing a key or value`)
+          ),
+          chips,
+          bullets: coerceItems<{ text: string }>(e.bullets, ['text']).map((b) => b.text).filter((t) => t !== ''),
+          bulletStyle: str(e.bulletStyle) === 'dash' ? 'dash' : 'check',
+          note: str(e.note),
+        })
+        break
+      }
+
+      case 'faq-tabs': {
+        const categories = coerceListItems<FaqTabsCategory>(
+          e.categories, ['key', 'label'], ['key', 'label'],
+          (n) => repair('faq-tabs', 'repaired', `dropped ${n} categor(y/ies) missing a key or label`)
+        )
+        const items = coerceListItems<FaqTabsItem>(
+          e.items, ['categoryKey', 'question', 'answer'], ['categoryKey', 'question', 'answer'],
+          (n) => repair('faq-tabs', 'repaired', `dropped ${n} FAQ item(s) missing a category, question or answer`)
+        )
+        if (categories.length === 0 || items.length === 0) {
+          repair('faq-tabs', 'skipped', 'dropped the whole section — it has no categories or no questions')
+          break
+        }
+        sections.push({ type: 'faq-tabs', title: str(e.title), subtitle: str(e.subtitle), categories, items })
+        break
+      }
 
       default:
         repair('sections', 'repaired', `dropped a section of unknown type "${String(e.type)}"`)
