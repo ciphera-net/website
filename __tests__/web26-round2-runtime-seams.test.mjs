@@ -22,9 +22,9 @@ function code(p) {
 
 // ── DEFAULT_RUNTIME_KINDS stays glossary-only ───────────────────────────────────────
 
-test('DEFAULT_RUNTIME_KINDS is still JUST glossary — blog/route/redirect ship OFF', () => {
+test('DEFAULT_RUNTIME_KINDS serves glossary, blog, route and redirect at request time', () => {
   const src = code('lib/cms/runtime-config.ts')
-  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary'\]/)
+  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary', 'blog', 'route', 'redirect'\]/)
 })
 
 // ── lib/cms/blog-build.ts ───────────────────────────────────────────────────────────
@@ -77,20 +77,18 @@ test('the blog index page is a server component handing resolved posts to a clie
   assert.doesNotMatch(client, /from '@\/lib\/blog-posts\.gen'|from '@\/lib\/blog'/, 'the client component must receive data as a prop, never import the seam itself')
 })
 
-test('generateStaticParams returns [] for a runtime kind, without ever calling the async seam — flag-off keeps the full static list', () => {
+test('a blog post renders per request: a literal force-dynamic and no generateStaticParams', () => {
+  // Measured: with generateStaticParams returning [] an unlisted slug is ISR-cached for a year on
+  // its first hit (x-nextjs-cache: HIT, s-maxage=31536000); only the literal stops that.
   const src = code('app/blog/[slug]/page.tsx')
-  assert.match(src, /export async function generateStaticParams\(\)/)
-  assert.match(src, /if \(isRuntimeKind\('blog'\)\) return \[\]/)
-  assert.match(src, /return \(await getBlogPosts\(\)\)\.map/)
+  assert.match(src, /export const dynamic = 'force-dynamic'/)
+  assert.doesNotMatch(src, /generateStaticParams/)
 })
 
-test('the measured ISR-caching limitation of an empty generateStaticParams is documented, not silently assumed fixed', () => {
-  // Round 2 measured this against a REAL flag-on build: returning [] does not alone
-  // force dynamic per-request rendering (Next still ISR-caches an unlisted param for
-  // a year on its first hit) — see the module comment this guards against deletion.
-  const raw = read('app/blog/[slug]/page.tsx')
-  assert.ok(raw.includes('MEASURED LIMITATION'), 'the measured-limitation comment must stay until the real cutover fixes it')
-  assert.ok(raw.includes('s-maxage=31536000'), 'the comment must cite the measured header, not a guess')
+test('the sitemap reads route SEO from the runtime seam, not the build-time seed', () => {
+  const src = code('app/sitemap.ts')
+  assert.match(src, /routeSeoForAsync/)
+  assert.doesNotMatch(src, /routeSeo\[/)
 })
 
 test('feed.xml and the sitemap read the async seam, not the build-time .gen file directly', () => {

@@ -29,7 +29,7 @@
  * Containers' env cannot gain a variable through the pipeline. Rolling a kind back is removing
  * it here; the seed in the image covers any CDN failure meanwhile.
  */
-const DEFAULT_RUNTIME_KINDS: readonly string[] = ['glossary']
+const DEFAULT_RUNTIME_KINDS: readonly string[] = ['glossary', 'blog', 'route', 'redirect']
 
 function parseKinds(raw: string | undefined): Set<string> {
   if (!raw) return new Set(DEFAULT_RUNTIME_KINDS)

@@ -127,6 +127,11 @@ export async function getRouteSeoRuntimeState(): Promise<RouteSeoRuntimeState> {
   return lastState
 }
 
+/** The stub for a path from the content zone when 'route' is runtime, else the seed (the sitemap reads this). */
+export async function routeSeoForAsync(path: string): Promise<RouteSeo | undefined> {
+  return resolveRouteSeo(path)
+}
+
 async function resolveRouteSeo(path: string): Promise<RouteSeo | undefined> {
   const seedStub = routeSeo[path]
 
