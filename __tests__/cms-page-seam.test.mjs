@@ -45,9 +45,14 @@ test('buildPages never throws on content and skips (never crashes on) every unus
   assert.match(src, /!PAGE_PATH_RE\.test\(path\)/)
 })
 
-test('a page owned by a coded route the site has not migrated is skipped, not rendered', () => {
+test('a page owned by a coded route the site has not migrated is skipped, not rendered; four product pages are migratable, /products/id is NOT', () => {
   const src = code('lib/cms/page-build.ts')
-  assert.match(src, /export const MIGRATABLE_PAGE_PATHS: readonly string\[\] = \[\]/, 'ciphera.net migrates no page yet (§4.2.1)')
+  assert.match(
+    src,
+    /export const MIGRATABLE_PAGE_PATHS: readonly string\[\] = \[\s*'\/products\/captcha',\s*'\/products\/pulse',\s*'\/products\/relay',\s*'\/products\/tessera',\s*\]/,
+    'build task §3: captcha/pulse/relay/tessera migrate; id needs facet-sections 0.3.0'
+  )
+  assert.doesNotMatch(src, /'\/products\/id',/, '/products/id is NOT migratable yet')
   assert.match(src, /ownedByCodedRoute\(path\) && !migratablePaths\.includes\(path\)/)
 })
 

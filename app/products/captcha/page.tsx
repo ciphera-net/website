@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
+import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
+import { CmsPage } from '@/components/cms/CmsPage'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
@@ -21,8 +23,10 @@ import {
   PuzzlePiece,
 } from '@phosphor-icons/react/dist/ssr'
 
+const CMS_PATH = '/products/captcha'
+
 export async function generateMetadata(): Promise<Metadata> {
-  return seoForAsync('/products/captcha', {
+  const base = await seoForAsync(CMS_PATH, {
     title: 'Ciphera Captcha - Privacy-First Bot Protection',
     description:
       'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking, fully stateless.',
@@ -54,6 +58,11 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [cdnUrl('/captcha_icon_no_margins.png')],
     },
   })
+  // Phase E (build task §3): a published CMS page's own SEO fields override this
+  // coded fallback field by field; a CMS title is the FULL title tag, applied
+  // absolute (mergePageSeo). No CMS page at this path yet -> base, unchanged.
+  const cms = await resolvePage(CMS_PATH)
+  return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
 const captchaSchema = [
@@ -102,7 +111,23 @@ const CAPTCHA_FEATURES = [
   },
 ] as const
 
-export default function CipheraCaptchaPage() {
+export default async function CipheraCaptchaPage() {
+  // Phase E (build task §3): once this page has a published CMS version it
+  // renders INSTEAD of the coded JSX below — never alongside it (same rule as
+  // the Pulse SEO cluster). The SoftwareApplication + BreadcrumbList JSON-LD
+  // stays code either way (contract §5: derived from the product's own
+  // identity, not from section content), so CmsPage's own generic breadcrumb
+  // is suppressed here to avoid a second, duplicate BreadcrumbList.
+  const cms = await resolvePage(CMS_PATH)
+  if (cms) {
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(captchaSchema) }} />
+        <CmsPage page={cms} breadcrumbs={false} />
+      </>
+    )
+  }
+
   return (
     <>
       <script

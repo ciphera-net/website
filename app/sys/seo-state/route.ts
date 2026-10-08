@@ -8,6 +8,7 @@ import { getGlossaryRuntimeState } from '@/lib/glossary'
 import { getBlogRuntimeState } from '@/lib/blog'
 import { getRedirectRuntimeState } from '@/lib/cms/redirect-runtime'
 import { getPageRuntimeState } from '@/lib/cms/page-runtime'
+import { getMenuRuntimeState } from '@/lib/cms/menu-runtime'
 
 /**
  * The ACTUAL half of the level-triggered deploy check (design D9).
@@ -36,6 +37,7 @@ export async function GET() {
   const routeRuntime = await getRouteSeoRuntimeState()
   const redirectRuntime = await getRedirectRuntimeState()
   const pageRuntime = await getPageRuntimeState()
+  const menuRuntime = await getMenuRuntimeState()
 
   // 🔴 `posts` IS NOT COSMETIC. A watermark is a maximum and maxima only move
   // forward, so unpublishing the newest entry makes WordPress's max fall BELOW this
@@ -130,6 +132,14 @@ export async function GET() {
           index_watermark: pageRuntime.indexWatermark ?? null,
           published_at: pageRuntime.publishedAt ?? null,
           count: pageRuntime.count ?? null,
+        },
+        // 🔑 M2: unlike 'page', 'menu' HAS a seed, so `source` can be 'seed' — a menu is
+        // on every page, so the request-time seam must never resolve to nothing.
+        menu: {
+          enabled: menuRuntime.header.enabled,
+          header: { source: menuRuntime.header.source, index_watermark: menuRuntime.header.indexWatermark ?? null },
+          footer: { source: menuRuntime.footer.source, index_watermark: menuRuntime.footer.indexWatermark ?? null },
+          published_at: menuRuntime.header.publishedAt ?? menuRuntime.footer.publishedAt ?? null,
         },
       },
     },

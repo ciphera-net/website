@@ -1,8 +1,11 @@
 import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
+import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
+import { CmsPage } from '@/components/cms/CmsPage'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PulseMockupTall } from '@/components/ui/pulse-mockup'
+import { PulseScriptTagCode } from '@/components/ui/pulse-script-tag-code'
 import PulseFAQ from '@/components/PulseFAQ'
 import { pulseShowcaseBg, pulseIcon, zurichPhoto } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
@@ -22,8 +25,10 @@ import {
   XIcon,
 } from '@ciphera-net/facet'
 
+const CMS_PATH = '/products/pulse'
+
 export async function generateMetadata(): Promise<Metadata> {
-  return seoForAsync('/products/pulse', {
+  const base = await seoForAsync(CMS_PATH, {
     title: 'Pulse Analytics - Privacy-First Website Analytics',
     description:
       'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded. Open-source client.',
@@ -55,6 +60,9 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [cdnUrl('/og-pulse.png')],
     },
   })
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
 const pulseSchema = [
@@ -127,7 +135,18 @@ const PULSE_FEATURES = [
   },
 ] as const
 
-export default function PulsePage() {
+export default async function PulsePage() {
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  if (cms) {
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pulseSchema) }} />
+        <CmsPage page={cms} breadcrumbs={false} />
+      </>
+    )
+  }
+
   return (
     <>
       <script
@@ -267,63 +286,7 @@ export default function PulsePage() {
         <div className="grid lg:grid-cols-2">
           {/* Visual cell — code block, left on desktop */}
           <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
-            <div className="w-full max-w-md min-w-0">
-              <div className="border border-border bg-background p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-2 h-2 bg-muted-foreground/30" />
-                  <div className="w-2 h-2 bg-muted-foreground/30" />
-                  <div className="w-2 h-2 bg-muted-foreground/30" />
-                  <span className="text-[10px] text-muted-foreground ml-2 font-mono">
-                    index.html
-                  </span>
-                </div>
-                <pre className="font-mono text-[11px] leading-relaxed overflow-x-auto">
-                  <code>
-                    <span className="text-muted-foreground">
-                      {'<!-- Add before </head> -->'}
-                    </span>
-                    {'\n'}
-                    <span className="text-muted-foreground">{'<'}</span>
-                    <span className="text-foreground">{'script'}</span>
-                    {'\n'}
-                    <span className="text-foreground">{'  defer'}</span>
-                    {'\n'}
-                    <span className="text-foreground">{'  data-domain'}</span>
-                    <span className="text-muted-foreground">{'="'}</span>
-                    <span className="text-primary">{'yoursite.com'}</span>
-                    <span className="text-muted-foreground">{'"'}</span>
-                    {'\n'}
-                    {/* 🔴 js.ciphera.net IS THE CANONICAL LOADER, and this is a
-                        COPY-ABLE value, not decoration. This block read
-                        https://pulse.ciphera.net/js/script.js until 19-09-2026 —
-                        a host that 307s to /login?returnTo=/js/script.js, so
-                        anybody who pasted the snippet off this page installed a
-                        script that could never load and saw no events, with
-                        nothing on our side failing. pulse-frontend fixed the same
-                        string in its own snippet on 06-08-2026; this copy was
-                        missed. Verified live: js.ciphera.net/script.js → 200. */}
-                    <span className="text-foreground">{'  src'}</span>
-                    <span className="text-muted-foreground">{'="'}</span>
-                    <span className="text-primary">
-                      {'https://js.ciphera.net/script.js'}
-                    </span>
-                    <span className="text-muted-foreground">{'"'}</span>
-                    {'\n'}
-                    <span className="text-muted-foreground">{'>'}</span>
-                    <span className="text-muted-foreground">{'</'}</span>
-                    <span className="text-foreground">{'script'}</span>
-                    <span className="text-muted-foreground">{'>'}</span>
-                  </code>
-                </pre>
-                <div className="mt-4 flex items-center justify-between text-[10px] text-muted-foreground border-t border-border pt-3">
-                  <span>2.7 KB gzipped</span>
-                  <span className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 bg-primary" />
-                    Non-blocking, async
-                  </span>
-                </div>
-              </div>
-            </div>
+            <PulseScriptTagCode />
           </div>
 
           {/* Copy cell */}

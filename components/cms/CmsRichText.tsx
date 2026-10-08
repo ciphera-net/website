@@ -25,3 +25,15 @@ const processor = unified()
 export function CmsRichText({ html, className }: { html: string; className?: string }): ReactNode {
   return <div className={className}>{processor.processSync(html).result}</div>
 }
+
+/**
+ * Same parse-to-React pipeline, no wrapping `<div>` — for a product-page section
+ * field (`product-banner.body`, `feature-split.text`, `comparison-cards.intro`,
+ * `content-block.text`/`note`) that `@ciphera-net/facet-sections` renders directly
+ * inside its own `<p>`: a nested `<div>` there would break that element's markup.
+ * The sanitised string is still already paragraph-safe HTML (page-build.ts), so this
+ * is purely about NOT adding a second wrapper the caller's own `<p>` doesn't want.
+ */
+export function cmsRichNodes(html: string): ReactNode {
+  return processor.processSync(html).result
+}

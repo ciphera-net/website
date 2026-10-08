@@ -11,10 +11,11 @@ import { CmsPage } from '@/components/cms/CmsPage'
  * 🔴 NEVER SHADOWS AN EXISTING ROUTE. Next's own router gives every static and
  * dynamic segment precedence over a catch-all — `/blog/x` resolves through
  * `app/blog/[slug]/page.tsx` long before this file is even considered, with no code
- * here making that true. `MIGRATABLE_PAGE_PATHS` (empty for ciphera.net this round)
- * is the publish-time half of the same rule: `lib/cms/page-build.ts` already skips a
- * page whose path a coded route owns, so this route is reached only for an address
- * nothing in `app/` claims.
+ * here making that true. `MIGRATABLE_PAGE_PATHS` (the four product pages that render
+ * their OWN CMS override, build task §3) is the publish-time half of the same rule:
+ * `lib/cms/page-build.ts` already skips a page whose path a coded route owns and is
+ * not in that list, so this route is reached only for an address nothing in `app/`
+ * claims at all.
  *
  * 🔴 NO generateStaticParams, NOT EVEN `[]`. Returning an empty array would still
  * tell Next this segment is statically generated with a fallback, which ISR-caches

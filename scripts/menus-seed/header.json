@@ -1,0 +1,130 @@
+{
+  "site": "ciphera-net",
+  "location": "header",
+  "title": "Header",
+  "blocks": [
+    {
+      "name": "ciphera/menu-group",
+      "attrs": {
+        "label": "Products",
+        "source": "manual",
+        "noteText": "Interested?",
+        "noteHref": "/contact",
+        "items": [
+          {
+            "label": "Pulse Analytics",
+            "href": "/products/pulse",
+            "description": "Privacy-first web analytics",
+            "media": "pulse-logo"
+          },
+          {
+            "label": "Ciphera Captcha",
+            "href": "/products/captcha",
+            "description": "Privacy-respecting bot protection",
+            "media": "captcha-logo"
+          },
+          {
+            "label": "Ciphera Relay",
+            "href": "/products/relay",
+            "description": "Secure email infrastructure",
+            "media": "relay-logo"
+          },
+          {
+            "label": "Tessera",
+            "href": "/products/tessera",
+            "description": "Open-source OPAQUE auth library",
+            "media": "lock"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/menu-group",
+      "attrs": {
+        "label": "Company",
+        "source": "manual",
+        "noteText": "Interested?",
+        "noteHref": "/contact",
+        "items": [
+          {
+            "label": "About Us",
+            "href": "/about",
+            "description": "Our mission for a more private internet",
+            "media": "users"
+          },
+          {
+            "label": "Sustainability",
+            "href": "/sustainability",
+            "description": "Our carbon footprint, measured — see the real numbers",
+            "media": "leaf"
+          },
+          {
+            "label": "Trust & Security",
+            "href": "/trust",
+            "description": "Architecture proofs, warrant canary & disclosure policy",
+            "media": "shield-check"
+          },
+          {
+            "label": "Press",
+            "href": "/press",
+            "description": "Media kit, company facts & brand assets",
+            "media": "newspaper"
+          },
+          {
+            "label": "Terms of Service",
+            "href": "/terms",
+            "description": "",
+            "media": "file-text"
+          },
+          {
+            "label": "Privacy Policy",
+            "href": "/privacy",
+            "description": "",
+            "media": "shield"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/menu-group",
+      "attrs": {
+        "label": "Resources & Support",
+        "source": "manual",
+        "noteText": "Interested?",
+        "noteHref": "/contact",
+        "items": [
+          {
+            "label": "Blog",
+            "href": "/blog",
+            "description": "Privacy & security insights",
+            "media": "leaf"
+          },
+          {
+            "label": "Learn",
+            "href": "/learn",
+            "description": "Guides & references for Ciphera products",
+            "media": "book-open"
+          },
+          {
+            "label": "Glossary",
+            "href": "/glossary",
+            "description": "Privacy & cryptography terms, defined precisely",
+            "media": "file-text"
+          },
+          {
+            "label": "Ciphera ID",
+            "href": "/products/id",
+            "description": "How signing in to Ciphera works",
+            "media": "auth-logo"
+          },
+          {
+            "label": "Contact",
+            "href": "/contact",
+            "description": "Get in touch with our team",
+            "media": "mail"
+          }
+        ]
+      }
+    }
+  ]
+}

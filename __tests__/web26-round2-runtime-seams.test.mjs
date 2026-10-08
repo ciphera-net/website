@@ -136,11 +136,22 @@ test('every one of the 14 seoFor() pages now uses generateMetadata + seoForAsync
     'app/products/captcha/page.tsx', 'app/products/id/page.tsx', 'app/products/pulse/page.tsx',
     'app/products/relay/page.tsx', 'app/products/tessera/page.tsx', 'app/glossary/page.tsx', 'app/page.tsx',
   ]
+  // WEB-28 build task §3: the four migratable product pages now AWAIT seoForAsync
+  // into a `base`, then merge a published CMS page's own SEO over it (mergePageSeo)
+  // before returning — `/products/id` is not migratable yet (facet-sections 0.3.0)
+  // and every non-product page is untouched, so those keep the plain `return`.
+  const migratable = new Set(['app/products/captcha/page.tsx', 'app/products/pulse/page.tsx', 'app/products/relay/page.tsx', 'app/products/tessera/page.tsx'])
   for (const p of pages) {
     const src = code(p)
     assert.match(src, /export async function generateMetadata\(\): Promise<Metadata> \{/, `${p} must export generateMetadata`)
-    assert.match(src, /return seoForAsync\(/, `${p} must call seoForAsync`)
+    assert.match(src, /seoForAsync\(/, `${p} must call seoForAsync`)
     assert.doesNotMatch(src, /export const metadata: Metadata = seoFor\(/, `${p} must not keep the old sync export`)
+    if (migratable.has(p)) {
+      assert.match(src, /const base = await seoForAsync\(/, `${p} must await seoForAsync into a base Metadata before merging`)
+      assert.match(src, /return cms \? mergePageSeo\(CMS_PATH, base, cms\.seo\) : base/, `${p} must merge a published CMS page's SEO over the coded fallback`)
+    } else {
+      assert.match(src, /return seoForAsync\(/, `${p} must call seoForAsync`)
+    }
   }
 })
 

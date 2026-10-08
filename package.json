@@ -9,6 +9,7 @@
     "prebuild": "npm run generate:seo && npm run generate:redirects && npm run generate:learn && npm run generate:blog && npm run generate:glossary && npm run sync:transparency && npm run generate:llms",
     "start": "next start",
     "test": "node --test \"__tests__/**/*.test.mjs\"",
+    "test:render": "node --test \"__tests__/**/*.render.mjs\"",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "generate:learn": "npx tsx scripts/generate-learn-articles.ts",
@@ -23,7 +24,7 @@
   },
   "dependencies": {
     "@ciphera-net/facet": "^0.4.1",
-    "@ciphera-net/facet-sections": "^0.1.0",
+    "@ciphera-net/facet-sections": "^0.2.0",
     "@ciphera-net/facet-tailwind": "^0.2.0",
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-accordion": "^1.2.13",
@@ -69,6 +70,7 @@
     "eslint-config-next": "^16.1.1",
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7",
+    "tsx": "^4.23.0",
     "typescript": "^5.5.4"
   }
 }

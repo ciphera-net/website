@@ -156,6 +156,9 @@ steps:
         fi
       - cp .npmrc-ci /root/.npmrc
       - npm ci --prefer-offline --no-audit --progress=false
+      # Render proofs need React, so they run here, after npm ci, not in test.yml (which installs
+      # nothing): the CMS menus must render byte-identical to the coded navigation.
+      - npm run test:render
       - rm -f /root/.npmrc
       - npm run build
       # cms-publisher (WEB-26) — bundled HERE, not in the Dockerfile (same reasoning
