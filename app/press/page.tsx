@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, GithubIcon, XIcon } from '@ciphera-net/facet'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { cdnUrl } from '@/lib/cdn'
 
-export const metadata: Metadata = seoFor('/press', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/press', {
     title: 'Press & Media Kit',
     description:
       'Press and media resources for Ciphera BV: company boilerplate, fact sheet, logo and brand assets, and press contact. Belgian privacy-software company, KBO/BCE 1013.721.660.',
@@ -32,6 +33,7 @@ export const metadata: Metadata = seoFor('/press', {
       images: [cdnUrl('/ciphera_logo_no_margins.png')],
     },
   })
+}
 
 const pressSchema = {
   '@context': 'https://schema.org',

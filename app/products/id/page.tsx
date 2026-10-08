@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AuthMockup } from '@/components/ui/auth-mockup'
@@ -13,7 +13,8 @@ import {
 } from '@ciphera-net/facet'
 import { ShieldCheck, Key, Timer, Vault } from '@phosphor-icons/react/dist/ssr'
 
-export const metadata: Metadata = seoFor('/products/id', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/products/id', {
     title: 'Ciphera ID - How Signing In to Ciphera Works',
     description:
       'Ciphera ID is the sign-in behind Ciphera’s own applications — not a product you buy. Zero-knowledge OPAQUE authentication (RFC 9807), an encrypted profile vault the server cannot read, and Swiss-hosted infrastructure.',
@@ -45,6 +46,7 @@ export const metadata: Metadata = seoFor('/products/id', {
       images: [cdnUrl('/id_icon_no_margins.png')],
     },
   })
+}
 
 // * Ciphera ID is internal infrastructure, not something on the shelf: there is
 // * no self-serve client registration, no OIDC discovery document and no

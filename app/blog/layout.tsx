@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import { cdnUrl } from '@/lib/cdn'
 
-export const metadata: Metadata = seoFor('/blog', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/blog', {
     title: 'Blog - Privacy & Security Insights',
     description: 'Privacy and security insights from the Ciphera team. Data breach analysis, encryption guides, tool comparisons, and privacy statistics backed by sourced data.',
     alternates: {
@@ -24,6 +25,7 @@ export const metadata: Metadata = seoFor('/blog', {
       images: [cdnUrl('/blog/og/_index.png')],
     },
   })
+}
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return children

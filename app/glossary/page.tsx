@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import Link from 'next/link'
 import { cdnUrl } from '@/lib/cdn'
 import { getGlossaryCategories, getGlossaryTerms } from '@/lib/glossary'
 
-export const metadata: Metadata = seoFor('/glossary', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/glossary', {
     title: 'Glossary - Privacy, Cryptography & Analytics Terms',
     description:
       'Precise definitions of the cryptography, privacy-regulation, analytics, and email-infrastructure terms behind Ciphera — written from implementations we run in production.',
@@ -22,6 +23,7 @@ export const metadata: Metadata = seoFor('/glossary', {
       images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
     },
   })
+}
 
 const categoryAnchor = (category: string) =>
   category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')

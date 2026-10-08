@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, GithubIcon } from '@ciphera-net/facet'
 import { authShowcaseBg, authIcon, pulseIcon } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
 
-export const metadata: Metadata = seoFor('/products/tessera', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/products/tessera', {
     title: 'Tessera - Open-Source OPAQUE Authentication',
     description:
       'Tessera is Ciphera’s open-source OPAQUE authentication library (Apache-2.0): a Rust core and sidecar, a Go server SDK, and a browser SDK. Zero-knowledge auth where the password never reaches the server.',
@@ -39,6 +40,7 @@ export const metadata: Metadata = seoFor('/products/tessera', {
       images: [cdnUrl('/ciphera_logo_no_margins.png')],
     },
   })
+}
 
 const tesseraSchema = [
   {

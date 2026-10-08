@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
@@ -21,7 +21,8 @@ import {
   PuzzlePiece,
 } from '@phosphor-icons/react/dist/ssr'
 
-export const metadata: Metadata = seoFor('/products/captcha', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/products/captcha', {
     title: 'Ciphera Captcha - Privacy-First Bot Protection',
     description:
       'Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking, fully stateless.',
@@ -53,6 +54,7 @@ export const metadata: Metadata = seoFor('/products/captcha', {
       images: [cdnUrl('/captcha_icon_no_margins.png')],
     },
   })
+}
 
 const captchaSchema = [
   {

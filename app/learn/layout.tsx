@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 import { cdnUrl } from '@/lib/cdn'
 
-export const metadata: Metadata = seoFor('/learn', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/learn', {
     title: 'Learn - Technical Guides & Reference',
     description: 'Guides, references, and technical deep-dives across Ciphera products. Web performance, security, encryption, analytics, and more.',
     alternates: {
@@ -24,6 +25,7 @@ export const metadata: Metadata = seoFor('/learn', {
       images: [cdnUrl('/ciphera_logo_no_margins.png')],
     },
   })
+}
 
 const schema = [
   {

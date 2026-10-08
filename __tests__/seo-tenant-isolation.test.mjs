@@ -28,30 +28,37 @@ function code(p) {
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
 }
 
-test('generate-seo filters by site before it looks at a stub\'s path', () => {
+/**
+ * 🔁 WEB-26 round 2: the per-stub shape checks, dedupe and field repairs moved into
+ * lib/cms/route-build.ts (buildRouteSeo), shared with cms-publisher.ts — see that
+ * module's own header. generate-seo.ts now only fetches, filters by site, and calls
+ * it; the tests that used to read the per-stub loop out of generate-seo.ts now read
+ * it out of route-build.ts instead. The site-isolation property this file is named
+ * for is actually STRONGER now: buildRouteSeo never sees an un-filtered node at all.
+ */
+
+test('generate-seo filters by site BEFORE calling the shared transform', () => {
   const src = code('scripts/generate-seo.ts')
   const siteFilterAt = src.indexOf('.includes(SITE))')
-  const loop = src.slice(src.indexOf('for (const n of nodes)'))
-  const emptyPath = loop.indexOf('if (!p) {')
-  const noSlash = loop.indexOf("if (!p.startsWith('/')) {")
-  assert.ok(siteFilterAt > 0, 'the per-site filter is missing before the stub loop')
-  assert.ok(emptyPath > 0 && noSlash > 0, 'the path checks are missing from the stub loop')
+  const buildCallAt = src.indexOf('buildRouteSeo(nodes)')
+  assert.ok(siteFilterAt > 0, 'the per-site filter is missing')
+  assert.ok(buildCallAt > 0, 'generate-seo.ts must call the shared buildRouteSeo')
   assert.ok(
-    siteFilterAt < src.indexOf('for (const n of nodes)'),
-    "another site's malformed stub would be read as this site's own: the site filter must run before the per-stub loop"
+    siteFilterAt < buildCallAt,
+    "another site's malformed stub would be read as this site's own: the site filter must run before buildRouteSeo ever sees a node"
   )
 })
 
 test('an unusable route-stub path is skipped and recorded, never a build failure', () => {
-  const src = code('scripts/generate-seo.ts')
+  const src = code('lib/cms/route-build.ts')
   assert.doesNotMatch(src, /if \(!p\) fail\(/, 'an empty path must no longer fail the build (P1-a)')
   assert.doesNotMatch(src, /if \(!p\.startsWith\('\/'\)\) fail\(/, 'a malformed path must no longer fail the build (P1-a)')
   assert.match(src, /'skipped'/, 'an unusable path must be recorded as skipped')
-  assert.match(src, /recordContentRepairs/, 'generate-seo.ts must record its repairs/skips')
+  assert.match(code('scripts/generate-seo.ts'), /recordContentRepairs/, 'generate-seo.ts must still record the repairs/skips buildRouteSeo returns')
 })
 
 test('an empty title, description or off-CDN OG image is repaired, never a build failure', () => {
-  const src = code('scripts/generate-seo.ts')
+  const src = code('lib/cms/route-build.ts')
   assert.doesNotMatch(src, /if \(!title\) fail\(/, 'an empty title must no longer fail the build')
   assert.doesNotMatch(src, /if \(!description\) fail\(/, 'an empty description must no longer fail the build')
   assert.doesNotMatch(src, /fail\(`\$\{p\}: OG image is not on cdn\.ciphera\.net/, 'a non-CDN OG image must no longer fail the build')
@@ -61,15 +68,20 @@ test('an empty title, description or off-CDN OG image is repaired, never a build
 })
 
 test('a duplicate route-stub path keeps the lowest WordPress databaseId', () => {
-  const src = code('scripts/generate-seo.ts')
+  const src = code('lib/cms/route-build.ts')
   assert.match(src, /\(a\.databaseId \?\? Infinity\) - \(b\.databaseId \?\? Infinity\)/)
   assert.doesNotMatch(src, /fail\(`duplicate stub for/, 'a duplicate stub must no longer fail the build')
 })
 
 test('the EXPECTED_ROUTES exact-count gate no longer fails the build', () => {
   const src = code('scripts/generate-seo.ts')
-  assert.doesNotMatch(src, /if \(seen\.size !== EXPECTED_ROUTES\) \{\s*\n\s*fail\(/, 'the exact-equality gate must be gone')
-  assert.match(src, /seen\.size !== EXPECTED_ROUTES/, 'the count must still be compared, but only to LOG')
+  assert.doesNotMatch(src, /if \(seenCount !== EXPECTED_ROUTES\) \{\s*\n\s*fail\(/, 'the exact-equality gate must be gone')
+  assert.match(src, /seenCount !== EXPECTED_ROUTES/, 'the count must still be compared, but only to LOG')
+})
+
+test('the publisher applies the SAME route-seo transform as the build', () => {
+  const src = code('scripts/cms-publisher.ts')
+  assert.match(src, /buildRouteSeo\(nodes\)/, 'cms-publisher.ts must call the shared lib/cms/route-build.ts transform, not its own copy')
 })
 
 test('WordPress unreachable, a non-200 response, or GraphQL errors still fail the build', () => {

@@ -22,7 +22,13 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => readFileSync(join(root, p), 'utf-8')
 function code(p) {
   return read(p)
-    .replace(/\/\*[\s\S]*?\*\//g, '')
+    // 🔴 THE NEGATIVE LOOKAHEAD MATTERS. `content/blog/*.mdx` (this file's own glob,
+    // quoted several times) contains a literal `/*` that is NOT a comment opener — a
+    // bare `/\/\*[\s\S]*?\*\//g` treats it as one and non-greedily eats everything up
+    // to the NEXT unrelated `*/`, silently deleting whole functions from `code()`'s
+    // output. `(?!\.)` excludes exactly that false start; every real block comment in
+    // this codebase opens `/**` or `/* ` (a letter or `*`), never `/*.`.
+    .replace(/\/\*(?!\.)[\s\S]*?\*\//g, '')
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
 }
 
@@ -53,33 +59,36 @@ test('transformWpPost repairs description, category/CTA, OG image and date inste
   assert.doesNotMatch(t, /problems\.push\(\{\s*field: 'ogImage'/, 'ogImage must no longer be a `problems` entry')
 })
 
-test('generate-blog-posts.ts skips a post with no safe repair and records it, never fails the build on it', () => {
-  const gen = code('scripts/generate-blog-posts.ts')
+test('lib/cms/blog-build.ts skips a post with no safe repair and records it, never fails the build on it', () => {
+  // 🔁 WEB-26 round 2: the per-node transform/skip/dedupe/recovery-copy logic moved
+  // here, shared with cms-publisher.ts — see that module's own header.
+  const built = code('lib/cms/blog-build.ts')
 
   // The shape: no slug/invalid slug → post is null → SKIP. Title/body → SKIP.
-  assert.match(gen, /if \(!post\) \{/)
-  assert.match(gen, /const blocking = problems\.filter\(\(p\) => p\.field === 'title' \|\| p\.field === 'body'\)/)
-  assert.match(gen, /repair\(ref, p\.field, 'skipped', p\.message\)/)
-  assert.match(gen, /repair\(post\.slug, p\.field, 'skipped', p\.message\)/)
+  assert.match(built, /if \(!post\) \{/)
+  assert.match(built, /const blocking = problems\.filter\(\(p\) => p\.field === 'title' \|\| p\.field === 'body'\)/)
+  assert.match(built, /repair\(ref, p\.field, 'skipped', p\.message\)/)
+  assert.match(built, /repair\(post\.slug, p\.field, 'skipped', p\.message\)/)
 
   // Auto-repairs from the shared transform are recorded as 'repaired', not re-validated.
-  assert.match(gen, /for \(const r of fieldRepairs\) repair\(post\.slug, r\.field, 'repaired', r\.detail\)/)
+  assert.match(built, /for \(const r of fieldRepairs\) repair\(post\.slug, r\.field, 'repaired', r\.detail\)/)
 
-  // A duplicate published slug, and a slug shared with a git-tracked MDX post, are both
-  // SKIPS now — the lowest WordPress databaseId wins a WP/WP duplicate; the MDX file
-  // wins an MDX/WP collision (it is the pre-existing, git-tracked source).
-  assert.match(gen, /\(a\.n\.databaseId \?\? Infinity\) - \(b\.n\.databaseId \?\? Infinity\)/, 'duplicates must be tie-broken by the LOWEST databaseId')
-  assert.match(gen, /duplicate published post for slug/)
-  assert.match(gen, /exists in BOTH content\/blog\//)
-  assert.doesNotMatch(gen, /fail\(`\$\{post\.slug\}/, 'a per-post problem must never reach fail() any more')
-  assert.doesNotMatch(gen, /fail\(`slug "\$\{post\.slug\}" exists in BOTH/, 'an MDX/WP slug collision must no longer fail the build')
-  assert.doesNotMatch(gen, /fail\(`duplicate published post/, 'a duplicate published post must no longer fail the build')
+  // A duplicate published slug is a SKIP — the lowest WordPress databaseId wins.
+  assert.match(built, /\(a\.n\.databaseId \?\? Infinity\) - \(b\.n\.databaseId \?\? Infinity\)/, 'duplicates must be tie-broken by the LOWEST databaseId')
+  assert.match(built, /duplicate published post for slug/)
+  assert.doesNotMatch(built, /throw /, 'no per-post problem may reach a throw any more')
 
   // The recovery-copy honesty guard ships the post UNCHANGED and FLAGS it (P1-a point
   // 3) — it is explicitly NOT a skip and NOT a repair of the copy itself.
-  assert.match(gen, /checkRecoveryCopy/)
-  assert.match(gen, /repair\(\s*post\.slug,\s*'recovery-copy',\s*'flagged'/)
-  assert.doesNotMatch(gen, /fail\(\s*`\$\{post\.slug\} makes a false/, 'a recovery-copy violation must no longer fail the build')
+  assert.match(built, /checkRecoveryCopy/)
+  assert.match(built, /repair\(\s*post\.slug,\s*'recovery-copy',\s*'flagged'/)
+
+  // A slug shared with a git-tracked MDX post stays a BUILD-ONLY check — it needs the
+  // filesystem, and lib/cms/blog-build.ts documents why it has no runtime equivalent.
+  const gen = code('scripts/generate-blog-posts.ts')
+  assert.match(gen, /exists in BOTH content\/blog\//)
+  assert.doesNotMatch(gen, /fail\(`slug "\$\{post\.slug\}" exists in BOTH/, 'an MDX/WP slug collision must no longer fail the build')
+  assert.doesNotMatch(gen, /fail\(`duplicate published post/, 'a duplicate published post must no longer fail the build')
 
   // An unreachable image/tool-logo mark is DROPPED from the body (repaired), not fatal.
   assert.match(gen, /dropUnreachableMedia/)

@@ -117,14 +117,21 @@ test('no unguarded surface talks about the recovery phrase', () => {
 
 test('the blog half of this guard is enforced at build time', () => {
   // 🔴 THE BLOG IS NO LONGER IN THIS REPOSITORY, so these rules can only reach it in
-  // the build. If that gate is deleted, this list quietly stops covering two of the six
-  // surfaces it was written for — with every test still green. This assertion is the
-  // only thing standing between that and nobody noticing.
-  const gen = readFileSync(join(root, 'scripts/generate-blog-posts.ts'), 'utf8')
+  // the build (or the publisher, once 'blog' is a runtime kind). If that gate is
+  // deleted, this list quietly stops covering two of the six surfaces it was written
+  // for — with every test still green. This assertion is the only thing standing
+  // between that and nobody noticing.
+  //
+  // 🔁 WEB-26 round 2: the check itself moved into lib/cms/blog-build.ts (shared with
+  // cms-publisher.ts), so BOTH the build and the publish path run it now — strictly
+  // more coverage than before, not less.
+  const built = readFileSync(join(root, 'lib/cms/blog-build.ts'), 'utf8')
   assert.match(
-    gen,
+    built,
     /checkRecoveryCopy/,
-    'generate-blog-posts.ts must run the recovery-copy rules over every WordPress body — ' +
+    'lib/cms/blog-build.ts must run the recovery-copy rules over every WordPress body — ' +
       'the blog posts that used to be in SURFACES live there now',
   )
+  const gen = readFileSync(join(root, 'scripts/generate-blog-posts.ts'), 'utf8')
+  assert.match(gen, /buildBlogPosts/, 'generate-blog-posts.ts must still call the shared transform that runs the check')
 })

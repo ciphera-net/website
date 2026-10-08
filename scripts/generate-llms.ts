@@ -7,7 +7,7 @@ import path from 'path'
 // existed. public/llms.txt / llms-full.txt therefore stay a build-time snapshot: they
 // can lag a live CMS edit by up to a deploy cycle even after a kind moves to runtime.
 import { generatedGlossaryTerms as glossaryTerms } from '../lib/glossary.gen'
-import { getBlogPosts } from '../lib/blog'
+import { getBlogPostsSeed } from '../lib/blog'
 import { getLearnArticles } from '../lib/learn'
 
 const ROOT = process.cwd()
@@ -127,7 +127,7 @@ function esc(text: string): string {
 // ---------------------------------------------------------------------------
 
 function buildLlmsTxt(): string {
-  const blogPosts = getBlogPosts().slice(0, 10)
+  const blogPosts = getBlogPostsSeed().slice(0, 10)
 
   const lines: string[] = []
 
@@ -212,7 +212,7 @@ function buildLlmsTxt(): string {
 // ---------------------------------------------------------------------------
 
 function buildLlmsFullTxt(): string {
-  const blogPosts = getBlogPosts()
+  const blogPosts = getBlogPostsSeed()
   const learnArticles = getLearnArticles()
 
   const lines: string[] = []

@@ -8,7 +8,7 @@ import ClosingCta from '../components/ClosingCta'
 import { cdnUrl } from '@/lib/cdn'
 
 import type { Metadata } from 'next'
-import { seoFor } from '@/lib/seo'
+import { seoForAsync } from '@/lib/seo'
 
 /**
  * 🔴 THE HOMEPAGE HAD NO METADATA OBJECT OF ITS OWN. It inherited the root layout's
@@ -19,7 +19,8 @@ import { seoFor } from '@/lib/seo'
  * ⚠️ Do NOT move this to the root layout to "share" it — that layout renders every
  * page on the site, so a title set there is a title set everywhere.
  */
-export const metadata: Metadata = seoFor('/', {
+export async function generateMetadata(): Promise<Metadata> {
+  return seoForAsync('/', {
   title: {
     absolute: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
   },
@@ -29,6 +30,7 @@ export const metadata: Metadata = seoFor('/', {
     canonical: 'https://ciphera.net',
   },
 })
+}
 // * JSON-LD structured data for homepage
 const homepageSchemas = [
   {
