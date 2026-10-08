@@ -138,9 +138,12 @@ async function fetchDraft(slug: string, id: number | null): Promise<{ node: WpNo
   }
 }
 
+// The notice sits in the page, under the site header, and scrolls away with it (CMS design R20,
+// 08-10-2026). It was fixed to the top, where it covered the sticky header's upper half; that went
+// unseen while the preview loaded no stylesheet.
 function Banner({ status, problems }: { status: string; problems: TransformProblem[] }) {
   return (
-    <div className="fixed inset-x-0 top-0 z-50 border-b border-border bg-card px-6 py-3">
+    <div className="relative border-b border-border bg-card px-6 py-3">
       <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-x-4 gap-y-1 text-sm">
         <span className="text-foreground">
           <span className="mr-2 text-primary">●</span>
