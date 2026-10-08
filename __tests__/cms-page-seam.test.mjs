@@ -29,9 +29,10 @@ function code(p) {
 
 // ── runtime-config.ts: page ships off by default ────────────────────────────────────
 
-test('DEFAULT_RUNTIME_KINDS is still JUST glossary — page ships OFF', () => {
+test('DEFAULT_RUNTIME_KINDS does not include page — page ships OFF', () => {
   const src = code('lib/cms/runtime-config.ts')
-  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary'\]/)
+  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary', 'blog', 'route', 'redirect'\]/)
+  assert.doesNotMatch(src.match(/const DEFAULT_RUNTIME_KINDS[^\n]*/)[0], /'page'/)
 })
 
 // ── lib/cms/page-build.ts ────────────────────────────────────────────────────────────
