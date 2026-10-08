@@ -7,6 +7,7 @@ import { CMS_RUNTIME_KINDS } from '@/lib/cms/runtime-config'
 import { getGlossaryRuntimeState } from '@/lib/glossary'
 import { getBlogRuntimeState } from '@/lib/blog'
 import { getRedirectRuntimeState } from '@/lib/cms/redirect-runtime'
+import { getPageRuntimeState } from '@/lib/cms/page-runtime'
 
 /**
  * The ACTUAL half of the level-triggered deploy check (design D9).
@@ -34,6 +35,7 @@ export async function GET() {
   const blogRuntime = await getBlogRuntimeState()
   const routeRuntime = await getRouteSeoRuntimeState()
   const redirectRuntime = await getRedirectRuntimeState()
+  const pageRuntime = await getPageRuntimeState()
 
   // 🔴 `posts` IS NOT COSMETIC. A watermark is a maximum and maxima only move
   // forward, so unpublishing the newest entry makes WordPress's max fall BELOW this
@@ -117,6 +119,17 @@ export async function GET() {
           index_watermark: redirectRuntime.indexWatermark ?? null,
           published_at: redirectRuntime.publishedAt ?? null,
           count: redirectRuntime.count ?? null,
+        },
+        // 🔑 WEB-28: 'page' has NO build-time seed (no generate-pages.ts exists this
+        // round), so unlike every kind above, `source` is only ever 'cdn' or 'off' —
+        // there is no 'seed' to fall back to. `count` is the index's own item count,
+        // not a build-time constant, since none exists to compare it against.
+        page: {
+          enabled: pageRuntime.enabled,
+          source: pageRuntime.source,
+          index_watermark: pageRuntime.indexWatermark ?? null,
+          published_at: pageRuntime.publishedAt ?? null,
+          count: pageRuntime.count ?? null,
         },
       },
     },

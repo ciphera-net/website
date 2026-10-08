@@ -29,6 +29,7 @@ import { buildGlossary, type WpGlossaryTerm } from '../lib/cms/glossary-build'
 import { buildBlogPosts } from '../lib/cms/blog-build'
 import { buildRouteSeo, routeKey, type RouteSeoNode } from '../lib/cms/route-build'
 import { buildRedirects, type RedirectNode } from '../lib/cms/redirect-build'
+import { buildPages, type WpPageNode } from '../lib/cms/page-build'
 import { WP_POST_FIELDS, type WpNode } from '../lib/blog-transform'
 import { getContentIndex, type ContentIndex, type ContentIndexKind } from '../lib/cms/content-client'
 import { CONTENT_BASE } from '../lib/cms/runtime-config'
@@ -201,6 +202,18 @@ const ROUTE_QUERY = `{
 const REDIRECT_QUERY = `{
   redirects(first: 200, where: { status: PUBLISH }) {
     nodes { databaseId cipheraFrom cipheraTo modifiedGmt routeSites { nodes { slug } } }
+  }
+}`
+
+const PAGE_QUERY = `{
+  cipheraPages(first: 100, where: { status: PUBLISH }) {
+    nodes {
+      databaseId cipheraPath cipheraSections modifiedGmt
+      cipheraTitle cipheraDescription cipheraCanonical
+      cipheraOgTitle cipheraOgDescription cipheraOgImage
+      cipheraTwitterTitle cipheraTwitterDescription
+      routeSites { nodes { slug } }
+    }
   }
 }`
 
@@ -386,11 +399,68 @@ async function publishRedirect(previousIndex: ContentIndex | null): Promise<Kind
   return { indexKind, toUpload, changed, pagePatterns }
 }
 
+type PageWireNode = WpPageNode & { routeSites?: { nodes?: { slug: string }[] } }
+
+/**
+ * §4.2.1's `page` kind. Same shape as publishRoute: a page's content-addressed key is
+ * its path, slugified the SAME way every other path-keyed kind slugifies it
+ * (`routeKey` — §4.1.3a "Paths"), so a key collision between two distinct published
+ * paths is refused loudly rather than letting one page's document silently overwrite
+ * another's (identical reasoning to publishRoute's own collision guard).
+ */
+async function publishPage(previousIndex: ContentIndex | null): Promise<KindPublishResult> {
+  const data = await wpQuery<{ cipheraPages: { nodes: PageWireNode[] } }>(PAGE_QUERY)
+  const nodes = mine(data.cipheraPages?.nodes ?? [])
+  const built = buildPages(nodes)
+
+  const previousItems = previousIndex?.kinds?.page?.items ?? null
+
+  const keyToPath = new Map<string, string>()
+  for (const p of Object.keys(built.pages)) {
+    const key = routeKey(p)
+    const existing = keyToPath.get(key)
+    if (existing) throw new Error(`page: paths "${existing}" and "${p}" both slugify to key "${key}" — refusing to publish`)
+    keyToPath.set(key, p)
+  }
+
+  const docsByKey: Record<string, { path: string; bytes: string }> = {}
+  for (const [key, path] of keyToPath) {
+    const doc = buildDocument(SITE, 'page', key, built.pages[path])
+    docsByKey[key] = { path: doc.path, bytes: doc.bytes }
+  }
+  const newItems = Object.fromEntries(Object.entries(docsByKey).map(([k, v]) => [k, v.path]))
+  // No last-good merge (same reasoning as publishRoute): a page WordPress stops
+  // publishing is simply no longer a page at that address — the catch-all 404s and a
+  // migrated coded route falls back to its own code, neither of which wants a stale
+  // CDN copy resurrected under it.
+  const mergedItems = newItems
+
+  const toUpload = documentsToUpload(previousItems, mergedItems)
+    .map(({ key, path }) => {
+      const doc = docsByKey[key]
+      return doc && doc.path === path ? { path, body: doc.bytes } : null
+    })
+    .filter((w): w is { path: string; body: string } => w !== null)
+
+  const changed = kindChanged(previousItems, mergedItems)
+  const indexKind = buildIndexKind(1, built.watermark, mergedItems)
+
+  // §4.1.3a item 4, same shape as publishRoute: every CURRENTLY published path whose
+  // document actually changed, plus sitemap.xml (new/updated pages change what it
+  // lists). A path WordPress stops publishing self-heals within the existing HTML TTL,
+  // same known limitation publishRoute's own comment documents.
+  const changedPaths = Object.keys(built.pages).filter((p) => (previousItems ?? {})[routeKey(p)] !== mergedItems[routeKey(p)])
+  const pagePatterns = [...changedPaths.flatMap((p) => [p, `${p}*`]), ...(changed ? ['/sitemap.xml'] : [])]
+
+  return { indexKind, toUpload, changed, pagePatterns }
+}
+
 const KIND_PUBLISHERS: Record<string, (previousIndex: ContentIndex | null) => Promise<KindPublishResult>> = {
   glossary: publishGlossary,
   blog: publishBlog,
   route: publishRoute,
   redirect: publishRedirect,
+  page: publishPage,
 }
 
 // ── One full pass ────────────────────────────────────────────────────────────────────
