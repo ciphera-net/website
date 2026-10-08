@@ -56,7 +56,6 @@ test('every generate-*.ts script records its repairs with its own owned type', (
     'scripts/generate-seo.ts': 'route-seo',
     'scripts/generate-redirects.ts': 'redirect',
     'scripts/generate-blog-posts.ts': 'blog-post',
-    'scripts/generate-glossary.ts': 'glossary-term',
   }
   for (const [file, type] of Object.entries(scripts)) {
     const src = code(file)
@@ -64,6 +63,16 @@ test('every generate-*.ts script records its repairs with its own owned type', (
     assert.match(src, new RegExp(`REPAIR_TYPE = '${type}'`), `${file} must own the '${type}' repair type`)
     assert.match(src, /recordContentRepairs\(\[REPAIR_TYPE\], repairs\)/, `${file} must call recordContentRepairs before exiting`)
   }
+
+  // 🔑 generate-glossary.ts owns the SAME 'glossary-term' type (WEB-26), but as an alias
+  // of the constant lib/cms/glossary-build.ts exports — that module is the one shared
+  // with scripts/cms-publisher.ts, so the type string itself must be defined exactly
+  // once, not re-declared as a sibling literal that could drift from it.
+  const glossaryScript = code('scripts/generate-glossary.ts')
+  assert.match(glossaryScript, /import \{ recordContentRepairs \} from '\.\.\/lib\/content-repair-log'/)
+  assert.match(glossaryScript, /const REPAIR_TYPE = GLOSSARY_REPAIR_TYPE/)
+  assert.match(glossaryScript, /recordContentRepairs\(\[REPAIR_TYPE\], repairs\)/)
+  assert.match(code('lib/cms/glossary-build.ts'), /export const GLOSSARY_REPAIR_TYPE = 'glossary-term'/)
 })
 
 test('/sys/seo-state exposes repairs and repairs_detail, and keeps every existing field', () => {
