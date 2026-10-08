@@ -243,10 +243,19 @@ function Section({ section, index }: { section: PageSection; index: number }) {
   }
 }
 
-export function CmsPage({ page }: { page: PageDocument }) {
+/**
+ * `breadcrumbs`: a migratable product page (build task §3) keeps its OWN
+ * SoftwareApplication + BreadcrumbList JSON-LD in code — contract §5: that
+ * structured data is "derived" from the product's own identity, not from section
+ * content, so it stays exactly as it is whichever version of the page is live
+ * (Phase E). Pass `breadcrumbs={false}` there so this component does not also emit
+ * a second, generic BreadcrumbList. Defaults to `true` (the catch-all's new pages,
+ * which have no coded breadcrumb of their own).
+ */
+export function CmsPage({ page, breadcrumbs = true }: { page: PageDocument; breadcrumbs?: boolean }) {
   return (
     <>
-      <Breadcrumbs items={breadcrumbItemsForPath(page.path)} />
+      {breadcrumbs && <Breadcrumbs items={breadcrumbItemsForPath(page.path)} />}
       {page.sections.map((section, i) => (
         <Section key={`${section.type}-${i}`} section={section} index={i} />
       ))}

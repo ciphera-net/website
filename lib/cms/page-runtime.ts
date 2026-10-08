@@ -11,10 +11,11 @@
  * exactly what "no CMS page at this path" already means to every caller (render the
  * coded route, or 404 on the catch-all), never a stale page nor a thrown error.
  */
+import type { Metadata } from 'next'
 import { getContentDocument, getContentIndex } from './content-client'
 import { isRuntimeKind, SITE_KEY } from './runtime-config'
 import { routeKey } from './route-build'
-import type { PageDocument } from './page-build'
+import type { PageDocument, PageSeo } from './page-build'
 
 const KIND = 'page'
 const KNOWN_SCHEMA = 1
@@ -63,6 +64,48 @@ export async function resolvePage(path: string): Promise<PageDocument | undefine
     lastState = { enabled: true, source: 'off' }
     return undefined
   }
+}
+
+/**
+ * Merge a published page's own SEO fields over a coded page's fallback `Metadata`,
+ * field by field (build task §3, the pulse-website `mergePageSeo` pattern:
+ * `Pulse/pulse-website` `lib/cms-pages.ts`). A CMS SEO `title` is the FULL title
+ * tag — "Ciphera Captcha - Privacy-First Bot Protection | Ciphera" — so it is
+ * applied `absolute`, the same device the catch-all route already uses for a new
+ * CMS-only page; this is that same rule, shared rather than duplicated, so a
+ * migratable page's own `generateMetadata` can call it too (build task §3's
+ * "keeping each page's generateMetadata … behaviour").
+ */
+export function mergePageSeo(path: string, fallback: Metadata, seo: PageSeo | undefined): Metadata {
+  if (!seo) return fallback
+  const merged: Metadata = { ...fallback }
+
+  if (seo.title) merged.title = { absolute: seo.title }
+  if (seo.description) merged.description = seo.description
+
+  const canonical = seo.canonical || `https://ciphera.net${path}`
+  merged.alternates = { ...(fallback.alternates ?? {}), canonical }
+
+  const title = seo.ogTitle || seo.title
+  const description = seo.ogDescription || seo.description
+  const fbOg = (fallback.openGraph ?? {}) as Record<string, unknown>
+  merged.openGraph = {
+    ...fbOg,
+    ...(title ? { title } : {}),
+    ...(description ? { description } : {}),
+    url: canonical,
+    ...(seo.ogImage ? { images: [{ url: seo.ogImage, width: 1200, height: 630, alt: title || 'Ciphera' }] } : {}),
+  }
+
+  const fbTw = (fallback.twitter ?? {}) as Record<string, unknown>
+  merged.twitter = {
+    ...fbTw,
+    ...(seo.twitterTitle || seo.title ? { title: seo.twitterTitle || seo.title } : {}),
+    ...(seo.twitterDescription || seo.description ? { description: seo.twitterDescription || seo.description } : {}),
+    ...(seo.ogImage ? { images: [seo.ogImage] } : {}),
+  }
+
+  return merged
 }
 
 /** `/sys/seo-state`'s runtime block reads this — forces a fresh resolution first. */

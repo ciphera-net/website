@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
+import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
+import { CmsPage } from '@/components/cms/CmsPage'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PulseMockupTall } from '@/components/ui/pulse-mockup'
@@ -23,8 +25,10 @@ import {
   XIcon,
 } from '@ciphera-net/facet'
 
+const CMS_PATH = '/products/pulse'
+
 export async function generateMetadata(): Promise<Metadata> {
-  return seoForAsync('/products/pulse', {
+  const base = await seoForAsync(CMS_PATH, {
     title: 'Pulse Analytics - Privacy-First Website Analytics',
     description:
       'Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded. Open-source client.',
@@ -56,6 +60,9 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [cdnUrl('/og-pulse.png')],
     },
   })
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
 const pulseSchema = [
@@ -128,7 +135,18 @@ const PULSE_FEATURES = [
   },
 ] as const
 
-export default function PulsePage() {
+export default async function PulsePage() {
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  if (cms) {
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pulseSchema) }} />
+        <CmsPage page={cms} breadcrumbs={false} />
+      </>
+    )
+  }
+
   return (
     <>
       <script

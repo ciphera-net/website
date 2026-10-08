@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
+import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
+import { CmsPage } from '@/components/cms/CmsPage'
 import Link from 'next/link'
 import Image from 'next/image'
 import { RelayMockup } from '@/components/ui/relay-mockup'
@@ -21,8 +23,10 @@ import {
   EnvelopeSimple,
 } from '@phosphor-icons/react/dist/ssr'
 
+const CMS_PATH = '/products/relay'
+
 export async function generateMetadata(): Promise<Metadata> {
-  return seoForAsync('/products/relay', {
+  const base = await seoForAsync(CMS_PATH, {
     title: 'Ciphera Relay - Secure Email Infrastructure',
     description:
       'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking, Swiss hosted.',
@@ -54,6 +58,9 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [cdnUrl('/relay_icon_no_margins.png')],
     },
   })
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
 const relaySchema = [
@@ -102,7 +109,18 @@ const RELAY_FEATURES = [
   },
 ] as const
 
-export default function CipheraRelayPage() {
+export default async function CipheraRelayPage() {
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  if (cms) {
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(relaySchema) }} />
+        <CmsPage page={cms} breadcrumbs={false} />
+      </>
+    )
+  }
+
   return (
     <>
       <script

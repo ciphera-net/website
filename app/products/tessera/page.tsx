@@ -1,13 +1,17 @@
 import type { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
+import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
+import { CmsPage } from '@/components/cms/CmsPage'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, GithubIcon } from '@ciphera-net/facet'
 import { authShowcaseBg, authIcon, pulseIcon } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
 
+const CMS_PATH = '/products/tessera'
+
 export async function generateMetadata(): Promise<Metadata> {
-  return seoForAsync('/products/tessera', {
+  const base = await seoForAsync(CMS_PATH, {
     title: 'Tessera - Open-Source OPAQUE Authentication',
     description:
       'Tessera is Ciphera’s open-source OPAQUE authentication library (Apache-2.0): a Rust core and sidecar, a Go server SDK, and a browser SDK. Zero-knowledge auth where the password never reaches the server.',
@@ -40,6 +44,9 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [cdnUrl('/ciphera_logo_no_margins.png')],
     },
   })
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
 const tesseraSchema = [
@@ -109,7 +116,18 @@ const packages = [
   },
 ] as const
 
-export default function TesseraPage() {
+export default async function TesseraPage() {
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  if (cms) {
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(tesseraSchema) }} />
+        <CmsPage page={cms} breadcrumbs={false} />
+      </>
+    )
+  }
+
   return (
     <>
       <script

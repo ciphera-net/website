@@ -45,12 +45,20 @@ export const RICH_TEXT_TAGS = ['p', 'a', 'strong', 'em', 'code', 'br'] as const
 
 /**
  * A path the CMS's catch-all/override rendering is allowed to reach for THIS site
- * (design §4.1.3a Phase E, §4.2.1 "Rendering rule"). Empty for ciphera.net this round
- * — its product pages are migrated in a later step (§4.2.1 "Order", item 5) — so
- * every one of its own coded routes stays coded for now, and only a path NO coded
- * route owns can serve from the CMS (via the catch-all).
+ * (design §4.1.3a Phase E, §4.2.1 "Rendering rule"). Four of the five product pages
+ * (build task §3): `/products/id` is NOT here yet — its hero trust-badge layout and
+ * "the vault" section need `@ciphera-net/facet-sections` 0.3.0 (ProductBanner's own
+ * doc comment: Ciphera ID's badges are a one-off vertical-bar-divider layout this
+ * package does not render), being built in parallel. Every other coded route (legal,
+ * trust, blog, glossary, learn, /products/id itself) stays coded; only a path NO
+ * coded route owns, or one of these four, can serve from the CMS.
  */
-export const MIGRATABLE_PAGE_PATHS: readonly string[] = []
+export const MIGRATABLE_PAGE_PATHS: readonly string[] = [
+  '/products/captcha',
+  '/products/pulse',
+  '/products/relay',
+  '/products/tessera',
+]
 
 /**
  * Top-level path prefixes a coded route owns today. Not exhaustive of every segment
