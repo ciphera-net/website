@@ -14,7 +14,22 @@ import type { PageDocument, PageSection } from '@/lib/cms/page-build'
  * FAQPage JSON-LD (§4.2.1: "the FAQ component already emits it") — there is nothing
  * for this component to add there. BreadcrumbList comes from the path alone, via the
  * same `Breadcrumbs` component every coded page already uses.
+ *
+ * 🔴 `SeoPageCta`'s OWN defaults are pulse-website's copy ("Try privacy-first
+ * analytics free…", "View live demo" → `/demo`) — `@ciphera-net/facet-sections` was
+ * promoted FROM pulse-website, so that is what a `closing-cta` section with an empty
+ * title/text rendered on ciphera.net until this fix. The §4.2.1 block has no
+ * secondary-link fields at all (the agency sets only `title`/`text`), so the
+ * secondary action is ALWAYS ours, title/body default to ciphera.net's own standard
+ * ending — the homepage's `ClosingCta` copy (`components/ClosingCta.tsx`), condensed
+ * to the plain eyebrow/title/body shape this shared section takes — whether or not
+ * the agency filled the section in.
  */
+const CIPHERA_CLOSING_CTA_TITLE = 'Own your data.'
+const CIPHERA_CLOSING_CTA_BODY =
+  'One Ciphera ID account signs you in to every product we build. Your password never leaves your device, and we authenticate you without ever seeing your credentials.'
+const CIPHERA_CLOSING_CTA_SECONDARY_HREF = '/products'
+const CIPHERA_CLOSING_CTA_SECONDARY_LABEL = 'Explore products'
 
 /** "/products/pulse" -> [{label:'Products', href:'/products'}, {label:'Pulse'}] — the
  * last segment carries no `href` (it is the current page, same convention every
@@ -61,7 +76,15 @@ function Section({ section, index }: { section: PageSection; index: number }) {
       ) : null
 
     case 'closing-cta':
-      return <SeoPageCta title={section.title || undefined} body={section.text || undefined} LinkComponent={CmsLink} />
+      return (
+        <SeoPageCta
+          title={section.title || CIPHERA_CLOSING_CTA_TITLE}
+          body={section.text || CIPHERA_CLOSING_CTA_BODY}
+          secondaryHref={CIPHERA_CLOSING_CTA_SECONDARY_HREF}
+          secondaryLabel={CIPHERA_CLOSING_CTA_SECONDARY_LABEL}
+          LinkComponent={CmsLink}
+        />
+      )
 
     default:
       // Unreachable: lib/cms/page-build.ts already drops any section type it does
