@@ -94,7 +94,7 @@ async function main() {
   // checks them, not TypeScript, not a test. 🔑 P1-a point 3: there is no field-level repair
   // for a CODE file linking to a term the CMS no longer publishes (rewriting a hardcoded
   // link is not a content repair), so this ships the glossary UNCHANGED and FLAGS it for
-  // the owner's review instead of failing every unrelated term's build. 🔑 BUILD-TIME ONLY
+  // review instead of failing every unrelated term's build. 🔑 BUILD-TIME ONLY
   // (WEB-26): this walks the checked-out source tree, which a publish-time pass does not
   // have — scripts/cms-publisher.ts does not run this scan.
   const slugs = new Set(terms.map((t) => t.slug))
