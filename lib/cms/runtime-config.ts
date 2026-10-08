@@ -21,8 +21,15 @@
  * new image).
  */
 
-/** Kinds served at request time from the CDN, once Phase 5 starts flipping them on. */
-const DEFAULT_RUNTIME_KINDS: readonly string[] = []
+/**
+ * Kinds served at request time from the CDN (design §4.1.3a). 🔑 A CODE CONSTANT, NOT ONLY AN
+ * ENV VAR: Next decides static vs dynamic at BUILD time, and the seam's no-store fetch is what
+ * makes a kind's routes dynamic, so a kind must be on in the build that serves it (measured:
+ * with 'glossary' on, /glossary, /glossary/[slug], /sitemap.xml build as ƒ). And Magic
+ * Containers' env cannot gain a variable through the pipeline. Rolling a kind back is removing
+ * it here; the seed in the image covers any CDN failure meanwhile.
+ */
+const DEFAULT_RUNTIME_KINDS: readonly string[] = ['glossary']
 
 function parseKinds(raw: string | undefined): Set<string> {
   if (!raw) return new Set(DEFAULT_RUNTIME_KINDS)
