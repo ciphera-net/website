@@ -1,8 +1,11 @@
 import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
+import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
+import { CmsPage } from '@/components/cms/CmsPage'
 import Link from 'next/link'
 import Image from 'next/image'
 import { RelayMockup } from '@/components/ui/relay-mockup'
+import { RelaySmtpEnvCode } from '@/components/ui/relay-smtp-env-code'
 import { relayIcon, genA10, zurichPhoto } from '@/lib/images'
 import { cdnUrl } from '@/lib/cdn'
 import {
@@ -20,8 +23,10 @@ import {
   EnvelopeSimple,
 } from '@phosphor-icons/react/dist/ssr'
 
+const CMS_PATH = '/products/relay'
+
 export async function generateMetadata(): Promise<Metadata> {
-  return seoForAsync('/products/relay', {
+  const base = await seoForAsync(CMS_PATH, {
     title: 'Ciphera Relay - Secure Email Infrastructure',
     description:
       'Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking, Swiss hosted.',
@@ -53,6 +58,9 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [cdnUrl('/relay_icon_no_margins.png')],
     },
   })
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
 const relaySchema = [
@@ -101,7 +109,18 @@ const RELAY_FEATURES = [
   },
 ] as const
 
-export default function CipheraRelayPage() {
+export default async function CipheraRelayPage() {
+  // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
+  const cms = await resolvePage(CMS_PATH)
+  if (cms) {
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(relaySchema) }} />
+        <CmsPage page={cms} breadcrumbs={false} />
+      </>
+    )
+  }
+
   return (
     <>
       <script
@@ -238,45 +257,7 @@ export default function CipheraRelayPage() {
         <div className="grid lg:grid-cols-2">
           {/* Visual cell — left on desktop */}
           <div className="relative min-h-[400px] order-last border-t border-border lg:order-first lg:border-r lg:border-t-0 flex items-center justify-center px-6 py-12 bg-card">
-            <div className="w-full max-w-md min-w-0">
-              {/* SMTP config mockup — flat, sharp */}
-              <div className="border border-border bg-background p-6 space-y-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 bg-muted-foreground/30" />
-                  <div className="w-2 h-2 bg-muted-foreground/30" />
-                  <div className="w-2 h-2 bg-muted-foreground/30" />
-                  <span className="font-mono text-[10px] text-muted-foreground ml-2">.env</span>
-                </div>
-                <pre className="font-mono text-[11px] leading-relaxed">
-                  <code>
-                    <span className="text-muted-foreground"># SMTP configuration</span>{'\n'}
-                    <span className="text-foreground">SMTP_HOST</span>
-                    <span className="text-muted-foreground">=</span>
-                    <span className="text-primary">relay.ciphera.net</span>{'\n'}
-                    <span className="text-foreground">SMTP_PORT</span>
-                    <span className="text-muted-foreground">=</span>
-                    <span className="text-primary">587</span>{'\n'}
-                    <span className="text-foreground">SMTP_USER</span>
-                    <span className="text-muted-foreground">=</span>
-                    <span className="text-primary">idnoreply</span>{'\n'}
-                    <span className="text-foreground">SMTP_FROM</span>
-                    <span className="text-muted-foreground">=</span>
-                    <span className="text-primary">noreply@id.ciphera.net</span>{'\n'}
-                    {'\n'}
-                    <span className="text-muted-foreground"># Per-service sender domains</span>{'\n'}
-                    <span className="text-muted-foreground/60"># ID    → noreply@id.ciphera.net</span>{'\n'}
-                    <span className="text-muted-foreground/60"># Pulse → noreply@pulse.ciphera.net</span>
-                  </code>
-                </pre>
-                <div className="flex items-center justify-between text-[10px] text-muted-foreground border-t border-border pt-3">
-                  <span>Standard SMTP AUTH — works with any language</span>
-                  <span className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 bg-primary" />
-                    STARTTLS
-                  </span>
-                </div>
-              </div>
-            </div>
+            <RelaySmtpEnvCode />
           </div>
 
           {/* Copy cell */}

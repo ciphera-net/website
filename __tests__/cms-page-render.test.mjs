@@ -22,7 +22,7 @@ function code(p) {
 
 test('@ciphera-net/facet-sections is a dependency, and its dist is in the Tailwind content scan', () => {
   const pkg = JSON.parse(read('package.json'))
-  assert.match(pkg.dependencies['@ciphera-net/facet-sections'], /^\^0\.1\./)
+  assert.match(pkg.dependencies['@ciphera-net/facet-sections'], /^\^0\.2\./)
   // read(), not code(): the glob's "/**/" reads as a block comment to the naive stripper.
   const tw = read('tailwind.config.ts')
   assert.match(tw, /node_modules\/@ciphera-net\/facet-sections\/dist\/\*\*\/\*\.\{js,mjs,cjs\}/)
