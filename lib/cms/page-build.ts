@@ -65,11 +65,14 @@ export const MIGRATABLE_PAGE_PATHS: readonly string[] = []
  * when a route is added, which is rare and already a PR.
  */
 export const CODED_ROUTE_PREFIXES: readonly string[] = [
+  // Every top-level directory actually under `app/` on this site today.
   '/about', '/what-is-ciphera', '/press', '/sustainability', '/contact',
-  '/products', '/pricing', '/demo', '/changelog',
-  '/privacy', '/terms', '/trust',
-  '/blog', '/glossary', '/learn',
-  '/security', '/companies', '/comparison', // Tier 1 (next.config.ts)
+  '/products', '/privacy', '/terms', '/trust', '/blog', '/glossary', '/learn',
+  // Tier 1 (next.config.ts, mirrored by lib/cms/redirect-build.ts's TIER1_EXACT /
+  // TIER1_PREFIX) — permanent redirects, not a directory under `app/`, but a path
+  // next.config.ts intercepts before any page ever renders, so a page published
+  // there would be unreachable regardless.
+  '/security', '/companies', '/comparison', '/transparency',
   '/preview', '/sys', // internal, never a page address
 ]
 
@@ -99,7 +102,7 @@ export function isSafeHref(href: string): boolean {
  * through (no scheme to check). This closes that one gap; everything else about the
  * allowlist is rehype-sanitize's job.
  */
-function dropUnsafeHrefs() {
+export function dropUnsafeHrefs() {
   return (tree: Root) => {
     visit(tree, 'element', (node: Element) => {
       if (node.tagName !== 'a') return
@@ -111,7 +114,11 @@ function dropUnsafeHrefs() {
   }
 }
 
-const richTextSchema: SanitizeSchema = {
+/** Exported so `components/cms/CmsRichText.tsx` parses-to-React against the SAME
+ * allowlist this module sanitises to at publish time — one definition, not two that
+ * could drift (the render side still parses fresh rather than trusting the stored
+ * bytes; see that component's own header for why). */
+export const richTextSchema: SanitizeSchema = {
   ...defaultSchema,
   tagNames: [...RICH_TEXT_TAGS],
   attributes: { a: ['href'] },
@@ -324,6 +331,33 @@ function compactSeo(n: WpPageNode): PageSeo {
 }
 
 /**
+ * One node's CONTENT — sections and SEO, never mind whether its path is publishable
+ * — for the ONE caller that must render a page regardless of address problems: the
+ * draft preview (`app/preview/page/[id]/page.tsx`). An editor previewing a page that
+ * has no path yet, or one that collides with a coded route, still needs to see the
+ * sections they just wrote; path validity is the publisher's and the review queue's
+ * concern (`ciphera_page_review_checks` in WordPress already flags it there), not a
+ * reason to render nothing. `buildPages()` below is the publishable-address gate;
+ * this is what it calls once a node has cleared that gate.
+ */
+export function buildPageDocument(
+  n: WpPageNode,
+  repair: (field: string, action: ContentRepairEntry['action'], detail: string) => void
+): PageDocument {
+  const sections = buildSections(n.cipheraSections, repair)
+  if (sections.length === 0) {
+    repair('sections', 'flagged', 'this page has no sections — it would render empty')
+  }
+  return {
+    path: str(n.cipheraPath).trim(),
+    databaseId: n.databaseId,
+    modifiedGmt: n.modifiedGmt ?? '',
+    seo: compactSeo(n),
+    sections,
+  }
+}
+
+/**
  * Published, site-filtered `cipheraPages` GraphQL nodes → the pages this site renders,
  * keyed by path, every repair/skip recorded, and the watermark the caller folds into
  * its own. `migratablePaths` defaults to this site's own list (§4.2.1: empty for
@@ -376,17 +410,7 @@ export function buildPages(nodes: WpPageNode[], migratablePaths: readonly string
   const pages: Record<string, PageDocument> = {}
   for (const [path, n] of chosen) {
     const ref = n.databaseId != null ? `wp-db-${n.databaseId}` : path
-    const sections = buildSections(n.cipheraSections, (field, action, detail) => repair(ref, field, action, detail))
-    if (sections.length === 0) {
-      repair(ref, 'sections', 'flagged', 'this page has no sections — it would render empty')
-    }
-    pages[path] = {
-      path,
-      databaseId: n.databaseId,
-      modifiedGmt: n.modifiedGmt ?? '',
-      seo: compactSeo(n),
-      sections,
-    }
+    pages[path] = buildPageDocument(n, (field, action, detail) => repair(ref, field, action, detail))
   }
 
   const watermark = [...chosen.values()].map((n) => n.modifiedGmt ?? '').filter(Boolean).sort().at(-1) ?? ''

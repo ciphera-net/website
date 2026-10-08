@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@ciphera-net/facet": "^0.4.1",
+    "@ciphera-net/facet-sections": "^0.1.0",
     "@ciphera-net/facet-tailwind": "^0.2.0",
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-accordion": "^1.2.13",
@@ -48,6 +49,7 @@
     "rehype-parse": "^9.0.1",
     "rehype-react": "^8.0.0",
     "rehype-sanitize": "^6.0.0",
+    "rehype-stringify": "^10.0.1",
     "remark-gfm": "^4.0.1",
     "svg-dotted-map": "^2.0.1",
     "tailwind-merge": "^3.5.0",

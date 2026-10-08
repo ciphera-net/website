@@ -70,3 +70,31 @@ export async function getPageRuntimeState(): Promise<PageRuntimeState> {
   await resolvePage('/__sys_page_runtime_state_probe__')
   return lastState
 }
+
+/**
+ * Every published CMS page, for `app/sitemap.ts` (§4.2.1: "the sitemap reads the
+ * same CDN index"). `[]` when 'page' is off, the index is unreachable, or nothing is
+ * published — a sitemap entry that disappeared is simply not listed, never an error.
+ * One item's own document failing to fetch drops just that item (no seed to fall
+ * back to, same as `resolvePage`), not the whole sitemap.
+ */
+export async function getAllPages(): Promise<PageDocument[]> {
+  if (!isRuntimeKind(KIND)) return []
+  try {
+    const index = await getContentIndex(SITE_KEY)
+    const kind = index?.kinds?.[KIND]
+    if (!index || !kind || kind.schema !== KNOWN_SCHEMA) return []
+    const docs = await Promise.all(
+      Object.values(kind.items).map(async (docPath) => {
+        try {
+          return await getContentDocument<PageDocument>(docPath)
+        } catch {
+          return null
+        }
+      })
+    )
+    return docs.filter((d): d is PageDocument => d !== null)
+  } catch {
+    return []
+  }
+}
