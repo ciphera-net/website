@@ -1,6 +1,6 @@
 /**
  * M2 render-comparison harness. NOT shipped — bundled by esbuild and run standalone by
- * `__tests__/menu-render-proof.test.mjs` only, never imported by the app itself.
+ * `__tests__/menu-render-proof.render.mjs` only (run by `npm run test:render` after `npm ci` in build.yml and push.yml), never imported by the app itself.
  *
  * Renders the FROZEN pre-refactor Header/Footer (`__tests__/fixtures/legacy-*.tsx`,
  * captured before this change touched either file) and the REFACTORED, document-driven
