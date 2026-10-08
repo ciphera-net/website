@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { BlogPostView } from '@/components/blog/post-view'
 import { getBlogPosts } from '@/lib/blog'
-import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode, type TransformProblem } from '@/lib/blog-transform'
+import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode } from '@/lib/blog-transform'
 
 /**
  * Draft preview for the CMS.
@@ -141,7 +141,11 @@ async function fetchDraft(slug: string, id: number | null): Promise<{ node: WpNo
 // The notice sits in the page, under the site header, and scrolls away with it (CMS design R20,
 // 08-10-2026). It was fixed to the top, where it covered the sticky header's upper half; that went
 // unseen while the preview loaded no stylesheet.
-function Banner({ status, problems }: { status: string; problems: TransformProblem[] }) {
+// It no longer lists the transform's problems (R22, 08-10-2026): it said they "would stop this
+// publishing", true when one bad post failed the site's build and false since content can no longer
+// fail a build (WEB-22: the post is skipped, everything else publishes). The review page's Checks
+// list the same problems where the reviewer acts on them.
+function Banner({ status }: { status: string }) {
   return (
     <div className="relative border-b border-border bg-card px-6 py-3">
       <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-x-4 gap-y-1 text-sm">
@@ -149,12 +153,6 @@ function Banner({ status, problems }: { status: string; problems: TransformProbl
           <span className="mr-2 text-primary">●</span>
           Preview — <span className="tabular-nums">{status}</span>. This is not the live page.
         </span>
-        {problems.length > 0 && (
-          <span className="text-muted-foreground">
-            {problems.length} thing{problems.length > 1 ? 's' : ''} would stop this publishing:{' '}
-            {problems.map((p) => p.message).join('; ')}
-          </span>
-        )}
       </div>
     </div>
   )
@@ -236,17 +234,14 @@ export default async function PreviewPage({
     renderNode = { ...node, slug: decoded }
   }
 
-  const { post, problems } = transformWpPost(renderNode, CDN)
+  const { post } = transformWpPost(renderNode, CDN)
   if (!post) notFound()
 
-  // ⚠️ The transform reports problems rather than throwing them, so the preview can
-  // render the post AND say what would stop it publishing. The build turns the same
-  // list into a red pipeline. One transform, two consequences (lib/blog-transform.ts).
   const status = node.slug && post.date ? `draft or published, last saved ${post.dateModified}` : 'draft'
 
   return (
     <>
-      <Banner status={status} problems={problems} />
+      <Banner status={status} />
       <BlogPostView
         post={{ ...post, content: post.html, body: { kind: 'html', content: post.html } }}
         allPosts={getBlogPosts()}
