@@ -29,10 +29,10 @@ function code(p) {
 
 // ── runtime-config.ts: page ships off by default ────────────────────────────────────
 
-test('DEFAULT_RUNTIME_KINDS does not include page — page ships OFF', () => {
+test('DEFAULT_RUNTIME_KINDS includes page — the product pages and new CMS pages are served from the CMS (on since 09-10-2026)', () => {
   const src = code('lib/cms/runtime-config.ts')
-  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary', 'blog', 'route', 'redirect', 'menu'\]/)
-  assert.doesNotMatch(src.match(/const DEFAULT_RUNTIME_KINDS[^\n]*/)[0], /'page'/)
+  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary', 'blog', 'route', 'redirect', 'menu', 'page'\]/)
+  assert.match(src.match(/const DEFAULT_RUNTIME_KINDS[^\n]*/)[0], /'page'/)
 })
 
 // ── lib/cms/page-build.ts ────────────────────────────────────────────────────────────
