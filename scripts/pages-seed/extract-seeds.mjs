@@ -82,13 +82,13 @@ function litValue(node) {
   if (!node) return ''
   switch (node.type) {
     case 'StringLiteral':
-      return node.value
+      return escapeHtmlText(node.value) // every seed string is HTML-escaped (see escapeHtmlText)
     case 'NumericLiteral':
       return node.value
     case 'BooleanLiteral':
       return node.value
     case 'TemplateLiteral':
-      if (node.expressions.length === 0) return node.quasis.map((q) => q.value.cooked).join('')
+      if (node.expressions.length === 0) return escapeHtmlText(node.quasis.map((q) => q.value.cooked).join(''))
       break
     case 'Identifier':
       if (ICON_KEY_BY_COMPONENT[node.name]) return ICON_KEY_BY_COMPONENT[node.name]
@@ -163,26 +163,32 @@ function elementChildren(el) {
  * nested `<p>` would double-wrap). `Link`/`a` -> `<a href>`, `br` -> `<br>` (with
  * `class` preserved — the one hero-heading case that needs it), `strong`/`em`/`code`
  * passed through, anything else (a decorative icon) contributes nothing. */
-function richInline(children) {
+/** Babel hands us DECODED JSX text (`&lt;head&gt;` arrives as `<head>`), so text is escaped again before it is written:
+ * measured 09-10-2026, "your site's <head> section" (a plain FAQ answer) lost `<head>` to kses on import. */
+function escapeHtmlText(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+function richInline(children, escape = escapeHtmlText) {
   let out = ''
   for (const node of children) {
     if (node.type === 'JSXText') {
-      out += normalizeJsxText(node.value)
+      out += escape(normalizeJsxText(node.value))
     } else if (node.type === 'JSXExpressionContainer') {
       const e = node.expression
-      if (e.type === 'StringLiteral') out += e.value
+      if (e.type === 'StringLiteral') out += escape(e.value)
       else if (e.type === 'JSXEmptyExpression') continue
       else throw new Error(`richInline: unexpected expression ${e.type} at line ${node.loc?.start.line}`)
     } else if (node.type === 'JSXElement') {
       const tag = tagName(node)
       if (tag === 'a' || tag === 'Link') {
         const href = jsxAttrString(node, 'href')
-        out += `<a href="${href}">${richInline(node.children)}</a>`
+        out += `<a href="${href.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">${richInline(node.children, escape)}</a>`
       } else if (tag === 'br') {
         const cls = jsxAttrString(node, 'className')
         out += cls ? `<br class="${cls}">` : '<br>'
       } else if (tag === 'strong' || tag === 'em' || tag === 'code') {
-        out += `<${tag}>${richInline(node.children)}</${tag}>`
+        out += `<${tag}>${richInline(node.children, escape)}</${tag}>`
       } // else: a decorative inline icon component — contributes no text.
     }
   }
@@ -197,6 +203,11 @@ function plainText(children) {
   }
   return richInline(children)
 }
+
+/** Every field is written HTML-escaped (09-10-2026): WordPress runs kses over EVERY block attribute on save, so a literal
+ * `<head>` in any field — plain or rich — would be stripped. WordPress decodes the PLAIN fields when it parses them; the
+ * RICH ones (the fields lib/cms/page-build.ts sanitises) stay HTML. simulate-wordpress.mjs models exactly that split. */
+const richHtml = richInline
 
 /** The first DESCENDANT with this tag — never matches `el` itself, even when `el`'s
  * own tag happens to equal `tag` (e.g. `firstByTag(aDiv, 'div')` must find the first
@@ -420,8 +431,8 @@ function productBanner(sectionEl, variant) {
   const kids = elementChildren(contentDiv)
 
   const label = plainText(kids[0].children)
-  const heading = richInline(kids[1].children)
-  const body = richInline(kids[2].children)
+  const heading = richHtml(kids[1].children)
+  const body = richHtml(kids[2].children)
 
   let badgeStyle = 'dots'
   let trustBadges = []
@@ -439,7 +450,7 @@ function productBanner(sectionEl, variant) {
     } else if (t === 'dl') {
       stats = (firstArrayExpression(k)?.elements ?? []).map((el) => litValue(el))
     } else if (t === 'p') {
-      footnote = richInline(k.children)
+      footnote = richHtml(k.children)
     }
   }
 
@@ -543,7 +554,7 @@ function featureSplit(sectionEl) {
   // featureSplitText() for the mirrored collapse on this site's own read side.
   const textParas = []
   while (copyKids[i] && tagName(copyKids[i]) === 'p') {
-    textParas.push({ text: richInline(copyKids[i].children) })
+    textParas.push({ text: richHtml(copyKids[i].children) })
     i++
   }
   let bullets = []
@@ -575,7 +586,7 @@ function featureSplit(sectionEl) {
       }
     } else {
       const cls = jsxAttrString(node, 'className')
-      const text = richInline(node.children)
+      const text = richHtml(node.children)
       if (cls.includes('text-sm')) note = text
       else trailingText = text
     }
@@ -660,7 +671,7 @@ function featureGrid(sectionEl) {
   const heading = richInline(kids[i].children); i++
   let dek = ''
   if (kids[i] && tagName(kids[i]) === 'p') {
-    dek = richInline(kids[i].children)
+    dek = richHtml(kids[i].children)
     i++
   }
   const grid = kids[i]; i++ // the `grid gap-px border...` items row
@@ -694,7 +705,7 @@ function comparisonCards(sectionEl) {
   let i = 0
   const label = plainText(kids[i].children); i++
   const heading = richInline(kids[i].children); i++
-  const intro = richInline(kids[i].children); i++
+  const intro = richHtml(kids[i].children); i++
   let statsStrip = []
   if (kids[i] && tagName(kids[i]) === 'dl') {
     statsStrip = (firstArrayExpression(kids[i])?.elements ?? []).map((el) => litValue(el))
@@ -804,7 +815,7 @@ function contentBlockNone(sectionEl) {
   let i = 0
   const label = plainText(kids[i].children); i++
   const heading = richInline(kids[i].children); i++
-  const text = richInline(kids[i].children); i++
+  const text = richHtml(kids[i].children); i++
   let bullets = []
   let bulletStyle = 'check'
   if (kids[i] && tagName(kids[i]) === 'ul') {
@@ -814,7 +825,7 @@ function contentBlockNone(sectionEl) {
     i++
   }
   let note = ''
-  if (kids[i] && tagName(kids[i]) === 'p') note = richInline(kids[i].children)
+  if (kids[i] && tagName(kids[i]) === 'p') note = richHtml(kids[i].children)
   return { label, heading, text, device: 'none', bullets, bulletStyle, note }
 }
 
@@ -823,7 +834,7 @@ function contentBlockCredentialTable(sectionEl) {
   const kids = elementChildren(outer)
   const label = plainText(kids[0].children)
   const heading = richInline(kids[1].children)
-  const text = richInline(kids[2].children)
+  const text = richHtml(kids[2].children)
   const tableDiv = kids[3]
   const tableKids = elementChildren(tableDiv)
   const headerDiv = tableKids[0]

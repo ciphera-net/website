@@ -232,7 +232,7 @@ export default async function CipheraIDPage() {
               Your password never leaves your device.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              With <Link href="/glossary/opaque" className="text-primary hover:underline">OPAQUE</Link> (RFC 9807), your password is stretched on your
+              With <Link href="/glossary/opaque" className="text-primary hover:underline">OPAQUE</Link>{' '}(RFC 9807), your password is stretched on your
               device with Argon2id and proven to our servers without ever
               being sent. We store only an opaque credential record that
               can&apos;t be reversed into your password — so even a full

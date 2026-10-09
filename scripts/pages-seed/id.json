@@ -44,7 +44,7 @@
         "primaryButtonLabel": "Read the open implementation",
         "primaryButtonHref": "/products/tessera",
         "primaryButtonExternal": false,
-        "secondaryButtonLabel": "Trust & Security",
+        "secondaryButtonLabel": "Trust &amp; Security",
         "secondaryButtonHref": "/trust",
         "secondaryButtonExternal": false,
         "footnote": ""
