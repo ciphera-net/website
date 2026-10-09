@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
 import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
 import { CmsPage } from '@/components/cms/CmsPage'
+import { PRODUCT_SCHEMA } from '@/lib/cms/product-schema'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, CheckIcon, GithubIcon } from '@ciphera-net/facet'
@@ -50,33 +51,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
-const tesseraSchema = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareSourceCode',
-    name: 'Tessera',
-    description:
-      'Open-source OPAQUE (RFC 9807) authentication library: a Rust core and sidecar, a Go server SDK, and a browser SDK. Asymmetric password-authenticated key exchange where the password never reaches the server.',
-    url: 'https://ciphera.net/products/tessera',
-    codeRepository: [
-      'https://github.com/ciphera-net/tessera',
-      'https://github.com/ciphera-net/tessera-go',
-      'https://github.com/ciphera-net/tessera-ts',
-    ],
-    programmingLanguage: ['Rust', 'Go', 'TypeScript'],
-    license: 'https://www.apache.org/licenses/LICENSE-2.0',
-    provider: { '@id': 'https://ciphera.net/#organization' },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ciphera.net' },
-      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://ciphera.net/#products' },
-      { '@type': 'ListItem', position: 3, name: 'Tessera' },
-    ],
-  },
-]
+// The coded (non-CMS) fallback below is the only branch that still has to emit this
+// itself — `CmsPage` reads the same `PRODUCT_SCHEMA` entry by path, so the CMS
+// branch no longer needs a copy. See `lib/cms/product-schema.ts`'s header for why.
+const tesseraSchema = PRODUCT_SCHEMA[CMS_PATH]
 
 const packages = [
   {
@@ -121,12 +99,7 @@ export default async function TesseraPage() {
   // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
   const cms = await resolvePage(CMS_PATH)
   if (cms) {
-    return (
-      <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(tesseraSchema) }} />
-        <CmsPage page={cms} breadcrumbs={false} />
-      </>
-    )
+    return <CmsPage page={cms} />
   }
 
   return (

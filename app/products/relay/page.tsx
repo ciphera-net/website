@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
 import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
 import { CmsPage } from '@/components/cms/CmsPage'
+import { PRODUCT_SCHEMA } from '@/lib/cms/product-schema'
 import Link from 'next/link'
 import Image from 'next/image'
 import { RelayMockup } from '@/components/ui/relay-mockup'
@@ -63,38 +64,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
-const relaySchema = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Ciphera Relay',
-    description:
-      'Privacy-first transactional email delivery with TLS encryption, DKIM signing and a DMARC reject policy, for verification emails, notifications, and alerts.',
-    applicationCategory: 'CommunicationApplication',
-    operatingSystem: 'Web',
-    url: 'https://ciphera.net/products/relay',
-    provider: { '@id': 'https://ciphera.net/#organization' },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://ciphera.net',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Products',
-        item: 'https://ciphera.net/#products',
-      },
-      { '@type': 'ListItem', position: 3, name: 'Ciphera Relay' },
-    ],
-  },
-]
+// The coded (non-CMS) fallback below is the only branch that still has to emit this
+// itself — `CmsPage` reads the same `PRODUCT_SCHEMA` entry by path, so the CMS
+// branch no longer needs a copy. See `lib/cms/product-schema.ts`'s header for why.
+const relaySchema = PRODUCT_SCHEMA[CMS_PATH]
 
 const RELAY_FEATURES = [
   {
@@ -113,12 +86,7 @@ export default async function CipheraRelayPage() {
   // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
   const cms = await resolvePage(CMS_PATH)
   if (cms) {
-    return (
-      <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(relaySchema) }} />
-        <CmsPage page={cms} breadcrumbs={false} />
-      </>
-    )
+    return <CmsPage page={cms} />
   }
 
   return (

@@ -3,7 +3,16 @@
  * `__tests__/pages-seed-parity.render.mjs` only (`npm run test:render`).
  *
  * Renders ONE (page, branch) combination per process invocation —
- * `node <bundle> <slug> coded|cms` — never two renders in the same process.
+ * `node <bundle> <slug> coded|cms|preview` — never two renders in the same process.
+ * `preview` renders `<CmsPage page={doc} />` directly — no `page.tsx`, no SEO
+ * metadata, no per-page schema script — the exact call `app/preview/page/[id]/page.tsx`
+ * makes for a WordPress draft. It exists to catch what `coded` vs `cms` cannot: both
+ * of those go through a product's OWN `page.tsx`, which decides for itself what to
+ * hand `CmsPage`, so a difference between page.tsx's two branches is invisible to a
+ * caller that never goes through page.tsx at all (09-10-2026: this is exactly how the
+ * real preview route shipped with no product JSON-LD and the wrong BreadcrumbList —
+ * `page.tsx`'s own `if (cms)` branch matched its own coded fallback perfectly, every
+ * time, while the ACTUAL bug sat one level up).
  * `@ciphera-net/facet`'s own bundled components call React 19's `ReactDOM.preload()`
  * for a fixed brand asset; React dedupes a `<link rel="preload">` it already emitted
  * WITHIN A PROCESS, so a second `renderToStaticMarkup()` call in the same process
@@ -25,6 +34,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import fs from 'fs'
 import path from 'path'
 import { buildPageDocument, type WpPageNode } from '@/lib/cms/page-build'
+import { CmsPage } from '@/components/cms/CmsPage'
 import { __setPage, __clearPages } from './shim-page-runtime'
 import { simulateWordpressSections } from '../../scripts/pages-seed/simulate-wordpress.mjs'
 
@@ -62,8 +72,8 @@ function metaSnapshot(m: any) {
 
 async function run() {
   const [slug, branch] = process.argv.slice(2)
-  if (!PAGE_IMPORTS[slug] || (branch !== 'coded' && branch !== 'cms')) {
-    throw new Error(`usage: node <bundle> <${Object.keys(PAGE_IMPORTS).join('|')}> <coded|cms>`)
+  if (!PAGE_IMPORTS[slug] || (branch !== 'coded' && branch !== 'cms' && branch !== 'preview')) {
+    throw new Error(`usage: node <bundle> <${Object.keys(PAGE_IMPORTS).join('|')}> <coded|cms|preview>`)
   }
   const cmsPath = CMS_PATHS[slug]
   const seed = readSeed(slug)
@@ -84,6 +94,14 @@ async function run() {
   }
   const repairs: string[] = []
   const doc = buildPageDocument(node, (field, action, detail) => repairs.push(`${field}/${action}: ${detail}`))
+
+  // `preview` never touches the page's own module at all — same as the real route,
+  // which has no idea `app/products/<slug>/page.tsx` exists.
+  if (branch === 'preview') {
+    const html = renderToStaticMarkup(React.createElement(CmsPage, { page: doc }))
+    process.stdout.write(JSON.stringify({ repairs, sectionCount: doc.sections.length, html, meta: null }))
+    return
+  }
 
   const mod = await PAGE_IMPORTS[slug]()
 
