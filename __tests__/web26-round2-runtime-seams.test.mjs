@@ -22,9 +22,9 @@ function code(p) {
 
 // ── DEFAULT_RUNTIME_KINDS stays glossary-only ───────────────────────────────────────
 
-test('DEFAULT_RUNTIME_KINDS serves glossary, blog, route, redirect and menu at request time', () => {
+test('DEFAULT_RUNTIME_KINDS serves glossary, blog, route, redirect, menu and page at request time', () => {
   const src = code('lib/cms/runtime-config.ts')
-  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary', 'blog', 'route', 'redirect', 'menu'\]/)
+  assert.match(src, /const DEFAULT_RUNTIME_KINDS: readonly string\[\] = \['glossary', 'blog', 'route', 'redirect', 'menu', 'page'\]/)
 })
 
 // ── lib/cms/blog-build.ts ───────────────────────────────────────────────────────────
