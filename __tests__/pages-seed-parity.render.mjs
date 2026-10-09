@@ -33,7 +33,7 @@ const outDir = join(root, '__tests__', 'render', '.out')
 const outFile = join(outDir, 'pages-seed-parity.mjs')
 
 const PAGES = ['captcha', 'id', 'pulse', 'relay', 'tessera']
-const BRANCHES = ['coded', 'cms']
+const BRANCHES = ['coded', 'cms', 'preview']
 
 /**
  * `mockup-captcha` (`components/ui/captcha-mockup.tsx`) wraps the REAL, live
@@ -108,6 +108,25 @@ for (const slug of PAGES) {
     const cms = normalizeKnownDifferences(slug, 'cms', result[slug].cms.html)
     const coded = normalizeKnownDifferences(slug, 'coded', result[slug].coded.html)
     assert.equal(cms, coded)
+  })
+
+  test(`${slug}: CmsPage renders identically whether reached through page.tsx's CMS branch or bypassed entirely (the real preview route's own call shape) — WEB-28 real-render fix, 09-10-2026`, () => {
+    // app/preview/page/[id]/page.tsx calls <CmsPage page={doc} /> directly — it has
+    // no idea app/products/<slug>/page.tsx exists, so a difference between that
+    // page's OWN CMS and coded branches is invisible to it. 'preview' renders the
+    // exact same CmsPage call with nothing in between; it must match 'cms' exactly.
+    const cms = normalizeKnownDifferences(slug, 'cms', result[slug].cms.html)
+    const preview = normalizeKnownDifferences(slug, 'preview', result[slug].preview.html)
+    assert.equal(preview, cms, `${slug}: the bare <CmsPage> call (preview) diverges from page.tsx's own CMS branch`)
+  })
+
+  test(`${slug}: the preview render's own JSON-LD <script> is the SAME object page.tsx's coded fallback imports from product-schema.ts — not re-derived, not hand-copied`, () => {
+    const ldJson = (html) => {
+      const m = html.match(/<script type="application\/ld\+json">([^<]*)<\/script>/)
+      assert.ok(m, 'no application/ld+json script found')
+      return JSON.parse(m[1])
+    }
+    assert.deepEqual(ldJson(result[slug].preview.html), ldJson(result[slug].coded.html))
   })
 
   test(`${slug}: the comparison is non-trivial — both renders are non-empty and actually differ from an empty page`, () => {

@@ -10,13 +10,15 @@ import {
   ComparisonCards,
   PackageGrid,
   ContentBlock,
-  FaqTabs,
 } from '@ciphera-net/facet-sections'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { CmsRichText, cmsRichNodes } from './CmsRichText'
 import { CmsLink } from './CmsLink'
+import { CmsExternalLink } from './CmsExternalLink'
+import { FaqTabsClient } from './FaqTabsClient'
 import type { PageDocument, PageSection } from '@/lib/cms/page-build'
 import { anchorIdFor } from '@/lib/cms/product-page-anchors'
+import { productSchemaFor } from '@/lib/cms/product-schema'
 import {
   resolveTrustBadgeIcon,
   resolveFeatureGridIcon,
@@ -38,8 +40,30 @@ import {
  *
  * 🔑 STRUCTURED DATA IS DERIVED, NEVER HAND-WRITTEN. `FaqBlock` already emits its own
  * FAQPage JSON-LD (§4.2.1: "the FAQ component already emits it") — there is nothing
- * for this component to add there. BreadcrumbList comes from the path alone, via the
- * same `Breadcrumbs` component every coded page already uses.
+ * for this component to add there. For a path OUTSIDE the five migratable product
+ * pages, BreadcrumbList comes from the path alone, via the same `Breadcrumbs`
+ * component every coded page already uses. For one of the five, `product-schema.ts`
+ * (keyed by path) already has that product's own code-owned JSON-LD — its own
+ * SoftwareApplication/SoftwareSourceCode plus a matching BreadcrumbList — and THAT is
+ * emitted instead, so every caller of `CmsPage` (a `page.tsx`'s own CMS branch, the
+ * draft preview route, any future one) gets the real thing rather than a generic
+ * breadcrumb. See `product-schema.ts`'s own header for why this moved out of the
+ * five `page.tsx` files and into one place `CmsPage` itself reads.
+ *
+ * 🔴 `FaqTabs` (`@ciphera-net/facet-sections`) is a client component — its own
+ * `"use client"` directive is on its per-file export, not on the package's barrel
+ * (`dist/index.js`), so importing it from THIS module (a Server Component) the same
+ * way as every other section here loses that boundary in a real Next build: it runs
+ * as a Server Component and crashes the moment it calls `useState`
+ * (`TypeError: (0, o.useState) is not a function`, measured 09-10-2026 against a real
+ * preview render — `renderToStaticMarkup` in the parity harness never catches this,
+ * since it does not enforce the Server/Client split at all). `./FaqTabsClient` is a
+ * local `"use client"` module that re-exports it — importing it FROM a client module
+ * establishes the boundary regardless of whether the package's own directive
+ * survived. Every other `@ciphera-net/facet-sections` component this file renders is
+ * hook-free ("server-safe page sections", per the package's own description) and
+ * needs no such wrapper — `__tests__/cms-facet-client-boundary.test.mjs` checks that
+ * this stays true of whatever this file imports next, not just of `FaqTabs` today.
  *
  * 🔴 `SeoPageCta`'s OWN defaults are pulse-website's copy ("Try privacy-first
  * analytics free…", "View live demo" → `/demo`) — `@ciphera-net/facet-sections` was
@@ -232,7 +256,7 @@ function Section({ section, index, path }: { section: PageSection; index: number
             registryLabel: it.registryLabel,
             registryPkg: it.registryPkg,
           }))}
-          LinkComponent={CmsLink}
+          LinkComponent={CmsExternalLink}
         />
       )
 
@@ -262,7 +286,7 @@ function Section({ section, index, path }: { section: PageSection; index: number
 
     case 'faq-tabs':
       return section.categories.length > 0 && section.items.length > 0 ? (
-        <FaqTabs title={section.title || undefined} subtitle={section.subtitle || undefined} categories={section.categories} items={section.items} />
+        <FaqTabsClient title={section.title || undefined} subtitle={section.subtitle || undefined} categories={section.categories} items={section.items} />
       ) : null
 
     default:
@@ -273,18 +297,25 @@ function Section({ section, index, path }: { section: PageSection; index: number
 }
 
 /**
- * `breadcrumbs`: a migratable product page (build task §3) keeps its OWN
- * SoftwareApplication + BreadcrumbList JSON-LD in code — contract §5: that
- * structured data is "derived" from the product's own identity, not from section
- * content, so it stays exactly as it is whichever version of the page is live
- * (Phase E). Pass `breadcrumbs={false}` there so this component does not also emit
- * a second, generic BreadcrumbList. Defaults to `true` (the catch-all's new pages,
- * which have no coded breadcrumb of their own).
+ * `breadcrumbs`: whether to fall back to a generic, path-derived BreadcrumbList when
+ * `page.path` has no entry in `product-schema.ts`. A migratable product page (build
+ * task §3) ALWAYS has one — contract §5: that structured data is "derived" from the
+ * product's own identity, not from section content, so it stays exactly as it is
+ * whichever version of the page is live (Phase E) — and that registered schema is
+ * emitted instead of the generic breadcrumb UNCONDITIONALLY, because code owns it:
+ * there is no caller-supplied way to suppress or disagree with it. `breadcrumbs`
+ * therefore only ever matters for a path NOT in that registry (the catch-all's new
+ * pages, which have no coded breadcrumb of their own); defaults to `true` there.
  */
 export function CmsPage({ page, breadcrumbs = true }: { page: PageDocument; breadcrumbs?: boolean }) {
+  const schema = productSchemaFor(page.path)
   return (
     <>
-      {breadcrumbs && <Breadcrumbs items={breadcrumbItemsForPath(page.path)} />}
+      {schema ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ) : (
+        breadcrumbs && <Breadcrumbs items={breadcrumbItemsForPath(page.path)} />
+      )}
       {page.sections.map((section, i) => (
         <Section key={`${section.type}-${i}`} section={section} index={i} path={page.path} />
       ))}

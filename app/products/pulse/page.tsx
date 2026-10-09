@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
 import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
 import { CmsPage } from '@/components/cms/CmsPage'
+import { PRODUCT_SCHEMA } from '@/lib/cms/product-schema'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PulseMockupTall } from '@/components/ui/pulse-mockup'
@@ -65,39 +66,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
-const pulseSchema = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Pulse Analytics',
-    description:
-      'Privacy-respecting website analytics that gives you insights without compromising user privacy. GDPR compliant, no cookies, no tracking.',
-    applicationCategory: 'AnalyticsApplication',
-    operatingSystem: 'Web',
-    url: 'https://pulse.ciphera.net',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
-    provider: { '@id': 'https://ciphera.net/#organization' },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://ciphera.net',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Products',
-        item: 'https://ciphera.net/#products',
-      },
-      { '@type': 'ListItem', position: 3, name: 'Pulse Analytics' },
-    ],
-  },
-]
+// The coded (non-CMS) fallback below is the only branch that still has to emit this
+// itself — `CmsPage` reads the same `PRODUCT_SCHEMA` entry by path, so the CMS
+// branch no longer needs a copy. See `lib/cms/product-schema.ts`'s header for why.
+const pulseSchema = PRODUCT_SCHEMA[CMS_PATH]
 
 // `anchor` backs the per-product mega-menu links in components/ui/header-3.tsx.
 // Before 29-08-2026 three of its four Pulse entries pointed at #visitors,
@@ -139,12 +111,7 @@ export default async function PulsePage() {
   // Phase E (build task §3): see app/products/captcha/page.tsx's identical comment.
   const cms = await resolvePage(CMS_PATH)
   if (cms) {
-    return (
-      <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pulseSchema) }} />
-        <CmsPage page={cms} breadcrumbs={false} />
-      </>
-    )
+    return <CmsPage page={cms} />
   }
 
   return (
@@ -205,14 +172,24 @@ export default async function PulsePage() {
               Get Started Free
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>
-            <Link
+            {/* A genuinely external, cross-origin URL — the site's canonical
+                external-brand-link treatment is a plain <a target="_blank">, same as
+                ProductBanner's own `external` branch (facet-sections) renders for
+                this exact button and every package card's GitHub/registry link
+                (components/ui/*, Footer.tsx). `next/link` destructures `href` out of
+                its own props and re-attaches it LAST, so a `<Link target=…
+                rel=… className=…>` here rendered a BYTE-DIFFERENT `<a>` than this
+                same button's CMS-rendered equivalent — attribute order only, same
+                text, same visual result — measured 09-10-2026 against a real
+                preview render. */}
+            <a
               href="https://github.com/ciphera-net/pulse"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-secondary"
             >
               View on GitHub
-            </Link>
+            </a>
           </div>
         </div>
       </section>

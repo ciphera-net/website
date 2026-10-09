@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
 import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
 import { CmsPage } from '@/components/cms/CmsPage'
+import { PRODUCT_SCHEMA } from '@/lib/cms/product-schema'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AuthMockup } from '@/components/ui/auth-mockup'
@@ -62,27 +63,11 @@ export async function generateMetadata(): Promise<Metadata> {
 // * Product / Offer markup — only the breadcrumb that describes where the URL
 // * sits. The URL itself is permanent: it is referenced from the sitemap,
 // * llms.txt, the press kit, the glossary and a blog post.
-const idSchema = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://ciphera.net',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Products',
-        item: 'https://ciphera.net/#products',
-      },
-      { '@type': 'ListItem', position: 3, name: 'Ciphera ID' },
-    ],
-  },
-]
+//
+// The coded (non-CMS) fallback below is the only branch that still has to emit this
+// itself — `CmsPage` reads the same `PRODUCT_SCHEMA` entry by path, so the CMS
+// branch no longer needs a copy. See `lib/cms/product-schema.ts`'s header for why.
+const idSchema = PRODUCT_SCHEMA[CMS_PATH]
 
 const NOT_BUILT_FOR = [
   'No self-serve client registration — adding an application takes a database migration by us',
@@ -96,16 +81,11 @@ export default async function CipheraIDPage() {
   // INSTEAD of the coded JSX below — never alongside it (same rule as the Pulse SEO
   // cluster, and the other four product pages). The BreadcrumbList JSON-LD stays
   // code either way (contract §5: derived from the product's own identity, not from
-  // section content), so CmsPage's own generic breadcrumb is suppressed here to
-  // avoid a second, duplicate BreadcrumbList.
+  // section content) — `CmsPage` reads it from `product-schema.ts` by path and
+  // emits it itself, so there is nothing to pass here any more.
   const cms = await resolvePage(CMS_PATH)
   if (cms) {
-    return (
-      <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(idSchema) }} />
-        <CmsPage page={cms} breadcrumbs={false} />
-      </>
-    )
+    return <CmsPage page={cms} />
   }
 
   return (

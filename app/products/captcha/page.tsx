@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
 import { resolvePage, mergePageSeo } from '@/lib/cms/page-runtime'
 import { CmsPage } from '@/components/cms/CmsPage'
+import { PRODUCT_SCHEMA } from '@/lib/cms/product-schema'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CaptchaMockup } from '@/components/ui/captcha-mockup'
@@ -66,38 +67,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return cms ? mergePageSeo(CMS_PATH, base, cms.seo) : base
 }
 
-const captchaSchema = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Ciphera Captcha',
-    description:
-      'Privacy-first bot protection with adaptive proof-of-work, puzzle challenges, audio verification, and behavioral risk scoring. Stateless, self-hosted, no tracking.',
-    applicationCategory: 'SecurityApplication',
-    operatingSystem: 'Web',
-    url: 'https://ciphera.net/products/captcha',
-    provider: { '@id': 'https://ciphera.net/#organization' },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://ciphera.net',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Products',
-        item: 'https://ciphera.net/#products',
-      },
-      { '@type': 'ListItem', position: 3, name: 'Ciphera Captcha' },
-    ],
-  },
-]
+// The coded (non-CMS) fallback below is the only branch that still has to emit this
+// itself — `CmsPage` reads the same `PRODUCT_SCHEMA` entry by path, so the CMS
+// branch no longer needs a copy. See `lib/cms/product-schema.ts`'s header for why.
+const captchaSchema = PRODUCT_SCHEMA[CMS_PATH]
 
 const CAPTCHA_FEATURES = [
   {
@@ -117,16 +90,12 @@ export default async function CipheraCaptchaPage() {
   // renders INSTEAD of the coded JSX below — never alongside it (same rule as
   // the Pulse SEO cluster). The SoftwareApplication + BreadcrumbList JSON-LD
   // stays code either way (contract §5: derived from the product's own
-  // identity, not from section content), so CmsPage's own generic breadcrumb
-  // is suppressed here to avoid a second, duplicate BreadcrumbList.
+  // identity, not from section content) — `CmsPage` reads it from
+  // `product-schema.ts` by path and emits it itself, so there is nothing to
+  // pass here any more.
   const cms = await resolvePage(CMS_PATH)
   if (cms) {
-    return (
-      <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(captchaSchema) }} />
-        <CmsPage page={cms} breadcrumbs={false} />
-      </>
-    )
+    return <CmsPage page={cms} />
   }
 
   return (

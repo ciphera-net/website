@@ -1,5 +1,6 @@
 import { Fragment, type AnchorHTMLAttributes, type ReactNode } from 'react'
 import { jsx, jsxs } from 'react/jsx-runtime'
+import NextLink from 'next/link'
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeSanitize from 'rehype-sanitize'
@@ -20,24 +21,56 @@ const processor = unified()
   .use(rehypeParse, { fragment: true })
   .use(rehypeSanitize, richTextSchema)
   .use(dropUnsafeHrefs)
-  .use(rehypeReact, { Fragment, jsx, jsxs })
+  .use(rehypeReact, { Fragment, jsx, jsxs, components: { a: richTextAnchor() } })
 
 export function CmsRichText({ html, className }: { html: string; className?: string }): ReactNode {
   return <div className={className}>{processor.processSync(html).result}</div>
 }
 
 /**
- * `cmsRichNodes`'s inline `<a>` — `richTextSchema` (page-build.ts) deliberately keeps
- * only `href` on an anchor, never a `class` (the six-tag allowlist has no "trust this
- * one attribute value" case), so an inline link inside a product-page field needs its
- * styling class reconstructed here rather than carried on the stored HTML. Every
- * coded page's inline link uses one of exactly two classes — `text-primary
- * hover:underline` (Captcha/Ciphera ID/Pulse/Relay) or `text-primary underline`
- * (Tessera, which never hides the underline) — so this takes which one as a prop
- * instead of guessing.
+ * `page-build.ts`'s `isSafeHref`/`SAFE_HREF_RE` is the only check an `<a>`'s `href`
+ * has already passed by the time it reaches this module — three shapes:
+ * `https?://…` (absolute, a genuinely different origin), `/…` (site-relative), or
+ * `#…` (in-page). The coded pages route the first kind through a plain `<a
+ * target="_blank">` and the other two through `next/link`'s `Link` — e.g.
+ * `app/products/id/page.tsx`'s own `<a href="https://id.ciphera.net/login">` next to
+ * its `<Link href="/glossary/opaque">` three lines later. A CMS-authored inline link
+ * must pick the same way, or its real rendered `<a>` disagrees with the coded page's
+ * on more than the `href` value: `next/link` destructures `href` out of its own
+ * props and re-attaches it LAST (`{...restProps, ...childProps}`,
+ * `node_modules/next/dist/client/app-dir/link.js`), so a `<Link href=… className=…>`
+ * renders `class="…" href="…"` — attribute order a plain `<a href=… className=…>`
+ * never reorders. Measured 09-10-2026 against a real preview render: this module's
+ * `<a href>`-first rendering of an internal link (`/glossary/opaque`) disagreed with
+ * the coded page's own `<Link>` for exactly this reason, byte for byte identical
+ * text and all.
  */
-function richTextAnchor(linkClassName: string) {
+function isExternalHref(href: string | undefined): boolean {
+  return /^https?:\/\//.test(href ?? '')
+}
+
+/**
+ * The shared inline `<a>` renderer for both exports below. `richTextSchema`
+ * (page-build.ts) deliberately keeps only `href` on an anchor, never a `class` (the
+ * six-tag allowlist has no "trust this one attribute value" case), so a styled
+ * inline link needs its class reconstructed here rather than carried on the stored
+ * HTML — `cmsRichNodes`'s product-page callers pass one; `CmsRichText`'s plain
+ * `text-section` body passes none and is styled by its wrapper's `prose-a:*`
+ * classes instead (an ancestor selector that matches an `<a>` regardless of which
+ * React component rendered it, so routing through `next/link` here changes nothing
+ * about how it looks). Every coded page's inline link uses one of exactly two
+ * classes — `text-primary hover:underline` (Captcha/Ciphera ID/Pulse/Relay) or
+ * `text-primary underline` (Tessera, which never hides the underline).
+ */
+function richTextAnchor(linkClassName?: string) {
   return function RichTextAnchor({ href, children }: AnchorHTMLAttributes<HTMLAnchorElement>) {
+    if (href !== undefined && !isExternalHref(href)) {
+      return (
+        <NextLink href={href} className={linkClassName}>
+          {children}
+        </NextLink>
+      )
+    }
     return (
       <a href={href} className={linkClassName}>
         {children}
