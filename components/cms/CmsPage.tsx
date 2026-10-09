@@ -206,7 +206,7 @@ function Section({ section, index, path }: { section: PageSection; index: number
           id={anchorIdFor(path, section.heading)}
           label={section.label}
           heading={section.heading}
-          dek={section.dek || undefined}
+          dek={section.dek ? cmsRichNodes(section.dek, linkClass) : undefined}
           items={section.items.map((it) => ({ icon: resolveFeatureGridIcon(it.icon), title: it.title, body: it.body, anchor: it.anchor || undefined }))}
           bullets={section.bullets.length > 0 ? section.bullets : undefined}
         />

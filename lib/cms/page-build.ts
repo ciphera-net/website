@@ -727,7 +727,7 @@ function buildSections(
           type: 'feature-grid',
           label: str(e.label),
           heading: str(e.heading),
-          dek: str(e.dek),
+          dek: sanitizeRichText(str(e.dek)),
           items,
           bullets: coerceItems<{ text: string }>(e.bullets, ['text']).map((b) => b.text).filter((t) => t !== ''),
         })

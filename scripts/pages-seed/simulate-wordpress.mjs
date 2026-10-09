@@ -46,8 +46,43 @@ function collapseTextParagraphs(paras) {
   return values
 }
 
+/** Fields the SITE treats as rich text (lib/cms/page-build.ts sanitizeRichText) — WordPress leaves these as stored HTML
+ * and entity-decodes every other string (ciphera_page_parse_sections(); the 09-10-2026 rich/plain contract). Seeds are
+ * written fully HTML-escaped (extract-seeds.mjs), so this is the WordPress step the parity proof has to model. */
+const RICH_FIELDS = {
+  'product-banner': ['heading', 'body', 'footnote'],
+  'feature-split': ['text', 'trailingText', 'note'],
+  'feature-grid': ['dek'],
+  'comparison-cards': ['intro'],
+  'content-block': ['text', 'note'],
+}
+
+function decodeEntities(s) {
+  return s
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(Number(d)))
+    .replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+}
+
+function decodePlain(value) {
+  if (typeof value === 'string') return decodeEntities(value)
+  if (Array.isArray(value)) return value.map(decodePlain)
+  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, decodePlain(v)]))
+  return value
+}
+
+function applyWordpressDecoding(section) {
+  const rich = new Set(RICH_FIELDS[section.type] ?? [])
+  return Object.fromEntries(Object.entries(section).map(([k, v]) => [k, k === 'type' || rich.has(k) ? v : decodePlain(v)]))
+}
+
 export function simulateWordpressSections(blocks) {
-  return blocks.map((block) => {
+  return blocks.map((block) => applyWordpressDecoding(simulateOne(block)))
+}
+
+function simulateOne(block) {
+  {
     const type = BLOCK_TO_TYPE[block.name]
     if (!type) throw new Error(`simulateWordpressSections: unknown block name "${block.name}"`)
     const a = block.attrs
@@ -147,5 +182,5 @@ export function simulateWordpressSections(blocks) {
       default:
         throw new Error(`simulateWordpressSections: unhandled type "${type}"`)
     }
-  })
+  }
 }

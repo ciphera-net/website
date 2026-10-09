@@ -328,7 +328,7 @@
           },
           {
             "key": "privacy",
-            "label": "Privacy & Compliance"
+            "label": "Privacy &amp; Compliance"
           },
           {
             "key": "technical",
@@ -364,7 +364,7 @@
           {
             "categoryKey": "setup",
             "question": "How do I install Pulse?",
-            "answer": "Add a single script tag to your site's <head> section. That's it. No npm packages, no build steps, no configuration files. The script is under 3 KB gzipped and loads asynchronously."
+            "answer": "Add a single script tag to your site's &lt;head&gt; section. That's it. No npm packages, no build steps, no configuration files. The script is under 3 KB gzipped and loads asynchronously."
           },
           {
             "categoryKey": "setup",

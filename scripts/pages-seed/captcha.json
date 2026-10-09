@@ -220,7 +220,7 @@
       "attrs": {
         "label": "05 · Compare",
         "heading": "How Ciphera Captcha compares.",
-        "intro": "Most captcha services track your users and send telemetry to third parties. Ciphera Captcha is self-contained. For the full breakdown, read <a href=\"/blog/ciphera-captcha-vs-recaptcha-vs-turnstile\">Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha</a>.",
+        "intro": "Most captcha services track your users and send telemetry to third parties. Ciphera Captcha is self-contained. For the full breakdown, read <a href=\"/blog/ciphera-captcha-vs-recaptcha-vs-turnstile\">Ciphera Captcha vs reCAPTCHA, Turnstile &amp; hCaptcha</a>.",
         "statsStrip": [],
         "oursIcon": "/captcha_icon_no_margins.png",
         "oursName": "Ciphera Captcha",

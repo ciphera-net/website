@@ -343,11 +343,12 @@ export default async function CipheraRelayPage() {
             <div className="bg-background p-8">
               <div className="flex items-center gap-3 mb-8">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-card">
-                  <img
+                  <Image
                     src={relayIcon}
                     alt="Ciphera Relay"
                     width={24}
                     height={24}
+                    unoptimized
                     className="h-6 w-6 object-contain"
                   />
                 </div>

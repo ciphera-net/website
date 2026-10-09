@@ -69,7 +69,7 @@
           }
         ],
         "bulletStyle": "check",
-        "note": "Honesty over marketing: Tessera has not yet had an independent third-party security audit. What exists today is a self-audit, a threat model, and conformance vectors anyone can run — see the <a href=\"/trust#open-source-and-audit-status\">open source & audit status</a> on our trust hub.",
+        "note": "Honesty over marketing: Tessera has not yet had an independent third-party security audit. What exists today is a self-audit, a threat model, and conformance vectors anyone can run — see the <a href=\"/trust#open-source-and-audit-status\">open source &amp; audit status</a> on our trust hub.",
         "noteTight": false,
         "label": "01 · What it is",
         "heading": "An OPAQUE library you can read",
@@ -197,7 +197,7 @@
         "primaryButtonLabel": "View on GitHub",
         "primaryButtonHref": "https://github.com/ciphera-net/tessera",
         "primaryButtonExternal": true,
-        "secondaryButtonLabel": "Trust & Security",
+        "secondaryButtonLabel": "Trust &amp; Security",
         "secondaryButtonHref": "/trust",
         "secondaryButtonExternal": false,
         "footnote": ""
