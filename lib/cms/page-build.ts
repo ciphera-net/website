@@ -45,16 +45,16 @@ export const RICH_TEXT_TAGS = ['p', 'a', 'strong', 'em', 'code', 'br'] as const
 
 /**
  * A path the CMS's catch-all/override rendering is allowed to reach for THIS site
- * (design §4.1.3a Phase E, §4.2.1 "Rendering rule"). Four of the five product pages
- * (build task §3): `/products/id` is NOT here yet — its hero trust-badge layout and
- * "the vault" section need `@ciphera-net/facet-sections` 0.3.0 (ProductBanner's own
- * doc comment: Ciphera ID's badges are a one-off vertical-bar-divider layout this
- * package does not render), being built in parallel. Every other coded route (legal,
- * trust, blog, glossary, learn, /products/id itself) stays coded; only a path NO
- * coded route owns, or one of these four, can serve from the CMS.
+ * (design §4.1.3a Phase E, §4.2.1 "Rendering rule"). All five product pages, now that
+ * `@ciphera-net/facet-sections` 0.3.0 gives `ProductBanner` the `badgeStyle: 'bars'`
+ * option Ciphera ID's hero needs (a vertical-bar divider, not the four-of-five-pages
+ * dot style) and `ContentBlock`'s `credential-table` device covers its "the vault"
+ * section. Every other coded route (legal, trust, blog, glossary, learn) stays coded;
+ * only a path NO coded route owns, or one of these five, can serve from the CMS.
  */
 export const MIGRATABLE_PAGE_PATHS: readonly string[] = [
   '/products/captcha',
+  '/products/id',
   '/products/pulse',
   '/products/relay',
   '/products/tessera',
@@ -125,11 +125,22 @@ export function dropUnsafeHrefs() {
 /** Exported so `components/cms/CmsRichText.tsx` parses-to-React against the SAME
  * allowlist this module sanitises to at publish time — one definition, not two that
  * could drift (the render side still parses fresh rather than trusting the stored
- * bytes; see that component's own header for why). */
+ * bytes; see that component's own header for why).
+ *
+ * 🔑 `br` ALSO carries `className` (hast's property name for the `class` attribute) —
+ * the one structural need the six-tag allowlist didn't originally cover: a
+ * `product-banner`'s `heading` is plain text everywhere EXCEPT the four hero
+ * headings that carry a hand-authored responsive hard break
+ * (`<br class="hidden sm:inline">`, identical string on every page that has one —
+ * see each page's own hero). Without this, that literal substring would sanitise
+ * down to a bare `<br>` and the break would always show, never hiding on mobile as
+ * the coded pages do. A `class` value on `br` cannot carry script or a clobber
+ * vector, so this is a plain capability widening, not a narrowed guarantee.
+ */
 export const richTextSchema: SanitizeSchema = {
   ...defaultSchema,
   tagNames: [...RICH_TEXT_TAGS],
-  attributes: { a: ['href'] },
+  attributes: { a: ['href'], br: ['className'] },
   protocols: { ...defaultSchema.protocols, href: ['http', 'https'] },
 }
 
@@ -215,6 +226,12 @@ export const ICON_KEYS = [
   'puzzle-piece', 'shield-check', 'lightning', 'eye-slash', 'timer', 'robot', 'eye',
   'key', 'vault', 'cookie', 'code', 'globe', 'funnel', 'envelope-simple', 'lock',
   'globe-outline', 'lock-outline', 'check', 'x', 'arrow-right', 'github',
+  // Product-logo chips (Tessera's "#who-uses-it") — same closed catalog as every other
+  // icon-keyed field (trustBadges/overlayBadges/feature-grid items/content-block chips),
+  // resolved to the real product mark instead of a Phosphor glyph. Harmless if ever
+  // selected somewhere else: product-registries.tsx's size-specific resolvers fall back
+  // to null for a key their own lookup table does not carry, same as any other gap here.
+  'logo-id', 'logo-pulse',
 ] as const
 export const VISUAL_KEYS = [
   'mockup-captcha', 'mockup-auth', 'mockup-relay', 'mockup-pulse-tall',
@@ -258,10 +275,16 @@ export interface ProductBannerSection {
   type: 'product-banner'
   variant: 'hero' | 'band'
   label: string
+  /** Sanitised against `richTextSchema` (not merely `str()`-coerced) — the one case a
+   * plain-text field still needs HTML: the hero `<br class="hidden sm:inline">` four of
+   * the five pages carry. See `richTextSchema`'s own comment. */
   heading: string
   body: string
   backgroundImage: string
   backgroundImageAlt: string
+  /** 0.3.0, hero only. `dots` (default, four of five pages) or `bars` (Ciphera ID's
+   * vertical-bar-divider hero). */
+  badgeStyle: 'dots' | 'bars'
   trustBadges: TrustBadge[]
   stats: Stat[]
   primaryButtonLabel: string
@@ -270,6 +293,10 @@ export interface ProductBannerSection {
   secondaryButtonLabel: string
   secondaryButtonHref: string
   secondaryButtonExternal: boolean
+  /** 0.3.0, band only — a small trailing line after the buttons (e.g. Ciphera ID's
+   * "Already have a Ciphera account? Sign in."). Richtext: that one case carries an
+   * inline link. Empty string when unset. */
+  footnote: string
 }
 
 export interface OverlayBadge {
@@ -281,7 +308,13 @@ export interface FeatureSplitSection {
   type: 'feature-split'
   label: string
   heading: string
-  text: string
+  /** 0 paragraphs -> `''`, 1 -> a plain string (byte-identical to the pre-0.3.0 scalar
+   * case), 2+ -> an array, one per paragraph — mirrors `ciphera-pages.php`'s own
+   * `$text` derivation for this block exactly. */
+  text: string | string[]
+  /** 0.3.0 — a full-size paragraph after the bullets (Ciphera ID's "#what-it-is"
+   * closer). Distinct from `note`, which is deliberately smaller type. Empty when unset. */
+  trailingText: string
   bullets: string[]
   bulletStyle: 'check' | 'dash'
   ctaLabel: string
@@ -289,9 +322,18 @@ export interface FeatureSplitSection {
   visualSide: 'left' | 'right'
   visualType: 'mockup' | 'diagram' | 'code' | 'photo' | ''
   visualKey: VisualKey | ''
+  /** 0.3.0, `visualSide: 'left'` non-photo only. Default `false` (the dominant,
+   * 3-of-4 style) — `true` reproduces Ciphera ID's `#zero-knowledge-auth` outlier. */
+  visualCellBordered: boolean
+  /** 0.3.0 — a CSS hook present only on the two tall-retina-screenshot mockups
+   * (Ciphera ID's `#what-it-is`, Pulse's `#dashboard`). Default `false`. */
+  mockupCell: boolean
   image: string
   imageAlt: string
   overlayBadges: OverlayBadge[]
+  /** 0.3.0, `photo` only. `default` (Captcha/Relay), `tabular` (Pulse, whose
+   * description holds a number) or `detailed` (Ciphera ID's one-page outlier). */
+  overlayBadgeStyle: 'default' | 'tabular' | 'detailed'
 }
 
 export interface FeatureGridItem {
@@ -315,8 +357,17 @@ export interface ComparisonCardsSection {
   heading: string
   intro: string
   statsStrip: Stat[]
-  ours: { icon: string; name: string; tagline: string; highlighted: boolean; items: string[] }
-  theirs: { icon: string; name: string; tagline: string; items: { text: string; has: boolean }[] }
+  /** `icon`: resolved as a known `ICON_KEYS` select first (matches the WordPress
+   * editor, which lets this field hold EITHER — see product-registries.tsx's
+   * `resolveComparisonIcon`), else rendered as a literal CDN image path: the
+   * WordPress field is a free `TextControl` ("Icon (CDN path)"), not a select, so
+   * nothing here escalates to a whole-section skip the way every true closed select
+   * elsewhere in this file does. `taglineAccent` (0.3.0): tints the tagline
+   * `text-primary` — independent of `highlighted`, which now draws only the top bar. */
+  ours: { icon: string; name: string; tagline: string; highlighted: boolean; taglineAccent: boolean; items: string[] }
+  /** `checkAccent` (0.3.0): a `has: true` item's check icon renders `text-foreground`
+   * instead of the default muted tone — Relay's one-page outlier. */
+  theirs: { icon: string; name: string; tagline: string; checkAccent: boolean; items: { text: string; has: boolean }[] }
 }
 
 export interface PackageGridItem {
@@ -329,6 +380,11 @@ export interface PackageGridItem {
   registryHref: string
   registryIcon: string
   registryLabel: string
+  /** 0.3.0, REQUIRED — the package's name as published on that registry (e.g.
+   * `ciphera-tessera`, `github.com/ciphera-net/tessera-go`, `@ciphera-net/tessera`),
+   * distinct from `name` (the repo's mono display name). Feeds only the registry
+   * link's aria-label. */
+  registryPkg: string
 }
 export interface PackageGridSection {
   type: 'package-grid'
@@ -355,10 +411,19 @@ export interface ContentBlockSection {
   device: 'none' | 'diagram' | 'credential-table' | 'chips'
   diagramKey: string
   rows: CredentialRow[]
+  /** `credential-table` device only — the table's own heading/subheading (e.g.
+   * Ciphera ID's "What an operator with full database access sees" / "One account
+   * row, in its entirety"). Plain strings, not richtext. Empty when unset. */
+  tableTitle: string
+  tableSubtitle: string
   chips: Chip[]
   bullets: string[]
   bulletStyle: 'check' | 'dash'
   note: string
+  /** 0.3.0 — forces the note's margin to `mt-6` regardless of bullet presence
+   * (Tessera's "#who-uses-it": a `chips` device, no bullets, but still `mt-6`).
+   * Default `false`. */
+  noteTight: boolean
 }
 
 export interface FaqTabsCategory {
@@ -435,6 +500,26 @@ function coerceItems<T>(raw: unknown, fields: (keyof T & string)[]): T[] {
 }
 
 const boolAttr = (v: unknown): boolean => str(v) === '1' || v === true
+
+/**
+ * `feature-split.text` (0.3.0): zero paragraphs -> `''`, one -> a plain string
+ * (byte-identical to the pre-0.3.0 scalar case), two or more -> an array, one
+ * sanitised paragraph per item — mirrors `ciphera_page_parse_sections()`'s own
+ * `$text` derivation. WordPress already reduces its own `{text}` repeater items to a
+ * flat array of STRINGS (`array_column(..., 'text')`) before this JSON is produced,
+ * so an array here is already `string[]`, never `{text}[]`; this also collapses a
+ * single-paragraph array to a scalar, same as WordPress, so this function does not
+ * depend on it having done so.
+ */
+function featureSplitText(raw: unknown): string | string[] {
+  if (Array.isArray(raw)) {
+    const paras = raw.map((p) => sanitizeRichText(str(p))).filter((p) => p !== '')
+    if (paras.length === 0) return ''
+    if (paras.length === 1) return paras[0]
+    return paras
+  }
+  return sanitizeRichText(str(raw))
+}
 
 /**
  * `ciphera_page_normalize_list()`'s TypeScript twin (WordPress mirrors this on save):
@@ -535,6 +620,7 @@ function buildSections(
 
       case 'product-banner': {
         const variant = str(e.variant) === 'band' ? 'band' : 'hero'
+        const badgeStyle = str(e.badgeStyle) === 'bars' ? 'bars' : 'dots'
         const badges = coerceListItems<{ icon: string; label: string }>(
           e.trustBadges, ['icon', 'label'], ['label'],
           (n) => repair('product-banner', 'repaired', `dropped ${n} trust badge(s) with no label`)
@@ -548,10 +634,11 @@ function buildSections(
           type: 'product-banner',
           variant,
           label: str(e.label),
-          heading: str(e.heading),
+          heading: sanitizeRichText(str(e.heading)),
           body: sanitizeRichText(str(e.body)),
           backgroundImage: str(e.backgroundImage),
           backgroundImageAlt: str(e.backgroundImageAlt),
+          badgeStyle,
           trustBadges: badges,
           stats: coerceListItems<Stat>(e.stats, ['term', 'detail'], ['term', 'detail'], (n) =>
             repair('product-banner', 'repaired', `dropped ${n} stat(s) missing a term or detail`)
@@ -562,6 +649,7 @@ function buildSections(
           secondaryButtonLabel: str(e.secondaryButtonLabel),
           secondaryButtonHref: str(e.secondaryButtonHref),
           secondaryButtonExternal: boolAttr(e.secondaryButtonExternal),
+          footnote: sanitizeRichText(str(e.footnote)),
         })
         break
       }
@@ -590,7 +678,8 @@ function buildSections(
           type: 'feature-split',
           label: str(e.label),
           heading: str(e.heading),
-          text: sanitizeRichText(str(e.text)),
+          text: featureSplitText(e.text),
+          trailingText: sanitizeRichText(str(e.trailingText)),
           bullets: coerceItems<{ text: string }>(e.bullets, ['text']).map((b) => b.text).filter((t) => t !== ''),
           bulletStyle: str(e.bulletStyle) === 'dash' ? 'dash' : 'check',
           ctaLabel: str(e.ctaLabel),
@@ -598,9 +687,12 @@ function buildSections(
           visualSide: str(e.visualSide) === 'left' ? 'left' : 'right',
           visualType: (['mockup', 'diagram', 'code', 'photo'].includes(visualType) ? visualType : '') as FeatureSplitSection['visualType'],
           visualKey: (isVisualKey(visualKey) ? visualKey : '') as VisualKey | '',
+          visualCellBordered: boolAttr(e.visualCellBordered),
+          mockupCell: boolAttr(e.mockupCell),
           image: str(e.image),
           imageAlt: str(e.imageAlt),
           overlayBadges,
+          overlayBadgeStyle: (['default', 'tabular', 'detailed'].includes(str(e.overlayBadgeStyle)) ? str(e.overlayBadgeStyle) : 'default') as FeatureSplitSection['overlayBadgeStyle'],
         })
         break
       }
@@ -627,12 +719,13 @@ function buildSections(
       }
 
       case 'comparison-cards': {
-        const oursIcon = str(e.oursIcon)
-        const theirsIcon = str(e.theirsIcon)
-        if ((oursIcon !== '' && !isIconKey(oursIcon)) || (theirsIcon !== '' && !isIconKey(theirsIcon))) {
-          repair('comparison-cards', 'skipped', 'dropped the whole section — "ours" or "theirs" icon is not a known icon key')
-          break
-        }
+        // 🔑 `oursIcon`/`theirsIcon` do NOT escalate to a whole-section skip — unlike
+        // every true closed select above, WordPress's own editor presents this field
+        // as a free "Icon (CDN path)" TextControl (mu-plugins/ciphera-page-blocks.js),
+        // not a dropdown, and `ciphera_page_parse_sections()` runs no
+        // `ciphera_page_check_select()` on it either. The value is read as-is and
+        // resolved downstream (product-registries.tsx's `resolveComparisonIcon`):
+        // a known `ICON_KEYS` entry first, else a literal curated-image path.
         sections.push({
           type: 'comparison-cards',
           label: str(e.label),
@@ -642,16 +735,18 @@ function buildSections(
             repair('comparison-cards', 'repaired', `dropped ${n} stat(s) missing a term or detail`)
           ),
           ours: {
-            icon: oursIcon,
+            icon: str(e.oursIcon),
             name: str(e.oursName),
             tagline: str(e.oursTagline),
             highlighted: boolAttr(e.oursHighlighted),
+            taglineAccent: boolAttr(e.oursTaglineAccent),
             items: coerceItems<{ text: string }>(e.oursItems, ['text']).map((it) => it.text).filter((t) => t !== ''),
           },
           theirs: {
-            icon: theirsIcon,
+            icon: str(e.theirsIcon),
             name: str(e.theirsName),
             tagline: str(e.theirsTagline),
+            checkAccent: boolAttr(e.theirsCheckAccent),
             items: coerceItems<{ text: string; has: string }>(e.theirsItems, ['text', 'has'])
               .filter((it) => it.text !== '')
               .map((it) => ({ text: it.text, has: boolAttr(it.has) })),
@@ -661,11 +756,13 @@ function buildSections(
       }
 
       case 'package-grid': {
+        // 0.3.0: `registryPkg` is a NEW REQUIRED field — same contract as the
+        // WordPress side (mu-plugins/ciphera-pages.php's `package-grid` case).
         const items = coerceListItems<PackageGridItem>(
           e.items,
-          ['langIcon', 'lang', 'name', 'role', 'body', 'repoHref', 'registryHref', 'registryIcon', 'registryLabel'],
-          ['lang', 'name', 'body', 'repoHref'],
-          (n) => repair('package-grid', 'repaired', `dropped ${n} package(s) missing a language, name, body or repo link`)
+          ['langIcon', 'lang', 'name', 'role', 'body', 'repoHref', 'registryHref', 'registryIcon', 'registryLabel', 'registryPkg'],
+          ['lang', 'name', 'body', 'repoHref', 'registryPkg'],
+          (n) => repair('package-grid', 'repaired', `dropped ${n} package(s) missing a language, name, body, repo link or registry package name`)
         )
         const badKey = items.find(
           (it) => (it.langIcon !== '' && !isLangIconKey(it.langIcon)) || (it.registryIcon !== '' && !isRegistryIconKey(it.registryIcon))
@@ -704,10 +801,13 @@ function buildSections(
           rows: coerceListItems<CredentialRow>(e.rows, ['key', 'value', 'note'], ['key', 'value'], (n) =>
             repair('content-block', 'repaired', `dropped ${n} row(s) missing a key or value`)
           ),
+          tableTitle: str(e.tableTitle),
+          tableSubtitle: str(e.tableSubtitle),
           chips,
           bullets: coerceItems<{ text: string }>(e.bullets, ['text']).map((b) => b.text).filter((t) => t !== ''),
           bulletStyle: str(e.bulletStyle) === 'dash' ? 'dash' : 'check',
           note: sanitizeRichText(str(e.note)),
+          noteTight: boolAttr(e.noteTight),
         })
         break
       }

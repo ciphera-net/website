@@ -17,7 +17,11 @@ import { CmsRichText, cmsRichNodes } from './CmsRichText'
 import { CmsLink } from './CmsLink'
 import type { PageDocument, PageSection } from '@/lib/cms/page-build'
 import {
-  resolveIcon,
+  resolveTrustBadgeIcon,
+  resolveFeatureGridIcon,
+  resolveOverlayBadgeIcon,
+  resolveComparisonIcon,
+  resolveChipImage,
   resolveVisual,
   resolveLangIcon,
   resolveRegistryIcon,
@@ -114,10 +118,11 @@ function Section({ section, index }: { section: PageSection; index: number }) {
         <ProductBanner
           variant={section.variant}
           label={section.label}
-          heading={section.heading}
+          heading={cmsRichNodes(section.heading)}
           body={cmsRichNodes(section.body)}
-          backgroundImage={productBackgroundImage(section.backgroundImage, section.backgroundImageAlt)}
-          trustBadges={section.trustBadges.map((b) => ({ icon: b.icon ? resolveIcon(b.icon) : undefined, label: b.label }))}
+          backgroundImage={productBackgroundImage(section.backgroundImage, section.backgroundImageAlt, section.variant === 'hero')}
+          badgeStyle={section.badgeStyle}
+          trustBadges={section.trustBadges.map((b) => ({ icon: b.icon ? resolveTrustBadgeIcon(b.icon) : undefined, label: b.label }))}
           stats={section.stats}
           primaryButton={
             section.primaryButtonLabel && section.primaryButtonHref
@@ -129,6 +134,7 @@ function Section({ section, index }: { section: PageSection; index: number }) {
               ? { label: section.secondaryButtonLabel, href: section.secondaryButtonHref, external: section.secondaryButtonExternal }
               : undefined
           }
+          footnote={section.footnote ? cmsRichNodes(section.footnote) : undefined}
           LinkComponent={CmsLink}
         />
       )
@@ -138,19 +144,23 @@ function Section({ section, index }: { section: PageSection; index: number }) {
         <FeatureSplit
           label={section.label}
           heading={section.heading}
-          text={cmsRichNodes(section.text)}
+          text={Array.isArray(section.text) ? section.text.map((p) => cmsRichNodes(p)) : cmsRichNodes(section.text)}
+          trailingText={section.trailingText ? cmsRichNodes(section.trailingText) : undefined}
           bullets={section.bullets}
           bulletStyle={section.bulletStyle}
           cta={section.ctaLabel && section.ctaHref ? { label: section.ctaLabel, href: section.ctaHref } : undefined}
           visualSide={section.visualSide}
           visualType={(section.visualType || 'photo') as 'mockup' | 'diagram' | 'code' | 'photo'}
           visual={section.visualType !== 'photo' ? resolveVisual(section.visualKey) : undefined}
+          visualCellBordered={section.visualCellBordered}
+          mockupCell={section.mockupCell}
           image={section.visualType === 'photo' ? featurePhotoImage(section.image, section.imageAlt) : undefined}
           overlayBadges={section.overlayBadges.map((b) => ({
-            icon: b.icon ? resolveIcon(b.icon) : undefined,
+            icon: b.icon ? resolveOverlayBadgeIcon(b.icon) : undefined,
             title: b.title,
             description: b.description,
           }))}
+          overlayBadgeStyle={section.overlayBadgeStyle}
           LinkComponent={CmsLink}
         />
       )
@@ -161,7 +171,7 @@ function Section({ section, index }: { section: PageSection; index: number }) {
           label={section.label}
           heading={section.heading}
           dek={section.dek || undefined}
-          items={section.items.map((it) => ({ icon: resolveIcon(it.icon), title: it.title, body: it.body, anchor: it.anchor || undefined }))}
+          items={section.items.map((it) => ({ icon: resolveFeatureGridIcon(it.icon), title: it.title, body: it.body, anchor: it.anchor || undefined }))}
           bullets={section.bullets.length > 0 ? section.bullets : undefined}
         />
       )
@@ -174,16 +184,18 @@ function Section({ section, index }: { section: PageSection; index: number }) {
           intro={cmsRichNodes(section.intro)}
           statsStrip={section.statsStrip.length > 0 ? section.statsStrip : undefined}
           ours={{
-            icon: resolveIcon(section.ours.icon),
+            icon: resolveComparisonIcon(section.ours.icon, section.ours.name, 'ours'),
             name: section.ours.name,
             tagline: section.ours.tagline,
             highlighted: section.ours.highlighted,
+            taglineAccent: section.ours.taglineAccent,
             items: section.ours.items,
           }}
           theirs={{
-            icon: resolveIcon(section.theirs.icon),
+            icon: resolveComparisonIcon(section.theirs.icon, section.theirs.name, 'theirs'),
             name: section.theirs.name,
             tagline: section.theirs.tagline,
+            checkAccent: section.theirs.checkAccent,
             items: section.theirs.items,
           }}
         />
@@ -204,6 +216,7 @@ function Section({ section, index }: { section: PageSection; index: number }) {
             registryHref: it.registryHref,
             registryIcon: resolveRegistryIcon(it.registryIcon),
             registryLabel: it.registryLabel,
+            registryPkg: it.registryPkg,
           }))}
           LinkComponent={CmsLink}
         />
@@ -214,9 +227,9 @@ function Section({ section, index }: { section: PageSection; index: number }) {
         section.device === 'diagram'
           ? ({ type: 'diagram', diagram: resolveVisual(section.diagramKey) } as const)
           : section.device === 'credential-table'
-            ? ({ type: 'credential-table', title: section.heading, subtitle: '', rows: section.rows } as const)
+            ? ({ type: 'credential-table', title: section.tableTitle, subtitle: section.tableSubtitle, rows: section.rows } as const)
             : section.device === 'chips'
-              ? ({ type: 'chips', items: section.chips.map((c) => ({ image: resolveIcon(c.image), label: c.label, href: c.href })) } as const)
+              ? ({ type: 'chips', items: section.chips.map((c) => ({ image: resolveChipImage(c.image), label: c.label, href: c.href })) } as const)
               : ({ type: 'none' } as const)
       return (
         <ContentBlock
@@ -226,6 +239,7 @@ function Section({ section, index }: { section: PageSection; index: number }) {
           device={device}
           bullets={section.bullets.length > 0 ? section.bullets : undefined}
           note={section.note ? cmsRichNodes(section.note) : undefined}
+          noteTight={section.noteTight}
           LinkComponent={CmsLink}
         />
       )

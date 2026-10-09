@@ -26,6 +26,7 @@ function code(p) {
 
 const PAGES = [
   { file: 'app/products/captcha/page.tsx', path: '/products/captcha', schema: 'captchaSchema' },
+  { file: 'app/products/id/page.tsx', path: '/products/id', schema: 'idSchema' },
   { file: 'app/products/pulse/page.tsx', path: '/products/pulse', schema: 'pulseSchema' },
   { file: 'app/products/relay/page.tsx', path: '/products/relay', schema: 'relaySchema' },
   { file: 'app/products/tessera/page.tsx', path: '/products/tessera', schema: 'tesseraSchema' },
@@ -64,14 +65,7 @@ test('breadcrumbs={false} is passed on every migratable page — CmsPage must no
   assert.match(cmsPageSrc, /\{breadcrumbs && <Breadcrumbs items=\{breadcrumbItemsForPath\(page\.path\)\} \/>\}/)
 })
 
-test('NEGATIVE CONTROL: a non-migratable page (/products/id) has none of this wiring', () => {
-  const src = code('app/products/id/page.tsx')
-  assert.doesNotMatch(src, /resolvePage/)
-  assert.doesNotMatch(src, /CmsPage/)
-  assert.doesNotMatch(src, /mergePageSeo/)
-})
-
-test("MIGRATABLE_PAGE_PATHS lists exactly these four paths, in page-build.ts, which both buildPages() and this test's own pages agree on", () => {
+test("MIGRATABLE_PAGE_PATHS lists exactly these five paths, in page-build.ts, which both buildPages() and this test's own pages agree on", () => {
   const src = code('lib/cms/page-build.ts')
   for (const { path } of PAGES) {
     assert.match(src, new RegExp(`'${path.replace('/', '\\/')}',`))
