@@ -1,0 +1,207 @@
+{
+  "site": "ciphera-net",
+  "path": "/products/tessera",
+  "title": "Tessera - Open-Source OPAQUE Authentication",
+  "seo": {
+    "title": "Tessera - Open-Source OPAQUE Authentication | Ciphera",
+    "description": "Tessera is Ciphera’s open-source OPAQUE authentication library (Apache-2.0): a Rust core and sidecar, a Go server SDK, and a browser SDK. Zero-knowledge auth where the password never reaches the server.",
+    "canonical": "https://ciphera.net/products/tessera",
+    "ogTitle": "Tessera - Open-Source OPAQUE Authentication | Ciphera",
+    "ogDescription": "Ciphera’s open-source OPAQUE authentication library (Apache-2.0): Rust core + sidecar, Go server SDK, and browser SDK. The password never reaches the server.",
+    "twitterTitle": "Tessera - Open-Source OPAQUE Authentication | Ciphera",
+    "twitterDescription": "Ciphera’s open-source OPAQUE authentication library (Apache-2.0): Rust core + sidecar, Go server SDK, and browser SDK."
+  },
+  "blocks": [
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "hero",
+        "label": "Tessera",
+        "heading": "Zero-knowledge auth, <br class=\"hidden sm:inline\">open source.",
+        "body": "Tessera is Ciphera’s open-source OPAQUE authentication library. The user proves their password without ever sending it — released under Apache-2.0 so the claim can be checked against code, not taken on trust.",
+        "backgroundImage": "/auth-showcase-bg.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [
+          {
+            "icon": "",
+            "label": "Apache-2.0"
+          },
+          {
+            "icon": "",
+            "label": "OPAQUE (RFC 9807)"
+          },
+          {
+            "icon": "",
+            "label": "Rust · Go · TypeScript"
+          }
+        ],
+        "stats": [],
+        "primaryButtonLabel": "View on GitHub",
+        "primaryButtonHref": "https://github.com/ciphera-net/tessera",
+        "primaryButtonExternal": true,
+        "secondaryButtonLabel": "How Ciphera ID uses it",
+        "secondaryButtonHref": "/products/id",
+        "secondaryButtonExternal": false,
+        "footnote": ""
+      }
+    },
+    {
+      "name": "ciphera/content-block",
+      "attrs": {
+        "diagramKey": "",
+        "rows": [],
+        "tableTitle": "",
+        "tableSubtitle": "",
+        "chips": [],
+        "bullets": [
+          {
+            "text": "Apache-2.0 — permissive, and free to inspect, fork, and reuse"
+          },
+          {
+            "text": "A language-neutral conformance kit so implementations can be checked for parity"
+          },
+          {
+            "text": "Rust core with a published self-audit and threat model"
+          },
+          {
+            "text": "CI-gated cross-language parity tests"
+          }
+        ],
+        "bulletStyle": "check",
+        "note": "Honesty over marketing: Tessera has not yet had an independent third-party security audit. What exists today is a self-audit, a threat model, and conformance vectors anyone can run — see the <a href=\"/trust#open-source-and-audit-status\">open source & audit status</a> on our trust hub.",
+        "noteTight": false,
+        "label": "01 · What it is",
+        "heading": "An OPAQUE library you can read",
+        "text": "OPAQUE (RFC 9807) is an asymmetric password-authenticated key exchange: the password is proven to the server, never transmitted to it. Tessera is our implementation of it, packaged as three libraries so it can run wherever authentication happens — the server, the browser, and the cryptographic core between them.",
+        "device": "none"
+      }
+    },
+    {
+      "name": "ciphera/package-grid",
+      "attrs": {
+        "label": "02 · Packages",
+        "heading": "Three packages, one protocol",
+        "items": [
+          {
+            "langIcon": "rust",
+            "lang": "Rust",
+            "name": "tessera",
+            "role": "OPAQUE core + sidecar",
+            "body": "The cryptographic core — an OPAQUE (RFC 9807) implementation and an HTTP sidecar. Configuration #1: ristretto255-SHA-512, 3DH, Argon2id.",
+            "repoHref": "https://github.com/ciphera-net/tessera",
+            "registryHref": "https://crates.io/crates/ciphera-tessera",
+            "registryIcon": "crates-io",
+            "registryLabel": "crates.io",
+            "registryPkg": "ciphera-tessera"
+          },
+          {
+            "langIcon": "go",
+            "lang": "Go",
+            "name": "tessera-go",
+            "role": "Server SDK",
+            "body": "The Go server SDK — the registration and login flows a backend needs to speak OPAQUE, with the crypto handled by the Rust core.",
+            "repoHref": "https://github.com/ciphera-net/tessera-go",
+            "registryHref": "https://pkg.go.dev/github.com/ciphera-net/tessera-go",
+            "registryIcon": "go-pkg",
+            "registryLabel": "pkg.go.dev",
+            "registryPkg": "github.com/ciphera-net/tessera-go"
+          },
+          {
+            "langIcon": "ts",
+            "lang": "TypeScript",
+            "name": "tessera-ts",
+            "role": "Browser SDK",
+            "body": "The browser SDK that runs the client half of OPAQUE in the user’s browser. Published on npm as @ciphera-net/tessera.",
+            "repoHref": "https://github.com/ciphera-net/tessera-ts",
+            "registryHref": "https://www.npmjs.com/package/@ciphera-net/tessera",
+            "registryIcon": "npm",
+            "registryLabel": "npm",
+            "registryPkg": "@ciphera-net/tessera"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/content-block",
+      "attrs": {
+        "diagramKey": "diagram-tessera-opaque-handshake",
+        "rows": [],
+        "tableTitle": "",
+        "tableSubtitle": "",
+        "chips": [],
+        "bullets": [
+          {
+            "text": "The password is never transmitted, so a compromised server cannot leak it"
+          },
+          {
+            "text": "No plaintext password to phish from the wire or log by accident"
+          },
+          {
+            "text": "A server breach exposes no password hashes to crack offline"
+          },
+          {
+            "text": "The exchange also yields a key material the client can use to unwrap a vault key"
+          }
+        ],
+        "bulletStyle": "check",
+        "note": "New to the term? Read the plain-language definition of <a href=\"/glossary/opaque\">OPAQUE</a> in our glossary.",
+        "noteTight": false,
+        "label": "03 · Why OPAQUE",
+        "heading": "The password never reaches the server",
+        "text": "Most login systems send your password to the server, which then hashes and compares it. OPAQUE removes that step entirely. The client and server run a key exchange in which the server verifies you know the password without ever receiving it. The server stores only an OPAQUE record — not a password, and not a password hash.",
+        "device": "diagram"
+      }
+    },
+    {
+      "name": "ciphera/content-block",
+      "attrs": {
+        "diagramKey": "",
+        "rows": [],
+        "tableTitle": "",
+        "tableSubtitle": "",
+        "chips": [
+          {
+            "image": "logo-id",
+            "label": "Ciphera ID",
+            "href": "/products/id"
+          },
+          {
+            "image": "logo-pulse",
+            "label": "Pulse",
+            "href": "/products/pulse"
+          }
+        ],
+        "bullets": [],
+        "bulletStyle": "check",
+        "note": "For how this fits the wider architecture, see the <a href=\"/trust#the-zero-knowledge-architecture\">zero-knowledge architecture</a> section of our trust hub.",
+        "noteTight": true,
+        "label": "04 · Who uses it",
+        "heading": "It runs in production at Ciphera",
+        "text": "Tessera is not a demo. It is the authentication layer behind <a href=\"/products/id\">Ciphera ID</a> and the auth for <a href=\"/products/pulse\">Pulse</a>. The same open code you can read is the code that verifies real Ciphera logins — the cryptographic core our whole platform depends on.",
+        "device": "chips"
+      }
+    },
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "band",
+        "label": "05 · Get the code",
+        "heading": "Read it, run it, build on it.",
+        "body": "The three Tessera repositories are public on GitHub and published to crates.io, npm, and the Go module registry. Apache-2.0 throughout.",
+        "backgroundImage": "/auth-showcase-bg.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [],
+        "stats": [],
+        "primaryButtonLabel": "View on GitHub",
+        "primaryButtonHref": "https://github.com/ciphera-net/tessera",
+        "primaryButtonExternal": true,
+        "secondaryButtonLabel": "Trust & Security",
+        "secondaryButtonHref": "/trust",
+        "secondaryButtonExternal": false,
+        "footnote": ""
+      }
+    }
+  ]
+}

@@ -719,7 +719,13 @@ function buildSections(
       }
 
       case 'comparison-cards': {
-        // 🔑 `oursIcon`/`theirsIcon` do NOT escalate to a whole-section skip — unlike
+        // 🔑 `ours`/`theirs` are NESTED objects on the wire (ciphera-pages.php builds
+        // `'ours' => ['icon' => …, 'name' => …, …]`, not flat `oursIcon`/`oursName`
+        // top-level keys) — read accordingly, defensively (an untrusted/malformed
+        // document might not nest them at all).
+        const oursRaw = (typeof e.ours === 'object' && e.ours !== null ? e.ours : {}) as Record<string, unknown>
+        const theirsRaw = (typeof e.theirs === 'object' && e.theirs !== null ? e.theirs : {}) as Record<string, unknown>
+        // 🔑 `ours.icon`/`theirs.icon` do NOT escalate to a whole-section skip — unlike
         // every true closed select above, WordPress's own editor presents this field
         // as a free "Icon (CDN path)" TextControl (mu-plugins/ciphera-page-blocks.js),
         // not a dropdown, and `ciphera_page_parse_sections()` runs no
@@ -735,19 +741,19 @@ function buildSections(
             repair('comparison-cards', 'repaired', `dropped ${n} stat(s) missing a term or detail`)
           ),
           ours: {
-            icon: str(e.oursIcon),
-            name: str(e.oursName),
-            tagline: str(e.oursTagline),
-            highlighted: boolAttr(e.oursHighlighted),
-            taglineAccent: boolAttr(e.oursTaglineAccent),
-            items: coerceItems<{ text: string }>(e.oursItems, ['text']).map((it) => it.text).filter((t) => t !== ''),
+            icon: str(oursRaw.icon),
+            name: str(oursRaw.name),
+            tagline: str(oursRaw.tagline),
+            highlighted: boolAttr(oursRaw.highlighted),
+            taglineAccent: boolAttr(oursRaw.taglineAccent),
+            items: coerceItems<{ text: string }>(oursRaw.items, ['text']).map((it) => it.text).filter((t) => t !== ''),
           },
           theirs: {
-            icon: str(e.theirsIcon),
-            name: str(e.theirsName),
-            tagline: str(e.theirsTagline),
-            checkAccent: boolAttr(e.theirsCheckAccent),
-            items: coerceItems<{ text: string; has: string }>(e.theirsItems, ['text', 'has'])
+            icon: str(theirsRaw.icon),
+            name: str(theirsRaw.name),
+            tagline: str(theirsRaw.tagline),
+            checkAccent: boolAttr(theirsRaw.checkAccent),
+            items: coerceItems<{ text: string; has: string }>(theirsRaw.items, ['text', 'has'])
               .filter((it) => it.text !== '')
               .map((it) => ({ text: it.text, has: boolAttr(it.has) })),
           },

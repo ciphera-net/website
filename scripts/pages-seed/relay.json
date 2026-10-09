@@ -1,0 +1,300 @@
+{
+  "site": "ciphera-net",
+  "path": "/products/relay",
+  "title": "Ciphera Relay - Secure Email Infrastructure",
+  "seo": {
+    "title": "Ciphera Relay - Secure Email Infrastructure | Ciphera",
+    "description": "Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking, Swiss hosted.",
+    "canonical": "https://ciphera.net/products/relay",
+    "ogTitle": "Ciphera Relay - Secure Email Infrastructure | Ciphera",
+    "ogDescription": "Privacy-first transactional email delivery with TLS 1.3, DKIM, SPF, and DMARC. No tracking pixels, no open tracking.",
+    "twitterTitle": "Ciphera Relay - Secure Email Infrastructure | Ciphera",
+    "twitterDescription": "Privacy-first transactional email with TLS 1.3, DKIM/SPF/DMARC. No tracking, Swiss hosted."
+  },
+  "blocks": [
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "hero",
+        "label": "Ciphera Relay",
+        "heading": "Transactional email that respects privacy.",
+        "body": "The email backbone behind every Ciphera service. TLS 1.3 encryption, DKIM signing, and zero tracking — for verification codes, security alerts, and account notifications.",
+        "backgroundImage": "/gen-a-10.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [
+          {
+            "icon": "lock",
+            "label": "TLS 1.3"
+          },
+          {
+            "icon": "shield-check",
+            "label": "DKIM / SPF / DMARC"
+          },
+          {
+            "icon": "eye-slash",
+            "label": "No tracking"
+          },
+          {
+            "icon": "envelope-simple",
+            "label": "Swiss hosted"
+          }
+        ],
+        "stats": [
+          {
+            "term": "Log retention",
+            "detail": "30 days"
+          },
+          {
+            "term": "Tracking pixels",
+            "detail": "0"
+          }
+        ],
+        "primaryButtonLabel": "Contact Sales",
+        "primaryButtonHref": "/contact",
+        "primaryButtonExternal": false,
+        "secondaryButtonLabel": "Learn More",
+        "secondaryButtonHref": "/about",
+        "secondaryButtonExternal": false,
+        "footnote": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "01 · Email",
+        "heading": "Security-critical emails, handed off fast.",
+        "text": [
+          {
+            "text": "When someone tries to break into an account or a password needs resetting, speed matters. Relay hands verification codes, security alerts, and lockout notifications straight to the mail server — with TLS encryption on every hop it controls."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "Verification emails and password resets"
+          },
+          {
+            "text": "Suspicious login alerts and account lockout notices"
+          },
+          {
+            "text": "Billing alerts and uptime reports (Pulse)"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "right",
+        "visualType": "",
+        "visualKey": "",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "",
+        "imageAlt": "",
+        "overlayBadges": [],
+        "overlayBadgeStyle": "default"
+      }
+    },
+    {
+      "name": "ciphera/feature-grid",
+      "attrs": {
+        "label": "02 · Features",
+        "heading": "Everything in Ciphera Relay.",
+        "dek": "",
+        "items": [
+          {
+            "icon": "shield-check",
+            "title": "Email authentication",
+            "body": "Per-domain DKIM keys, strict SPF, and a DMARC reject policy over TLS 1.3 — authenticated end to end, with reverse-DNS configured for HELO compliance.",
+            "anchor": ""
+          },
+          {
+            "icon": "eye-slash",
+            "title": "No tracking",
+            "body": "No tracking pixels, no open or click monitoring, no recipient IP profiling, no third-party analytics — delivery metadata is retained 30 days, then permanently deleted.",
+            "anchor": ""
+          }
+        ],
+        "bullets": []
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "03 · SMTP",
+        "heading": "Standard SMTP. Any language.",
+        "text": [
+          {
+            "text": "No SDK, no proprietary API. Relay uses standard SMTP AUTH over port 587 with STARTTLS — it works with any language, framework, or email library. Each Ciphera service gets its own sender domain and <a href=\"/glossary/dkim\">DKIM</a> key for clean provenance."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "SMTP AUTH on port 587 (STARTTLS) or 465 (implicit TLS)"
+          },
+          {
+            "text": "Per-service sender domains for email provenance"
+          },
+          {
+            "text": "Works with Go, Node.js, Python, PHP — any SMTP client"
+          },
+          {
+            "text": "Direct SMTP handoff for transactional emails"
+          },
+          {
+            "text": "No proprietary SDK or API lock-in"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "left",
+        "visualType": "code",
+        "visualKey": "code-relay-smtp-env",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "",
+        "imageAlt": "",
+        "overlayBadges": [],
+        "overlayBadgeStyle": "default"
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "04 · Data residency",
+        "heading": "Hosted in Switzerland. Deleted in 30 days.",
+        "text": [
+          {
+            "text": "Relay runs on Exoscale (CH-DK-2), under the <a href=\"/glossary/fadp\">Federal Act on Data Protection (FADP)</a>. Email metadata is retained for 30 days under contract performance basis, then permanently deleted. No marketing emails, no behavioral data, no profiling."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "Hosted on Exoscale, Zurich (CH-DK-2)"
+          },
+          {
+            "text": "Stalwart Mail Server — open-source foundation"
+          },
+          {
+            "text": "Admin UI bound to localhost only (SSH tunnel access)"
+          },
+          {
+            "text": "Let's Encrypt TLS certificates with auto-renewal"
+          },
+          {
+            "text": "Transactional only — marketing emails are never sent"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "left",
+        "visualType": "photo",
+        "visualKey": "",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "/zurich.jpg",
+        "imageAlt": "Zurich, Switzerland — where Ciphera email is hosted",
+        "overlayBadges": [
+          {
+            "icon": "globe-outline",
+            "title": "Data residency",
+            "description": "Exoscale, Switzerland (CH-DK-2)"
+          },
+          {
+            "icon": "timer",
+            "title": "Data retention",
+            "description": "30 days, then deleted"
+          },
+          {
+            "icon": "shield-check",
+            "title": "Compliance",
+            "description": "GDPR, FADP, no tracking"
+          }
+        ],
+        "overlayBadgeStyle": "default"
+      }
+    },
+    {
+      "name": "ciphera/comparison-cards",
+      "attrs": {
+        "label": "05 · Compare",
+        "heading": "How Ciphera Relay compares.",
+        "intro": "Most email services track opens, clicks, and recipient behavior. Relay just hands off the email.",
+        "statsStrip": [],
+        "oursIcon": "/relay_icon_no_margins.png",
+        "oursName": "Ciphera Relay",
+        "oursTagline": "Privacy-first email",
+        "oursHighlighted": false,
+        "oursTaglineAccent": true,
+        "oursItems": [],
+        "theirsIcon": "eye",
+        "theirsName": "Traditional Services",
+        "theirsTagline": "SendGrid, Postmark, SES",
+        "theirsCheckAccent": false,
+        "theirsItems": [
+          {
+            "text": "Tracking pixels by default",
+            "has": false
+          },
+          {
+            "text": "TLS encryption",
+            "has": true
+          },
+          {
+            "text": "Shared DKIM infrastructure",
+            "has": false
+          },
+          {
+            "text": "DMARC support",
+            "has": true
+          },
+          {
+            "text": "US cloud infrastructure",
+            "has": false
+          },
+          {
+            "text": "Proprietary API required",
+            "has": false
+          },
+          {
+            "text": "Indefinite data retention",
+            "has": false
+          },
+          {
+            "text": "Marketing + transactional",
+            "has": false
+          },
+          {
+            "text": "Fast delivery",
+            "has": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "band",
+        "label": "06 · Get started",
+        "heading": "Interested in Ciphera Relay?",
+        "body": "Ciphera Relay is currently an internal service powering email delivery across the Ciphera ecosystem. Reach out if you're interested in the technology for your platform.",
+        "backgroundImage": "/gen-a-10.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [],
+        "stats": [],
+        "primaryButtonLabel": "Contact Sales",
+        "primaryButtonHref": "/contact",
+        "primaryButtonExternal": false,
+        "secondaryButtonLabel": "About Ciphera",
+        "secondaryButtonHref": "/about",
+        "secondaryButtonExternal": false,
+        "footnote": ""
+      }
+    }
+  ]
+}
