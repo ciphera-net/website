@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@ciphera-net/facet": "^0.4.1",
-    "@ciphera-net/facet-sections": "^0.3.0",
+    "@ciphera-net/facet-sections": "^0.3.1",
     "@ciphera-net/facet-tailwind": "^0.2.0",
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-accordion": "^1.2.13",
