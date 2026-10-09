@@ -87,6 +87,9 @@ function componentFile(name) {
 }
 
 test('every @ciphera-net/facet-sections component CmsPage imports from the bare barrel is confirmed server-safe (no hook anywhere in its implementation graph) — a hook-using one must go through a local client wrapper instead', () => {
+  // Runs in `test:render` (after npm ci), never in the install-less `npm test`: without the package every component
+  // file is missing and the filter below would pass vacuously (09-10-2026, PR CI).
+  assert.ok(existsSync(FACET_SECTIONS_DIST), 'facet-sections is not installed: this guard needs node_modules')
   const src = code('components/cms/CmsPage.tsx')
   const barrelImports = facetSectionsBarrelImports(src)
   assert.ok(barrelImports.length > 0, 'CmsPage imports nothing from @ciphera-net/facet-sections any more — update this test')
