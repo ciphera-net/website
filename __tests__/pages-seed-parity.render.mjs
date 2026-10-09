@@ -51,47 +51,8 @@ function normalizeReactUseIds(html) {
   return html.replace(/id="_R_[a-zA-Z0-9]+_"/g, 'id="_R__"')
 }
 
-/**
- * `FeatureSplit` (`@ciphera-net/facet-sections`) UNCONDITIONALLY wraps its `visual`
- * prop in `<div className="w-full max-w-md min-w-0">`, for every non-photo
- * `visualType`. The two CODE-snippet sections (Pulse's `#script`, Relay's
- * `#integration`) never had that wrapper in the original source — `<PulseScriptTagCode />`/
- * `<RelaySmtpEnvCode />` sit directly inside the visual cell, with no intermediate
- * div — so the CMS path, going through the shared component, gains one extra
- * wrapper `<div>` the coded page never had. This is a limitation of the PUBLISHED
- * `@ciphera-net/facet-sections` package (out of this repo's scope to change), not a
- * content/data bug: every byte inside and around that one extra div is identical.
- * Removes exactly one redundant nesting level by tracking div depth from the second
- * (inner, redundant) open tag to its own matching close — never a blind text
- * replace, which could not keep the result valid, tag-balanced HTML. Pulse/Relay only.
- */
-function unwrapRedundantVisualWrapper(html) {
-  const outerOpen = '<div class="w-full max-w-md min-w-0">'
-  const dupIdx = html.indexOf(outerOpen + outerOpen)
-  if (dupIdx === -1) return html
-  const innerOpenStart = dupIdx + outerOpen.length
-  const innerOpenEnd = innerOpenStart + outerOpen.length
-  let depth = 1
-  let i = innerOpenEnd
-  while (depth > 0) {
-    const nextOpen = html.indexOf('<div', i)
-    const nextClose = html.indexOf('</div>', i)
-    if (nextClose === -1) throw new Error('unwrapRedundantVisualWrapper: unbalanced <div>/</div>')
-    if (nextOpen !== -1 && nextOpen < nextClose) {
-      depth++
-      i = nextOpen + 4
-    } else {
-      depth--
-      if (depth === 0) return html.slice(0, innerOpenStart) + html.slice(innerOpenEnd, nextClose) + html.slice(nextClose + 6)
-      i = nextClose + 6
-    }
-  }
-  return html
-}
-
 function normalizeKnownDifferences(slug, branch, html) {
   if (slug === 'captcha') html = normalizeReactUseIds(html)
-  if ((slug === 'pulse' || slug === 'relay') && branch === 'cms') html = unwrapRedundantVisualWrapper(html)
   return html
 }
 
@@ -174,19 +135,14 @@ for (const slug of PAGES) {
 }
 
 test('NEGATIVE CONTROL: every known-difference normalisation is doing REAL work on exactly the page it claims, and is a no-op everywhere else', () => {
-  // id and tessera need NONE of the three normalisations — already byte-identical raw.
-  for (const slug of ['id', 'tessera']) {
+  // id, tessera, pulse and relay need NO normalisation — byte-identical raw. (pulse and relay needed an
+  // unwrap of FeatureSplit's code-visual wrapper until facet-sections 0.3.1, 09-10-2026.)
+  for (const slug of ['id', 'tessera', 'pulse', 'relay']) {
     assert.equal(result[slug].cms.html, result[slug].coded.html, `${slug} should already be identical with no normalisation at all`)
   }
   // captcha needs ONLY the useId() one.
   assert.notEqual(result.captcha.cms.html, result.captcha.coded.html, 'captcha should still differ without the useId() normalisation')
   assert.equal(normalizeReactUseIds(result.captcha.cms.html), normalizeReactUseIds(result.captcha.coded.html))
-  // pulse and relay need ONLY the redundant-visual-wrapper one.
-  for (const slug of ['pulse', 'relay']) {
-    assert.notEqual(result[slug].cms.html, result[slug].coded.html, `${slug} should still differ without the wrapper normalisation`)
-  }
-  assert.equal(unwrapRedundantVisualWrapper(result.pulse.cms.html), result.pulse.coded.html)
-  assert.equal(unwrapRedundantVisualWrapper(result.relay.cms.html), result.relay.coded.html)
 })
 
 test('NEGATIVE CONTROL: different pages render different HTML — the comparison is not vacuously equal by construction', () => {
