@@ -334,6 +334,19 @@ export interface FeatureSplitSection {
   /** 0.3.0, `photo` only. `default` (Captcha/Relay), `tabular` (Pulse, whose
    * description holds a number) or `detailed` (Ciphera ID's one-page outlier). */
   overlayBadgeStyle: 'default' | 'tabular' | 'detailed'
+  /**
+   * 🔴 NOT ON THE WORDPRESS WIRE YET. `FeatureSplit` (`@ciphera-net/facet-sections`)
+   * has carried a `note` prop since before 0.3.0 (Ciphera ID's "#zero-knowledge-auth"
+   * closer, "To be precise about the last one…" — deliberately smaller type than
+   * `trailingText`), but `ciphera/feature-split`'s block.json never gained a `note`
+   * attribute the way it gained `trailingText` in 0.3.0 — `ciphera_page_parse_
+   * sections()` emits no `note` key for this block type (verified against
+   * `origin/main` @ `393c33e`). Wired here anyway (parse, repair, render) so this
+   * site is ready the moment that WordPress-side addition ships; until then this is
+   * always `''` for real published content, and `/products/id`'s one section that
+   * needs it cannot be migrated — see the WEB-28 build report.
+   */
+  note: string
 }
 
 export interface FeatureGridItem {
@@ -693,6 +706,9 @@ function buildSections(
           imageAlt: str(e.imageAlt),
           overlayBadges,
           overlayBadgeStyle: (['default', 'tabular', 'detailed'].includes(str(e.overlayBadgeStyle)) ? str(e.overlayBadgeStyle) : 'default') as FeatureSplitSection['overlayBadgeStyle'],
+          // Not on the wire yet — see FeatureSplitSection['note']'s own comment. `str()`
+          // on a field WordPress never sends is always ''; this is forward-wiring.
+          note: sanitizeRichText(str(e.note)),
         })
         break
       }

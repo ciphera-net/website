@@ -114,7 +114,7 @@ function iconComponentFor(key: string): ComponentType<IconProps> | null {
  * exercises today. Every proven call site has its own sized resolver below. */
 export function resolveIcon(key: string): ReactNode {
   const Icon = iconComponentFor(key)
-  return Icon ? <Icon className="h-4 w-4" aria-hidden="true" /> : null
+  return Icon ? <Icon aria-hidden="true" className="h-4 w-4" /> : null
 }
 
 /** `product-banner.trustBadges[].icon` — hero/band trust-badge row. Measured on all
@@ -122,21 +122,21 @@ export function resolveIcon(key: string): ReactNode {
  * `h-3.5 w-3.5`, no color class (inherits the badge span's own muted text color). */
 export function resolveTrustBadgeIcon(key: string): ReactNode {
   const Icon = iconComponentFor(key)
-  return Icon ? <Icon className="h-3.5 w-3.5" aria-hidden="true" /> : null
+  return Icon ? <Icon aria-hidden="true" className="h-3.5 w-3.5" /> : null
 }
 
 /** `feature-grid.items[].icon` — the divided icon-card grid. Measured on Captcha,
  * Relay, Pulse and Ciphera ID: `h-5 w-5 text-muted-foreground`. */
 export function resolveFeatureGridIcon(key: string): ReactNode {
   const Icon = iconComponentFor(key)
-  return Icon ? <Icon className="h-5 w-5 text-muted-foreground" aria-hidden="true" /> : null
+  return Icon ? <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" /> : null
 }
 
 /** `feature-split.overlayBadges[].icon` — the `photo` visual type's bottom-overlaid
  * info chips. Measured on all four photo splits: `h-4 w-4 shrink-0 text-muted-foreground`. */
 export function resolveOverlayBadgeIcon(key: string): ReactNode {
   const Icon = iconComponentFor(key)
-  return Icon ? <Icon className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" /> : null
+  return Icon ? <Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground" /> : null
 }
 
 /**

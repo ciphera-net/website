@@ -79,14 +79,15 @@
         "ctaLabel": "",
         "ctaHref": "",
         "visualSide": "right",
-        "visualType": "",
-        "visualKey": "",
+        "visualType": "mockup",
+        "visualKey": "mockup-captcha",
         "visualCellBordered": false,
         "mockupCell": false,
         "image": "",
         "imageAlt": "",
         "overlayBadges": [],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "default",
+        "note": ""
       }
     },
     {
@@ -144,14 +145,15 @@
         "ctaLabel": "",
         "ctaHref": "",
         "visualSide": "left",
-        "visualType": "",
-        "visualKey": "",
+        "visualType": "diagram",
+        "visualKey": "diagram-captcha-stateless",
         "visualCellBordered": false,
         "mockupCell": false,
         "image": "",
         "imageAlt": "",
         "overlayBadges": [],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "default",
+        "note": ""
       }
     },
     {
@@ -209,7 +211,8 @@
             "description": "No tracking, IPs hashed with SHA-256"
           }
         ],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "default",
+        "note": ""
       }
     },
     {
@@ -224,7 +227,32 @@
         "oursTagline": "Privacy-first bot protection",
         "oursHighlighted": false,
         "oursTaglineAccent": false,
-        "oursItems": [],
+        "oursItems": [
+          {
+            "text": "Invisible adaptive proof-of-work"
+          },
+          {
+            "text": "No user tracking or fingerprinting"
+          },
+          {
+            "text": "Self-hosted — your infrastructure"
+          },
+          {
+            "text": "Fully stateless (HMAC-signed)"
+          },
+          {
+            "text": "5-signal behavioral risk scoring"
+          },
+          {
+            "text": "Action-scoped JWT tokens"
+          },
+          {
+            "text": "Zero-downtime key rotation"
+          },
+          {
+            "text": "Audio + puzzle + PoW challenges"
+          }
+        ],
         "theirsIcon": "eye",
         "theirsName": "Traditional Captchas",
         "theirsTagline": "reCAPTCHA, hCaptcha, Turnstile",

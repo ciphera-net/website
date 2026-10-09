@@ -16,6 +16,7 @@ import Breadcrumbs from '@/components/Breadcrumbs'
 import { CmsRichText, cmsRichNodes } from './CmsRichText'
 import { CmsLink } from './CmsLink'
 import type { PageDocument, PageSection } from '@/lib/cms/page-build'
+import { anchorIdFor } from '@/lib/cms/product-page-anchors'
 import {
   resolveTrustBadgeIcon,
   resolveFeatureGridIcon,
@@ -69,7 +70,15 @@ function breadcrumbItemsForPath(path: string): { label: string; href?: string }[
   })
 }
 
-function Section({ section, index }: { section: PageSection; index: number }) {
+/** The inline-link class every `cmsRichNodes` call on a product page needs —
+ * `text-primary hover:underline` everywhere except Tessera, which never hides the
+ * underline (`text-primary underline`). See `CmsRichText.tsx`'s own comment. */
+function linkClassFor(path: string): string | undefined {
+  return path === '/products/tessera' ? 'text-primary underline' : undefined
+}
+
+function Section({ section, index, path }: { section: PageSection; index: number; path: string }) {
+  const linkClass = linkClassFor(path)
   switch (section.type) {
     case 'hero':
       return <SeoHero eyebrow={section.label} title={section.title} lede={section.introduction} />
@@ -118,8 +127,8 @@ function Section({ section, index }: { section: PageSection; index: number }) {
         <ProductBanner
           variant={section.variant}
           label={section.label}
-          heading={cmsRichNodes(section.heading)}
-          body={cmsRichNodes(section.body)}
+          heading={cmsRichNodes(section.heading, linkClass)}
+          body={cmsRichNodes(section.body, linkClass)}
           backgroundImage={productBackgroundImage(section.backgroundImage, section.backgroundImageAlt, section.variant === 'hero')}
           badgeStyle={section.badgeStyle}
           trustBadges={section.trustBadges.map((b) => ({ icon: b.icon ? resolveTrustBadgeIcon(b.icon) : undefined, label: b.label }))}
@@ -134,7 +143,7 @@ function Section({ section, index }: { section: PageSection; index: number }) {
               ? { label: section.secondaryButtonLabel, href: section.secondaryButtonHref, external: section.secondaryButtonExternal }
               : undefined
           }
-          footnote={section.footnote ? cmsRichNodes(section.footnote) : undefined}
+          footnote={section.footnote ? cmsRichNodes(section.footnote, linkClass) : undefined}
           LinkComponent={CmsLink}
         />
       )
@@ -142,10 +151,11 @@ function Section({ section, index }: { section: PageSection; index: number }) {
     case 'feature-split':
       return (
         <FeatureSplit
+          id={anchorIdFor(path, section.heading)}
           label={section.label}
           heading={section.heading}
-          text={Array.isArray(section.text) ? section.text.map((p) => cmsRichNodes(p)) : cmsRichNodes(section.text)}
-          trailingText={section.trailingText ? cmsRichNodes(section.trailingText) : undefined}
+          text={Array.isArray(section.text) ? section.text.map((p) => cmsRichNodes(p, linkClass)) : cmsRichNodes(section.text, linkClass)}
+          trailingText={section.trailingText ? cmsRichNodes(section.trailingText, linkClass) : undefined}
           bullets={section.bullets}
           bulletStyle={section.bulletStyle}
           cta={section.ctaLabel && section.ctaHref ? { label: section.ctaLabel, href: section.ctaHref } : undefined}
@@ -161,6 +171,7 @@ function Section({ section, index }: { section: PageSection; index: number }) {
             description: b.description,
           }))}
           overlayBadgeStyle={section.overlayBadgeStyle}
+          note={section.note ? cmsRichNodes(section.note, linkClass) : undefined}
           LinkComponent={CmsLink}
         />
       )
@@ -168,6 +179,7 @@ function Section({ section, index }: { section: PageSection; index: number }) {
     case 'feature-grid':
       return (
         <FeatureGrid
+          id={anchorIdFor(path, section.heading)}
           label={section.label}
           heading={section.heading}
           dek={section.dek || undefined}
@@ -179,9 +191,10 @@ function Section({ section, index }: { section: PageSection; index: number }) {
     case 'comparison-cards':
       return (
         <ComparisonCards
+          id={anchorIdFor(path, section.heading)}
           label={section.label}
           heading={section.heading}
-          intro={cmsRichNodes(section.intro)}
+          intro={cmsRichNodes(section.intro, linkClass)}
           statsStrip={section.statsStrip.length > 0 ? section.statsStrip : undefined}
           ours={{
             icon: resolveComparisonIcon(section.ours.icon, section.ours.name, 'ours'),
@@ -204,6 +217,7 @@ function Section({ section, index }: { section: PageSection; index: number }) {
     case 'package-grid':
       return (
         <PackageGrid
+          id={anchorIdFor(path, section.heading)}
           label={section.label}
           heading={section.heading}
           items={section.items.map((it) => ({
@@ -233,12 +247,13 @@ function Section({ section, index }: { section: PageSection; index: number }) {
               : ({ type: 'none' } as const)
       return (
         <ContentBlock
+          id={anchorIdFor(path, section.heading)}
           label={section.label}
           heading={section.heading}
-          text={cmsRichNodes(section.text)}
+          text={cmsRichNodes(section.text, linkClass)}
           device={device}
           bullets={section.bullets.length > 0 ? section.bullets : undefined}
-          note={section.note ? cmsRichNodes(section.note) : undefined}
+          note={section.note ? cmsRichNodes(section.note, linkClass) : undefined}
           noteTight={section.noteTight}
           LinkComponent={CmsLink}
         />
@@ -271,7 +286,7 @@ export function CmsPage({ page, breadcrumbs = true }: { page: PageDocument; brea
     <>
       {breadcrumbs && <Breadcrumbs items={breadcrumbItemsForPath(page.path)} />}
       {page.sections.map((section, i) => (
-        <Section key={`${section.type}-${i}`} section={section} index={i} />
+        <Section key={`${section.type}-${i}`} section={section} index={i} path={page.path} />
       ))}
     </>
   )

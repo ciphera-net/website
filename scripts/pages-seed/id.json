@@ -82,14 +82,15 @@
         "ctaLabel": "",
         "ctaHref": "",
         "visualSide": "right",
-        "visualType": "",
-        "visualKey": "",
+        "visualType": "mockup",
+        "visualKey": "mockup-auth",
         "visualCellBordered": false,
         "mockupCell": true,
         "image": "",
         "imageAlt": "",
         "overlayBadges": [],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "default",
+        "note": ""
       }
     },
     {
@@ -102,7 +103,7 @@
             "text": "With <a href=\"/glossary/opaque\">OPAQUE</a> (RFC 9807), your password is stretched on your device with Argon2id and proven to our servers without ever being sent. We store only an opaque credential record that can't be reversed into your password — so even a full database breach gives attackers nothing usable."
           }
         ],
-        "trailingText": "To be precise about the last one: there is no email reset, because there is nothing on our side to reset. Recovery runs on the 24-word phrase shown at the end of signup — it enrols a second identity that we cannot read, and it is the only thing besides your password that can open the account. Accounts created before 7 September 2026 set it up from Security settings, which needs the password, so do it while you still have it. Lose the password with no phrase enrolled and the account is gone — for us as much as for anyone.",
+        "trailingText": "",
         "bullets": [
           {
             "text": "OPAQUE (RFC 9807) — your password is never sent to our servers"
@@ -121,14 +122,15 @@
         "ctaLabel": "",
         "ctaHref": "",
         "visualSide": "left",
-        "visualType": "",
-        "visualKey": "",
+        "visualType": "diagram",
+        "visualKey": "diagram-id-zero-knowledge",
         "visualCellBordered": true,
         "mockupCell": false,
         "image": "",
         "imageAlt": "",
         "overlayBadges": [],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "default",
+        "note": "To be precise about the last one: there is no email reset, because there is nothing on our side to reset. Recovery runs on the 24-word phrase shown at the end of signup — it enrols a second identity that we cannot read, and it is the only thing besides your password that can open the account. Accounts created before 7 September 2026 set it up from Security settings, which needs the password, so do it while you still have it. Lose the password with no phrase enrolled and the account is gone — for us as much as for anyone."
       }
     },
     {
@@ -266,7 +268,8 @@
             "description": "GDPR, FADP, privacy by design"
           }
         ],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "detailed",
+        "note": ""
       }
     },
     {

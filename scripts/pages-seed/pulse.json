@@ -46,7 +46,7 @@
         "primaryButtonExternal": false,
         "secondaryButtonLabel": "View on GitHub",
         "secondaryButtonHref": "https://github.com/ciphera-net/pulse",
-        "secondaryButtonExternal": false,
+        "secondaryButtonExternal": true,
         "footnote": ""
       }
     },
@@ -79,14 +79,15 @@
         "ctaLabel": "Get Started Free",
         "ctaHref": "https://pulse.ciphera.net/signup",
         "visualSide": "right",
-        "visualType": "",
-        "visualKey": "",
+        "visualType": "mockup",
+        "visualKey": "mockup-pulse-tall",
         "visualCellBordered": false,
         "mockupCell": true,
         "image": "",
         "imageAlt": "",
         "overlayBadges": [],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "default",
+        "note": ""
       }
     },
     {
@@ -157,7 +158,8 @@
         "image": "",
         "imageAlt": "",
         "overlayBadges": [],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "default",
+        "note": ""
       }
     },
     {
@@ -215,7 +217,8 @@
             "description": "GDPR, FADP, ePrivacy exempt"
           }
         ],
-        "overlayBadgeStyle": "default"
+        "overlayBadgeStyle": "tabular",
+        "note": ""
       }
     },
     {
@@ -239,7 +242,32 @@
         "oursTagline": "Privacy-first analytics",
         "oursHighlighted": true,
         "oursTaglineAccent": true,
-        "oursItems": [],
+        "oursItems": [
+          {
+            "text": "No cookies required"
+          },
+          {
+            "text": "GDPR compliant by default"
+          },
+          {
+            "text": "No consent banner needed"
+          },
+          {
+            "text": "Open source client"
+          },
+          {
+            "text": "2.7 KB script — measured"
+          },
+          {
+            "text": "No cross-site tracking"
+          },
+          {
+            "text": "Free tier available"
+          },
+          {
+            "text": "Real-time dashboard"
+          }
+        ],
         "theirsIcon": "https://cdn.ciphera.net/website/ga-favicon.png",
         "theirsName": "Google Analytics",
         "theirsTagline": "Traditional tracking",

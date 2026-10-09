@@ -198,17 +198,47 @@ function plainText(children) {
   return richInline(children)
 }
 
+/** The first DESCENDANT with this tag — never matches `el` itself, even when `el`'s
+ * own tag happens to equal `tag` (e.g. `firstByTag(aDiv, 'div')` must find the first
+ * INNER div, not report `aDiv` back unchanged). */
+/** Visits every descendant of `node` (never `node` itself) via a GENERIC property
+ * walk — not just `.children` — because a `.map()`-rendered list's JSX template
+ * lives inside the arrow function's `.body`/`.expression`, not reachable through
+ * `.children` alone. Every "find X inside this subtree" helper below is built on
+ * this one walk so that class of bug (found once, in `firstByTag` and in what is
+ * now `findAllByTag`) cannot recur a third time in a different helper. */
+function walkDescendants(node, visit) {
+  function walk(n) {
+    if (!n || typeof n !== 'object' || typeof n.type !== 'string') return
+    if (n !== node) visit(n)
+    for (const key of Object.keys(n)) {
+      if (key === 'loc' || key === 'start' || key === 'end' || key === 'range' || key === 'leadingComments' || key === 'trailingComments') continue
+      const v = n[key]
+      if (Array.isArray(v)) v.forEach(walk)
+      else if (v && typeof v === 'object' && typeof v.type === 'string') walk(v)
+    }
+  }
+  for (const key of Object.keys(node)) {
+    if (key === 'loc' || key === 'start' || key === 'end' || key === 'range' || key === 'leadingComments' || key === 'trailingComments') continue
+    const v = node[key]
+    if (Array.isArray(v)) v.forEach(walk)
+    else if (v && typeof v === 'object' && typeof v.type === 'string') walk(v)
+  }
+}
+
 function firstByTag(el, tag) {
   let found = null
-  function walk(node) {
-    if (found || !node) return
-    if (node.type === 'JSXElement' && tagName(node) === tag) {
-      found = node
-      return
-    }
-    for (const c of node.children ?? []) walk(c)
-  }
-  walk(el)
+  walkDescendants(el, (n) => {
+    if (!found && n.type === 'JSXElement' && tagName(n) === tag) found = n
+  })
+  return found
+}
+
+function findAllByTag(el, tag) {
+  const found = []
+  walkDescendants(el, (n) => {
+    if (n.type === 'JSXElement' && tagName(n) === tag) found.push(n)
+  })
   return found
 }
 
@@ -345,12 +375,18 @@ function isLinkEl(el) {
   return t === 'a' || t === 'Link'
 }
 
+/** `external` means "render through a raw `<a target=_blank rel=noopener>`, never
+ * through LinkComponent" — ProductBannerButton's own two paths. Pulse's hero
+ * secondary button is coded as `<Link target="_blank" rel="noopener noreferrer">`
+ * (Next's `Link` forwards unknown props straight to the `<a>` it renders), which
+ * produces the SAME bytes as the external path — so this keys on the `target`
+ * attribute's presence, never on the JSX tag name (`a` vs `Link`). */
 function extractButton(el) {
   if (!el) return { label: '', href: '', external: false }
   return {
     label: richInline(el.children),
     href: jsxAttrString(el, 'href'),
-    external: tagName(el) === 'a' && jsxHasAttr(el, 'target'),
+    external: jsxHasAttr(el, 'target'),
   }
 }
 
@@ -472,15 +508,10 @@ function overlayBadgeBlock(photoAbsDiv) {
     const raw = litValue(el)
     return { icon: raw.icon ?? '', title: raw.title, description: raw.desc ?? raw.description }
   })
-  const ps = []
-  ;(function findAllP(node) {
-    if (!node) return
-    if (node.type === 'JSXElement' && tagName(node) === 'p') {
-      ps.push(node)
-      return
-    }
-    for (const c of node.children ?? []) findAllP(c)
-  })(photoAbsDiv)
+  // The badge <p>s are a `.map()` TEMPLATE, nested inside the JSXExpressionContainer's
+  // `.expression` (a CallExpression's arrow-function body) — NOT reachable through
+  // `.children` alone, hence `findAllByTag`'s generic walk, not a JSX-children-only one.
+  const ps = findAllByTag(photoAbsDiv, 'p')
   let overlayBadgeStyle = 'default'
   if (ps.length >= 2) {
     const titleClass = jsxAttrString(ps[0], 'className')
@@ -523,24 +554,31 @@ function featureSplit(sectionEl) {
     bulletStyle = b.bulletStyle
     i++
   }
+  // trailingText/cta/note, in whatever order/combination is present. A lone
+  // trailing <p> is ambiguous by POSITION alone (ID's "#what-it-is" has only
+  // trailingText, no cta, no note; its "#zero-knowledge-auth" has only note, no
+  // trailingText, no cta — identical shape, different field) — disambiguated by
+  // the authored className instead: FeatureSplit's `trailingText` is always
+  // `text-lg` (full-size, same as `text`), `note` is always `text-sm` (deliberately
+  // smaller). Reading the real class, never guessing from position.
   let trailingText = ''
-  if (copyKids[i] && tagName(copyKids[i]) === 'p') {
-    trailingText = richInline(copyKids[i].children)
-    i++
-  }
   let ctaLabel = ''
   let ctaHref = ''
-  if (copyKids[i] && tagName(copyKids[i]) === 'div') {
-    const link = elementChildren(copyKids[i]).find(isLinkEl)
-    if (link) {
-      ctaLabel = richInline(link.children)
-      ctaHref = jsxAttrString(link, 'href')
-    }
-    i++
-  }
   let note = ''
-  if (copyKids[i] && tagName(copyKids[i]) === 'p') {
-    note = richInline(copyKids[i].children)
+  while (copyKids[i] && (tagName(copyKids[i]) === 'p' || tagName(copyKids[i]) === 'div')) {
+    const node = copyKids[i]
+    if (tagName(node) === 'div') {
+      const link = elementChildren(node).find(isLinkEl)
+      if (link) {
+        ctaLabel = richInline(link.children)
+        ctaHref = jsxAttrString(link, 'href')
+      }
+    } else {
+      const cls = jsxAttrString(node, 'className')
+      const text = richInline(node.children)
+      if (cls.includes('text-sm')) note = text
+      else trailingText = text
+    }
     i++
   }
 
@@ -607,6 +645,7 @@ function featureSplit(sectionEl) {
       imageAlt,
       overlayBadges,
       overlayBadgeStyle,
+      note,
     },
   }
 }
@@ -683,12 +722,14 @@ function comparisonCards(sectionEl) {
   const oursHighlighted = jsxAttrString(oursCard, 'className').includes('relative') || elementChildren(oursCard).some((c) => jsxAttrString(c, 'className').includes('absolute top-0 left-0 right-0'))
   const oursTaglineAccent = oursHeader.taglineClass.includes('text-primary')
   const oursUl = firstByTag(oursCard, 'ul')
-  // Real WP attrs shape: `ciphera_page_normalize_list($attrs['oursItems'], ['text'], ['text'])`.
-  const oursItems = elementChildren(oursUl).map((li) => ({ text: richInline(li.children) }))
+  // "ours" items are a `.map()` over a plain string array (no literal <li>s in the AST,
+  // same device as bulletListOf). Real WP attrs shape:
+  // `ciphera_page_normalize_list($attrs['oursItems'], ['text'], ['text'])`.
+  const oursArr = firstArrayExpression(oursUl)
+  const oursItems = oursArr.elements.map((el) => ({ text: litValue(el) }))
 
   const theirsHeader = cardHeader(theirsCard)
   const theirsUl = firstByTag(theirsCard, 'ul')
-  const theirsLis = elementChildren(theirsUl)
   // "theirs" items are either a plain array of strings (checkmarks only, no `has`) or
   // `{feature,has}` objects in the SOURCE (all three pages that have one name the key
   // `feature`) — read straight from the <ul>'s own data array, same device as
@@ -701,15 +742,11 @@ function comparisonCards(sectionEl) {
     }
     return { text: litValue(el), has: false }
   })
-  // checkAccent: a `has:true` item's check icon class, read directly off the first such <li>.
-  let theirsCheckAccent = false
-  for (let k = 0; k < theirsLis.length; k++) {
-    if (theirsItems[k]?.has) {
-      const iconEl = elementChildren(theirsLis[k])[0]
-      theirsCheckAccent = jsxAttrString(iconEl, 'className').includes('text-foreground')
-      break
-    }
-  }
+  // checkAccent: the list is itself a `.map()` TEMPLATE (one `<li>` in the AST, not one
+  // per item), so read the template's own CheckIcon className directly — same device as
+  // overlayBadgeBlock's style detection, not an iteration over (non-existent) literal <li>s.
+  const theirsCheckIcon = findAllByTag(theirsUl, 'CheckIcon')[0]
+  const theirsCheckAccent = theirsCheckIcon ? jsxAttrString(theirsCheckIcon, 'className').includes('text-foreground') : false
 
   return {
     name: 'ciphera/comparison-cards',
@@ -794,7 +831,6 @@ function contentBlockCredentialTable(sectionEl) {
   const tableTitle = richInline(headerPs[0].children)
   const tableSubtitle = richInline(headerPs[1].children)
   const dl = tableKids[1]
-  const rowDivs = elementChildren(dl)
   const rowsArr = firstArrayExpression(dl)
   const rawRows = rowsArr.elements.map((el) => litValue(el))
   const rows = rawRows.map((r) => ({ key: r.k, value: r.v, note: r.note }))
