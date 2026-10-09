@@ -1,0 +1,464 @@
+{
+  "site": "ciphera-net",
+  "path": "/products/pulse",
+  "title": "Pulse Analytics - Privacy-First Website Analytics",
+  "seo": {
+    "title": "Pulse Analytics - Privacy-First Website Analytics | Ciphera",
+    "description": "Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded. Open-source client.",
+    "canonical": "https://ciphera.net/products/pulse",
+    "ogTitle": "Pulse Analytics - Privacy-First Website Analytics | Ciphera",
+    "ogDescription": "Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded.",
+    "twitterTitle": "Pulse Analytics - Privacy-First Website Analytics | Ciphera",
+    "twitterDescription": "Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design."
+  },
+  "blocks": [
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "hero",
+        "label": "Pulse",
+        "heading": "Analytics without <br class=\"hidden sm:inline\">the surveillance.",
+        "body": "Get the insights you need without compromising user privacy. No cookies, no fingerprinting, no personal data. GDPR compliant by design.",
+        "backgroundImage": "/pulse-showcase-bg.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [
+          {
+            "icon": "cookie",
+            "label": "Cookie-free"
+          },
+          {
+            "icon": "code",
+            "label": "Open source client"
+          },
+          {
+            "icon": "shield-check",
+            "label": "GDPR compliant"
+          },
+          {
+            "icon": "lightning",
+            "label": "2.7 KB script"
+          }
+        ],
+        "stats": [],
+        "primaryButtonLabel": "Get Started Free",
+        "primaryButtonHref": "https://pulse.ciphera.net/signup",
+        "primaryButtonExternal": false,
+        "secondaryButtonLabel": "View on GitHub",
+        "secondaryButtonHref": "https://github.com/ciphera-net/pulse",
+        "secondaryButtonExternal": true,
+        "footnote": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "01 · Dashboard",
+        "heading": "Your traffic, at a glance.",
+        "text": [
+          {
+            "text": "Real-time dashboard with unique visitors, pageviews, bounce rate, and visit duration. Filter by date range, compare periods, and export your data — all without a single cookie."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "Live visitor count with real-time updates"
+          },
+          {
+            "text": "Hourly, daily, and weekly trend charts"
+          },
+          {
+            "text": "Referrer sources and UTM tracking"
+          },
+          {
+            "text": "Country-level geographic breakdown"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "Get Started Free",
+        "ctaHref": "https://pulse.ciphera.net/signup",
+        "visualSide": "right",
+        "visualType": "mockup",
+        "visualKey": "mockup-pulse-tall",
+        "visualCellBordered": false,
+        "mockupCell": true,
+        "image": "",
+        "imageAlt": "",
+        "overlayBadges": [],
+        "overlayBadgeStyle": "default",
+        "note": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-grid",
+      "attrs": {
+        "label": "02 · Features",
+        "heading": "Everything in Pulse.",
+        "dek": "",
+        "items": [
+          {
+            "icon": "globe",
+            "title": "Visitor insights",
+            "body": "Top pages, referrer sources, browser breakdowns, geographic maps, and peak-hour traffic — the full picture, no personal data collected.",
+            "anchor": "visitors"
+          },
+          {
+            "icon": "funnel",
+            "title": "Conversion funnels",
+            "body": "Multi-step funnels with drop-off analysis between each step, conversion trends over time, and breakdowns by device, country, or referrer.",
+            "anchor": "funnels"
+          },
+          {
+            "icon": "envelope-simple",
+            "title": "Uptime alerts",
+            "body": "Uptime monitors with downtime and recovery alerts to email, Slack, Discord, or a webhook of yours.",
+            "anchor": "alerts"
+          },
+          {
+            "icon": "code",
+            "title": "Modular configuration",
+            "body": "Toggle only the features you use — scroll depth, outbound links, downloads, 404s, rage-click tracking — with setup guides for 10+ frameworks.",
+            "anchor": "configuration"
+          }
+        ],
+        "bullets": []
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "03 · Script",
+        "heading": "One script tag. That's it.",
+        "text": [
+          {
+            "text": "Add a single script tag to your site and you're done. 2.7 KB gzipped — measured, not rounded — about 54x lighter than Google Analytics. Loads asynchronously, never blocks page rendering, works with any framework."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "Works with React, Next.js, Vue, Svelte, WordPress, plain HTML"
+          },
+          {
+            "text": "No npm package required — just a script tag"
+          },
+          {
+            "text": "No consent banner needed — exempt from ePrivacy requirements"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "left",
+        "visualType": "code",
+        "visualKey": "code-pulse-script-tag",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "",
+        "imageAlt": "",
+        "overlayBadges": [],
+        "overlayBadgeStyle": "default",
+        "note": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "04 · Data residency",
+        "heading": "Hosted in Switzerland. Discarded at the edge.",
+        "text": [
+          {
+            "text": "All analytics data is processed and stored under the <a href=\"/glossary/fadp\">Federal Act on Data Protection (FADP)</a>. IP addresses are used only to derive an approximate location at the edge and immediately discarded — never stored, never logged."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "We never move your data out of Switzerland"
+          },
+          {
+            "text": "IP addresses discarded after geo lookup"
+          },
+          {
+            "text": "Aggregate-first — visitor-level views are off by default and month-scoped"
+          },
+          {
+            "text": "No cookies, no fingerprinting, no personal data"
+          },
+          {
+            "text": "Data Processing Agreement available on request"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "left",
+        "visualType": "photo",
+        "visualKey": "",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "/zurich.jpg",
+        "imageAlt": "Zurich, Switzerland — where Pulse analytics data is hosted",
+        "overlayBadges": [
+          {
+            "icon": "globe",
+            "title": "Data residency",
+            "description": "Switzerland (FADP protected)"
+          },
+          {
+            "icon": "timer",
+            "title": "IP retention",
+            "description": "0 seconds — discarded at edge"
+          },
+          {
+            "icon": "shield-check",
+            "title": "Compliance",
+            "description": "GDPR, FADP, ePrivacy exempt"
+          }
+        ],
+        "overlayBadgeStyle": "tabular",
+        "note": ""
+      }
+    },
+    {
+      "name": "ciphera/comparison-cards",
+      "attrs": {
+        "label": "05 · Compare",
+        "heading": "How Pulse compares.",
+        "intro": "Google Analytics is installed on over 28 million websites. Here's why Pulse is the better choice for privacy-conscious teams.",
+        "statsStrip": [
+          {
+            "term": "Script size",
+            "detail": "Pulse 2.7 KB gzipped · GA 146 KB"
+          },
+          {
+            "term": "Cookies",
+            "detail": "Pulse none · GA required"
+          }
+        ],
+        "oursIcon": "/pulse_icon_no_margins.png",
+        "oursName": "Pulse",
+        "oursTagline": "Privacy-first analytics",
+        "oursHighlighted": true,
+        "oursTaglineAccent": true,
+        "oursItems": [
+          {
+            "text": "No cookies required"
+          },
+          {
+            "text": "GDPR compliant by default"
+          },
+          {
+            "text": "No consent banner needed"
+          },
+          {
+            "text": "Open source client"
+          },
+          {
+            "text": "2.7 KB script — measured"
+          },
+          {
+            "text": "No cross-site tracking"
+          },
+          {
+            "text": "Free tier available"
+          },
+          {
+            "text": "Real-time dashboard"
+          }
+        ],
+        "theirsIcon": "https://cdn.ciphera.net/website/ga-favicon.png",
+        "theirsName": "Google Analytics",
+        "theirsTagline": "Traditional tracking",
+        "theirsCheckAccent": false,
+        "theirsItems": [
+          {
+            "text": "Requires cookies",
+            "has": false
+          },
+          {
+            "text": "GDPR requires configuration",
+            "has": false
+          },
+          {
+            "text": "Consent banner required",
+            "has": false
+          },
+          {
+            "text": "Closed source",
+            "has": false
+          },
+          {
+            "text": "Script over 100 KB",
+            "has": false
+          },
+          {
+            "text": "US infrastructure",
+            "has": false
+          },
+          {
+            "text": "Cross-site tracking",
+            "has": false
+          },
+          {
+            "text": "Free tier available",
+            "has": true
+          },
+          {
+            "text": "Real-time dashboard",
+            "has": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/faq-tabs",
+      "attrs": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "06 · FAQ",
+        "categories": [
+          {
+            "key": "general",
+            "label": "General"
+          },
+          {
+            "key": "setup",
+            "label": "Setup"
+          },
+          {
+            "key": "privacy",
+            "label": "Privacy & Compliance"
+          },
+          {
+            "key": "technical",
+            "label": "Technical"
+          }
+        ],
+        "items": [
+          {
+            "categoryKey": "general",
+            "question": "What is Pulse?",
+            "answer": "Pulse is a privacy-first website analytics platform by Ciphera. It tracks pageviews, unique visitors, referrers, and geographic data without using cookies, fingerprinting, or collecting any personal data. It's a privacy-respecting alternative to Google Analytics."
+          },
+          {
+            "categoryKey": "general",
+            "question": "Is Pulse free?",
+            "answer": "Yes, Pulse is free for personal websites. We plan to offer a paid Pro tier for teams and high-traffic sites in the future, but the free tier will always be available."
+          },
+          {
+            "categoryKey": "general",
+            "question": "Can I migrate from Google Analytics?",
+            "answer": "Pulse is not a drop-in replacement for Google Analytics — it's fundamentally different by design. It doesn't track individual users or sessions, so historical GA data can't be imported. However, you can run both side by side during a transition period."
+          },
+          {
+            "categoryKey": "general",
+            "question": "Is Pulse open source?",
+            "answer": "The Pulse client — dashboard and tracking script — are open source and available on GitHub. You can inspect every line of code that runs on your site and verify our privacy claims."
+          },
+          {
+            "categoryKey": "general",
+            "question": "How is Pulse different from Plausible or Fathom?",
+            "answer": "Pulse shares the privacy-first philosophy with Plausible and Fathom, but it stores data in Switzerland under the FADP. The client — dashboard and tracking script — are open source, and Pulse is part of the Ciphera ecosystem, giving you a unified privacy-first stack."
+          },
+          {
+            "categoryKey": "setup",
+            "question": "How do I install Pulse?",
+            "answer": "Add a single script tag to your site's <head> section. That's it. No npm packages, no build steps, no configuration files. The script is under 3 KB gzipped and loads asynchronously."
+          },
+          {
+            "categoryKey": "setup",
+            "question": "Does Pulse work with my framework?",
+            "answer": "Yes. Pulse works with any website or framework: plain HTML, React, Next.js, Vue, Nuxt, Svelte, WordPress, Shopify, and more. If it renders HTML, Pulse works with it."
+          },
+          {
+            "categoryKey": "setup",
+            "question": "How do I verify Pulse is working?",
+            "answer": "After adding the script tag, visit your site and check the Pulse dashboard. You should see your visit appear in real-time within seconds. The dashboard shows a live visitor count and updates every few seconds."
+          },
+          {
+            "categoryKey": "setup",
+            "question": "Can I track multiple websites?",
+            "answer": "Yes. Each website gets its own dashboard. You can add as many sites as you need from the Pulse dashboard by adding the script tag with a different data-domain attribute."
+          },
+          {
+            "categoryKey": "setup",
+            "question": "Does Pulse slow down my website?",
+            "answer": "No. The Pulse script is under 3 KB gzipped — about 54x smaller than Google Analytics. It loads asynchronously with the defer attribute, meaning it never blocks page rendering or affects your Core Web Vitals scores."
+          },
+          {
+            "categoryKey": "privacy",
+            "question": "Do I need a cookie consent banner for Pulse?",
+            "answer": "No. Because Pulse doesn't use cookies, fingerprinting, or any form of persistent identifier, it's exempt from ePrivacy cookie consent requirements. You can use Pulse without any consent banner."
+          },
+          {
+            "categoryKey": "privacy",
+            "question": "Is Pulse GDPR compliant?",
+            "answer": "Yes, by architecture — not by configuration. Pulse doesn't collect any personal data as defined by GDPR Article 4. There are no data subjects in the dataset, so DSAR requests don't apply. A Data Processing Agreement is available on request."
+          },
+          {
+            "categoryKey": "privacy",
+            "question": "What happens to IP addresses?",
+            "answer": "IP addresses are used only at the network edge for country-level geolocation. They are immediately discarded after the geo lookup — never stored, never logged, never written to disk. We can't retrieve them even if asked."
+          },
+          {
+            "categoryKey": "privacy",
+            "question": "Where is my analytics data stored?",
+            "answer": "All data is processed and stored in Switzerland, protected by the Federal Act on Data Protection (FADP). We never move it out of that jurisdiction. It leaves only if you export it, or connect a tool you choose, such as an AI assistant."
+          },
+          {
+            "categoryKey": "privacy",
+            "question": "Can Pulse identify individual users?",
+            "answer": "No. Pulse is architecturally incapable of identifying individual users. Each pageview is treated as an independent, anonymous event. There are no user IDs, session IDs, or any form of persistent tracking."
+          },
+          {
+            "categoryKey": "technical",
+            "question": "How does Pulse count unique visitors without cookies?",
+            "answer": "Pulse uses a privacy-safe hashing method that generates a daily rotating identifier from non-personal data points. This allows approximate unique visitor counts without tracking individuals across sessions or days."
+          },
+          {
+            "categoryKey": "technical",
+            "question": "Does Pulse have an API?",
+            "answer": "Yes. Pulse provides a REST API for programmatic access to your analytics data. You can use it to build custom dashboards, integrate with other tools, or export your data."
+          },
+          {
+            "categoryKey": "technical",
+            "question": "What metrics does Pulse track?",
+            "answer": "Pulse tracks pageviews, unique visitors, bounce rate, visit duration, referrer sources, UTM parameters, device type, browser, operating system, and country-level geolocation."
+          },
+          {
+            "categoryKey": "technical",
+            "question": "Can I export my data?",
+            "answer": "Yes. Site Settings → Export lets you download your data as Excel, CSV, or JSON, or share a growth report with someone outside your team. You can also use the API for automated exports."
+          },
+          {
+            "categoryKey": "technical",
+            "question": "Does Pulse support custom events?",
+            "answer": "Custom event tracking is on our roadmap. Currently, Pulse focuses on pageview analytics. We plan to add lightweight custom event support that maintains our zero-personal-data architecture."
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "band",
+        "label": "07 · Get started",
+        "heading": "Start tracking with privacy.",
+        "body": "Add one script tag and get privacy-first analytics in under 60 seconds. Free forever for personal sites.",
+        "backgroundImage": "/pulse-showcase-bg.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [],
+        "stats": [],
+        "primaryButtonLabel": "Get Started Free",
+        "primaryButtonHref": "https://pulse.ciphera.net/signup",
+        "primaryButtonExternal": false,
+        "secondaryButtonLabel": "Contact Sales",
+        "secondaryButtonHref": "/contact",
+        "secondaryButtonExternal": false,
+        "footnote": ""
+      }
+    }
+  ]
+}

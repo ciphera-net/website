@@ -1,0 +1,297 @@
+{
+  "site": "ciphera-net",
+  "path": "/products/id",
+  "title": "Ciphera ID - How Signing In to Ciphera Works",
+  "seo": {
+    "title": "Ciphera ID - How Signing In to Ciphera Works | Ciphera",
+    "description": "Ciphera ID is the sign-in behind Ciphera’s own applications — not a product you buy. Zero-knowledge OPAQUE authentication (RFC 9807), an encrypted profile vault the server cannot read, and Swiss-hosted infrastructure.",
+    "canonical": "https://ciphera.net/products/id",
+    "ogTitle": "Ciphera ID - How Signing In to Ciphera Works | Ciphera",
+    "ogDescription": "The sign-in behind Ciphera’s own applications: zero-knowledge OPAQUE authentication (RFC 9807), an encrypted profile vault the server cannot read, and Swiss-hosted infrastructure.",
+    "twitterTitle": "Ciphera ID - How Signing In to Ciphera Works | Ciphera",
+    "twitterDescription": "The sign-in behind Ciphera’s own applications: zero-knowledge OPAQUE authentication (RFC 9807) and an encrypted profile vault the server cannot read."
+  },
+  "blocks": [
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "hero",
+        "label": "Ciphera ID",
+        "heading": "The sign-in <br class=\"hidden sm:inline\">behind Ciphera.",
+        "body": "Ciphera ID is infrastructure, not a product. It is how you sign in to Ciphera's own applications — with a password that never reaches our servers and a profile we cannot read.",
+        "backgroundImage": "/auth-showcase-bg.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "bars",
+        "trustBadges": [
+          {
+            "icon": "lock-outline",
+            "label": "Zero-knowledge"
+          },
+          {
+            "icon": "key",
+            "label": "OPAQUE (RFC 9807)"
+          },
+          {
+            "icon": "vault",
+            "label": "Encrypted profile vault"
+          },
+          {
+            "icon": "globe-outline",
+            "label": "Swiss-hosted"
+          }
+        ],
+        "stats": [],
+        "primaryButtonLabel": "Read the open implementation",
+        "primaryButtonHref": "/products/tessera",
+        "primaryButtonExternal": false,
+        "secondaryButtonLabel": "Trust & Security",
+        "secondaryButtonHref": "/trust",
+        "secondaryButtonExternal": false,
+        "footnote": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "01 · What it is",
+        "heading": "One account for our applications.",
+        "text": [
+          {
+            "text": "Every Ciphera application shares one account. You sign in once at <a href=\"https://id.ciphera.net/login\">id.ciphera.net</a> and arrive back at the application you came from over OAuth 2.0 with mandatory PKCE. Today that means <a href=\"/products/pulse\">Pulse</a>, with more of our own services to follow. Ciphera ID does the authentication ceremonies — sign in, sign up, recovery — and nothing else; your settings live in the application you are using."
+          },
+          {
+            "text": "It is not a general-purpose identity platform, and we would rather say so on this page than let you find out after a procurement call:"
+          }
+        ],
+        "trailingText": "If you want to build on this model, the part you can actually use is <a href=\"/products/tessera\">Tessera</a> — the OPAQUE implementation underneath Ciphera ID, published open-source under Apache-2.0.",
+        "bullets": [
+          {
+            "text": "No self-serve client registration — adding an application takes a database migration by us"
+          },
+          {
+            "text": "No OpenID Connect discovery document and no JWKS endpoint for third-party token verification"
+          },
+          {
+            "text": "No “Sign in with Ciphera” SDK, no social-login connectors, no SAML"
+          },
+          {
+            "text": "No plan, no price and no checkout — the billing tables were removed rather than left dormant"
+          }
+        ],
+        "bulletStyle": "dash",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "right",
+        "visualType": "mockup",
+        "visualKey": "mockup-auth",
+        "visualCellBordered": false,
+        "mockupCell": true,
+        "image": "",
+        "imageAlt": "",
+        "overlayBadges": [],
+        "overlayBadgeStyle": "default",
+        "note": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "02 · Authentication",
+        "heading": "Your password never leaves your device.",
+        "text": [
+          {
+            "text": "With <a href=\"/glossary/opaque\">OPAQUE</a> (RFC 9807), your password is stretched on your device with Argon2id and proven to our servers without ever being sent. We store only an opaque credential record that can't be reversed into your password — so even a full database breach gives attackers nothing usable."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "OPAQUE (RFC 9807) — your password is never sent to our servers"
+          },
+          {
+            "text": "On-device Argon2id key stretching"
+          },
+          {
+            "text": "We store only an opaque credential record — no password, hash, or verifier"
+          },
+          {
+            "text": "No password reset — recovery runs on a 24-word phrase we never see"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "left",
+        "visualType": "diagram",
+        "visualKey": "diagram-id-zero-knowledge",
+        "visualCellBordered": true,
+        "mockupCell": false,
+        "image": "",
+        "imageAlt": "",
+        "overlayBadges": [],
+        "overlayBadgeStyle": "default",
+        "note": "To be precise about the last one: there is no email reset, because there is nothing on our side to reset. Recovery runs on the 24-word phrase shown at the end of signup — it enrols a second identity that we cannot read, and it is the only thing besides your password that can open the account. Accounts created before 7 September 2026 set it up from Security settings, which needs the password, so do it while you still have it. Lose the password with no phrase enrolled and the account is gone — for us as much as for anyone."
+      }
+    },
+    {
+      "name": "ciphera/content-block",
+      "attrs": {
+        "diagramKey": "",
+        "rows": [
+          {
+            "key": "id",
+            "value": "b7c1e0f4-2a58-4d19-9f3e-0c8a41d6b2ee",
+            "note": "A UUID"
+          },
+          {
+            "key": "email_blind_index",
+            "value": "4f9a2c81…e3d0",
+            "note": "Keyed hash — not reversible to an address"
+          },
+          {
+            "key": "opaque_record",
+            "value": "9f2c4e8a…b1d7",
+            "note": "Credential record — no password inside it"
+          },
+          {
+            "key": "opaque_wrapped_key",
+            "value": "c04b7e13…8a26",
+            "note": "Inert without a key only your device derives"
+          },
+          {
+            "key": "encrypted_vault",
+            "value": "a1d8…2f60",
+            "note": "Ciphertext — your name and email, sealed"
+          }
+        ],
+        "tableTitle": "What an operator with full database access sees",
+        "tableSubtitle": "One account row, in its entirety",
+        "chips": [],
+        "bullets": [],
+        "bulletStyle": "check",
+        "note": "The trade-off is real and we take it deliberately: because we cannot read your address, we cannot reset your password for you, and a lawful order served on us returns ciphertext. The full account of what we can and cannot see is in <a href=\"/blog/what-we-see-about-you-what-we-dont\">what we see about you</a>.",
+        "noteTight": false,
+        "label": "03 · The vault",
+        "heading": "We do not know your name or your email address.",
+        "text": "This is the part that surprises people, so it is worth being literal about it. The account table has no email column and no name column. Your name and email are sealed in a vault encrypted on your own device, under a key derived during the OPAQUE exchange that our servers never hold in usable form. To find your account at sign-in we use a blind index — a keyed hash of your email that identifies the row without revealing the address.",
+        "device": "credential-table"
+      }
+    },
+    {
+      "name": "ciphera/feature-grid",
+      "attrs": {
+        "label": "04 · Sessions",
+        "heading": "What happens after you sign in.",
+        "dek": "Applications never see your credentials. They receive a short-lived token over an OAuth 2.0 authorization-code flow, and they verify it without calling back to us on every request.",
+        "items": [
+          {
+            "icon": "key",
+            "title": "OAuth 2.0, PKCE mandatory",
+            "body": "Every authorization-code flow requires PKCE with S256 — there is no downgrade path and no implicit flow. Access tokens live 15 minutes; refresh tokens rotate on use, and a reused token revokes the family.",
+            "anchor": ""
+          },
+          {
+            "icon": "shield-check",
+            "title": "A log you can read, on data we hash",
+            "body": "Every sign-in, password change and second-factor event is recorded, and you can end any session from your account settings. Client IP addresses are HMAC-hashed before they are written — which is why the log shows a mask, not an address.",
+            "anchor": ""
+          }
+        ],
+        "bullets": [
+          {
+            "text": "TOTP two-factor authentication with any authenticator app"
+          },
+          {
+            "text": "Escalating lockout on repeated failures (15 min → 1 hour → 24 hours)"
+          },
+          {
+            "text": "A captcha challenge after three failed attempts"
+          },
+          {
+            "text": "Expired tokens and stale sessions cleaned up automatically"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "05 · Data residency",
+        "heading": "Hosted in Switzerland. Blind by design.",
+        "text": [
+          {
+            "text": "All identity data is stored under the <a href=\"/glossary/fadp\">Federal Act on Data Protection (FADP)</a>. Passwords use zero-knowledge OPAQUE auth, IPs are HMAC-hashed, and audit logs are batched asynchronously — privacy at every layer."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "Run on our own infrastructure — no third-party identity vendor holds your account"
+          },
+          {
+            "text": "IP addresses HMAC-hashed before storage"
+          },
+          {
+            "text": "Minimal metadata: no behavioral tracking"
+          },
+          {
+            "text": "Automatic token cleanup and session expiration"
+          },
+          {
+            "text": "Security alerts rate-limited to 1 per hour per user"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "left",
+        "visualType": "photo",
+        "visualKey": "",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "/zurich.jpg",
+        "imageAlt": "Zurich, Switzerland — where Ciphera data is hosted",
+        "overlayBadges": [
+          {
+            "icon": "globe-outline",
+            "title": "Data residency",
+            "description": "Switzerland (FADP protected)"
+          },
+          {
+            "icon": "timer",
+            "title": "Token lifetime",
+            "description": "15 min access, 30 day refresh"
+          },
+          {
+            "icon": "shield-check",
+            "title": "Compliance",
+            "description": "GDPR, FADP, privacy by design"
+          }
+        ],
+        "overlayBadgeStyle": "detailed",
+        "note": ""
+      }
+    },
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "band",
+        "label": "06 · The code",
+        "heading": "You cannot buy this. You can read it.",
+        "body": "Ciphera ID is an internal service, and it is staying that way. The cryptography underneath it is not: Tessera is the same OPAQUE code that verifies real Ciphera sign-ins, published under Apache-2.0 for anyone who wants to hold no passwords either.",
+        "backgroundImage": "/auth-showcase-bg.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [],
+        "stats": [],
+        "primaryButtonLabel": "Tessera, the open implementation",
+        "primaryButtonHref": "/products/tessera",
+        "primaryButtonExternal": false,
+        "secondaryButtonLabel": "See Pulse",
+        "secondaryButtonHref": "/products/pulse",
+        "secondaryButtonExternal": false,
+        "footnote": "Already have a Ciphera account? <a href=\"https://id.ciphera.net/login\">Sign in</a>."
+      }
+    }
+  ]
+}

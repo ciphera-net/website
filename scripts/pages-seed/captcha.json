@@ -1,0 +1,322 @@
+{
+  "site": "ciphera-net",
+  "path": "/products/captcha",
+  "title": "Ciphera Captcha - Privacy-First Bot Protection",
+  "seo": {
+    "title": "Ciphera Captcha - Privacy-First Bot Protection | Ciphera",
+    "description": "Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking, fully stateless.",
+    "canonical": "https://ciphera.net/products/captcha",
+    "ogTitle": "Ciphera Captcha - Privacy-First Bot Protection | Ciphera",
+    "ogDescription": "Protect your applications from bots with adaptive proof-of-work, puzzle challenges, and behavioral analysis. No cookies, no cross-site tracking.",
+    "twitterTitle": "Ciphera Captcha - Privacy-First Bot Protection | Ciphera",
+    "twitterDescription": "Adaptive proof-of-work, puzzle challenges, and 5-signal risk scoring. No tracking, fully stateless."
+  },
+  "blocks": [
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "hero",
+        "label": "Ciphera Captcha",
+        "heading": "Stop bots without <br class=\"hidden sm:inline\">compromising privacy.",
+        "body": "Adaptive proof-of-work, puzzle challenges, and behavioral analysis — all without tracking your users. Fully stateless, self-hosted, and GDPR compliant by design.",
+        "backgroundImage": "/captcha-showcase-bg.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [
+          {
+            "icon": "lightning",
+            "label": "Adaptive PoW"
+          },
+          {
+            "icon": "eye-slash",
+            "label": "No tracking"
+          },
+          {
+            "icon": "shield-check",
+            "label": "Stateless"
+          },
+          {
+            "icon": "robot",
+            "label": "5-signal risk scoring"
+          }
+        ],
+        "stats": [],
+        "primaryButtonLabel": "Contact Sales",
+        "primaryButtonHref": "/contact",
+        "primaryButtonExternal": false,
+        "secondaryButtonLabel": "Learn More",
+        "secondaryButtonHref": "/about",
+        "secondaryButtonExternal": false,
+        "footnote": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "01 · Bot defense",
+        "heading": "Invisible to humans. Expensive for bots.",
+        "text": [
+          {
+            "text": "Ciphera's proof-of-work runs silently in a Web Worker — users see nothing while their browser solves a SHA-256 challenge in the background. Difficulty adapts per-IP based on request rate, scaling from easy to hard as suspicious activity increases."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "Zero friction — runs invisibly in a background thread"
+          },
+          {
+            "text": "Adaptive difficulty (4-6 leading zeros) based on request rate"
+          },
+          {
+            "text": "Web Worker keeps the UI fully responsive"
+          },
+          {
+            "text": "Graceful fallback to main thread on older browsers"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "right",
+        "visualType": "mockup",
+        "visualKey": "mockup-captcha",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "",
+        "imageAlt": "",
+        "overlayBadges": [],
+        "overlayBadgeStyle": "default",
+        "note": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-grid",
+      "attrs": {
+        "label": "02 · Features",
+        "heading": "Everything in Ciphera Captcha.",
+        "dek": "",
+        "items": [
+          {
+            "icon": "puzzle-piece",
+            "title": "Human challenge",
+            "body": "When stronger proof is needed, a drag-to-fit SVG puzzle resists ML and OCR, verifies statelessly via HMAC-signed positions, and ships an audio fallback (WCAG 2.1 AAA).",
+            "anchor": ""
+          },
+          {
+            "icon": "shield-check",
+            "title": "Risk scoring",
+            "body": "Every check returns a 0–100 score from solve time, behavioral entropy, IP activity, and request patterns — your backend sets the threshold, strict or lenient.",
+            "anchor": ""
+          }
+        ],
+        "bullets": []
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "03 · Stateless",
+        "heading": "No database. No sessions. No state.",
+        "text": [
+          {
+            "text": "Challenges are HMAC-signed instead of stored — the server verifies its own signature, not a database record. This means zero state to manage, horizontal scaling without session affinity, and no cleanup jobs. JWT tokens bind to IP, action scope, and unique ID for replay prevention."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "HMAC-signed challenges — no database lookups"
+          },
+          {
+            "text": "Horizontal scaling with no session affinity"
+          },
+          {
+            "text": "JWT tokens scoped to action (login vs upload)"
+          },
+          {
+            "text": "IP-bound tokens prevent cross-origin reuse"
+          },
+          {
+            "text": "Zero-downtime key rotation via comma-separated HMAC keys"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "left",
+        "visualType": "diagram",
+        "visualKey": "diagram-captcha-stateless",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "",
+        "imageAlt": "",
+        "overlayBadges": [],
+        "overlayBadgeStyle": "default",
+        "note": ""
+      }
+    },
+    {
+      "name": "ciphera/feature-split",
+      "attrs": {
+        "label": "04 · Data residency",
+        "heading": "Hosted in Switzerland. Zero telemetry.",
+        "text": [
+          {
+            "text": "Ciphera Captcha runs entirely on our own infrastructure, with no external dependencies. No telemetry sent to Google, Cloudflare, or any third party. Client IPs are SHA-256 hashed before embedding in tokens — we verify without storing identities."
+          }
+        ],
+        "trailingText": "",
+        "bullets": [
+          {
+            "text": "Self-contained — no external API calls"
+          },
+          {
+            "text": "IP addresses hashed, never stored in plaintext"
+          },
+          {
+            "text": "Behavioral signals are optional and session-scoped"
+          },
+          {
+            "text": "Tokens auto-expire with JTI replay prevention"
+          },
+          {
+            "text": "Audio samples embedded in binary — no TTS API"
+          }
+        ],
+        "bulletStyle": "check",
+        "ctaLabel": "",
+        "ctaHref": "",
+        "visualSide": "left",
+        "visualType": "photo",
+        "visualKey": "",
+        "visualCellBordered": false,
+        "mockupCell": false,
+        "image": "/zurich.jpg",
+        "imageAlt": "Zurich, Switzerland — where Ciphera data is hosted",
+        "overlayBadges": [
+          {
+            "icon": "globe-outline",
+            "title": "Data residency",
+            "description": "Switzerland (FADP protected)"
+          },
+          {
+            "icon": "timer",
+            "title": "Token lifetime",
+            "description": "15 minutes, single-use"
+          },
+          {
+            "icon": "shield-check",
+            "title": "Privacy",
+            "description": "No tracking, IPs hashed with SHA-256"
+          }
+        ],
+        "overlayBadgeStyle": "default",
+        "note": ""
+      }
+    },
+    {
+      "name": "ciphera/comparison-cards",
+      "attrs": {
+        "label": "05 · Compare",
+        "heading": "How Ciphera Captcha compares.",
+        "intro": "Most captcha services track your users and send telemetry to third parties. Ciphera Captcha is self-contained. For the full breakdown, read <a href=\"/blog/ciphera-captcha-vs-recaptcha-vs-turnstile\">Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha</a>.",
+        "statsStrip": [],
+        "oursIcon": "/captcha_icon_no_margins.png",
+        "oursName": "Ciphera Captcha",
+        "oursTagline": "Privacy-first bot protection",
+        "oursHighlighted": false,
+        "oursTaglineAccent": false,
+        "oursItems": [
+          {
+            "text": "Invisible adaptive proof-of-work"
+          },
+          {
+            "text": "No user tracking or fingerprinting"
+          },
+          {
+            "text": "Self-hosted — your infrastructure"
+          },
+          {
+            "text": "Fully stateless (HMAC-signed)"
+          },
+          {
+            "text": "5-signal behavioral risk scoring"
+          },
+          {
+            "text": "Action-scoped JWT tokens"
+          },
+          {
+            "text": "Zero-downtime key rotation"
+          },
+          {
+            "text": "Audio + puzzle + PoW challenges"
+          }
+        ],
+        "theirsIcon": "eye",
+        "theirsName": "Traditional Captchas",
+        "theirsTagline": "reCAPTCHA, hCaptcha, Turnstile",
+        "theirsCheckAccent": false,
+        "theirsItems": [
+          {
+            "text": "Visible challenges or limited PoW",
+            "has": false
+          },
+          {
+            "text": "Sends telemetry to third parties",
+            "has": false
+          },
+          {
+            "text": "SaaS-only — vendor infrastructure",
+            "has": false
+          },
+          {
+            "text": "Session-based state",
+            "has": false
+          },
+          {
+            "text": "Proprietary risk scoring",
+            "has": true
+          },
+          {
+            "text": "Global tokens (no action scope)",
+            "has": false
+          },
+          {
+            "text": "Manual key rotation",
+            "has": false
+          },
+          {
+            "text": "Multiple challenge types",
+            "has": true
+          },
+          {
+            "text": "US/EU infrastructure",
+            "has": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "ciphera/product-banner",
+      "attrs": {
+        "variant": "band",
+        "label": "06 · Get started",
+        "heading": "Interested in Ciphera Captcha?",
+        "body": "Ciphera Captcha is currently an internal service protecting the Ciphera ecosystem. Reach out if you're interested in the technology for your platform.",
+        "backgroundImage": "/captcha-showcase-bg.png",
+        "backgroundImageAlt": "",
+        "badgeStyle": "dots",
+        "trustBadges": [],
+        "stats": [],
+        "primaryButtonLabel": "Contact Sales",
+        "primaryButtonHref": "/contact",
+        "primaryButtonExternal": false,
+        "secondaryButtonLabel": "About Ciphera",
+        "secondaryButtonHref": "/about",
+        "secondaryButtonExternal": false,
+        "footnote": ""
+      }
+    }
+  ]
+}

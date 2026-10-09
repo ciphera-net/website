@@ -136,11 +136,18 @@ test('every one of the 14 seoFor() pages now uses generateMetadata + seoForAsync
     'app/products/captcha/page.tsx', 'app/products/id/page.tsx', 'app/products/pulse/page.tsx',
     'app/products/relay/page.tsx', 'app/products/tessera/page.tsx', 'app/glossary/page.tsx', 'app/page.tsx',
   ]
-  // WEB-28 build task §3: the four migratable product pages now AWAIT seoForAsync
-  // into a `base`, then merge a published CMS page's own SEO over it (mergePageSeo)
-  // before returning — `/products/id` is not migratable yet (facet-sections 0.3.0)
-  // and every non-product page is untouched, so those keep the plain `return`.
-  const migratable = new Set(['app/products/captcha/page.tsx', 'app/products/pulse/page.tsx', 'app/products/relay/page.tsx', 'app/products/tessera/page.tsx'])
+  // WEB-28 build task §3/§5: all five product pages now AWAIT seoForAsync into a
+  // `base`, then merge a published CMS page's own SEO over it (mergePageSeo) before
+  // returning — `/products/id` joined the other four once facet-sections 0.3.0
+  // landed (build task §5). Every non-product page is untouched, so those keep the
+  // plain `return`.
+  const migratable = new Set([
+    'app/products/captcha/page.tsx',
+    'app/products/id/page.tsx',
+    'app/products/pulse/page.tsx',
+    'app/products/relay/page.tsx',
+    'app/products/tessera/page.tsx',
+  ])
   for (const p of pages) {
     const src = code(p)
     assert.match(src, /export async function generateMetadata\(\): Promise<Metadata> \{/, `${p} must export generateMetadata`)

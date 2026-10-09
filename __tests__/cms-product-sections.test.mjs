@@ -60,11 +60,18 @@ test('an unresolvable key drops the WHOLE section with a repair, never a crash �
   // feature-split: a bad visual key, or a mockup\/diagram\/code type with none set.
   assert.match(src, /dropped the whole section — visual key/)
   assert.match(src, /dropped the whole section — visual type/)
-  // feature-grid / comparison-cards / package-grid / content-block: same device.
+  // feature-grid / package-grid / content-block: same device.
   assert.match(src, /dropped the whole section — item icon/)
-  assert.match(src, /dropped the whole section — "ours" or "theirs" icon/)
   assert.match(src, /dropped the whole section — a package\\'s language or registry icon/)
   assert.match(src, /dropped the whole section — diagram key/)
+})
+
+test('comparison-cards\' ours/theirs icon does NOT escalate to a whole-section skip — WordPress presents it as a free CDN-path TextControl, not a select, and runs no check_select on it either (0.3.0 correction)', () => {
+  const src = code('lib/cms/page-build.ts')
+  const caseMatch = src.match(/case 'comparison-cards': \{[\s\S]*?\n      \}\n/)
+  assert.ok(caseMatch, "could not find the 'comparison-cards' case")
+  assert.doesNotMatch(caseMatch[0], /isIconKey\(oursIcon\)|isIconKey\(theirsIcon\)/, 'oursIcon/theirsIcon must not be validated against the closed ICON_KEYS select')
+  assert.doesNotMatch(caseMatch[0], /dropped the whole section/)
 })
 
 test('NEGATIVE CONTROL: a required-field list drop is REPAIRED (kept list, dropped item), not a whole-section drop — the two failure modes must stay distinct', () => {
@@ -73,11 +80,24 @@ test('NEGATIVE CONTROL: a required-field list drop is REPAIRED (kept list, dropp
   // required field — only an unresolvable SELECT KEY escalates to a whole-section drop.
   assert.match(src, /dropped \$\{n\} trust badge\(s\) with no label/)
   assert.match(src, /dropped \$\{n\} item\(s\) missing an icon, title or body/)
-  assert.doesNotMatch(
-    code('lib/cms/page-build.ts').replace(/dropped the whole section[^\n]*/g, ''),
-    /dropped the whole section/,
-    'every whole-section drop must be one of the explicitly asserted cases above, not a stray extra one'
-  )
+  const wholeSectionDrops = code('lib/cms/page-build.ts').match(/dropped the whole section[^\n]*/g) ?? []
+  const asserted = [
+    'trust badge icon',
+    'visual key',
+    'visual type',
+    'overlay badge icon',
+    'item icon',
+    "a package\\'s language or registry icon",
+    'diagram key',
+    'chip image',
+    'it has no categories or no questions',
+  ]
+  for (const drop of wholeSectionDrops) {
+    assert.ok(
+      asserted.some((a) => drop.includes(a)),
+      `unasserted whole-section drop found: ${drop}`
+    )
+  }
 })
 
 test('every new richtext field is sanitised at publish time, same as text-section', () => {
@@ -110,9 +130,13 @@ test('the icon/visual/lang/registry registries are exhaustive over page-build.ts
     // quoted otherwise (e.g. `'puzzle-piece':`) — accept either.
     assert.match(registries, new RegExp(`['"]?${key}['"]?:`), `ICON_REGISTRY has no entry for "${key}"`)
   }
-  // The three un-extracted diagrams are a DOCUMENTED null, not a silent gap.
-  for (const key of ['diagram-captcha-stateless', 'diagram-id-zero-knowledge', 'diagram-tessera-opaque-handshake']) {
-    assert.match(registries, new RegExp(`'${key}': null`))
+  // All three protocol diagrams are now extracted components (build task §2),
+  // wired to real elements — not a documented null any more.
+  for (const [key, component] of [
+    ['diagram-captcha-stateless', 'CaptchaStatelessDiagram'],
+    ['diagram-id-zero-knowledge', 'IdZeroKnowledgeDiagram'],
+    ['diagram-tessera-opaque-handshake', 'TesseraOpaqueHandshakeDiagram'],
+  ]) {
+    assert.match(registries, new RegExp(`'${key}': <${component} `))
   }
-  assert.match(read('lib/cms/product-registries.tsx'), /NOT YET WIRED/)
 })
