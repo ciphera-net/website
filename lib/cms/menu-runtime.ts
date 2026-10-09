@@ -9,9 +9,10 @@
  * in the SAME document shape, mechanically, and are the fallback here exactly as
  * `lib/glossary.gen.ts` is `lib/glossary.ts`'s.
  *
- * 🔴 'menu' STAYS OFF `DEFAULT_RUNTIME_KINDS` THIS ROUND (§runtime-config.ts). With the
- * kind off, every caller here resolves straight to the seed — a real exercise of the CDN
- * path only happens once a future round flips it on.
+ * 'menu' is ON in `DEFAULT_RUNTIME_KINDS` since 09-10-2026 (R26). The no-store read here runs
+ * in the root layout's Header and Footer, so every route renders at request time and a
+ * published menu reaches every page in about a minute. With nothing published (or the CDN
+ * unreachable, or an unknown schema) the seed renders — today's coded navigation.
  */
 import { getContentDocument, getContentIndex } from './content-client'
 import { isRuntimeKind, SITE_KEY } from './runtime-config'
