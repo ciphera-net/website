@@ -218,13 +218,8 @@ export function resolveVisual(key: string): ReactNode {
  *
  * `priority`: the hero variant of `product-banner` always sets `priority` on its
  * background `Image` (above-the-fold, LCP-critical — Captcha/Pulse/Ciphera
- * ID/Tessera all do); the closing band never does. Defaults to `false` (the band
- * case) so a caller must opt in explicitly for the hero.
- *
- * 🔴 Relay's hero/band both use a raw `<img>` in the original source (no `fill`,
- * no `sizes`, a Tailwind `absolute inset-0 h-full w-full` in place of `next/image`'s
- * own fill behaviour) — another pre-existing inconsistency, not a second code path
- * this helper reproduces. See the WEB-28 build report.
+ * ID/Tessera/Relay all do); the closing band never does. Defaults to `false` (the
+ * band case) so a caller must opt in explicitly for the hero.
  */
 export function productBackgroundImage(src: string, alt: string, priority = false): ReactNode {
   if (!src) return null

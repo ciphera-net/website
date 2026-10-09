@@ -89,26 +89,9 @@ function unwrapRedundantVisualWrapper(html) {
   return html
 }
 
-/**
- * Relay's hero/band background is a raw `<img className="absolute inset-0 h-full
- * w-full object-cover grayscale brightness-[0.4]">` in the ORIGINAL source — the one
- * page of the five that doesn't use `next/image`'s `fill` prop for this (Captcha/
- * Ciphera ID/Pulse/Tessera all do) — a pre-existing inconsistency in the hand-authored
- * page, not a deliberate design difference. `productBackgroundImage()`
- * (`lib/cms/product-registries.tsx`) follows the DOMINANT `next/image` pattern
- * uniformly for every page, so Relay's CMS render carries the shorter class
- * (`fill`'s own absolute-positioning normally arrives via inline style in a real
- * Next build, invisible to this harness's `next/image` shim either way). Normalises
- * the CODED side's one-off class down to what every other page already uses. Relay only.
- */
-function normalizeRelayRawImageWrapper(html) {
-  return html.split('class="absolute inset-0 h-full w-full object-cover grayscale brightness-[0.4]"').join('class="object-cover grayscale brightness-[0.4]"')
-}
-
 function normalizeKnownDifferences(slug, branch, html) {
   if (slug === 'captcha') html = normalizeReactUseIds(html)
   if ((slug === 'pulse' || slug === 'relay') && branch === 'cms') html = unwrapRedundantVisualWrapper(html)
-  if (slug === 'relay' && branch === 'coded') html = normalizeRelayRawImageWrapper(html)
   return html
 }
 
@@ -198,21 +181,12 @@ test('NEGATIVE CONTROL: every known-difference normalisation is doing REAL work 
   // captcha needs ONLY the useId() one.
   assert.notEqual(result.captcha.cms.html, result.captcha.coded.html, 'captcha should still differ without the useId() normalisation')
   assert.equal(normalizeReactUseIds(result.captcha.cms.html), normalizeReactUseIds(result.captcha.coded.html))
-  // pulse and relay need ONLY the redundant-visual-wrapper one (plus, for relay only,
-  // the raw-<img> one).
+  // pulse and relay need ONLY the redundant-visual-wrapper one.
   for (const slug of ['pulse', 'relay']) {
     assert.notEqual(result[slug].cms.html, result[slug].coded.html, `${slug} should still differ without the wrapper normalisation`)
   }
   assert.equal(unwrapRedundantVisualWrapper(result.pulse.cms.html), result.pulse.coded.html)
-  assert.notEqual(
-    unwrapRedundantVisualWrapper(result.relay.cms.html),
-    result.relay.coded.html,
-    'relay should still differ after only the wrapper fix — it also needs the raw-<img> one'
-  )
-  assert.equal(
-    unwrapRedundantVisualWrapper(result.relay.cms.html),
-    normalizeRelayRawImageWrapper(result.relay.coded.html)
-  )
+  assert.equal(unwrapRedundantVisualWrapper(result.relay.cms.html), result.relay.coded.html)
 })
 
 test('NEGATIVE CONTROL: different pages render different HTML — the comparison is not vacuously equal by construction', () => {

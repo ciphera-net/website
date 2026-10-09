@@ -130,10 +130,14 @@ export default async function CipheraRelayPage() {
 
       {/* ─── Hero — A7 full-bleed ─────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-border">
-        <img
+        <Image
           src={genA10}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover grayscale brightness-[0.4]"
+          fill
+          unoptimized
+          priority
+          sizes="100vw"
+          className="object-cover grayscale brightness-[0.4]"
         />
         <div
           aria-hidden="true"
@@ -447,10 +451,13 @@ export default async function CipheraRelayPage() {
 
       {/* ─── 06 · Get started — A7 full-bleed CTA ────────────────────── */}
       <section className="relative overflow-hidden border-b border-border">
-        <img
+        <Image
           src={genA10}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover grayscale brightness-[0.4]"
+          fill
+          unoptimized
+          sizes="100vw"
+          className="object-cover grayscale brightness-[0.4]"
         />
         <div
           aria-hidden="true"
