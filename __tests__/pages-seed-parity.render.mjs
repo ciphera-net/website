@@ -140,6 +140,10 @@ before(() => {
     ...process.env,
     NEXT_PUBLIC_WEBSITE_API_URL: 'https://example.invalid',
     NEXT_PUBLIC_CAPTCHA_API_URL: 'https://example.invalid',
+    // 🔴 Always render with a CDN base (09-10-2026). Production and CI set NEXT_PUBLIC_CDN_URL, so the coded pages emit
+    // cdnUrl('/x.png'); with it unset locally both sides emitted the bare path and a CMS image that skipped cdnUrl()
+    // (a 404 in production) passed here and failed only in CI. CI's own value wins when present.
+    NEXT_PUBLIC_CDN_URL: process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.example.invalid/website',
   }
 
   for (const slug of PAGES) {

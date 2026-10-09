@@ -184,11 +184,11 @@ export function resolveComparisonIcon(key: string, name: string, role: 'ours' | 
     return <Icon aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
   }
   if (role === 'ours') {
-    return <Image src={key} alt={name} width={24} height={24} unoptimized className="h-6 w-6 object-contain" />
+    return <Image src={cdnUrl(key)} alt={name} width={24} height={24} unoptimized className="h-6 w-6 object-contain" />
   }
   // eslint-disable-next-line @next/next/no-img-element -- byte-identical to the one
   // precedent for this field (Pulse's Google Analytics favicon): a raw <img>, never next/image.
-  return <img src={key} alt={name} width={24} height={24} className="h-6 w-6 object-contain grayscale" />
+  return <img src={cdnUrl(key)} alt={name} width={24} height={24} className="h-6 w-6 object-contain grayscale" />
 }
 
 /** §3 "Mockups"/"Diagrams"/"Code snippets" — `feature-split`'s `visualKey`, and
@@ -230,7 +230,7 @@ export function productBackgroundImage(src: string, alt: string, priority = fals
   if (!src) return null
   return (
     <Image
-      src={src}
+      src={cdnUrl(src)}
       alt={alt}
       fill
       unoptimized
@@ -242,7 +242,7 @@ export function productBackgroundImage(src: string, alt: string, priority = fals
 }
 export function featurePhotoImage(src: string, alt: string): ReactNode {
   if (!src) return null
-  return <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover grayscale" />
+  return <Image src={cdnUrl(src)} alt={alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover grayscale" />
 }
 
 /**
