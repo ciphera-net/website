@@ -19,7 +19,7 @@
  *   - the CDN image/tool-logo HEAD checks and the OG-card HEAD check — network calls
  *     against the ASSET cdn (cdn.ciphera.net), one per image, on every pass. A build
  *     runs once; this publisher sweeps every 120s. Not replicated here: a post
- *     published through cms.ciphera.net/upload already has its images on the CDN by
+ *     published through cms.teleport.ciphera.net/upload already has its images on the CDN by
  *     construction (the uploader hands back a working CDN URL), so the failure mode
  *     this check exists for — a STALE migrated path — does not recur for new,
  *     CMS-authored content. A post with a broken image published this way ships with

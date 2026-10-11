@@ -14,7 +14,7 @@ import { buildHeaderMenuDocument, buildFooterMenuDocument, HEADER_MEDIA_KEYS, FO
 import { ownedByCodedRoute } from '@/lib/cms/page-build'
 
 /**
- * Draft preview for a `ciphera_menu` — `cms.ciphera.net/preview/menu/<databaseId>`
+ * Draft preview for a `ciphera_menu` — `cms.teleport.ciphera.net/preview/menu/<databaseId>`
  * (M2, §4.2.2). Mirrors `app/preview/page/[id]/page.tsx`'s gate exactly.
  *
  * 🔴 THE HOME PAGE IS RENDERED WITH ONLY THE PREVIEWED LOCATION SWAPPED. The OTHER

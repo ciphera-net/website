@@ -2,7 +2,7 @@
 // Run: npm run generate:redirects
 //
 // 🔴 BUILD OUTPUT, NOT SOURCE. Editing this changes nothing — the next build
-// overwrites it. To add or remove a redirect, use https://cms.ciphera.net → Redirects.
+// overwrites it. To add or remove a redirect, use https://cms.teleport.ciphera.net → Redirects.
 //
 // ⚠️ COMMITTED AS AN EMPTY STUB so `next.config.ts` resolves on a fresh clone, the
 // same convention as lib/blog-wp.gen.ts. A stub that reached production would put 18

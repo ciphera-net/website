@@ -157,7 +157,7 @@ async function main() {
 //
 // 🔴 BUILD OUTPUT, NOT SOURCE. Git-ignored, because a committed copy is a second source
 // of truth for what the CMS says and the stale one wins an argument nobody knew was
-// happening. To change a term, edit it at https://cms.ciphera.net → Glossary.
+// happening. To change a term, edit it at https://cms.teleport.ciphera.net → Glossary.
 
 import type { GlossaryTerm } from './glossary/types'
 

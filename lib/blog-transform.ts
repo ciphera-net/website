@@ -213,7 +213,7 @@ export function transformWpPost(
   // one by hand, which is exactly the case worth catching: the path would 404 for every
   // visitor. Rewriting it to the CDN and then HEAD-checking below turns that into a red
   // build naming the file, rather than a hole in a published page.
-  // 🔑 Images are uploaded at cms.ciphera.net/upload, which writes to the CDN directly
+  // 🔑 Images are uploaded at cms.teleport.ciphera.net/upload, which writes to the CDN directly
   // and hands back a finished URL (design §29). Nothing in this build holds a CDN
   // credential, and that is the property that let the write live somewhere else.
   const { html: rawHtml, faqs } = extractFaqs(n.content ?? '')

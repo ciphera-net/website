@@ -342,7 +342,7 @@ async function main() {
 //
 // 🔴 BUILD OUTPUT, NOT SOURCE. Git-ignored, because a committed copy is a second
 // source of truth for what the CMS says and the stale one wins an argument nobody
-// knew was happening. To change a post, edit it at https://cms.ciphera.net.
+// knew was happening. To change a post, edit it at https://cms.teleport.ciphera.net.
 
 export interface BlogPostSummary {
   slug: string
