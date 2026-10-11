@@ -161,7 +161,7 @@ async function main() {
 //
 // 🔴 THIS FILE IS BUILD OUTPUT, NOT SOURCE. Editing it changes nothing: the next
 // build overwrites it from WordPress. To change a title or a meta description, edit
-// the route's stub at https://cms.ciphera.net → Route SEO.
+// the route's stub at https://cms.teleport.ciphera.net → Route SEO.
 `
 
   fs.writeFileSync(

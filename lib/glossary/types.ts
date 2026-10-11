@@ -6,7 +6,7 @@
  * 🔴 THIS IS NO LONGER A SOURCE FILE'S SHAPE — IT DESCRIBES WHAT WORDPRESS RETURNS.
  * The 53 terms live in the CMS (`ciphera_glossary`) and reach the site through
  * `scripts/generate-glossary.ts` at build time. Editing a definition means editing it at
- * https://cms.ciphera.net → Glossary, not here.
+ * https://cms.teleport.ciphera.net → Glossary, not here.
  */
 
 /**

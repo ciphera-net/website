@@ -2,7 +2,7 @@
 
 The blog moved into the headless CMS on 10-09-2026 (design decision D13,
 `Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md` §24.14). Posts are
-written at <https://cms.ciphera.net> → **Blog** and pulled in at build time by
+written at <https://cms.teleport.ciphera.net> → **Blog** and pulled in at build time by
 `npm run generate:blog`.
 
 ## This directory is not vestigial — it is the escape hatch

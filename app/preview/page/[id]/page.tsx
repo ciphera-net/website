@@ -4,7 +4,7 @@ import { CmsPage } from '@/components/cms/CmsPage'
 import { buildPageDocument, type WpPageNode } from '@/lib/cms/page-build'
 
 /**
- * Draft preview for a `ciphera_page` — `cms.ciphera.net/preview/page/<databaseId>`
+ * Draft preview for a `ciphera_page` — `cms.teleport.ciphera.net/preview/page/<databaseId>`
  * (WEB-28, §4.2.1). Mirrors `app/preview/[slug]/page.tsx` exactly: same gate (this
  * route ships in the production image and is inert there — `WORDPRESS_GRAPHQL_URL`
  * is only set on the in-cluster `blog-preview` Deployment), same Basic-Auth service

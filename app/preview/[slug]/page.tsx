@@ -12,7 +12,7 @@ import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode } fr
  * 🔴 THIS ROUTE SHIPS IN THE PRODUCTION IMAGE AND IS INERT THERE.
  * `WORDPRESS_GRAPHQL_URL` is unset on Magic Containers, so every request 404s. It is
  * set only on the single-replica in-cluster `blog-preview` Deployment, which sits
- * behind cms.ciphera.net's existing basicAuth gate and can reach WordPress. Shipping
+ * behind the CMS's Teleport gate and can reach WordPress. Shipping
  * one image and switching on an environment variable is what avoids a second build,
  * a second registry tag and a second thing to keep in step.
  *

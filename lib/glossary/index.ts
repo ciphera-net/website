@@ -19,7 +19,7 @@
  * written by `scripts/generate-glossary.ts` from WordPress and is git-ignored; the CDN
  * documents are written by `scripts/cms-publisher.ts` from the same WordPress, through
  * the same shared transform (`lib/cms/glossary-build.ts`). To change a definition, edit
- * it at https://cms.ciphera.net → Glossary — never either generated file.
+ * it at https://cms.teleport.ciphera.net → Glossary — never either generated file.
  */
 import type { GlossaryCategory, GlossaryTerm } from './types'
 import {
