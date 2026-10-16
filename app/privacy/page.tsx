@@ -5,7 +5,7 @@ import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 26-09-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 16-10-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-muted-foreground mb-12">
-              Last updated: 26-09-2026
+              Last updated: 16-10-2026
             </p>
 
             <nav aria-label="Contents" className="mb-12 hidden md:block border border-border bg-card p-6">
@@ -357,22 +357,28 @@ export default function PrivacyPolicyPage() {
                         <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Signing in to Ciphera ID (id.ciphera.net)</td>
                       </tr>
                       <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-mono text-xs">access_token</td>
-                        <td className="py-2 pr-4">HTTP-only cookie, across ciphera.net</td>
+                        <td className="py-2 pr-4 font-mono text-xs">id_access</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, id.ciphera.net only</td>
                         <td className="py-2 pr-4">Keeps you signed in to the account pages</td>
                         <td className="py-2 tabular-nums text-foreground">15 minutes</td>
                       </tr>
                       <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-mono text-xs">refresh_token</td>
-                        <td className="py-2 pr-4">HTTP-only cookie, across ciphera.net</td>
+                        <td className="py-2 pr-4 font-mono text-xs">id_refresh</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, id.ciphera.net only</td>
                         <td className="py-2 pr-4">Renews that session without re-entering your password</td>
                         <td className="py-2 tabular-nums text-foreground">30 days</td>
                       </tr>
                       <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-mono text-xs">csrf_token</td>
-                        <td className="py-2 pr-4">Cookie (app-readable), across ciphera.net</td>
+                        <td className="py-2 pr-4 font-mono text-xs">id_csrf</td>
+                        <td className="py-2 pr-4">Cookie (app-readable), id.ciphera.net only</td>
                         <td className="py-2 pr-4">Protects against cross-site request forgery</td>
                         <td className="py-2 tabular-nums text-foreground">30 days</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">__Host-ciphera_device</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, the sign-in service only (api.id.ciphera.net)</td>
+                        <td className="py-2 pr-4">Recognises this browser when you sign in, so we email you only when a browser that has not signed in before does, and so you can see and sign out each browser under Devices. A random value, stored only as a keyed hash; it identifies the browser to your own account and nothing else, and is never used for analytics</td>
+                        <td className="py-2 tabular-nums text-foreground">400 days, renewed each time it is used</td>
                       </tr>
                       <tr>
                         <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Signing in to Pulse Analytics (pulse.ciphera.net)</td>
