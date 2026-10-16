@@ -401,6 +401,18 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2 pr-4">Lets Pulse end your session properly when you sign out</td>
                         <td className="py-2 tabular-nums text-foreground">30 days</td>
                       </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_team</td>
+                        <td className="py-2 pr-4">HTTP-only cookie, this site only</td>
+                        <td className="py-2 pr-4">Remembers which team you were working in, so Pulse opens it again. It grants nothing: your membership is checked on every request</td>
+                        <td className="py-2 tabular-nums text-foreground">400 days</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_signed_in</td>
+                        <td className="py-2 pr-4">Cookie (app-readable), this site only</td>
+                        <td className="py-2 pr-4">Holds only &ldquo;1&rdquo; while you are signed in, so the pages on this site outside the dashboard can link you to it instead of offering a sign-in</td>
+                        <td className="py-2 tabular-nums text-foreground">30 days</td>
+                      </tr>
                       <tr>
                         <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Linking a Discord account (link.ciphera.net)</td>
                       </tr>
@@ -429,9 +441,9 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2">Persistent</td>
                       </tr>
                       <tr className="border-b border-border">
-                        <td className="py-2 pr-4 font-mono text-xs">oauth_state, oauth_code_verifier, oauth_pending</td>
+                        <td className="py-2 pr-4 font-mono text-xs">oauth_pending:&lt;attempt&gt;</td>
                         <td className="py-2 pr-4">Local storage</td>
-                        <td className="py-2 pr-4">Secure the login redirect (PKCE)</td>
+                        <td className="py-2 pr-4">Secures the login redirect (PKCE), one entry per sign-in attempt</td>
                         <td className="py-2">Cleared after login, or 10 minutes after an abandoned attempt</td>
                       </tr>
                       <tr>
@@ -456,6 +468,12 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2 pr-4 font-mono text-xs">ciphera_last_pv</td>
                         <td className="py-2 pr-4">Session storage</td>
                         <td className="py-2 pr-4">Prevents counting a page refresh twice</td>
+                        <td className="py-2">Tab session</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">ciphera_anchor</td>
+                        <td className="py-2 pr-4">Session storage</td>
+                        <td className="py-2 pr-4">The id of this tab&apos;s last page view, so the next pages you open in the same tab count as the same visit</td>
                         <td className="py-2">Tab session</td>
                       </tr>
                     </tbody>
