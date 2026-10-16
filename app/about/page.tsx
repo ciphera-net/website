@@ -48,10 +48,7 @@ const architecture = [
 const timeline = [
   { year: '2024', event: 'Ciphera founded to build privacy-first infrastructure from the ground up.' },
   { year: '2025', event: 'Pulse, Ciphera ID, Captcha, and Relay shipped.' },
-  {
-    year: '2026',
-    event: 'Moved Ciphera ID to zero-knowledge authentication and published our first transparency report.',
-  },
+  { year: '2026', event: 'Moved Ciphera ID to zero-knowledge authentication.' },
 ] as const
 
 // * Company facts — the registered legal entity, so an owned page answers the

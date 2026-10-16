@@ -1,22 +1,20 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRightIcon } from '@ciphera-net/facet'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { cdnUrl } from '@/lib/cdn'
-import { getCurrentCanary, getCurrentReport } from '@/lib/transparency'
 import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
 
 export const metadata: Metadata = {
   title: 'Trust & Security',
   description:
-    'What you can verify yourself: the zero-knowledge architecture, open-source proofs, warrant canary, transparency reports, Swiss residency, subprocessors, and how to report a vulnerability.',
+    'What you can verify yourself: the zero-knowledge architecture, open-source proofs, Swiss residency, subprocessors, and how to report a vulnerability.',
   alternates: {
     canonical: 'https://ciphera.net/trust',
   },
   openGraph: {
     title: 'Trust & Security | Ciphera',
     description:
-      'What you can verify yourself: the zero-knowledge architecture, open-source proofs, warrant canary, transparency reports, and coordinated disclosure policy.',
+      'What you can verify yourself: the zero-knowledge architecture, open-source proofs, and coordinated disclosure policy.',
     url: 'https://ciphera.net/trust',
     siteName: 'Ciphera',
     images: [{ url: cdnUrl('/og/trust.png'), width: 1200, height: 630, alt: 'Ciphera Trust & Security' }],
@@ -28,23 +26,20 @@ export const metadata: Metadata = {
     site: '@CipheraNET',
     title: 'Trust & Security | Ciphera',
     description:
-      'What you can verify yourself: the zero-knowledge architecture, open-source proofs, warrant canary, transparency reports, and coordinated disclosure policy.',
+      'What you can verify yourself: the zero-knowledge architecture, open-source proofs, and coordinated disclosure policy.',
     images: [cdnUrl('/og/trust.png')],
   },
 }
 
 // * Bump when the page COPY changes. The rendered "Last updated" and JSON-LD
-// * dateModified take the max of this and the live canary/report publish
-// * dates, so monthly canary rolls refresh the page's freshness signals
-// * without an edit here.
-const PAGE_REVISED_ISO = '2026-07-20'
+// * dateModified both read it.
+const PAGE_REVISED_ISO = '2026-10-16'
 
 const SECTIONS = [
   { id: 'the-zero-knowledge-architecture', title: 'Architecture' },
   { id: 'data-handling-in-plain-language', title: 'Data handling' },
   { id: 'open-source-and-audit-status', title: 'Open source & audit' },
   { id: 'swiss-residency-belgian-jurisdiction', title: 'Residency & jurisdiction' },
-  { id: 'warrant-canary-and-transparency-reports', title: 'Canary & reports' },
   { id: 'subprocessors', title: 'Subprocessors' },
   { id: 'coordinated-disclosure', title: 'Disclosure' },
   { id: 'scope-and-safe-harbor', title: 'Scope & safe harbor' },
@@ -53,22 +48,8 @@ const SECTIONS = [
   { id: 'for-security-reviewers', title: 'For reviewers' },
 ] as const
 
-const verifySteps = [
-  'Pull the canary plaintext and its detached signature, as raw files, straight from this site.',
-  'Import the public key — the same key, every month — and run gpg --verify.',
-  'Diff each month against its Archive.org snapshot. Nothing should change after the fact.',
-  'If a canary misses its next-update date, the silence is the disclosure. Read the non-update protocol.',
-] as const
-
 export default async function TrustPage() {
-  const canary = await getCurrentCanary()
-  const report = await getCurrentReport()
-  const fingerprint = canary.text.match(/\b([0-9A-F]{40})\b/)?.[1] ?? null
-  const fingerprintSpaced = fingerprint ? fingerprint.replace(/(.{4})(?=.)/g, '$1 ') : null
-
-  const lastUpdatedISO = [PAGE_REVISED_ISO, canary.publishedISO, report.publishedISO]
-    .sort()
-    .at(-1) as string
+  const lastUpdatedISO = PAGE_REVISED_ISO
   const lastUpdatedEuropean = lastUpdatedISO.split('-').reverse().join('-')
 
   const trustSchema = {
@@ -76,7 +57,7 @@ export default async function TrustPage() {
     '@type': 'WebPage',
     name: 'Trust & Security',
     description:
-      'What you can verify yourself: the zero-knowledge architecture, open-source proofs, warrant canary, transparency reports, and coordinated disclosure policy.',
+      'What you can verify yourself: the zero-knowledge architecture, open-source proofs, and coordinated disclosure policy.',
     url: 'https://ciphera.net/trust',
     dateModified: lastUpdatedISO,
     breadcrumb: {
@@ -88,12 +69,9 @@ export default async function TrustPage() {
     },
   }
 
-  // * Live status facts — canary and report values come from the published
-  // * documents themselves; the audit line is a static label (no audit data
-  // * source exists yet — see the open-source & audit section).
+  // * Status facts — static labels (no audit data source exists yet — see the
+  // * open-source & audit section).
   const status: { term: string; detail: string }[] = [
-    { term: 'Warrant canary', detail: `${canary.periodLabel} · next on or before ${canary.nextUpdateEuropean}` },
-    { term: 'Transparency report', detail: `${report.period} · ${report.status} · published ${report.publishedEuropean}` },
     { term: 'Independent audit', detail: 'planned — self-audit and threat model published' },
     { term: 'Vulnerability contact', detail: 'security@ciphera.net' },
   ]
@@ -115,8 +93,7 @@ export default async function TrustPage() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Everything on this page is something you can verify — open code,
-            signed statements, raw files, named vendors. What we cannot prove,
-            we say plainly.
+            named vendors. What we cannot prove, we say plainly.
           </p>
           <p className="mt-6 text-xs text-muted-foreground">
             <a href="#for-security-reviewers" className="text-primary hover:underline">
@@ -127,7 +104,7 @@ export default async function TrustPage() {
         </div>
       </section>
 
-      {/* Current status — live ledger, values from the published documents */}
+      {/* Current status */}
       <section className="border-b border-border">
         <div className="px-6 py-12 sm:py-14">
           <p className="text-xs text-muted-foreground">Current status</p>
@@ -303,8 +280,8 @@ export default async function TrustPage() {
           <p className="mt-4 max-w-3xl leading-relaxed text-muted-foreground">
             We hold no SOC 2 or ISO 27001 certification. Rather than rent
             a badge, we publish the things a certification would attest
-            to — the code, the threat model, the vendor list, the signed
-            canary — and let you check them directly.
+            to — the code, the threat model, the vendor list — and let
+            you check them directly.
           </p>
         </div>
       </section>
@@ -344,124 +321,10 @@ export default async function TrustPage() {
         </div>
       </section>
 
-      {/* 05 · Warrant canary & transparency reports */}
-      <section id="warrant-canary-and-transparency-reports" className="border-b border-border">
-        <div className="px-6 py-16 sm:py-20">
-          <p className="text-xs text-muted-foreground">05</p>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            Warrant canary &amp; transparency reports
-          </h2>
-          <p className="mt-6 max-w-3xl leading-relaxed text-muted-foreground">
-            Legal process received, disclosed in full: we publish a
-            biannual report of every legal request we receive, and a
-            monthly GPG-signed warrant canary. Both are
-            offline-signed and independently verifiable — built to
-            outlast silent compulsion, not merely describe it.
-          </p>
-
-          <div className="mt-10 max-w-3xl">
-            <Link
-              href="/trust/report"
-              aria-label={report.title}
-              className="group -mx-4 block border-y border-border px-4 py-7 transition-colors hover:bg-card"
-            >
-              <p className="text-xs tabular-nums text-muted-foreground">
-                Report · {report.status} · published {report.publishedEuropean}
-              </p>
-              <h3 className="mt-2 flex items-center gap-2 font-display text-xl font-semibold tracking-tight text-foreground">
-                {report.title}
-                <ArrowRightIcon
-                  aria-hidden="true"
-                  className="h-4 w-4 text-muted-foreground transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-primary"
-                />
-              </h3>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-                Every legal request received, counted and categorised by
-                type, jurisdiction, and outcome.
-              </p>
-            </Link>
-
-            <Link
-              href="/trust/canary"
-              aria-label="Warrant canary"
-              className="group -mx-4 block border-b border-border px-4 py-7 transition-colors hover:bg-card"
-            >
-              <p className="text-xs tabular-nums text-muted-foreground">
-                Canary · {canary.periodLabel} · next on or before {canary.nextUpdateEuropean}
-              </p>
-              <h3 className="mt-2 flex items-center gap-2 font-display text-xl font-semibold tracking-tight text-foreground">
-                Warrant canary
-                <ArrowRightIcon
-                  aria-hidden="true"
-                  className="h-4 w-4 text-muted-foreground transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-primary"
-                />
-              </h3>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-                Signed offline every month with a key on no production
-                system. Miss the date and the silence is the disclosure —
-                see the non-update protocol.
-              </p>
-            </Link>
-            <p className="mt-4 px-0 text-xs text-muted-foreground">
-              If the canary goes silent:{' '}
-              <Link href="/trust/canary#non-update" className="text-primary hover:underline">
-                the non-update protocol
-                <span aria-hidden="true"> &rarr;</span>
-              </Link>
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-x-16 gap-y-10 lg:grid-cols-2">
-            <div>
-              <p className="text-xs text-muted-foreground">Verify it yourself, without trusting this page</p>
-              <ol className="mt-2 max-w-xl">
-                {verifySteps.map((step, i) => (
-                  <li key={step} className="flex gap-4 border-t border-border py-4 first:border-t-0 first:pt-6">
-                    <span className="text-xs tabular-nums text-foreground">{`0${i + 1}`}</span>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{step}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-            <div className="self-start border border-border bg-card p-6">
-              <p className="text-xs text-muted-foreground">Verify the signature</p>
-              <pre tabIndex={0} className="mt-4 overflow-x-auto font-mono text-xs leading-relaxed text-foreground">
-                <code>{`gpg --import canary-pubkey.asc\ngpg --verify \\\n  canary-${canary.period}.txt.asc \\\n  canary-${canary.period}.txt`}</code>
-              </pre>
-              {fingerprintSpaced && (
-                <div className="mt-5 border-t border-border pt-4">
-                  <p className="text-xs text-muted-foreground">Signing key</p>
-                  <p className="mt-1.5 break-words font-mono text-xs tabular-nums text-foreground">
-                    {fingerprintSpaced}
-                  </p>
-                </div>
-              )}
-              <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-border pt-4">
-                {[
-                  { label: 'Plaintext', href: canary.plaintextUrl },
-                  { label: 'Signature', href: canary.signatureUrl },
-                  { label: 'Public key', href: canary.pubkeyUrl },
-                ].map((f) => (
-                  <a
-                    key={f.label}
-                    href={f.href}
-                    aria-label={`${canary.periodLabel} canary — ${f.label.toLowerCase()} file`}
-                    className="text-xs text-primary hover:underline"
-                  >
-                    {f.label} <span aria-hidden="true">&rarr;</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 06 */}
+      {/* 05 */}
       <section id="subprocessors" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="text-xs text-muted-foreground">06</p>
+          <p className="text-xs text-muted-foreground">05</p>
           <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Subprocessors
           </h2>
@@ -514,10 +377,10 @@ export default async function TrustPage() {
         </div>
       </section>
 
-      {/* 07 */}
+      {/* 06 */}
       <section id="coordinated-disclosure" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="text-xs text-muted-foreground">07</p>
+          <p className="text-xs text-muted-foreground">06</p>
           <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Coordinated disclosure
           </h2>
@@ -548,10 +411,10 @@ export default async function TrustPage() {
         </div>
       </section>
 
-      {/* 08 · Scope & safe harbor */}
+      {/* 07 · Scope & safe harbor */}
       <section id="scope-and-safe-harbor" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="text-xs text-muted-foreground">08</p>
+          <p className="text-xs text-muted-foreground">07</p>
           <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Scope &amp; safe harbor
           </h2>
@@ -600,10 +463,10 @@ export default async function TrustPage() {
         </div>
       </section>
 
-      {/* 09 */}
+      {/* 08 */}
       <section id="what-to-expect-from-us" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="text-xs text-muted-foreground">09</p>
+          <p className="text-xs text-muted-foreground">08</p>
           <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             What to expect from us
           </h2>
@@ -624,10 +487,10 @@ export default async function TrustPage() {
         </div>
       </section>
 
-      {/* 10 */}
+      {/* 09 */}
       <section id="our-track-record" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="text-xs text-muted-foreground">10</p>
+          <p className="text-xs text-muted-foreground">09</p>
           <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Our track record
           </h2>
@@ -645,10 +508,10 @@ export default async function TrustPage() {
         </div>
       </section>
 
-      {/* 11 */}
+      {/* 10 */}
       <section id="for-security-reviewers" className="border-b border-border">
         <div className="px-6 py-16 sm:py-20">
-          <p className="text-xs text-muted-foreground">11</p>
+          <p className="text-xs text-muted-foreground">10</p>
           <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             For security reviewers
           </h2>
@@ -656,8 +519,8 @@ export default async function TrustPage() {
             Running a vendor review? The materials above are the review
             package: open-source cryptographic core with a published
             self-audit and threat model (section 03), the subprocessor
-            list (section 06), data-handling summary (section 02), and the
-            disclosure policy with response commitments (sections 07–09).
+            list (section 05), data-handling summary (section 02), and the
+            disclosure policy with response commitments (sections 06–08).
           </p>
           <ul className="mt-4 max-w-3xl list-disc space-y-2 pl-6 text-muted-foreground">
             <li>

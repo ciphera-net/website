@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { ArrowUpRightIcon } from '@ciphera-net/facet'
-import { getCurrentCanary } from '@/lib/transparency'
 import { fetchImpactReport } from '@/lib/api/sustainability'
 
 interface Receipt {
@@ -16,13 +15,6 @@ interface Receipt {
  * invented numbers.
  */
 export default async function Receipts() {
-  let canaryDate: string | null = null
-  try {
-    canaryDate = (await getCurrentCanary()).publishedEuropean
-  } catch {
-    // canary content missing at build time — render the link without a date
-  }
-
   const report = await fetchImpactReport()
   const renewable = report?.totals?.renewableShare ?? null
 
@@ -32,11 +24,6 @@ export default async function Receipts() {
       value: 'github.com/ciphera-net',
       href: 'https://github.com/ciphera-net',
       external: true,
-    },
-    {
-      label: 'Warrant canary',
-      value: canaryDate ? `GPG-signed · ${canaryDate}` : 'GPG-signed · monthly',
-      href: '/trust/canary',
     },
     {
       label: 'Renewable hosting',
@@ -52,7 +39,7 @@ export default async function Receipts() {
 
   return (
     <section className="border-b border-border" aria-label="Verifiable facts">
-      <div className="grid grid-cols-2 gap-px bg-border lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-3">
         {receipts.map((receipt) => {
           const inner = (
             <>

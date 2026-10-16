@@ -592,12 +592,10 @@ URL: https://ciphera.net/glossary/zero-knowledge-authentication
 - [Why Swiss Infrastructure Matters for Privacy](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy): Switzerland hosts 75 data centers outside CLOUD Act reach. Swiss FADP and neutrality make it the top choice for privacy infrastructure.
 - [Why Privacy Can't Be an Afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought): 82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta have been hit with $2B+ in fines and verdicts — several still contested. Here's what real privacy architecture looks like.
 
-## Transparency
+## Trust & Security
 
-Ciphera publishes a monthly GPG-signed warrant canary, signed with an offline key, stating that no secret government compulsion has been received; a lapsed canary is itself the disclosure. Past canaries are archived, and periodic transparency reports summarize legal process received. Everything is independently verifiable: pull the plaintext and signature directly from the site and verify with gpg.
+The trust hub sets out what can be checked independently: the zero-knowledge architecture, the open-source cryptographic core (Tessera, Apache-2.0) with its published self-audit and threat model, the full subprocessor list, and the coordinated disclosure policy (security@ciphera.net, with a machine-readable RFC 9116 security.txt).
 URL: https://ciphera.net/trust
-URL: https://ciphera.net/trust/canary
-URL: https://ciphera.net/trust/report
 
 ## Sustainability
 

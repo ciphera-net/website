@@ -169,7 +169,6 @@ function buildLlmsTxt(): string {
   )
   lines.push('- Compliance: GDPR and Swiss FADP')
   lines.push('- No cookies, no fingerprinting, no third-party trackers')
-  lines.push('- Warrant canary: monthly, GPG-signed')
   lines.push('- Carbon footprint: published with a full life-cycle assessment')
   lines.push('')
 
@@ -179,8 +178,7 @@ function buildLlmsTxt(): string {
   lines.push(`- [Glossary](${SITE}/glossary): definitions of privacy and cryptography terms`)
   lines.push(`- [Learn](${SITE}/learn): in-depth articles per product`)
   lines.push(`- [Blog](${SITE}/blog): articles on privacy, security, and infrastructure`)
-  lines.push(`- [Trust & Security](${SITE}/trust): architecture proofs, audit status, legal process reports, and disclosure policy`)
-  lines.push(`- [Warrant canary](${SITE}/trust/canary): monthly GPG-signed canary`)
+  lines.push(`- [Trust & Security](${SITE}/trust): architecture proofs, audit status, and disclosure policy`)
   lines.push(`- [Sustainability](${SITE}/sustainability): measured carbon footprint and methodology`)
   lines.push('')
 
@@ -292,14 +290,12 @@ function buildLlmsFullTxt(): string {
   }
   lines.push('')
 
-  lines.push('## Transparency')
+  lines.push('## Trust & Security')
   lines.push('')
   lines.push(
-    'Ciphera publishes a monthly GPG-signed warrant canary, signed with an offline key, stating that no secret government compulsion has been received; a lapsed canary is itself the disclosure. Past canaries are archived, and periodic transparency reports summarize legal process received. Everything is independently verifiable: pull the plaintext and signature directly from the site and verify with gpg.'
+    'The trust hub sets out what can be checked independently: the zero-knowledge architecture, the open-source cryptographic core (Tessera, Apache-2.0) with its published self-audit and threat model, the full subprocessor list, and the coordinated disclosure policy (security@ciphera.net, with a machine-readable RFC 9116 security.txt).'
   )
   lines.push(`URL: ${SITE}/trust`)
-  lines.push(`URL: ${SITE}/trust/canary`)
-  lines.push(`URL: ${SITE}/trust/report`)
   lines.push('')
 
   lines.push('## Sustainability')

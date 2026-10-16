@@ -5,13 +5,12 @@
  * Design: Public/docs/plans/07-10-2026-cms-made-easy-design.md §4.1 P1-a
  *
  * 🔴 TIER 1 NEVER COMES FROM HERE, AND THIS SCRIPT REFUSES TO SHADOW IT.
- * `next.config.ts` keeps seven rules for ever. The trust-hub pair is the load-bearing
- * one: the GPG-signed canaries published 2026-04..2026-07 cite
- * `ciphera.net/transparency/canary-pubkey.asc` INSIDE their signed plaintext, which
- * cannot be edited without invalidating the signatures. A Tier-2 rule that collided
- * with one of those would be a CMS row quietly overriding a cryptographic commitment.
- * Two things stop it: the guard below, and the spread order in next.config.ts, which
- * puts Tier 1 first so it wins even if this file were bypassed.
+ * `next.config.ts` keeps the structural rules for ever: the retired site pages and
+ * the trust-hub set (/security, the old /transparency tree, and the retired
+ * /trust/canary and /trust/report pages and files, discontinued 16-10-2026). A Tier-2
+ * rule that collided with one of those would be a CMS row that never fires. Two things
+ * stop it: the guard below, and the spread order in next.config.ts, which puts Tier 1
+ * first so it wins even if this file were bypassed.
  *
  * 🔑 NO MIDDLEWARE, DELIBERATELY. We already pull at build time, so a generated array
  * spread into `next.config.ts`'s existing `redirects()` is handled by Next's router
@@ -25,7 +24,7 @@
  * page or the lowest-databaseId redirect wins, and the agency sees the drop in the CMS
  * review queue rather than a red pipeline. A CHAIN (A→B→C) is REPAIRED by flattening A
  * to point straight at C. The ONE THING THAT STAYS A HARD FAILURE is a Tier-1 collision
- * — it is load-bearing (see above), not a content state this build may repair around.
+ * — it is structural (see above), not a content state this build may repair around.
  */
 import fs from 'fs'
 import path from 'path'
@@ -60,9 +59,12 @@ const TIER1_EXACT = [
   '/products',
   '/products/auth',
   '/products/drop',
+  '/trust/report-status.txt',
 ]
-/** `/transparency/:path*` matches the segment itself and everything beneath it. */
-const TIER1_PREFIX = ['/transparency']
+/** `/<prefix>/:path*` matches the segment itself and everything beneath it. */
+const TIER1_PREFIX = ['/transparency', '/trust/canary', '/trust/report']
+/** `/trust/canary-:file` matches every retired canary file (`canary-2026-04.txt`, …). */
+const TIER1_FILE_PREFIX = ['/trust/canary-']
 
 const QUERY = `{
   redirects(first: 200, where: { status: PUBLISH }) {
@@ -200,13 +202,17 @@ async function main() {
 
     // 🔴 TIER 1 WINS AND THIS SAYS SO OUT LOUD. THE ONE HARD FAILURE P1-a KEEPS.
     // Shadowed rules are worse than absent ones: the agency creates one, sees it
-    // published, and it never fires — but a Tier-1 collision is not that case, it is a
-    // cryptographic commitment at risk, so it stays load-bearing and refuses the build.
-    if (TIER1_EXACT.includes(from) || TIER1_PREFIX.some((p) => from === p || from.startsWith(`${p}/`))) {
+    // published, and it never fires — and a Tier-1 rule is a structural decision made
+    // in a PR, so a collision with one stays a hard failure and refuses the build.
+    if (
+      TIER1_EXACT.includes(from) ||
+      TIER1_PREFIX.some((p) => from === p || from.startsWith(`${p}/`)) ||
+      TIER1_FILE_PREFIX.some((p) => from.startsWith(p))
+    ) {
       fail(
         `redirect source "${from}" collides with a Tier-1 rule in next.config.ts.\n` +
-          `   Tier 1 is permanent infrastructure — the /transparency rules are cited inside\n` +
-          `   GPG-signed canaries — and it is spread FIRST, so this rule would never fire.\n` +
+          `   Tier 1 is permanent structural infrastructure, and it is spread FIRST,\n` +
+          `   so this rule would never fire.\n` +
           `   Delete it in the CMS, or change Tier 1 deliberately in a PR.`
       )
     }

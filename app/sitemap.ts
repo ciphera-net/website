@@ -2,7 +2,6 @@ import { MetadataRoute } from 'next'
 import { getLearnArticles } from '@/lib/learn'
 import { getBlogPosts } from '@/lib/blog'
 import { getGlossaryTerms } from '@/lib/glossary'
-import { getCurrentCanary, getCurrentReport } from '@/lib/transparency'
 import { routeSeoForAsync } from '@/lib/seo'
 import { getAllPages } from '@/lib/cms/page-runtime'
 
@@ -19,13 +18,6 @@ import { getAllPages } from '@/lib/cms/page-runtime'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://ciphera.net'
-
-  // Trust hub lastmod derives from the published documents (the canary rolls
-  // monthly), floored at the date the hub copy was last revised.
-  const [canary, report] = await Promise.all([getCurrentCanary(), getCurrentReport()])
-  const trustHubLastModified = ['2026-07-19', canary.publishedISO, report.publishedISO]
-    .sort()
-    .at(-1) as string
 
   const staticPages: MetadataRoute.Sitemap = [
     // Core pages
@@ -86,9 +78,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/trust`,
-      // Hub copy last revised 19-07-2026; the max() below keeps it fresh as
-      // the live canary/report content rolls forward monthly.
-      lastModified: trustHubLastModified,
+      // Hub copy last revised 16-10-2026 (warrant canary and transparency report
+      // retired; /trust/canary and /trust/report now redirect here).
+      lastModified: '2026-10-16',
     },
 
     // Blog index (include even if posts are drafts -- the index page itself is valid)
@@ -102,13 +94,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/learn`,
       lastModified: '2026-03-27',
     },
-  ]
-
-  // Trust hub subpages — lastmod derives from the published documents
-  // themselves (the canary changes monthly; a hardcoded date would go stale)
-  const trustPages: MetadataRoute.Sitemap = [
-    { url: `${baseUrl}/trust/canary`, lastModified: canary.publishedISO },
-    { url: `${baseUrl}/trust/report`, lastModified: report.publishedISO },
   ]
 
   // Glossary index + every term page.
@@ -160,7 +145,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: p.modifiedGmt ? new Date(p.modifiedGmt) : new Date(),
     }))
 
-  const all = [...staticPages, ...trustPages, ...glossaryPages, ...blogPages, ...learnPages, ...cmsPageEntries]
+  const all = [...staticPages, ...glossaryPages, ...blogPages, ...learnPages, ...cmsPageEntries]
 
   // 🔴 THE SITEMAP MUST HONOUR THE SAME `robots` VALUE THE PAGE DOES (design §6.7).
   // Level 1 hands the agency a noindex toggle in the CMS. Without this, the first
@@ -170,9 +155,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // improve SEO.
   //
   // 🔑 `lastModified` also prefers the stub's own WordPress timestamp. The hardcoded
-  // dates below stay as the fallback for every route without a stub — the /trust hub
-  // in particular must keep deriving its date from the published canary and report,
-  // not from a CMS edit, and the /learn/pulse cluster keeps its own exclusion.
+  // dates below stay as the fallback for every route without a stub, and the
+  // /learn/pulse cluster keeps its own exclusion.
   // The stub comes from the content zone when 'route' is a runtime kind, so a noindex or an
   // edit reaches the sitemap without a build.
   const stubs = await Promise.all(all.map((entry) => routeSeoForAsync(entry.url.replace(baseUrl, '') || '/')))

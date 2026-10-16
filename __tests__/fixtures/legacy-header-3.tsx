@@ -501,7 +501,7 @@ const companyLinks: LinkItem[] = [
     {
         title: 'Trust & Security',
         href: '/trust',
-        description: 'Architecture proofs, warrant canary & disclosure policy',
+        description: 'Architecture proofs & disclosure policy',
         icon: ShieldCheck,
     },
     {

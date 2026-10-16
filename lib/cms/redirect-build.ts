@@ -28,11 +28,26 @@ import type { ContentRepairEntry } from '../content-repair-types'
 export const REDIRECT_REPAIR_TYPE = 'redirect'
 
 /** Mirrors next.config.ts's Tier 1 exactly — see generate-redirects.ts's own copy. */
-export const TIER1_EXACT = ['/security', '/companies', '/comparison', '/products', '/products/auth', '/products/drop']
-export const TIER1_PREFIX = ['/transparency']
+export const TIER1_EXACT = [
+  '/security',
+  '/companies',
+  '/comparison',
+  '/products',
+  '/products/auth',
+  '/products/drop',
+  '/trust/report-status.txt',
+]
+/** `/<prefix>/:path*` matches the segment itself and everything beneath it. */
+export const TIER1_PREFIX = ['/transparency', '/trust/canary', '/trust/report']
+/** `/trust/canary-:file` matches every retired canary file (`canary-2026-04.txt`, …). */
+export const TIER1_FILE_PREFIX = ['/trust/canary-']
 
 export function isTier1(from: string): boolean {
-  return TIER1_EXACT.includes(from) || TIER1_PREFIX.some((p) => from === p || from.startsWith(`${p}/`))
+  return (
+    TIER1_EXACT.includes(from) ||
+    TIER1_PREFIX.some((p) => from === p || from.startsWith(`${p}/`)) ||
+    TIER1_FILE_PREFIX.some((p) => from.startsWith(p))
+  )
 }
 
 export interface RedirectNode {

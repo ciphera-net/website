@@ -22,7 +22,6 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - Open source: OPAQUE implementation released as Tessera (github.com/ciphera-net/tessera, Apache-2.0)
 - Compliance: GDPR and Swiss FADP
 - No cookies, no fingerprinting, no third-party trackers
-- Warrant canary: monthly, GPG-signed
 - Carbon footprint: published with a full life-cycle assessment
 
 ## Reference
@@ -31,8 +30,7 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - [Glossary](https://ciphera.net/glossary): definitions of privacy and cryptography terms
 - [Learn](https://ciphera.net/learn): in-depth articles per product
 - [Blog](https://ciphera.net/blog): articles on privacy, security, and infrastructure
-- [Trust & Security](https://ciphera.net/trust): architecture proofs, audit status, legal process reports, and disclosure policy
-- [Warrant canary](https://ciphera.net/trust/canary): monthly GPG-signed canary
+- [Trust & Security](https://ciphera.net/trust): architecture proofs, audit status, and disclosure policy
 - [Sustainability](https://ciphera.net/sustainability): measured carbon footprint and methodology
 
 ## Blog
