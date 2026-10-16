@@ -413,6 +413,18 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2 pr-4">Holds only &ldquo;1&rdquo; while you are signed in, so the pages on this site outside the dashboard can link you to it instead of offering a sign-in</td>
                         <td className="py-2 tabular-nums text-foreground">30 days</td>
                       </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_had_session</td>
+                        <td className="py-2 pr-4">Cookie (app-readable), this site only</td>
+                        <td className="py-2 pr-4">Holds only &ldquo;1&rdquo; once this browser has signed in, and stays after you sign out, so Pulse can tell a signed-out browser from one that never signed in</td>
+                        <td className="py-2 tabular-nums text-foreground">1 year</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">pulse_theme</td>
+                        <td className="py-2 pr-4">Cookie (app-readable), this site only</td>
+                        <td className="py-2 pr-4">Remembers your colour theme on this device, so the page opens in it before it has loaded. Your account holds the choice</td>
+                        <td className="py-2 tabular-nums text-foreground">1 year</td>
+                      </tr>
                       <tr>
                         <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Linking a Discord account (link.ciphera.net)</td>
                       </tr>
@@ -445,6 +457,12 @@ export default function PrivacyPolicyPage() {
                         <td className="py-2 pr-4">Local storage</td>
                         <td className="py-2 pr-4">Secures the login redirect (PKCE), one entry per sign-in attempt</td>
                         <td className="py-2">Cleared after login, or 10 minutes after an abandoned attempt</td>
+                      </tr>
+                      <tr className="border-b border-border">
+                        <td className="py-2 pr-4 font-mono text-xs">ciphera_token_refreshed_at</td>
+                        <td className="py-2 pr-4">Local storage</td>
+                        <td className="py-2 pr-4">The time this browser last renewed its session, so your other open tabs pick up the renewal instead of each renewing on their own</td>
+                        <td className="py-2">Until logout</td>
                       </tr>
                       <tr>
                         <td colSpan={4} className="py-2 pt-4 font-semibold text-foreground">Password-protected shared dashboards</td>
