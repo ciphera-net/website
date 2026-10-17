@@ -9,8 +9,8 @@ import { fileURLToPath } from 'node:url'
  * content-shaped check — a missing half, a malformed path, a self-redirect, a
  * duplicate `from`, shadowing a live page or post, a redirect chain — is now SKIPPED
  * or (for a chain) REPAIRED instead of failing the build. The ONE EXCEPTION, kept
- * exactly as it was, is a Tier-1 collision: it is load-bearing (the /transparency
- * rules are cited inside GPG-signed canaries) and still refuses the build.
+ * exactly as it was, is a Tier-1 collision: Tier 1 is structural (decided in a PR,
+ * spread first in next.config.ts) and a collision still refuses the build.
  *
  * 🔑 SOURCE-LEVEL, like blog-seam.test.mjs: CI runs `npm test` with no `npm ci` and no
  * network, so nothing here executes the generator — everything is asserted on the raw

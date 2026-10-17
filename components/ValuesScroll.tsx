@@ -30,7 +30,7 @@ const VALUES = [
     icon: EyeIcon,
     title: 'You can check our work',
     description:
-      'Our cryptographic core is open source, our warrant canary is public, and we publish a transparency report. Don’t take the claims on faith — read the code and the receipts.',
+      'Our cryptographic core is open source. Don’t take the claims on faith — read the code and the receipts.',
     href: '/trust',
     linkLabel: 'See the trust hub',
   },

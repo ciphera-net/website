@@ -49,23 +49,25 @@ const nextConfig: NextConfig = {
     ]
     // * /security and /transparency were consolidated into the /trust hub
     // * (19-07-2026, see Public/docs/plans/19-07-2026-trust-hub-consolidation.md).
-    // * The wildcard maps the whole /transparency tree 1:1 onto /trust: the
-    // * index (zero segments), /canary, /report, and every static file
-    // * (canary-*.txt, canary-*.txt.asc, canary-pubkey.asc, report-status.txt).
-    // * HARD CONSTRAINT — never remove these entries: the GPG-signed canaries
-    // * published 2026-04..2026-07 cite ciphera.net/transparency/canary-pubkey.asc
-    // * INSIDE their signed plaintext, which can never be edited without
-    // * invalidating the signatures. These redirects are permanent
-    // * infrastructure, not a migration aid.
+    // * The warrant canary and the transparency report were discontinued on
+    // * 16-10-2026: /trust/canary, /trust/report and every file they served
+    // * (canary-*.txt, canary-*.txt.asc, canary-pubkey.asc, report-status.txt)
+    // * are gone, so each of those addresses lands on the hub instead of a 404.
+    // * The whole old /transparency tree goes straight to the hub too (no chain
+    // * through /trust/canary). Nothing signed is served any more, so these are
+    // * kept for the inbound links and search equity those URLs carry.
     const trustHub = [
       { source: '/security', destination: '/trust', permanent: true },
-      { source: '/transparency/:path*', destination: '/trust/:path*', permanent: true },
+      { source: '/transparency/:path*', destination: '/trust', permanent: true },
+      { source: '/trust/canary/:path*', destination: '/trust', permanent: true },
+      { source: '/trust/report/:path*', destination: '/trust', permanent: true },
+      { source: '/trust/canary-:file', destination: '/trust', permanent: true },
+      { source: '/trust/report-status.txt', destination: '/trust', permanent: true },
     ]
     // 🔴 TIER 1 IS SPREAD FIRST SO IT ALWAYS WINS. Next applies redirects in order,
-    // and a CMS row must never be able to shadow the /transparency rules — their URLs
-    // are cited INSIDE GPG-signed canary plaintext that cannot be edited without
-    // invalidating the signatures. `generate-redirects.ts` refuses such a collision
-    // too; this ordering is the half that holds even if the generator is bypassed.
+    // and a CMS row must never be able to shadow a structural redirect.
+    // `generate-redirects.ts` refuses such a collision too; this ordering is the
+    // half that holds even if the generator is bypassed.
     return [
       ...goneSite.map(([source, destination]) => ({
         source,

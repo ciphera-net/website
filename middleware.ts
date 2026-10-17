@@ -13,8 +13,8 @@ import { isRuntimeKind } from './lib/cms/runtime-config'
  * same package's own docs page (`dist/docs/.../10-routing-information.md`,
  * `routing.beforeMiddleware`: "Routes applied before middleware execution. These
  * include generated header and redirect behavior.") says the same thing. So a Tier-1
- * request is answered and returned before this file's code ever executes — the
- * GPG-signed-canary guarantee holds regardless of what this file does.
+ * request is answered and returned before this file's code ever executes — Tier 1
+ * wins regardless of what this file does.
  *
  * 🔑 'redirect' OFF (today's default — DEFAULT_RUNTIME_KINDS has no 'redirect') is a
  * NO-OP, not merely "finds nothing": `resolveRedirectDoc()` takes its first `if` and

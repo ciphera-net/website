@@ -36,7 +36,7 @@ export const HEADER_PRODUCT_ITEMS: SeedItem[] = [
 export const HEADER_COMPANY_ITEMS: SeedItem[] = [
   item('About Us', '/about', 'Our mission for a more private internet', 'users'),
   item('Sustainability', '/sustainability', 'Our carbon footprint, measured — see the real numbers', 'leaf'),
-  item('Trust & Security', '/trust', 'Architecture proofs, warrant canary & disclosure policy', 'shield-check'),
+  item('Trust & Security', '/trust', 'Architecture proofs & disclosure policy', 'shield-check'),
   item('Press', '/press', 'Media kit, company facts & brand assets', 'newspaper'),
 ]
 
