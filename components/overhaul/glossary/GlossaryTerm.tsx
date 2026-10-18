@@ -24,7 +24,8 @@ export const GLOSSARY_TERM_VARIANTS: GlossaryTermVariant[] = ['a', 'b', 'c']
 const READ = 'max-w-[42.5rem]'
 const termHref = (_variant: GlossaryTermVariant, slug: string) => `/glossary/${slug}`
 const BACK = 'text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground'
-const TITLE = 'font-display text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-foreground text-balance sm:text-5xl lg:text-6xl'
+// Below 360 px a long one-word title (Pseudonymization) steps down to 32 px; `break-words` is the safety net.
+const TITLE = 'break-words font-display text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-foreground text-balance max-[359px]:text-[2rem] sm:text-5xl lg:text-6xl'
 // The body is the generator's sanitised HTML (as on the live term page), styled like the blog's reading column.
 const BODY = 'prose prose-invert max-w-none sm:prose-lg prose-p:leading-[1.75] prose-a:text-foreground'
 

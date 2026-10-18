@@ -51,7 +51,8 @@ function Row({ term, showCategory = false }: { term: GlossaryTerm; showCategory?
         </h3>
         {showCategory && <p className="mt-1 text-sm text-muted-foreground">{term.category}</p>}
       </div>
-      <p data-cms className="line-clamp-2 max-w-2xl text-base leading-relaxed text-muted-foreground">{term.short}</p>
+      {/* self-start: a term name longer than two lines (PAKE) must not stretch the clamped box, or a third line shows. */}
+      <p data-cms className="line-clamp-2 max-w-2xl self-start text-base leading-relaxed text-muted-foreground">{term.short}</p>
     </li>
   )
 }

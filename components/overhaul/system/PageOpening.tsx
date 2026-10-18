@@ -71,6 +71,11 @@ export function PageOpeningC({ title, lead, children }: Props & { children?: Rea
 /**
  * The sunrise itself, refactored out of PageOpeningC (R7, 18-10) so an opening that sets its own words (the blog
  * post's title, standfirst and date line) draws the same arc instead of a copy. Its parent must be `relative isolate`.
+ *
+ * Sized by the page's width, never by the opening's height (D50, 18-10): a band on the section's bottom edge, 15rem
+ * tall at least and 36rem at most, at most 90rem wide and centred, its haze free to paint past the box. Filling the
+ * section instead made the arc grow with every line of words, so on a phone the glow rose behind the title and the
+ * date line (316 of 528 page widths under WCAG's 4.5:1; this shape: 0).
  */
 export function SunriseArc() {
   return (
@@ -78,7 +83,7 @@ export function SunriseArc() {
       aria-hidden="true"
       viewBox="0 0 1200 400"
       preserveAspectRatio="xMidYMax slice"
-      className="pointer-events-none absolute inset-0 -z-10 h-full w-full"
+      className="pointer-events-none absolute bottom-0 left-1/2 -z-10 h-[clamp(15rem,40vw,36rem)] w-full max-w-[90rem] -translate-x-1/2 overflow-visible"
     >
       <defs>
         <radialGradient id="pso-haze" gradientUnits="userSpaceOnUse" cx="600" cy="1450" r="1300">
