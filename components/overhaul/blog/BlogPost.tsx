@@ -21,11 +21,20 @@ import { POST } from './content'
 import { formatDate, loadPost, loadPosts, neighbours, readMinutes, updatedDate } from './data'
 import { renderPostBody, type Heading } from './PostBody'
 import { jsonLdHtml } from '@/lib/json-ld'
+import { cdnUrl } from '@/lib/cdn'
 
 export type PostVariant = 'a' | 'b' | 'c' | 'plain'
 export const POST_VARIANTS: PostVariant[] = ['a', 'b', 'c', 'plain']
 
 const READ = 'max-w-[42.5rem]' // the reading measure: 680 px, about 75 characters at 18 px
+
+const ORGANIZATION = {
+  '@type': 'Organization',
+  '@id': 'https://ciphera.net/#organization',
+  name: 'Ciphera',
+  url: 'https://ciphera.net',
+  logo: { '@type': 'ImageObject', url: cdnUrl('/ciphera_logo_no_margins.png') },
+}
 const postHref = (_variant: PostVariant, slug: string) => `/blog/${slug}`
 
 function MetaLine({ post, minutes, lean = false }: { post: BlogPost; minutes: number; lean?: boolean }) {
@@ -259,11 +268,15 @@ export function BlogPostView({ variant, post, posts }: { variant: PostVariant; p
       description: post.description,
       url,
       inLanguage: 'en',
+      // The cover the index shows and the social card, as the template before the overhaul declared it.
+      ...(post.image ? { image: cdnUrl(post.image) } : {}),
       datePublished: post.date.slice(0, 10),
       dateModified: (updated ?? post.date).slice(0, 10),
       wordCount: post.wordCount,
-      author: { '@id': 'https://ciphera.net/#organization' },
-      publisher: { '@id': 'https://ciphera.net/#organization' },
+      // The Organization is defined in full on the homepage only, so a post names it here too: an @id alone resolves
+      // to nothing for a reader of this page.
+      author: ORGANIZATION,
+      publisher: ORGANIZATION,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     },
     {

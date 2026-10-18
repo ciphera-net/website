@@ -59,16 +59,22 @@ const FIELDS: readonly FieldKey[] = ['name', 'email', 'message']
 /** The words of a field error, one line per field (the email line covers an empty field and a malformed address). */
 const ERROR_WORDS: Record<FieldKey, string> = FORM.errors
 
-// The same pattern as app/contact/page.tsx. "Looks like an address", nothing stricter: the backend and the mail server have the last word.
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// website-backend's own pattern (internal/api/contact.go), so the form never accepts an address the backend then refuses
+// with a line the visitor cannot act on. The mail server still has the last word.
+const EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+/** website-backend refuses a name outside 2 to 100 characters. */
+const NAME_MAX_LENGTH = 100
 
 /** website-backend rejects a shorter name or message, so the form says so first (the rules today's page enforced). */
 export const MESSAGE_MAX_LENGTH = 1000
 
+/** website-backend refuses a page stamp older than 30 minutes; a page open longer is re-stamped when the visitor writes. */
+const STAMP_MAX_AGE_MS = 20 * 60 * 1000
+
 function isValid(field: FieldKey, value: string): boolean {
   const v = value.trim()
   if (field === 'email') return EMAIL.test(v)
-  if (field === 'name') return v.length >= 2
+  if (field === 'name') return v.length >= 2 && v.length <= NAME_MAX_LENGTH
   return v.length >= 10 && value.length <= MESSAGE_MAX_LENGTH
 }
 
@@ -108,8 +114,16 @@ function useContactForm() {
   // Real people never touch the honeypot; automation that fills every input does. A ref, so automation that sets
   // input.value directly (and never fires React's onChange) is caught too.
   const honeypotRef = React.useRef<HTMLInputElement>(null)
-  // Taken once on mount and sent with the message: the backend rejects a submission faster than 2 seconds.
-  const [pageLoadedAt] = React.useState<number>(() => Date.now())
+  // Taken on mount and sent with the message: the backend rejects a submission faster than 2 seconds, and a stamp older
+  // than 30 minutes. A ref, because a page left open that long is re-stamped when the visitor starts writing, and again
+  // after a refusal (the next attempt needs a new security check, which takes longer than the 2 seconds).
+  const pageLoadedAt = React.useRef<number>(0)
+  React.useEffect(() => {
+    pageLoadedAt.current = Date.now()
+  }, [])
+  // The captcha widget keeps its "verified" state after a send, but its answer is single-use: a new key remounts it, so a
+  // second message, or a retry after a refusal, starts a fresh check.
+  const [captchaKey, setCaptchaKey] = React.useState(0)
 
   // Focus goes to the first invalid field AFTER the error state has rendered, so a screen reader reads the field with its
   // aria-invalid and its error line already attached. `n` makes a second press on the same field ask again.
@@ -120,6 +134,7 @@ function useContactForm() {
   function change(field: ValueKey) {
     return (e: React.ChangeEvent<Control>) => {
       const value = e.target.value
+      if (Date.now() - pageLoadedAt.current > STAMP_MAX_AGE_MS) pageLoadedAt.current = Date.now()
       setValues((v) => ({ ...v, [field]: value }))
       // A field that has been flagged re-checks as you type, so its line goes the moment the problem is fixed.
       if (field !== 'subject' && invalid[field]) setInvalid((s) => ({ ...s, [field]: !isValid(field, value) }))
@@ -128,8 +143,15 @@ function useContactForm() {
 
   function verify(id: string, solution: string, token?: string) {
     setCaptcha({ id, solution, token: token || '' })
-    if (status === 'captcha') setStatus('idle')
+    // The widget calls this from an earlier render, so the status is read at update time, not from the closure.
+    setStatus((s) => (s === 'captcha' ? 'idle' : s))
     track('contact_captcha_verified')
+  }
+
+  /** The answer was spent on a request: clear it and remount the widget for the next one. */
+  function freshCaptcha() {
+    setCaptcha({ id: '', solution: '', token: '' })
+    setCaptchaKey((k) => k + 1)
   }
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -165,13 +187,20 @@ function useContactForm() {
           captcha_solution: captcha.solution,
           captcha_token: captcha.token,
           website: honeypotRef.current?.value || '',
-          page_loaded_at: pageLoadedAt,
+          page_loaded_at: pageLoadedAt.current,
         }),
       })
-      if (!response.ok) throw new Error(`contact: HTTP ${response.status}`)
+      freshCaptcha()
+      if (!response.ok) {
+        // 403: the security check failed or expired (website-backend contact.go), so the visitor redoes it. Anything else
+        // keeps the general line, which names the email address as the way round. A 400 can be the page stamp: re-stamp.
+        pageLoadedAt.current = Date.now()
+        setStatus(response.status === 403 ? 'captcha' : 'failed')
+        track('contact_form_submit_error')
+        return
+      }
       setStatus('sent')
       setValues({ name: '', email: '', subject: FORM.subjects[0].value, message: '' })
-      setCaptcha({ id: '', solution: '', token: '' })
       track('contact_form_submit_success')
     } catch {
       setStatus('failed')
@@ -179,7 +208,7 @@ function useContactForm() {
     }
   }
 
-  return { uid, values, invalid, status, change, submit, verify, honeypotRef }
+  return { uid, values, invalid, status, change, submit, verify, honeypotRef, captchaKey }
 }
 
 type MockForm = ReturnType<typeof useContactForm>
@@ -261,6 +290,7 @@ function SubjectField({ form, className }: { form: MockForm; className?: string 
 function MessageField({ form, rows, className }: { form: MockForm; rows: number; className?: string }) {
   const id = `${form.uid}-message`
   const errorId = `${id}-error`
+  const countId = `${id}-count`
   const bad = form.invalid.message
   return (
     <div className={cn('min-w-0', className)}>
@@ -276,11 +306,12 @@ function MessageField({ form, rows, className }: { form: MockForm; rows: number;
         onChange={form.change('message')}
         placeholder={FORM.placeholders.message}
         aria-invalid={bad || undefined}
-        aria-describedby={bad ? errorId : undefined}
+        aria-describedby={bad ? `${countId} ${errorId}` : countId}
         maxLength={MESSAGE_MAX_LENGTH}
         className={cn('resize-none px-3.5 py-2.5', CONTROL)}
       />
-      <p className="mt-2 text-right text-xs tabular-nums text-muted-foreground" aria-live="polite">
+      {/* Not a live region: announced with the field, not after every keystroke. */}
+      <p id={countId} className="mt-2 text-right text-xs tabular-nums text-muted-foreground">
         {form.values.message.length} / {MESSAGE_MAX_LENGTH}
       </p>
       {bad && <FieldError id={errorId} text={ERROR_WORDS.message} />}
@@ -290,7 +321,7 @@ function MessageField({ form, rows, className }: { form: MockForm; rows: number;
 
 /** Facet's Captcha against the real service, props as today's page passed them. */
 function CaptchaBox({ form, className }: { form: MockForm; className?: string }) {
-  return <Captcha onVerify={form.verify} apiUrl={env.NEXT_PUBLIC_CAPTCHA_API_URL} action="contact" className={className} />
+  return <Captcha key={form.captchaKey} onVerify={form.verify} apiUrl={env.NEXT_PUBLIC_CAPTCHA_API_URL} action="contact" className={className} />
 }
 
 /** The honeypot: off-screen, out of the tab order, hidden from assistive technology. */
@@ -312,7 +343,7 @@ function Honeypot({ form }: { form: MockForm }) {
 /** The one filled action. Disclosure's MailButton recipe (h-12, px-6, icon and label) on Facet's Button. */
 function SubmitButton({ form }: { form: MockForm }) {
   return (
-    <Button type="submit" disabled={form.status === 'sending'} className={`h-12 w-full gap-2.5 px-6 hover:bg-[#E54E00] sm:w-auto ${FOCUS}`}>
+    <Button type="submit" disabled={form.status === 'sending'} aria-busy={form.status === 'sending' || undefined} className={`h-12 w-full gap-2.5 px-6 hover:bg-[#E54E00] sm:w-auto ${FOCUS}`}>
       <PaperPlaneTilt className="h-4 w-4" aria-hidden="true" />
       {FORM.submit}
     </Button>
@@ -329,6 +360,7 @@ function Status({ form }: { form: MockForm }) {
     form.status === 'sent' ? `${FORM.sent.title} ${FORM.sent.line}` :
     form.status === 'failed' ? `${FORM.failed.title} ${FORM.failed.line}` :
     form.status === 'captcha' ? FORM.captchaFirst :
+    form.status === 'sending' ? FORM.sending :
     null
   return (
     <div role="status">
