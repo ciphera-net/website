@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
-import { cdnUrl } from '@/lib/cdn'
+import { pageCardImages } from '@/lib/og/cards'
+
+const CARD = pageCardImages('learn')
 
 export async function generateMetadata(): Promise<Metadata> {
   return seoForAsync('/learn', {
@@ -14,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: 'Guides, references, and technical deep-dives across Ciphera products.',
       url: 'https://ciphera.net/learn',
       siteName: 'Ciphera',
-      images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera Learn' }],
+      images: CARD.openGraph,
       locale: 'en_US',
       type: 'website',
     },
@@ -22,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: 'Learn - Technical Guides & Reference | Ciphera',
       description: 'Guides, references, and technical deep-dives across Ciphera products.',
-      images: [cdnUrl('/ciphera_logo_no_margins.png')],
+      images: CARD.twitter,
     },
   })
 }

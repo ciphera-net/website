@@ -10,6 +10,7 @@ import { Closing } from '@/components/overhaul/home/Closing'
 import { cdnUrl } from '@/lib/cdn'
 import { jsonLdHtml } from '@/lib/json-ld'
 import { seoForAsync } from '@/lib/seo'
+import { pageCardImages } from '@/lib/og/cards'
 
 /**
  * The homepage (the overhaul, 18-10-2026): the approved hero (R1, D4, D26: the routes into Zurich, no city lights) and
@@ -20,6 +21,7 @@ import { seoForAsync } from '@/lib/seo'
  * everywhere. The wording is W1 (D5). A WordPress route stub for '/' overrides this at request time (seoForAsync).
  */
 const TITLE = 'Ciphera — Privacy-first software, made in Europe'
+const HOME_CARD = pageCardImages('home')
 const DESCRIPTION = 'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,6 +29,10 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { absolute: TITLE },
     description: DESCRIPTION,
     alternates: { canonical: 'https://ciphera.net' },
+    // The card is set here as well as in the root layout: a WordPress stub's image yields only to a page whose own
+    // metadata carries its card (lib/seo.ts), and Next replaces a parent's openGraph instead of merging into it.
+    openGraph: { type: 'website', locale: 'en_US', url: 'https://ciphera.net', siteName: 'Ciphera', title: TITLE, description: DESCRIPTION, images: HOME_CARD.openGraph },
+    twitter: { card: 'summary_large_image', site: '@CipheraNET', title: TITLE, description: DESCRIPTION, images: HOME_CARD.twitter },
   })
 }
 

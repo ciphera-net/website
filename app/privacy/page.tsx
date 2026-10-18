@@ -1,7 +1,9 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { cdnUrl } from '@/lib/cdn'
 import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
+import { pageCardImages } from '@/lib/og/cards'
+
+const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -14,10 +16,12 @@ export const metadata: Metadata = {
     description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
     url: 'https://ciphera.net/privacy',
     siteName: 'Ciphera',
-    images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Ciphera Privacy Policy' }],
+    images: CARD.openGraph,
     locale: 'en_US',
     type: 'website',
   },
+  // Its own card on X too: without a twitter block the page inherited the homepage's.
+  twitter: { card: 'summary_large_image', images: CARD.twitter },
 }
 
 const privacySchema = {

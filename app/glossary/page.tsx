@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
-import { cdnUrl } from '@/lib/cdn'
 import { GlossaryIndexPage } from '@/components/overhaul/glossary/GlossaryIndex'
 import { INDEX } from '@/components/overhaul/glossary/content'
+import { pageCardImages } from '@/lib/og/cards'
 
 // 'glossary' is a runtime kind (lib/cms/runtime-config.ts): the index reads the content zone per request, so a term
 // published in the CMS appears without a build.
 export const dynamic = 'force-dynamic'
+
+const CARD = pageCardImages('glossary')
 
 export async function generateMetadata(): Promise<Metadata> {
   // The WordPress route stub for '/glossary' overrides these at request time (seoForAsync).
@@ -23,13 +25,13 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: 'Ciphera',
       locale: 'en_US',
       type: 'website',
-      images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
+      images: CARD.openGraph,
     },
     twitter: {
       card: 'summary_large_image',
       title: 'Glossary - Privacy, Cryptography & Analytics Terms | Ciphera',
       description: INDEX.lead,
-      images: [cdnUrl('/og-homepage.png')],
+      images: CARD.twitter,
     },
   })
 }

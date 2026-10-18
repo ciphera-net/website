@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { getBlogPost } from '@/lib/blog'
 import { BlogPostPage as OverhaulPost } from '@/components/overhaul/blog/BlogPost'
 import { UNPUBLISHED } from '@/components/overhaul/blog/content'
-import { cdnUrl } from '@/lib/cdn'
+import { postCardImages } from '@/lib/og/cards'
 
 // 'blog' is a runtime kind (lib/cms/runtime-config.ts): every post renders per request from the
 // content zone. 🔴 This must be the literal: with no `dynamic` export, an unlisted slug renders once
@@ -15,6 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const post = await getBlogPost(slug)
   if (!post) return {}
+  const card = postCardImages(slug, post.title)
 
   return {
     title: post.title,
@@ -31,24 +32,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       locale: 'en_US',
       publishedTime: post.date.slice(0, 10),
       ...(post.dateModified ? { modifiedTime: post.dateModified.slice(0, 10) } : {}),
-      // 🔴 1200×630, which is what the cards ACTUALLY are. This route declared
-      // 1376×768 until 03-09-2026 — the only route on the site that did; every
-      // other page already said 1200×630, and the OG generation recipe
-      // (Public/docs/og-image-generation.md) mandates 1200×630 as the spec the
-      // compositor screenshots at.
-      //
-      // The dimensions are not decoration: a scraper lays the card out from the
-      // DECLARED size before the image arrives, so a wrong pair reserves the
-      // wrong box and the unfurl letterboxes or crops. It is invisible in
-      // review — the HTML is well-formed and the image loads — and only shows
-      // up in somebody else's Slack.
-      images: [{ url: cdnUrl(post.image), width: 1200, height: 630, alt: post.title }],
+      // The post's card from the OG system (D52), not its cover art: the cover stays on the blog index (D38). The
+      // declared size is the card's real one (lib/og/url.ts); a scraper lays the card out from it before the image
+      // arrives, so a wrong pair letterboxes or crops the unfurl.
+      images: card.openGraph,
     },
     twitter: {
       card: 'summary_large_image',
       title: `${post.title} | Ciphera`,
       description: post.description,
-      images: [cdnUrl(post.image)],
+      images: card.twitter,
     },
   }
 }

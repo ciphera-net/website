@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
-import { cdnUrl } from '@/lib/cdn'
 import { META } from '@/components/overhaul/contact/content'
+import { pageCardImages } from '@/lib/og/cards'
 
 // The overhaul (18-10-2026): Round 6's title and description. A WordPress route stub for '/contact' overrides these at
 // request time (seoForAsync).
+const CARD = pageCardImages('contact')
+
 export async function generateMetadata(): Promise<Metadata> {
   return seoForAsync('/contact', {
     title: META.title,
@@ -14,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: META.description,
       url: 'https://ciphera.net/contact',
       siteName: 'Ciphera',
-      images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: 'Contact Ciphera' }],
+      images: CARD.openGraph,
       locale: 'en_US',
       type: 'website',
     },
@@ -22,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: `${META.title} | Ciphera`,
       description: META.description,
-      images: [cdnUrl('/ciphera_logo_no_margins.png')],
+      images: CARD.twitter,
     },
     alternates: { canonical: 'https://ciphera.net/contact' },
   })

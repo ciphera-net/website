@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
+import { pageCardImages } from '@/lib/og/cards'
+
+const CARD = pageCardImages('sustainability')
 
 export async function generateMetadata(): Promise<Metadata> {
   return seoForAsync('/sustainability', {
@@ -17,12 +20,14 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: 'Ciphera',
       locale: 'en_US',
       type: 'website',
+      images: CARD.openGraph,
     },
     twitter: {
       card: 'summary_large_image',
       title: 'Environmental Impact | Ciphera',
       description:
         'Receipts, not promises. Ciphera runs on one of Europe’s lowest-carbon grids — Swiss hydro and nuclear.',
+      images: CARD.twitter,
     },
   })
 }
