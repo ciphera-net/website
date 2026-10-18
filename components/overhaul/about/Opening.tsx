@@ -6,6 +6,7 @@
  */
 import { createMap } from 'svg-dotted-map'
 import { cn } from '@/lib/utils'
+import { lazy } from '../dotted-map-projection'
 import { Reveal } from '../home/Reveal'
 import { WM } from '../footer/wordmark-geom'
 import { Horizon } from '../Horizon'
@@ -27,21 +28,27 @@ const QUICK_FACTS = OPENING.facts
  */
 const MINI_W = 320
 const MINI_H = 220
-const { points: MINI_POINTS, addMarkers: miniAddMarkers } = createMap({
-  width: MINI_W,
-  height: MINI_H,
-  mapSamples: 3200,
-  region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
+// Lazy: the About route imports this module for its other openings, and sampling the land at module scope ran on every
+// new server's first About request (components/overhaul/dotted-map-projection.ts).
+const miniMap = lazy(() => {
+  const { points: MINI_POINTS, addMarkers: miniAddMarkers } = createMap({
+    width: MINI_W,
+    height: MINI_H,
+    mapSamples: 3200,
+    region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
+  })
+  const [MINI_DIEGEM, MINI_ZURICH] = miniAddMarkers([
+    { lat: 50.8907, lng: 4.4614, key: 'diegem', name: 'Diegem' },
+    { lat: 47.3769, lng: 8.5417, key: 'zurich', name: 'Zurich' },
+  ])
+  const MINI_MID_X = (MINI_DIEGEM.x + MINI_ZURICH.x) / 2
+  const MINI_BEND_Y = Math.min(MINI_DIEGEM.y, MINI_ZURICH.y) - 20
+  const MINI_ARC = `M ${MINI_DIEGEM.x.toFixed(1)} ${MINI_DIEGEM.y.toFixed(1)} Q ${MINI_MID_X.toFixed(1)} ${MINI_BEND_Y.toFixed(1)} ${MINI_ZURICH.x.toFixed(1)} ${MINI_ZURICH.y.toFixed(1)}`
+  return { MINI_POINTS, MINI_DIEGEM, MINI_ZURICH, MINI_ARC }
 })
-const [MINI_DIEGEM, MINI_ZURICH] = miniAddMarkers([
-  { lat: 50.8907, lng: 4.4614, key: 'diegem', name: 'Diegem' },
-  { lat: 47.3769, lng: 8.5417, key: 'zurich', name: 'Zurich' },
-])
-const MINI_MID_X = (MINI_DIEGEM.x + MINI_ZURICH.x) / 2
-const MINI_BEND_Y = Math.min(MINI_DIEGEM.y, MINI_ZURICH.y) - 20
-const MINI_ARC = `M ${MINI_DIEGEM.x.toFixed(1)} ${MINI_DIEGEM.y.toFixed(1)} Q ${MINI_MID_X.toFixed(1)} ${MINI_BEND_Y.toFixed(1)} ${MINI_ZURICH.x.toFixed(1)} ${MINI_ZURICH.y.toFixed(1)}`
 
 function MiniEuropeMap() {
+  const { MINI_POINTS, MINI_DIEGEM, MINI_ZURICH, MINI_ARC } = miniMap()
   return (
     <div className="w-full max-w-[260px]">
       <svg

@@ -110,6 +110,9 @@ async function main() {
   const repoLinkRepairs: ContentRepairEntry[] = []
   for (const file of roots.filter((r) => fs.existsSync(r)).flatMap(walk)) {
     if (file.endsWith('glossary.gen.ts')) continue
+    // The Tier 1 redirect table lists retired terms as redirect SOURCES (/glossary/warrant-canary since 18-10-2026):
+    // an address that redirects away, not a page that links to the term.
+    if (file.endsWith(path.join('cms', 'redirect-build.ts'))) continue
     const src = fs.readFileSync(file, 'utf-8')
     for (const m of src.matchAll(/["'`]\/glossary\/([a-z0-9-]+)["'`]/g)) {
       if (!linked.has(m[1])) linked.set(m[1], [])

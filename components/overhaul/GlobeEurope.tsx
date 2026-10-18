@@ -9,6 +9,7 @@ import { createMap } from 'svg-dotted-map'
 import { cdnUrl } from '@/lib/cdn'
 import { DESKTOP, MOBILE, type Scene } from './Horizon'
 import { DOT_FIELDS, type Dot } from './dot-field'
+import { lazy } from './dotted-map-projection'
 
 const RAD = Math.PI / 180
 const DIEGEM = { lat: 50.8907, lng: 4.4614 }
@@ -24,10 +25,15 @@ const GRID_H = 560
 const merc = (lat: number) => Math.log(Math.tan(Math.PI / 4 + (lat * RAD) / 2))
 const M_MAX = merc(REGION.lat.max)
 const M_MIN = merc(REGION.lat.min)
-const LAND = createMap({ width: GRID_W, height: GRID_H, mapSamples: 30000, region: REGION }).points.map((p) => ({
-  lng: REGION.lng.min + (p.x / GRID_W) * (REGION.lng.max - REGION.lng.min),
-  lat: (2 * Math.atan(Math.exp(M_MAX - (p.y / GRID_H) * (M_MAX - M_MIN))) - Math.PI / 2) / RAD,
-}))
+// 🔴 LAZY: sampling 30,000 cells against the world's polygons is seconds of CPU on a shared container, and at module
+// scope it ran on every new server's first request (dotted-map-projection.ts). The page draws the land from a static
+// file (dot-field.ts); only the dot-field script and the mock-only land look ask for it.
+const landLatLng = lazy(() =>
+  createMap({ width: GRID_W, height: GRID_H, mapSamples: 30000, region: REGION }).points.map((p) => ({
+    lng: REGION.lng.min + (p.x / GRID_W) * (REGION.lng.max - REGION.lng.min),
+    lat: (2 * Math.atan(Math.exp(M_MAX - (p.y / GRID_H) * (M_MAX - M_MIN))) - Math.PI / 2) / RAD,
+  })),
+)
 
 // Night lights: major cities, approximate coordinates; size 1 = large city or capital.
 const CITIES: [number, number, number][] = [
@@ -133,7 +139,7 @@ function scene(s: Scene, target: { x: number; y: number }) {
   }
   const inView = (p: { x: number; y: number; k: number }) => p.k > 0.02 && p.x > -10 && p.x < s.w + 10 && p.y > -10 && p.y < s.h + 10
   return {
-    land: LAND.map((g) => put(g.lat, g.lng)).filter(inView),
+    land: lazy(() => landLatLng().map((g) => put(g.lat, g.lng)).filter(inView)),
     cities: CITIES.map(([lat, lng, size]) => ({ ...put(lat, lng), size })).filter(inView),
     diegem: put(DIEGEM.lat, DIEGEM.lng),
     zurich: put(ZURICH.lat, ZURICH.lng),
@@ -157,7 +163,7 @@ export function globeLandDots(layer: 'desktop' | 'mobile'): { w: number; h: numb
   const quiet = layer === 'mobile'
   const s = quiet ? MOBILE : DESKTOP
   const g = quiet ? M : D
-  const dots = g.land.map((p) => {
+  const dots = g.land().map((p) => {
     const k = Math.round(p.k * 50) / 50
     return { x: p.x, y: p.y, r: landRadius(k, quiet), o: landOpacity(k, 'lights', quiet) }
   })
@@ -205,7 +211,7 @@ function Layer({ s, g, look, labels, id, quiet = false, world = false, cities = 
         {look === 'lights' ? (
           <image href={cdnUrl(quiet ? DOT_FIELDS.globeMobile : DOT_FIELDS.globeDesktop)} x="0" y="0" width={s.w} height={s.h} />
         ) : (
-          g.land.map((p, i) => (
+          g.land().map((p, i) => (
             <circle key={i} cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r={landRadius(p.k, quiet).toFixed(2)} fill="#f4f4f4" fillOpacity={landOpacity(p.k, look, quiet).toFixed(3)} />
           ))
         )}
@@ -266,19 +272,21 @@ export function GlobeEurope({ look, world = false, cities = true, half = false }
 /** The two places, for the phone layout and for screen readers. */
 export function GlobeLegend() {
   return (
-    <dl className="hz-in hz-in-5 mx-auto mt-12 grid max-w-sm grid-cols-2 gap-4 text-left text-sm md:hidden">
+    // A list, not a <dl>: the dot beside each place cannot sit inside a description list's term groups. relative: the
+    // hero's scrim must not paint over it when reduced motion removes the hz-in animation (OverhaulHero).
+    <ul className="hz-in hz-in-5 relative mx-auto mt-12 grid max-w-sm grid-cols-2 gap-4 text-left text-sm md:hidden">
       {[
         ['Diegem, Belgium', 'Where Ciphera works'],
         ['Zurich, Switzerland', 'Where your data is stored'],
       ].map(([name, role]) => (
-        <div key={name} className="flex items-start gap-2">
+        <li key={name} className="flex items-start gap-2">
           <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden="true" />
           <div>
-            <dt className="font-medium text-foreground">{name}</dt>
-            <dd className="text-muted-foreground">{role}</dd>
+            <p className="font-medium text-foreground">{name}</p>
+            <p className="text-muted-foreground">{role}</p>
           </div>
-        </div>
+        </li>
       ))}
-    </dl>
+    </ul>
   )
 }

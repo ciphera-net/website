@@ -4,6 +4,7 @@
  * Server-rendered SVG: no JavaScript ships for it.
  */
 import { createMap } from 'svg-dotted-map'
+import { lazy } from './dotted-map-projection'
 
 const W = 1200
 const H = 440
@@ -13,35 +14,37 @@ const MAP_H = 150
 
 // Western and central Europe: wide enough to keep the shapes people recognise (Britain, Ireland, Denmark, Italy),
 // tight enough that Belgium and Switzerland read as two places.
-const { points, addMarkers } = createMap({
-  width: MAP_W,
-  height: MAP_H,
-  mapSamples: 6500,
-  region: { lat: { min: 38, max: 59 }, lng: { min: -11, max: 24 } },
-})
+// Lazy: the hero imports this module for its mock options, and sampling at module scope ran on every request path that
+// imports the hero (dotted-map-projection.ts).
+const orbitMap = lazy(() =>
+  createMap({
+    width: MAP_W,
+    height: MAP_H,
+    mapSamples: 6500,
+    region: { lat: { min: 38, max: 59 }, lng: { min: -11, max: 24 } },
+  }),
+)
 
 // Flat variant: a band centred on Europe. The crop's width:height in Mercator units is 2.34 (58° of longitude over
 // lat 42–58.5), and the grid is drawn at exactly that ratio, so the map keeps its true shape.
 const FLAT_W = 351
 const FLAT_H = 150
 const FLAT_DRAW_W = 1000
-const FLAT = createMap({
-  width: FLAT_W,
-  height: FLAT_H,
-  mapSamples: 9000,
-  region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
-})
+const flatMap = lazy(() =>
+  createMap({
+    width: FLAT_W,
+    height: FLAT_H,
+    mapSamples: 9000,
+    region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
+  }),
+)
 
 const PLACE_LIST = [
   { lat: 50.8907, lng: 4.4614, key: 'diegem', name: 'Diegem, Belgium', role: 'Where Ciphera works', side: 'left' as const },
   { lat: 47.3769, lng: 8.5417, key: 'zurich', name: 'Zurich, Switzerland', role: 'Where your data is stored', side: 'right' as const },
 ]
-const FLAT_PLACES = FLAT.addMarkers(PLACE_LIST)
-
-const PLACES = addMarkers([
-  { lat: 50.8907, lng: 4.4614, key: 'diegem', name: 'Diegem, Belgium', role: 'Where Ciphera works', side: 'left' as const },
-  { lat: 47.3769, lng: 8.5417, key: 'zurich', name: 'Zurich, Switzerland', role: 'Where your data is stored', side: 'right' as const },
-])
+const flatPlaces = lazy(() => flatMap().addMarkers(PLACE_LIST))
+const orbitPlaces = lazy(() => orbitMap().addMarkers(PLACE_LIST))
 
 /** Flat map coordinates → a plane tilted away from the viewer (far rows narrower, closer together, fainter). */
 function project(x: number, y: number) {
@@ -61,9 +64,9 @@ function projectFlat(x: number, y: number) {
 
 export function EuropeOrbit({ flat = false }: { flat?: boolean }) {
   const dots = flat
-    ? FLAT.points.map((p) => projectFlat(p.x, p.y))
-    : points.map((p) => project(p.x, p.y)).filter((p) => p.x > -20 && p.x < W + 20)
-  const places = flat ? FLAT_PLACES.map((m) => ({ ...m, ...projectFlat(m.x, m.y) })) : PLACES.map((m) => ({ ...m, ...project(m.x, m.y) }))
+    ? flatMap().points.map((p) => projectFlat(p.x, p.y))
+    : orbitMap().points.map((p) => project(p.x, p.y)).filter((p) => p.x > -20 && p.x < W + 20)
+  const places = flat ? flatPlaces().map((m) => ({ ...m, ...projectFlat(m.x, m.y) })) : orbitPlaces().map((m) => ({ ...m, ...project(m.x, m.y) }))
   const [a, b] = places
   const arc = `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${((a.x + b.x) / 2 + 40).toFixed(1)} ${(Math.min(a.y, b.y) - 50).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`
 

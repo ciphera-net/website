@@ -8,6 +8,7 @@ import { createMap } from 'svg-dotted-map'
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { cdnUrl } from '@/lib/cdn'
 import { DOT_FIELDS, type Dot } from '../../dot-field'
+import { lazy, markerProjector } from '../../dotted-map-projection'
 import { INFRA_MARKS } from '../../brand-marks'
 import { Section } from '../Section'
 import { Reveal } from '../Reveal'
@@ -17,21 +18,19 @@ import { Reveal } from '../Reveal'
 // shape survives scaling.
 const MAP_W = 702
 const MAP_H = 300
-const { points, addMarkers } = createMap({
-  width: MAP_W,
-  height: MAP_H,
-  mapSamples: 6000,
-  region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
-})
+const MAP = { width: MAP_W, height: MAP_H, mapSamples: 6000, region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } } }
+// The dots are a static file (dot-field.ts); sampling the land is seconds of CPU on a shared container, so only the
+// dot-field script asks for it. The two places come from the same projection without sampling (dotted-map-projection.ts).
+const landPoints = lazy(() => createMap(MAP).points)
 
-const [diegem, zurich] = addMarkers([
+const [diegem, zurich] = [
   { lat: 50.8907, lng: 4.4614, key: 'diegem' },
   { lat: 47.3769, lng: 8.5417, key: 'zurich' },
-])
+].map(markerProjector(MAP))
 
 /** The map's dots for scripts/draw-dot-fields.ts: one radius, seven opacities (the page draws them from a static file). */
 export function europeDots(): { w: number; h: number; dots: Dot[] } {
-  return { w: MAP_W, h: MAP_H, dots: points.map((p, i) => ({ x: p.x, y: p.y, r: 1.3, o: 0.14 + (i % 7) * 0.02 })) }
+  return { w: MAP_W, h: MAP_H, dots: landPoints().map((p, i) => ({ x: p.x, y: p.y, r: 1.3, o: 0.14 + (i % 7) * 0.02 })) }
 }
 
 const midX = (diegem.x + zurich.x) / 2

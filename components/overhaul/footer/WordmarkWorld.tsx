@@ -5,41 +5,49 @@
  * no client JavaScript; motion is the hero's own `eo-pulse` / `eo-ring` CSS, which reduced motion already stops.
  */
 import { createMap } from 'svg-dotted-map'
+import { lazy } from '../dotted-map-projection'
 import { WM } from './wordmark-geom'
 
 // The same Europe crop as the hero's flat map and Where your data lives, scaled to the rail's width.
 const MAP_H = 472
-const { points, addMarkers } = createMap({
-  width: WM.w,
-  height: MAP_H,
-  mapSamples: 9000,
-  region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
-})
-const [diegemRaw, zurichRaw] = addMarkers([
-  { lat: 50.8907, lng: 4.4614, key: 'diegem' },
-  { lat: 47.3769, lng: 8.5417, key: 'zurich' },
-])
-// Shift the map so Zurich sits mid-height in the part of the letters the crop leaves visible (cap top ~33, edge 200).
-const DY = 128 - zurichRaw.y
-const zurich = { x: zurichRaw.x, y: zurichRaw.y + DY }
-const diegem = { x: diegemRaw.x, y: diegemRaw.y + DY }
-const LAND = points.map((p) => ({ x: p.x, y: p.y + DY })).filter((p) => p.y > 0 && p.y < WM.h)
 
-// Routes into Zurich: from beyond the left edge (the Americas), the right edge (Asia), the bottom right (the Gulf),
-// and Diegem. Generic directions, not customer locations. Quadratic arcs that bow upward, like the hero's.
-const arc = (from: { x: number; y: number }, lift: number) => {
-  const mx = (from.x + zurich.x) / 2
-  const my = Math.min(from.y, zurich.y) - lift
-  return `M ${from.x.toFixed(1)} ${from.y.toFixed(1)} Q ${mx.toFixed(1)} ${my.toFixed(1)} ${zurich.x.toFixed(1)} ${zurich.y.toFixed(1)}`
-}
-const ROUTES = [
-  { d: arc({ x: -60, y: 150 }, 70), delay: '0s' },
-  { d: arc({ x: WM.w + 60, y: 120 }, 80), delay: '1.1s' },
-  { d: arc({ x: WM.w - 120, y: 230 }, 40), delay: '2.2s' },
-  { d: arc(diegem, 26), delay: '0.6s' },
-]
+// Lazy: the footer imports this module on every page for its other wordmark options, and sampling the land at module
+// scope ran on every new server's first request, whichever wordmark rendered (dotted-map-projection.ts).
+const world = lazy(() => {
+  const { points, addMarkers } = createMap({
+    width: WM.w,
+    height: MAP_H,
+    mapSamples: 9000,
+    region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
+  })
+  const [diegemRaw, zurichRaw] = addMarkers([
+    { lat: 50.8907, lng: 4.4614, key: 'diegem' },
+    { lat: 47.3769, lng: 8.5417, key: 'zurich' },
+  ])
+  // Shift the map so Zurich sits mid-height in the part of the letters the crop leaves visible (cap top ~33, edge 200).
+  const DY = 128 - zurichRaw.y
+  const zurich = { x: zurichRaw.x, y: zurichRaw.y + DY }
+  const diegem = { x: diegemRaw.x, y: diegemRaw.y + DY }
+  const LAND = points.map((p) => ({ x: p.x, y: p.y + DY })).filter((p) => p.y > 0 && p.y < WM.h)
+
+  // Routes into Zurich: from beyond the left edge (the Americas), the right edge (Asia), the bottom right (the Gulf),
+  // and Diegem. Generic directions, not customer locations. Quadratic arcs that bow upward, like the hero's.
+  const arc = (from: { x: number; y: number }, lift: number) => {
+    const mx = (from.x + zurich.x) / 2
+    const my = Math.min(from.y, zurich.y) - lift
+    return `M ${from.x.toFixed(1)} ${from.y.toFixed(1)} Q ${mx.toFixed(1)} ${my.toFixed(1)} ${zurich.x.toFixed(1)} ${zurich.y.toFixed(1)}`
+  }
+  const ROUTES = [
+    { d: arc({ x: -60, y: 150 }, 70), delay: '0s' },
+    { d: arc({ x: WM.w + 60, y: 120 }, 80), delay: '1.1s' },
+    { d: arc({ x: WM.w - 120, y: 230 }, 40), delay: '2.2s' },
+    { d: arc(diegem, 26), delay: '0.6s' },
+  ]
+  return { zurich, diegem, LAND, ROUTES }
+})
 
 export function WordmarkWorld() {
+  const { zurich, diegem, LAND, ROUTES } = world()
   return (
     <svg viewBox={`0 0 ${WM.w} ${WM.h}`} className="-mb-px block h-auto w-full select-none" aria-hidden="true">
       <defs>
