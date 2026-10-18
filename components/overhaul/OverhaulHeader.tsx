@@ -132,10 +132,11 @@ function Row({ item, chrome }: { item: Item; chrome: Chrome }) {
   )
 }
 
-function Menu({ label, chrome, children }: { label: string; chrome: Chrome; children: React.ReactNode }) {
+function Menu({ label, chrome, onTrigger, children }: { label: string; chrome: Chrome; onTrigger: (label: string, el: HTMLElement | null) => void; children: React.ReactNode }) {
   return (
-    <Nav.Item>
+    <Nav.Item value={label}>
       <Nav.Trigger
+        ref={(el) => onTrigger(label, el)}
         data-mock-trigger={label}
         className={cn(
           'group relative inline-flex items-center text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:text-foreground',
@@ -339,9 +340,58 @@ function useScrolled(threshold = 24) {
  */
 export type HeaderFit = 'column' | 'inset' | 'wide'
 
+/**
+ * D54 (owner 19-10, "AAAA - all four a's"): an open dropdown sits centred under its own menu. Pinned to the bar's right
+ * edge, Company's panel started 42 px right of the middle of its word, so a pointer moving straight down missed it and the
+ * menu closed. The panel keeps EDGE px from both sides of the window and slides to the next menu as it resizes. Placed
+ * with `left` in the bar's coordinates, never a translate: the open animation's zoom writes `transform`.
+ */
+const EDGE = 16
+const PANEL_W = 'var(--radix-navigation-menu-viewport-width)'
+const PANEL_LEFT = `clamp(var(--menu-min, 0px), calc(var(--menu-center, 50%) - ${PANEL_W} / 2), calc(var(--menu-max, 100%) - ${PANEL_W}))`
+
+function useMenuAnchor() {
+  const rootRef = React.useRef<HTMLElement>(null)
+  const triggers = React.useRef(new Map<string, HTMLElement>())
+  const [open, setOpen] = React.useState('')
+  const [anchor, setAnchor] = React.useState<{ center: number; min: number; max: number } | null>(null)
+  const onTrigger = React.useCallback((label: string, el: HTMLElement | null) => {
+    if (el) triggers.current.set(label, el)
+    else triggers.current.delete(label)
+  }, [])
+  const measure = React.useCallback((value: string) => {
+    const root = rootRef.current
+    const trigger = triggers.current.get(value)
+    if (!root || !trigger) return
+    const r = root.getBoundingClientRect()
+    const t = trigger.getBoundingClientRect()
+    setAnchor({ center: t.left + t.width / 2 - r.left, min: EDGE - r.left, max: document.documentElement.clientWidth - EDGE - r.left })
+  }, [])
+  // Measured in the same batch as Radix's own value change, so a panel opens in its place instead of sliding in from the
+  // last one's; on close the anchor stays, so the panel fades out where it was.
+  const onValueChange = React.useCallback(
+    (value: string) => {
+      if (value) measure(value)
+      setOpen(value)
+    },
+    [measure],
+  )
+  React.useEffect(() => {
+    if (!open) return
+    const on = () => measure(open)
+    window.addEventListener('resize', on)
+    return () => window.removeEventListener('resize', on)
+  }, [open, measure])
+  const vars = anchor
+    ? ({ '--menu-center': `${anchor.center}px`, '--menu-min': `${anchor.min}px`, '--menu-max': `${anchor.max}px` } as React.CSSProperties)
+    : undefined
+  return { rootRef, onTrigger, onValueChange, vars }
+}
+
 // D25 (owner 17-10, "inset it is"): inset is the default on every page; 'column' and 'wide' stay for comparison.
 export function OverhaulHeader({ chrome, fit = 'inset' }: { chrome: Chrome; fit?: HeaderFit }) {
   const scrolled = useScrolled()
+  const { rootRef, onTrigger, onValueChange, vars } = useMenuAnchor()
   return (
     <header data-scrolled={scrolled} data-header-fit={fit} className={cn('fixed inset-x-0 top-0 z-50 pt-4', fit !== 'inset' && 'px-4')}>
       <div
@@ -358,10 +408,10 @@ export function OverhaulHeader({ chrome, fit = 'inset' }: { chrome: Chrome; fit?
           <span className="text-[17px] font-semibold tracking-tight text-foreground">Ciphera</span>
         </a>
 
-        <Nav.Root delayDuration={80} className={cn('relative isolate hidden h-12 items-center gap-1 pl-1.5 pr-1.5 md:flex', isRound(chrome) && 'rounded-full')}>
+        <Nav.Root ref={rootRef} delayDuration={80} onValueChange={onValueChange} className={cn('relative isolate hidden h-12 items-center gap-1 pl-1.5 pr-1.5 md:flex', isRound(chrome) && 'rounded-full')}>
           <span aria-hidden="true" className={cn('pointer-events-none absolute inset-0 -z-10', surface[chrome])} />
           <Nav.List className="flex items-center gap-0.5">
-            <Menu label="Products" chrome={chrome}>
+            <Menu label="Products" chrome={chrome} onTrigger={onTrigger}>
               <div className="grid w-[560px] grid-cols-[240px_1fr] gap-2 p-2">
                 <a href="https://pulse.ciphera.net" className={cn('flex flex-col justify-between p-4', feature[chrome])}>
                   <span>
@@ -382,14 +432,14 @@ export function OverhaulHeader({ chrome, fit = 'inset' }: { chrome: Chrome; fit?
                 </div>
               </div>
             </Menu>
-            <Menu label="Company" chrome={chrome}>
+            <Menu label="Company" chrome={chrome} onTrigger={onTrigger}>
               <div className="grid w-[300px] gap-0.5 p-2">
                 {COMPANY.map((it) => (
                   <Row key={it.title} item={it} chrome={chrome} />
                 ))}
               </div>
             </Menu>
-            <Menu label="Resources" chrome={chrome}>
+            <Menu label="Resources" chrome={chrome} onTrigger={onTrigger}>
               <div className="grid w-[300px] gap-0.5 p-2">
                 {RESOURCES.map((it) => (
                   <Row key={it.title} item={it} chrome={chrome} />
@@ -403,12 +453,14 @@ export function OverhaulHeader({ chrome, fit = 'inset' }: { chrome: Chrome; fit?
             Contact {chrome === 'glass' && <ArrowUpRight className="h-3.5 w-3.5" />}
           </Cta>
           {/* The wrapper lets the pointer through (only the panel takes it): its top margin is the gap the triggers'
-              strips bridge, and painted over them it made the pointer leave the trigger on the way down. */}
-          <div className="pointer-events-none absolute right-0 top-full flex justify-end">
+              strips bridge, and painted over them it made the pointer leave the trigger on the way down. It spans the
+              bar, so the panel's `left` is in the bar's coordinates. */}
+          <div className="pointer-events-none absolute inset-x-0 top-full" style={vars}>
             <Nav.Viewport
               data-mock="menu-panel"
+              style={{ left: PANEL_LEFT }}
               className={cn(
-                'pointer-events-auto relative mt-3 h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)] overflow-hidden transition-[width,height] duration-200 motion-reduce:transition-none data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out',
+                'pointer-events-auto absolute top-0 mt-3 h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)] overflow-hidden transition-[left,width,height] duration-200 motion-reduce:transition-none data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out',
                 panel[chrome],
               )}
             />
