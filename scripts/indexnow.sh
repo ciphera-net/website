@@ -17,44 +17,32 @@ ENDPOINT="https://api.indexnow.org/IndexNow"
 if [ $# -gt 0 ]; then
   URLS=("$@")
 else
+  # The live set since the overhaul (18-10-2026): the retired product pages, /what-is-ciphera, /press and the four
+  # retired posts are permanent redirects now, so they are not submitted.
   URLS=(
-    # Core pages (/products is a section on the homepage, not a route — do not add it)
     "https://ciphera.net"
     "https://ciphera.net/about"
+    "https://ciphera.net/trust"
     "https://ciphera.net/contact"
-
-    # Product pages
-    "https://ciphera.net/products/pulse"
-    "https://ciphera.net/products/id"
-    "https://ciphera.net/products/captcha"
-    "https://ciphera.net/products/relay"
-
-    # Legal pages
+    "https://ciphera.net/sustainability"
     "https://ciphera.net/privacy"
     "https://ciphera.net/terms"
-
-    # Trust hub (absorbed /security and /transparency, 19-07-2026; the canary and
-    # report subpages were retired 16-10-2026 and redirect here)
-    "https://ciphera.net/trust"
-
-    # Blog (survivors of the 19-07-2026 corpus purge — keep in sync with content/blog/)
+    "https://ciphera.net/glossary"
     "https://ciphera.net/blog"
-    "https://ciphera.net/blog/what-we-see-about-you-what-we-dont"
-    "https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy"
-    "https://ciphera.net/blog/why-privacy-cant-be-an-afterthought"
-    "https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom"
-    "https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order"
-    "https://ciphera.net/blog/eu-ai-act-compliance-guide-2026"
-    "https://ciphera.net/blog/open-source-privacy-tools-2026"
-    "https://ciphera.net/blog/zero-knowledge-encryption-guide"
-    "https://ciphera.net/blog/why-we-chose-bunnycdn"
-    "https://ciphera.net/blog/ciphera-id-vs-auth0-vs-clerk"
-    "https://ciphera.net/blog/ciphera-captcha-vs-recaptcha-vs-turnstile"
-    "https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics"
-    "https://ciphera.net/blog/is-your-analytics-gdpr-compliant"
-    "https://ciphera.net/blog/how-to-migrate-off-google-analytics"
-    "https://ciphera.net/blog/bunny-hopstart-second-place"
+    "https://ciphera.net/blog/privacy-tools"
+    "https://ciphera.net/blog/cookieless-analytics"
     "https://ciphera.net/blog/free-analytics-for-open-source"
+    "https://ciphera.net/blog/open-source-privacy-tools-2026"
+    "https://ciphera.net/blog/how-to-migrate-off-google-analytics"
+    "https://ciphera.net/blog/is-your-analytics-gdpr-compliant"
+    "https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics"
+    "https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom"
+    "https://ciphera.net/blog/eu-ai-act-compliance-guide-2026"
+    "https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order"
+    "https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy"
+    "https://ciphera.net/blog/why-we-chose-bunnycdn"
+    "https://ciphera.net/blog/bunny-hopstart-second-place"
+    "https://ciphera.net/blog/zero-knowledge-encryption-guide"
   )
 fi
 
