@@ -16,6 +16,7 @@ import { getContentDocument, getContentIndex } from './content-client'
 import { isRuntimeKind, SITE_KEY } from './runtime-config'
 import { routeKey } from './route-build'
 import type { PageDocument, PageSeo } from './page-build'
+import { hasSystemCard } from '../og/url'
 
 const KIND = 'page'
 const KNOWN_SCHEMA = 1
@@ -89,12 +90,14 @@ export function mergePageSeo(path: string, fallback: Metadata, seo: PageSeo | un
   const title = seo.ogTitle || seo.title
   const description = seo.ogDescription || seo.description
   const fbOg = (fallback.openGraph ?? {}) as Record<string, unknown>
+  // A page that carries its OG-system card keeps it (D52), as in lib/seo.ts.
+  const cmsImage = seo.ogImage && !hasSystemCard(fbOg.images) ? seo.ogImage : ''
   merged.openGraph = {
     ...fbOg,
     ...(title ? { title } : {}),
     ...(description ? { description } : {}),
     url: canonical,
-    ...(seo.ogImage ? { images: [{ url: seo.ogImage, width: 1200, height: 630, alt: title || 'Ciphera' }] } : {}),
+    ...(cmsImage ? { images: [{ url: cmsImage, width: 1200, height: 630, alt: title || 'Ciphera' }] } : {}),
   }
 
   const fbTw = (fallback.twitter ?? {}) as Record<string, unknown>
@@ -102,7 +105,7 @@ export function mergePageSeo(path: string, fallback: Metadata, seo: PageSeo | un
     ...fbTw,
     ...(seo.twitterTitle || seo.title ? { title: seo.twitterTitle || seo.title } : {}),
     ...(seo.twitterDescription || seo.description ? { description: seo.twitterDescription || seo.description } : {}),
-    ...(seo.ogImage ? { images: [seo.ogImage] } : {}),
+    ...(cmsImage ? { images: [cmsImage] } : {}),
   }
 
   return merged

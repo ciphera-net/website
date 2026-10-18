@@ -5,10 +5,10 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import Image from 'next/image'
 import { ArrowLeftIcon } from '@ciphera-net/facet'
-import { cdnUrl } from '@/lib/cdn'
 import { getLearnArticle, getLearnArticles } from '@/lib/learn'
 import { pulseIcon, authIcon, captchaIcon, relayIcon } from '@/lib/images'
 import { MDXTable } from '@/components/mdx-table'
+import { learnCardImages } from '@/lib/og/cards'
 
 const PRODUCT_ICONS: Record<string, typeof pulseIcon> = {
   pulse: pulseIcon,
@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { product, slug } = await params
   const article = getLearnArticle(product, slug)
   if (!article) return {}
+  const card = learnCardImages(product, article.slug, article.title)
 
   return {
     title: article.title,
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: article.description,
       url: `https://ciphera.net/learn/${product}/${article.slug}`,
       siteName: 'Ciphera',
-      images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: article.title }],
+      images: card.openGraph,
       locale: 'en_US',
       type: 'article',
     },
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       title: `${article.title} | Ciphera`,
       description: article.description,
-      images: [cdnUrl('/og-homepage.png')],
+      images: card.twitter,
     },
   }
 }

@@ -3,6 +3,7 @@ import { routeSeo, SEO_ROUTE_COUNT, SEO_WATERMARK, SEO_POST_COUNT } from './seo.
 import { getContentDocument, getContentIndex } from './cms/content-client'
 import { isRuntimeKind, SITE_KEY } from './cms/runtime-config'
 import { routeKey } from './cms/route-build'
+import { hasSystemCard } from './og/url'
 
 /**
  * Level 1: SEO fields come from WordPress; the page body does not.
@@ -71,12 +72,15 @@ export function seoFor(path: string, fallback: Metadata): Metadata {
   }
 
   const fbOg = (fallback.openGraph ?? {}) as Record<string, unknown>
+  // A page that carries its OG-system card keeps it (D52): the stubs still name the old site-wide images, and an image
+  // the stub sets would otherwise replace the page's own card.
+  const stubImage = wp.ogImage && !hasSystemCard(fbOg.images) ? wp.ogImage : ''
   merged.openGraph = {
     ...fbOg,
     ...(wp.ogTitle ? { title: wp.ogTitle } : {}),
     ...(wp.ogDescription ? { description: wp.ogDescription } : {}),
-    ...(wp.ogImage
-      ? { images: [{ url: wp.ogImage, width: 1200, height: 630, alt: wp.ogTitle || wp.title }] }
+    ...(stubImage
+      ? { images: [{ url: stubImage, width: 1200, height: 630, alt: wp.ogTitle || wp.title }] }
       : {}),
   }
 
@@ -85,7 +89,7 @@ export function seoFor(path: string, fallback: Metadata): Metadata {
     ...fbTw,
     ...(wp.twitterTitle ? { title: wp.twitterTitle } : {}),
     ...(wp.twitterDescription ? { description: wp.twitterDescription } : {}),
-    ...(wp.ogImage ? { images: [wp.ogImage] } : {}),
+    ...(stubImage ? { images: [stubImage] } : {}),
   }
 
   // Only ever narrow. A stub can take a page OUT of the index; it cannot put one in
@@ -194,12 +198,15 @@ function mergeRouteSeo(path: string, wp: RouteSeo, fallback: Metadata): Metadata
   }
 
   const fbOg = (fallback.openGraph ?? {}) as Record<string, unknown>
+  // A page that carries its OG-system card keeps it (D52): the stubs still name the old site-wide images, and an image
+  // the stub sets would otherwise replace the page's own card.
+  const stubImage = wp.ogImage && !hasSystemCard(fbOg.images) ? wp.ogImage : ''
   merged.openGraph = {
     ...fbOg,
     ...(wp.ogTitle ? { title: wp.ogTitle } : {}),
     ...(wp.ogDescription ? { description: wp.ogDescription } : {}),
-    ...(wp.ogImage
-      ? { images: [{ url: wp.ogImage, width: 1200, height: 630, alt: wp.ogTitle || wp.title }] }
+    ...(stubImage
+      ? { images: [{ url: stubImage, width: 1200, height: 630, alt: wp.ogTitle || wp.title }] }
       : {}),
   }
 
@@ -208,7 +215,7 @@ function mergeRouteSeo(path: string, wp: RouteSeo, fallback: Metadata): Metadata
     ...fbTw,
     ...(wp.twitterTitle ? { title: wp.twitterTitle } : {}),
     ...(wp.twitterDescription ? { description: wp.twitterDescription } : {}),
-    ...(wp.ogImage ? { images: [wp.ogImage] } : {}),
+    ...(stubImage ? { images: [stubImage] } : {}),
   }
 
   if (wp.noindex || wp.nofollow) {

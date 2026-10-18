@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { cdnUrl } from '@/lib/cdn'
 import { getTerm } from '@/lib/glossary'
 import { GlossaryTermPage as TermPage } from '@/components/overhaul/glossary/GlossaryTerm'
 import { REMOVED } from '@/components/overhaul/glossary/content'
+import { termCardImages } from '@/lib/og/cards'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -38,6 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
    * ⚠️ `title.absolute` — the root layout's template appends " | Ciphera", and the CMS
    * value already carries the full string it should render.
    */
+  const card = termCardImages(term.slug, term.term)
   return {
     title: { absolute: term.seoTitle },
     description: term.seoDescription,
@@ -54,14 +55,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'Ciphera',
       locale: 'en_US',
       type: 'article',
-      images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
+      images: card.openGraph,
     },
     // The term's own words, as Open Graph has them (plan §5j): the root layout's card would otherwise describe the company.
     twitter: {
       card: 'summary_large_image',
       title: term.seoTitle,
       description: term.seoDescription,
-      images: [cdnUrl('/og-homepage.png')],
+      images: card.twitter,
     },
   }
 }

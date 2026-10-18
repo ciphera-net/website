@@ -7,10 +7,13 @@ import '@ciphera-net/facet/styles'
 import '../styles/globals.css'
 import '../styles/overhaul.css'
 import { env } from '@/lib/env'
-import { cdnUrl } from '@/lib/cdn'
+import { pageCardImages } from '@/lib/og/cards'
 
 const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' })
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono', display: 'swap' })
+
+// Every page's share card is drawn by the OG system (D52; lib/og); this default is the homepage's.
+const HOME_CARD = pageCardImages('home')
 
 export const metadata: Metadata = {
   title: {
@@ -45,21 +48,14 @@ export const metadata: Metadata = {
     siteName: 'Ciphera',
     title: 'Ciphera — Privacy-first software, made in Europe',
     description: 'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.',
-    images: [
-      {
-        url: cdnUrl('/og-homepage.png'),
-        width: 1200,
-        height: 630,
-        alt: 'Ciphera — Privacy-first software, made in Europe',
-      },
-    ],
+    images: HOME_CARD.openGraph,
   },
   twitter: {
     card: 'summary_large_image',
     site: '@CipheraNET',
     title: 'Ciphera — Privacy-first software, made in Europe',
     description: 'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.',
-    images: [cdnUrl('/og-homepage.png')],
+    images: HOME_CARD.twitter,
   },
   alternates: {
     canonical: 'https://ciphera.net',

@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // * Standalone output for Docker image builds (small runtime, no node_modules at runtime)
   output: 'standalone',
+  // * The OG card route reads its Geist files from disk (lib/og/render.tsx), which file tracing cannot see from the
+  // * code: without this the standalone build ships the route and not its fonts, and every card answers 500.
+  outputFileTracingIncludes: {
+    '/og/[file]': ['./lib/og/fonts/**'],
+  },
   // * Privacy-first: Disable analytics and telemetry
   productionBrowserSourceMaps: false,
   // * Images are served directly from cdn.ciphera.net (path-keyed, immutable),

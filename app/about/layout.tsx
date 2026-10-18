@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
-import { cdnUrl } from '@/lib/cdn'
 import { OPENING } from '@/components/overhaul/about/content'
+import { pageCardImages } from '@/lib/og/cards'
 
 // The overhaul (18-10-2026): the title and description are the page's own ruled opening (W4b, W4c), so a search
 // result says what the page says. A WordPress route stub for '/about' overrides these at request time (seoForAsync).
+const CARD = pageCardImages('about')
+
 export async function generateMetadata(): Promise<Metadata> {
   return seoForAsync('/about', {
     title: { absolute: OPENING.title },
@@ -14,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: OPENING.lead,
       url: 'https://ciphera.net/about',
       siteName: 'Ciphera',
-      images: [{ url: cdnUrl('/ciphera_logo_no_margins.png'), width: 1200, height: 630, alt: OPENING.title }],
+      images: CARD.openGraph,
       locale: 'en_US',
       type: 'website',
     },
@@ -22,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: OPENING.title,
       description: OPENING.lead,
-      images: [cdnUrl('/ciphera_logo_no_margins.png')],
+      images: CARD.twitter,
     },
     alternates: { canonical: 'https://ciphera.net/about' },
   })
