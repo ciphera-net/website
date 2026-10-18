@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getBlogPost, getBlogPosts } from '@/lib/blog'
-import { BlogPostView } from '@/components/blog/post-view'
+import { getBlogPost } from '@/lib/blog'
+import { BlogPostPage as OverhaulPost } from '@/components/overhaul/blog/BlogPost'
+import { UNPUBLISHED } from '@/components/overhaul/blog/content'
 import { cdnUrl } from '@/lib/cdn'
 
 // 'blog' is a runtime kind (lib/cms/runtime-config.ts): every post renders per request from the
@@ -28,6 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: 'Ciphera',
       type: 'article',
       locale: 'en_US',
+      publishedTime: post.date.slice(0, 10),
+      ...(post.dateModified ? { modifiedTime: post.dateModified.slice(0, 10) } : {}),
       // 🔴 1200×630, which is what the cards ACTUALLY are. This route declared
       // 1376×768 until 03-09-2026 — the only route on the site that did; every
       // other page already said 1200×630, and the OG generation recipe
@@ -50,10 +53,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
+/** The post page as ruled (D37, plan §5i): option A, opening with the sunrise. */
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = await getBlogPost(slug)
-  if (!post) notFound()
-
-  return <BlogPostView post={post} allPosts={await getBlogPosts()} />
+  // The four D39 posts redirect before they reach here (lib/redirects.gen.ts); until the CMS unpublishes them, a request
+  // that gets past the redirect must not render a post the site no longer lists.
+  if ((UNPUBLISHED as readonly string[]).includes(slug)) notFound()
+  return <OverhaulPost variant="a" slug={slug} />
 }

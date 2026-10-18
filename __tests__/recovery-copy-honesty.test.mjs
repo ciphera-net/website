@@ -35,11 +35,13 @@ const read = (p) => readFileSync(join(root, p), 'utf8')
 // every WordPress body at build time. The subject did not shrink; the guard grew a second half.
 // ⚠️ If that build gate is ever removed, this list is silently four surfaces wide again.
 // The last test in this file is what makes that loud.
+// 🔁 18-10-2026: /products/id was retired by the overhaul; how sign-in and recovery work is
+// now told on /trust (#sign-in), whose words live in components/overhaul/trust/content.ts.
 const SURFACES = [
   'app/terms/page.tsx',
   'app/privacy/page.tsx',
   'components/FAQ.tsx',
-  'app/products/id/page.tsx',
+  'components/overhaul/trust/content.ts',
 ]
 
 test('the surface list is not stale', () => {

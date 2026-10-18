@@ -250,9 +250,12 @@ test('the preview and the build share ONE transform', () => {
   assert.match(code('scripts/generate-blog-posts.ts'), /buildBlogPosts/, 'generate-blog-posts.ts must call the shared transform, not re-implement it')
   assert.match(code('app/preview/[slug]/page.tsx'), /transformWpPost/, 'the preview must use lib/blog-transform.ts, not its own copy')
   // The post page too: a preview that renders a lookalike layout is a page an editor
-  // trusts that visitors never see.
-  assert.match(code('app/preview/[slug]/page.tsx'), /BlogPostView/)
-  assert.match(code('app/blog/[slug]/page.tsx'), /BlogPostView/)
+  // trusts that visitors never see. Since the overhaul (18-10-2026) both render the
+  // post template in components/overhaul/blog/BlogPost.tsx: the route through
+  // BlogPostPage (which loads the post), the preview through BlogPostView directly.
+  assert.match(code('app/preview/[slug]/page.tsx'), /import \{ BlogPostView \} from '@\/components\/overhaul\/blog\/BlogPost'/)
+  assert.match(code('app/blog/[slug]/page.tsx'), /from '@\/components\/overhaul\/blog\/BlogPost'/)
+  assert.match(code('components/overhaul/blog/BlogPost.tsx'), /return <BlogPostView variant=\{variant\} post=\{post\} posts=\{posts\} \/>/)
 })
 
 test('the preview reads drafts through the CONNECTION, not the single-node lookup', () => {
@@ -359,7 +362,7 @@ test('every blog ld+json script is escaped through jsonLdHtml, never a bare JSON
   // those characters as JSON unicode escapes, which a JSON parser decodes back to the
   // same value: the crawler sees the same structured data, the HTML parser never sees
   // the raw `<`.
-  for (const f of ['components/blog/post-view.tsx', 'app/blog/page.tsx']) {
+  for (const f of ['components/overhaul/blog/BlogPost.tsx', 'components/overhaul/blog/BlogIndex.tsx']) {
     const src = code(f)
     assert.match(src, /from '@\/lib\/json-ld'/, `${f} must import jsonLdHtml`)
     assert.match(

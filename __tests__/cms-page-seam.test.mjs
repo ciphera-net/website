@@ -45,13 +45,16 @@ test('buildPages never throws on content and skips (never crashes on) every unus
   assert.match(src, /!PAGE_PATH_RE\.test\(path\)/)
 })
 
-test('a page owned by a coded route the site has not migrated is skipped, not rendered; all five product pages are migratable, now that facet-sections 0.3.0 is in', () => {
+test('a page owned by a coded route the site has not migrated is skipped, not rendered; since the overhaul no path is migratable', () => {
   const src = code('lib/cms/page-build.ts')
+  // 🔁 18-10-2026: the five product pages that were migratable are retired and are Tier 1
+  // redirects (next.config.ts), so the list is empty and /products stays an owned prefix.
   assert.match(
     src,
-    /export const MIGRATABLE_PAGE_PATHS: readonly string\[\] = \[\s*'\/products\/captcha',\s*'\/products\/id',\s*'\/products\/pulse',\s*'\/products\/relay',\s*'\/products\/tessera',\s*\]/,
-    'build task §3/§5: all five product pages migrate now that facet-sections 0.3.0 gives ProductBanner badgeStyle:"bars" and ContentBlock credential-table'
+    /export const MIGRATABLE_PAGE_PATHS: readonly string\[\] = \[\]/,
+    'the overhaul retired the five product pages (plan D1/D2): nothing at a coded address serves from the CMS'
   )
+  assert.match(src, /'\/products', '\/what-is-ciphera', '\/press',/, '/products, /what-is-ciphera and /press stay owned: Tier 1 redirects intercept them')
   assert.match(src, /ownedByCodedRoute\(path\) && !migratablePaths\.includes\(path\)/)
 })
 

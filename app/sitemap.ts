@@ -4,6 +4,8 @@ import { getBlogPosts } from '@/lib/blog'
 import { getGlossaryTerms } from '@/lib/glossary'
 import { routeSeoForAsync } from '@/lib/seo'
 import { getAllPages } from '@/lib/cms/page-runtime'
+import { MIGRATABLE_PAGE_PATHS, ownedByCodedRoute } from '@/lib/cms/page-build'
+import { UNPUBLISHED } from '@/components/overhaul/blog/content'
 
 /**
  * Sitemap for ciphera.net
@@ -21,21 +23,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPages: MetadataRoute.Sitemap = [
     // Core pages
+    // The overhaul (18-10-2026) rebuilt the homepage, About, Trust, Contact and the blog's pages. The five product
+    // pages, /what-is-ciphera and /press are permanent redirects since then (next.config.ts), so they are not listed.
     {
       url: baseUrl,
-      lastModified: '2026-02-28',
+      lastModified: '2026-10-18',
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: '2026-07-21',
-    },
-    {
-      url: `${baseUrl}/what-is-ciphera`,
-      lastModified: '2026-07-21',
-    },
-    {
-      url: `${baseUrl}/press`,
-      lastModified: '2026-07-21',
+      lastModified: '2026-10-18',
     },
     {
       url: `${baseUrl}/sustainability`,
@@ -43,28 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: '2026-02-28',
-    },
-    // Product detail pages
-    {
-      url: `${baseUrl}/products/pulse`,
-      lastModified: '2026-03-02',
-    },
-    {
-      url: `${baseUrl}/products/id`,
-      lastModified: '2026-09-03',
-    },
-    {
-      url: `${baseUrl}/products/captcha`,
-      lastModified: '2026-02-28',
-    },
-    {
-      url: `${baseUrl}/products/relay`,
-      lastModified: '2026-03-02',
-    },
-    {
-      url: `${baseUrl}/products/tessera`,
-      lastModified: '2026-07-21',
+      lastModified: '2026-10-18',
     },
 
     // Legal pages
@@ -78,15 +53,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/trust`,
-      // Hub copy last revised 16-10-2026 (warrant canary and transparency report
-      // retired; /trust/canary and /trust/report now redirect here).
-      lastModified: '2026-10-16',
+      // Rebuilt 18-10-2026 (the overhaul); the canary and the transparency report were retired 16-10 and
+      // /trust/canary and /trust/report redirect here.
+      lastModified: '2026-10-18',
     },
 
     // Blog index (include even if posts are drafts -- the index page itself is valid)
     {
       url: `${baseUrl}/blog`,
-      lastModified: '2026-03-16',
+      lastModified: '2026-10-18',
     },
 
     // Learn index
@@ -102,7 +77,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // minute, so a frozen sitemap date would be visibly wrong within that same minute.
   // The index page itself has no single "modified" field of its own; it is bounded by
   // the newest term, same reasoning as the blog index would use if it tracked one.
-  const glossaryTerms = await getGlossaryTerms()
+  // The warrant canary's term redirects to the index (next.config.ts) until the CMS unpublishes it.
+  const glossaryTerms = (await getGlossaryTerms()).filter((t) => t.slug !== 'warrant-canary')
   // term.modified is WordPress's `modifiedGmt` (e.g. "2026-09-21T19:37:30", no zone
   // suffix) — not a bare YYYY-MM-DD — so it is parsed the same way routeSeo's own
   // `modified` field is, just below.
@@ -118,7 +94,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Dynamically add published blog posts
   const blogPosts = await getBlogPosts()
-  const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+  // The four posts the overhaul retires (D39) redirect (next.config.ts and the CMS) until the CMS unpublishes them.
+  const retiredPosts = new Set<string>(UNPUBLISHED)
+  const blogPages: MetadataRoute.Sitemap = blogPosts.filter((post) => !retiredPosts.has(post.slug)).map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.dateModified,
   }))
@@ -138,8 +116,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 'page' is off (today's default) or nothing is published — a `ciphera_page` has
   // no noindex field at all (unlike a route stub), so every one with a path is listed.
   const cmsPages = await getAllPages()
+  // A page at an address a coded route or a Tier 1 redirect owns never renders (the five retired product pages,
+  // until the CMS unpublishes them), so it is not listed either.
   const cmsPageEntries: MetadataRoute.Sitemap = cmsPages
-    .filter((p) => p.path !== '')
+    .filter((p) => p.path !== '' && (!ownedByCodedRoute(p.path) || MIGRATABLE_PAGE_PATHS.includes(p.path)))
     .map((p) => ({
       url: `${baseUrl}${p.path}`,
       lastModified: p.modifiedGmt ? new Date(p.modifiedGmt) : new Date(),

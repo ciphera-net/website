@@ -14,10 +14,15 @@ const read = (p) => readFileSync(join(ROOT, p), 'utf8')
 // two hops to a screen saying "Welcome back" and asking for a password they
 // never set. The header's CTA on the Pulse page has always pointed at /signup;
 // the in-body ones had not. (Friction audit #2, 08-09-2026.)
+// 🔁 The overhaul (18-10-2026) retired /products/pulse and rebuilt About; the "Try Pulse
+// free" CTAs now live in the homepage's closing band, About's closing and the blog post
+// template. (The homepage's "Visit pulse.ciphera.net" is a link to the product's own site,
+// labelled as such, not a get-started CTA.)
 const SURFACES = [
-  ['app/products/pulse/page.tsx', 3],
   ['components/ClosingCta.tsx', 1],
-  ['app/about/page.tsx', 1],
+  ['components/overhaul/home/Closing.tsx', 1],
+  ['components/overhaul/about/content.ts', 1],
+  ['components/overhaul/blog/content.ts', 2],
 ]
 
 for (const [path, expected] of SURFACES) {

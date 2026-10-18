@@ -45,20 +45,14 @@ export const RICH_TEXT_TAGS = ['p', 'a', 'strong', 'em', 'code', 'br'] as const
 
 /**
  * A path the CMS's catch-all/override rendering is allowed to reach for THIS site
- * (design §4.1.3a Phase E, §4.2.1 "Rendering rule"). All five product pages, now that
- * `@ciphera-net/facet-sections` 0.3.0 gives `ProductBanner` the `badgeStyle: 'bars'`
- * option Ciphera ID's hero needs (a vertical-bar divider, not the four-of-five-pages
- * dot style) and `ContentBlock`'s `credential-table` device covers its "the vault"
- * section. Every other coded route (legal, trust, blog, glossary, learn) stays coded;
- * only a path NO coded route owns, or one of these five, can serve from the CMS.
+ * (design §4.1.3a Phase E, §4.2.1 "Rendering rule"). Empty since the overhaul
+ * (18-10-2026): the five product pages it listed were retired (plan D1/D2) and are
+ * Tier 1 redirects in next.config.ts, so a page published at one of those addresses
+ * can never render and is skipped with a repair like any other coded address. Every
+ * coded route (legal, trust, blog, glossary, learn) stays coded; only a path NO coded
+ * route owns can serve from the CMS.
  */
-export const MIGRATABLE_PAGE_PATHS: readonly string[] = [
-  '/products/captcha',
-  '/products/id',
-  '/products/pulse',
-  '/products/relay',
-  '/products/tessera',
-]
+export const MIGRATABLE_PAGE_PATHS: readonly string[] = []
 
 /**
  * Top-level path prefixes a coded route owns today. Not exhaustive of every segment
@@ -74,12 +68,14 @@ export const MIGRATABLE_PAGE_PATHS: readonly string[] = [
  */
 export const CODED_ROUTE_PREFIXES: readonly string[] = [
   // Every top-level directory actually under `app/` on this site today.
-  '/about', '/what-is-ciphera', '/press', '/sustainability', '/contact',
-  '/products', '/privacy', '/terms', '/trust', '/blog', '/glossary', '/learn',
+  '/about', '/sustainability', '/contact',
+  '/privacy', '/terms', '/trust', '/blog', '/glossary', '/learn',
   // Tier 1 (next.config.ts, mirrored by lib/cms/redirect-build.ts's TIER1_EXACT /
   // TIER1_PREFIX) — permanent redirects, not a directory under `app/`, but a path
   // next.config.ts intercepts before any page ever renders, so a page published
-  // there would be unreachable regardless.
+  // there would be unreachable regardless. `/products`, `/what-is-ciphera` and
+  // `/press` were pages until the overhaul (18-10-2026).
+  '/products', '/what-is-ciphera', '/press',
   '/security', '/companies', '/comparison', '/transparency',
   '/preview', '/sys', // internal, never a page address
 ]

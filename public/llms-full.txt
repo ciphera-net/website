@@ -1,66 +1,43 @@
 # Ciphera
 
-> Privacy-first infrastructure: cookieless analytics, zero-knowledge authentication, private bot protection, and tracking-free transactional email. Belgian company with Swiss-hosted infrastructure.
+> Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.
 
-Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Signing in to them runs through Ciphera ID, an internal zero-knowledge sign-in using OPAQUE — passwords never reach the server — which Ciphera does not sell or license to third parties. Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection. This file is the comprehensive companion to llms.txt: full product fact sheets, the complete glossary, and every blog and learn article.
+Ciphera BV is a software company in Diegem, near Brussels, founded on 18 September 2024. Its product is Pulse Analytics, web analytics without cookies (pulse.ciphera.net). Customer data and its backups are stored in Switzerland, at Exoscale in Zurich with backups at Infomaniak, under the Swiss data protection act. Ciphera itself is a Belgian company, so Belgian law and the GDPR apply to it as well.
 
-Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affiliated with ciphera.co (a security consultancy), ciphera.org, ciphera.uk, the Ciphera mobile apps, or any fictional character sharing the name.
+Ciphera BV (ciphera.net) is not affiliated with ciphera.co, ciphera.org, Ciphera Ltd (ciphera.uk) or the Ciphera apps.
 
-## Products
+This file is the companion to llms.txt: the company facts, the complete glossary, and every blog and learn article.
 
-### Pulse
-URL: https://ciphera.net/products/pulse
+## Pulse Analytics
+URL: https://pulse.ciphera.net
 
-Pulse is cookie-free website analytics: real-time dashboards and geographic insights without tracking individual visitors. The tracking script is 2.7 KB gzipped (measured) and the client — dashboard and tracking script — is open source; the managed cloud backend is not.
+Web analytics that shows how your site is doing without cookies and without following anyone. It is hosted in Switzerland and the Personal plan is free forever.
 
-- No cookies, no fingerprinting techniques, no personal data collection
-- GDPR compliant by architecture, not policy
-- Tracking script: 2.7 KB gzipped (measured)
-- Open-source client (dashboard + tracking script)
+- No cookies, and no fingerprint of anyone
+- Data stored in Switzerland, backups included
+- Exports your data as CSV, Excel or JSON, and you can delete it whenever you want
+- The dashboard and the tracking script are open source (AGPL-3.0)
 
-### Ciphera Captcha
-URL: https://ciphera.net/products/captcha
+## How sign-in works
+URL: https://ciphera.net/trust#sign-in
 
-Ciphera Captcha protects applications from bots with adaptive proof-of-work, puzzle challenges, audio verification, and behavioral risk scoring. It is fully stateless and does not track users across sites.
+Signing in to Ciphera uses a protocol called OPAQUE (RFC 9807). The browser proves that it knows the password without sending it.
 
-- Adaptive proof-of-work and puzzle challenges
-- 5-signal behavioral risk scoring
-- No cookies, no cross-site tracking
-- Fully stateless, self-hosted
+At sign-up the browser creates a record that Ciphera stores. It contains neither the password nor a hash of it. The key needed to test password guesses against that record is kept apart from the database, so a stolen copy of the database is not enough to start guessing.
 
-### Ciphera Relay
-URL: https://ciphera.net/products/relay
+Apps get an access token that lasts 15 minutes, and the refresh token behind it changes every time it is used.
 
-Ciphera Relay delivers transactional email (verification, notifications, alerts) with TLS 1.3 encryption in transit and DKIM/SPF/DMARC authentication. It carries no tracking pixels and no open tracking, and is Swiss hosted.
+## Open source
+URL: https://ciphera.net/trust#open-source
 
-- TLS 1.3, DKIM, SPF, and DMARC
-- No tracking pixels, no open tracking
-- Swiss hosted
-- 30-day metadata retention
+Much of Ciphera's code is public on GitHub (github.com/ciphera-net).
 
-### Tessera
-URL: https://ciphera.net/products/tessera
+- [Tessera](https://github.com/ciphera-net/tessera): The library behind Ciphera's sign-in, an implementation of OPAQUE (RFC 9807) with SDKs for Go and the browser. Apache-2.0.
+- [Pulse dashboard and tracker](https://github.com/ciphera-net/pulse): The app Pulse customers use, and the script that runs on their websites. AGPL-3.0.
+- [Pulse CLI](https://github.com/ciphera-net/pulse-cli): Pulse analytics from the terminal. Apache-2.0.
+- [This website](https://github.com/ciphera-net/website): The code behind ciphera.net. AGPL-3.0.
 
-Tessera is Ciphera's open-source implementation of OPAQUE, an asymmetric password-authenticated key exchange in which the password is proven to the server but never transmitted. It ships as three Apache-2.0 packages — a Rust core and sidecar, a Go server SDK, and a browser SDK (npm @ciphera-net/tessera) — and is the authentication layer behind Ciphera ID and Pulse.
-
-- OPAQUE (RFC 9807): the password never reaches the server
-- Apache-2.0, published to crates.io (ciphera-tessera), npm (@ciphera-net/tessera), and pkg.go.dev (tessera-go)
-- Rust core with a published self-audit and threat model
-- The authentication core behind Ciphera ID and Pulse
-
-## Infrastructure (not sold)
-
-### Ciphera ID
-URL: https://ciphera.net/products/id
-
-Ciphera ID is the sign-in behind Ciphera’s own applications, not a product that can be bought or integrated. It authenticates every account with OPAQUE, an asymmetric password-authenticated key exchange standardized in RFC 9807, so the password never leaves the client in any form — not even during registration. The account row holds no email and no name: those live in a vault encrypted on the user’s device, found at sign-in through a blind index. Applications receive a token over OAuth 2.0 with mandatory PKCE. Developers who want this model should use Tessera, the open-source OPAQUE implementation underneath it.
-
-- Infrastructure, not a product: no self-serve client registration, no OpenID Connect discovery endpoint, no SDK, no plan and no price
-- Zero-knowledge password authentication via OPAQUE (RFC 9807), not password hashing
-- No email or name column: profile data is sealed in a client-encrypted vault, located by blind index
-- OAuth 2.0 with mandatory PKCE (S256) on all authorization-code flows
-- JWT sessions: 15-minute access tokens, 30-day rotating refresh tokens
-- The OPAQUE implementation is open-sourced as Tessera (Rust core, Go and TypeScript SDKs, Apache-2.0) — that is the reusable part
+Tessera has a published self-audit and threat model. No independent firm has audited it. Ciphera holds no SOC 2 or ISO 27001 certification.
 
 ## Glossary
 
@@ -410,13 +387,6 @@ Because UTM tags are just visible query-string text, they work identically wheth
 Pulse Analytics parses standard UTM parameters to attribute traffic to campaigns and sources, the same as any analytics tool — no cookie is needed to read a query string.
 URL: https://ciphera.net/glossary/utm-parameters
 
-### Warrant canary
-A warrant canary is a regularly published statement that an organization has not received a secret government order — its disappearance warns users implicitly, since a gag order would forbid saying so directly.
-The mechanism exploits a legal gap: many government orders that compel data disclosure come with a gag provision making it a crime to reveal the order’s existence — but courts in some jurisdictions have held that compelling an organization to keep affirmatively publishing a false statement ("we have received no such order") is a step beyond merely forbidding disclosure, and may not be enforceable the same way. A warrant canary is published on a fixed schedule; as long as it keeps being renewed, no such order has arrived. If it quietly stops updating, that silence is the signal — without anyone having stated the forbidden fact directly.
-The legal reliability of warrant canaries is genuinely contested and untested in many jurisdictions — there’s no guarantee a court would treat forced silence (rather than forced speech) as protected, and the mechanism gives no warning at all if the canary’s operator is compelled to keep publishing it falsely. It functions best as a transparency commitment and an operational signal, not a guaranteed legal shield.
-Ciphera publishes a GPG-signed warrant canary monthly, with the current statement and a public archive of past ones, at /trust/canary.
-URL: https://ciphera.net/glossary/warrant-canary
-
 ### Zero-knowledge
 In applied privacy engineering, zero-knowledge describes systems designed so the service operator cannot read user data or secrets — verification and storage work without the server ever holding the plaintext.
 The term originates in the theory of zero-knowledge proofs, where one party proves a statement is true without revealing why. Product engineering borrows it more broadly: a zero-knowledge service is one where, by architecture rather than policy, the operator holds only ciphertext and derived records it cannot invert.
@@ -575,26 +545,24 @@ URL: https://ciphera.net/glossary/zero-knowledge-authentication
 
 ## Blog
 
-- [Pulse Is Free for Open-Source Projects and Nonprofits](https://ciphera.net/blog/free-analytics-for-open-source): Pulse's Team tier at €0 for OSI-licensed projects and registered nonprofits — five sites, 100,000 pageviews a month, every feature. The deal is printed on the page: we get to say you use Pulse.
-- [Ciphera × Bunny: A Fully European Stack, Front to Back](https://ciphera.net/blog/bunny-hopstart-second-place): Every public Ciphera surface runs on Bunny, the Slovenia-based European CDN — because infrastructure jurisdiction is a privacy decision. Bunny's HopStart Cohort #3 just put $25,000 in credits behind that choice. Here's why the two fit.
+- [Privacy Tools: What They Are and How to Choose](https://ciphera.net/blog/privacy-tools): Compare the best privacy tools for browsing, messaging, passwords, and website analytics. Learn how to protect your data online.
+- [Cookieless Analytics: How It Works and What It Tracks](https://ciphera.net/blog/cookieless-analytics): Learn how cookieless analytics works, what it tracks, how EU privacy rules apply, and how Pulse measures traffic without cookies.
+- [Pulse Is Free for Open-Source Projects and Nonprofits](https://ciphera.net/blog/free-analytics-for-open-source): Pulse's Business tier at €0 for OSI-licensed projects and nonprofits: five sites, 100,000 pageviews a month, every feature. We get to say you use Pulse.
+- [Ciphera × Bunny: Second Place in HopStart Cohort #3](https://ciphera.net/blog/bunny-hopstart-second-place): Ciphera's public edge runs on Bunny, a Slovenia-based CDN. On 23 July 2026 Bunny's HopStart Cohort #3 put $25,000 in credits behind that choice.
 - [Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)](https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics): The rule behind cookie banners isn't about cookies — it's about storing and reading information on a visitor's device. Here's what EU law actually requires for web analytics in 2026, why 'first-party' doesn't exempt you, and how a genuinely cookieless tool changes the question.
 - [How to Migrate Off Google Analytics: A 2026 Guide](https://ciphera.net/blog/how-to-migrate-off-google-analytics): A practical, honest guide to leaving Google Analytics for a privacy-first tool in 2026 — the timeline you need to know, why teams are switching, what you genuinely gain and lose, and the step-by-step migration (including the historical-data trap nobody warns you about).
 - [Is Your Website Analytics GDPR-Compliant? A 2026 Checklist](https://ciphera.net/blog/is-your-analytics-gdpr-compliant): GDPR applies to your analytics the moment it processes personal data — and an IP address usually counts. A practical, source-backed 2026 checklist: lawful basis, data minimisation, retention, international transfers, and the one design choice that collapses most of it.
-- [Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha (2026)](https://ciphera.net/blog/ciphera-captcha-vs-recaptcha-vs-turnstile): The bot-protection widget you add to a form often watches your visitors more than it protects them. A privacy- and jurisdiction-first comparison of reCAPTCHA, Turnstile, hCaptcha, and Ciphera Captcha's proof-of-work, cookieless approach.
-- [Why We Built Our Own Sign-In Instead of Buying Auth0 or Clerk](https://ciphera.net/blog/ciphera-id-vs-auth0-vs-clerk): A build-versus-buy postmortem. Auth0 and Clerk are good products and buying one would have been the sane call. We wrote our own OPAQUE sign-in instead — here is the requirement that forced it, and the bill we are still paying for it.
-- [What We See About You, What We Don't, and Why It Matters](https://ciphera.net/blog/what-we-see-about-you-what-we-dont): Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.
-- [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.
+- [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 lapsed in June 2026, 2,800+ companies face transfer uncertainty.
 - [Why We Chose BunnyCDN as Ciphera's CDN](https://ciphera.net/blog/why-we-chose-bunnycdn): A CDN terminates TLS and sees every request. For a privacy company, choosing one is a trust decision. Here's the checklist we used, our actual setup, and what running it taught us.
 - [Zero-Knowledge Encryption Guide (2026)](https://ciphera.net/blog/zero-knowledge-encryption-guide): What zero-knowledge encryption actually means — explained through the system we run in production: OPAQUE authentication, blind indexes, and a vault key that never leaves your browser.
-- [EU AI Act Compliance Guide for 2026](https://ciphera.net/blog/eu-ai-act-compliance-guide-2026): The AI Act's high-risk deadline just moved to December 2027 — but transparency rules and EUR 35M fines still land August 2, 2026. Here's what changed and what to do with the extra runway.
+- [EU AI Act Compliance Guide for 2026](https://ciphera.net/blog/eu-ai-act-compliance-guide-2026): The AI Act's high-risk deadline moved to December 2027, but Article 50 transparency rules took effect on 2 August 2026. What changed and what to do next.
 - [Open Source Privacy Tools: Complete List 2026](https://ciphera.net/blog/open-source-privacy-tools-2026): 34 open source privacy tools across 11 categories — every one re-verified in July 2026: licenses, maintenance status, and governance changes. Plus the open-source stack we run ourselves.
 - [Pulse vs GA vs Plausible vs Fathom (2026)](https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom): Side-by-side comparison of Pulse, Google Analytics, Plausible, and Fathom on privacy, performance, accuracy, and cost. Cookie-based analytics loses 80-90% of EU visitor data.
-- [Why Swiss Infrastructure Matters for Privacy](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy): Switzerland hosts 75 data centers outside CLOUD Act reach. Swiss FADP and neutrality make it the top choice for privacy infrastructure.
-- [Why Privacy Can't Be an Afterthought](https://ciphera.net/blog/why-privacy-cant-be-an-afterthought): 82% of consumers abandoned a brand over data concerns in 2025. Google, Apple, and Meta have been hit with $2B+ in fines and verdicts — several still contested. Here's what real privacy architecture looks like.
+- [Why Swiss Infrastructure Matters for Privacy](https://ciphera.net/blog/why-swiss-infrastructure-matters-for-data-privacy): Data held in Switzerland by a non-US company is outside the CLOUD Act's reach. What the Swiss FADP protects and why jurisdiction matters for privacy.
 
 ## Trust & Security
 
-The trust hub sets out what can be checked independently: the zero-knowledge architecture, the open-source cryptographic core (Tessera, Apache-2.0) with its published self-audit and threat model, the full subprocessor list, and the coordinated disclosure policy (security@ciphera.net, with a machine-readable RFC 9116 security.txt).
+The trust page sets out what Ciphera keeps and what it does not, every company it works with, how sign-in works, what is public, and how to report a security problem (security@ciphera.net, with a machine-readable RFC 9116 security.txt).
 URL: https://ciphera.net/trust
 
 ## Sustainability
