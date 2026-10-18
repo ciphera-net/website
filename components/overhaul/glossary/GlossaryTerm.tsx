@@ -14,7 +14,7 @@ import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr'
 import { Reveal } from '@/components/overhaul/home/Reveal'
 import { SunriseArc } from '@/components/overhaul/system/PageOpening'
 import type { GlossaryTerm } from '@/lib/glossary'
-import { TERM } from './content'
+import { INDEX, TERM } from './content'
 import { loadTerm } from './data'
 import { jsonLdHtml } from '@/lib/json-ld'
 
@@ -22,7 +22,7 @@ export type GlossaryTermVariant = 'a' | 'b' | 'c'
 export const GLOSSARY_TERM_VARIANTS: GlossaryTermVariant[] = ['a', 'b', 'c']
 
 const READ = 'max-w-[42.5rem]'
-const termHref = (variant: GlossaryTermVariant, slug: string) => `/mock-glossary/term/${variant}/${slug}`
+const termHref = (_variant: GlossaryTermVariant, slug: string) => `/glossary/${slug}`
 const BACK = 'text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground'
 const TITLE = 'font-display text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-foreground text-balance sm:text-5xl lg:text-6xl'
 // The body is the generator's sanitised HTML (as on the live term page), styled like the blog's reading column.
@@ -119,7 +119,7 @@ export async function GlossaryTermPage({ variant, slug }: { variant: GlossaryTer
       name: term.term,
       description: term.short,
       url,
-      inDefinedTermSet: { '@type': 'DefinedTermSet', '@id': 'https://ciphera.net/glossary', name: 'Glossary' },
+      inDefinedTermSet: { '@type': 'DefinedTermSet', '@id': 'https://ciphera.net/glossary', name: INDEX.setName },
     },
     {
       '@context': 'https://schema.org',

@@ -42,8 +42,9 @@ const OUT = path.join(process.cwd(), 'lib', 'glossary.gen.ts')
  * one is different and kept). `WordpressGlossaryTermsDropped` already alerts on a drop
  * independently. Kept as a constant purely for this comment's own arithmetic.
  */
-// 53 until 18-10-2026, when the warrant canary's term was retired with the canary (redirected, then unpublished).
-const EXPECTED_TERMS = 52
+// 53 until 18-10-2026, when the warrant canary's term and five email-authentication terms were retired (D6, D43), each
+// redirected, then unpublished.
+const EXPECTED_TERMS = 47
 
 /** Same type value the shared transform uses — kept as a local alias so this script's
  * own `recordContentRepairs` call reads exactly like the other three generate-*.ts

@@ -6,6 +6,7 @@ import { routeSeoForAsync } from '@/lib/seo'
 import { getAllPages } from '@/lib/cms/page-runtime'
 import { MIGRATABLE_PAGE_PATHS, ownedByCodedRoute } from '@/lib/cms/page-build'
 import { UNPUBLISHED } from '@/components/overhaul/blog/content'
+import { REMOVED as RETIRED_TERMS } from '@/components/overhaul/glossary/content'
 
 /**
  * Sitemap for ciphera.net
@@ -77,8 +78,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // minute, so a frozen sitemap date would be visibly wrong within that same minute.
   // The index page itself has no single "modified" field of its own; it is bounded by
   // the newest term, same reasoning as the blog index would use if it tracked one.
-  // The warrant canary's term redirects to the index (next.config.ts) until the CMS unpublishes it.
-  const glossaryTerms = (await getGlossaryTerms()).filter((t) => t.slug !== 'warrant-canary')
+  // Retired terms (the warrant canary, D6; five email-authentication terms, D43) redirect to the index and stay drafts in
+  // the CMS: never listed, even if one is published again by mistake.
+  const glossaryTerms = (await getGlossaryTerms()).filter((t) => !(RETIRED_TERMS as readonly string[]).includes(t.slug))
   // term.modified is WordPress's `modifiedGmt` (e.g. "2026-09-21T19:37:30", no zone
   // suffix) — not a bare YYYY-MM-DD — so it is parsed the same way routeSeo's own
   // `modified` field is, just below.

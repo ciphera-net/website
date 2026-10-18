@@ -32,29 +32,32 @@ test('the verifier\'s exact repro — one character off — is REPAIRED, not a t
 })
 
 test('a typo/case/whitespace/"&" vs "and" near-match is REPAIRED to the exact known string', () => {
-  assert.deepEqual(normalizeGlossaryCategory('cryptography & authentication'), {
-    name: 'Cryptography & authentication',
+  // 🔁 The three categories since 18-10-2026 (D43, W8-2).
+  assert.deepEqual(normalizeGlossaryCategory('encryption and sign-in'), {
+    name: 'Encryption and sign-in',
     matched: true,
     changed: true,
   })
   // Collapsing internal whitespace happens in the trim step itself, so the result
   // already equals the known string before the match lookup even runs — `changed` is
   // false here because there is nothing left to change, not because nothing was fixed.
-  assert.deepEqual(normalizeGlossaryCategory('Privacy  &  regulation'), {
-    name: 'Privacy & regulation',
+  assert.deepEqual(normalizeGlossaryCategory('Privacy  law'), {
+    name: 'Privacy law',
     matched: true,
     changed: false,
   })
-  assert.deepEqual(normalizeGlossaryCategory('  Analytics & web  '), {
-    name: 'Analytics & web',
+  assert.deepEqual(normalizeGlossaryCategory('  Analytics and the web  '), {
+    name: 'Analytics and the web',
     matched: true,
     changed: false,
   })
-  assert.deepEqual(normalizeGlossaryCategory('Email and infrastructure'), {
-    name: 'Email & infrastructure',
+  assert.deepEqual(normalizeGlossaryCategory('Analytics & the web'), {
+    name: 'Analytics and the web',
     matched: true,
     changed: true,
   })
+  // A retired name is no longer known: it ships as given and is flagged for review.
+  assert.equal(normalizeGlossaryCategory('Email & infrastructure').matched, false)
 })
 
 test('a genuinely new category name ships unchanged, unmatched — never silently bucketed elsewhere', () => {
