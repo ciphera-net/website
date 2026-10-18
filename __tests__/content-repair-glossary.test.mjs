@@ -64,6 +64,17 @@ test('a dangling related-term slug is dropped from just that term, not a build f
   assert.match(src, /repair\(t\.slug, 'related', 'repaired', `related term "\$\{dangling\}" does not resolve — dropped/)
 })
 
+test('a see-also link to a retired page or an unpublished term ships unchanged and is flagged, not failed', () => {
+  // 18-10-2026: twelve see-also rows still pointed at retired /products/* pages and nothing in the build noticed.
+  const src = code('lib/cms/glossary-build.ts')
+  assert.match(src, /import \{ isTier1 \} from '\.\/redirect-build'/)
+  assert.match(src, /for \(const s of t\.see\)/)
+  assert.match(src, /if \(!s\.href\.startsWith\('\/'\)\) continue/, 'only internal hrefs are checked')
+  assert.match(src, /const retired = isTier1\(path\)/)
+  assert.match(src, /retired \|\| \(termSlug !== null && !slugs\.has\(termSlug\)\)/)
+  assert.match(src, /repair\(\s*t\.slug,\s*'see',\s*'flagged'/)
+})
+
 test('a repo-hardcoded link to an unpublished term ships unchanged and is flagged, not failed — build-time only', () => {
   const src = code('scripts/generate-glossary.ts')
   assert.match(src, /field:\s*'repo-link',\s*\n\s*action:\s*'flagged'/)

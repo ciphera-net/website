@@ -22,6 +22,7 @@ import { checkRecoveryCopy } from '../recovery-copy-rules.mjs'
 import { normalizeGlossaryCategory, KNOWN_GLOSSARY_CATEGORIES } from '../glossary-category-rules.mjs'
 import type { ContentRepairEntry } from '../content-repair-types'
 import type { GlossaryTerm } from '../glossary/types'
+import { isTier1 } from './redirect-build'
 
 export const GLOSSARY_REPAIR_TYPE = 'glossary-term'
 
@@ -232,6 +233,27 @@ export function buildGlossary(nodes: WpGlossaryTerm[]): GlossaryBuildResult {
         repair(t.slug, 'related', 'repaired', `related term "${dangling}" does not resolve — dropped from this term's related list`)
       }
       t.related = kept
+    }
+  }
+
+  // ── Flag: a see-also link to a retired page or an unpublished term ships UNCHANGED and is FLAGGED. On 18-10 twelve
+  //    see-also rows still pointed at retired /products/* pages (each a redirect to somewhere else) and nothing in the
+  //    build noticed, because only the related list was checked. Internal hrefs only; the hash and query are ignored. ──
+  for (const t of terms) {
+    for (const s of t.see) {
+      if (!s.href.startsWith('/')) continue
+      const path = s.href.split(/[?#]/)[0].replace(/\/+$/, '') || '/'
+      const termSlug = path.startsWith('/glossary/') ? path.slice('/glossary/'.length) : null
+      const retired = isTier1(path)
+      if (retired || (termSlug !== null && !slugs.has(termSlug))) {
+        repair(
+          t.slug,
+          'see',
+          'flagged',
+          `severity=high — see also "${s.label}" links to ${path}, ` +
+            `${retired ? 'a retired page that redirects elsewhere' : 'a term that is not published'} (shipped unchanged)`
+        )
+      }
     }
   }
 
