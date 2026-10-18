@@ -143,3 +143,9 @@ test('the shared transform takes nodes already fetched and never reaches WordPre
   assert.doesNotMatch(src, /\bfetch\(/, 'lib/cms/glossary-build.ts must stay a pure function — no network calls')
   assert.match(src, /export function buildGlossary\(nodes: WpGlossaryTerm\[\]\): GlossaryBuildResult/)
 })
+
+test('the repo-link scan skips both redirect tables: their /glossary/<slug> entries are redirect sources, not links', () => {
+  const src = code('scripts/generate-glossary.ts')
+  assert.match(src, /if \(file\.endsWith\(path\.join\('cms', 'redirect-build\.ts'\)\)\) continue/)
+  assert.match(src, /if \(file\.endsWith\('redirects\.gen\.ts'\)\) continue/)
+})
