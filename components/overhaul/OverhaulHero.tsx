@@ -129,7 +129,9 @@ export function OverhaulHero({ chrome, serifHeadline = false, product = false, s
 
         <h1
           className={cn(
-            'hz-in hz-in-2 mx-auto max-w-4xl text-foreground', showBadge && 'mt-7',
+            // relative: under reduced motion the hz-in animation (and the stacking context its fill gives) is gone, and
+            // an unpositioned heading would paint UNDER the positioned scrim above. PageOpening does the same.
+            'hz-in hz-in-2 relative mx-auto max-w-4xl text-foreground', showBadge && 'mt-7',
             serifHeadline
               ? `${serif.className} text-[52px] font-normal leading-[1.02] tracking-[-0.01em] sm:text-7xl lg:text-[104px]`
               : 'font-display text-[44px] font-semibold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-[84px]',
@@ -139,11 +141,11 @@ export function OverhaulHero({ chrome, serifHeadline = false, product = false, s
           <br className="hidden sm:block" /> made in Europe.
         </h1>
 
-        <p className="hz-in hz-in-3 mx-auto mt-6 max-w-[34rem] text-base leading-relaxed text-muted-foreground sm:text-lg">
+        <p className="hz-in hz-in-3 relative mx-auto mt-6 max-w-[34rem] text-base leading-relaxed text-muted-foreground sm:text-lg">
           Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.
         </p>
 
-        <div className="hz-in hz-in-4 mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="hz-in hz-in-4 relative mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <a href="#products" className={cn('inline-flex h-12 items-center gap-2 px-6 text-sm font-medium transition-colors duration-150', primary[chrome])}>
             What we build <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </a>

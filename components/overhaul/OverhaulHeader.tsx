@@ -28,6 +28,7 @@ import {
   Code,
   ArrowUpRight,
   List,
+  X,
 } from '@phosphor-icons/react/dist/ssr'
 import { cn } from '@/lib/utils'
 import { authIcon, cipheraIcon, pulseIcon } from '@/lib/images'
@@ -151,7 +152,7 @@ function Menu({ label, chrome, children }: { label: string; chrome: Chrome; chil
   )
 }
 
-function Cta({ chrome, kind, href, children }: { chrome: Chrome; kind: 'primary' | 'secondary'; href: string; children: React.ReactNode }) {
+function Cta({ chrome, kind, href, className, children }: { chrome: Chrome; kind: 'primary' | 'secondary'; href: string; className?: string; children: React.ReactNode }) {
   const base = 'inline-flex h-10 items-center gap-1.5 px-4 text-sm font-medium transition-colors duration-150'
   const styles: Record<Chrome, Record<'primary' | 'secondary', string>> = {
     bar: {
@@ -176,9 +177,118 @@ function Cta({ chrome, kind, href, children }: { chrome: Chrome; kind: 'primary'
     },
   }
   return (
-    <a href={href} className={cn(base, styles[chrome][kind])}>
+    <a href={href} className={cn(base, styles[chrome][kind], className)}>
       {children}
     </a>
+  )
+}
+
+/**
+ * Row's icon and title without Radix's Nav.Link, for the phone menu (which is not inside a NavigationMenu root). The
+ * descriptions stay on the desktop dropdowns: on a phone they doubled the list's height and pushed the actions off the
+ * screen.
+ */
+function PlainRow({ item, chrome, onNavigate }: { item: Item; chrome: Chrome; onNavigate: () => void }) {
+  const Icon = item.icon
+  return (
+    <a href={item.href} onClick={onNavigate} className={cn('flex items-center gap-3 px-2.5 py-2 transition-colors duration-150', tile[chrome])}>
+      <span className={cn('flex h-8 w-8 shrink-0 items-center justify-center border', isGlass(chrome) ? 'border-white/[0.08] bg-black/30' : 'border-border bg-background', isRound(chrome) && 'rounded-[8px]')}>
+        <Icon className="h-4 w-4 text-foreground" />
+      </span>
+      <span className="text-sm font-medium text-foreground">{item.title}</span>
+    </a>
+  )
+}
+
+const MOBILE_MENU_ID = 'site-menu-mobile'
+
+/**
+ * The phone menu (below md, where the cluster is hidden): the button opens one panel with the desktop menus' own rows
+ * under their three labels, the Pulse tile, and the two actions. A disclosure, not a dialog: the page stays where it is,
+ * Escape closes it and returns focus to the button, following a link closes it, and it closes when the desktop
+ * cluster takes over at md. Same panel surface as the desktop dropdowns.
+ */
+function MobileMenu({ chrome }: { chrome: Chrome }) {
+  const [open, setOpen] = React.useState(false)
+  const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const close = React.useCallback(() => setOpen(false), [])
+
+  React.useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false)
+        buttonRef.current?.focus()
+      }
+    }
+    const wide = window.matchMedia('(min-width: 768px)')
+    const onWide = () => wide.matches && setOpen(false)
+    document.addEventListener('keydown', onKey)
+    wide.addEventListener('change', onWide)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      wide.removeEventListener('change', onWide)
+    }
+  }, [open])
+
+  const groups: [string, Item[]][] = [
+    ['Products', PRODUCTS],
+    ['Company', COMPANY],
+    ['Resources', RESOURCES],
+  ]
+  return (
+    <>
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-expanded={open}
+        aria-controls={MOBILE_MENU_ID}
+        onClick={() => setOpen((o) => !o)}
+        className={cn(
+          'inline-flex h-10 w-10 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden',
+          chrome === 'bar' ? 'border border-border' : chrome === 'barGlass' ? 'border border-white/[0.08] bg-[#0f0f0f]/55 backdrop-blur-xl backdrop-saturate-150' : chrome === 'pillGlass' ? 'rounded-full border border-white/[0.08] bg-[#0f0f0f]/55 backdrop-blur-xl backdrop-saturate-150' : 'rounded-full bg-white/[0.06] ring-1 ring-white/10',
+        )}
+      >
+        {open ? <X className="h-5 w-5 text-foreground" aria-hidden="true" /> : <List className="h-5 w-5 text-foreground" aria-hidden="true" />}
+      </button>
+      {open && (
+        <nav
+          id={MOBILE_MENU_ID}
+          aria-label="Site"
+          data-mock="menu-panel-mobile"
+          className={cn(
+            'absolute inset-x-6 top-full mt-3 flex max-h-[calc(100svh-6.5rem)] flex-col animate-in fade-in zoom-in-95 motion-reduce:animate-none sm:inset-x-10 md:hidden',
+            panel[chrome],
+          )}
+        >
+          <div className="min-h-0 overflow-y-auto overscroll-contain p-2">
+            <a href="https://pulse.ciphera.net" onClick={close} className={cn('flex items-center gap-3 p-3', feature[chrome])}>
+              <Image src={pulseIcon} alt="" width={22} height={32} unoptimized className="h-7 w-auto" />
+              <span className="min-w-0">
+                <span className="block text-sm font-semibold text-foreground">Pulse Analytics</span>
+                <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">Web analytics with no cookies, hosted in Switzerland.</span>
+              </span>
+            </a>
+            {groups.map(([label, items]) => (
+              <div key={label} className="mt-2">
+                <p className="px-2.5 pb-1 pt-2 text-xs text-muted-foreground">{label}</p>
+                <div className="grid gap-0.5">
+                  {items.map((it) => (
+                    <PlainRow key={it.title} item={it} chrome={chrome} onNavigate={close} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* The two actions stay in view while the list scrolls. */}
+          <div className="grid shrink-0 grid-cols-2 gap-2 border-t border-white/[0.06] p-3">
+            <Cta chrome={chrome} kind="secondary" href="https://id.ciphera.net/login" className="justify-center border border-white/[0.08]">Sign in</Cta>
+            <Cta chrome={chrome} kind="primary" href="/contact" className="justify-center">Contact</Cta>
+          </div>
+        </nav>
+      )}
+    </>
   )
 }
 
@@ -276,16 +386,7 @@ export function OverhaulHeader({ chrome, fit = 'inset' }: { chrome: Chrome; fit?
           </div>
         </Nav.Root>
 
-        <button
-          type="button"
-          aria-label="Open menu"
-          className={cn(
-            'inline-flex h-10 w-10 items-center justify-center md:hidden',
-            chrome === 'bar' ? 'border border-border' : chrome === 'barGlass' ? 'border border-white/[0.08] bg-[#0f0f0f]/55 backdrop-blur-xl backdrop-saturate-150' : chrome === 'pillGlass' ? 'rounded-full border border-white/[0.08] bg-[#0f0f0f]/55 backdrop-blur-xl backdrop-saturate-150' : 'rounded-full bg-white/[0.06] ring-1 ring-white/10',
-          )}
-        >
-          <List className="h-5 w-5 text-foreground" />
-        </button>
+        <MobileMenu chrome={chrome} />
       </div>
     </header>
   )

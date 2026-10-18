@@ -45,6 +45,8 @@ function headingIds() {
     visit(tree, 'element', (node: Element) => {
       if (node.tagName !== 'h2') return
       const text = hastToString(node).replace(/\s+/g, ' ').trim()
+      // An empty heading (one post's CMS body ends with <h2></h2>) has nothing to list: it would be a blank, unnamed link.
+      if (!text) return
       const base = slugify(text) || 'section'
       let id = base
       for (let n = 2; used.has(id); n++) id = `${base}-${n}`
