@@ -76,6 +76,7 @@ export function FooterAnchor({ link, className }: { link: FooterLink; className?
       className={cn('transition-colors duration-150 hover:text-foreground', className)}
     >
       {link.label}
+      {external && <span className="sr-only"> (opens in a new tab)</span>}
     </a>
   )
 }
@@ -90,7 +91,7 @@ export function SocialRow({ className }: { className?: string }) {
           href={s.href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Ciphera on ${s.label}`}
+          aria-label={`Ciphera on ${s.label} (opens in a new tab)`}
           className="inline-flex h-9 w-9 items-center justify-center border border-border text-muted-foreground transition-colors duration-150 hover:border-line-hover hover:text-foreground"
         >
           <SocialIcon icon={s.icon} className="h-4 w-4" />
@@ -131,6 +132,7 @@ export async function FooterStatus({ className }: { className?: string }) {
       <span className={cn('h-2 w-2 rounded-full', ok ? 'bg-pos' : 'bg-neg')} aria-hidden="true" />
       {ok ? 'All systems operational' : 'Some services are degraded'}
       <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+      <span className="sr-only"> (opens in a new tab)</span>
     </a>
   )
 }

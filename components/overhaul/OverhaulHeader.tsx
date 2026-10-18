@@ -138,7 +138,11 @@ function Menu({ label, chrome, children }: { label: string; chrome: Chrome; chil
       <Nav.Trigger
         data-mock-trigger={label}
         className={cn(
-          'group inline-flex items-center text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:text-foreground',
+          'group relative inline-flex items-center text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:text-foreground',
+          // The panel opens 18 px below the trigger and Radix closes it 150 ms after the pointer leaves the trigger, so
+          // a slow pointer lost it on the way down (accessibility review, 18-10-2026). This invisible strip keeps the
+          // pointer on the trigger until it reaches the panel.
+          "after:absolute after:inset-x-0 after:top-full after:h-5 after:content-['']",
           trigger[chrome],
         )}
       >
@@ -211,7 +215,25 @@ const MOBILE_MENU_ID = 'site-menu-mobile'
 function MobileMenu({ chrome }: { chrome: Chrome }) {
   const [open, setOpen] = React.useState(false)
   const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const panelRef = React.useRef<HTMLElement>(null)
   const close = React.useCallback(() => setOpen(false), [])
+
+  // A disclosure, not a dialog, so nothing traps focus; instead the panel closes as soon as focus or a tap lands
+  // outside the button and the panel. Without this, Tab walked on into the page behind the open panel and the links
+  // it covered took focus unseen (accessibility review, 18-10-2026).
+  React.useEffect(() => {
+    if (!open) return
+    const inside = (t: EventTarget | null) =>
+      t instanceof Node && (buttonRef.current?.contains(t) || panelRef.current?.contains(t))
+    const onFocusIn = (e: FocusEvent) => !inside(e.target) && setOpen(false)
+    const onPointerDown = (e: PointerEvent) => !inside(e.target) && setOpen(false)
+    document.addEventListener('focusin', onFocusIn)
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => {
+      document.removeEventListener('focusin', onFocusIn)
+      document.removeEventListener('pointerdown', onPointerDown)
+    }
+  }, [open])
 
   React.useEffect(() => {
     if (!open) return
@@ -241,7 +263,7 @@ function MobileMenu({ chrome }: { chrome: Chrome }) {
       <button
         ref={buttonRef}
         type="button"
-        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-label="Menu"
         aria-expanded={open}
         aria-controls={MOBILE_MENU_ID}
         onClick={() => setOpen((o) => !o)}
@@ -254,6 +276,7 @@ function MobileMenu({ chrome }: { chrome: Chrome }) {
       </button>
       {open && (
         <nav
+          ref={panelRef}
           id={MOBILE_MENU_ID}
           aria-label="Site"
           data-mock="menu-panel-mobile"
@@ -272,12 +295,16 @@ function MobileMenu({ chrome }: { chrome: Chrome }) {
             </a>
             {groups.map(([label, items]) => (
               <div key={label} className="mt-2">
-                <p className="px-2.5 pb-1 pt-2 text-xs text-muted-foreground">{label}</p>
-                <div className="grid gap-0.5">
+                <p id={`${MOBILE_MENU_ID}-${label.toLowerCase()}`} className="px-2.5 pb-1 pt-2 text-xs text-muted-foreground">
+                  {label}
+                </p>
+                <ul aria-labelledby={`${MOBILE_MENU_ID}-${label.toLowerCase()}`} className="grid gap-0.5">
                   {items.map((it) => (
-                    <PlainRow key={it.title} item={it} chrome={chrome} onNavigate={close} />
+                    <li key={it.title}>
+                      <PlainRow item={it} chrome={chrome} onNavigate={close} />
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             ))}
           </div>
@@ -375,11 +402,13 @@ export function OverhaulHeader({ chrome, fit = 'inset' }: { chrome: Chrome; fit?
           <Cta chrome={chrome} kind="primary" href="/contact">
             Contact {chrome === 'glass' && <ArrowUpRight className="h-3.5 w-3.5" />}
           </Cta>
-          <div className="absolute right-0 top-full flex justify-end">
+          {/* The wrapper lets the pointer through (only the panel takes it): its top margin is the gap the triggers'
+              strips bridge, and painted over them it made the pointer leave the trigger on the way down. */}
+          <div className="pointer-events-none absolute right-0 top-full flex justify-end">
             <Nav.Viewport
               data-mock="menu-panel"
               className={cn(
-                'relative mt-3 h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)] overflow-hidden transition-[width,height] duration-200 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out',
+                'pointer-events-auto relative mt-3 h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)] overflow-hidden transition-[width,height] duration-200 motion-reduce:transition-none data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out',
                 panel[chrome],
               )}
             />

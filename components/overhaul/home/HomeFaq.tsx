@@ -24,7 +24,7 @@ export function HomeFaq() {
           <details key={f.q} className="group">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-lg font-medium text-foreground marker:hidden [&::-webkit-details-marker]:hidden">
               {f.q}
-              <Plus className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 ease-apple group-open:rotate-45" aria-hidden="true" />
+              <Plus className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 ease-apple group-open:rotate-45 motion-reduce:transition-none" aria-hidden="true" />
             </summary>
             <p className="max-w-3xl pb-6 text-[15px] leading-relaxed text-muted-foreground">{f.a}</p>
           </details>

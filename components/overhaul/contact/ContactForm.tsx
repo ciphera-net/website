@@ -343,7 +343,12 @@ function Honeypot({ form }: { form: MockForm }) {
 /** The one filled action. Disclosure's MailButton recipe (h-12, px-6, icon and label) on Facet's Button. */
 function SubmitButton({ form }: { form: MockForm }) {
   return (
-    <Button type="submit" disabled={form.status === 'sending'} aria-busy={form.status === 'sending' || undefined} className={`h-12 w-full gap-2.5 px-6 hover:bg-[#E54E00] sm:w-auto ${FOCUS}`}>
+    <Button
+      type="submit"
+      aria-disabled={form.status === 'sending' || undefined}
+      aria-busy={form.status === 'sending' || undefined}
+      className={`h-12 w-full gap-2.5 px-6 hover:bg-[#E54E00] aria-disabled:pointer-events-none aria-disabled:opacity-50 sm:w-auto ${FOCUS}`}
+    >
       <PaperPlaneTilt className="h-4 w-4" aria-hidden="true" />
       {FORM.submit}
     </Button>
