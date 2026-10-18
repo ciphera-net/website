@@ -1,37 +1,35 @@
-import Hero from '../components/Hero'
-import TrustStrip from '../components/TrustStrip'
-import FeatureSection from '../components/feature-section'
-import ProductShowcase from '../components/ProductShowcase'
-import SwissPrivacy from '../components/SwissPrivacy'
-import FAQ from '../components/FAQ'
-import ClosingCta from '../components/ClosingCta'
-import { cdnUrl } from '@/lib/cdn'
-
 import type { Metadata } from 'next'
+import { OverhaulHero } from '@/components/overhaul/OverhaulHero'
+import { WhatWeBuildB } from '@/components/overhaul/home/variants/WhatWeBuildB'
+import { HowWeBuildM } from '@/components/overhaul/home/variants/HowWeBuildStepper'
+import { WhereDataLivesB } from '@/components/overhaul/home/variants/WhereDataLivesB'
+import { OpenByDefault } from '@/components/overhaul/home/OpenByDefault'
+import { FromTheBlogB } from '@/components/overhaul/home/variants/FromTheBlogB'
+import { HomeFaq, FAQ } from '@/components/overhaul/home/HomeFaq'
+import { Closing } from '@/components/overhaul/home/Closing'
+import { cdnUrl } from '@/lib/cdn'
+import { jsonLdHtml } from '@/lib/json-ld'
 import { seoForAsync } from '@/lib/seo'
 
 /**
- * 🔴 THE HOMEPAGE HAD NO METADATA OBJECT OF ITS OWN. It inherited the root layout's
- * wholesale, which is why this export is an addition rather than a one-line wrap like
- * the other twelve routes. The fallback below is exactly what app/layout.tsx renders
- * today, so with or without a WordPress stub the served <head> is unchanged.
+ * The homepage (the overhaul, 18-10-2026): the approved hero (R1, D4, D26: the routes into Zurich, no city lights) and
+ * the owner's Round 2 picks (D15, D16): What we build B, How we build M, Where your data lives B, Open by default A,
+ * From the blog B, the FAQ (seven questions, D24) and the closing band. Header and footer come from the root layout.
  *
- * ⚠️ Do NOT move this to the root layout to "share" it — that layout renders every
- * page on the site, so a title set there is a title set everywhere.
+ * ⚠️ The homepage has its own metadata object: the root layout renders every page, so a title set there is a title set
+ * everywhere. The wording is W1 (D5). A WordPress route stub for '/' overrides this at request time (seoForAsync).
  */
+const TITLE = 'Ciphera — Privacy-first software, made in Europe'
+const DESCRIPTION = 'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.'
+
 export async function generateMetadata(): Promise<Metadata> {
   return seoForAsync('/', {
-  title: {
-    absolute: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-  },
-  description:
-    'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Captcha bot protection, Relay email, the zero-knowledge Ciphera ID sign-in behind them, and open-source Tessera.',
-  alternates: {
-    canonical: 'https://ciphera.net',
-  },
-})
+    title: { absolute: TITLE },
+    description: DESCRIPTION,
+    alternates: { canonical: 'https://ciphera.net' },
+  })
 }
-// * JSON-LD structured data for homepage
+
 const homepageSchemas = [
   {
     '@context': 'https://schema.org',
@@ -41,26 +39,18 @@ const homepageSchemas = [
     alternateName: ['Ciphera BV'],
     legalName: 'Ciphera BV',
     vatID: 'BE1013721660',
-    // * Machine-readable company identifiers. Google names iso6523 and naics as
-    // * properties used "behind the scenes to disambiguate your organization from
-    // * other organizations" — which is the whole problem here, given the several
-    // * unrelated entities also called Ciphera. ICD 0208 is the Belgian KBO/BCE
-    // * scheme (Peppol code list); companyweb.be publishes the identical PEPPOL ID.
+    // * Machine-readable company identifiers. Google names iso6523 and naics as properties used "behind the scenes to
+    // * disambiguate your organization from other organizations", the whole problem with several unrelated entities
+    // * also called Ciphera. ICD 0208 is the Belgian KBO/BCE scheme (Peppol code list).
     iso6523Code: '0208:1013721660',
     naics: '541511',
     url: 'https://ciphera.net',
-    logo: {
-      '@type': 'ImageObject',
-      url: cdnUrl('/ciphera_logo_no_margins.png'),
-    },
-    description: 'Privacy-first infrastructure and applications built on zero-knowledge principles',
+    logo: { '@type': 'ImageObject', url: cdnUrl('/ciphera_logo_no_margins.png') },
+    description: DESCRIPTION,
     disambiguatingDescription:
-      'Ciphera (Ciphera BV) is a Belgian privacy-infrastructure company behind Pulse cookieless analytics, Ciphera Captcha, Ciphera Relay, the open-source Tessera authentication library, and Ciphera ID — the zero-knowledge sign-in for its own applications. Not affiliated with other companies, apps, or fictional characters sharing the Ciphera name.',
+      'Ciphera (Ciphera BV) is a Belgian software company. It makes Pulse, privacy-first web analytics. It is not affiliated with ciphera.co, ciphera.org, Ciphera Ltd (ciphera.uk) or the Ciphera apps.',
     foundingDate: '2024-09-18',
-    foundingLocation: {
-      '@type': 'Place',
-      address: { '@type': 'PostalAddress', addressCountry: 'BE' },
-    },
+    foundingLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', addressCountry: 'BE' } },
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'De Kleetlaan 2',
@@ -69,19 +59,9 @@ const homepageSchemas = [
       addressCountry: 'BE',
     },
     telephone: '+3278480710',
-    contactPoint: {
-      '@type': 'ContactPoint',
-      email: 'hello@ciphera.net',
-      contactType: 'customer service',
-    },
-    // * Every URL here was confirmed to exist before being added — a sameAs
-    // * pointing at a dead page weakens the entity cluster rather than
-    // * corroborating it. crates.io and npmjs.com both sit behind bot
-    // * protection (404 / Cloudflare "Just a moment..." to a plain fetch), so
-    // * they were confirmed two other ways: browser-header request returning
-    // * 200, and their registry APIs, which are the canonical source and are
-    // * never gated. Package registries are corroboration a namesake cannot
-    // * fake — they are tied to published artifacts, not to a claim.
+    contactPoint: { '@type': 'ContactPoint', email: 'hello@ciphera.net', contactType: 'customer service' },
+    // * Every URL here was confirmed to exist before being added: a sameAs pointing at a dead page weakens the entity
+    // * cluster instead of corroborating it. Package registries are corroboration a namesake cannot fake.
     sameAs: [
       'https://github.com/ciphera-net',
       'https://x.com/CipheraNET',
@@ -101,26 +81,26 @@ const homepageSchemas = [
     name: 'Ciphera',
     publisher: { '@id': 'https://ciphera.net/#organization' },
   },
+  {
+    // The visible questions, word for word: FAQPage data must match what the page shows.
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
 ]
 
 export default function HomePage() {
   return (
     <>
-      {/* * JSON-LD structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchemas) }}
-      />
-      {/* Rails now live in the root layout (app/layout.tsx) so every page
-          inherits the continuous header→footer frame. Sections provide their
-          own horizontal hairlines via border-b. */}
-      <Hero />
-      <TrustStrip />
-      <FeatureSection />
-      <ProductShowcase />
-      <SwissPrivacy />
-      <FAQ />
-      <ClosingCta />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(homepageSchemas) }} />
+      <OverhaulHero chrome="barGlass" showBadge={false} below="globe-routes" />
+      <WhatWeBuildB />
+      <HowWeBuildM />
+      <WhereDataLivesB />
+      <OpenByDefault />
+      <FromTheBlogB />
+      <HomeFaq />
+      <Closing />
     </>
   )
 }

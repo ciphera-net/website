@@ -34,7 +34,7 @@ export default function ClosingCta() {
             </a>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="/products/id">How sign-in works</Link>
+            <Link href="/trust#sign-in">How sign-in works</Link>
           </Button>
         </div>
         <p className="mt-8 text-xs text-muted-foreground">

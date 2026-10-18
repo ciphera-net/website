@@ -67,14 +67,21 @@ test('generate-llms.ts reads the seed accessor, never the async seam', () => {
   assert.doesNotMatch(src, /getBlogPosts\(\)/, 'a build CLI script has no request to await the seam for')
 })
 
-test('the blog index page is a server component handing resolved posts to a client component', () => {
+test('the blog index renders on the server, per request, from the async seam', () => {
+  // 🔁 The overhaul (18-10-2026, D38): the index is option F, a server component with no
+  // client search or filter (a category is a ?category= URL), so there is no client
+  // component to hand posts to. It still reads the runtime seam, never the .gen file.
   const page = code('app/blog/page.tsx')
-  assert.doesNotMatch(page, /'use client'/, 'app/blog/page.tsx must be a server component so it can await getBlogPosts()')
-  assert.match(page, /await getBlogPosts\(\)/)
-  assert.match(page, /<BlogPageClient posts=\{posts\}/)
-  const client = code('components/blog/blog-page-client.tsx')
-  assert.match(client, /'use client'/)
-  assert.doesNotMatch(client, /from '@\/lib\/blog-posts\.gen'|from '@\/lib\/blog'/, 'the client component must receive data as a prop, never import the seam itself')
+  assert.doesNotMatch(page, /'use client'/, 'app/blog/page.tsx must be a server component')
+  assert.match(page, /export const dynamic = 'force-dynamic'/)
+  assert.match(page, /<BlogIndexPage variant="f" category=\{isCategoryKey\(key\) \? key : null\} \/>/)
+  const index = code('components/overhaul/blog/BlogIndex.tsx')
+  assert.doesNotMatch(index, /'use client'/)
+  assert.match(index, /const posts = await loadPosts\(\)/)
+  const data = code('components/overhaul/blog/data.ts')
+  assert.match(data, /import \{ getBlogPost, getBlogPosts, type BlogPost, type BlogPostMeta \} from '@\/lib\/blog'/)
+  assert.match(data, /await getBlogPosts\(\)/)
+  assert.doesNotMatch(data, /blog-posts\.gen/, 'the index must read the seam, not the build-time file')
 })
 
 test('a blog post renders per request: a literal force-dynamic and no generateStaticParams', () => {
@@ -129,25 +136,15 @@ test('seoForAsync exists and resolves synchronously-fast from the seed when "rou
   assert.match(src, /export function seoFor\(path: string, fallback: Metadata\): Metadata \{/)
 })
 
-test('every one of the 14 seoFor() pages now uses generateMetadata + seoForAsync, not a module-scope const', () => {
+test('every seoFor() page uses generateMetadata + seoForAsync, not a module-scope const', () => {
+  // 🔁 The overhaul (18-10-2026) retired seven of the original fourteen: the five product
+  // pages, /press and /what-is-ciphera (Tier 1 redirects since). Their route stubs may stay
+  // published in the CMS; nothing renders them.
   const pages = [
     'app/about/layout.tsx', 'app/blog/layout.tsx', 'app/contact/layout.tsx', 'app/learn/layout.tsx',
-    'app/sustainability/layout.tsx', 'app/press/page.tsx', 'app/what-is-ciphera/page.tsx',
-    'app/products/captcha/page.tsx', 'app/products/id/page.tsx', 'app/products/pulse/page.tsx',
-    'app/products/relay/page.tsx', 'app/products/tessera/page.tsx', 'app/glossary/page.tsx', 'app/page.tsx',
+    'app/sustainability/layout.tsx', 'app/glossary/page.tsx', 'app/page.tsx',
   ]
-  // WEB-28 build task §3/§5: all five product pages now AWAIT seoForAsync into a
-  // `base`, then merge a published CMS page's own SEO over it (mergePageSeo) before
-  // returning — `/products/id` joined the other four once facet-sections 0.3.0
-  // landed (build task §5). Every non-product page is untouched, so those keep the
-  // plain `return`.
-  const migratable = new Set([
-    'app/products/captcha/page.tsx',
-    'app/products/id/page.tsx',
-    'app/products/pulse/page.tsx',
-    'app/products/relay/page.tsx',
-    'app/products/tessera/page.tsx',
-  ])
+  const migratable = new Set()
   for (const p of pages) {
     const src = code(p)
     assert.match(src, /export async function generateMetadata\(\): Promise<Metadata> \{/, `${p} must export generateMetadata`)

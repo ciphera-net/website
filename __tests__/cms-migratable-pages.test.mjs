@@ -51,32 +51,19 @@ test('mergePageSeo exists and applies a CMS title as the FULL title tag (absolut
   assert.doesNotMatch(src, /template:/, 'ciphera.net pages have no title TEMPLATE to preserve (unlike pulse-website) — never invent one')
 })
 
-for (const { file, path, schema } of PAGES) {
-  test(`${file}: CMS_PATH is "${path}" and generateMetadata merges a published page's SEO over the coded fallback`, () => {
-    const src = code(file)
-    assert.match(src, new RegExp(`const CMS_PATH = '${path.replace('/', '\\/')}'`))
-    assert.match(src, /import \{ resolvePage, mergePageSeo \} from '@\/lib\/cms\/page-runtime'/)
-    assert.match(src, /const cms = await resolvePage\(CMS_PATH\)/g)
-  })
-
-  test(`${file}: the default export is async, renders CmsPage INSTEAD of the coded JSX when published, and ${schema} is imported from the shared registry`, () => {
-    const src = code(file)
-    assert.match(src, /export default async function \w+\(\) \{/)
-    assert.match(src, /import \{ CmsPage \} from '@\/components\/cms\/CmsPage'/)
-    assert.match(src, /import \{ PRODUCT_SCHEMA \} from '@\/lib\/cms\/product-schema'/)
-    assert.match(src, new RegExp(`const ${schema} = PRODUCT_SCHEMA\\[CMS_PATH\\]`))
-    assert.match(src, /if \(cms\) \{\s*return <CmsPage page=\{cms\} \/>\s*\}/)
-    // The schema script renders on ONLY the coded fallback now — CmsPage reads the
-    // same registry entry by path for the CMS branch, so this page.tsx file must
-    // not also stringify it itself a second time.
-    const scriptCount = (src.match(new RegExp(`JSON\\.stringify\\(${schema}\\)`, 'g')) ?? []).length
-    assert.equal(scriptCount, 1, `${schema} must be stringified exactly once (the coded fallback only — CmsPage owns the CMS branch's copy)`)
-  })
-}
-
-test('no migratable page.tsx passes breadcrumbs to CmsPage any more — the schema registry decides, not the caller', () => {
-  for (const { file } of PAGES) {
-    assert.doesNotMatch(code(file), /breadcrumbs=/, `${file} still passes a breadcrumbs prop to CmsPage`)
+// 🔁 THE OVERHAUL (18-10-2026) RETIRED THE FIVE PRODUCT PAGES (plan D1/D2/D7). Their
+// page.tsx files are gone and each address is a permanent Tier 1 redirect, so nothing a
+// CMS page publishes at one of them can render. What used to be pinned per page is
+// pinned here as the new state.
+test('the product pages are gone and every one of their addresses is a Tier 1 redirect, mirrored in both copies', () => {
+  const config = code('next.config.ts')
+  const mirrors = ['scripts/generate-redirects.ts', 'lib/cms/redirect-build.ts'].map((f) => [f, code(f)])
+  for (const { file, path } of PAGES) {
+    assert.throws(() => read(file), /ENOENT/, `${file} must not exist any more`)
+    assert.match(config, new RegExp(`\\['${path.replace('/', '\\/')}', '[^']+'\\]`), `${path} must be a Tier 1 redirect in next.config.ts`)
+    for (const [f, src] of mirrors) {
+      assert.match(src, new RegExp(`'${path.replace('/', '\\/')}',`), `${f}'s TIER1_EXACT must mirror ${path}`)
+    }
   }
 })
 
@@ -99,9 +86,7 @@ test('product-schema.ts registers exactly the five migratable paths, each with a
   assert.match(src, /function breadcrumbList\(leafName: string\)/)
 })
 
-test("MIGRATABLE_PAGE_PATHS lists exactly these five paths, in page-build.ts, which both buildPages() and this test's own pages agree on", () => {
+test('MIGRATABLE_PAGE_PATHS is empty since the overhaul: no coded address can be served from the CMS', () => {
   const src = code('lib/cms/page-build.ts')
-  for (const { path } of PAGES) {
-    assert.match(src, new RegExp(`'${path.replace('/', '\\/')}',`))
-  }
+  assert.match(src, /export const MIGRATABLE_PAGE_PATHS: readonly string\[\] = \[\]/)
 })

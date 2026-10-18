@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { BlogPostView } from '@/components/blog/post-view'
-import { getBlogPosts } from '@/lib/blog'
+import { BlogPostView } from '@/components/overhaul/blog/BlogPost'
+import { loadPosts } from '@/components/overhaul/blog/data'
 import { WP_POST_FIELDS, transformWpPost, nodeSites, BLOG_SITE, type WpNode } from '@/lib/blog-transform'
 
 /**
@@ -242,9 +242,11 @@ export default async function PreviewPage({
   return (
     <>
       <Banner status={status} />
+      {/* The site's own post template (D37, option A), so a draft previews as it will publish. */}
       <BlogPostView
+        variant="a"
         post={{ ...post, content: post.html, body: { kind: 'html', content: post.html } }}
-        allPosts={await getBlogPosts()}
+        posts={await loadPosts()}
       />
     </>
   )

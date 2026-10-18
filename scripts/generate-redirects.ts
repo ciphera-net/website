@@ -59,6 +59,15 @@ const TIER1_EXACT = [
   '/products',
   '/products/auth',
   '/products/drop',
+  '/products/pulse',
+  '/products/captcha',
+  '/products/relay',
+  '/products/id',
+  '/products/tessera',
+  '/what-is-ciphera',
+  '/press',
+  '/glossary/warrant-canary',
+  '/blog/ciphera-id-vs-auth0-vs-clerk',
   '/trust/report-status.txt',
 ]
 /** `/<prefix>/:path*` matches the segment itself and everything beneath it. */

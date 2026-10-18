@@ -40,12 +40,30 @@ const nextConfig: NextConfig = {
     // * Removed site pages (GSC 404 report, 19-07-2026): the old /products
     // * landing (removed 31-03), the pre-rename Auth product page, the retired
     // * Drop product page, and two dead marketing pages from the March cleanup.
+    // * The overhaul (18-10-2026, plan D1/D2/D7) retired the five product pages,
+    // * /what-is-ciphera and /press: Pulse has its own site, sign-in and open source
+    // * became sections of /trust, and About absorbed the other two. The older entries
+    // * point straight at the new homes, so no request takes two hops.
     const goneSite: Array<[string, string]> = [
       ['/companies', '/'],
       ['/comparison', '/blog/zero-knowledge-encryption-guide'],
-      ['/products', '/#products'],
-      ['/products/auth', '/products/id'],
-      ['/products/drop', '/#products'],
+      ['/products', '/'],
+      ['/products/auth', '/trust#sign-in'],
+      ['/products/drop', '/'],
+      ['/products/pulse', 'https://pulse.ciphera.net'],
+      ['/products/captcha', '/'],
+      ['/products/relay', '/'],
+      ['/products/id', '/trust#sign-in'],
+      ['/products/tessera', '/trust#open-source'],
+      ['/what-is-ciphera', '/about'],
+      ['/press', '/about#press'],
+      // * The warrant canary's glossary term goes with the canary (D6, plan §5j).
+      ['/glossary/warrant-canary', '/glossary'],
+      // * A retired POST belongs in the CMS (Tier 2), and three of the four the
+      // * overhaul retires are there (D39). This one is here because it lands on a
+      // * section: a CMS redirect cannot carry a #fragment (lib/redirect-path-rules.mjs
+      // * allows none), and Next's own redirects keep one.
+      ['/blog/ciphera-id-vs-auth0-vs-clerk', '/trust#sign-in'],
     ]
     // * /security and /transparency were consolidated into the /trust hub
     // * (19-07-2026, see Public/docs/plans/19-07-2026-trust-hub-consolidation.md).

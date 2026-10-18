@@ -1,0 +1,144 @@
+/* The overhaul (released 18-10-2026; built in Rounds 1 to 7). Motion from Round 1 (16-10-2026). Facet's one easing curve and duration scale:
+   ease.apple = cubic-bezier(0.32, 0.72, 0, 1); 150 / 250 / 400 / 600 ms. The intro
+   uses longer durations on purpose (a scene, not a UI state change). Every animated
+   property is compositor-only (opacity, transform, stroke-dashoffset on one path). */
+
+.hz-rim {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hz-draw 2.2s cubic-bezier(0.32, 0.72, 0, 1) 0.15s both;
+}
+.hz-glow {
+  opacity: 0;
+  animation:
+    hz-rise 2.8s cubic-bezier(0.32, 0.72, 0, 1) 0.45s both,
+    hz-breathe 9s ease-in-out 3.3s infinite alternate;
+}
+.hz-in {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: hz-in 0.9s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.hz-in-1 { animation-delay: 0.35s; }
+.hz-in-2 { animation-delay: 0.47s; }
+.hz-in-3 { animation-delay: 0.59s; }
+.hz-in-4 { animation-delay: 0.71s; }
+.hz-in-5 { animation-delay: 0.95s; }
+
+@keyframes hz-draw { to { stroke-dashoffset: 0; } }
+@keyframes hz-rise { to { opacity: 1; } }
+@keyframes hz-breathe { from { opacity: 1; } to { opacity: 0.78; } }
+@keyframes hz-in { to { opacity: 1; transform: none; } }
+
+/* Option D: the product window un-tilts as it scrolls into view. Transform only —
+   never a reveal from opacity 0, which blanks non-scrolling renders. */
+@supports (animation-timeline: view()) {
+  .hz-tilt {
+    transform-origin: 50% 0%;
+    animation: hz-untilt linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 45%;
+  }
+  @keyframes hz-untilt {
+    from { transform: perspective(1800px) rotateX(16deg) scale(0.95); }
+    to { transform: none; }
+  }
+}
+
+/* Scroll cue: a short line with a light travelling down it. */
+.hz-cue > span { animation: hz-cue 2.4s cubic-bezier(0.32, 0.72, 0, 1) 1.6s infinite; transform: translateY(-100%); }
+@keyframes hz-cue { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(340%); } }
+
+/* Round 1c. Fingerprint: each value is struck through in turn. Europe: a light travels the Diegem–Zurich arc,
+   and the two places pulse. */
+.fp-strike { transform: scaleX(0); transform-origin: left center; animation: fp-strike 0.5s cubic-bezier(0.32, 0.72, 0, 1) both; }
+@keyframes fp-strike { to { transform: scaleX(1); } }
+.eo-pulse { stroke-dasharray: 0.16 1; stroke-dashoffset: 1.16; animation: eo-pulse 3.2s cubic-bezier(0.32, 0.72, 0, 1) 1.8s infinite; }
+@keyframes eo-pulse { to { stroke-dashoffset: 0; } }
+.eo-ring { transform-box: fill-box; transform-origin: center; animation: eo-ring 2.6s ease-out 1.4s infinite; }
+@keyframes eo-ring { from { transform: scale(1); opacity: 0.9; } to { transform: scale(4); opacity: 0; } }
+
+/* Round 2 reveal: only blocks marked "armed" (below the fold, JavaScript running) start dimmed; never invisible. */
+[data-reveal] { transition: opacity 0.9s cubic-bezier(0.32, 0.72, 0, 1), transform 0.9s cubic-bezier(0.32, 0.72, 0, 1); }
+[data-reveal='armed'] { opacity: 0.35; transform: translateY(18px); }
+[data-reveal='shown'] { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { transition: none !important; opacity: 1 !important; transform: none !important; }
+  .fp-strike { animation: none !important; transform: none; }
+  .eo-pulse, .eo-ring { animation: none !important; }
+  .eo-ring { opacity: 0; }
+  .hz-cue > span { animation: none !important; transform: none; }
+  .hz-rim, .hz-glow, .hz-in, .hz-tilt {
+    animation: none !important;
+  }
+  .hz-rim { stroke-dashoffset: 0; }
+  .hz-glow, .hz-in { opacity: 1; transform: none; }
+}
+
+/* Round 2c: the rule timeline (How we build D/E/F). Every custom property defaults to 1, the final and fully drawn
+   state; the scroll handler only writes values in [0, 1] and removes them all under reduced motion. Copy is never
+   below opacity 0.35 (motion rule 5). Everything that moves is a transform or an opacity. */
+[data-rt] { --slide: 0px; --line: 1; --kend: 1; --k0: 1; --k1: 1; --k2: 1; --k3: 1; --vline: 1; --v0: 1; --v1: 1; --v2: 1; --v3: 1; }
+[data-rt-pinned='on'] > [data-rt-stage] {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center; padding-top: 72px; padding-bottom: 0;
+}
+[data-rt-track] { transform: translate3d(var(--slide), 0, 0); }
+[data-rt-pinned='on'] [data-rt-track] { will-change: transform; }
+.rt-line { transform: scaleX(var(--line)); transform-origin: left center; }
+.rt-vline { transform: scaleY(var(--vline)); transform-origin: center top; }
+.rt-stem { transform: scaleY(var(--k)); }
+.rt-on { opacity: var(--k); }
+.rt-start { opacity: min(1, calc(var(--line) * 40)); } /* lit as soon as the line has started, never before */
+.rt-icon { opacity: calc(0.35 + 0.65 * var(--k)); }
+.rt-text { opacity: calc(0.35 + 0.65 * var(--k)); transform: translate3d(0, calc((1 - var(--k)) * 12px), 0); }
+
+/* Round 2d: the STEPPED rule timeline (How we build G/H/I). Defaults are the static state: everything reached, no
+   current step. While pinned, a scroll that comes to rest eases on to the next step (RuleStepper); each step eases on
+   Facet's curve: the line first, then the stem, then the copy and the orange "current" marks. */
+[data-rs] { --line: 1; --k0: 1; --k1: 1; --k2: 1; --k3: 1; --c0: 0; --c1: 0; --c2: 0; --c3: 0; --s0: 1; --s1: 0; --s2: 0; --s3: 0; --vline: 1; --v0: 1; --v1: 1; --v2: 1; --v3: 1; }
+[data-rs-pinned='on'] > [data-rs-stage] {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center; padding-top: 72px; padding-bottom: 0;
+}
+.rs-line { transform: scaleX(var(--line)); transform-origin: left center; }
+.rs-vline { transform: scaleY(var(--vline)); transform-origin: center top; }
+.rs-stem { transform: scaleY(var(--k)); }
+.rs-text { opacity: calc(0.35 + 0.65 * var(--k)); transform: translate3d(0, calc((1 - var(--k)) * 10px), 0); }
+.rs-icon { opacity: calc(0.35 + 0.65 * var(--k)); }
+.rs-cur { opacity: var(--c); }
+.rs-on-start, .rs-on-end { opacity: 1; }
+[data-rs-step='-1'] .rs-on-start { opacity: 0; }
+[data-rs-step]:not([data-rs-step='4']) .rs-on-end { opacity: 0; }
+[data-rs-pinned='on'] .rs-line { transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1); }
+[data-rs-pinned='on'] .rs-stem { transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1) 0.25s; }
+[data-rs-pinned='on'] .rs-text,
+[data-rs-pinned='on'] .rs-icon { transition: opacity 0.5s cubic-bezier(0.32, 0.72, 0, 1) 0.3s, transform 0.5s cubic-bezier(0.32, 0.72, 0, 1) 0.3s; }
+[data-rs-pinned='on'] .rs-cur,
+[data-rs-pinned='on'] .rs-on-start,
+[data-rs-pinned='on'] .rs-on-end { transition: opacity 0.4s cubic-bezier(0.32, 0.72, 0, 1) 0.3s; }
+
+/* Round 2e: evidence 'spotlight' shows one panel beside the heading while pinned, and falls back to a card under each
+   rule when static (its row is taller then, to hold them). */
+.rs-spot { display: none; }
+[data-rs-pinned='on'] .rs-spot { display: block; }
+[data-rs-pinned='on'] .rs-spot-inline { display: none; }
+.rs-row-spot { height: 760px; }
+[data-rs-pinned='on'] .rs-row-spot { height: 400px; }
+.rs-spot-item { opacity: var(--s); }
+[data-rs-pinned='on'] .rs-spot-item { transition: opacity 0.4s cubic-bezier(0.32, 0.72, 0, 1) 0.3s; }
+
+
+/* Round 3b: footer wordmark treatments (C1 dots, C2 spotlight). */
+[data-wm='dots'][data-ready] .wm-fallback { visibility: hidden; }
+[data-wm='spotlight'] { --mx: 50%; --my: 62%; }
+.wm-lit {
+  -webkit-mask-image: radial-gradient(circle 230px at var(--mx) var(--my), #000 0%, rgba(0, 0, 0, 0.55) 38%, transparent 72%);
+  mask-image: radial-gradient(circle 230px at var(--mx) var(--my), #000 0%, rgba(0, 0, 0, 0.55) 38%, transparent 72%);
+}
+
+/* The header is fixed (72 px: a 16 px offset and a 56 px bar). A page whose body predates the overhaul starts below it;
+   a page with an overhaul opening (the hero, the sunrise, the blog post's) clears the header itself, so the spacer goes. */
+.site-header-spacer { height: 72px; }
+body:has([data-mock-opening], [data-mock='hero']) .site-header-spacer { display: none; }

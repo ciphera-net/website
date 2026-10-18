@@ -1,49 +1,47 @@
 # Ciphera
 
-> Privacy-first infrastructure: cookieless analytics, zero-knowledge authentication, private bot protection, and tracking-free transactional email. Belgian company with Swiss-hosted infrastructure.
+> Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.
 
-Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Signing in to them runs through Ciphera ID, an internal zero-knowledge sign-in using OPAQUE — passwords never reach the server — which Ciphera does not sell or license to third parties. Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection.
+Ciphera BV is a software company in Diegem, near Brussels, founded on 18 September 2024. Its product is Pulse Analytics, web analytics without cookies (pulse.ciphera.net). Customer data and its backups are stored in Switzerland, at Exoscale in Zurich with backups at Infomaniak, under the Swiss data protection act. Ciphera itself is a Belgian company, so Belgian law and the GDPR apply to it as well.
 
-Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affiliated with ciphera.co (a security consultancy), ciphera.org, ciphera.uk, the Ciphera mobile apps, or any fictional character sharing the name.
+Ciphera BV (ciphera.net) is not affiliated with ciphera.co, ciphera.org, Ciphera Ltd (ciphera.uk) or the Ciphera apps.
 
-## Products
-- [Pulse Analytics](https://ciphera.net/products/pulse): Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.
-- [Ciphera Captcha](https://ciphera.net/products/captcha): Privacy-first bot protection using adaptive proof-of-work and behavioral analysis — no cookies, no cross-site tracking.
-- [Ciphera Relay](https://ciphera.net/products/relay): Privacy-first transactional email infrastructure with TLS 1.3, DKIM, SPF, and DMARC — no tracking pixels.
-- [Tessera](https://ciphera.net/products/tessera): Open-source OPAQUE (RFC 9807) authentication library (Apache-2.0): Rust core and sidecar, Go server SDK, and browser SDK — the password never reaches the server.
+## Product
+- [Pulse Analytics](https://pulse.ciphera.net): Web analytics that shows how your site is doing without cookies and without following anyone. It is hosted in Switzerland and the Personal plan is free forever.
 
-## Infrastructure (not sold)
-- [Ciphera ID](https://ciphera.net/products/id): Internal, not for sale: the zero-knowledge sign-in behind Ciphera’s own applications, using OPAQUE (RFC 9807) — passwords never reach the server.
+## Open source
+- [Tessera](https://github.com/ciphera-net/tessera): The library behind Ciphera's sign-in, an implementation of OPAQUE (RFC 9807) with SDKs for Go and the browser. Apache-2.0.
+- [Pulse dashboard and tracker](https://github.com/ciphera-net/pulse): The app Pulse customers use, and the script that runs on their websites. AGPL-3.0.
+- [Pulse CLI](https://github.com/ciphera-net/pulse-cli): Pulse analytics from the terminal. Apache-2.0.
+- [This website](https://github.com/ciphera-net/website): The code behind ciphera.net. AGPL-3.0.
 
 ## Key facts
-- Founded: 2024, Diegem, Belgium (Ciphera BV)
-- Infrastructure: Swiss-hosted (Exoscale, Zurich CH-DK-2), Swiss FADP protected
-- Authentication: zero-knowledge, OPAQUE (RFC 9807) — passwords never reach the server
-- Open source: OPAQUE implementation released as Tessera (github.com/ciphera-net/tessera, Apache-2.0)
-- Compliance: GDPR and Swiss FADP
-- No cookies, no fingerprinting, no third-party trackers
+- Company: Ciphera BV, enterprise number (KBO/BCE) 1013.721.660, De Kleetlaan 2, 1831 Diegem, Belgium
+- Founded: 18 September 2024
+- Data: stored in Switzerland (Exoscale, Zurich; backups at Infomaniak), under the Swiss data protection act
+- Sign-in: Ciphera's own, built on OPAQUE (RFC 9807); the password never leaves the user's device
+- ciphera.net sets no cookies, and Pulse counts visits without cookies and without building a fingerprint of anyone
 - Carbon footprint: published with a full life-cycle assessment
 
 ## Reference
-- [What is Ciphera?](https://ciphera.net/what-is-ciphera): a plain-language definition of the company and its products
-- [Press & media kit](https://ciphera.net/press): company boilerplate, fact sheet, and brand assets
+- [About](https://ciphera.net/about): the company, who runs it, its registered details and press assets
+- [Trust & security](https://ciphera.net/trust): what we keep, every company we work with, how sign-in works, what is public, and how to report a security problem
+- [Blog](https://ciphera.net/blog): notes on privacy and the web
 - [Glossary](https://ciphera.net/glossary): definitions of privacy and cryptography terms
-- [Learn](https://ciphera.net/learn): in-depth articles per product
-- [Blog](https://ciphera.net/blog): articles on privacy, security, and infrastructure
-- [Trust & Security](https://ciphera.net/trust): architecture proofs, audit status, and disclosure policy
 - [Sustainability](https://ciphera.net/sustainability): measured carbon footprint and methodology
+- [Contact](https://ciphera.net/contact): email addresses and the office
 
 ## Blog
-- [Pulse Is Free for Open-Source Projects and Nonprofits](https://ciphera.net/blog/free-analytics-for-open-source): Pulse's Team tier at €0 for OSI-licensed projects and registered nonprofits — five sites, 100,000 pageviews a month, every feature. The deal is printed on the page: we get to say you use Pulse.
-- [Ciphera × Bunny: A Fully European Stack, Front to Back](https://ciphera.net/blog/bunny-hopstart-second-place): Every public Ciphera surface runs on Bunny, the Slovenia-based European CDN — because infrastructure jurisdiction is a privacy decision. Bunny's HopStart Cohort #3 just put $25,000 in credits behind that choice. Here's why the two fit.
+- [Privacy Tools: What They Are and How to Choose](https://ciphera.net/blog/privacy-tools): Compare the best privacy tools for browsing, messaging, passwords, and website analytics. Learn how to protect your data online.
+- [Cookieless Analytics: How It Works and What It Tracks](https://ciphera.net/blog/cookieless-analytics): Learn how cookieless analytics works, what it tracks, how EU privacy rules apply, and how Pulse measures traffic without cookies.
+- [Pulse Is Free for Open-Source Projects and Nonprofits](https://ciphera.net/blog/free-analytics-for-open-source): Pulse's Business tier at €0 for OSI-licensed projects and nonprofits: five sites, 100,000 pageviews a month, every feature. We get to say you use Pulse.
+- [Ciphera × Bunny: Second Place in HopStart Cohort #3](https://ciphera.net/blog/bunny-hopstart-second-place): Ciphera's public edge runs on Bunny, a Slovenia-based CDN. On 23 July 2026 Bunny's HopStart Cohort #3 put $25,000 in credits behind that choice.
 - [Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)](https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics): The rule behind cookie banners isn't about cookies — it's about storing and reading information on a visitor's device. Here's what EU law actually requires for web analytics in 2026, why 'first-party' doesn't exempt you, and how a genuinely cookieless tool changes the question.
 - [How to Migrate Off Google Analytics: A 2026 Guide](https://ciphera.net/blog/how-to-migrate-off-google-analytics): A practical, honest guide to leaving Google Analytics for a privacy-first tool in 2026 — the timeline you need to know, why teams are switching, what you genuinely gain and lose, and the step-by-step migration (including the historical-data trap nobody warns you about).
 - [Is Your Website Analytics GDPR-Compliant? A 2026 Checklist](https://ciphera.net/blog/is-your-analytics-gdpr-compliant): GDPR applies to your analytics the moment it processes personal data — and an IP address usually counts. A practical, source-backed 2026 checklist: lawful basis, data minimisation, retention, international transfers, and the one design choice that collapses most of it.
-- [Ciphera Captcha vs reCAPTCHA, Turnstile & hCaptcha (2026)](https://ciphera.net/blog/ciphera-captcha-vs-recaptcha-vs-turnstile): The bot-protection widget you add to a form often watches your visitors more than it protects them. A privacy- and jurisdiction-first comparison of reCAPTCHA, Turnstile, hCaptcha, and Ciphera Captcha's proof-of-work, cookieless approach.
-- [Why We Built Our Own Sign-In Instead of Buying Auth0 or Clerk](https://ciphera.net/blog/ciphera-id-vs-auth0-vs-clerk): A build-versus-buy postmortem. Auth0 and Clerk are good products and buying one would have been the sane call. We wrote our own OPAQUE sign-in instead — here is the requirement that forced it, and the bill we are still paying for it.
-- [What We See About You, What We Don't, and Why It Matters](https://ciphera.net/blog/what-we-see-about-you-what-we-dont): Your password never touches our servers. Your email lives in a vault we can't decrypt. Here's the honest accounting of what Ciphera sees — and doesn't.
-- [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 sunsetting April 20, 2,800+ companies face transfer uncertainty.
+- [The EU-US Data Privacy Framework Is Built on an Executive Order — and That's the Problem](https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order): The DPF relies on an executive order, not legislation. With PCLOB gutted and FISA 702 lapsed in June 2026, 2,800+ companies face transfer uncertainty.
 - [Why We Chose BunnyCDN as Ciphera's CDN](https://ciphera.net/blog/why-we-chose-bunnycdn): A CDN terminates TLS and sees every request. For a privacy company, choosing one is a trust decision. Here's the checklist we used, our actual setup, and what running it taught us.
+- [Zero-Knowledge Encryption Guide (2026)](https://ciphera.net/blog/zero-knowledge-encryption-guide): What zero-knowledge encryption actually means — explained through the system we run in production: OPAQUE authentication, blind indexes, and a vault key that never leaves your browser.
 
 ## Policies
 - Privacy policy: https://ciphera.net/privacy
@@ -54,4 +52,4 @@ Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affili
 - Email: hello@ciphera.net
 - Address: De Kleetlaan 2, 1831 Diegem, Belgium
 
-Full corpus (products, glossary, blog, and learn articles in full): https://ciphera.net/llms-full.txt
+Full corpus (the company facts, the glossary, and every blog and learn article): https://ciphera.net/llms-full.txt

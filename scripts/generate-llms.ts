@@ -9,6 +9,7 @@ import path from 'path'
 import { generatedGlossaryTerms as glossaryTerms } from '../lib/glossary.gen'
 import { getBlogPostsSeed } from '../lib/blog'
 import { getLearnArticles } from '../lib/learn'
+import { UNPUBLISHED } from '../components/overhaul/blog/content'
 
 const ROOT = process.cwd()
 const SITE = 'https://ciphera.net'
@@ -18,108 +19,72 @@ const LLMS_FULL_TXT_PATH = path.join(ROOT, 'public', 'llms-full.txt')
 const AI_POLICY =
   "AI training on this site's content is not permitted. Search indexing is allowed."
 
-interface ProductFact {
-  slug: string
-  name: string
-  oneLiner: string
-  paragraph: string
-  bullets: string[]
-  /**
-   * 'product' = something a reader can buy, adopt or install.
-   * 'infrastructure' = something Ciphera runs for its own applications and does
-   * not sell. Ciphera ID is the only entry of the second kind: it has no
-   * self-serve client registration, no OIDC discovery and no SDK, so listing it
-   * beside Pulse or Relay tells a machine reader something untrue. It keeps its
-   * URL and its facts — only the heading it sits under changes.
-   */
-  kind: 'product' | 'infrastructure'
+// * The overhaul (18-10-2026, plan D1, D5): Ciphera is a privacy-first software company whose one product is Pulse
+// * Analytics. Every sentence below is one the rebuilt pages already say (the homepage FAQ and rules, About, Trust),
+// * so the machine-readable summary cannot drift from the site. Change them together.
+// * The four posts the overhaul retires (D39) and the warrant canary's glossary term redirect until the CMS
+// * unpublishes them, so they are left out here as they are from the sitemap.
+const RETIRED_POSTS = new Set<string>(UNPUBLISHED)
+const RETIRED_TERMS = new Set<string>(['warrant-canary'])
+
+const SUMMARY =
+  'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.'
+
+const INTRO =
+  'Ciphera BV is a software company in Diegem, near Brussels, founded on 18 September 2024. Its product is Pulse Analytics, web analytics without cookies (pulse.ciphera.net). Customer data and its backups are stored in Switzerland, at Exoscale in Zurich with backups at Infomaniak, under the Swiss data protection act. Ciphera itself is a Belgian company, so Belgian law and the GDPR apply to it as well.'
+
+const DISAMBIGUATION =
+  'Ciphera BV (ciphera.net) is not affiliated with ciphera.co, ciphera.org, Ciphera Ltd (ciphera.uk) or the Ciphera apps.'
+
+const PULSE = {
+  name: 'Pulse Analytics',
+  url: 'https://pulse.ciphera.net',
+  oneLiner:
+    'Web analytics that shows how your site is doing without cookies and without following anyone. It is hosted in Switzerland and the Personal plan is free forever.',
+  bullets: [
+    'No cookies, and no fingerprint of anyone',
+    'Data stored in Switzerland, backups included',
+    'Exports your data as CSV, Excel or JSON, and you can delete it whenever you want',
+    'The dashboard and the tracking script are open source (AGPL-3.0)',
+  ],
 }
 
-// * Facts below are sourced from each product page's metadata/schema blocks
-// * (app/products/*/page.tsx, first ~60 lines) as of the last manual review.
-// * Update this list if a product page's positioning changes materially.
-const PRODUCTS: ProductFact[] = [
+const OPEN_SOURCE = [
   {
-    slug: 'pulse',
-    kind: 'product',
-    name: 'Pulse Analytics',
-    oneLiner:
-      'Privacy-first website analytics with no cookies, no fingerprinting, and no personal data collection. GDPR compliant by design.',
-    paragraph:
-      'Pulse is cookie-free website analytics: real-time dashboards and geographic insights without tracking individual visitors. The tracking script is 2.7 KB gzipped (measured) and the client — dashboard and tracking script — is open source; the managed cloud backend is not.',
-    bullets: [
-      'No cookies, no fingerprinting techniques, no personal data collection',
-      'GDPR compliant by architecture, not policy',
-      'Tracking script: 2.7 KB gzipped (measured)',
-      'Open-source client (dashboard + tracking script)',
-    ],
-  },
-  {
-    slug: 'id',
-    kind: 'infrastructure',
-    name: 'Ciphera ID',
-    oneLiner:
-      'Internal, not for sale: the zero-knowledge sign-in behind Ciphera’s own applications, using OPAQUE (RFC 9807) — passwords never reach the server.',
-    paragraph:
-      'Ciphera ID is the sign-in behind Ciphera’s own applications, not a product that can be bought or integrated. It authenticates every account with OPAQUE, an asymmetric password-authenticated key exchange standardized in RFC 9807, so the password never leaves the client in any form — not even during registration. The account row holds no email and no name: those live in a vault encrypted on the user’s device, found at sign-in through a blind index. Applications receive a token over OAuth 2.0 with mandatory PKCE. Developers who want this model should use Tessera, the open-source OPAQUE implementation underneath it.',
-    bullets: [
-      'Infrastructure, not a product: no self-serve client registration, no OpenID Connect discovery endpoint, no SDK, no plan and no price',
-      'Zero-knowledge password authentication via OPAQUE (RFC 9807), not password hashing',
-      'No email or name column: profile data is sealed in a client-encrypted vault, located by blind index',
-      'OAuth 2.0 with mandatory PKCE (S256) on all authorization-code flows',
-      'JWT sessions: 15-minute access tokens, 30-day rotating refresh tokens',
-      'The OPAQUE implementation is open-sourced as Tessera (Rust core, Go and TypeScript SDKs, Apache-2.0) — that is the reusable part',
-    ],
-  },
-  {
-    slug: 'captcha',
-    kind: 'product',
-    name: 'Ciphera Captcha',
-    oneLiner:
-      'Privacy-first bot protection using adaptive proof-of-work and behavioral analysis — no cookies, no cross-site tracking.',
-    paragraph:
-      'Ciphera Captcha protects applications from bots with adaptive proof-of-work, puzzle challenges, audio verification, and behavioral risk scoring. It is fully stateless and does not track users across sites.',
-    bullets: [
-      'Adaptive proof-of-work and puzzle challenges',
-      '5-signal behavioral risk scoring',
-      'No cookies, no cross-site tracking',
-      'Fully stateless, self-hosted',
-    ],
-  },
-  {
-    slug: 'relay',
-    kind: 'product',
-    name: 'Ciphera Relay',
-    oneLiner:
-      'Privacy-first transactional email infrastructure with TLS 1.3, DKIM, SPF, and DMARC — no tracking pixels.',
-    paragraph:
-      'Ciphera Relay delivers transactional email (verification, notifications, alerts) with TLS 1.3 encryption in transit and DKIM/SPF/DMARC authentication. It carries no tracking pixels and no open tracking, and is Swiss hosted.',
-    bullets: [
-      'TLS 1.3, DKIM, SPF, and DMARC',
-      'No tracking pixels, no open tracking',
-      'Swiss hosted',
-      '30-day metadata retention',
-    ],
-  },
-  {
-    slug: 'tessera',
-    kind: 'product',
     name: 'Tessera',
-    oneLiner:
-      'Open-source OPAQUE (RFC 9807) authentication library (Apache-2.0): Rust core and sidecar, Go server SDK, and browser SDK — the password never reaches the server.',
-    paragraph:
-      'Tessera is Ciphera\'s open-source implementation of OPAQUE, an asymmetric password-authenticated key exchange in which the password is proven to the server but never transmitted. It ships as three Apache-2.0 packages — a Rust core and sidecar, a Go server SDK, and a browser SDK (npm @ciphera-net/tessera) — and is the authentication layer behind Ciphera ID and Pulse.',
-    bullets: [
-      'OPAQUE (RFC 9807): the password never reaches the server',
-      'Apache-2.0, published to crates.io (ciphera-tessera), npm (@ciphera-net/tessera), and pkg.go.dev (tessera-go)',
-      'Rust core with a published self-audit and threat model',
-      'The authentication core behind Ciphera ID and Pulse',
-    ],
+    url: 'https://github.com/ciphera-net/tessera',
+    what: "The library behind Ciphera's sign-in, an implementation of OPAQUE (RFC 9807) with SDKs for Go and the browser. Apache-2.0.",
   },
+  {
+    name: 'Pulse dashboard and tracker',
+    url: 'https://github.com/ciphera-net/pulse',
+    what: 'The app Pulse customers use, and the script that runs on their websites. AGPL-3.0.',
+  },
+  { name: 'Pulse CLI', url: 'https://github.com/ciphera-net/pulse-cli', what: 'Pulse analytics from the terminal. Apache-2.0.' },
+  { name: 'This website', url: 'https://github.com/ciphera-net/website', what: 'The code behind ciphera.net. AGPL-3.0.' },
 ]
+
+const SIGN_IN = [
+  'Signing in to Ciphera uses a protocol called OPAQUE (RFC 9807). The browser proves that it knows the password without sending it.',
+  'At sign-up the browser creates a record that Ciphera stores. It contains neither the password nor a hash of it. The key needed to test password guesses against that record is kept apart from the database, so a stolen copy of the database is not enough to start guessing.',
+  'Apps get an access token that lasts 15 minutes, and the refresh token behind it changes every time it is used.',
+]
+
+const AUDIT = 'Tessera has a published self-audit and threat model. No independent firm has audited it. Ciphera holds no SOC 2 or ISO 27001 certification.'
 
 function esc(text: string): string {
   return text.replace(/\s+/g, ' ').trim()
+}
+
+function header(lines: string[]) {
+  lines.push('# Ciphera')
+  lines.push('')
+  lines.push(`> ${SUMMARY}`)
+  lines.push('')
+  lines.push(INTRO)
+  lines.push('')
+  lines.push(DISAMBIGUATION)
+  lines.push('')
 }
 
 // ---------------------------------------------------------------------------
@@ -127,59 +92,37 @@ function esc(text: string): string {
 // ---------------------------------------------------------------------------
 
 function buildLlmsTxt(): string {
-  const blogPosts = getBlogPostsSeed().slice(0, 10)
+  const blogPosts = getBlogPostsSeed().filter((p) => !RETIRED_POSTS.has(p.slug)).slice(0, 10)
 
   const lines: string[] = []
+  header(lines)
 
-  lines.push('# Ciphera')
-  lines.push('')
-  lines.push(
-    '> Privacy-first infrastructure: cookieless analytics, zero-knowledge authentication, private bot protection, and tracking-free transactional email. Belgian company with Swiss-hosted infrastructure.'
-  )
-  lines.push('')
-  lines.push(
-    'Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Signing in to them runs through Ciphera ID, an internal zero-knowledge sign-in using OPAQUE — passwords never reach the server — which Ciphera does not sell or license to third parties. Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection.'
-  )
-  lines.push('')
-  lines.push(
-    'Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affiliated with ciphera.co (a security consultancy), ciphera.org, ciphera.uk, the Ciphera mobile apps, or any fictional character sharing the name.'
-  )
+  lines.push('## Product')
+  lines.push(`- [${PULSE.name}](${PULSE.url}): ${esc(PULSE.oneLiner)}`)
   lines.push('')
 
-  lines.push('## Products')
-  for (const p of PRODUCTS.filter((x) => x.kind === 'product')) {
-    lines.push(`- [${p.name}](${SITE}/products/${p.slug}): ${esc(p.oneLiner)}`)
-  }
-  lines.push('')
-
-  lines.push('## Infrastructure (not sold)')
-  for (const p of PRODUCTS.filter((x) => x.kind === 'infrastructure')) {
-    lines.push(`- [${p.name}](${SITE}/products/${p.slug}): ${esc(p.oneLiner)}`)
+  lines.push('## Open source')
+  for (const r of OPEN_SOURCE) {
+    lines.push(`- [${r.name}](${r.url}): ${esc(r.what)}`)
   }
   lines.push('')
 
   lines.push('## Key facts')
-  lines.push('- Founded: 2024, Diegem, Belgium (Ciphera BV)')
-  lines.push('- Infrastructure: Swiss-hosted (Exoscale, Zurich CH-DK-2), Swiss FADP protected')
-  lines.push(
-    '- Authentication: zero-knowledge, OPAQUE (RFC 9807) — passwords never reach the server'
-  )
-  lines.push(
-    '- Open source: OPAQUE implementation released as Tessera (github.com/ciphera-net/tessera, Apache-2.0)'
-  )
-  lines.push('- Compliance: GDPR and Swiss FADP')
-  lines.push('- No cookies, no fingerprinting, no third-party trackers')
+  lines.push('- Company: Ciphera BV, enterprise number (KBO/BCE) 1013.721.660, De Kleetlaan 2, 1831 Diegem, Belgium')
+  lines.push('- Founded: 18 September 2024')
+  lines.push('- Data: stored in Switzerland (Exoscale, Zurich; backups at Infomaniak), under the Swiss data protection act')
+  lines.push("- Sign-in: Ciphera's own, built on OPAQUE (RFC 9807); the password never leaves the user's device")
+  lines.push('- ciphera.net sets no cookies, and Pulse counts visits without cookies and without building a fingerprint of anyone')
   lines.push('- Carbon footprint: published with a full life-cycle assessment')
   lines.push('')
 
   lines.push('## Reference')
-  lines.push(`- [What is Ciphera?](${SITE}/what-is-ciphera): a plain-language definition of the company and its products`)
-  lines.push(`- [Press & media kit](${SITE}/press): company boilerplate, fact sheet, and brand assets`)
+  lines.push(`- [About](${SITE}/about): the company, who runs it, its registered details and press assets`)
+  lines.push(`- [Trust & security](${SITE}/trust): what we keep, every company we work with, how sign-in works, what is public, and how to report a security problem`)
+  lines.push(`- [Blog](${SITE}/blog): notes on privacy and the web`)
   lines.push(`- [Glossary](${SITE}/glossary): definitions of privacy and cryptography terms`)
-  lines.push(`- [Learn](${SITE}/learn): in-depth articles per product`)
-  lines.push(`- [Blog](${SITE}/blog): articles on privacy, security, and infrastructure`)
-  lines.push(`- [Trust & Security](${SITE}/trust): architecture proofs, audit status, and disclosure policy`)
   lines.push(`- [Sustainability](${SITE}/sustainability): measured carbon footprint and methodology`)
+  lines.push(`- [Contact](${SITE}/contact): email addresses and the office`)
   lines.push('')
 
   lines.push('## Blog')
@@ -199,7 +142,7 @@ function buildLlmsTxt(): string {
   lines.push('- Address: De Kleetlaan 2, 1831 Diegem, Belgium')
   lines.push('')
 
-  lines.push(`Full corpus (products, glossary, blog, and learn articles in full): ${SITE}/llms-full.txt`)
+  lines.push(`Full corpus (the company facts, the glossary, and every blog and learn article): ${SITE}/llms-full.txt`)
   lines.push('')
 
   return lines.join('\n')
@@ -210,52 +153,52 @@ function buildLlmsTxt(): string {
 // ---------------------------------------------------------------------------
 
 function buildLlmsFullTxt(): string {
-  const blogPosts = getBlogPostsSeed()
+  const blogPosts = getBlogPostsSeed().filter((p) => !RETIRED_POSTS.has(p.slug))
   const learnArticles = getLearnArticles()
+  const terms = glossaryTerms.filter((t) => !RETIRED_TERMS.has(t.slug))
 
   const lines: string[] = []
-
-  lines.push('# Ciphera')
-  lines.push('')
-  lines.push(
-    '> Privacy-first infrastructure: cookieless analytics, zero-knowledge authentication, private bot protection, and tracking-free transactional email. Belgian company with Swiss-hosted infrastructure.'
-  )
-  lines.push('')
-  lines.push(
-    'Ciphera builds privacy-first infrastructure and applications on zero-knowledge principles: cookieless website analytics (Pulse), private bot protection (Ciphera Captcha), and tracking-free transactional email (Ciphera Relay). Signing in to them runs through Ciphera ID, an internal zero-knowledge sign-in using OPAQUE — passwords never reach the server — which Ciphera does not sell or license to third parties. Ciphera BV is based in Diegem, Belgium, and hosts its infrastructure in Switzerland (Exoscale, Zurich CH-DK-2), under Swiss FADP protection. This file is the comprehensive companion to llms.txt: full product fact sheets, the complete glossary, and every blog and learn article.'
-  )
-  lines.push('')
-  lines.push(
-    'Ciphera BV is a Belgian privacy-software company (ciphera.net). It is not affiliated with ciphera.co (a security consultancy), ciphera.org, ciphera.uk, the Ciphera mobile apps, or any fictional character sharing the name.'
-  )
+  header(lines)
+  lines.push('This file is the companion to llms.txt: the company facts, the complete glossary, and every blog and learn article.')
   lines.push('')
 
-  const factSheet = (heading: string, kind: ProductFact['kind']) => {
-    lines.push(heading)
+  lines.push(`## ${PULSE.name}`)
+  lines.push(`URL: ${PULSE.url}`)
+  lines.push('')
+  lines.push(esc(PULSE.oneLiner))
+  lines.push('')
+  for (const b of PULSE.bullets) {
+    lines.push(`- ${b}`)
+  }
+  lines.push('')
+
+  lines.push('## How sign-in works')
+  lines.push(`URL: ${SITE}/trust#sign-in`)
+  lines.push('')
+  for (const para of SIGN_IN) {
+    lines.push(esc(para))
     lines.push('')
-    for (const p of PRODUCTS.filter((x) => x.kind === kind)) {
-      lines.push(`### ${p.name}`)
-      lines.push(`URL: ${SITE}/products/${p.slug}`)
-      lines.push('')
-      lines.push(esc(p.paragraph))
-      lines.push('')
-      for (const b of p.bullets) {
-        lines.push(`- ${b}`)
-      }
-      lines.push('')
-    }
   }
 
-  factSheet('## Products', 'product')
-  factSheet('## Infrastructure (not sold)', 'infrastructure')
+  lines.push('## Open source')
+  lines.push(`URL: ${SITE}/trust#open-source`)
+  lines.push('')
+  lines.push("Much of Ciphera's code is public on GitHub (github.com/ciphera-net).")
+  lines.push('')
+  for (const r of OPEN_SOURCE) {
+    lines.push(`- [${r.name}](${r.url}): ${esc(r.what)}`)
+  }
+  lines.push('')
+  lines.push(AUDIT)
+  lines.push('')
 
   lines.push('## Glossary')
   lines.push('')
-  if (glossaryTerms.length === 0) {
+  if (terms.length === 0) {
     lines.push('No glossary terms are published yet.')
     lines.push('')
   } else {
-    for (const t of glossaryTerms) {
+    for (const t of terms) {
       lines.push(`### ${t.term}`)
       lines.push(esc(t.short))
       for (const para of t.paragraphs) {
@@ -293,7 +236,7 @@ function buildLlmsFullTxt(): string {
   lines.push('## Trust & Security')
   lines.push('')
   lines.push(
-    'The trust hub sets out what can be checked independently: the zero-knowledge architecture, the open-source cryptographic core (Tessera, Apache-2.0) with its published self-audit and threat model, the full subprocessor list, and the coordinated disclosure policy (security@ciphera.net, with a machine-readable RFC 9116 security.txt).'
+    'The trust page sets out what Ciphera keeps and what it does not, every company it works with, how sign-in works, what is public, and how to report a security problem (security@ciphera.net, with a machine-readable RFC 9116 security.txt).'
   )
   lines.push(`URL: ${SITE}/trust`)
   lines.push('')

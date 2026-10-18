@@ -1,10 +1,11 @@
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import { OverhaulHeader } from '@/components/overhaul/OverhaulHeader'
+import { FooterC } from '@/components/overhaul/footer/FooterC'
 import type { Metadata, Viewport } from 'next'
 import { Geist, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
 import '@ciphera-net/facet/styles'
 import '../styles/globals.css'
+import '../styles/overhaul.css'
 import { env } from '@/lib/env'
 import { cdnUrl } from '@/lib/cdn'
 
@@ -13,10 +14,10 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jet
 
 export const metadata: Metadata = {
   title: {
-    default: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
+    default: 'Ciphera — Privacy-first software, made in Europe',
     template: '%s | Ciphera',
   },
-  description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Captcha bot protection, Relay email, the zero-knowledge Ciphera ID sign-in behind them, and open-source Tessera.',
+  description: 'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.',
   authors: [{ name: 'Ciphera' }],
   creator: 'Ciphera',
   publisher: 'Ciphera',
@@ -42,22 +43,22 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://ciphera.net',
     siteName: 'Ciphera',
-    title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-    description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Captcha bot protection, Relay email, the zero-knowledge Ciphera ID sign-in behind them, and open-source Tessera.',
+    title: 'Ciphera — Privacy-first software, made in Europe',
+    description: 'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.',
     images: [
       {
         url: cdnUrl('/og-homepage.png'),
         width: 1200,
         height: 630,
-        alt: 'Ciphera - Built for privacy',
+        alt: 'Ciphera — Privacy-first software, made in Europe',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     site: '@CipheraNET',
-    title: 'Ciphera - Privacy-First Zero-Knowledge Encryption',
-    description: 'Ciphera is a Belgian privacy-software company: Pulse cookieless analytics, Captcha bot protection, Relay email, the zero-knowledge Ciphera ID sign-in behind them, and open-source Tessera.',
+    title: 'Ciphera — Privacy-first software, made in Europe',
+    description: 'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.',
     images: [cdnUrl('/og-homepage.png')],
   },
   alternates: {
@@ -89,7 +90,7 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href={env.NEXT_PUBLIC_PULSE_API_URL} />
         <link rel="alternate" type="application/rss+xml" title="Ciphera Blog" href="/feed.xml" />
       </head>
-      <body className="relative antialiased min-h-screen flex flex-col bg-background text-foreground">
+      <body className="relative antialiased min-h-screen flex flex-col overflow-x-clip bg-background text-foreground">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:border focus:border-border focus:bg-background focus:px-4 focus:py-2 focus:text-xs focus:text-foreground"
@@ -108,17 +109,21 @@ export default async function RootLayout({
             core through window.pulse, so the two tags work in either order.
             What it collects is described at /privacy §4.3, which went live first. */}
         <Script defer src="https://js.ciphera.net/script.interactions.js" />
-        <Header />
+        {/* The overhaul (18-10-2026): the glass bar (D4), inset (D25), fixed over every page. */}
+        <OverhaulHeader chrome="barGlass" />
         <main id="main-content" className="flex flex-1 flex-col">
-          {/* Continuous vertical rails frame every page: the header nav, this
-              content column, and the footer all share max-w-6xl + border-x, so
-              two hairlines run unbroken from header to footer. flex-1 keeps the
-              column (and its borders) reaching the footer even on short pages. */}
+          {/* The content column keeps its rails (D14); the homepage hero is open above them. flex-1 keeps the column
+              (and its borders) reaching the footer even on short pages. */}
           <div className="mx-auto w-full max-w-6xl flex-1 sm:border-x sm:border-border">
+            <div className="site-header-spacer" aria-hidden="true" />
             {children}
           </div>
         </main>
-        <Footer />
+        {/* D17: footer C, the assembling dot wordmark with the orange dot of the i. It breaks out of the 6xl column
+            to the full width, as it did in the approved mocks, so it keeps that containing width here. */}
+        <div className="mx-auto w-full max-w-6xl">
+          <FooterC wordmark="assemble" accent="tittle" />
+        </div>
         {/*
           * Honeypot link — invisible to real users (positioned off-screen,
           * aria-hidden, untabbable, no pointer events). Link-walking crawlers

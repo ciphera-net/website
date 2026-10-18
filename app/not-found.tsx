@@ -49,12 +49,14 @@ export default function NotFound() {
               >
                 About
               </Link>
-              <Link
-                href="/products/pulse"
+              {/* Pulse has its own site since the overhaul (18-10-2026, D2): a plain link, so Next does not prefetch a
+                  redirect that leaves this origin. */}
+              <a
+                href="https://pulse.ciphera.net"
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 Pulse Analytics
-              </Link>
+              </a>
               <Link
                 href="/contact"
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
