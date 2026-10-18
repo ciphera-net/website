@@ -4,11 +4,11 @@
  *   A — a bordered card: text left, the portrait right (~18rem wide), the idiom app/about/page.tsx already uses.
  *   B — portrait left (4:5 crop, ~280-320px), the name set very large beside it, open (no card).
  *   C — compact and minimal: a small square portrait in one row with name/role/links, the bio as one continuous line.
- *   D — Round 4b (17-10, owner: "missing colors", "not really cool like the landing page"): B's layout, but the
- *       portrait is drawn in the footer wordmark's dot language (FounderDots.tsx) instead of a plain photograph —
- *       this block's one borrowed homepage "moment".
- * The only photograph on the page: FOUNDER.photoSrc (owner's crop 17-10, 552 × 579), black and white, never shown wider
- * than 276 CSS px (half its width, sharp on 2x screens).
+ *   D — Round 4b (17-10): B's layout at the photo's own 552:579 ratio. Until 19-10 the portrait assembled from the
+ *       footer wordmark's dots before the photo showed; the owner removed that animation with the new photo (19-10:
+ *       "lets get rid of the dot assembly animation"), so D now shows the photograph at once.
+ * The only photograph on the page: FOUNDER.photoSrc (the owner's photo of 19-10, graded black and white, 552 × 579),
+ * never shown wider than 276 CSS px (half its width, sharp on 2x screens).
  */
 import Image from 'next/image'
 import { EnvelopeSimple, GithubLogo, LinkedinLogo } from '@phosphor-icons/react/dist/ssr'
@@ -16,7 +16,6 @@ import type { IconProps } from '@phosphor-icons/react'
 import type { ComponentType } from 'react'
 import { Section } from '@/components/overhaul/home/Section'
 import { FOUNDER } from './content'
-import { FounderDots } from './FounderDots'
 
 const LINK_ICON: Record<string, ComponentType<IconProps>> = {
   LinkedIn: LinkedinLogo,
@@ -163,16 +162,14 @@ export function FounderC() {
   )
 }
 
-/** D — Round 4b: B's layout (portrait left, the name set very large beside it, open — no card), but the portrait
- *  is FounderDots: the same photo, drawn as dots that assemble, lit grey-to-white with a warm highlight or two,
- *  instead of a plain crop. Kept at the photo's own 552:579 ratio (B's 4:5 crop was a convenience for a flat
- *  image; the dot grid samples the real file, so it keeps the real file's shape), same widths as B. */
+/** D — B's layout (portrait left, the name set very large beside it, open — no card), at the photo's own 552:579
+ *  ratio rather than B's 4:5 crop, same widths as B. The photograph shows at once (19-10: no dot animation). */
 export function FounderD() {
   return (
     <Section id="founder" eyebrow={FOUNDER.eyebrow} title={FOUNDER.title}>
       <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-10">
         <div className="relative aspect-[552/579] w-[240px] shrink-0 overflow-hidden border border-border sm:w-[264px] lg:w-[276px]">
-          <FounderDots />
+          <Image src={FOUNDER.photoSrc} alt={FOUNDER.photoAlt} fill unoptimized sizes="276px" className="object-cover" />
         </div>
         <div className="flex-1 pt-1">
           <h3 className="font-display text-5xl font-semibold leading-[0.95] tracking-[-0.03em] text-foreground sm:text-6xl">

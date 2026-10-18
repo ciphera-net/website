@@ -56,11 +56,10 @@ export const FOUNDER = {
     'Usman Baig founded Ciphera BV in September 2024 and leads the company.',
     'Questions about how we work go straight to the founder.',
   ],
-  // Owner 17-10: this crop of the same photo (552 × 579, tighter on the face). MOCK ONLY: served from the worktree's
-  // public/ (untracked, like the mock dashboard images). Before shipping it goes to the CDN at a NEW path: the live
-  // About page uses /team/founder-usman.jpg, which must not change until the new page ships. Shown at most 276 CSS px
-  // wide (half its width) so it stays sharp on 2x screens.
-  photoSrc: cdnUrl('/overhaul/founder-17-10-2026.jpg'),
+  // Owner 19-10: the new photo, black and white and graded down so the wall sits back on the dark page (option B of
+  // the founder-photo round), cropped to the same 552 × 579 frame as the photo it replaces. A new name, because the CDN
+  // caches /website/* for a year. Shown at most 276 CSS px wide (half its width) so it stays sharp on 2x screens.
+  photoSrc: cdnUrl('/overhaul/founder-19-10-2026.jpg'),
   photoW: 552,
   photoH: 579,
   photoAlt: 'Usman Baig, founder of Ciphera',
