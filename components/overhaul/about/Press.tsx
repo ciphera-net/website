@@ -119,6 +119,7 @@ export function PressA() {
               className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors duration-150 hover:text-primary"
             >
               <DownloadSimple className="h-4 w-4 shrink-0" aria-hidden="true" /> Download PNG
+              <span className="sr-only">: {a.label}</span>
             </a>
           </div>
         ))}
@@ -158,6 +159,7 @@ export function PressB() {
                 className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors duration-150 hover:text-primary"
               >
                 <DownloadSimple className="h-4 w-4 shrink-0" aria-hidden="true" /> Download PNG
+                <span className="sr-only">: {a.label}</span>
               </a>
             </div>
           )
@@ -274,6 +276,7 @@ export function PressD() {
                 className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors duration-150 hover:text-primary"
               >
                 <DownloadSimple className="h-4 w-4 shrink-0" aria-hidden="true" /> Download PNG
+                <span className="sr-only">: {a.label}</span>
               </a>
             </div>
           )

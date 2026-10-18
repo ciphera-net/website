@@ -64,6 +64,7 @@ function SeeAlso({ term, compact = false }: { term: GlossaryTerm; compact?: bool
               <a data-cms href={s.href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className="text-base text-foreground underline decoration-border underline-offset-4 transition-colors duration-150 hover:decoration-foreground">
                 {s.label}
                 {external && <ArrowUpRight aria-hidden="true" className="ml-1.5 inline-block h-3.5 w-3.5 align-[-1px] text-muted-foreground" />}
+                {external && <span className="sr-only"> (opens in a new tab)</span>}
               </a>
             </li>
           )

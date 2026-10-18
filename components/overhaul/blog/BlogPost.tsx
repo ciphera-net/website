@@ -104,10 +104,16 @@ function PlainOpening({ post, minutes }: { post: BlogPost; minutes: number }) {
   )
 }
 
+/**
+ * The rail scrolls on its own, which clips anything drawn outside its box: its links' focus rings were cut to two lines.
+ * The box is 6 px wider on each side (-mx-1.5) with 6 px of padding (px-1.5), so the links sit exactly where they did
+ * and the ring fits. Not ml-auto: the column (164 px at 1440) is narrower than the max width, and with a width that
+ * overflows its column CSS treats an auto margin as zero, which moved the rail 6 px (measured, 18-10-2026).
+ */
 function TocRail({ headings }: { headings: Heading[] }) {
   return (
     <nav aria-label={POST.contents} data-blog-toc="rail" className="hidden lg:col-start-1 lg:row-start-1 lg:block">
-      <div className="sticky top-28 ml-auto max-h-[calc(100svh-9rem)] max-w-[13rem] overflow-y-auto overscroll-contain pb-4">
+      <div className="sticky top-28 -mx-1.5 max-h-[calc(100svh-9rem)] max-w-[13.75rem] overflow-y-auto overscroll-contain px-1.5 pb-4">
         <p className="text-sm text-muted-foreground">{POST.contents}</p>
         <ul className="mt-4 space-y-3 border-l border-border">
           {headings.map((h) => (
@@ -130,7 +136,7 @@ function TocInline({ headings }: { headings: Heading[] }) {
         <span>
           {POST.contents} <span className="tabular-nums">({headings.length})</span>
         </span>
-        <CaretDown aria-hidden="true" className="h-4 w-4 transition-transform duration-150 group-open:rotate-180" />
+        <CaretDown aria-hidden="true" className="h-4 w-4 transition-transform duration-150 group-open:rotate-180 motion-reduce:transition-none" />
       </summary>
       <ul className="space-y-3 pb-5">
         {headings.map((h) => (

@@ -107,6 +107,9 @@
 .rs-stem { transform: scaleY(var(--k)); }
 .rs-text { opacity: calc(0.35 + 0.65 * var(--k)); transform: translate3d(0, calc((1 - var(--k)) * 10px), 0); }
 .rs-icon { opacity: calc(0.35 + 0.65 * var(--k)); }
+/* Keyboard focus inside a rule the scroll has not reached yet shows it at full strength: focus on copy drawn at 0.35
+   (1.7 to 3:1) was unreadable (accessibility review, 18-10-2026). */
+.rs-text:focus-within { opacity: 1; transform: none; }
 .rs-cur { opacity: var(--c); }
 .rs-on-start, .rs-on-end { opacity: 1; }
 [data-rs-step='-1'] .rs-on-start { opacity: 0; }

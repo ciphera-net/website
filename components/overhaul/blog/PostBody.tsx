@@ -100,12 +100,33 @@ function Blockquote(props: Props) {
   return createElement('blockquote', rest, children)
 }
 
+/**
+ * Two posts' CMS bodies carry an empty <h2>/<h3>, which screen readers list as a heading with no name, and two
+ * comparison tables start with an empty <th>. Empty headings go; an empty header cell becomes a data cell (the corner of
+ * a comparison table, whose column holds row labels: the W3C tables tutorial's advice). An empty heading has no line
+ * box, so removing it moves nothing.
+ */
+function emptyCells() {
+  return (tree: Root) => {
+    visit(tree, 'element', (node: Element, index, parent) => {
+      const empty = !hastToString(node).trim() && !node.children.some((c) => c.type === 'element' && c.tagName !== 'br')
+      if (!empty) return
+      if (/^h[1-6]$/.test(node.tagName) && parent && typeof index === 'number') {
+        parent.children.splice(index, 1)
+        return index
+      }
+      if (node.tagName === 'th') node.tagName = 'td'
+    })
+  }
+}
+
 const processor = unified()
   .use(rehypeParse, { fragment: true })
   .use(cipheraBlocks)
   .use(rehypeSanitize, schema)
   .use(cdnImagesOnly)
   .use(toolLogosValidated)
+  .use(emptyCells)
   .use(headingIds)
   .use(rehypeReact, {
     Fragment,
