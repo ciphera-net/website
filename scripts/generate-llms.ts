@@ -22,10 +22,11 @@ const AI_POLICY =
 // * The overhaul (18-10-2026, plan D1, D5): Ciphera is a privacy-first software company whose one product is Pulse
 // * Analytics. Every sentence below is one the rebuilt pages already say (the homepage FAQ and rules, About, Trust),
 // * so the machine-readable summary cannot drift from the site. Change them together.
-// * The four posts the overhaul retires (D39) and the warrant canary's glossary term redirect until the CMS
-// * unpublishes them, so they are left out here as they are from the sitemap.
+// * The four posts the overhaul retires (D39) and the retired glossary terms (the warrant canary, D6; five
+// * email-authentication terms, D43) redirect, and the CMS keeps them as drafts, so they are left out here as they are
+// * from the sitemap and the glossary's own lists (components/overhaul/glossary/content.ts REMOVED).
 const RETIRED_POSTS = new Set<string>(UNPUBLISHED)
-const RETIRED_TERMS = new Set<string>(['warrant-canary'])
+const RETIRED_TERMS = new Set<string>(['warrant-canary', 'dkim', 'dmarc', 'mta-sts', 'spf', 'transactional-email'])
 
 const SUMMARY =
   'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.'

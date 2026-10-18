@@ -88,7 +88,11 @@ test('the term page has no generateStaticParams — a CMS-runtime kind renders d
   const src = code('app/glossary/[slug]/page.tsx')
   assert.doesNotMatch(src, /generateStaticParams/, 'a build-time param list would miss a term published after this image was built')
   assert.match(src, /const term = await getTerm\(slug\)/)
-  assert.match(src, /await Promise\.all\(term\.related\.map\(\(s\) => getTerm\(s\)\)\)/, 'related-term lookups must resolve concurrently, not one await per item in a .map')
+  // 🔁 Since the overhaul (18-10-2026, D42) the page renders components/overhaul/glossary/GlossaryTerm.tsx, which reads
+  // terms through data.ts's loadTerm() (getTerm() less the retired slugs).
+  const page = code('components/overhaul/glossary/GlossaryTerm.tsx')
+  assert.match(page, /await Promise\.all\(term\.related\.map\(\(s\) => loadTerm\(s\)\)\)/, 'related-term lookups must resolve concurrently, not one await per item in a .map')
+  assert.match(code('components/overhaul/glossary/data.ts'), /return \(await getTerm\(slug\)\) \?\? null/)
 })
 
 test('the sitemap reads each glossary term\'s own modified date, not a frozen one', () => {

@@ -1,130 +1,44 @@
 import type { Metadata } from 'next'
 import { seoForAsync } from '@/lib/seo'
-import Link from 'next/link'
 import { cdnUrl } from '@/lib/cdn'
-import { getGlossaryCategories, getGlossaryTerms } from '@/lib/glossary'
+import { GlossaryIndexPage } from '@/components/overhaul/glossary/GlossaryIndex'
+import { INDEX } from '@/components/overhaul/glossary/content'
+
+// 'glossary' is a runtime kind (lib/cms/runtime-config.ts): the index reads the content zone per request, so a term
+// published in the CMS appears without a build.
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
+  // The WordPress route stub for '/glossary' overrides these at request time (seoForAsync).
   return seoForAsync('/glossary', {
     title: 'Glossary - Privacy, Cryptography & Analytics Terms',
-    description:
-      'Precise definitions of the cryptography, privacy-regulation, analytics, and email-infrastructure terms behind Ciphera — written from implementations we run in production.',
+    description: INDEX.lead,
     alternates: {
       canonical: 'https://ciphera.net/glossary',
     },
     openGraph: {
       title: 'Glossary - Privacy, Cryptography & Analytics Terms | Ciphera',
-      description:
-        'Precise definitions of the cryptography, privacy-regulation, analytics, and email-infrastructure terms behind Ciphera.',
+      description: INDEX.lead,
       url: 'https://ciphera.net/glossary',
       siteName: 'Ciphera',
       locale: 'en_US',
       type: 'website',
       images: [{ url: cdnUrl('/og-homepage.png'), width: 1200, height: 630, alt: 'Ciphera' }],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Glossary - Privacy, Cryptography & Analytics Terms | Ciphera',
+      description: INDEX.lead,
+      images: [cdnUrl('/og-homepage.png')],
+    },
   })
 }
 
-const categoryAnchor = (category: string) =>
-  category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-
-export default async function GlossaryPage() {
-  const glossaryTerms = await getGlossaryTerms()
-  const GLOSSARY_CATEGORIES = await getGlossaryCategories()
-  // Resolved once, here — every category's terms derive from the SAME resolved array,
-  // never a second independent lookup, so a CDN item that failed and fell back for one
-  // category can't disagree with itself across the hero count and the section below.
-  const termsByCategory = (category: string) => glossaryTerms.filter((t) => t.category === category)
-
-  // * DefinedTermSet — the machine-readable index AI engines and rich results
-  // * consume. Each term page carries its own DefinedTerm pointing back here.
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'DefinedTermSet',
-    '@id': 'https://ciphera.net/glossary',
-    name: 'Ciphera Privacy & Infrastructure Glossary',
-    description:
-      'Definitions of cryptography, privacy-regulation, analytics, and email-infrastructure terms, maintained by Ciphera.',
-    url: 'https://ciphera.net/glossary',
-    publisher: {
-      '@type': 'Organization',
-      name: 'Ciphera',
-      url: 'https://ciphera.net',
-    },
-    hasDefinedTerm: glossaryTerms.map((t) => ({
-      '@type': 'DefinedTerm',
-      name: t.term,
-      description: t.short,
-      url: `https://ciphera.net/glossary/${t.slug}`,
-    })),
-  }
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
-
-      {/* Hero */}
-      <section className="border-b border-border">
-        <div className="px-6 py-16 sm:py-24">
-          <p className="text-xs text-muted-foreground">Reference</p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
-            The privacy glossary.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            {glossaryTerms.length} precise definitions — cryptography, regulation, measurement, and
-            email infrastructure — written from implementations we actually run, not paraphrased
-            marketing.
-          </p>
-          {/* Category jump links */}
-          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
-            {GLOSSARY_CATEGORIES.map((c) => (
-              <a
-                key={c}
-                href={`#${categoryAnchor(c)}`}
-                className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {c} ({termsByCategory(c).length})
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Term sections */}
-      {GLOSSARY_CATEGORIES.map((category, i) => {
-        const terms = termsByCategory(category)
-        if (terms.length === 0) return null
-        return (
-          <section
-            key={category}
-            id={categoryAnchor(category)}
-            className="scroll-mt-24 border-b border-border"
-          >
-            <div className="px-6 py-14 sm:py-16">
-              <p className="text-xs text-muted-foreground">
-                {String(i + 1).padStart(2, '0')} · {category}
-              </p>
-              <div className="mt-6 grid grid-cols-1 gap-px border border-border bg-border md:grid-cols-2">
-                {terms.map((t) => (
-                  <Link
-                    key={t.slug}
-                    href={`/glossary/${t.slug}`}
-                    className="group bg-card p-5 transition-colors hover:bg-background"
-                  >
-                    <span className="text-sm font-semibold text-foreground">{t.term}</span>
-                    <span className="mt-1.5 block text-sm leading-relaxed text-muted-foreground">
-                      {t.short.split('. ')[0].replace(/\.$/, '')}.
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )
-      })}
-    </>
-  )
+/**
+ * The glossary index as ruled (D42, plan §5j): the sunrise opening with the term count, the categories as jump links, then
+ * each category's terms as rows (the blog's row grammar, D38). The DefinedTermSet data is emitted by the component, through
+ * jsonLdHtml().
+ */
+export default function GlossaryPage() {
+  return <GlossaryIndexPage variant="a" />
 }

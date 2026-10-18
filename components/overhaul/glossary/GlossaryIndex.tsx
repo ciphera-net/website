@@ -16,7 +16,7 @@ import { jsonLdHtml } from '@/lib/json-ld'
 export type GlossaryIndexVariant = 'a' | 'b' | 'c'
 export const GLOSSARY_INDEX_VARIANTS: GlossaryIndexVariant[] = ['a', 'b', 'c']
 
-const termHref = (slug: string) => `/mock-glossary/term/a/${slug}`
+const termHref = (slug: string) => `/glossary/${slug}`
 const LINK = 'after:absolute after:inset-0 hover:underline hover:decoration-1 hover:underline-offset-4'
 
 function JumpRow({ items }: { items: { href: string; label: string; n?: number; off?: boolean }[] }) {
@@ -135,10 +135,11 @@ export async function GlossaryIndexPage({ variant }: { variant: GlossaryIndexVar
     '@context': 'https://schema.org',
     '@type': 'DefinedTermSet',
     '@id': 'https://ciphera.net/glossary',
-    name: INDEX.title,
-    description: INDEX.lead,
+    name: INDEX.setName,
+    description: INDEX.description,
     url: 'https://ciphera.net/glossary',
-    hasDefinedTerm: terms.map((t) => ({ '@type': 'DefinedTerm', name: t.term, url: `https://ciphera.net/glossary/${t.slug}` })),
+    publisher: { '@id': 'https://ciphera.net/#organization' },
+    hasDefinedTerm: terms.map((t) => ({ '@type': 'DefinedTerm', name: t.term, description: t.short, url: `https://ciphera.net/glossary/${t.slug}` })),
   }
   return (
     <div data-mock-glossary="index" data-mock-variant={variant} data-terms={terms.length}>
