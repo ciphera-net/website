@@ -207,32 +207,52 @@ function PlainRow({ item, chrome, onNavigate }: { item: Item; chrome: Chrome; on
 
 const MOBILE_MENU_ID = 'site-menu-mobile'
 
+/** The phone's groups: the desktop menus' rows, each address once. Documentation stays under Products, and Contact is the
+ * pinned action, not a row (one list on a phone showed both twice). */
+const PHONE_GROUPS: [string, Item[]][] = [
+  ['Products', PRODUCTS],
+  ['Company', COMPANY.filter((it) => it.href !== '/contact')],
+  ['Resources', RESOURCES.filter((it) => it.href !== 'https://docs.ciphera.net')],
+]
+
 /**
- * The phone menu (below md, where the cluster is hidden): the button opens one panel with the desktop menus' own rows
- * under their three labels, the Pulse tile, and the two actions. A disclosure, not a dialog: the page stays where it is,
- * Escape closes it and returns focus to the button, following a link closes it, and it closes when the desktop
- * cluster takes over at md. Same panel surface as the desktop dropdowns.
+ * The phone menu (below md, where the cluster is hidden): one panel with the desktop menus' rows under their three labels,
+ * the Pulse tile, and the two actions, on the same surface as the desktop dropdowns (R11, D67: option A).
+ *
+ * 🔑 A MODAL. While it is open the page behind it is `inert` (no tap, click or Tab reaches it) and does not scroll; a tap
+ * outside the panel lands on the scrim, which closes the menu without pressing what is underneath; Escape closes it and
+ * returns focus to the button; closing fades like opening. It also closes when a link is followed and when the desktop
+ * cluster takes over at md. Until R11 it was a disclosure that closed on `pointerdown` outside it: the panel unmounted
+ * mid-tap, so the rest of the tap landed on the page and opened whatever link was there.
  */
 function MobileMenu({ chrome }: { chrome: Chrome }) {
   const [open, setOpen] = React.useState(false)
+  const [closing, setClosing] = React.useState(false)
   const buttonRef = React.useRef<HTMLButtonElement>(null)
-  const panelRef = React.useRef<HTMLElement>(null)
-  const close = React.useCallback(() => setOpen(false), [])
 
-  // A disclosure, not a dialog, so nothing traps focus; instead the panel closes as soon as focus or a tap lands
-  // outside the button and the panel. Without this, Tab walked on into the page behind the open panel and the links
-  // it covered took focus unseen (accessibility review, 18-10-2026).
+  const close = React.useCallback(() => {
+    setOpen(false)
+    setClosing(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  }, [])
+
+  // The page behind the menu: inert and still while the menu is open.
   React.useEffect(() => {
     if (!open) return
-    const inside = (t: EventTarget | null) =>
-      t instanceof Node && (buttonRef.current?.contains(t) || panelRef.current?.contains(t))
-    const onFocusIn = (e: FocusEvent) => !inside(e.target) && setOpen(false)
-    const onPointerDown = (e: PointerEvent) => !inside(e.target) && setOpen(false)
-    document.addEventListener('focusin', onFocusIn)
-    document.addEventListener('pointerdown', onPointerDown)
+    // Everything beside the header, at every level up to <body>, so a wrapper added around the page later cannot leave
+    // it reachable. Elements already inert are left as they are, and so are left inert afterwards.
+    const behind: HTMLElement[] = []
+    for (let node: Element | null = buttonRef.current?.closest('header') ?? null; node && node !== document.body; node = node.parentElement) {
+      for (const sib of Array.from(node.parentElement?.children ?? [])) {
+        if (sib !== node && sib instanceof HTMLElement && !sib.inert) behind.push(sib)
+      }
+    }
+    for (const el of behind) el.inert = true
+    const root = document.documentElement
+    const overflow = root.style.overflow
+    root.style.overflow = 'hidden'
     return () => {
-      document.removeEventListener('focusin', onFocusIn)
-      document.removeEventListener('pointerdown', onPointerDown)
+      for (const el of behind) el.inert = false
+      root.style.overflow = overflow
     }
   }, [open])
 
@@ -240,25 +260,30 @@ function MobileMenu({ chrome }: { chrome: Chrome }) {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setOpen(false)
+        close()
         buttonRef.current?.focus()
       }
     }
     const wide = window.matchMedia('(min-width: 768px)')
-    const onWide = () => wide.matches && setOpen(false)
+    const onWide = () => wide.matches && close()
     document.addEventListener('keydown', onKey)
     wide.addEventListener('change', onWide)
     return () => {
       document.removeEventListener('keydown', onKey)
       wide.removeEventListener('change', onWide)
     }
-  }, [open])
+  }, [open, close])
 
-  const groups: [string, Item[]][] = [
-    ['Products', PRODUCTS],
-    ['Company', COMPANY],
-    ['Resources', RESOURCES],
-  ]
+  // The exit fade ends the closing state; if the browser never runs it (a background tab), this does.
+  React.useEffect(() => {
+    if (!closing) return
+    const t = window.setTimeout(() => setClosing(false), 400)
+    return () => window.clearTimeout(t)
+  }, [closing])
+
+  const shown = open || closing
+  const state = open ? 'open' : 'closed'
+  const fade = open ? 'animate-in fade-in' : 'pointer-events-none animate-out fade-out fill-mode-forwards'
   return (
     <>
       <button
@@ -267,7 +292,11 @@ function MobileMenu({ chrome }: { chrome: Chrome }) {
         aria-label="Menu"
         aria-expanded={open}
         aria-controls={MOBILE_MENU_ID}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          if (open) return close()
+          setClosing(false)
+          setOpen(true)
+        }}
         className={cn(
           'inline-flex h-10 w-10 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden',
           chrome === 'bar' ? 'border border-border' : chrome === 'barGlass' ? 'border border-white/[0.08] bg-[#0f0f0f]/55 backdrop-blur-xl backdrop-saturate-150' : chrome === 'pillGlass' ? 'rounded-full border border-white/[0.08] bg-[#0f0f0f]/55 backdrop-blur-xl backdrop-saturate-150' : 'rounded-full bg-white/[0.06] ring-1 ring-white/10',
@@ -275,15 +304,29 @@ function MobileMenu({ chrome }: { chrome: Chrome }) {
       >
         {open ? <X className="h-5 w-5 text-foreground" aria-hidden="true" /> : <List className="h-5 w-5 text-foreground" aria-hidden="true" />}
       </button>
-      {open && (
+      {shown && (
+        // The scrim takes the tap that closes the menu, so it never lands on the page underneath. It closes on `click`,
+        // not `pointerdown`: removing it on pointerdown let the rest of the tap fall through to the page.
+        <div
+          aria-hidden="true"
+          data-menu-scrim=""
+          data-state={state}
+          onClick={close}
+          className={cn('fixed inset-0 -z-10 bg-black/60 duration-150 motion-reduce:animate-none md:hidden', fade)}
+        />
+      )}
+      {shown && (
         <nav
-          ref={panelRef}
           id={MOBILE_MENU_ID}
           aria-label="Site"
           data-mock="menu-panel-mobile"
+          data-state={state}
+          onAnimationEnd={(e) => e.target === e.currentTarget && !open && setClosing(false)}
           className={cn(
-            'absolute inset-x-6 top-full mt-3 flex max-h-[calc(100svh-6.5rem)] flex-col animate-in fade-in zoom-in-95 motion-reduce:animate-none sm:inset-x-10 md:hidden',
+            'absolute inset-x-6 top-full mt-3 flex max-h-[calc(100svh-6.5rem)] flex-col duration-150 motion-reduce:animate-none sm:inset-x-10 md:hidden',
             panel[chrome],
+            fade,
+            open ? 'zoom-in-95' : 'zoom-out-95',
           )}
         >
           <div className="min-h-0 overflow-y-auto overscroll-contain p-2">
@@ -294,7 +337,7 @@ function MobileMenu({ chrome }: { chrome: Chrome }) {
                 <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">Web analytics with no cookies, hosted in Switzerland.</span>
               </span>
             </a>
-            {groups.map(([label, items]) => (
+            {PHONE_GROUPS.map(([label, items]) => (
               <div key={label} className="mt-2">
                 <p id={`${MOBILE_MENU_ID}-${label.toLowerCase()}`} className="px-2.5 pb-1 pt-2 text-xs text-muted-foreground">
                   {label}
