@@ -20,6 +20,7 @@ import type { BlogPost, BlogPostMeta } from '@/lib/blog'
 import { POST } from './content'
 import { formatDate, loadPost, loadPosts, neighbours, readMinutes, updatedDate } from './data'
 import { renderPostBody, type Heading } from './PostBody'
+import { TocRail } from './TocRail'
 import { jsonLdHtml } from '@/lib/json-ld'
 import { cdnUrl } from '@/lib/cdn'
 
@@ -102,31 +103,6 @@ function PlainOpening({ post, minutes }: { post: BlogPost; minutes: number }) {
         </div>
       </section>
     </div>
-  )
-}
-
-/**
- * The rail scrolls on its own, which clips anything drawn outside its box: its links' focus rings were cut to two lines.
- * The box is 6 px wider on each side (-mx-1.5) with 6 px of padding (px-1.5), so the links sit exactly where they did
- * and the ring fits. Not ml-auto: the column (164 px at 1440) is narrower than the max width, and with a width that
- * overflows its column CSS treats an auto margin as zero, which moved the rail 6 px (measured, 18-10-2026).
- */
-function TocRail({ headings }: { headings: Heading[] }) {
-  return (
-    <nav aria-label={POST.contents} data-blog-toc="rail" className="hidden lg:col-start-1 lg:row-start-1 lg:block">
-      <div className="sticky top-28 -mx-1.5 max-h-[calc(100svh-9rem)] max-w-[13.75rem] overflow-y-auto overscroll-contain px-1.5 pb-4">
-        <p className="text-sm text-muted-foreground">{POST.contents}</p>
-        <ul className="mt-4 space-y-3 border-l border-border">
-          {headings.map((h) => (
-            <li key={h.id}>
-              <a data-cms href={`#${h.id}`} className="-ml-px block border-l border-transparent pl-4 text-sm leading-snug text-muted-foreground transition-colors duration-150 hover:border-foreground hover:text-foreground">
-                {h.text}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
   )
 }
 
