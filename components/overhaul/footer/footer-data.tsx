@@ -103,10 +103,13 @@ export function SocialRow({ className }: { className?: string }) {
 
 /**
  * One quiet line from the public status feed (status.ciphera.net renders the same file). Renders NOTHING when the feed
- * cannot be read or is stale: a footer on every page must never claim "operational" from old data (status.ciphera.net
- * refuses a stale feed for the same reason). Colour lives in the dot only (Facet: pos / neg tokens).
+ * cannot be read, is stale, or is dated in the future: a footer on every page must never claim "operational" from data
+ * whose age it cannot trust (status.ciphera.net refuses a stale feed for the same reason). Colour lives in the dot only
+ * (Facet: pos / neg tokens).
  */
 const STALE_AFTER_MS = 15 * 60 * 1000
+/** A feed stamped further ahead than this is not fresh either: a negative age proves nothing about the services. */
+const FUTURE_SKEW_MS = 2 * 60 * 1000
 export async function FooterStatus({ className }: { className?: string }) {
   let overall: string | null = null
   try {
@@ -114,7 +117,7 @@ export async function FooterStatus({ className }: { className?: string }) {
     if (r.ok) {
       const f = (await r.json()) as { overall?: string; generatedAt?: string }
       const age = f.generatedAt ? Date.now() - Date.parse(f.generatedAt) : Infinity
-      if (age < STALE_AFTER_MS) overall = f.overall ?? null
+      if (age > -FUTURE_SKEW_MS && age < STALE_AFTER_MS) overall = f.overall ?? null
     }
   } catch {
     overall = null

@@ -422,7 +422,7 @@ export function FormA() {
           </div>
         </Reveal>
         <Reveal delay={90} className="min-w-0">
-          <form noValidate onSubmit={form.submit} className="relative border border-border bg-card p-6 sm:p-8">
+          <form method="post" noValidate onSubmit={form.submit} className="relative border border-border bg-card p-6 sm:p-8">
             <Honeypot form={form} />
             <div className="space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
@@ -453,7 +453,7 @@ export function FormB() {
   return (
     <Section id={FORM.id} eyebrow={FORM.eyebrow} title={FORM.title} lead={LEAD}>
       <Reveal>
-        <form noValidate onSubmit={form.submit} className="relative border border-border bg-card p-6 sm:p-8">
+        <form method="post" noValidate onSubmit={form.submit} className="relative border border-border bg-card p-6 sm:p-8">
             <Honeypot form={form} />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             <TextField form={form} field="name" type="text" autoComplete="name" />
@@ -488,7 +488,7 @@ export function FormC() {
   return (
     <Section id={FORM.id} eyebrow={FORM.eyebrow} title={FORM.title} lead={LEAD}>
       <Reveal>
-        <form noValidate onSubmit={form.submit} className="relative max-w-3xl">
+        <form method="post" noValidate onSubmit={form.submit} className="relative max-w-3xl">
           <Honeypot form={form} />
           <div className="space-y-5">
             <div className="grid gap-5 sm:grid-cols-2">
