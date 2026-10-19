@@ -31,7 +31,7 @@ export function SourceBadge({ source, periodLabel, className }: SourceBadgeProps
         <CircleNotch className="h-4 w-4" />
       )}
       {isLive
-        ? `Measured · ${periodLabel}`
+        ? `From our host's report · ${periodLabel}`
         : `Approximated · Boavizta life-cycle factors`}
     </span>
   )

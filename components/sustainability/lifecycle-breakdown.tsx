@@ -46,7 +46,9 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
   ]
 
   const useOnlyPct = phases.find((p) => p.isUse)?.pct ?? 0
-  const hiddenPct = 100 - useOnlyPct
+  // * Rounded once and the rest taken from it, so the two printed shares always sum to 100.
+  const usePct = Math.round(useOnlyPct)
+  const restPct = 100 - usePct
 
   return (
     <section className="border-b border-border bg-background py-20 lg:py-32">
@@ -59,11 +61,6 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
               We count the whole lifecycle, not just the plug.
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-              Most cloud providers report the CO₂ from electricity use and stop
-              there. That&apos;s the &ldquo;plug&rdquo; phase — and it&apos;s only
-              part of the real impact.
-            </p>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               Every server is manufactured, shipped, used for years, then
               decommissioned. Each step has its own carbon cost. We use the
               Boavizta life-cycle assessment framework, which tracks all four
@@ -71,9 +68,9 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               <strong className="text-foreground">
-                Use phase is only {useOnlyPct.toFixed(0)}% of our real impact.
+                In our estimate, electricity is {usePct}% of the footprint.
               </strong>{' '}
-              Most cloud providers hide the other {hiddenPct.toFixed(0)}%.
+              The other {restPct}% is making, shipping and disposing of the servers.
             </p>
           </div>
 
@@ -126,8 +123,7 @@ export function LifecycleBreakdown({ report }: LifecycleBreakdownProps) {
             </ol>
 
             <p className="mt-4 text-xs text-muted-foreground">
-              Bar segments sized by share of total lifecycle GWP. Use phase highlighted
-              because it is the only phase competitors typically report.
+              Bar segments sized by share of total lifecycle GWP.
             </p>
           </div>
         </div>

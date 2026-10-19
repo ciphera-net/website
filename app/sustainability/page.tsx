@@ -126,7 +126,12 @@ export default async function SustainabilityPage() {
 
   return (
     <>
-      <SustainabilityHero report={report} />
+      {/* The hero is a client component: only the fields it renders reach the page payload. */}
+      <SustainabilityHero
+        co2eKg={report.totals.co2e.amount}
+        periodLabel={report.period.label}
+        source={report.source}
+      />
       <FootprintBento report={report} />
       <SwissGridBlock />
       <LifecycleBreakdown report={report} />

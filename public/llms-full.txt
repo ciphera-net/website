@@ -567,7 +567,7 @@ URL: https://ciphera.net/trust
 
 ## Sustainability
 
-Ciphera measures its infrastructure's carbon footprint with a life-cycle assessment covering all four lifecycle phases — manufacturing, transport, use, and end-of-life — rather than reporting operational energy use alone. Infrastructure runs on Swiss grid electricity, which the Swiss Federal Office of Energy rates at roughly 12 gCO2e/kWh, predominantly hydro and nuclear. Methodology and current figures are published and updated regularly.
+Ciphera measures its infrastructure's carbon footprint with a life-cycle assessment covering all four lifecycle phases — manufacturing, transport, use, and end-of-life — rather than reporting operational energy use alone. Our servers run on Swiss grid electricity. Methodology and current figures are published and updated regularly.
 URL: https://ciphera.net/sustainability
 
 ## Policies

@@ -5,26 +5,31 @@ import Image from 'next/image'
 import { ArrowRight } from '@phosphor-icons/react'
 import { track } from '@/lib/pulse'
 import { sustainabilityHeroBg } from '@/lib/images'
-import type { ImpactReport } from './types'
-import { CountUpNumber } from './count-up-number'
+import type { ReportSource } from './types'
 import { SourceBadge } from './source-badge'
 
+// * A client component's props are serialised into the page payload, so the hero takes only the three fields it
+// * renders, never the whole report (which carries the server inventory).
 interface SustainabilityHeroProps {
-  report: ImpactReport
+  co2eKg: number
+  periodLabel: string
+  source: ReportSource
 }
 
 /**
  * Section 1 — Full-bleed grayscale Swiss-mountain photograph with a gradient
- * that resolves to the solid background on the text side, a count-up CO2e
- * number, and two CTAs. Facet: sharp 0px, monochrome imagery, text on a
+ * that resolves to the solid background on the text side, the CO2e number,
+ * and two CTAs. Facet: sharp 0px, monochrome imagery, text on a
  * gradient-to-background (never on raw photo brightness), scarce orange
  * (only the primary CTA button carries it).
  *
  * The hero number is formatted by magnitude: under 1 kg shows grams,
- * 1-999 kg shows kg, over 1000 kg shows tonnes.
+ * 1-999 kg shows kg, over 1000 kg shows tonnes. It is rendered as its final
+ * value, so the server HTML carries the real figure (the count-up it replaced
+ * started at 0, which is what crawlers and readers without JavaScript saw).
+ * The locale is fixed so the server and the browser format it identically.
  */
-export function SustainabilityHero({ report }: SustainabilityHeroProps) {
-  const co2eKg = report.totals.co2e.amount
+export function SustainabilityHero({ co2eKg, periodLabel, source }: SustainabilityHeroProps) {
   let displayAmount = co2eKg
   let displayUnit = 'kg'
   let decimals = 2
@@ -37,6 +42,10 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
     displayUnit = 't'
     decimals = 2
   }
+  const displayValue = displayAmount.toLocaleString('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  })
 
   return (
     <section className="relative overflow-hidden border-b border-border">
@@ -65,26 +74,24 @@ export function SustainabilityHero({ report }: SustainabilityHeroProps) {
         </h1>
 
         <div className="mt-10 flex items-baseline gap-3">
-          <CountUpNumber
-            value={displayAmount}
-            decimals={decimals}
-            className="font-display text-7xl font-semibold leading-none tabular-nums text-foreground sm:text-8xl"
-          />
+          <span className="font-display text-7xl font-semibold leading-none tabular-nums text-foreground sm:text-8xl">
+            {displayValue}
+          </span>
           <span className="text-2xl font-semibold text-muted-foreground sm:text-4xl">
             {displayUnit}
           </span>
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
           <p className="text-xs text-muted-foreground">
-            CO₂ equivalent · {report.period.label}
+            Estimated CO₂ equivalent · {periodLabel}
           </p>
-          <SourceBadge source={report.source} periodLabel={report.period.label} />
+          <SourceBadge source={source} periodLabel={periodLabel} />
         </div>
 
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          Every Ciphera service runs on one of Europe’s lowest-carbon grids — Swiss hydro and
-          nuclear, ~12 gCO₂e/kWh. Here’s what that actually costs the planet, measured with
-          life-cycle assessment — not estimates.
+          Our servers in Zurich run on one of Europe&apos;s lowest-carbon grids, powered by Swiss
+          hydro and nuclear. Here is our estimate of what they cost the planet, using life-cycle
+          assessment.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center gap-5">

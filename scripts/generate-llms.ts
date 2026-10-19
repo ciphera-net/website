@@ -114,7 +114,7 @@ function buildLlmsTxt(): string {
   lines.push('- Data: stored in Switzerland (Exoscale, Zurich; backups at Infomaniak), under the Swiss data protection act')
   lines.push("- Sign-in: Ciphera's own, built on OPAQUE (RFC 9807); the password never leaves the user's device")
   lines.push('- ciphera.net sets no cookies, and Pulse counts visits without cookies and without building a fingerprint of anyone')
-  lines.push('- Carbon footprint: published with a full life-cycle assessment')
+  lines.push('- Carbon footprint: estimated with life-cycle assessment, method published')
   lines.push('')
 
   lines.push('## Reference')
@@ -122,7 +122,7 @@ function buildLlmsTxt(): string {
   lines.push(`- [Trust & security](${SITE}/trust): what we keep, every company we work with, how sign-in works, what is public, and how to report a security problem`)
   lines.push(`- [Blog](${SITE}/blog): notes on privacy and the web`)
   lines.push(`- [Glossary](${SITE}/glossary): definitions of privacy and cryptography terms`)
-  lines.push(`- [Sustainability](${SITE}/sustainability): measured carbon footprint and methodology`)
+  lines.push(`- [Sustainability](${SITE}/sustainability): estimated carbon footprint and its method`)
   lines.push(`- [Contact](${SITE}/contact): email addresses and the office`)
   lines.push('')
 
@@ -245,7 +245,7 @@ function buildLlmsFullTxt(): string {
   lines.push('## Sustainability')
   lines.push('')
   lines.push(
-    "Ciphera measures its infrastructure's carbon footprint with a life-cycle assessment covering all four lifecycle phases — manufacturing, transport, use, and end-of-life — rather than reporting operational energy use alone. Infrastructure runs on Swiss grid electricity, which the Swiss Federal Office of Energy rates at roughly 12 gCO2e/kWh, predominantly hydro and nuclear. Methodology and current figures are published and updated regularly."
+    "Ciphera measures its infrastructure's carbon footprint with a life-cycle assessment covering all four lifecycle phases — manufacturing, transport, use, and end-of-life — rather than reporting operational energy use alone. Our servers run on Swiss grid electricity. Methodology and current figures are published and updated regularly."
   )
   lines.push(`URL: ${SITE}/sustainability`)
   lines.push('')

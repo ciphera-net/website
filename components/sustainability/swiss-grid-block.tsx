@@ -15,7 +15,7 @@ const gridFacts = [
 ] as const
 
 const sources = [
-  'Hosted on Exoscale, Zurich (CH-DK-2) — 100% on Swiss soil',
+  'Our servers run on Exoscale in Zurich (CH-DK-2). This website is served by bunny.net from servers worldwide.',
   'Sources: Swiss Federal Office of Energy (BFE), 2025 · EU/US averages, Ember 2024',
 ] as const
 
