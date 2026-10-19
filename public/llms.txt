@@ -21,14 +21,14 @@ Ciphera BV (ciphera.net) is not affiliated with ciphera.co, ciphera.org, Ciphera
 - Data: stored in Switzerland (Exoscale, Zurich; backups at Infomaniak), under the Swiss data protection act
 - Sign-in: Ciphera's own, built on OPAQUE (RFC 9807); the password never leaves the user's device
 - ciphera.net sets no cookies, and Pulse counts visits without cookies and without building a fingerprint of anyone
-- Carbon footprint: published with a full life-cycle assessment
+- Carbon footprint: estimated with life-cycle assessment, method published
 
 ## Reference
 - [About](https://ciphera.net/about): the company, who runs it, its registered details and press assets
 - [Trust & security](https://ciphera.net/trust): what we keep, every company we work with, how sign-in works, what is public, and how to report a security problem
 - [Blog](https://ciphera.net/blog): notes on privacy and the web
 - [Glossary](https://ciphera.net/glossary): definitions of privacy and cryptography terms
-- [Sustainability](https://ciphera.net/sustainability): measured carbon footprint and methodology
+- [Sustainability](https://ciphera.net/sustainability): estimated carbon footprint and its method
 - [Contact](https://ciphera.net/contact): email addresses and the office
 
 ## Blog

@@ -145,8 +145,8 @@ export function FootprintBento({ report }: FootprintBentoProps) {
             Six ways your cloud footprint matters
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
-            Climate change is only one of them. We track all six, using the
-            Boavizta life-cycle assessment framework.
+            Climate change is only one of them. We estimate all six with
+            life-cycle assessment, using the Boavizta framework.
           </p>
         </div>
 

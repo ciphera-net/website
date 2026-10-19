@@ -4,18 +4,21 @@ import { pageCardImages } from '@/lib/og/cards'
 
 const CARD = pageCardImages('sustainability')
 
+// * The <meta>, Open Graph, X and JSON-LD descriptions. 🔴 The first three are overridden at request time by the CMS
+// * route stub for /sustainability (lib/seo.ts, seoForAsync), so this is their fallback; the JSON-LD is read from here.
+const DESCRIPTION =
+  "Ciphera's environmental impact: the servers we run in Zurich, estimated with life-cycle assessment, on one of Europe's lowest-carbon grids. We buy no carbon offsets."
+
 export async function generateMetadata(): Promise<Metadata> {
   return seoForAsync('/sustainability', {
     title: 'Environmental Impact',
-    description:
-      "Ciphera's environmental impact — every server we run, measured with life-cycle assessment, powered by one of Europe's lowest-carbon grids (Swiss hydro and nuclear, ~12 gCO₂e/kWh). No offsets, no greenwashing, just receipts.",
+    description: DESCRIPTION,
     alternates: {
       canonical: 'https://ciphera.net/sustainability',
     },
     openGraph: {
       title: 'Environmental Impact | Ciphera',
-      description:
-        'Receipts, not promises. Ciphera runs on one of Europe’s lowest-carbon grids — Swiss hydro and nuclear, ~12 gCO₂e/kWh. See every server, every lifecycle phase, every gram of CO₂.',
+      description: DESCRIPTION,
       url: 'https://ciphera.net/sustainability',
       siteName: 'Ciphera',
       locale: 'en_US',
@@ -25,8 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: 'summary_large_image',
       title: 'Environmental Impact | Ciphera',
-      description:
-        'Receipts, not promises. Ciphera runs on one of Europe’s lowest-carbon grids — Swiss hydro and nuclear.',
+      description: DESCRIPTION,
       images: CARD.twitter,
     },
   })
@@ -42,8 +44,7 @@ export default function SustainabilityLayout({
     '@type': 'WebPage',
     name: 'Environmental Impact — Ciphera',
     url: 'https://ciphera.net/sustainability',
-    description:
-      "Ciphera's environmental impact measured with life-cycle assessment, powered by one of Europe's lowest-carbon grids (Swiss hydro and nuclear, ~12 gCO₂e/kWh).",
+    description: DESCRIPTION,
     publisher: { '@id': 'https://ciphera.net/#organization' },
   }
   return (
