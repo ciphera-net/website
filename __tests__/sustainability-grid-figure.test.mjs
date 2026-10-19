@@ -5,14 +5,15 @@ import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 /**
- * /sustainability states one Swiss grid figure, from one place (lib/sustainability-grid.ts), with its source. Until
- * 19-10-2026 the page said the grid "runs at about 12 grams of CO₂ per kilowatt-hour", cited to the Swiss Federal Office
- * of Energy; no published figure for the electricity used in Switzerland is anywhere near it (42 to 114 g across the
- * sources checked). The figure is now the 2025 Swiss consumer mix from VSE.
+ * /sustainability prints numbers it does not compute. Until 19-10-2026 the page said the Swiss grid "runs at about 12
+ * grams of CO₂ per kilowatt-hour", cited to the Swiss Federal Office of Energy; no published figure for the electricity
+ * used in Switzerland is near it (42 to 114 g across the sources checked), and the figure is now the 2025 consumer mix,
+ * which website-backend serves with its year. The rebuilt page (R12) also dropped the emergency report that stood in for
+ * a missing backend with an invented 0.5 kg.
  *
- * 🔑 SOURCE-LEVEL, like the rest of this suite: the module's figure stays in a plausible consumer-mix range and names
- * its source; no file the site ships states a 12 g grid; the grid block and the page's emergency report both read the
- * module instead of typing a number.
+ * 🔑 SOURCE-LEVEL, like the rest of this suite: no file the site ships states a 12 g grid; the receipt prints the API's
+ * grid figure and year, never a typed one; the grid note, which speaks of 2025, prints only for the 2025 figure; and the
+ * route has no report of its own to fall back on.
  */
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -34,16 +35,6 @@ function code(src) {
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
 }
 
-test('the grid figure is a plausible Swiss consumer-mix value, with its source named', () => {
-  const src = read('lib/sustainability-grid.ts')
-  const g = Number(/gCO2ePerKWh:\s*(\d+(?:\.\d+)?)/.exec(src)?.[1])
-  // VSE's location-based consumer mix: 57 g in 2024, 90 g in 2025, over 180 g in the mid-2010s.
-  assert.ok(g >= 30 && g <= 250, `gCO2ePerKWh is ${g}: outside 30-250 g/kWh, so not a consumer-mix figure`)
-  const source = /source:\s*'([^']+)'/.exec(src)?.[1] ?? ''
-  assert.match(source, /consumer mix/, 'the source must say it is the consumer mix')
-  assert.match(source, /VSE/, 'the source must name its publisher')
-})
-
 test('no file the site ships states a 12 g grid', () => {
   const claims = []
   const scan = (p, src) => {
@@ -64,11 +55,24 @@ test('no file the site ships states a 12 g grid', () => {
   assert.deepEqual(claims, [], `a 12 g grid claim: ${claims.join(' | ')}`)
 })
 
-test('the grid block and the emergency report read the shared figure', () => {
-  const block = code(read('components/sustainability/swiss-grid-block.tsx'))
-  assert.ok((block.match(/SWISS_GRID\.gCO2ePerKWh/g) ?? []).length >= 2, 'the stat and the sentence both read SWISS_GRID')
+test("the receipt prints the API's grid figure and year, never a typed one", () => {
+  const receipt = code(read('components/overhaul/sustainability/receipt.ts'))
+  assert.match(receipt, /nf\(w\.gridGCO2ePerKWh\)/, 'the grid line prints working.gridGCO2ePerKWh')
+  assert.match(receipt, /R\.grid\.source\(w\.gridYear\)/, "the grid line's source carries working.gridYear")
+  assert.doesNotMatch(receipt, /g CO₂e\/kWh[^`]*\b(?:12|42|78|90)\b|\b(?:12|42|78|90) g CO₂e\/kWh/, 'a grid number typed into the receipt')
+})
+
+test('the grid note, which speaks of 2025, prints only for the 2025 figure', () => {
+  const content = read('components/overhaul/sustainability/content.ts')
+  const year = Number(/gridYear:\s*(\d{4})/.exec(content)?.[1])
+  const note = /grid:\s*'([^']+)'/.exec(content)?.[1] ?? ''
+  assert.ok(year >= 2020, 'NOTES.gridYear is missing')
+  assert.ok(note.includes(`In ${year},`), `the grid note does not speak of ${year}: ${note}`)
+  assert.match(code(read('components/overhaul/sustainability/receipt.ts')), /w\.gridYear === NOTES\.gridYear/)
+})
+
+test('the route has no report of its own to fall back on', () => {
   const page = code(read('app/sustainability/page.tsx'))
-  assert.doesNotMatch(page, /gridIntensity:\s*\{\s*amount:\s*\d/, 'the emergency report types its own grid number')
-  assert.match(page, /gridIntensity:\s*\{\s*amount:\s*SWISS_GRID\.gCO2ePerKWh/)
-  assert.match(page, /gridSource:\s*SWISS_GRID\.source/)
+  assert.doesNotMatch(page, /emergencyFallback|amount:\s*\d/, 'the route types a report of its own')
+  assert.match(page, /receiptFrom\(await fetchImpactReport\(\)\)/)
 })

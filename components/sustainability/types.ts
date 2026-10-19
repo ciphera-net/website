@@ -35,13 +35,35 @@ export interface Product {
   energy: NumberWithUnit
 }
 
+/** One server: its type, size and zone. The API never carries host names or what a host runs (website-backend#32). */
 export interface InventoryItem {
-  instance: string
   type: string
   vcpu: number
   ramGb: number
-  zone: 'CH-DK-2' | 'CH-GVA-2'
-  purpose: string
+  zone: string
+}
+
+/**
+ * Every number the /sustainability receipt prints for our own estimate, computed by website-backend (fallback.go,
+ * `Working`): the page formats these and computes nothing. Present on the computed-fallback path, null on the host's.
+ */
+export interface Working {
+  servers: number
+  vcpu: number
+  hours: number
+  wattsPerVcpu: number
+  pue: number
+  energyKWh: number
+  gridGCO2ePerKWh: number
+  gridYear: number
+  useKg: number
+  embodiedKgPerVcpu: number
+  lifetimeYears: number
+  lifetimeHours: number
+  embodiedKg: number
+  totalKg: number
+  /** embodiedKg / totalKg, 0 to 1. */
+  embodiedShare: number
 }
 
 export interface Methodology {
@@ -71,4 +93,6 @@ export interface ImpactReport {
   lifecycle: LifecyclePhases
   methodology: Methodology
   indicators: Indicator[]
+  /** Optional: a backend older than #32 does not send it. */
+  working?: Working | null
 }

@@ -7,9 +7,8 @@ import { env } from '@/lib/env'
 /**
  * Derive the six Boavizta indicators from a report's total GWP. Used as a
  * defensive fallback when the upstream API response omits the `indicators`
- * field (older backend build, schema skew, etc.) — keeps the FootprintBento
- * section from crashing during prerender. Ratios are the same ones used in
- * the emergencyFallback() in app/sustainability/page.tsx.
+ * field (older backend build, schema skew, etc.), so a reader that lists the
+ * indicators always finds six.
  */
 export function deriveIndicators(totalCo2eKg: number): Indicator[] {
   return [
@@ -75,8 +74,8 @@ export function deriveIndicators(totalCo2eKg: number): Indicator[] {
  * degraded state (the page never 500s because of this).
  *
  * Schema safety: if the backend returns a report without the `indicators`
- * field (older build / schema skew), we synthesize them from the total GWP
- * so FootprintBento always has 6 cards to render.
+ * field (older build / schema skew), we synthesize them from the total GWP,
+ * so a reader that lists the indicators always finds six.
  */
 export async function fetchImpactReport(): Promise<ImpactReport | null> {
   const url = `${env.NEXT_PUBLIC_WEBSITE_API_URL}/api/v1/environmental-impact`
@@ -91,7 +90,7 @@ export async function fetchImpactReport(): Promise<ImpactReport | null> {
     }
     const data = (await res.json()) as ImpactReport
     // * Defensive: older backend builds don't return `indicators`. Derive
-    // * them from the total GWP so the page still prerenders cleanly.
+    // * them from the total GWP.
     if (!data.indicators || data.indicators.length === 0) {
       data.indicators = deriveIndicators(data.totals?.co2e?.amount ?? 0)
     }
