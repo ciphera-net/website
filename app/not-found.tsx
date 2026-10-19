@@ -1,72 +1,13 @@
-import Link from 'next/link'
-import { HomeIcon, ArrowLeftIcon } from '@ciphera-net/facet'
-import { BackButton } from './not-found-client'
+import type { Metadata } from 'next'
+import { NotFoundView } from '@/components/overhaul/notfound/NotFoundView'
+import { NOT_FOUND } from '@/components/overhaul/notfound/content'
 
-export const metadata = {
-  title: '404 - Page Not Found',
-  description: 'The page you are looking for could not be found.',
+// The root layout's template adds " | Ciphera". Next adds the noindex itself for a 404.
+export const metadata: Metadata = {
+  title: NOT_FOUND.title,
+  description: NOT_FOUND.lead,
 }
 
 export default function NotFound() {
-  return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center py-12 sm:py-16">
-      <div className="w-full">
-        <div className="max-w-2xl mx-auto text-center px-4">
-          {/* * 404 Number */}
-          <div className="mb-8">
-            <h1 className="font-display text-8xl sm:text-9xl md:text-[12rem] font-semibold text-muted-foreground leading-none">
-              <span className="gradient-text">404</span>
-            </h1>
-          </div>
-
-          {/* * Message */}
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground mb-4">
-            Page Not Found
-          </h2>
-          <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
-            The page you're looking for doesn't exist or has been moved.
-            Let's get you back on track.
-          </p>
-
-          {/* * Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Link href="/" className="btn-primary inline-flex items-center gap-2">
-              <HomeIcon className="w-5 h-5" />
-              Go Home
-            </Link>
-            <BackButton />
-          </div>
-
-          {/* * Helpful Links */}
-          <div className="border-t border-border pt-8">
-            <p className="text-sm text-muted-foreground mb-4">
-              You might be looking for:
-            </p>
-            <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-              <Link
-                href="/about"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                About
-              </Link>
-              {/* Pulse has its own site since the overhaul (18-10-2026, D2): a plain link, so Next does not prefetch a
-                  redirect that leaves this origin. */}
-              <a
-                href="https://pulse.ciphera.net"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Pulse Analytics
-              </a>
-              <Link
-                href="/contact"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Contact
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  return <NotFoundView />
 }
