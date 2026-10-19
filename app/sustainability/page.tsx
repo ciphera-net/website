@@ -8,6 +8,7 @@ import { LifecycleBreakdown } from '@/components/sustainability/lifecycle-breakd
 import { Methodology } from '@/components/sustainability/methodology'
 import { Commitments } from '@/components/sustainability/commitments'
 import { SustainabilityCTA } from '@/components/sustainability/sustainability-cta'
+import { SWISS_GRID } from '@/lib/sustainability-grid'
 
 // * Regenerate the page once per day. The backend has its own 24h cache
 // * so the upstream measurement API is hit at most once per day in the
@@ -59,10 +60,10 @@ function emergencyFallback(): ImpactReport {
     },
     methodology: {
       gridZone: 'CH',
-      gridIntensity: { amount: 12, unit: 'gCO2e/kWh' },
-      gridSource: 'Swiss Federal Office of Energy (BFE), 2025 annualized',
+      gridIntensity: { amount: SWISS_GRID.gCO2ePerKWh, unit: 'gCO2e/kWh' },
+      gridSource: SWISS_GRID.source,
       factorsSource: 'Boavizta (emergency fallback — backend unreachable)',
-      factorsVersion: '2026.2',
+      factorsVersion: '2026.3',
       excludes: [
         'Bunny CDN edge delivery',
         'Office electricity (we have no office)',

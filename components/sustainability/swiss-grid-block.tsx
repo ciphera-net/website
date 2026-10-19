@@ -1,6 +1,7 @@
 import { Check } from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
 import { swissGridBuildingsPhoto } from '@/lib/images'
+import { SWISS_GRID } from '@/lib/sustainability-grid'
 
 /**
  * Section 02 — Swiss grid advantage. About-style editorial split: a grayscale
@@ -11,12 +12,13 @@ import { swissGridBuildingsPhoto } from '@/lib/images'
 const gridFacts = [
   { value: '~60%', label: 'Hydroelectric' },
   { value: '~30%', label: 'Nuclear' },
-  { value: '~12g', label: 'CO₂e/kWh' },
+  // The electricity used in Switzerland, imports included (lib/sustainability-grid.ts has the source).
+  { value: `~${SWISS_GRID.gCO2ePerKWh} g`, label: `CO₂e per kWh used (${SWISS_GRID.year})` },
 ] as const
 
 const sources = [
   'Our servers run on Exoscale in Zurich (CH-DK-2). This website is served by bunny.net from servers worldwide.',
-  'Sources: Swiss Federal Office of Energy (BFE), 2025 · EU/US averages, Ember 2024',
+  `Sources: Swiss Federal Office of Energy (BFE) · ${SWISS_GRID.year} consumer mix: VSE (strom.ch), partly provisional`,
 ] as const
 
 export function SwissGridBlock() {
@@ -43,9 +45,9 @@ export function SwissGridBlock() {
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
             The Alps hand Switzerland roughly 60% of its electricity from hydro — gravity doing
-            the work — and nuclear covers most of the rest. The result is a grid that runs at about
-            12 grams of CO₂ per kilowatt-hour, against ~210 across the EU average and ~360 in the
-            United States.
+            the work — and nuclear covers most of the rest. Counting the power Switzerland imports, the
+            electricity used there averaged about {SWISS_GRID.gCO2ePerKWh} grams of CO₂e per kilowatt-hour in{' '}
+            {SWISS_GRID.year}.
           </p>
 
           {/* Grid composition */}
