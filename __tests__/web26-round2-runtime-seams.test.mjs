@@ -173,27 +173,27 @@ test('buildRedirects flattens a chain and drops a true cycle, mirroring the buil
   assert.match(src, /flattened\.delete\(source\)/)
 })
 
-// ── middleware.ts ────────────────────────────────────────────────────────────────────
+// ── proxy.ts (middleware.ts until R11) ──────────────────────────────────────────────
 
-test('middleware is a no-op with zero CDN reads when "redirect" is off', () => {
-  const src = code('middleware.ts')
-  assert.match(src, /if \(!isRuntimeKind\(KIND\)\) return NextResponse\.next\(\)/)
+test('the redirect half reads nothing from the CDN when "redirect" is off', () => {
+  const src = code('proxy.ts')
+  const fnStart = src.indexOf('async function cmsRedirect')
+  assert.ok(fnStart > 0, 'cmsRedirect must exist')
   // That check must be the FIRST thing in the function body — before any fetch.
-  // middleware.ts makes no fetch() call of its own; resolveRedirectDoc() (the CDN
-  // read, lib/cms/redirect-runtime.ts) is the first thing that could reach the CDN.
-  const fnStart = src.indexOf('export async function middleware')
-  const guardAt = src.indexOf('if (!isRuntimeKind(KIND)) return NextResponse.next()')
+  // proxy.ts makes no fetch() call of its own; resolveRedirectDoc() (the CDN read,
+  // lib/cms/redirect-runtime.ts) is the first thing in this half that could reach the CDN.
+  const guardAt = src.indexOf('if (!isRuntimeKind(KIND)) return null', fnStart)
   const firstFetchAt = src.indexOf('resolveRedirectDoc(', fnStart)
   assert.ok(guardAt > fnStart && firstFetchAt > fnStart && guardAt < firstFetchAt, 'the off-switch must run before any CDN read')
 })
 
-test('middleware never 500s on a CDN failure — it falls through to the normal route', () => {
-  const src = code('middleware.ts')
-  assert.match(src, /\} catch \{\s*\n[\s\S]{0,200}return NextResponse\.next\(\)\s*\n\s*\}/)
+test('the redirect half never 500s on a CDN failure — it falls through to the gate and the normal route', () => {
+  const src = code('proxy.ts')
+  assert.match(src, /\} catch \{\s*\n\s*return null\s*\n\s*\}/)
 })
 
-test('middleware excludes _next, static files and /sys from its matcher', () => {
-  const src = code('middleware.ts')
+test('proxy excludes _next, static files and /sys from its matcher', () => {
+  const src = code('proxy.ts')
   assert.match(src, /matcher: \[.*_next\/.*sys\/.*\]/)
 })
 

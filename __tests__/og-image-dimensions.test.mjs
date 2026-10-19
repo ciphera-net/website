@@ -49,7 +49,7 @@ test('no declaration names an OG size other than the 1200x630 the cards are', ()
       declarations.push({ file: relative(root, file), size: `${m[1]}x${m[2]}` })
     }
   }
-  // Second control: the CMS merges (two in lib/seo.ts, one in lib/cms/page-runtime.ts) and the catch-all route declare
+  // Second control: the CMS merges (two in lib/seo.ts, one in lib/cms/page-runtime.ts) and the CMS page route declare
   // the size of an editor's image by hand.
   assert.ok(declarations.length >= 4, `expected the CMS image declarations, found ${declarations.length}`)
   const novel = declarations.filter((d) => d.size !== '1200x630')

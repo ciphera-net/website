@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getBlogPost } from '@/lib/blog'
 import { BlogPostPage as OverhaulPost } from '@/components/overhaul/blog/BlogPost'
-import { UNPUBLISHED } from '@/components/overhaul/blog/content'
+import { postExists } from '@/components/overhaul/blog/data'
 import { postCardImages } from '@/lib/og/cards'
 
 // 'blog' is a runtime kind (lib/cms/runtime-config.ts): every post renders per request from the
@@ -49,8 +49,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 /** The post page as ruled (D37, plan §5i): option A, opening with the sunrise. */
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  // The four D39 posts redirect before they reach here (lib/redirects.gen.ts); until the CMS unpublishes them, a request
-  // that gets past the redirect must not render a post the site no longer lists.
-  if ((UNPUBLISHED as readonly string[]).includes(slug)) notFound()
+  // proxy.ts asks the same question before anything renders and answers a miss with the rendered not-found page. This
+  // is the backstop for a request it let through (the content index changed in between): a 404, but an empty one.
+  if (!(await postExists(slug))) notFound()
   return <OverhaulPost variant="a" slug={slug} />
 }

@@ -1,5 +1,5 @@
 /**
- * The redirect kind's runtime resolution — shared by middleware.ts (which only cares
+ * The redirect kind's runtime resolution — shared by proxy.ts (which only cares
  * about the match) and /sys/seo-state (which only cares about the state), so neither
  * duplicates the index-read/schema/fallback logic (WEB-26 round 2, §4.1.3a R13).
  */
@@ -27,7 +27,7 @@ export interface RedirectRuntimeState {
 
 let lastState: RedirectRuntimeState = { enabled: isRuntimeKind(KIND), source: 'off' }
 
-/** middleware.ts's only call — returns the document (or undefined on anything short
+/** proxy.ts's only call — returns the document (or undefined on anything short
  * of a healthy, schema-matching index), never throwing past this module. */
 export async function resolveRedirectDoc(): Promise<RedirectDoc | undefined> {
   if (!isRuntimeKind(KIND)) {
@@ -56,7 +56,7 @@ export async function resolveRedirectDoc(): Promise<RedirectDoc | undefined> {
     }
     return doc
   } catch {
-    // A CDN failure must never 500 a request — see middleware.ts's own comment.
+    // A CDN failure must never 500 a request — see proxy.ts's own comment.
     lastState = { enabled: true, source: 'off' }
     return undefined
   }

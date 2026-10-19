@@ -22,6 +22,14 @@ export async function loadTerm(slug: string): Promise<GlossaryTerm | null> {
   return (await getTerm(slug)) ?? null
 }
 
+/**
+ * Whether /glossary/<slug> has a term: the ONE answer, asked by the term route and by proxy.ts before anything renders
+ * (lib/routing/not-found-routes.mjs says why the proxy must ask). A retired term (D6, D43) counts as missing.
+ */
+export async function termExists(slug: string): Promise<boolean> {
+  return (await loadTerm(slug)) !== null
+}
+
 /** 'Privacy & regulation' → 'privacy-regulation', for section anchors. */
 export const anchorOf = (category: string) => category.toLowerCase().replace(/&/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 

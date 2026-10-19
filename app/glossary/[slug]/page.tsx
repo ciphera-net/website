@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTerm } from '@/lib/glossary'
 import { GlossaryTermPage as TermPage } from '@/components/overhaul/glossary/GlossaryTerm'
-import { REMOVED } from '@/components/overhaul/glossary/content'
+import { termExists } from '@/components/overhaul/glossary/data'
 import { termCardImages } from '@/lib/og/cards'
 
 interface Props {
@@ -70,8 +70,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** The term page as ruled (D42, plan §5j): option A, the blog post's form with the sunrise. */
 export default async function GlossaryTermPage({ params }: Props) {
   const { slug } = await params
-  // Retired terms (D6, D43) redirect before they reach here; until WordPress unpublishes them, one that gets past the
-  // redirect must not render a term the glossary no longer lists.
-  if ((REMOVED as readonly string[]).includes(slug)) notFound()
+  // Retired terms (D6, D43) redirect before they reach here. proxy.ts asks the same question before anything renders and
+  // answers a miss with the rendered not-found page; this is the backstop for a request it let through.
+  if (!(await termExists(slug))) notFound()
   return <TermPage variant="a" slug={slug} />
 }
