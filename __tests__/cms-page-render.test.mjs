@@ -5,8 +5,9 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 /**
- * WEB-28 — the CMS page renderer: `CmsPage`/`CmsRichText`/`CmsLink`, the catch-all
- * route (`app/[...slug]/page.tsx`), the preview route (`app/preview/page/[id]/page.tsx`),
+ * WEB-28 — the CMS page renderer: `CmsPage`/`CmsRichText`/`CmsLink`, the CMS page
+ * route (`app/cms-page/[...slug]/page.tsx`, reached through next.config.ts's fallback
+ * rewrite since R11), the preview route (`app/preview/page/[id]/page.tsx`),
  * and the sitemap addition. Source-level, same reason as cms-page-seam.test.mjs.
  */
 
@@ -60,17 +61,17 @@ test('CmsLink narrows next/link so it satisfies the injectable LinkComponentType
   assert.match(src, /href \?\? '#'/)
 })
 
-// ── app/[...slug]/page.tsx (the catch-all) ──────────────────────────────────────────
+// ── app/cms-page/[...slug]/page.tsx (the CMS page route) ────────────────────────────
 
-test('the catch-all has NO generateStaticParams — never even returning [] — so no path is ISR-cached', () => {
-  const src = code('app/[...slug]/page.tsx')
+test('the CMS page route has NO generateStaticParams — never even returning [] — so no path is ISR-cached', () => {
+  const src = code('app/cms-page/[...slug]/page.tsx')
   assert.doesNotMatch(src, /generateStaticParams/)
   assert.match(src, /resolvePage\(pathFromSlug\(slug\)\)/)
   assert.match(src, /if \(!page\) notFound\(\)/)
 })
 
-test('the catch-all builds its own Metadata from the page SEO fields, deriving the canonical when empty', () => {
-  const src = code('app/[...slug]/page.tsx')
+test('the CMS page route builds its own Metadata from the page SEO fields, deriving the canonical when empty', () => {
+  const src = code('app/cms-page/[...slug]/page.tsx')
   assert.match(src, /seo\.canonical \|\| `https:\/\/ciphera\.net\$\{page\.path\}`/)
 })
 

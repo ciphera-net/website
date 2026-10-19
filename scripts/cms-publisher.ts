@@ -442,7 +442,7 @@ async function publishPage(previousIndex: ContentIndex | null): Promise<KindPubl
   }
   const newItems = Object.fromEntries(Object.entries(docsByKey).map(([k, v]) => [k, v.path]))
   // No last-good merge (same reasoning as publishRoute): a page WordPress stops
-  // publishing is simply no longer a page at that address — the catch-all 404s and a
+  // publishing is simply no longer a page at that address — the address 404s and a
   // migrated coded route falls back to its own code, neither of which wants a stale
   // CDN copy resurrected under it.
   const mergedItems = newItems

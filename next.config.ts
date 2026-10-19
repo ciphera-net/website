@@ -3,6 +3,7 @@ import type { NextConfig } from 'next'
 // `npm run generate:redirects` in prebuild and committed as an empty stub so this
 // config resolves on a fresh clone — the same convention as lib/blog-wp.gen.ts.
 import { REDIRECTS } from './lib/redirects.gen'
+import { CMS_PAGE_HEADER, CMS_PAGE_ROUTE } from './lib/routing/not-found-routes.mjs'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -100,6 +101,23 @@ const nextConfig: NextConfig = {
       ...trustHub,
       ...REDIRECTS,
     ]
+  },
+  // * A published CMS page at an address no coded route owns (WEB-28), served at that address. 🔴 `fallback` is the
+  // * point: Next tries it only after EVERY page and dynamic route has failed to match, so a coded route always wins,
+  // * structurally. The header is proxy.ts saying the content index has a page at this path. Without it nothing
+  // * matches, and Next answers with its own not-found page, rendered in full (R11; lib/routing/not-found-routes.mjs).
+  async rewrites() {
+    return {
+      beforeFiles: [],
+      afterFiles: [],
+      fallback: [
+        {
+          source: '/:path*',
+          has: [{ type: 'header', key: CMS_PAGE_HEADER, value: '1' }],
+          destination: `${CMS_PAGE_ROUTE}/:path*`,
+        },
+      ],
+    }
   },
   // * Security headers
   async headers() {

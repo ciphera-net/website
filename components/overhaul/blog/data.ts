@@ -41,6 +41,16 @@ export async function loadPost(slug: string): Promise<BlogPost | null> {
   return getBlogPost(slug)
 }
 
+/**
+ * Whether /blog/<slug> has a post: the ONE answer, asked by the post route and by proxy.ts before anything renders
+ * (lib/routing/not-found-routes.mjs says why the proxy must ask). The four D39 posts redirect before they get here
+ * (lib/redirects.gen.ts); until the CMS unpublishes them, they count as missing.
+ */
+export async function postExists(slug: string): Promise<boolean> {
+  if ((UNPUBLISHED as readonly string[]).includes(slug)) return false
+  return (await loadPost(slug)) !== null
+}
+
 /** The neighbours in the index's order (newest first): previous = the older post, next = the newer one. */
 export function neighbours(posts: BlogPostMeta[], slug: string): { previous: BlogPostMeta | null; next: BlogPostMeta | null } {
   const i = posts.findIndex((p) => p.slug === slug)

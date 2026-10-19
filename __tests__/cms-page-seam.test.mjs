@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 /**
  * WEB-28 — `ciphera_page` as a CMS content kind: the transform
  * (`lib/cms/page-build.ts`), the publisher entry, and the `/sys/seo-state` runtime
- * block. The renderer (CmsPage, the catch-all route, the preview route) is covered by
+ * block. The renderer (CmsPage, the CMS page route, the preview route) is covered by
  * `__tests__/cms-page-render.test.mjs`.
  *
  * 🔑 SOURCE-LEVEL, same reason as web26-round2-runtime-seams.test.mjs: CI runs

@@ -1,6 +1,7 @@
 /**
- * The 'page' kind's runtime resolution (WEB-28, §4.2.1) — shared by the catch-all
- * route, any coded route checking for a CMS override, and `/sys/seo-state`, so none
+ * The 'page' kind's runtime resolution (WEB-28, §4.2.1) — shared by the CMS page
+ * route (`app/cms-page/[...slug]`), proxy.ts's not-found gate, any coded route checking
+ * for a CMS override, and `/sys/seo-state`, so none
  * of them duplicates the index-read/schema/fallback logic (same split as
  * `redirect-runtime.ts`).
  *
@@ -9,7 +10,7 @@
  * (`lib/glossary`, `lib/blog.ts`, `lib/seo.ts`) falls back to a baked-in copy when the
  * CDN is unreachable; this one cannot, so a failure here resolves to `undefined` —
  * exactly what "no CMS page at this path" already means to every caller (render the
- * coded route, or 404 on the catch-all), never a stale page nor a thrown error.
+ * coded route, or answer 404), never a stale page nor a thrown error.
  */
 import type { Metadata } from 'next'
 import { getContentDocument, getContentIndex } from './content-client'

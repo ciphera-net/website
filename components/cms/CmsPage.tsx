@@ -304,8 +304,8 @@ function Section({ section, index, path }: { section: PageSection; index: number
  * whichever version of the page is live (Phase E) — and that registered schema is
  * emitted instead of the generic breadcrumb UNCONDITIONALLY, because code owns it:
  * there is no caller-supplied way to suppress or disagree with it. `breadcrumbs`
- * therefore only ever matters for a path NOT in that registry (the catch-all's new
- * pages, which have no coded breadcrumb of their own); defaults to `true` there.
+ * therefore only ever matters for a path NOT in that registry (new pages at addresses no
+ * coded route owns, which have no coded breadcrumb of their own); defaults to `true` there.
  */
 export function CmsPage({ page, breadcrumbs = true }: { page: PageDocument; breadcrumbs?: boolean }) {
   const schema = productSchemaFor(page.path)

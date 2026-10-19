@@ -62,7 +62,8 @@ export const MIGRATABLE_PAGE_PATHS: readonly string[] = []
  * document nothing will ever read (§4.2.1: "a page whose path is … owned by a coded
  * route that is NOT in the site's migratable list is skipped with a repair").
  * Next's own router enforces the actual precedence at request time regardless (a
- * static or dynamic segment always wins over the catch-all) — this list is the
+ * static or dynamic segment always matches before next.config.ts's fallback rewrite to
+ * the CMS page route) — this list is the
  * publish-time half of that same rule, kept in step by hand because it changes only
  * when a route is added, which is rare and already a PR.
  */
