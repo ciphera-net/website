@@ -13,7 +13,7 @@ const NOT_COUNTED = [
 ] as const
 
 /**
- * Section 6 — How we measure this. Auditor-shaped: narrower column,
+ * Section 6 — How we estimate this. Auditor-shaped: narrower column,
  * content-dense, one welded panel (source, what's included, refresh cadence
  * as internal rows). No imagery.
  */
@@ -54,7 +54,7 @@ export function Methodology({ report }: MethodologyProps) {
             tells you which path served the current numbers — currently:{' '}
             <strong className="text-foreground">
               {report.source === 'exoscale-api'
-                ? 'Live measurement API'
+                ? "Our host's report"
                 : 'Computed fallback'}
             </strong>
             .
@@ -77,7 +77,11 @@ export function Methodology({ report }: MethodologyProps) {
           </ul>
           <p className="text-muted-foreground mb-3">We don&apos;t count:</p>
           <ul className="space-y-1.5 text-muted-foreground">
-            {[...report.methodology.excludes, ...NOT_COUNTED].map((exclusion) => (
+            {[
+              // The backend's own Bunny line is superseded by NOT_COUNTED's, which also names the containers.
+              ...report.methodology.excludes.filter((e) => !e.startsWith('Bunny')),
+              ...NOT_COUNTED,
+            ].map((exclusion) => (
               <li key={exclusion}>✗ {exclusion}</li>
             ))}
           </ul>
@@ -92,7 +96,7 @@ export function Methodology({ report }: MethodologyProps) {
           This page is regenerated every 24 hours. Our provider recomputes its
           report roughly monthly, so the reporting period can lag by weeks or
           months. When no month is available, the page shows our own estimate
-          for the current month. The line above the badge always shows the
+          for the current month. The figure's caption always shows the
           month the numbers cover. Our provider&apos;s
           environmental API is in public{' '}
           <span className="text-muted-foreground">BETA</span> — if the schema
@@ -109,7 +113,7 @@ export function Methodology({ report }: MethodologyProps) {
         <div className="mb-12">
           <p className="text-xs text-muted-foreground">04 · Methodology</p>
           <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            How we measure this
+            How we estimate this
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             No magic, no marketing. Here&apos;s exactly where the numbers come

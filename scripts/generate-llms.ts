@@ -245,7 +245,7 @@ function buildLlmsFullTxt(): string {
   lines.push('## Sustainability')
   lines.push('')
   lines.push(
-    "Ciphera measures its infrastructure's carbon footprint with a life-cycle assessment covering all four lifecycle phases — manufacturing, transport, use, and end-of-life — rather than reporting operational energy use alone. Our servers run on Swiss grid electricity. Methodology and current figures are published and updated regularly."
+    "Ciphera estimates the carbon footprint of its servers with a life-cycle assessment covering all four lifecycle phases (manufacturing, transport, use and end of life), not only operational energy use. Our servers run on Swiss grid electricity. Methodology and current figures are published and updated regularly."
   )
   lines.push(`URL: ${SITE}/sustainability`)
   lines.push('')
