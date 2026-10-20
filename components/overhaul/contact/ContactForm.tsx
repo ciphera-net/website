@@ -14,6 +14,10 @@
  * like one, a message of 10 to 1000 characters, with a counter); and the POST to website-backend `/api/v1/contact`, with
  * the same analytics events. The result is a line in the live region under the button: FORM.sent or FORM.failed.
  *
+ * R11 (D69, 20-10-2026): the line sits 16 px under the button at every width (B's button, line and notes are one grid);
+ * it clears as soon as a field changes, because it is about the message it was sent with; and a line set twice is said
+ * twice (Status empties the region for 100 ms and fills it again).
+ *
  * An error is a line of muted text with a small icon under its field. The field carries aria-invalid and points at the
  * line with aria-describedby, its border goes a step lighter, and focus moves to the first invalid field once the error
  * has rendered. No red, no tint, no panel (FORM.failed and FORM.sent are the build's words and are not drawn in the mock).
@@ -108,6 +112,8 @@ function useContactForm() {
   })
   const [invalid, setInvalid] = React.useState<Record<FieldKey, boolean>>({ name: false, email: false, message: false })
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent' | 'failed' | 'captcha'>('idle')
+  // Bumped whenever a result line is set, even to the line already shown, so Status can say it again.
+  const [statusSeq, setStatusSeq] = React.useState(0)
   const [focusRequest, setFocusRequest] = React.useState<{ field: FieldKey; n: number } | null>(null)
   // The captcha's answer, as the auth pages keep it: an id and a solution, or a token.
   const [captcha, setCaptcha] = React.useState({ id: '', solution: '', token: '' })
@@ -136,9 +142,17 @@ function useContactForm() {
       const value = e.target.value
       if (Date.now() - pageLoadedAt.current > STAMP_MAX_AGE_MS) pageLoadedAt.current = Date.now()
       setValues((v) => ({ ...v, [field]: value }))
+      // A result line is about the message it was sent with: editing the form clears "sent" and "failed".
+      setStatus((s) => (s === 'sent' || s === 'failed' ? 'idle' : s))
       // A field that has been flagged re-checks as you type, so its line goes the moment the problem is fixed.
       if (field !== 'subject' && invalid[field]) setInvalid((s) => ({ ...s, [field]: !isValid(field, value) }))
     }
+  }
+
+  /** Every result line is set through here, so a line set twice still reaches the live region twice. */
+  function announce(next: 'sending' | 'sent' | 'failed' | 'captcha') {
+    setStatus(next)
+    setStatusSeq((n) => n + 1)
   }
 
   function verify(id: string, solution: string, token?: string) {
@@ -170,10 +184,10 @@ function useContactForm() {
       return
     }
     if (!captcha.token && (!captcha.id || !captcha.solution)) {
-      setStatus('captcha')
+      announce('captcha')
       return
     }
-    setStatus('sending')
+    announce('sending')
     try {
       const response = await fetch(`${env.NEXT_PUBLIC_WEBSITE_API_URL}/api/v1/contact`, {
         method: 'POST',
@@ -195,20 +209,20 @@ function useContactForm() {
         // 403: the security check failed or expired (website-backend contact.go), so the visitor redoes it. Anything else
         // keeps the general line, which names the email address as the way round. A 400 can be the page stamp: re-stamp.
         pageLoadedAt.current = Date.now()
-        setStatus(response.status === 403 ? 'captcha' : 'failed')
+        announce(response.status === 403 ? 'captcha' : 'failed')
         track('contact_form_submit_error')
         return
       }
-      setStatus('sent')
+      announce('sent')
       setValues({ name: '', email: '', subject: FORM.subjects[0].value, message: '' })
       track('contact_form_submit_success')
     } catch {
-      setStatus('failed')
+      announce('failed')
       track('contact_form_submit_error')
     }
   }
 
-  return { uid, values, invalid, status, change, submit, verify, honeypotRef, captchaKey }
+  return { uid, values, invalid, status, statusSeq, change, submit, verify, honeypotRef, captchaKey }
 }
 
 type MockForm = ReturnType<typeof useContactForm>
@@ -360,19 +374,36 @@ function SubmitButton({ form }: { form: MockForm }) {
  * appears already full is not announced. Muted text with a small icon, like an error: not a success panel (no state is
  * a colour on this page).
  */
-function Status({ form }: { form: MockForm }) {
+function Status({ form, className }: { form: MockForm; className?: string }) {
   const words =
     form.status === 'sent' ? `${FORM.sent.title} ${FORM.sent.line}` :
     form.status === 'failed' ? `${FORM.failed.title} ${FORM.failed.line}` :
     form.status === 'captcha' ? FORM.captchaFirst :
     form.status === 'sending' ? FORM.sending :
     null
+  // A line set again (Send pressed twice before the check) changes no text, so a screen reader would say nothing. Then, and
+  // only then, the region is emptied and filled again 100 ms later. (Emptying it and refilling it in the next animation
+  // frame is not enough: React batches the two updates into one render and the DOM never changes; measured, 0 mutations.)
+  const [blank, setBlank] = React.useState(false)
+  const last = React.useRef({ seq: form.statusSeq, words })
+  React.useEffect(() => {
+    const repeated = form.statusSeq !== last.current.seq && words === last.current.words
+    last.current = { seq: form.statusSeq, words }
+    if (!repeated) {
+      setBlank(false)
+      return
+    }
+    setBlank(true)
+    const timer = window.setTimeout(() => setBlank(false), 100)
+    return () => window.clearTimeout(timer)
+  }, [form.statusSeq, words])
+  const shown = blank ? null : words
   return (
-    <div role="status">
-      {words && (
+    <div role="status" className={className}>
+      {shown && (
         <p className="mt-4 flex items-start gap-2 text-sm text-muted-foreground">
           <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-          {words}
+          {shown}
         </p>
       )}
     </div>
@@ -462,15 +493,19 @@ export function FormB() {
             <MessageField form={form} rows={6} className="md:col-span-2 lg:col-span-3" />
           </div>
           <CaptchaBox form={form} className="mt-5 max-w-md" />
-          {/* items-start: in a column the button keeps its own width from sm (w-full still fills a phone); from lg the row centres. */}
-          <div className="mt-8 flex flex-col items-start gap-5 lg:flex-row lg:items-center lg:gap-8">
+          {/* ONE grid for the button, its result line and the notes (R11, D69). Below lg one column, in that order, so the line
+              sits right under the button on a phone (it was under the notes, 120 px away and off the screen); from lg the
+              button and the notes share the first row, centred, and the line takes the whole second row, as before.
+              justify-items-start: the button keeps its own width from sm (w-full still fills a phone). No row gap, so an
+              empty line takes no space: the spacing is the line's own mt-4 and the notes' mt-5 (lg:mt-0). */}
+          <div className="mt-8 grid justify-items-start lg:grid-cols-[auto_minmax(0,1fr)] lg:items-center lg:gap-x-8">
             <SubmitButton form={form} />
-            <div className="space-y-1 text-sm text-muted-foreground">
+            <Status form={form} className="w-full lg:col-span-2 lg:row-start-2" />
+            <div className="mt-5 space-y-1 text-sm text-muted-foreground lg:col-start-2 lg:row-start-1 lg:mt-0">
               <PrivacyNote />
               <SecurityNote />
             </div>
           </div>
-          <Status form={form} />
         </form>
       </Reveal>
     </Section>
