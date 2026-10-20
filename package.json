@@ -23,7 +23,7 @@
     "selftest:cms-publisher": "node dist/cms-publisher/publisher.mjs --self-test"
   },
   "dependencies": {
-    "@ciphera-net/facet": "^0.4.7",
+    "@ciphera-net/facet": "^0.4.8",
     "@ciphera-net/facet-sections": "^0.3.1",
     "@ciphera-net/facet-tailwind": "^0.2.0",
     "@phosphor-icons/react": "^2.1.10",
