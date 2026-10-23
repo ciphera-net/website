@@ -16,8 +16,8 @@
  * Every row links to the post in option A's post layout (ruled, D37), so the dev server can be browsed end to end.
  */
 import { PageOpeningC } from '@/components/overhaul/system/PageOpening'
-import { cdnUrl } from '@/lib/cdn'
 import { cn } from '@/lib/utils'
+import { postCardUrl } from '@/lib/og/cards'
 import type { BlogPostMeta } from '@/lib/blog'
 import { CATEGORIES, CATEGORY_UI, INDEX, type CategoryKey } from './content'
 import { formatDate, loadPosts } from './data'
@@ -89,11 +89,16 @@ function ListA({ posts }: { posts: BlogPostMeta[] }) {
   )
 }
 
+/**
+ * A post's image on the index is its own card (D52): the dotted card its page declares as og:image, drawn from its title
+ * by lib/og, so every post has one and nothing is uploaded. One image per post on both blogs (23-10-2026, option A of the
+ * index round), the list rows included. The card repeats the entry's title, so it is decorative (`alt=""`).
+ */
 function Cover({ post, eager, className }: { post: BlogPostMeta; eager: boolean; className?: string }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- the CDN serves the card as is; the title is in the text
+    // eslint-disable-next-line @next/next/no-img-element -- the card route serves the card as is; the title is in the text
     <img
-      src={cdnUrl(post.image)}
+      src={postCardUrl(post.slug, post.title)}
       alt=""
       width={1200}
       height={630}

@@ -9,7 +9,7 @@ import { getTerm } from '@/lib/glossary'
 import { getLearnArticle } from '@/lib/learn'
 import { getPulsePostTitle } from '@/lib/cms/pulse-posts'
 import type { OgCard, OgKind } from './spec'
-import { learnKey, ogCardImages } from './url'
+import { cardPath, learnKey, ogCardImages } from './url'
 
 /**
  * The words on every card (D52; plan §5l): each page's own opening, the words a visitor reads first. Labels are the
@@ -38,6 +38,9 @@ export const termCard = (term: string): OgCard => ({ label: 'Glossary', title: t
 export const learnCard = (title: string): OgCard => ({ label: 'Learn', title })
 /** A pulse.ciphera.net post: ciphera.net's post card with Pulse's lockup. */
 export const pulsePostCard = (title: string): OgCard => ({ label: 'Blog', title, brand: 'pulse' })
+
+/** A post's card address, site-relative: its og:image, and its image on the blog index and in its BlogPosting. */
+export const postCardUrl = (slug: string, title: string) => cardPath('post', slug, postCard(title))
 
 /** A coded page's card images, for its metadata. */
 export const pageCardImages = (key: PageCardKey) => ogCardImages('page', key, PAGE_CARDS[key])

@@ -90,3 +90,13 @@ test('the fonts and marks the route reads from disk are traced into the standalo
     assert.ok(traced, `${file} is read by the card route but not traced into the build`)
   }
 })
+
+test('a post’s image is its card on the blog index and in its BlogPosting, never an uploaded image', () => {
+  // One image per post on both blogs (23-10-2026, option A of the index round): every slot on the index, the small list
+  // rows included, shows the card the page declares as og:image.
+  assert.match(read('lib', 'og', 'cards.ts'), /export const postCardUrl = \(slug: string, title: string\) => cardPath\('post', slug, postCard\(title\)\)/)
+  const index = read('components', 'overhaul', 'blog', 'BlogIndex.tsx')
+  assert.match(index, /src=\{postCardUrl\(post\.slug, post\.title\)\}/)
+  assert.doesNotMatch(index, /post\.image|cdnUrl\(/, 'the blog index still shows an uploaded image')
+  assert.match(read('components', 'overhaul', 'blog', 'BlogPost.tsx'), /image: `https:\/\/ciphera\.net\$\{postCardUrl\(slug, post\.title\)\}`/)
+})
