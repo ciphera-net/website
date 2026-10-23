@@ -9,10 +9,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // * Standalone output for Docker image builds (small runtime, no node_modules at runtime)
   output: 'standalone',
-  // * The OG card route reads its Geist files from disk (lib/og/render.tsx), which file tracing cannot see from the
-  // * code: without this the standalone build ships the route and not its fonts, and every card answers 500.
+  // * The OG card route reads its Geist files and the lockups' marks from disk (lib/og/render.tsx), which file tracing
+  // * cannot see from the code: without this the standalone build ships the route and not its fonts, and every card
+  // * answers 500. (Ciphera's mark is public/ciphera_icon.png, which the image copies whole.)
   outputFileTracingIncludes: {
-    '/og/[file]': ['./lib/og/fonts/**'],
+    '/og/[file]': ['./lib/og/fonts/**', './lib/og/brand/**'],
   },
   // * Privacy-first: Disable analytics and telemetry
   productionBrowserSourceMaps: false,

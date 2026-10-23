@@ -23,6 +23,7 @@ import { renderPostBody, type Heading } from './PostBody'
 import { TocRail } from './TocRail'
 import { jsonLdHtml } from '@/lib/json-ld'
 import { cdnUrl } from '@/lib/cdn'
+import { postCardImages } from '@/lib/og/cards'
 
 export type PostVariant = 'a' | 'b' | 'c' | 'plain'
 export const POST_VARIANTS: PostVariant[] = ['a', 'b', 'c', 'plain']
@@ -251,8 +252,8 @@ export function BlogPostView({ variant, post, posts }: { variant: PostVariant; p
       description: post.description,
       url,
       inLanguage: 'en',
-      // The cover the index shows and the social card, as the template before the overhaul declared it.
-      ...(post.image ? { image: cdnUrl(post.image) } : {}),
+      // The post's card, the image its page declares as og:image (D52): one image per post (23-10-2026).
+      image: `https://ciphera.net${postCardImages(slug, post.title).openGraph[0].url}`,
       datePublished: post.date.slice(0, 10),
       dateModified: (updated ?? post.date).slice(0, 10),
       wordCount: post.wordCount,

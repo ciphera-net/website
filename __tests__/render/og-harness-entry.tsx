@@ -8,6 +8,8 @@ import { DOT_BASELINE, DOT_LINE_HEIGHT, DOT_SIZE } from '../../lib/og/dots'
 import { TITLE, wrapLead, wrapTitle } from '../../lib/og/layout'
 import { SATORI_BASELINE, renderCard, renderCover, titleDots } from '../../lib/og/render'
 import { cardHash, cardPath, coverHash, coverPath, hasSystemCard, parseCardFile } from '../../lib/og/url'
+import { __resetContentCacheForTests, getContentIndex } from '../../lib/cms/content-client'
+import { getPulsePostTitle } from '../../lib/cms/pulse-posts'
 
 const semibold = readFileSync('lib/og/fonts/Geist-SemiBold.ttf')
 const fonts = [{ name: 'Geist', data: semibold, weight: 600 as const, style: 'normal' as const }]
@@ -31,7 +33,67 @@ function wordGaps({ width, height, alpha }: { width: number; height: number; alp
   return runs.slice(1).map((r, i) => r[0] - runs[i][1]).filter((g) => g > 14)
 }
 
+/**
+ * The Pulse blog's loader (lib/cms/pulse-posts.ts) and the content client under it, against a fake content CDN: the
+ * answers the card route turns into 200, 404 and 503, and the index cache kept per site.
+ */
+async function pulseLoader() {
+  const realFetch = globalThis.fetch
+  const asked: string[] = []
+  const live = { slug: 'google-analytics-alternative', title: 'Google Analytics Alternative: Free, Cookieless, No Banner' }
+  const items = { [live.slug]: `content/pulse/blog/${live.slug}.cc351e52.json`, untitled: 'content/pulse/blog/untitled.00000000.json' }
+  let pulse: { status: number; body?: unknown } = { status: 200, body: { version: 1, site: 'pulse', kinds: { blog: { schema: 1, items } } } }
+  const json = (status: number, body: unknown) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } })
+  globalThis.fetch = (async (input: string | URL | Request) => {
+    const url = String(input)
+    asked.push(url)
+    if (url.endsWith('/content/ciphera-net/index.json')) return json(200, { version: 1, site: 'ciphera-net', kinds: {} })
+    if (url.endsWith('/content/pulse/index.json')) return pulse.body ? json(pulse.status, pulse.body) : new Response('', { status: pulse.status })
+    if (url.endsWith(items[live.slug])) return json(200, live)
+    if (url.endsWith(items.untitled)) return json(200, { slug: 'untitled' })
+    return new Response('', { status: 404 })
+  }) as typeof fetch
+  const settle = (p: Promise<string | null>) => p.then((value) => ({ value }), (e: Error) => ({ error: e.message }))
+  const fresh = (next: typeof pulse) => {
+    __resetContentCacheForTests()
+    pulse = next
+  }
+  try {
+    __resetContentCacheForTests()
+    // Both sites' indexes inside one 15 s window: each answers for its own site, and the third read is the cached one.
+    const sites = [(await getContentIndex('ciphera-net'))?.site, (await getContentIndex('pulse'))?.site, (await getContentIndex('ciphera-net'))?.site]
+    const indexReads = asked.filter((a) => a.endsWith('/index.json')).length
+    const found = await settle(getPulsePostTitle(live.slug))
+    const absent = await settle(getPulsePostTitle('no-such-post'))
+    const prototype = await settle(getPulsePostTitle('constructor'))
+    const untitled = await settle(getPulsePostTitle('untitled'))
+    fresh({ status: 200, body: { version: 1, site: 'pulse', kinds: { blog: { schema: 2, items } } } })
+    const schema = await settle(getPulsePostTitle(live.slug))
+    fresh({ status: 200, body: { version: 1, site: 'pulse', kinds: {} } })
+    const noBlog = await settle(getPulsePostTitle(live.slug))
+    fresh({ status: 404 })
+    const neverPublished = await settle(getPulsePostTitle(live.slug))
+    fresh({ status: 500 })
+    const down = await settle(getPulsePostTitle(live.slug))
+    return { sites, indexReads, found, absent, prototype, untitled, schema, noBlog, neverPublished, down }
+  } finally {
+    globalThis.fetch = realFetch
+    __resetContentCacheForTests()
+  }
+}
+
+/**
+ * Run with `--isolation` from a folder that has the fonts and Ciphera's mark but not Pulse's: a brand's missing file
+ * must fail only that brand's cards.
+ */
+async function isolation() {
+  const words = { label: 'Blog', title: 'Privacy Tools' }
+  const attempt = (brand?: 'pulse') => renderCard({ ...words, brand }).then((b) => ({ bytes: b.byteLength }), (e: NodeJS.ErrnoException) => ({ error: e.code ?? e.message }))
+  console.log(JSON.stringify({ ciphera: await attempt(), pulse: await attempt('pulse'), cipheraAfter: await attempt() }))
+}
+
 async function main() {
+  if (process.argv.includes('--isolation')) return isolation()
   // 1. Where Satori puts a 100 px Geist SemiBold glyph's baseline in a node at top 0: the row under the H's bottom edge.
   const h = await alphaOf(<div style={{ display: 'flex', position: 'relative', width: 200, height: 130 }}><div style={{ ...GLYPH, position: 'absolute', left: 10, top: 0 }}>H</div></div>, 200, 130)
   let bottom = -1
@@ -74,6 +136,39 @@ async function main() {
     }
   }
 
+  // 5. Brands (23-10-2026): a Pulse card is Ciphera's card with Pulse's lockup. The same words drawn for both brands
+  //    differ only inside the lockup; Ciphera named explicitly is the card drawn with no brand, byte for byte.
+  const words = { label: 'Blog', title: 'Google Analytics Alternative: Free, Cookieless, No Banner' }
+  const plainPng = new Uint8Array(await renderCard(words))
+  const namedPng = new Uint8Array(await renderCard({ ...words, brand: 'ciphera' }))
+  const pulsePng = new Uint8Array(await renderCard({ ...words, brand: 'pulse' }))
+  const p0 = decodePng(plainPng)
+  const p1 = decodePng(pulsePng)
+  let diffBox: { left: number; top: number; right: number; bottom: number } | null = null
+  for (let y = 0; y < p0.height; y++) {
+    for (let x = 0; x < p0.width; x++) {
+      const at = (y * p0.width + x) * p0.channels
+      let differs = false
+      for (let ch = 0; ch < Math.min(p0.channels, 3); ch++) if (p0.pixels[at + ch] !== p1.pixels[at + ch]) differs = true
+      if (!differs) continue
+      diffBox = diffBox
+        ? { left: Math.min(diffBox.left, x), top: Math.min(diffBox.top, y), right: Math.max(diffBox.right, x), bottom: Math.max(diffBox.bottom, y) }
+        : { left: x, top: y, right: x, bottom: y }
+    }
+  }
+  const pc = decodePng(new Uint8Array(await renderCover({ ...words, brand: 'pulse' })))
+  const pLeft = (pc.width - p1.width) / 2
+  let pulseCoverMiddleDiff = 0
+  for (let y = 0; y < p1.height; y++) {
+    for (let x = 0; x < p1.width; x++) {
+      for (let ch = 0; ch < Math.min(pc.channels, 3); ch++) {
+        pulseCoverMiddleDiff = Math.max(pulseCoverMiddleDiff, Math.abs(pc.pixels[(y * pc.width + x + pLeft) * pc.channels + ch] - p1.pixels[(y * p1.width + x) * p1.channels + ch]))
+      }
+    }
+  }
+  const live = { label: 'Blog', title: 'Privacy Tools: What They Are and How to Choose' }
+  const loader = await pulseLoader()
+
   console.log(JSON.stringify({
     baselineBottomRow: bottom,
     satoriBaseline: SATORI_BASELINE,
@@ -108,6 +203,26 @@ async function main() {
       coverHashIsItsOwn: coverHash(card) !== cardHash(card),
       coverHashChangesWithWords: coverHash(card) !== coverHash({ ...card, title: 'About Ciphera BV' }),
       systemCard: [hasSystemCard('/og/page--about--0123456789ab.png'), hasSystemCard([{ url: '/og/x.png' }]), hasSystemCard([{ url: 'https://cdn.ciphera.net/website/og/trust.png' }]), hasSystemCard(undefined)],
+      pulse: [
+        parseCardFile('pulse-post--google-analytics-alternative--5afc158210f8.png'),
+        parseCardFile('pulse-post--google-analytics-alternative--bf9874e6e44e--cover.png'),
+        parseCardFile('pulse--google-analytics-alternative--5afc158210f8.png'),
+        parseCardFile('pulse-posts--google-analytics-alternative--5afc158210f8.png'),
+      ],
+    },
+    loader,
+    brands: {
+      namedIsPlain: plainPng.length === namedPng.length && plainPng.every((v, i) => v === namedPng[i]),
+      pulseSize: [p1.width, p1.height],
+      diffBox,
+      pulseCover: { width: pc.width, height: pc.height, middleDiff: pulseCoverMiddleDiff },
+      hashes: {
+        // ciphera.net/blog/privacy-tools's card and cover, as the site served them before brands existed.
+        cipheraLive: [cardHash(live), coverHash(live)],
+        cipheraNamed: [cardHash({ ...live, brand: 'ciphera' }), coverHash({ ...live, brand: 'ciphera' })],
+        pulse: [cardHash({ ...words, brand: 'pulse' }), coverHash({ ...words, brand: 'pulse' })],
+        cipheraSameWords: [cardHash(words), coverHash(words)],
+      },
     },
   }))
 }

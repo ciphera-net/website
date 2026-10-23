@@ -7,6 +7,7 @@ import { INDEX as GLOSSARY, REMOVED } from '@/components/overhaul/glossary/conte
 import { getBlogPost } from '@/lib/blog'
 import { getTerm } from '@/lib/glossary'
 import { getLearnArticle } from '@/lib/learn'
+import { getPulsePostTitle } from '@/lib/cms/pulse-posts'
 import type { OgCard, OgKind } from './spec'
 import { learnKey, ogCardImages } from './url'
 
@@ -35,6 +36,8 @@ export type PageCardKey = keyof typeof PAGE_CARDS
 export const postCard = (title: string): OgCard => ({ label: 'Blog', title })
 export const termCard = (term: string): OgCard => ({ label: 'Glossary', title: term })
 export const learnCard = (title: string): OgCard => ({ label: 'Learn', title })
+/** A pulse.ciphera.net post: ciphera.net's post card with Pulse's lockup. */
+export const pulsePostCard = (title: string): OgCard => ({ label: 'Blog', title, brand: 'pulse' })
 
 /** A coded page's card images, for its metadata. */
 export const pageCardImages = (key: PageCardKey) => ogCardImages('page', key, PAGE_CARDS[key])
@@ -42,7 +45,10 @@ export const postCardImages = (slug: string, title: string) => ogCardImages('pos
 export const termCardImages = (slug: string, term: string) => ogCardImages('term', slug, termCard(term))
 export const learnCardImages = (product: string, slug: string, title: string) => ogCardImages('learn', learnKey(product, slug), learnCard(title))
 
-/** The words for one card, read the same way its page reads them; null for a page that does not exist. */
+/**
+ * The words for one card, read the same way its page reads them; null for a page that does not exist. Throws only when
+ * it cannot tell (a Pulse post's words come from the content CDN, with no seed behind them): the route answers 503.
+ */
 export async function resolveCard(kind: OgKind, key: string): Promise<OgCard | null> {
   switch (kind) {
     case 'page':
@@ -61,6 +67,11 @@ export async function resolveCard(kind: OgKind, key: string): Promise<OgCard | n
       const [product, slug] = key.split('~')
       const article = product && slug ? getLearnArticle(product, slug) : null
       return article ? learnCard(article.title) : null
+    }
+    case 'pulse-post': {
+      // pulse.ciphera.net declares this card on its own post pages (Pulse/pulse-website lib/blog-card.ts).
+      const title = await getPulsePostTitle(key)
+      return title === null ? null : pulsePostCard(title)
     }
   }
 }

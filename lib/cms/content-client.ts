@@ -40,36 +40,42 @@ interface IndexCacheEntry {
   fetchedAt: number
 }
 
-let indexCache: IndexCacheEntry | null = null
+/**
+ * One entry PER SITE (23-10-2026). ciphera.net also reads Pulse's index, for the Pulse blog's share cards
+ * (lib/cms/pulse-posts.ts); a single slot shared by every site would hand ciphera.net's menus, redirects and pages
+ * Pulse's index for up to 15s after a Pulse read, and the other way round.
+ */
+const indexCache = new Map<string, IndexCacheEntry>()
 const documentCache = new Map<string, unknown>()
 
 /** Test-only: both caches are module-level and must not leak between test cases. */
 export function __resetContentCacheForTests(): void {
-  indexCache = null
+  indexCache.clear()
   documentCache.clear()
 }
 
 /**
- * This site's content index, or `null` when the site has never published anything
+ * A site's content index, or `null` when the site has never published anything
  * (§4.1.3a "Pass = read index from CONTENT_BASE (404 = empty)" — a 404 is a real,
  * cacheable answer, not a failure). Any OTHER failure (timeout, 5xx, a malformed body)
  * throws, and the caller decides whether that means "fall back to the seed".
  */
 export async function getContentIndex(site: string): Promise<ContentIndex | null> {
   const now = Date.now()
-  if (indexCache && now - indexCache.fetchedAt < INDEX_CACHE_MS) return indexCache.index
+  const cached = indexCache.get(site)
+  if (cached && now - cached.fetchedAt < INDEX_CACHE_MS) return cached.index
 
   const res = await fetch(`${CONTENT_BASE}/content/${site}/index.json`, {
     signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     cache: 'no-store',
   })
   if (res.status === 404) {
-    indexCache = { index: null, fetchedAt: now }
+    indexCache.set(site, { index: null, fetchedAt: now })
     return null
   }
   if (!res.ok) throw new Error(`content index: CDN returned HTTP ${res.status} for site "${site}"`)
   const index = (await res.json()) as ContentIndex
-  indexCache = { index, fetchedAt: now }
+  indexCache.set(site, { index, fetchedAt: now })
   return index
 }
 

@@ -65,7 +65,7 @@ test('a single document failure falls back ITEM BY ITEM, not the whole kind', ()
 
 test('the content client treats an index 404 as empty, never as a failure, and documents cache forever', () => {
   const src = code('lib/cms/content-client.ts')
-  assert.match(src, /if \(res\.status === 404\) \{\s*\n\s*indexCache = \{ index: null, fetchedAt: now \}\s*\n\s*return null\s*\n\s*\}/)
+  assert.match(src, /if \(res\.status === 404\) \{\s*\n\s*indexCache\.set\(site, \{ index: null, fetchedAt: now \}\)\s*\n\s*return null\s*\n\s*\}/)
   assert.doesNotMatch(src, /status === 404[\s\S]{0,80}throw/, 'a 404 index must never throw')
   assert.match(src, /documentCache\.set\(path, doc\)/)
   assert.doesNotMatch(src, /documentCache\.delete|setTimeout.*documentCache/, 'a content-addressed document must never be evicted')
@@ -73,8 +73,17 @@ test('the content client treats an index 404 as empty, never as a failure, and d
 
 test('the index cache respects INDEX_CACHE_MS, not a longer or shorter window', () => {
   const src = code('lib/cms/content-client.ts')
-  assert.match(src, /if \(indexCache && now - indexCache\.fetchedAt < INDEX_CACHE_MS\) return indexCache\.index/)
+  assert.match(src, /const cached = indexCache\.get\(site\)\s*\n\s*if \(cached && now - cached\.fetchedAt < INDEX_CACHE_MS\) return cached\.index/)
   assert.match(code('lib/cms/runtime-config.ts'), /export const INDEX_CACHE_MS = 15_000/)
+})
+
+test('the index cache is kept per site, so reading Pulse’s index never answers for ciphera.net', () => {
+  // ciphera.net reads content/pulse/index.json for the Pulse blog's cards (lib/cms/pulse-posts.ts). The behaviour is
+  // proven against a fake CDN in og-render.render.mjs; this pins the shape.
+  const src = code('lib/cms/content-client.ts')
+  assert.match(src, /const indexCache = new Map<string, IndexCacheEntry>\(\)/)
+  assert.equal(src.match(/indexCache\.set\(site, /g)?.length, 2, 'both the 404 and the found index are cached under their site')
+  assert.doesNotMatch(src, /indexCache = \{/, 'one slot shared by every site')
 })
 
 test('every CDN read carries the 3s timeout, both for the index and for a document', () => {

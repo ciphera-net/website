@@ -48,6 +48,21 @@ test('the card route answers 404 for what the site does not say, 308 for an old 
   // The Location is relative: behind the CDN the server sees the Magic Containers host, so an absolute URL built from
   // the request would send a scraper off ciphera.net.
   assert.doesNotMatch(src, /NextResponse\.redirect|new URL\(/)
+  // Words that cannot be read (a Pulse post's come from the content CDN) are a 503 that is never cached, not a 404.
+  assert.match(src, /try \{\s*card = await resolveCard\(parsed\.kind, parsed\.key\)\s*\} catch \(err\) \{[\s\S]{0,200}return new Response\('Card unavailable', UNAVAILABLE\)/)
+  assert.match(src, /const UNAVAILABLE = \{ status: 503, headers: \{ 'Cache-Control': 'no-store', 'Retry-After': '60'/)
+})
+
+test('a Pulse post’s card is Ciphera’s post card with Pulse’s lockup, its words read from Pulse’s published index', () => {
+  const cards = read('lib', 'og', 'cards.ts')
+  assert.match(cards, /export const pulsePostCard = \(title: string\): OgCard => \(\{ label: 'Blog', title, brand: 'pulse' \}\)/)
+  assert.match(cards, /case 'pulse-post': \{[\s\S]{0,200}const title = await getPulsePostTitle\(key\)\s*return title === null \? null : pulsePostCard\(title\)/)
+  const loader = read('lib', 'cms', 'pulse-posts.ts')
+  assert.match(loader, /export const PULSE_SITE = 'pulse'/)
+  assert.match(loader, /getContentIndex\(PULSE_SITE\)/)
+  assert.doesNotMatch(loader, /SITE_KEY/, 'the Pulse loader must never read ciphera.net’s own index')
+  assert.match(read('lib', 'og', 'url.ts'), /const FILE = \/\^\(page\|post\|term\|learn\|pulse-post\)--/)
+  assert.match(read('lib', 'og', 'spec.ts'), /export type OgKind = 'page' \| 'post' \| 'term' \| 'learn' \| 'pulse-post'/)
 })
 
 test('a WordPress stub or CMS page image never replaces a page’s own card', () => {
@@ -60,8 +75,18 @@ test('a WordPress stub or CMS page image never replaces a page’s own card', ()
   assert.doesNotMatch(page, /\.\.\.\(seo\.ogImage \?/, 'mergePageSeo still applies the CMS image unguarded')
 })
 
-test('the fonts the route reads from disk are traced into the standalone build', () => {
+test('the fonts and marks the route reads from disk are traced into the standalone build', () => {
   // Without this the image ships the route and not its fonts, and every card answers 500.
-  assert.match(read('next.config.ts'), /'\/og\/\[file\]': \['\.\/lib\/og\/fonts\/\*\*'\]/)
-  assert.match(read('lib', 'og', 'render.tsx'), /readFile\(path\.join\(root, 'lib\/og\/fonts\/Geist-SemiBold\.ttf'\)\)/)
+  const include = read('next.config.ts').match(/'\/og\/\[file\]': \[([^\]]*)\]/)?.[1] ?? ''
+  assert.match(include, /'\.\/lib\/og\/fonts\/\*\*'/)
+  const render = read('lib', 'og', 'render.tsx')
+  assert.match(render, /readFile\(path\.join\(root, 'lib\/og\/fonts\/Geist-SemiBold\.ttf'\)\)/)
+  // Every lockup's mark: under public/ (the image copies it whole) or under a traced lib/og/ folder.
+  const marks = [...render.matchAll(/file: '([^']+)'/g)].map((m) => m[1])
+  assert.ok(marks.length >= 2, `no lockup files found in render.tsx (${marks})`)
+  for (const file of marks) {
+    readFileSync(join(root, file))
+    const traced = file.startsWith('public/') || [...include.matchAll(/'\.\/(lib\/og\/[a-z-]+)\/\*\*'/g)].some((m) => file.startsWith(`${m[1]}/`))
+    assert.ok(traced, `${file} is read by the card route but not traced into the build`)
+  }
 })
