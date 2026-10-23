@@ -32,22 +32,23 @@ function code(p) {
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
 }
 
-test('transformWpPost repairs description, category/CTA, OG image and date instead of failing', () => {
+test('transformWpPost repairs description, category/CTA and date instead of failing', () => {
   const t = code('lib/blog-transform.ts')
   assert.match(t, /export function truncateAtWordBoundary/, 'the shared word-boundary truncation helper must exist')
   assert.match(t, /export const ISO_DATE/, 'a date must be validated against one shape, shared with any other reader')
 
-  // The four REPAIRED fields push onto `repairs`, never `problems` (which the build
+  // The REPAIRED fields push onto `repairs`, never `problems` (which the build
   // would once have failed on).
   assert.match(t, /description = truncateAtWordBoundary\(textOf\(html\), 155\)/, 'a missing description must repair from the body text')
   assert.match(t, /repairs\.push\(\{\s*field: 'description'/, 'description repair must be recorded in `repairs`, not `problems`')
   assert.match(t, /repairs\.push\(\{\s*field: 'category'/, 'a missing/CTA-less category must be recorded in `repairs`')
-  assert.match(t, /repairs\.push\(\{\s*field: 'ogImage'/, 'a non-CDN OG image must be recorded in `repairs`')
+  // A post has no image of its own (23-10-2026): its share card is drawn from the title (lib/og), so the transform
+  // neither asks WordPress for the social-image field nor repairs one.
+  assert.doesNotMatch(t, /cipheraOgImage|field: 'ogImage'/, 'a post must not carry an image of its own')
   assert.match(t, /repairs\.push\(\{\s*field: 'date'/, 'a malformed date must be recorded in `repairs`')
 
   // The CTA repair itself: an empty cta must become `undefined`, not a present-but-
-  // empty object — that is what lets post-view.tsx's existing `?? CATEGORY_CTA[...]
-  // ?? DEFAULT_CTA` fallback actually run.
+  // empty object, so a template's `post.cta ?? …` fallback can run.
   assert.match(t, /cta: ctaLabel && ctaHref \? \{ label: ctaLabel, href: ctaHref \} : undefined/)
 
   // Only a truly unrepairable field still lives in `problems` — and only those three.
@@ -94,9 +95,12 @@ test('lib/cms/blog-build.ts skips a post with no safe repair and records it, nev
   assert.match(gen, /dropUnreachableMedia/)
   assert.match(gen, /repair\(\s*post\.slug,\s*'image',\s*'repaired'/)
 
-  // The OG-card gate falls back to the site default image instead of failing.
-  assert.match(gen, /post\.image = DEFAULT_OG_IMAGE/)
-  assert.match(gen, /DEFAULT_OG_IMAGE = '\/og-homepage\.png'/)
+  // A post's share card is drawn from its title (lib/og), so the build no longer looks one up on the CDN. Counted, not
+  // spelled: the build makes exactly one kind of request to the CDN, the HEAD of each image the body will render.
+  assert.doesNotMatch(gen, /post\.image|DEFAULT_OG_IMAGE/, 'the build must not check an uploaded card')
+  assert.equal(gen.match(/method: 'HEAD'/g)?.length, 1, 'the generator must send HEAD requests from one helper only')
+  assert.equal(gen.match(/\bawait head\(/g)?.length, 1, 'the only HEAD request is the body-media check')
+  assert.match(gen, /for \(const src of survivingSources\) \{\s*const imgStatus = await head\(src\)/, 'the HEAD must be of a body image')
 
   // What MUST still fail: WordPress itself, and the deploy secret.
   assert.match(gen, /fail\(`cannot reach WordPress/)

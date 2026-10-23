@@ -3,11 +3,14 @@
  * of the next two. Asymmetric split instead of option A's uniform three-up grid — a
  * different rhythm (one hero + a list) built from the same data and the same card
  * device (hairline border, 1200×630 image), not a recolour of A.
+ *
+ * Each post's image is its own card (D52), the dotted card its page declares as og:image, as on the blog index: one
+ * image per post (23-10-2026). The card repeats the title beside it, so it is decorative (`alt=""`).
  */
 import Image from 'next/image'
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { getBlogPosts } from '@/lib/blog'
-import { cdnUrl } from '@/lib/cdn'
+import { postCardUrl } from '@/lib/og/cards'
 import { Section } from '../Section'
 import { Reveal } from '../Reveal'
 
@@ -40,7 +43,7 @@ export async function FromTheBlogB() {
           <a href={`/blog/${featured.slug}`} className="group block">
             <div className="overflow-hidden border border-border bg-card">
               <Image
-                src={cdnUrl(featured.image)}
+                src={postCardUrl(featured.slug, featured.title)}
                 alt=""
                 width={1200}
                 height={630}
@@ -66,7 +69,7 @@ export async function FromTheBlogB() {
                 <a href={`/blog/${p.slug}`} className="group flex items-start gap-5">
                   <div className="w-28 shrink-0 overflow-hidden border border-border bg-card sm:w-36">
                     <Image
-                      src={cdnUrl(p.image)}
+                      src={postCardUrl(p.slug, p.title)}
                       alt=""
                       width={1200}
                       height={630}

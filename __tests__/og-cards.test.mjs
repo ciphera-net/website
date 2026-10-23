@@ -98,9 +98,10 @@ test('the fonts and marks the route reads from disk are traced into the standalo
   }
 })
 
-test('a post’s image is its card on the blog index and in its BlogPosting, never an uploaded image', () => {
-  // One image per post on both blogs (23-10-2026, option A of the index round): every slot on the index, the small list
-  // rows included, shows the card the page declares as og:image.
+test('a post’s image is its card on the blog index, on the homepage and in its BlogPosting, never an uploaded image', () => {
+  // One image per post on both blogs (23-10-2026, option A of the index round, then the homepage block): every slot on
+  // the index, the small list rows included, and both slots of the homepage's "From the blog" show the card the page
+  // declares as og:image.
   const cards = code('lib', 'og', 'cards.ts')
   assert.match(cards, /^export const postCard = \(title: string\): OgCard => \(\{ label: 'Blog', title \}\)$/m)
   assert.match(cards, /^export const postCardUrl = \(slug: string, title: string\) => cardPath\('post', slug, postCard\(title\)\)$/m)
@@ -113,4 +114,28 @@ test('a post’s image is its card on the blog index and in its BlogPosting, nev
   assert.match(index, /<img\s+src=\{postCardUrl\(post\.slug, post\.title\)\}\s+alt=""/)
   assert.doesNotMatch(index, /post\.image|cdnUrl\(/, 'the blog index still shows an uploaded image')
   assert.match(code('components', 'overhaul', 'blog', 'BlogPost.tsx'), /^      image: `https:\/\/ciphera\.net\$\{postCardUrl\(slug, post\.title\)\}`,$/m)
+  const home = code('components', 'overhaul', 'home', 'variants', 'FromTheBlogB.tsx')
+  // Two images, the featured post's and the list's, and every source is a card: an image added in any spelling
+  // changes a count here.
+  assert.equal(home.match(/<Image\b/g)?.length, 2, 'the homepage block draws an image that is not a card')
+  assert.equal(home.match(/<img\b/g), null, 'the homepage block draws a plain <img>')
+  assert.deepEqual([...home.matchAll(/src=\{([^}]*\))\}/g)].map((m) => m[1]), ['postCardUrl(featured.slug, featured.title)', 'postCardUrl(p.slug, p.title)'])
+  assert.equal(home.match(/\bsrc=/g)?.length, 2, 'every image source in the homepage block must be a card')
+  assert.doesNotMatch(home, /\.image\b|cdnUrl\(/, 'the homepage block still shows an uploaded image')
+  // Nothing on the site reads a post's own image any more: the shared types carry exactly these fields, so an image
+  // field comes back only by changing this list.
+  const types = code('lib', 'blog-types.ts')
+  const fields = (name) => {
+    const m = types.match(new RegExp(`export interface ${name} \\{([\\s\\S]*?)\\n\\}`))
+    assert.ok(m, `lib/blog-types.ts has no interface ${name}`)
+    return [...m[1].matchAll(/^\s*(\w+)\??:/gm)].map((f) => f[1])
+  }
+  const meta = ['slug', 'title', 'description', 'category', 'date', 'dateModified', 'readTime']
+  assert.deepEqual(fields('BlogPostMeta'), meta)
+  assert.deepEqual(fields('WpBlogPost'), [...meta, 'html', 'faqs', 'cta', 'wordCount'])
+  // The generated summary the index and the feed read, and the merged post the template reads.
+  const summary = code('scripts', 'generate-blog-posts.ts').match(/export interface BlogPostSummary \{([\s\S]*?)\n\}/)
+  assert.deepEqual([...summary[1].matchAll(/^\s*(\w+)\??:/gm)].map((f) => f[1]), meta)
+  const post = code('lib', 'blog.ts').match(/export interface BlogPost extends BlogPostMeta \{([\s\S]*?)\n\}/)
+  assert.deepEqual([...post[1].matchAll(/^\s*(\w+)\??:/gm)].map((f) => f[1]), ['content', 'faqs', 'cta', 'body', 'wordCount'])
 })

@@ -16,7 +16,7 @@
  *     async seam always resolves an MDX slug from the repo FIRST and never even asks
  *     the CDN for it, so a CDN-published document for a colliding slug is harmless —
  *     it is uploaded (content addressing makes that nearly free) but never served.
- *   - the CDN image/tool-logo HEAD checks and the OG-card HEAD check — network calls
+ *   - the CDN image/tool-logo HEAD checks — network calls
  *     against the ASSET cdn (cdn.ciphera.net), one per image, on every pass. A build
  *     runs once; this publisher sweeps every 120s. Not replicated here: a post
  *     published through cms.teleport.ciphera.net/upload already has its images on the CDN by

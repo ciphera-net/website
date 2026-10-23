@@ -1,11 +1,12 @@
 /**
- * Round 7 (mock, 18-10-2026): a post's body for the blog options. The SAME parse → cipheraBlocks → sanitize →
- * cdnImagesOnly → toolLogosValidated chain as the live template (components/blog/wp-body.tsx: never
- * dangerouslySetInnerHTML), plus one step after the sanitizer and two quieter components.
+ * A post's body, as the post template (BlogPost.tsx) renders it (first built for round 7, 18-10-2026).
+ * It starts with the shared parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated chain
+ * (`sanitizeChain`, lib/blog-html.ts), the same one the build's image check runs, and builds elements from the tree,
+ * never dangerouslySetInnerHTML. On top: two tree steps after the sanitizer and two quieter components.
  *
  * - `headingIds` writes an id on every <h2> and collects the list, so the contents list and every `#section` link exist
- *   in the server HTML. Today the ids are written by a client effect after hydration, so a shared `#section` link has no
- *   target at first load, and the whole raw post HTML ships to the browser to build the list (plan §5i).
+ *   in the server HTML. The older template wrote the ids in a client effect after hydration, so a shared `#section` link
+ *   had no target at first load, and the whole raw post HTML shipped to the browser to build the list (plan §5i).
  * - Tables wrap their cells (BlogTable, below).
  * - A callout (WordPress's TL;DR style and the plain callout) is a label and two hairlines, never the orange-tinted panel
  *   with a side stripe (house rule: colour in a dot or a word, never a panel).
@@ -13,15 +14,13 @@
 import { Fragment, createElement, type ReactNode } from 'react'
 import { jsx, jsxs } from 'react/jsx-runtime'
 import { unified } from 'unified'
-import rehypeParse from 'rehype-parse'
-import rehypeSanitize from 'rehype-sanitize'
 import rehypeReact from 'rehype-react'
 import { toString as hastToString } from 'hast-util-to-string'
 import { visit } from 'unist-util-visit'
 import type { Element, Root } from 'hast'
 import type { VFile } from 'vfile'
 import { ToolLogo } from '@/components/blog/tool-logo'
-import { cipheraBlocks, schema, cdnImagesOnly, toolLogosValidated } from '@/lib/blog-html'
+import { sanitizeChain } from '@/lib/blog-html'
 import { POST } from './content'
 
 export type Heading = { id: string; text: string }
@@ -121,11 +120,7 @@ function emptyCells() {
 }
 
 const processor = unified()
-  .use(rehypeParse, { fragment: true })
-  .use(cipheraBlocks)
-  .use(rehypeSanitize, schema)
-  .use(cdnImagesOnly)
-  .use(toolLogosValidated)
+  .use(sanitizeChain)
   .use(emptyCells)
   .use(headingIds)
   .use(rehypeReact, {

@@ -6,7 +6,7 @@
  * 🔑 `lib/blog.ts` IS THE UNION POINT, NOT `lib/blog-posts.gen.ts`. Both are seams,
  * but they are not the same seam: `app/feed.xml/route.ts` and `app/blog/page.tsx` read
  * the generated summary file, while `app/sitemap.ts`, `scripts/generate-llms.ts` and
- * `RelatedPosts` read `lib/blog.ts` off the filesystem. Unioning here means those three
+ * (then) `RelatedPosts` read `lib/blog.ts` off the filesystem. Unioning here means those three
  * change by ZERO lines; unioning at the generated file would have left the sitemap and
  * llms.txt blind to every WordPress post.
  */
@@ -20,8 +20,8 @@ export interface BlogPostFaq {
  * A post's list-view fields — what the blog index and feed render without needing the
  * body. Lives here, not in `lib/blog.ts`, so a client component (which must never
  * import that server-only module — it reads WordPress and the filesystem) can still
- * type the prop it receives from its server parent (WEB-26 round 2,
- * components/blog/blog-page-client.tsx).
+ * type the prop it receives from its server parent (WEB-26 round 2; first for
+ * components/blog/blog-page-client.tsx, removed 23-10-2026).
  */
 export interface BlogPostMeta {
   slug: string
@@ -31,8 +31,6 @@ export interface BlogPostMeta {
   date: string
   dateModified: string
   readTime: string
-  /** Relative path (e.g. /blog/og/<slug>.png); resolve with cdnUrl() at the point of use. */
-  image: string
 }
 
 /** Optional per-post CTA override; when absent the template falls back to its category. */
@@ -44,10 +42,12 @@ export interface BlogPostCta {
 /**
  * A post's body and where it came from.
  *
- * 🔴 A DISCRIMINATED UNION, NOT A `isWordPress` FLAG. The renderer picks MDXRemote or
- * the rehype pipeline on this, and the two are not interchangeable: MDX parses raw HTML
- * as JSX, so `class=` throws, HTML comments throw, and any `{` in prose becomes an
- * expression. A boolean would let a caller read `content` without knowing which it has.
+ * 🔴 A DISCRIMINATED UNION, NOT A `isWordPress` FLAG. The two kinds are not
+ * interchangeable: MDX parses raw HTML as JSX, so `class=` throws, HTML comments throw,
+ * and any `{` in prose becomes an expression. A boolean would let a caller read `content`
+ * without knowing which it has.
+ * ⚠️ The post template (components/overhaul/blog/BlogPost.tsx) renders only the `html`
+ * kind; an `mdx` body renders as an empty article (content/blog/README.md).
  */
 export type BlogPostBody =
   | { kind: 'mdx'; content: string }
@@ -62,7 +62,6 @@ export interface WpBlogPost {
   date: string
   dateModified: string
   readTime: string
-  image: string
   /** Sanitised, CDN-rewritten HTML. Never raw WordPress output. */
   html: string
   faqs: BlogPostFaq[]
