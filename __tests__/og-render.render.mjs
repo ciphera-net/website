@@ -1,7 +1,8 @@
 import { test, before } from 'node:test'
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
-import { mkdirSync } from 'node:fs'
+import { cpSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -21,6 +22,7 @@ const outFile = join(outDir, 'og-harness.mjs')
 const CHROME_GAPS = [22, 27, 24]
 
 let r
+let iso
 
 before(() => {
   mkdirSync(outDir, { recursive: true })
@@ -39,6 +41,15 @@ before(() => {
     { cwd: root, stdio: ['ignore', 'ignore', 'inherit'] },
   )
   r = JSON.parse(execFileSync('node', [outFile], { cwd: root, encoding: 'utf-8' }))
+  // The same harness from a folder holding the fonts and Ciphera's mark, without Pulse's.
+  const bare = mkdtempSync(join(tmpdir(), 'og-isolation-'))
+  try {
+    cpSync(join(root, 'lib', 'og', 'fonts'), join(bare, 'lib', 'og', 'fonts'), { recursive: true })
+    cpSync(join(root, 'public', 'ciphera_icon.png'), join(bare, 'public', 'ciphera_icon.png'))
+    iso = JSON.parse(execFileSync('node', [outFile, '--isolation'], { cwd: bare, encoding: 'utf-8' }))
+  } finally {
+    rmSync(bare, { recursive: true, force: true })
+  }
 })
 
 test('the title is lifted by where next/og really puts a 100 px Geist SemiBold baseline', () => {
@@ -129,4 +140,35 @@ test('a Pulse card is the same card with Pulse’s lockup, and Ciphera’s cards
   assert.notEqual(b.hashes.pulse[0], b.hashes.cipheraSameWords[0])
   assert.notEqual(b.hashes.pulse[1], b.hashes.cipheraSameWords[1])
   assert.deepEqual(b.hashes.pulse, ['5afc158210f8', 'bf9874e6e44e'])
+})
+
+test('pulse-post addresses parse, cards and covers, and nothing near them does', () => {
+  const [card, cover, shortKind, longKind] = r.url.pulse
+  assert.deepEqual(card, { kind: 'pulse-post', key: 'google-analytics-alternative', hash: '5afc158210f8', variant: 'card' })
+  assert.deepEqual(cover, { kind: 'pulse-post', key: 'google-analytics-alternative', hash: 'bf9874e6e44e', variant: 'cover' })
+  assert.equal(shortKind, null)
+  assert.equal(longKind, null)
+})
+
+test('a Pulse post’s words come from Pulse’s published index: found, absent, or unreadable, never confused', () => {
+  const l = r.loader
+  // The index cache is per site: reading Pulse's never answers for ciphera.net, and a cached read is not asked again.
+  assert.deepEqual(l.sites, ['ciphera-net', 'pulse', 'ciphera-net'])
+  assert.equal(l.indexReads, 2)
+  assert.deepEqual(l.found, { value: 'Google Analytics Alternative: Free, Cookieless, No Banner' })
+  // Not published: the route answers 404.
+  assert.deepEqual(l.absent, { value: null })
+  assert.deepEqual(l.prototype, { value: null }, 'a slug naming an Object.prototype property must not read it')
+  assert.deepEqual(l.noBlog, { value: null })
+  assert.deepEqual(l.neverPublished, { value: null }, 'an index 404 means Pulse never published')
+  // Cannot tell: the route answers 503, never a cached 404.
+  assert.match(l.untitled.error ?? '', /has no title/)
+  assert.match(l.schema.error ?? '', /schema 2/)
+  assert.match(l.down.error ?? '', /HTTP 500/)
+})
+
+test('a brand’s missing mark fails only that brand’s cards', () => {
+  assert.ok(iso.ciphera.bytes > 10000, `Ciphera's card failed without Pulse's mark: ${JSON.stringify(iso.ciphera)}`)
+  assert.equal(iso.pulse.error, 'ENOENT')
+  assert.ok(iso.cipheraAfter.bytes > 10000, 'a failed Pulse card left Ciphera’s cards broken')
 })

@@ -43,7 +43,7 @@ export function coverPath(kind: OgKind, key: string, card: OgCard): string {
 
 export type OgVariant = 'card' | 'cover'
 
-const FILE = /^(page|post|term|learn)--([a-z0-9][a-z0-9-]*(?:~[a-z0-9][a-z0-9-]*)?)--([0-9a-f]{12})(--cover)?\.png$/
+const FILE = /^(page|post|term|learn|pulse-post)--([a-z0-9][a-z0-9-]*(?:~[a-z0-9][a-z0-9-]*)?)--([0-9a-f]{12})(--cover)?\.png$/
 
 export function parseCardFile(file: string): { kind: OgKind; key: string; hash: string; variant: OgVariant } | null {
   const m = FILE.exec(file)

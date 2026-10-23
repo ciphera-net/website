@@ -50,8 +50,8 @@ const LEAD_LINE = LEAD.size * LEAD_LINE_HEIGHT
 
 type Fonts = NonNullable<ConstructorParameters<typeof ImageResponse>[1]>['fonts']
 type Icon = { src: string; width: number }
-type Assets = { fonts: Fonts; icons: Record<OgBrand, Icon> }
-let assets: Promise<Assets> | null = null
+let fonts: Promise<Fonts> | null = null
+const icons = new Map<OgBrand, Promise<Icon>>()
 
 /** Each brand's lockup: its mark (34 px tall, as the mock set Ciphera's) and its name, as its own site's header has it. */
 const LOCKUP: Record<OgBrand, { file: string; type: string; width: number; height: number; name: string }> = {
@@ -64,40 +64,52 @@ const LOCKUP: Record<OgBrand, { file: string; type: string; width: number; heigh
 const ICON_HEIGHT = 34
 
 /**
- * The fonts (vendored, OFL; traced into the build by next.config.ts) and the lockups' icons (public/ and lib/og/brand/,
- * which the image ships), read once per process on the first card, never at import: a server's first request must stay
- * cheap (website#146). A failed read is not kept, so the next request tries again.
+ * The fonts (vendored, OFL; traced into the build by next.config.ts), read once per process on the first card, never at
+ * import: a server's first request must stay cheap (website#146). A failed read is not kept, so the next request tries
+ * again.
  */
-function loadAssets(): Promise<Assets> {
-  if (assets) return assets
-  const loading = (async (): Promise<Assets> => {
+function loadFonts(): Promise<Fonts> {
+  if (fonts) return fonts
+  const loading = (async (): Promise<Fonts> => {
     const root = process.cwd()
-    const brands = Object.keys(LOCKUP) as OgBrand[]
-    const [semibold, regular, ...icons] = await Promise.all([
+    const [semibold, regular] = await Promise.all([
       readFile(path.join(root, 'lib/og/fonts/Geist-SemiBold.ttf')),
       readFile(path.join(root, 'lib/og/fonts/Geist-Regular.ttf')),
-      ...brands.map((b) => readFile(path.join(root, LOCKUP[b].file))),
     ])
-    return {
-      fonts: [
-        { name: 'Geist', data: semibold, weight: 600, style: 'normal' },
-        { name: 'Geist', data: regular, weight: 400, style: 'normal' },
-      ],
-      icons: Object.fromEntries(
-        brands.map((b, i) => [b, { src: `data:${LOCKUP[b].type};base64,${icons[i].toString('base64')}`, width: (ICON_HEIGHT * LOCKUP[b].width) / LOCKUP[b].height }]),
-      ) as Record<OgBrand, Icon>,
-    }
+    return [
+      { name: 'Geist', data: semibold, weight: 600, style: 'normal' },
+      { name: 'Geist', data: regular, weight: 400, style: 'normal' },
+    ]
   })()
-  assets = loading
+  fonts = loading
   loading.catch(() => {
-    if (assets === loading) assets = null
+    if (fonts === loading) fonts = null
+  })
+  return loading
+}
+
+/**
+ * A brand's mark (public/ and lib/og/brand/, which the image ships), read the first time a card of that brand is drawn
+ * and kept the same way. Per brand, so one brand's missing file fails only that brand's cards.
+ */
+function loadIcon(brand: OgBrand): Promise<Icon> {
+  const kept = icons.get(brand)
+  if (kept) return kept
+  const { file, type, width, height } = LOCKUP[brand]
+  const loading = readFile(path.join(process.cwd(), file)).then((data) => ({
+    src: `data:${type};base64,${data.toString('base64')}`,
+    width: (ICON_HEIGHT * width) / height,
+  }))
+  icons.set(brand, loading)
+  loading.catch(() => {
+    if (icons.get(brand) === loading) icons.delete(brand)
   })
   return loading
 }
 
 /** The title as dots: the SVG, its box height (the mock's DotText box for that many lines), the line and dot counts. */
 export async function titleDots(title: string): Promise<{ svg: string; height: number; lines: number; dots: number; layout: 'metrics' | 'renderer' }> {
-  const { fonts } = await loadAssets()
+  const fonts = await loadFonts()
   const draw = async (node: ReactElement, height: number) =>
     decodePngAlpha(new Uint8Array(await new ImageResponse(node, { width: DOT_WIDTH, height, fonts }).arrayBuffer()))
 
@@ -161,9 +173,8 @@ function Lead({ text }: { text: string }) {
 
 /** The card, as the PNG the route serves. */
 export async function renderCard(card: OgCard): Promise<ArrayBuffer> {
-  const { fonts, icons } = await loadAssets()
   const brand = card.brand ?? 'ciphera'
-  const icon = icons[brand]
+  const [fonts, icon] = await Promise.all([loadFonts(), loadIcon(brand)])
   const title = await titleDots(card.title)
   const dotsUrl = `data:image/svg+xml;base64,${Buffer.from(title.svg).toString('base64')}`
   const res = new ImageResponse(
@@ -199,7 +210,7 @@ export async function renderCard(card: OgCard): Promise<ArrayBuffer> {
  * join cannot show.
  */
 export async function renderCover(card: OgCard): Promise<ArrayBuffer> {
-  const [{ fonts }, png] = await Promise.all([loadAssets(), renderCard(card)])
+  const [fonts, png] = await Promise.all([loadFonts(), renderCard(card)])
   const src = `data:image/png;base64,${Buffer.from(png).toString('base64')}`
   const res = new ImageResponse(
     (

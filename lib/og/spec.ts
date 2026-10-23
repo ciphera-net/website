@@ -9,7 +9,8 @@
  */
 export type OgBrand = 'ciphera' | 'pulse'
 export type OgCard = { label: string; title: string; lead?: string; brand?: OgBrand }
-export type OgKind = 'page' | 'post' | 'term' | 'learn'
+/** `pulse-post`: a pulse.ciphera.net blog post, keyed by its slug (lib/cms/pulse-posts.ts); its page declares the card. */
+export type OgKind = 'page' | 'post' | 'term' | 'learn' | 'pulse-post'
 
 /** Bump when the drawing changes: every card's address moves with it, so the CDN's year-long copies are never stale. */
 export const OG_TEMPLATE = 'dots-1'

@@ -48,6 +48,21 @@ test('the card route answers 404 for what the site does not say, 308 for an old 
   // The Location is relative: behind the CDN the server sees the Magic Containers host, so an absolute URL built from
   // the request would send a scraper off ciphera.net.
   assert.doesNotMatch(src, /NextResponse\.redirect|new URL\(/)
+  // Words that cannot be read (a Pulse post's come from the content CDN) are a 503 that is never cached, not a 404.
+  assert.match(src, /try \{\s*card = await resolveCard\(parsed\.kind, parsed\.key\)\s*\} catch \(err\) \{[\s\S]{0,200}return new Response\('Card unavailable', UNAVAILABLE\)/)
+  assert.match(src, /const UNAVAILABLE = \{ status: 503, headers: \{ 'Cache-Control': 'no-store', 'Retry-After': '60'/)
+})
+
+test('a Pulse post’s card is Ciphera’s post card with Pulse’s lockup, its words read from Pulse’s published index', () => {
+  const cards = read('lib', 'og', 'cards.ts')
+  assert.match(cards, /export const pulsePostCard = \(title: string\): OgCard => \(\{ label: 'Blog', title, brand: 'pulse' \}\)/)
+  assert.match(cards, /case 'pulse-post': \{[\s\S]{0,200}const title = await getPulsePostTitle\(key\)\s*return title === null \? null : pulsePostCard\(title\)/)
+  const loader = read('lib', 'cms', 'pulse-posts.ts')
+  assert.match(loader, /export const PULSE_SITE = 'pulse'/)
+  assert.match(loader, /getContentIndex\(PULSE_SITE\)/)
+  assert.doesNotMatch(loader, /SITE_KEY/, 'the Pulse loader must never read ciphera.net’s own index')
+  assert.match(read('lib', 'og', 'url.ts'), /const FILE = \/\^\(page\|post\|term\|learn\|pulse-post\)--/)
+  assert.match(read('lib', 'og', 'spec.ts'), /export type OgKind = 'page' \| 'post' \| 'term' \| 'learn' \| 'pulse-post'/)
 })
 
 test('a WordPress stub or CMS page image never replaces a page’s own card', () => {
