@@ -4,8 +4,8 @@ import type { ReactElement } from 'react'
 import { ImageResponse } from 'next/og'
 import { readFileSync } from 'node:fs'
 import { decodePng, decodePngAlpha } from '../../lib/og/png'
-import { DOT_BASELINE, DOT_LINE_HEIGHT, DOT_SIZE } from '../../lib/og/dots'
-import { TITLE, wrapLead, wrapTitle } from '../../lib/og/layout'
+import { DOT_BASELINE, DOT_LINE_HEIGHT, DOT_SIZE, DOT_WIDTH } from '../../lib/og/dots'
+import { TITLE, TITLE_ROOM, fitTitle, wrapLead, wrapTitle } from '../../lib/og/layout'
 import { SATORI_BASELINE, renderCard, renderCover, titleDots } from '../../lib/og/render'
 import { cardHash, cardPath, coverHash, coverPath, hasSystemCard, parseCardFile } from '../../lib/og/url'
 import { __resetContentCacheForTests, getContentIndex } from '../../lib/cms/content-client'
@@ -81,6 +81,57 @@ async function pulseLoader() {
     __resetContentCacheForTests()
   }
 }
+
+/**
+ * Long titles (23-10-2026): a title that fits is drawn exactly as before; a longer one is drawn whole at a smaller size;
+ * a word wider than a line breaks after its hyphen or slash. The titles of up to four lines are the site's own.
+ */
+const UP_TO_FOUR = [
+  "The EU-US Data Privacy Framework Is Built on an Executive Order \u2014 and That's the Problem",
+  'Do You Need a Cookie Banner for Analytics? What EU Law Actually Requires (2026)',
+  'Is Your Website Analytics GDPR-Compliant? A 2026 Checklist',
+  'Privacy Tools: What They Are and How to Choose',
+  'How to Migrate Off Google Analytics: A 2026 Guide',
+  'Google Analytics Alternative: Free, Cookieless, No Banner',
+  'Privacy policy',
+]
+const LONG = {
+  five: 'How to Migrate Off Google Analytics: A 2026 Guide for Privacy-Conscious Teams',
+  six: 'Is Your Website Analytics GDPR-Compliant? A 2026 Checklist for Marketing and Legal Teams',
+  pulse: 'How to Replace Google Analytics with a Cookieless Alternative Without Losing Your Reports',
+  pake: 'PAKE (password-authenticated key exchange)',
+  token: 'Cookie-less/GDPR-compliant analytics, explained for small teams',
+  huge: 'How to Replace Google Analytics with a Cookieless, Privacy-First Alternative Without Losing Your Reports, Your Funnels, Your Goals or Your Sanity: A Complete Field Guide for 2026 and Beyond',
+  cut: 'How to Replace Google Analytics with a Cookieless, Privacy-First Alternative Without Losing Your Reports, Your Funnels, Your Goals or Your Sanity: A Complete Field Guide for Teams of Every Size and Every Budget, Across Europe and Beyond, This Year and Next Year Too, Written for Busy People',
+}
+
+async function longTitles() {
+  const fit = Object.fromEntries(Object.entries(LONG).map(([k, t]) => [k, fitTitle(t)]))
+  const unchanged = UP_TO_FOUR.map((t) => {
+    const f = fitTitle(t)
+    return f.scale === 1 && !f.cut && JSON.stringify(f.lines) === JSON.stringify(wrapTitle(t))
+  })
+  // Every line of every fit within the width it is drawn at (the last keeps room for the orange block).
+  const widths = Object.values(fit).every((f) => f.lines.every((l) => TITLE.width(l) <= DOT_WIDTH / f.scale))
+  const shown = await titleDots(LONG.six)
+  // The six-line card's lockup corner, against the same card with a one-word title: the title must not reach it.
+  const corner = async (title: string) => {
+    const { width, pixels, channels } = decodePng(new Uint8Array(await renderCard({ label: 'Blog', title })))
+    const out: number[] = []
+    for (let y = 40; y < TITLE_TOP_EDGE; y++) for (let x = 40; x < 600; x++) out.push(pixels[(y * width + x) * channels])
+    return out
+  }
+  const [long, short] = await Promise.all([corner(LONG.six), corner('Privacy')])
+  return {
+    fit: Object.fromEntries(Object.entries(fit).map(([k, f]) => [k, { scale: f.scale, lines: f.lines, cut: f.cut }])),
+    unchanged,
+    widths,
+    six: { height: shown.height, scale: shown.scale, room: TITLE_ROOM },
+    cornerClear: long.every((v, i) => v === short[i]),
+  }
+}
+/** The top of the title's area (lib/og/spec.ts TITLE_TOP): above it are only the lockup and the label. */
+const TITLE_TOP_EDGE = 120
 
 /**
  * Run with `--isolation` from a folder that has the fonts and Ciphera's mark but not Pulse's: a brand's missing file
@@ -168,6 +219,7 @@ async function main() {
   }
   const live = { label: 'Blog', title: 'Privacy Tools: What They Are and How to Choose' }
   const loader = await pulseLoader()
+  const long = await longTitles()
 
   console.log(JSON.stringify({
     baselineBottomRow: bottom,
@@ -211,6 +263,7 @@ async function main() {
       ],
     },
     loader,
+    long,
     brands: {
       namedIsPlain: plainPng.length === namedPng.length && plainPng.every((v, i) => v === namedPng[i]),
       pulseSize: [p1.width, p1.height],

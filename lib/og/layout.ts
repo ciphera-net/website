@@ -1,6 +1,7 @@
 import semibold from './geist-semibold-metrics.json'
 import regular from './geist-regular-metrics.json'
-import { DOT_PITCH, DOT_SIZE, DOT_WIDTH } from './dots'
+import { DOT_PITCH, DOT_SIZE, DOT_WIDTH, dotBoxHeight } from './dots'
+import { OG_HEIGHT, TITLE_BOTTOM, TITLE_TOP } from './spec'
 
 /**
  * Sets an OG card's words the way the approved mock's browser did (D52), so the card looks like what the owner approved:
@@ -77,16 +78,73 @@ export function wrapTitle(title: string, width = DOT_WIDTH): string[] {
 /** The lead's lines, as the mock's paragraph broke them at its maximum width. */
 export const wrapLead = (lead: string) => greedy(lead, LEAD_WIDTH, LEAD.width)
 
+/** The sizes a title may be drawn at: full size, then a tenth smaller at a time (23-10-2026). */
+export const TITLE_SCALES = [1, 0.9, 0.8, 0.7, 0.6] as const
+/** The height a card gives its title when it has no lead: the area between TITLE_TOP and TITLE_BOTTOM. */
+export const TITLE_ROOM = OG_HEIGHT - TITLE_TOP - TITLE_BOTTOM
+
+export type TitleFit = { lines: string[]; scale: number; cut: boolean }
+
+/**
+ * How a title fits its card: at full size when it does, as every title on the site does today (four lines fill the
+ * title's area), and otherwise the whole title at the largest of TITLE_SCALES at which it fits `room`. D52 drew every
+ * title at one size, so a fifth line crowded the lockup and a sixth printed over it and lost its last line; this was
+ * chosen over cutting a long title at four lines (23-10-2026). Measured on ordinary words: full size holds about 75
+ * characters, 90 % about 95, 80 % about 140, 70 % about 200, 60 % about 270. Past the smallest size, as many lines
+ * as fit, the last one ending in an ellipsis: the card never overflows. The lines are wrapped at the card's width divided by the scale, so a smaller title still fills the width.
+ */
+export function fitTitle(title: string, room = TITLE_ROOM): TitleFit {
+  for (const scale of TITLE_SCALES) {
+    const lines = wrapTitle(title, DOT_WIDTH / scale)
+    if (dotBoxHeight(lines.length) * scale <= room) return { lines, scale, cut: false }
+  }
+  const scale = TITLE_SCALES[TITLE_SCALES.length - 1]
+  const width = DOT_WIDTH / scale
+  const lines = wrapTitle(title, width)
+  let keep = lines.length
+  while (keep > 1 && dotBoxHeight(keep) * scale > room) keep--
+  let last = lines[keep - 1]
+  while (TITLE.width(`${last}\u2026`) > width - BLOCK && last.length > 1) {
+    last = last.includes(' ') ? last.slice(0, last.lastIndexOf(' ')) : last.slice(0, -1)
+  }
+  return { lines: [...lines.slice(0, keep - 1), `${last.replace(/[\s,;:.\u2014-]+$/, '')}\u2026`], scale, cut: true }
+}
+
+/**
+ * Lines at most `max` wide, broken at spaces. A word wider than a whole line (a long compound, a run like
+ * "Cookie-less/GDPR-compliant") breaks after a hyphen or a slash, and a part still too wide between two characters, so
+ * no line runs off the card (23-10-2026). Every other text breaks exactly where it did before.
+ */
 function greedy(text: string, max: number, width: (s: string) => number): string[] {
   const lines: string[] = []
   let cur = ''
   for (const word of text.replace(/\s+/g, ' ').trim().split(' ')) {
-    const next = cur ? `${cur} ${word}` : word
-    if (cur && width(next) > max) {
-      lines.push(cur)
-      cur = word
-    } else cur = next
+    pieces(word, max, width).forEach((part, k) => {
+      // A word's first piece follows a space; the pieces of one broken word join without one.
+      const next = cur ? (k === 0 ? `${cur} ${part}` : `${cur}${part}`) : part
+      if (cur && width(next) > max) {
+        lines.push(cur)
+        cur = part
+      } else cur = next
+    })
   }
   if (cur) lines.push(cur)
   return lines
+}
+
+/** A word as the pieces a line may end between: the word itself when it fits a line. */
+function pieces(word: string, max: number, width: (s: string) => number): string[] {
+  if (width(word) <= max) return [word]
+  return word.split(/(?<=[-/])/).flatMap((part) => {
+    if (width(part) <= max) return [part]
+    const out: string[] = []
+    let cur = ''
+    for (const c of Array.from(part)) {
+      if (cur && width(cur + c) > max) {
+        out.push(cur)
+        cur = c
+      } else cur += c
+    }
+    return cur ? [...out, cur] : out
+  })
 }

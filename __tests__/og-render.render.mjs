@@ -172,3 +172,32 @@ test('a brand’s missing mark fails only that brand’s cards', () => {
   assert.equal(iso.pulse.error, 'ENOENT')
   assert.ok(iso.cipheraAfter.bytes > 10000, 'a failed Pulse card left Ciphera’s cards broken')
 })
+
+test('a title that fits keeps its size and lines; a longer one is drawn whole, smaller, inside its area', () => {
+  const { fit, unchanged, widths, six, cornerClear } = r.long
+  // Every title of up to four lines, the site's longest among them, is set exactly as before at full size.
+  assert.deepEqual(unchanged, unchanged.map(() => true), 'a title that fits changed')
+  // Five or six lines at full size: the whole title at 90 %, in four lines. Pulse's 89 characters: 80 %.
+  assert.deepEqual([fit.five.scale, fit.five.lines.length, fit.five.cut], [0.9, 4, false])
+  assert.deepEqual([fit.six.scale, fit.six.lines.length, fit.six.cut], [0.9, 4, false])
+  assert.deepEqual([fit.pulse.scale, fit.pulse.cut], [0.8, false])
+  assert.equal(fit.six.lines.join(' '), 'Is Your Website Analytics GDPR-Compliant? A 2026 Checklist for Marketing and Legal Teams')
+  // The six-line title is shown no taller than its area, so its first line stays clear of the lockup.
+  assert.equal(six.scale, 0.9)
+  assert.ok(six.height <= six.room, `${six.height} px shown in a ${six.room} px area`)
+  assert.ok(cornerClear, 'the long title reached the lockup corner')
+})
+
+test('a word wider than a line breaks after its hyphen or slash, and only a title past the smallest size is cut', () => {
+  const { fit, widths } = r.long
+  assert.ok(widths, 'a line runs past the width it is drawn at')
+  // ciphera.net/glossary/pake's term, whose "(password-authenticated" ran off the card's right edge.
+  assert.deepEqual(fit.pake.lines, ['PAKE (password-', 'authenticated key', 'exchange)'])
+  assert.equal(fit.pake.scale, 1)
+  assert.ok(fit.token.lines.some((l) => /[-/]$/.test(l)), `no break after a hyphen or a slash: ${JSON.stringify(fit.token.lines)}`)
+  // 189 characters still fit whole (at 70 %); only a title past the smallest size is cut, ending in an ellipsis
+  // rather than leaving the card.
+  assert.deepEqual([fit.huge.scale, fit.huge.cut], [0.7, false])
+  assert.deepEqual([fit.cut.scale, fit.cut.cut], [0.6, true])
+  assert.match(fit.cut.lines.at(-1), /\u2026$/)
+})
