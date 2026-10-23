@@ -1,6 +1,6 @@
 import { resolveCard } from '@/lib/og/cards'
-import { renderCard } from '@/lib/og/render'
-import { cardHash, cardPath, parseCardFile } from '@/lib/og/url'
+import { renderCard, renderCover } from '@/lib/og/render'
+import { cardHash, cardPath, coverHash, coverPath, parseCardFile } from '@/lib/og/url'
 
 /**
  * Every page's share card (D52; plan §5l), drawn on request and kept by the CDN for a year: the address carries a hash of
@@ -11,6 +11,7 @@ import { cardHash, cardPath, parseCardFile } from '@/lib/og/url'
  *   stale hash           308 to the current card (an old share keeps working)
  *   current              200 image/png, immutable
  *
+ * A `--cover` address is the same card at DEV's cover shape (lib/og/spec.ts), with its own hash and the same rules.
  * The Location is relative: behind the CDN this server sees the Magic Containers host, not ciphera.net.
  */
 export const runtime = 'nodejs'
@@ -23,14 +24,16 @@ export async function GET(_req: Request, { params }: { params: Promise<{ file: s
   if (!parsed) return new Response('Not found', NOT_FOUND)
   const card = await resolveCard(parsed.kind, parsed.key)
   if (!card) return new Response('Not found', NOT_FOUND)
-  if (cardHash(card) !== parsed.hash) {
+  const cover = parsed.variant === 'cover'
+  if ((cover ? coverHash(card) : cardHash(card)) !== parsed.hash) {
+    const current = cover ? coverPath(parsed.kind, parsed.key, card) : cardPath(parsed.kind, parsed.key, card)
     return new Response(null, {
       status: 308,
-      headers: { Location: cardPath(parsed.kind, parsed.key, card), 'Cache-Control': 'public, max-age=300' },
+      headers: { Location: current, 'Cache-Control': 'public, max-age=300' },
     })
   }
   try {
-    const png = await renderCard(card)
+    const png = await (cover ? renderCover(card) : renderCard(card))
     return new Response(png, {
       headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=31536000, immutable' },
     })

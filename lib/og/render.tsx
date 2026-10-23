@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 import { ImageResponse } from 'next/og'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { OG_HEIGHT, OG_WIDTH, type OgCard } from './spec'
+import { COVER_HEIGHT, COVER_WIDTH, OG_HEIGHT, OG_WIDTH, type OgCard } from './spec'
 import { decodePngAlpha } from './png'
 import {
   DOT_BASELINE,
@@ -174,6 +174,25 @@ export async function renderCard(card: OgCard): Promise<ArrayBuffer> {
       </div>
     ),
     { width: OG_WIDTH, height: OG_HEIGHT, fonts },
+  )
+  return res.arrayBuffer()
+}
+
+/**
+ * The card's cover (lib/og/spec.ts): the card's own PNG, drawn at its own size on the card's ground, so its pixels are
+ * the card's (the render test compares them) and only the ground widens. Every edge of a card is that ground, so the
+ * join cannot show.
+ */
+export async function renderCover(card: OgCard): Promise<ArrayBuffer> {
+  const [{ fonts }, png] = await Promise.all([loadAssets(), renderCard(card)])
+  const src = `data:image/png;base64,${Buffer.from(png).toString('base64')}`
+  const res = new ImageResponse(
+    (
+      <div style={{ display: 'flex', position: 'relative', width: COVER_WIDTH, height: COVER_HEIGHT, background: BG }}>
+        <img src={src} width={OG_WIDTH} height={OG_HEIGHT} alt="" style={{ position: 'absolute', left: (COVER_WIDTH - OG_WIDTH) / 2, top: (COVER_HEIGHT - OG_HEIGHT) / 2 }} />
+      </div>
+    ),
+    { width: COVER_WIDTH, height: COVER_HEIGHT, fonts },
   )
   return res.arrayBuffer()
 }

@@ -37,7 +37,11 @@ test('the card route answers 404 for what the site does not say, 308 for an old 
   assert.match(src, /if \(!parsed\) return new Response\('Not found', NOT_FOUND\)/)
   assert.match(src, /if \(!card\) return new Response\('Not found', NOT_FOUND\)/)
   assert.match(src, /status: 404, headers: \{ 'Cache-Control': 'no-store'/)
-  assert.match(src, /status: 308,\s*headers: \{ Location: cardPath\(parsed\.kind, parsed\.key, card\)/)
+  // A stale card goes to the current card, a stale cover to the current cover, each checked against its own hash.
+  assert.match(src, /\(cover \? coverHash\(card\) : cardHash\(card\)\) !== parsed\.hash/)
+  assert.match(src, /const current = cover \? coverPath\(parsed\.kind, parsed\.key, card\) : cardPath\(parsed\.kind, parsed\.key, card\)/)
+  assert.match(src, /status: 308,\s*headers: \{ Location: current,/)
+  assert.match(src, /await \(cover \? renderCover\(card\) : renderCard\(card\)\)/)
   assert.match(src, /'Cache-Control': 'public, max-age=31536000, immutable'/)
   // A failed drawing is never cached, so the next request draws it again.
   assert.match(src, /status: 500, headers: \{ 'Cache-Control': 'no-store'/)
