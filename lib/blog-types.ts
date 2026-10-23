@@ -39,20 +39,6 @@ export interface BlogPostCta {
   href: string
 }
 
-/**
- * A post's body and where it came from.
- *
- * 🔴 A DISCRIMINATED UNION, NOT A `isWordPress` FLAG. The two kinds are not
- * interchangeable: MDX parses raw HTML as JSX, so `class=` throws, HTML comments throw,
- * and any `{` in prose becomes an expression. A boolean would let a caller read `content`
- * without knowing which it has.
- * ⚠️ The post template (components/overhaul/blog/BlogPost.tsx) renders only the `html`
- * kind; an `mdx` body renders as an empty article (content/blog/README.md).
- */
-export type BlogPostBody =
-  | { kind: 'mdx'; content: string }
-  | { kind: 'html'; content: string }
-
 /** What `generate-blog-posts.ts` writes for each WordPress-sourced post. */
 export interface WpBlogPost {
   slug: string

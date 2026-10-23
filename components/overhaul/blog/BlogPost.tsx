@@ -236,7 +236,7 @@ export async function BlogPostPage({ variant, slug }: { variant: PostVariant; sl
  */
 export function BlogPostView({ variant, post, posts }: { variant: PostVariant; post: BlogPost; posts: BlogPostMeta[] }) {
   const slug = post.slug
-  const { body, headings } = renderPostBody(post.body.kind === 'html' ? post.body.content : '')
+  const { body, headings } = renderPostBody(post.html)
   const minutes = readMinutes(post.wordCount)
   const lean = variant === 'c'
   const toc = !lean && headings.length >= 4

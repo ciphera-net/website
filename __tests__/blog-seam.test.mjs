@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -50,13 +50,18 @@ test('the four generator pipelines keep their BlogPostSummary contract', () => {
   }
 })
 
-test('a slug in both sources is a build failure, not a precedence rule', () => {
+test('WordPress is the only source of a post: nothing reads the blog from the repository', () => {
+  // 23-10-2026: the git-tracked MDX posts were retired (content/blog/ held none since the move into the CMS, and the
+  // post template never rendered an MDX body). A second source would need a precedence rule or a collision guard
+  // again; there is none, so there must be no second source either.
   const blog = code('lib/blog.ts')
-  assert.match(blog, /collision/i, 'lib/blog.ts must detect a slug present in both content/blog and WordPress')
-  assert.match(blog, /throw new Error/, 'the collision must THROW — a precedence rule silently retires one source')
+  assert.doesNotMatch(blog, /from 'fs'|from 'path'|gray-matter|content\/blog|\.mdx/, 'lib/blog.ts reads posts from the repository again')
+  const gen = code('scripts/generate-blog-posts.ts')
+  assert.doesNotMatch(gen, /gray-matter|content\/blog|\.mdx/, 'the blog generator reads posts from the repository again')
+  assert.ok(!existsSync(join(root, 'content', 'blog')), 'content/blog/ is back: the blog has one source, WordPress')
 })
 
-test('the post page branches on the body discriminant, not on a boolean', () => {
+test('the post page renders the body through the sanitising renderer, and reads it once', () => {
   // ⚠️ THIS LIVES IN THE POST TEMPLATE, NOT THE ROUTE. The route only routes; the page is
   // one shared component so that /preview renders the REAL page rather than a
   // lookalike that can drift from it (§24.9). Since the overhaul (D37) that template is
@@ -64,14 +69,11 @@ test('the post page branches on the body discriminant, not on a boolean', () => 
   // older post-view.tsx these guards first read was rendered by no route (removed
   // 23-10-2026).
   const page = code('components/overhaul/blog/BlogPost.tsx')
-  // ⚠️ KNOWN GAP, PINNED AS IT IS (23-10-2026): the `: ''` means an `mdx` body renders as an empty article. It was
-  // the same before the template change; content/blog/README.md says so. Restoring an MDX branch or retiring the MDX
-  // source is an open decision, and either changes this line on purpose.
-  assert.match(page, /renderPostBody\(post\.body\.kind === 'html' \? post\.body\.content : ''\)/, 'the HTML branch must be selected by the discriminant')
+  assert.match(page, /renderPostBody\(post\.html\)/, 'the body must go through renderPostBody')
   assert.doesNotMatch(page, /dangerouslySetInnerHTML=\{\{\s*__html:\s*post\./, 'a WordPress body must never be injected as raw HTML')
   // The body is read in exactly one place, the renderer's argument: a second read (an alias handed to raw HTML, say)
   // is a path around the sanitiser that the line above cannot see.
-  assert.equal(page.match(/post\.body\.content/g)?.length, 1, 'the post body must be read only to hand it to renderPostBody')
+  assert.equal(page.match(/post\.html\b/g)?.length, 1, 'the post body must be read only to hand it to renderPostBody')
   const body = code('components/overhaul/blog/PostBody.tsx')
   assert.doesNotMatch(body, /dangerouslySetInnerHTML/, 'the body renderer must build elements, never inject HTML')
 })
@@ -212,7 +214,6 @@ test('every build-time gate the blog depends on is present', () => {
   // and splitting any one of them out was how coverage could regress unnoticed.
   const gen = code('scripts/generate-blog-posts.ts') + code('lib/blog-transform.ts') + code('lib/cms/blog-build.ts')
   for (const [needle, why] of [
-    [/exists in BOTH/, 'slug collision between MDX and WordPress'],
     [/duplicate published post/, 'two published posts sharing a slug'],
     [/no category/, 'a post with no category has no call-to-action'],
     [/has no call-to-action/, 'a category with no CTA silently shows the generic button'],

@@ -16,7 +16,7 @@ import { REMOVED as RETIRED_TERMS } from '@/components/overhaul/glossary/content
  * - Use real lastmod dates (file modification or content publish date), not build time
  * - Do not include priority or changeFrequency (ignored by Google and Bing)
  * - Do not include blog posts until they have substantive content (avoid thin-content indexing)
- * - Blog post dates are read from MDX frontmatter via getBlogPosts()
+ * - Blog post dates are read from WordPress via getBlogPosts()
  */
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

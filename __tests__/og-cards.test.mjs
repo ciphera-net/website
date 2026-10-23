@@ -137,5 +137,5 @@ test('a post’s image is its card on the blog index, on the homepage and in its
   const summary = code('scripts', 'generate-blog-posts.ts').match(/export interface BlogPostSummary \{([\s\S]*?)\n\}/)
   assert.deepEqual([...summary[1].matchAll(/^\s*(\w+)\??:/gm)].map((f) => f[1]), meta)
   const post = code('lib', 'blog.ts').match(/export interface BlogPost extends BlogPostMeta \{([\s\S]*?)\n\}/)
-  assert.deepEqual([...post[1].matchAll(/^\s*(\w+)\??:/gm)].map((f) => f[1]), ['content', 'faqs', 'cta', 'body', 'wordCount'])
+  assert.deepEqual([...post[1].matchAll(/^\s*(\w+)\??:/gm)].map((f) => f[1]), ['html', 'faqs', 'cta', 'wordCount'])
 })

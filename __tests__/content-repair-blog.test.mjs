@@ -84,11 +84,7 @@ test('lib/cms/blog-build.ts skips a post with no safe repair and records it, nev
   assert.match(built, /checkRecoveryCopy/)
   assert.match(built, /repair\(\s*post\.slug,\s*'recovery-copy',\s*'flagged'/)
 
-  // A slug shared with a git-tracked MDX post stays a BUILD-ONLY check — it needs the
-  // filesystem, and lib/cms/blog-build.ts documents why it has no runtime equivalent.
   const gen = code('scripts/generate-blog-posts.ts')
-  assert.match(gen, /exists in BOTH content\/blog\//)
-  assert.doesNotMatch(gen, /fail\(`slug "\$\{post\.slug\}" exists in BOTH/, 'an MDX/WP slug collision must no longer fail the build')
   assert.doesNotMatch(gen, /fail\(`duplicate published post/, 'a duplicate published post must no longer fail the build')
 
   // An unreachable image/tool-logo mark is DROPPED from the body (repaired), not fatal.

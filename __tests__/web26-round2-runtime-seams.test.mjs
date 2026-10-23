@@ -38,7 +38,7 @@ test('buildBlogPosts shares transformWpPost and dedupes by lowest databaseId, ne
 
 test('buildBlogPosts documents exactly which build-only checks it does NOT replicate, and why', () => {
   const src = read(join('lib', 'cms', 'blog-build.ts'))
-  for (const needle of ['content/blog/*.mdx collision', 'HEAD check', 'shrink guard']) {
+  for (const needle of ['HEAD check', 'shrink guard']) {
     assert.ok(src.includes(needle), `the module header must name "${needle}" as a documented gap`)
   }
 })
@@ -51,14 +51,6 @@ test('getBlogPosts/getBlogPost are async, and the flag-off path reproduces the p
   assert.match(src, /export async function getBlogPost\(slug: string\)/)
   assert.match(src, /export function getBlogPostsSeed\(\)/, 'a SYNC seed accessor must exist for build-time-only callers')
   assert.match(src, /if \(!isRuntimeKind\(KIND\)\) \{\s*\n\s*lastState = \{ enabled: false, source: 'seed' \}/)
-})
-
-test('MDX always wins over a CDN-published post with the same slug — the ONE hard build failure stays build-only', () => {
-  const src = code('lib/blog.ts')
-  // The build-time throw (module scope, against the SEED) must still exist.
-  assert.match(src, /throw new Error\(\s*\n\s*`Blog slug collision/)
-  // The runtime seam must NOT throw on the same situation — it silently prefers MDX.
-  assert.match(src, /if \(mdxSlugSet\.has\(slug\)\) continue/, 'a CDN post colliding with an MDX slug must be silently skipped, never thrown')
 })
 
 test('generate-llms.ts reads the seed accessor, never the async seam', () => {
