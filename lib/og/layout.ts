@@ -1,6 +1,7 @@
 import semibold from './geist-semibold-metrics.json'
 import regular from './geist-regular-metrics.json'
-import { DOT_PITCH, DOT_SIZE, DOT_WIDTH } from './dots'
+import { DOT_PITCH, DOT_SIZE, DOT_WIDTH, dotBoxHeight } from './dots'
+import { OG_HEIGHT, TITLE_BOTTOM, TITLE_TOP } from './spec'
 
 /**
  * Sets an OG card's words the way the approved mock's browser did (D52), so the card looks like what the owner approved:
@@ -13,20 +14,37 @@ type Metrics = { unitsPerEm: number; advance: Record<string, number>; kern: Reco
 
 export type Placed = { glyphs: { char: string; x: number }[]; end: number }
 
+/** A width function: how wide a run of text is drawn. Wrapping takes one, so the same rules serve both ways of drawing. */
+export type Measure = (text: string) => number
+
 function setter(metrics: Metrics, size: number, letterSpacing: number) {
   const scale = size / metrics.unitsPerEm
+  // A character the font does not have (an emoji, a script it lacks) counts as one em, wider than nearly any glyph.
+  const advance = (c: string) => metrics.advance[c] ?? metrics.unitsPerEm
   const step = (chars: string[], i: number) =>
-    metrics.advance[chars[i]] * scale + letterSpacing + (i < chars.length - 1 ? (metrics.kern[chars[i]]?.[chars[i + 1]] ?? 0) * scale : 0)
+    advance(chars[i]) * scale + letterSpacing + (i < chars.length - 1 ? (metrics.kern[chars[i]]?.[chars[i + 1]] ?? 0) * scale : 0)
   return {
     size,
     letterSpacing,
-    /** True when every character has metrics; otherwise the renderer sets the text with its own layout. */
+    /** True when the font has every character, so the text is drawn glyph by glyph; else line by line (`bound`). */
     has: (text: string) => Array.from(text).every((c) => c in metrics.advance),
     /** The width canvas measureText gives: advances, kerning, and the letter-spacing after each character. */
     width(text: string): number {
       const chars = Array.from(text)
       let w = 0
       for (let i = 0; i < chars.length; i++) w += step(chars, i)
+      return w
+    },
+    /**
+     * At least the width the renderer draws a line at when it sets the text itself: unkerned advances, as it places
+     * words, and the letter-spacing after each character; a character the font lacks counts one em and no spacing,
+     * because next/og draws an emoji as an image that wide with no tracking (measured 23-10-2026: three rockets and
+     * a word ran 8 px past a bound that tracked them). For text the font does not wholly have (`has` false), so a line
+     * wrapped to it never runs past the width it is drawn on.
+     */
+    bound(text: string): number {
+      let w = 0
+      for (const c of Array.from(text)) w += c in metrics.advance ? metrics.advance[c] * scale + letterSpacing : size
       return w
     },
     /** Where each visible character of a line starts (spaces only advance the pen), and where the line ends. */
@@ -55,38 +73,114 @@ export const LEAD_WIDTH = 900
 /** Every title line keeps room for the orange block (one gap and three dots), as the mock's wrap did. */
 const BLOCK = DOT_PITCH * 4
 
+/** How a title is measured: glyph by glyph (kerned) when the font has every character, else by the renderer's bound. */
+export const titleMeasure = (title: string): Measure => (TITLE.has(title) ? TITLE.width : TITLE.bound)
+
 /** The title's lines, as the mock's DotText wrapped them (the orange block replaces a trailing full stop). */
-export function wrapTitle(title: string, width = DOT_WIDTH): string[] {
-  const lines = greedy(title, width - BLOCK, TITLE.width)
+export function wrapTitle(title: string, width = DOT_WIDTH, measure: Measure = titleMeasure(title)): string[] {
+  const { lines, mid } = greedy(title, width - BLOCK, measure)
+  // A last line that is only the full stop the orange block replaces is no line: the block follows the line before it.
+  if (lines.length > 1 && lines[lines.length - 1] === '.') {
+    lines.pop()
+    mid.pop()
+  }
   // A one- or two-letter word never ends a line ("Analytics: A / 2026 Guide"): it moves down to the next line when that
   // line still fits with it.
   for (let i = 0; i < lines.length - 1; i++) {
     const words = lines[i].split(' ')
     const last = words[words.length - 1]
     if (words.length < 2 || last.length > 2) continue
-    const moved = `${last} ${lines[i + 1]}`
+    // A piece of a word broken after its hyphen or slash ("e-", "A/") goes down WITHOUT a space: it is still that word.
+    const moved = `${last}${mid[i] ? '' : ' '}${lines[i + 1]}`
     const room = i + 1 === lines.length - 1 ? width - BLOCK : width
-    if (TITLE.width(moved) <= room) {
+    if (measure(moved) <= room) {
       lines[i] = words.slice(0, -1).join(' ')
       lines[i + 1] = moved
+      mid[i] = false
     }
   }
   return lines.map((l, i) => (i === lines.length - 1 ? l.replace(/\.$/, '') : l))
 }
 
-/** The lead's lines, as the mock's paragraph broke them at its maximum width. */
-export const wrapLead = (lead: string) => greedy(lead, LEAD_WIDTH, LEAD.width)
+/** The lead's lines, as the mock's paragraph broke them at its maximum width (by the bound when it has a character the
+ * font lacks, so the room the title gives up is never short of the lines drawn). */
+export const wrapLead = (lead: string) => greedy(lead, LEAD_WIDTH, LEAD.has(lead) ? LEAD.width : LEAD.bound).lines
 
-function greedy(text: string, max: number, width: (s: string) => number): string[] {
+/** The sizes a title may be drawn at: full size, then a tenth smaller at a time (23-10-2026). */
+export const TITLE_SCALES = [1, 0.9, 0.8, 0.7, 0.6] as const
+/** The height a card gives its title when it has no lead: the area between TITLE_TOP and TITLE_BOTTOM. */
+export const TITLE_ROOM = OG_HEIGHT - TITLE_TOP - TITLE_BOTTOM
+
+export type TitleFit = { lines: string[]; scale: number; cut: boolean }
+
+/**
+ * How a title fits its card: at full size when it does, as every title on the site does today (four lines fill the
+ * title's area), and otherwise the whole title at the largest of TITLE_SCALES at which it fits `room`. D52 drew every
+ * title at one size, so a fifth line crowded the lockup and a sixth printed over it and lost its last line; this was
+ * chosen over cutting a long title at four lines (23-10-2026). Measured on ordinary words: full size holds about 75
+ * characters, 90 % about 95, 80 % about 140, 70 % about 200, 60 % about 270. Past the smallest size, as many lines
+ * as fit, the last one ending in an ellipsis: the card never overflows. The lines are wrapped at the card's width
+ * divided by the scale, so a smaller title still fills the width. Every title goes through here, also one with a
+ * character the font lacks: it is measured by `bound` and drawn line by line (lib/og/render.tsx).
+ */
+export function fitTitle(title: string, room = TITLE_ROOM, measure: Measure = titleMeasure(title)): TitleFit {
+  for (const scale of TITLE_SCALES) {
+    const lines = wrapTitle(title, DOT_WIDTH / scale, measure)
+    if (dotBoxHeight(lines.length) * scale <= room) return { lines, scale, cut: false }
+  }
+  const scale = TITLE_SCALES[TITLE_SCALES.length - 1]
+  const width = DOT_WIDTH / scale
+  const lines = wrapTitle(title, width, measure)
+  let keep = lines.length
+  while (keep > 1 && dotBoxHeight(keep) * scale > room) keep--
+  const whole = lines[keep - 1]
+  let last = whole
+  while (measure(`${last}\u2026`) > width - BLOCK && last.length > 1) {
+    last = last.includes(' ') ? last.slice(0, last.lastIndexOf(' ')) : last.slice(0, -1)
+  }
+  // A room under one line at the smallest size drops nothing: the title is not cut, and the card shows it whole.
+  if (keep === lines.length && last === whole) return { lines, scale, cut: false }
+  return { lines: [...lines.slice(0, keep - 1), `${last.replace(/[\s,;:.\u2026\u2013\u2014-]+$/, '')}\u2026`], scale, cut: true }
+}
+
+/**
+ * Lines at most `max` wide, broken at spaces. A word wider than a whole line (a long compound, a run like
+ * "Cookie-less/GDPR-compliant") breaks after a hyphen or a slash, and a part still too wide between two characters, so
+ * no line runs off the card (23-10-2026). Every other text breaks exactly where it did before.
+ */
+function greedy(text: string, max: number, width: Measure): { lines: string[]; mid: boolean[] } {
   const lines: string[] = []
+  // For each line, whether the break after it falls inside a word (the next line goes on with the same word).
+  const mid: boolean[] = []
   let cur = ''
   for (const word of text.replace(/\s+/g, ' ').trim().split(' ')) {
-    const next = cur ? `${cur} ${word}` : word
-    if (cur && width(next) > max) {
-      lines.push(cur)
-      cur = word
-    } else cur = next
+    pieces(word, max, width).forEach((part, k) => {
+      // A word's first piece follows a space; the pieces of one broken word join without one.
+      const next = cur ? (k === 0 ? `${cur} ${part}` : `${cur}${part}`) : part
+      if (cur && width(next) > max) {
+        lines.push(cur)
+        mid.push(k > 0)
+        cur = part
+      } else cur = next
+    })
   }
   if (cur) lines.push(cur)
-  return lines
+  return { lines, mid }
+}
+
+/** A word as the pieces a line may end between: the word itself when it fits a line. */
+function pieces(word: string, max: number, width: Measure): string[] {
+  if (width(word) <= max) return [word]
+  return word.split(/(?<=[-/])/).flatMap((part) => {
+    if (width(part) <= max) return [part]
+    const out: string[] = []
+    let cur = ''
+    for (const c of Array.from(part)) {
+      if (cur && width(cur + c) > max) {
+        out.push(cur)
+        cur = c
+      } else cur += c
+    }
+    return cur ? [...out, cur] : out
+  })
 }

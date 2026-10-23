@@ -4,9 +4,10 @@ import type { OgCard } from '@/lib/og/spec'
 import { cardHash, cardPath, coverHash, coverPath, parseCardFile } from '@/lib/og/url'
 
 /**
- * Every page's share card (D52; plan §5l), drawn on request and kept by the CDN for a year: the address carries a hash of
- * the card's words, so a changed title is a new URL and an old copy is never shown. Posts and glossary terms are runtime
- * CMS content, so the cards cannot be drawn at build time. pulse.ciphera.net's posts get their cards here too
+ * Every page's share card (D52; plan §5l), drawn on request and kept by the CDN for 30 days (the zone's static-files
+ * rule; the response itself says a year, immutable): the address carries a hash of the card's words, so a changed title
+ * is a new URL and an old copy is never shown. Posts and glossary terms are runtime CMS content, so the cards cannot be
+ * drawn at build time. pulse.ciphera.net's posts get their cards here too
  * (`pulse-post`, 23-10-2026).
  *
  *   unknown key or kind  404 (the words come from the page's own loaders, never from the URL)

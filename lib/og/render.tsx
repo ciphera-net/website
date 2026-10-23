@@ -1,26 +1,10 @@
-import type { ReactElement } from 'react'
 import { ImageResponse } from 'next/og'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { COVER_HEIGHT, COVER_WIDTH, OG_HEIGHT, OG_WIDTH, type OgBrand, type OgCard } from './spec'
+import { COVER_HEIGHT, COVER_WIDTH, OG_HEIGHT, OG_WIDTH, TITLE_BOTTOM, TITLE_TOP, type OgBrand, type OgCard } from './spec'
 import { decodePngAlpha } from './png'
-import {
-  DOT_BASELINE,
-  DOT_LINE,
-  DOT_LINE_HEIGHT,
-  DOT_MAX_LINES,
-  DOT_SIZE,
-  DOT_WIDTH,
-  DOT_WRAP_WIDTH,
-  countLines,
-  dotBoxHeight,
-  dotsSvg,
-  fullStop,
-  inkEnd,
-  sampleDots,
-  titleText,
-} from './dots'
-import { LABEL, LEAD, LEAD_LINE_HEIGHT, LEAD_WIDTH, TITLE, wrapLead, wrapTitle } from './layout'
+import { DOT_BASELINE, DOT_LINE, DOT_LINE_HEIGHT, DOT_SIZE, DOT_WIDTH, dotBoxHeight, dotsSvg, fullStop, inkEnd, sampleDots } from './dots'
+import { LABEL, LEAD, LEAD_LINE_HEIGHT, LEAD_WIDTH, TITLE, TITLE_ROOM, fitTitle, wrapLead } from './layout'
 
 /**
  * Draws one OG card (D52, "D, at one size"; plan §5l). Two renders with next/og: the title alone, white on transparent,
@@ -33,6 +17,10 @@ import { LABEL, LEAD, LEAD_LINE_HEIGHT, LEAD_WIDTH, TITLE, wrapLead, wrapTitle }
  * (DOT_BASELINE, then one per line height); Satori draws a 100 px Geist SemiBold glyph with line height 1.02 with its
  * baseline 86 px below the node's top (measured; __tests__/og-render.render.mjs pins it), so each node is lifted by the
  * difference. The lead was a paragraph in the mock, so its glyphs sit in ordinary line boxes.
+ *
+ * Text with a character the font lacks (an emoji, a script it does not have) is wrapped and fitted by the same rules,
+ * measured by its bound (lib/og/layout.ts), and each line is handed to next/og whole, so it can shape what it draws;
+ * only the word spacing on those lines is next/og's own.
  */
 export const SATORI_BASELINE = 86
 
@@ -47,6 +35,8 @@ const ORANGE = '#FD5E0F'
 const TITLE_GLYPH = { fontFamily: 'Geist', fontWeight: 600, fontSize: DOT_SIZE, lineHeight: DOT_LINE_HEIGHT, color: '#fff', WebkitTextStrokeWidth: 1, WebkitTextStrokeColor: '#fff' } as const
 const LEAD_TEXT = { fontFamily: 'Geist', fontWeight: 400, fontSize: LEAD.size, lineHeight: LEAD_LINE_HEIGHT, color: MUTED } as const
 const LEAD_LINE = LEAD.size * LEAD_LINE_HEIGHT
+/** The space between the title and its lead (Lead's marginTop). */
+const LEAD_GAP = 22
 
 type Fonts = NonNullable<ConstructorParameters<typeof ImageResponse>[1]>['fonts']
 type Icon = { src: string; width: number }
@@ -107,66 +97,65 @@ function loadIcon(brand: OgBrand): Promise<Icon> {
   return loading
 }
 
-/** The title as dots: the SVG, its box height (the mock's DotText box for that many lines), the line and dot counts. */
-export async function titleDots(title: string): Promise<{ svg: string; height: number; lines: number; dots: number; layout: 'metrics' | 'renderer' }> {
+/**
+ * The title as dots: the SVG, the height it is shown at on the card (the mock's DotText box for that many lines, times
+ * the scale), the line and dot counts, how it was drawn, and the scale. `room` is the height the card leaves it
+ * (lib/og/layout.ts fitTitle): a title that fits is drawn exactly as before; a longer one is drawn whole, at a smaller
+ * size, on a canvas as much wider than the card's as it is smaller, and the card shows that canvas at the card's width.
+ * `glyphs`: placed one glyph at a time (the font has every character); `lines`: each line set by next/og.
+ */
+export async function titleDots(title: string, room = TITLE_ROOM): Promise<{ svg: string; height: number; lines: number; dots: number; layout: 'glyphs' | 'lines'; scale: number }> {
   const fonts = await loadFonts()
-  const draw = async (node: ReactElement, height: number) =>
-    decodePngAlpha(new Uint8Array(await new ImageResponse(node, { width: DOT_WIDTH, height, fonts }).arrayBuffer()))
-
-  if (TITLE.has(title)) {
-    const lines = wrapTitle(title).map(TITLE.place)
-    const box = dotBoxHeight(lines.length)
-    const { width, alpha } = await draw(
-      <div style={{ display: 'flex', position: 'relative', width: DOT_WIDTH, height: box }}>
-        {lines.flatMap((line, i) =>
-          line.glyphs.map((g, k) => (
-            <div key={`${i}-${k}`} style={{ ...TITLE_GLYPH, position: 'absolute', left: g.x, top: DOT_BASELINE + i * DOT_LINE - SATORI_BASELINE }}>
-              {g.char}
+  const fit = fitTitle(title, room)
+  if (fit.lines.length === 0) throw new Error('og: the title is empty')
+  const glyphs = TITLE.has(title)
+  const canvas = Math.round(DOT_WIDTH / fit.scale)
+  const box = dotBoxHeight(fit.lines.length)
+  const top = (i: number) => DOT_BASELINE + i * DOT_LINE - SATORI_BASELINE
+  const placed = glyphs ? fit.lines.map(TITLE.place) : []
+  const node = (
+    <div style={{ display: 'flex', position: 'relative', width: canvas, height: box }}>
+      {glyphs
+        ? placed.flatMap((line, i) =>
+            line.glyphs.map((g, k) => (
+              <div key={`${i}-${k}`} style={{ ...TITLE_GLYPH, position: 'absolute', left: g.x, top: top(i) }}>
+                {g.char}
+              </div>
+            )),
+          )
+        : fit.lines.map((line, i) => (
+            <div key={i} style={{ ...TITLE_GLYPH, position: 'absolute', left: 0, top: top(i), whiteSpace: 'pre', letterSpacing: TITLE.letterSpacing }}>
+              {line}
             </div>
-          )),
-        )}
-      </div>,
-      box,
-    )
-    const last = lines[lines.length - 1]
-    const dots = [...sampleDots(alpha, width, box), ...fullStop(last.end, DOT_BASELINE + (lines.length - 1) * DOT_LINE)]
-    return { svg: dotsSvg(dots, DOT_WIDTH, box), height: box, lines: lines.length, dots: dots.length, layout: 'metrics' }
-  }
-
-  // A character outside the metrics table (an emoji, a script the site does not write in): the renderer's own text
-  // layout sets the title, with its uneven word spacing, rather than no card at all.
-  const tall = dotBoxHeight(DOT_MAX_LINES)
-  const { width, height, alpha } = await draw(
-    <div style={{ display: 'flex', width: DOT_WIDTH, height: tall }}>
-      <div style={{ ...TITLE_GLYPH, display: 'flex', marginTop: DOT_BASELINE - SATORI_BASELINE, width: DOT_WRAP_WIDTH, letterSpacing: TITLE.letterSpacing }}>
-        {titleText(title)}
-      </div>
-    </div>,
-    tall,
+          ))}
+    </div>
   )
-  const lines = countLines(alpha, width, height)
-  if (lines === 0) throw new Error(`og: the title rendered no ink (${JSON.stringify(title)})`)
-  const box = dotBoxHeight(lines)
-  const base = DOT_BASELINE + (lines - 1) * DOT_LINE
-  const dots = [...sampleDots(alpha.subarray(0, width * box), width, box), ...fullStop(inkEnd(alpha, width, height, base), base)]
-  return { svg: dotsSvg(dots, DOT_WIDTH, box), height: box, lines, dots: dots.length, layout: 'renderer' }
+  const { width, alpha } = decodePngAlpha(new Uint8Array(await new ImageResponse(node, { width: canvas, height: box, fonts }).arrayBuffer()))
+  const base = DOT_BASELINE + (fit.lines.length - 1) * DOT_LINE
+  // The orange block follows the last line: where its glyphs end, or, set by next/og, where its ink ends.
+  const end = glyphs ? placed[placed.length - 1].end : inkEnd(alpha, width, box, base)
+  const dots = [...sampleDots(alpha, width, box), ...fullStop(end, base)]
+  return { svg: dotsSvg(dots, width, box), height: Math.round(box * fit.scale), lines: fit.lines.length, dots: dots.length, layout: glyphs ? 'glyphs' : 'lines', scale: fit.scale }
 }
 
-/** The lead, set glyph by glyph when the metrics cover it, else by the renderer. */
+/** The lead, set glyph by glyph when the font has every character, else line by line by the renderer. */
 function Lead({ text }: { text: string }) {
-  if (!LEAD.has(text)) {
-    return <div style={{ ...LEAD_TEXT, display: 'flex', marginTop: 22, maxWidth: LEAD_WIDTH, letterSpacing: LEAD.letterSpacing }}>{text}</div>
-  }
-  const lines = wrapLead(text).map(LEAD.place)
+  const lines = wrapLead(text)
   return (
-    <div style={{ display: 'flex', position: 'relative', marginTop: 22, width: LEAD_WIDTH, height: lines.length * LEAD_LINE }}>
-      {lines.flatMap((line, i) =>
-        line.glyphs.map((g, k) => (
-          <div key={`${i}-${k}`} style={{ ...LEAD_TEXT, position: 'absolute', left: g.x, top: i * LEAD_LINE }}>
-            {g.char}
-          </div>
-        )),
-      )}
+    <div style={{ display: 'flex', position: 'relative', marginTop: LEAD_GAP, width: LEAD_WIDTH, height: lines.length * LEAD_LINE }}>
+      {LEAD.has(text)
+        ? lines.map(LEAD.place).flatMap((line, i) =>
+            line.glyphs.map((g, k) => (
+              <div key={`${i}-${k}`} style={{ ...LEAD_TEXT, position: 'absolute', left: g.x, top: i * LEAD_LINE }}>
+                {g.char}
+              </div>
+            )),
+          )
+        : lines.map((line, i) => (
+            <div key={i} style={{ ...LEAD_TEXT, position: 'absolute', left: 0, top: i * LEAD_LINE, whiteSpace: 'pre', letterSpacing: LEAD.letterSpacing }}>
+              {line}
+            </div>
+          ))}
     </div>
   )
 }
@@ -175,7 +164,8 @@ function Lead({ text }: { text: string }) {
 export async function renderCard(card: OgCard): Promise<ArrayBuffer> {
   const brand = card.brand ?? 'ciphera'
   const [fonts, icon] = await Promise.all([loadFonts(), loadIcon(brand)])
-  const title = await titleDots(card.title)
+  // A lead below the title takes its own lines (and the gap above them) out of the title's room.
+  const title = await titleDots(card.title, card.lead ? TITLE_ROOM - LEAD_GAP - wrapLead(card.lead).length * LEAD_LINE : TITLE_ROOM)
   const dotsUrl = `data:image/svg+xml;base64,${Buffer.from(title.svg).toString('base64')}`
   const res = new ImageResponse(
     (
@@ -193,7 +183,7 @@ export async function renderCard(card: OgCard): Promise<ArrayBuffer> {
             <div style={LABEL.has(card.label) ? { display: 'flex', width: LABEL.width(card.label) } : { display: 'flex' }}>{card.label}</div>
           </div>
         ) : null}
-        <div style={{ position: 'absolute', left: 60, right: 40, top: 120, bottom: 56, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div style={{ position: 'absolute', left: 60, right: 40, top: TITLE_TOP, bottom: TITLE_BOTTOM, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <img src={dotsUrl} width={DOT_WIDTH} height={title.height} alt="" />
           {card.lead ? <Lead text={card.lead} /> : null}
         </div>

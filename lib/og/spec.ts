@@ -12,10 +12,24 @@ export type OgCard = { label: string; title: string; lead?: string; brand?: OgBr
 /** `pulse-post`: a pulse.ciphera.net blog post, keyed by its slug (lib/cms/pulse-posts.ts); its page declares the card. */
 export type OgKind = 'page' | 'post' | 'term' | 'learn' | 'pulse-post'
 
-/** Bump when the drawing changes: every card's address moves with it, so the CDN's year-long copies are never stale. */
+/**
+ * Bump when the drawing changes: every card's address moves with it, so no cached copy is ever stale. The edge and
+ * browsers keep a card 30 days (the zone's static-files rule answers `max-age=2592000`; the route itself says a year).
+ * A change that redraws only cards the old drawing broke may keep it and purge each affected card's address instead.
+ * The long-title fit (23-10-2026) drew 210 of the 211 live cards byte for byte as before and fixed one (`term--pake`,
+ * a word that ran off the card), so it kept `dots-1` rather than moving all 211 addresses. Done that way:
+ * - the live set comes from every index, not the sitemap alone: its 71 pages, the 139 Learn pages it leaves out
+ *   (noindex), and pulse.ciphera.net's posts;
+ * - purge the exact card and cover addresses, never `/og/*`, and only once the deploy is `active` on Magic Containers
+ *   and has held 30 minutes: a purge before then can let an old instance draw the old card into the edge for another
+ *   30 days. Then fetch each one and compare it with the new drawing. Copies other sites fetched are not reachable.
+ */
 export const OG_TEMPLATE = 'dots-1'
 export const OG_WIDTH = 1200
 export const OG_HEIGHT = 630
+/** The title's area on a card (renderCard): from 120 px below the top edge to 56 px above the bottom one. */
+export const TITLE_TOP = 120
+export const TITLE_BOTTOM = 56
 
 /**
  * A card's cover (23-10-2026): the same card, untouched, centred on its own ground at DEV's cover shape. DEV shows every
