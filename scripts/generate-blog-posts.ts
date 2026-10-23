@@ -367,7 +367,7 @@ export const BLOG_WATERMARK = ${JSON.stringify(built.watermark)}
 //
 // 🔴 BUILD OUTPUT, NOT SOURCE. See lib/blog-posts.gen.ts.
 // The HTML here is WordPress's rendered output with FAQ blocks lifted out. It is
-// SANITISED AT RENDER TIME by components/blog/wp-body.tsx, not here — one allowlist,
+// SANITISED AT RENDER TIME by components/overhaul/blog/PostBody.tsx, not here — one allowlist,
 // applied where the markup becomes elements.
 
 import type { WpBlogPost } from './blog-types'

@@ -1,12 +1,12 @@
-// Split out of components/blog/wp-body.tsx so the sanitize pipeline has no React
-// dependency and can run both at render time and at build time (scripts/generate-blog-posts.ts
-// HEAD-checks exactly what this will render, via renderableImageSources()).
+// The React-free half of the blog body pipeline, so it can run both at render time
+// (components/overhaul/blog/PostBody.tsx) and at build time (scripts/generate-blog-posts.ts
+// HEAD-checks exactly what the page will render, via renderableImageSources()).
 //
 // Ported from pulse-website@edcb673 / 70a90da / ef2bf0e (PULSE-243): the sanitizer's
 // `protocols` map replaced defaultSchema.protocols instead of merging it, so an <img src>
 // carried no scheme check at all — javascript:, data: and any off-CDN https image rendered.
-// ciphera-website's own wp-body.tsx had the identical bug (same origin, same code shape).
-import { unified } from 'unified'
+// ciphera-website's own body renderer had the identical bug (same origin, same code shape).
+import { unified, type Preset } from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeSanitize, { defaultSchema, type Options as SanitizeSchema } from 'rehype-sanitize'
 import { visit } from 'unist-util-visit'
@@ -16,12 +16,12 @@ import type { Root, Element } from 'hast'
  * The React-free half of the WordPress body pipeline: parse → cipheraBlocks →
  * rehype-sanitize → cdnImagesOnly → toolLogosValidated.
  *
- * components/blog/wp-body.tsx imports `cipheraBlocks`, `schema`, `cdnImagesOnly` and
- * `toolLogosValidated` from here and adds `rehype-react` on top to actually render to
- * React. scripts/generate-blog-posts.ts imports only `renderableImageSources()`, which
- * runs this exact chain, so the set of images (and tool-logo marks) the build HEAD-checks
- * and the set the page will actually render can never disagree — see that function's own
- * comment.
+ * The chain is written once, as the `sanitizeChain` preset below.
+ * components/overhaul/blog/PostBody.tsx starts its processor with it and adds two tree
+ * steps and `rehype-react` on top to actually render to React.
+ * scripts/generate-blog-posts.ts imports only `renderableImageSources()`, which runs the
+ * same preset, so the set of images (and tool-logo marks) the build HEAD-checks and the
+ * set the page will actually render can never disagree — see that function's own comment.
  *
  * Design: Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md §24.5
  * Port:   Pulse/docs/plans/04-10-2026-cms-and-split-handover-5.md (WEB-16, mirrors PULSE-243)
@@ -205,7 +205,7 @@ export function cdnImagesOnly() {
  * 🔴 `data-src` IS A '*' ATTRIBUTE (schema above), SO IT IS NEVER SHAPE-CHECKED BY
  * SANITIZE ITSELF. `<span data-ciphera-block="tool-logo" data-src="…">` survives the
  * hast pipeline unexamined and is substituted by `<ToolLogo>` only AFTER this whole
- * chain runs (components/blog/wp-body.tsx's `CipheraBlock`), which renders
+ * chain runs (components/overhaul/blog/PostBody.tsx's `CipheraBlock`), which renders
  * `<img src={cdnUrl(data-src)}>` straight from the CMS-authored string — unchecked,
  * never returned by `renderableImageSources` (so the generator never HEAD-checks a
  * tool logo), and rendered relative to this app's own origin whenever
@@ -218,7 +218,7 @@ export const TOOL_LOGO_SRC = /^\/blog\/tools\/[a-z0-9][a-z0-9._-]*\.(?:png|svg|w
 /**
  * Runs AFTER sanitize, same position as `cdnImagesOnly` and for the same reason:
  * `data-src` is a '*' attribute, never shape-checked there. Only `span` and `div`
- * become a `<ToolLogo>` (components/blog/wp-body.tsx's `CipheraBlock`); on any other
+ * become a `<ToolLogo>` (components/overhaul/blog/PostBody.tsx's `CipheraBlock`); on any other
  * tag the block is mis-authored and would render as that element with an inert
  * data-src, so the attributes go but the element and its text stay (deleting a `<p>`
  * would delete the editor's prose). On `span`/`div`, removes the whole element when
@@ -246,26 +246,38 @@ export function toolLogosValidated() {
   }
 }
 
-/** Same first two steps as `sanitizePipeline`, stopping BEFORE sanitize/cdnImagesOnly/
+/** The first two steps of `sanitizeChain` (below), stopping BEFORE sanitize/cdnImagesOnly/
  * toolLogosValidated — see `rawMediaRefs`, the only thing that runs this. */
 const rawParsePipeline = unified()
   .use(rehypeParse, { fragment: true })
   .use(cipheraBlocks)
 
-const sanitizePipeline = unified()
-  .use(rehypeParse, { fragment: true })
-  .use(cipheraBlocks)
-  .use(rehypeSanitize, schema)
-  .use(cdnImagesOnly)
-  .use(toolLogosValidated)
+/**
+ * 🔑 THE CHAIN, WRITTEN ONCE: parse → cipheraBlocks → sanitize → cdnImagesOnly →
+ * toolLogosValidated. The post body renderer (components/overhaul/blog/PostBody.tsx) and
+ * `renderableImageSources` below both start from this preset, so the images the build
+ * HEAD-checks and the images a reader's browser requests come from one list of steps by
+ * construction, not from two copies a test has to keep in step. Until 23-10-2026 there
+ * were two copies, and the render-side one's image validators were pinned only by a guard
+ * reading a file no route rendered.
+ * 🔴 cdnImagesOnly and toolLogosValidated run AFTER sanitize, never before: a pre-sanitize
+ * check would validate markup the sanitizer has not finished with.
+ */
+export const sanitizeChain: Preset = {
+  plugins: [[rehypeParse, { fragment: true }], cipheraBlocks, [rehypeSanitize, schema], cdnImagesOnly, toolLogosValidated],
+}
+
+const sanitizePipeline = unified().use(sanitizeChain)
 
 /**
  * Every image source that will actually reach a reader's browser from this post body,
  * deduped, in document order — both a surviving `<img src>` and a surviving tool-logo
  * mark's resolved CDN URL. It is the result of the EXACT SAME
  * parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated chain
- * components/blog/wp-body.tsx renders with, minus only the final rehype-react step
- * (which has no bearing on which elements survive).
+ * (`sanitizeChain`) components/overhaul/blog/PostBody.tsx renders with, minus only its
+ * last three steps, none of which has any bearing on which images survive: `emptyCells`
+ * removes only a heading with no text and no element child, `headingIds` only writes ids,
+ * and rehype-react only turns the tree into elements.
  *
  * scripts/generate-blog-posts.ts HEAD-checks exactly this set, so the set it verifies
  * and the set a reader's browser requests are the same set by construction — never a
@@ -352,7 +364,7 @@ export function rawMediaRefs(html: string): Array<{ kind: 'img' | 'tool-logo'; v
  *
  * 🔑 STRING SURGERY, NOT A SECOND PARSE/SERIALIZE ROUND-TRIP. `post.html` here is the
  * RAW (pre-sanitize) body — sanitizing happens again at render time
- * (components/blog/wp-body.tsx) — and this repo has no HTML serializer dependency to
+ * (components/overhaul/blog/PostBody.tsx) — and this repo has no HTML serializer dependency to
  * round-trip a mutated hast tree back to a string without adding one (out of scope for a
  * build-safety fix). A literal-match replace on the exact `src`/`data-src` value already
  * computed by `renderableImageSources` is unambiguous: both are build-generated absolute

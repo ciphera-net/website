@@ -22,13 +22,13 @@
  * 🔴 TEXT-SECTION BODY HTML IS SANITISED HERE, TO A SIX-TAG ALLOWLIST
  * (p/a[href]/strong/em/code/br), AND THE SANITISED STRING IS WHAT SHIPS IN THE
  * DOCUMENT — unlike the blog body (sanitised at RENDER time only, in
- * `components/blog/wp-body.tsx`, because its allowlist is large and structural:
+ * `components/overhaul/blog/PostBody.tsx`, because its allowlist is large and structural:
  * tables, custom blocks, images). A six-tag allowlist is small enough to resolve once,
  * at publish time, so the document on the CDN is itself already safe to read as HTML
  * — and the renderer still parses-to-React rather than
- * `dangerouslySetInnerHTML`-ing it (defence in depth, same conviction as wp-body.tsx's
- * own comment: the primary control is that only an authenticated editor can reach this
- * at all).
+ * `dangerouslySetInnerHTML`-ing it (defence in depth, the same conviction as the blog
+ * body's renderer: the primary control is that only an authenticated editor can reach
+ * this at all).
  */
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'

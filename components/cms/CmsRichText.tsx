@@ -11,7 +11,7 @@ import { dropUnsafeHrefs, richTextSchema } from '@/lib/cms/page-build'
  * Renders a `text-section`'s already-sanitised body (WEB-28, §4.2.1).
  *
  * 🔴 PARSE TO REACT. NEVER dangerouslySetInnerHTML — same conviction as
- * `components/blog/wp-body.tsx`. `lib/cms/page-build.ts` already cut this string
+ * `components/overhaul/blog/PostBody.tsx`. `lib/cms/page-build.ts` already cut this string
  * down to `p`/`a`/`strong`/`em`/`code`/`br` before it ever reached a content
  * document, so re-sanitising here is defence in depth, not the primary control: a
  * schema drift in the publish-time transform, or a document written some other way,

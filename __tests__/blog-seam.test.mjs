@@ -64,11 +64,15 @@ test('the post page branches on the body discriminant, not on a boolean', () => 
   // older post-view.tsx these guards first read was rendered by no route (removed
   // 23-10-2026).
   const page = code('components/overhaul/blog/BlogPost.tsx')
+  // ⚠️ KNOWN GAP, PINNED AS IT IS (23-10-2026): the `: ''` means an `mdx` body renders as an empty article. It was
+  // the same before the template change; content/blog/README.md says so. Restoring an MDX branch or retiring the MDX
+  // source is an open decision, and either changes this line on purpose.
   assert.match(page, /renderPostBody\(post\.body\.kind === 'html' \? post\.body\.content : ''\)/, 'the HTML branch must be selected by the discriminant')
   assert.doesNotMatch(page, /dangerouslySetInnerHTML=\{\{\s*__html:\s*post\./, 'a WordPress body must never be injected as raw HTML')
+  // The body is read in exactly one place, the renderer's argument: a second read (an alias handed to raw HTML, say)
+  // is a path around the sanitiser that the line above cannot see.
+  assert.equal(page.match(/post\.body\.content/g)?.length, 1, 'the post body must be read only to hand it to renderPostBody')
   const body = code('components/overhaul/blog/PostBody.tsx')
-  assert.match(body, /import \{ cipheraBlocks, schema, cdnImagesOnly, toolLogosValidated \} from '@\/lib\/blog-html'/, 'the body must go through the shared sanitising chain')
-  assert.match(body, /\.use\(rehypeParse, \{ fragment: true \}\)\s*\.use\(cipheraBlocks\)\s*\.use\(rehypeSanitize, schema\)/, 'parse, then the blocks, then the sanitiser')
   assert.doesNotMatch(body, /dangerouslySetInnerHTML/, 'the body renderer must build elements, never inject HTML')
 })
 
@@ -83,9 +87,10 @@ test('the BlogPosting wordCount does not count HTML tags', () => {
 })
 
 test('the sanitiser strips every class and merges (never replaces) the protocol map (WEB-16, mirrors PULSE-243)', () => {
-  // 🔴 SPLIT 04-10-2026: the schema and cipheraBlocks moved from wp-body.tsx into
+  // 🔴 SPLIT 04-10-2026: the schema and cipheraBlocks moved out of the render component into
   // lib/blog-html.ts (WEB-16, mirrors pulse-website@edcb673) so scripts/generate-blog-posts.ts
-  // can run the exact same chain at build time. wp-body.tsx now only imports and wires it.
+  // can run the exact same chain at build time. Since 23-10-2026 the chain itself lives there
+  // too (`sanitizeChain`), and the renderer (components/overhaul/blog/PostBody.tsx) starts from it.
   const html = code('lib/blog-html.ts')
   // The ONE exception, and it is a VALUE allowlist rather than a hole: MDX emits
   // `<code class="language-html">` for a fenced block's info string, and stripping it
@@ -123,19 +128,34 @@ test('the sanitiser strips every class and merges (never replaces) the protocol 
   assert.match(html, /startsWith\(CDN_IMAGE_ORIGIN\)/, 'cdnImagesOnly must reject anything not starting with the exact CDN origin')
 })
 
-test('wp-body.tsx wires the shared schema, cdnImagesOnly and toolLogosValidated into one pipeline (WEB-16)', () => {
-  const body = code('components/blog/wp-body.tsx')
-  assert.match(body, /from '@\/lib\/blog-html'/, 'wp-body.tsx must import the shared pipeline, not keep its own copy')
-  assert.match(body, /\.use\(rehypeSanitize, schema\)/)
-  assert.match(body, /\.use\(cdnImagesOnly\)/, 'an img that fails the protocol/host check must still be removed from the rendered tree')
-  assert.match(body, /\.use\(toolLogosValidated\)/, 'a tool-logo mark must be validated the same way an <img> is')
-  // cdnImagesOnly and toolLogosValidated must run AFTER sanitize, never before — a
-  // pre-sanitize check would be validating markup the sanitizer has not finished with.
-  const sanitizeAt = body.indexOf('.use(rehypeSanitize, schema)')
-  const cdnAt = body.indexOf('.use(cdnImagesOnly)')
-  const toolLogoAt = body.indexOf('.use(toolLogosValidated)')
-  assert.ok(sanitizeAt > -1 && cdnAt > sanitizeAt, 'cdnImagesOnly must run after rehype-sanitize')
-  assert.ok(toolLogoAt > cdnAt, 'toolLogosValidated must run after cdnImagesOnly')
+test('the post body and the build-time image check run ONE chain, in order (WEB-16)', () => {
+  // 🔴 THE IMAGE VALIDATORS ARE THE CONTROL HERE. The CSP allows `img-src https:`, so a body renderer that dropped
+  // cdnImagesOnly would render any off-CDN https image an editor pasted, and one that dropped toolLogosValidated would
+  // render an unchecked tool-logo path. Until 23-10-2026 the render side wrote its own copy of the chain, and the guard
+  // on its validators read a file no route rendered. The chain is now one preset, and both sides start from it.
+  const html = code('lib/blog-html.ts')
+  const preset = html.match(/export const sanitizeChain: Preset = \{\s*plugins: \[([\s\S]*?)\],?\s*\}/)
+  assert.ok(preset, 'lib/blog-html.ts must write the chain once, as the sanitizeChain preset')
+  // Exactly these five steps, in this order: parse, the blocks (before the sanitiser strips the classes they read),
+  // the sanitiser, then the two validators. A validator before the sanitiser would check markup it has not finished.
+  assert.equal(
+    preset[1].replace(/\s+/g, '').replace(/,$/, ''),
+    '[rehypeParse,{fragment:true}],cipheraBlocks,[rehypeSanitize,schema],cdnImagesOnly,toolLogosValidated',
+    'the chain must be parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated'
+  )
+  assert.match(html, /^const sanitizePipeline = unified\(\)\.use\(sanitizeChain\)$/m, 'renderableImageSources must run the preset itself')
+
+  const body = code('components/overhaul/blog/PostBody.tsx')
+  assert.match(body, /import \{ sanitizeChain \} from '@\/lib\/blog-html'/, 'the body must go through the shared chain')
+  // The chain comes first, and the only steps after it are the two that move no image and the React compiler.
+  assert.match(
+    body,
+    /const processor = unified\(\)\s*\.use\(sanitizeChain\)\s*\.use\(emptyCells\)\s*\.use\(headingIds\)\s*\.use\(rehypeReact, \{/,
+    'the renderer must start with sanitizeChain, then emptyCells, headingIds and rehype-react only'
+  )
+  assert.equal(body.match(/\.use\(/g)?.length, 4, 'a step added to the renderer must be added here on purpose')
+  // A parser or sanitiser of its own would be a second chain beside the shared one.
+  assert.doesNotMatch(body, /from 'rehype-(parse|sanitize)'/, 'the renderer must not parse or sanitise on its own')
 })
 
 test('the converter canonicalises hast\'s camelCased data attributes (lib/blog-html.ts, WEB-16)', () => {

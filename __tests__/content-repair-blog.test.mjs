@@ -95,8 +95,12 @@ test('lib/cms/blog-build.ts skips a post with no safe repair and records it, nev
   assert.match(gen, /dropUnreachableMedia/)
   assert.match(gen, /repair\(\s*post\.slug,\s*'image',\s*'repaired'/)
 
-  // A post's share card is drawn from its title (lib/og), so the build no longer looks one up on the CDN.
+  // A post's share card is drawn from its title (lib/og), so the build no longer looks one up on the CDN. Counted, not
+  // spelled: the build makes exactly one kind of request to the CDN, the HEAD of each image the body will render.
   assert.doesNotMatch(gen, /post\.image|DEFAULT_OG_IMAGE/, 'the build must not check an uploaded card')
+  assert.equal(gen.match(/method: 'HEAD'/g)?.length, 1, 'the generator must send HEAD requests from one helper only')
+  assert.equal(gen.match(/\bawait head\(/g)?.length, 1, 'the only HEAD request is the body-media check')
+  assert.match(gen, /for \(const src of survivingSources\) \{\s*const imgStatus = await head\(src\)/, 'the HEAD must be of a body image')
 
   // What MUST still fail: WordPress itself, and the deploy secret.
   assert.match(gen, /fail\(`cannot reach WordPress/)
