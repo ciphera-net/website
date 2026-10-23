@@ -9,10 +9,13 @@ import { COVER_TEMPLATE, OG_HEIGHT, OG_TEMPLATE, OG_WIDTH, type OgCard, type OgK
  */
 export function cardHash(card: OgCard): string {
   return createHash('sha256')
-    .update(JSON.stringify([OG_TEMPLATE, card.label, card.title, card.lead ?? '']))
+    .update(JSON.stringify([OG_TEMPLATE, ...brandPart(card), card.label, card.title, card.lead ?? '']))
     .digest('hex')
     .slice(0, 12)
 }
+
+/** A brand other than Ciphera is part of the hash; Ciphera's cards keep the addresses they had before brands existed. */
+const brandPart = (card: OgCard) => (card.brand && card.brand !== 'ciphera' ? [card.brand] : [])
 
 /** A Learn article's key joins its product and slug with `~`, a character no slug contains. */
 export const learnKey = (product: string, slug: string) => `${product}~${slug}`
@@ -29,7 +32,7 @@ export function cardPath(kind: OgKind, key: string, card: OgCard): string {
  */
 export function coverHash(card: OgCard): string {
   return createHash('sha256')
-    .update(JSON.stringify([OG_TEMPLATE, COVER_TEMPLATE, card.label, card.title, card.lead ?? '']))
+    .update(JSON.stringify([OG_TEMPLATE, COVER_TEMPLATE, ...brandPart(card), card.label, card.title, card.lead ?? '']))
     .digest('hex')
     .slice(0, 12)
 }

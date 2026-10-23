@@ -60,8 +60,18 @@ test('a WordPress stub or CMS page image never replaces a page’s own card', ()
   assert.doesNotMatch(page, /\.\.\.\(seo\.ogImage \?/, 'mergePageSeo still applies the CMS image unguarded')
 })
 
-test('the fonts the route reads from disk are traced into the standalone build', () => {
+test('the fonts and marks the route reads from disk are traced into the standalone build', () => {
   // Without this the image ships the route and not its fonts, and every card answers 500.
-  assert.match(read('next.config.ts'), /'\/og\/\[file\]': \['\.\/lib\/og\/fonts\/\*\*'\]/)
-  assert.match(read('lib', 'og', 'render.tsx'), /readFile\(path\.join\(root, 'lib\/og\/fonts\/Geist-SemiBold\.ttf'\)\)/)
+  const include = read('next.config.ts').match(/'\/og\/\[file\]': \[([^\]]*)\]/)?.[1] ?? ''
+  assert.match(include, /'\.\/lib\/og\/fonts\/\*\*'/)
+  const render = read('lib', 'og', 'render.tsx')
+  assert.match(render, /readFile\(path\.join\(root, 'lib\/og\/fonts\/Geist-SemiBold\.ttf'\)\)/)
+  // Every lockup's mark: under public/ (the image copies it whole) or under a traced lib/og/ folder.
+  const marks = [...render.matchAll(/file: '([^']+)'/g)].map((m) => m[1])
+  assert.ok(marks.length >= 2, `no lockup files found in render.tsx (${marks})`)
+  for (const file of marks) {
+    readFileSync(join(root, file))
+    const traced = file.startsWith('public/') || [...include.matchAll(/'\.\/(lib\/og\/[a-z-]+)\/\*\*'/g)].some((m) => file.startsWith(`${m[1]}/`))
+    assert.ok(traced, `${file} is read by the card route but not traced into the build`)
+  }
 })

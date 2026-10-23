@@ -111,3 +111,22 @@ test('cover addresses parse back with their own hash, and nothing else parses', 
   assert.ok(r.url.coverHashIsItsOwn, 'a cover must not share its card’s hash, or a change to the cover alone would keep its address')
   assert.ok(r.url.coverHashChangesWithWords, 'a changed title must be a new cover address')
 })
+
+test('a Pulse card is the same card with Pulse’s lockup, and Ciphera’s cards keep their addresses', () => {
+  const b = r.brands
+  assert.ok(b.namedIsPlain, 'a card naming Ciphera must be the card drawn with no brand, byte for byte')
+  assert.deepEqual(b.pulseSize, [1200, 630])
+  // Only the lockup changes (left 64, top 52, one 45 px row): the title, the label and the ground are the same pixels.
+  assert.ok(b.diffBox, 'the Pulse card is pixel for pixel the Ciphera card: its lockup was not drawn')
+  const { left, top, right, bottom } = b.diffBox
+  assert.ok(left >= 64 && top >= 52 && right < 300 && bottom < 97, `pixels outside the lockup differ: ${JSON.stringify(b.diffBox)}`)
+  assert.deepEqual([b.pulseCover.width, b.pulseCover.height, b.pulseCover.middleDiff], [1500, 630, 0])
+  // ciphera.net/blog/privacy-tools's card and cover as served before brands existed: every Ciphera address stays put.
+  assert.deepEqual(b.hashes.cipheraLive, ['fc1e0c3f9679', '74400c4cce69'])
+  assert.deepEqual(b.hashes.cipheraNamed, b.hashes.cipheraLive)
+  // A brand is part of the address, so the same words for Pulse are another card. pulse.ciphera.net computes these
+  // addresses itself; its own test pins the same two hashes, so the two sites cannot drift apart unseen.
+  assert.notEqual(b.hashes.pulse[0], b.hashes.cipheraSameWords[0])
+  assert.notEqual(b.hashes.pulse[1], b.hashes.cipheraSameWords[1])
+  assert.deepEqual(b.hashes.pulse, ['5afc158210f8', 'bf9874e6e44e'])
+})

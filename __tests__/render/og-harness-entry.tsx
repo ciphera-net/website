@@ -74,6 +74,38 @@ async function main() {
     }
   }
 
+  // 5. Brands (23-10-2026): a Pulse card is Ciphera's card with Pulse's lockup. The same words drawn for both brands
+  //    differ only inside the lockup; Ciphera named explicitly is the card drawn with no brand, byte for byte.
+  const words = { label: 'Blog', title: 'Google Analytics Alternative: Free, Cookieless, No Banner' }
+  const plainPng = new Uint8Array(await renderCard(words))
+  const namedPng = new Uint8Array(await renderCard({ ...words, brand: 'ciphera' }))
+  const pulsePng = new Uint8Array(await renderCard({ ...words, brand: 'pulse' }))
+  const p0 = decodePng(plainPng)
+  const p1 = decodePng(pulsePng)
+  let diffBox: { left: number; top: number; right: number; bottom: number } | null = null
+  for (let y = 0; y < p0.height; y++) {
+    for (let x = 0; x < p0.width; x++) {
+      const at = (y * p0.width + x) * p0.channels
+      let differs = false
+      for (let ch = 0; ch < Math.min(p0.channels, 3); ch++) if (p0.pixels[at + ch] !== p1.pixels[at + ch]) differs = true
+      if (!differs) continue
+      diffBox = diffBox
+        ? { left: Math.min(diffBox.left, x), top: Math.min(diffBox.top, y), right: Math.max(diffBox.right, x), bottom: Math.max(diffBox.bottom, y) }
+        : { left: x, top: y, right: x, bottom: y }
+    }
+  }
+  const pc = decodePng(new Uint8Array(await renderCover({ ...words, brand: 'pulse' })))
+  const pLeft = (pc.width - p1.width) / 2
+  let pulseCoverMiddleDiff = 0
+  for (let y = 0; y < p1.height; y++) {
+    for (let x = 0; x < p1.width; x++) {
+      for (let ch = 0; ch < Math.min(pc.channels, 3); ch++) {
+        pulseCoverMiddleDiff = Math.max(pulseCoverMiddleDiff, Math.abs(pc.pixels[(y * pc.width + x + pLeft) * pc.channels + ch] - p1.pixels[(y * p1.width + x) * p1.channels + ch]))
+      }
+    }
+  }
+  const live = { label: 'Blog', title: 'Privacy Tools: What They Are and How to Choose' }
+
   console.log(JSON.stringify({
     baselineBottomRow: bottom,
     satoriBaseline: SATORI_BASELINE,
@@ -108,6 +140,19 @@ async function main() {
       coverHashIsItsOwn: coverHash(card) !== cardHash(card),
       coverHashChangesWithWords: coverHash(card) !== coverHash({ ...card, title: 'About Ciphera BV' }),
       systemCard: [hasSystemCard('/og/page--about--0123456789ab.png'), hasSystemCard([{ url: '/og/x.png' }]), hasSystemCard([{ url: 'https://cdn.ciphera.net/website/og/trust.png' }]), hasSystemCard(undefined)],
+    },
+    brands: {
+      namedIsPlain: plainPng.length === namedPng.length && plainPng.every((v, i) => v === namedPng[i]),
+      pulseSize: [p1.width, p1.height],
+      diffBox,
+      pulseCover: { width: pc.width, height: pc.height, middleDiff: pulseCoverMiddleDiff },
+      hashes: {
+        // ciphera.net/blog/privacy-tools's card and cover, as the site served them before brands existed.
+        cipheraLive: [cardHash(live), coverHash(live)],
+        cipheraNamed: [cardHash({ ...live, brand: 'ciphera' }), coverHash({ ...live, brand: 'ciphera' })],
+        pulse: [cardHash({ ...words, brand: 'pulse' }), coverHash({ ...words, brand: 'pulse' })],
+        cipheraSameWords: [cardHash(words), coverHash(words)],
+      },
     },
   }))
 }

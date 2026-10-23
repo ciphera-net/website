@@ -3,7 +3,12 @@
  * own words (a label, its title, the first sentence of its lead) drawn by lib/og/render.tsx. This module holds only the
  * shared shape, so the renderer and the address helpers import nothing that reads the CMS.
  */
-export type OgCard = { label: string; title: string; lead?: string }
+/**
+ * Whose card it is: the lockup in its top-left corner. Pulse's blog posts get the same card as ciphera.net's, with
+ * Pulse's mark and name (23-10-2026: one card for both blogs). Absent means Ciphera.
+ */
+export type OgBrand = 'ciphera' | 'pulse'
+export type OgCard = { label: string; title: string; lead?: string; brand?: OgBrand }
 export type OgKind = 'page' | 'post' | 'term' | 'learn'
 
 /** Bump when the drawing changes: every card's address moves with it, so the CDN's year-long copies are never stale. */
