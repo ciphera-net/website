@@ -51,7 +51,6 @@ export interface WpNode {
   modifiedGmt: string | null
   cipheraTitle: string | null
   cipheraDescription: string | null
-  cipheraOgImage: string | null
   cipheraReadTime: string | null
   cipheraCtaLabel: string | null
   cipheraCtaHref: string | null
@@ -75,7 +74,6 @@ export const WP_POST_FIELDS = `
   modifiedGmt
   cipheraTitle
   cipheraDescription
-  cipheraOgImage
   cipheraReadTime
   cipheraCtaLabel
   cipheraCtaHref
@@ -254,11 +252,11 @@ export function transformWpPost(
   // onto the term, adding a category left every post in it silently falling back to a
   // generic button, with a green build and no signal anywhere.
   // 🔑 P1-a REPAIR: this no longer fails the build. `cta` below is left `undefined`
-  // rather than a half-filled { label: '', href: '' } — components/blog/post-view.tsx
-  // already falls `post.cta ?? CATEGORY_CTA[post.category] ?? DEFAULT_CTA`, so an
-  // `undefined` cta is what makes that existing fallback chain actually run instead of
-  // being masked by a present-but-empty object. "No closing CTA block" never happens:
-  // DEFAULT_CTA is the site's own floor.
+  // rather than a half-filled { label: '', href: '' }: the pre-overhaul template
+  // (components/blog/post-view.tsx, removed 23-10-2026) fell back
+  // `post.cta ?? CATEGORY_CTA[post.category] ?? DEFAULT_CTA`, and an `undefined` cta is
+  // what let that chain run instead of being masked by a present-but-empty object. The
+  // overhauled template (components/overhaul/blog/BlogPost.tsx) does not render a post CTA.
   const catHref = (cat?.cipheraCtaHref ?? '').trim()
   const catLabel = (cat?.cipheraCtaLabel ?? '').trim()
   if (cat && (!catHref || !catLabel)) {
@@ -274,24 +272,8 @@ export function transformWpPost(
   const ctaLabel = postCtaLabel || catLabel
   const ctaHref = postCtaHref || catHref
 
-  // ⚠️ A path, resolved through cdnUrl() at the point of use — exactly like the MDX
-  // frontmatter's `image`. Deriving it from the slug is what makes the build's OG gate
-  // meaningful: the URL is predictable, so its absence is detectable.
-  // 🔑 P1-a REPAIR: an OG image set but not on the CDN no longer fails the build — it
-  // is dropped (ignored) in favour of the same slug-derived default path every post
-  // without a custom card already uses.
-  const ogRaw = (n.cipheraOgImage ?? '').trim()
-  let image = `/blog/og/${slug}.png`
-  if (ogRaw) {
-    if (!ogRaw.startsWith(`${cdn}/`)) {
-      repairs.push({
-        field: 'ogImage',
-        detail: `the OG image is not on the CDN — got "${ogRaw}"; repaired to the default-shaped card path for this slug`,
-      })
-    } else {
-      image = ogRaw.slice(cdn.length)
-    }
-  }
+  // A post has no image of its own (23-10-2026): its one image is its share card, which lib/og draws from the title
+  // (app/og/[file]/route.ts), so the CMS's social-image field is neither asked for nor stored.
 
   // 🔑 P1-a REPAIR: a missing or malformed publish date falls back to the modified
   // date rather than shipping an invalid or empty value into the feed, the sitemap and
@@ -318,7 +300,6 @@ export function transformWpPost(
       date,
       dateModified: modified || date,
       readTime: (n.cipheraReadTime ?? '').trim() || readTimeOf(words),
-      image,
       html,
       faqs,
       cta: ctaLabel && ctaHref ? { label: ctaLabel, href: ctaHref } : undefined,

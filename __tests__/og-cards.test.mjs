@@ -98,9 +98,10 @@ test('the fonts and marks the route reads from disk are traced into the standalo
   }
 })
 
-test('a post’s image is its card on the blog index and in its BlogPosting, never an uploaded image', () => {
-  // One image per post on both blogs (23-10-2026, option A of the index round): every slot on the index, the small list
-  // rows included, shows the card the page declares as og:image.
+test('a post’s image is its card on the blog index, on the homepage and in its BlogPosting, never an uploaded image', () => {
+  // One image per post on both blogs (23-10-2026, option A of the index round, then the homepage block): every slot on
+  // the index, the small list rows included, and both slots of the homepage's "From the blog" show the card the page
+  // declares as og:image.
   const cards = code('lib', 'og', 'cards.ts')
   assert.match(cards, /^export const postCard = \(title: string\): OgCard => \(\{ label: 'Blog', title \}\)$/m)
   assert.match(cards, /^export const postCardUrl = \(slug: string, title: string\) => cardPath\('post', slug, postCard\(title\)\)$/m)
@@ -113,4 +114,9 @@ test('a post’s image is its card on the blog index and in its BlogPosting, nev
   assert.match(index, /<img\s+src=\{postCardUrl\(post\.slug, post\.title\)\}\s+alt=""/)
   assert.doesNotMatch(index, /post\.image|cdnUrl\(/, 'the blog index still shows an uploaded image')
   assert.match(code('components', 'overhaul', 'blog', 'BlogPost.tsx'), /^      image: `https:\/\/ciphera\.net\$\{postCardUrl\(slug, post\.title\)\}`,$/m)
+  const home = code('components', 'overhaul', 'home', 'variants', 'FromTheBlogB.tsx')
+  assert.deepEqual([...home.matchAll(/src=\{([^}]*\))\}/g)].map((m) => m[1]), ['postCardUrl(featured.slug, featured.title)', 'postCardUrl(p.slug, p.title)'])
+  assert.doesNotMatch(home, /\.image\b|cdnUrl\(/, 'the homepage block still shows an uploaded image')
+  // Nothing on the site reads a post's own image any more: the field is gone from the shared types.
+  assert.doesNotMatch(code('lib', 'blog-types.ts'), /^\s*image: string$/m)
 })

@@ -6,7 +6,7 @@
  * 🔑 `lib/blog.ts` IS THE UNION POINT, NOT `lib/blog-posts.gen.ts`. Both are seams,
  * but they are not the same seam: `app/feed.xml/route.ts` and `app/blog/page.tsx` read
  * the generated summary file, while `app/sitemap.ts`, `scripts/generate-llms.ts` and
- * `RelatedPosts` read `lib/blog.ts` off the filesystem. Unioning here means those three
+ * (then) `RelatedPosts` read `lib/blog.ts` off the filesystem. Unioning here means those three
  * change by ZERO lines; unioning at the generated file would have left the sitemap and
  * llms.txt blind to every WordPress post.
  */
@@ -31,8 +31,6 @@ export interface BlogPostMeta {
   date: string
   dateModified: string
   readTime: string
-  /** Relative path (e.g. /blog/og/<slug>.png); resolve with cdnUrl() at the point of use. */
-  image: string
 }
 
 /** Optional per-post CTA override; when absent the template falls back to its category. */
@@ -62,7 +60,6 @@ export interface WpBlogPost {
   date: string
   dateModified: string
   readTime: string
-  image: string
   /** Sanitised, CDN-rewritten HTML. Never raw WordPress output. */
   html: string
   faqs: BlogPostFaq[]

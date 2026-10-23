@@ -42,7 +42,7 @@ test('the four generator pipelines keep their BlogPostSummary contract', () => {
   // feed.xml, the blog index, the sitemap and llms.txt all depend on this shape. A
   // field dropped here is a field missing from the RSS feed, silently.
   const gen = code('scripts/generate-blog-posts.ts')
-  for (const key of ['slug', 'title', 'description', 'category', 'date', 'dateModified', 'readTime', 'image']) {
+  for (const key of ['slug', 'title', 'description', 'category', 'date', 'dateModified', 'readTime']) {
     assert.ok(
       new RegExp(`\\b${key}\\b`).test(gen),
       `generate-blog-posts.ts no longer emits "${key}" — feed.xml / the blog index / the sitemap read it`
@@ -57,22 +57,23 @@ test('a slug in both sources is a build failure, not a precedence rule', () => {
 })
 
 test('the post page branches on the body discriminant, not on a boolean', () => {
-  // ⚠️ THIS LIVES IN post-view.tsx, NOT THE ROUTE. The route only routes; the page is
+  // ⚠️ THIS LIVES IN THE POST TEMPLATE, NOT THE ROUTE. The route only routes; the page is
   // one shared component so that /preview renders the REAL page rather than a
-  // lookalike that can drift from it (§24.9).
-  const page = code('components/blog/post-view.tsx')
-  assert.match(page, /post\.body\.kind === 'mdx'/, 'the MDX branch must be selected by the discriminant')
-  assert.match(page, /MDXRemote source=\{post\.body\.content\}/, 'MDX must render from the discriminated body')
-  assert.match(page, /<WpBody html=\{post\.body\.content\}/, 'WordPress must render through the sanitising pipeline')
-  assert.doesNotMatch(
-    page,
-    /dangerouslySetInnerHTML=\{\{\s*__html:\s*post\./,
-    'a WordPress body must never be injected as raw HTML'
-  )
+  // lookalike that can drift from it (§24.9). Since the overhaul (D37) that template is
+  // components/overhaul/blog/BlogPost.tsx, and its body goes through PostBody.tsx; the
+  // older post-view.tsx these guards first read was rendered by no route (removed
+  // 23-10-2026).
+  const page = code('components/overhaul/blog/BlogPost.tsx')
+  assert.match(page, /renderPostBody\(post\.body\.kind === 'html' \? post\.body\.content : ''\)/, 'the HTML branch must be selected by the discriminant')
+  assert.doesNotMatch(page, /dangerouslySetInnerHTML=\{\{\s*__html:\s*post\./, 'a WordPress body must never be injected as raw HTML')
+  const body = code('components/overhaul/blog/PostBody.tsx')
+  assert.match(body, /import \{ cipheraBlocks, schema, cdnImagesOnly, toolLogosValidated \} from '@\/lib\/blog-html'/, 'the body must go through the shared sanitising chain')
+  assert.match(body, /\.use\(rehypeParse, \{ fragment: true \}\)\s*\.use\(cipheraBlocks\)\s*\.use\(rehypeSanitize, schema\)/, 'parse, then the blocks, then the sanitiser')
+  assert.doesNotMatch(body, /dangerouslySetInnerHTML/, 'the body renderer must build elements, never inject HTML')
 })
 
 test('the BlogPosting wordCount does not count HTML tags', () => {
-  const page = code('components/blog/post-view.tsx')
+  const page = code('components/overhaul/blog/BlogPost.tsx')
   assert.doesNotMatch(
     page,
     /wordCount:\s*post\.content\.split/,
@@ -196,7 +197,6 @@ test('every build-time gate the blog depends on is present', () => {
     [/no category/, 'a post with no category has no call-to-action'],
     [/has no call-to-action/, 'a category with no CTA silently shows the generic button'],
     [/no meta description/, 'an empty meta description reaches the SERP'],
-    [/OG card/, 'a missing OG card unfurls broken where nobody looks'],
     [/ALLOW_POST_COUNT_DECREASE/, 'the shrink guard, once WordPress holds the only copy'],
   ]) {
     assert.match(gen, needle, `generate-blog-posts.ts lost its gate for: ${why}`)

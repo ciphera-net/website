@@ -59,7 +59,7 @@ function mdxWordCount(content: string): number {
   return content.split(/\s+/).length
 }
 
-function metaFromWp(p: Pick<WpBlogPost, 'slug' | 'title' | 'description' | 'category' | 'date' | 'dateModified' | 'readTime' | 'image'>): BlogPostMeta {
+function metaFromWp(p: Pick<WpBlogPost, 'slug' | 'title' | 'description' | 'category' | 'date' | 'dateModified' | 'readTime'>): BlogPostMeta {
   return {
     slug: p.slug,
     title: p.title,
@@ -68,7 +68,6 @@ function metaFromWp(p: Pick<WpBlogPost, 'slug' | 'title' | 'description' | 'cate
     date: p.date,
     dateModified: p.dateModified,
     readTime: p.readTime,
-    image: p.image,
   }
 }
 
@@ -101,7 +100,6 @@ function mdxPostsMeta(): BlogPostMeta[] {
         date: data.date,
         dateModified: data.dateModified || data.date,
         readTime: data.readTime,
-        image: data.image || `/blog/og/${slug}.png`,
       })
     }
   }
@@ -137,7 +135,6 @@ export function getBlogPostSeed(slug: string): BlogPost | null {
       date: data.date,
       dateModified: data.dateModified || data.date,
       readTime: data.readTime,
-      image: data.image || `/blog/og/${slug}.png`,
       content,
       faqs: data.faqs || [],
       cta:

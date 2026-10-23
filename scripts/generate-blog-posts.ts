@@ -40,8 +40,6 @@ const WP = process.env.WORDPRESS_GRAPHQL_URL ?? 'http://wordpress.apps.svc.clust
 const CDN = process.env.NEXT_PUBLIC_CDN_URL ?? 'https://cdn.ciphera.net/website'
 /** The live site's own report of what it is serving — see the shrink guard below. */
 const LIVE_STATE = process.env.LIVE_SEO_STATE_URL ?? 'https://ciphera.net/sys/seo-state'
-/** The site's own sitewide default OG image (app/layout.tsx) — the P1-a fallback card. */
-const DEFAULT_OG_IMAGE = '/og-homepage.png'
 
 const CONTENT_DIR = path.join(process.cwd(), 'content', 'blog')
 const SUMMARY_OUT = path.join(process.cwd(), 'lib', 'blog-posts.gen.ts')
@@ -89,7 +87,6 @@ async function main() {
         date: data.date as string,
         dateModified: (data.dateModified || data.date) as string,
         readTime: data.readTime as string,
-        image: (data.image || `/blog/og/${slug}.png`) as string,
       })
     }
   }
@@ -211,18 +208,8 @@ async function main() {
       post.html = dropUnreachableMedia(post.html, badImgSrcs, badToolLogoDataSrcs)
     }
 
-    // 🔑 P1-a REPAIR: the OG card gate. A per-post card that 404s no longer fails the
-    // build — it falls back to the site's own default OG image (app/layout.tsx).
-    const status = await head(`${CDN}${post.image}`)
-    if (status !== 200) {
-      repair(
-        post.slug,
-        'image',
-        'repaired',
-        `OG card ${CDN}${post.image} returned HTTP ${status} — repaired to the site default OG image`
-      )
-      post.image = DEFAULT_OG_IMAGE
-    }
+    // A post's share card is not checked here (23-10-2026): lib/og draws it from the title (app/og/[file]/route.ts),
+    // so there is no uploaded card to look for.
 
     const { html: _html, faqs: _faqs, wordCount: _wc, cta: _cta, ...summary } = post
     summaries.push(summary)
@@ -236,7 +223,7 @@ async function main() {
   // already falls back to the production default when NEXT_PUBLIC_CDN_URL is unset (so
   // this build's own HEAD checks keep passing against the real CDN), but lib/cdn.ts's
   // `cdnUrl()` has NO such fallback (`process.env.NEXT_PUBLIC_CDN_URL || ''`) — it resolves
-  // every tool-logo mark and post card image RELATIVE TO THIS APP'S OWN ORIGIN whenever the
+  // every tool-logo mark RELATIVE TO THIS APP'S OWN ORIGIN whenever the
   // env var is actually unset at runtime. Before this check, that state was invisible: the
   // generator's own default silently masked it and the build stayed green while production
   // pages would have served broken images. Zero posts has nothing to resolve, so an unset
@@ -244,8 +231,8 @@ async function main() {
   if (wp.length > 0 && !process.env.NEXT_PUBLIC_CDN_URL) {
     fail(
       `NEXT_PUBLIC_CDN_URL is unset but this build is publishing ${wp.length} WordPress post(s). ` +
-        `Pages resolve tool-logo marks and post card images through cdnUrl() (NEXT_PUBLIC_CDN_URL); ` +
-        `left unset, both would render relative to this app's own origin instead of the CDN. Fix the ` +
+        `Pages resolve tool-logo marks through cdnUrl() (NEXT_PUBLIC_CDN_URL); ` +
+        `left unset, they would render relative to this app's own origin instead of the CDN. Fix the ` +
         `secret, not this file.`
     )
   }
@@ -352,7 +339,6 @@ export interface BlogPostSummary {
   date: string
   dateModified: string
   readTime: string
-  image: string
 }
 
 export const blogPosts: BlogPostSummary[] = ${JSON.stringify(summaries, null, 2)}
