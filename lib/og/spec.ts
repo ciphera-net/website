@@ -13,10 +13,16 @@ export type OgCard = { label: string; title: string; lead?: string; brand?: OgBr
 export type OgKind = 'page' | 'post' | 'term' | 'learn' | 'pulse-post'
 
 /**
- * Bump when the drawing changes: every card's address moves with it, so the CDN's year-long copies are never stale.
- * A change that redraws only cards the old drawing broke may keep it and purge each affected live card's address after
- * the deploy instead: the long-title fit (23-10-2026) drew 71 of the 72 live cards byte for byte as before and fixed
- * one (`term--pake`, a word that ran off the card), so it kept `dots-1` rather than moving all 72 addresses.
+ * Bump when the drawing changes: every card's address moves with it, so no cached copy is ever stale. The edge and
+ * browsers keep a card 30 days (the zone's static-files rule answers `max-age=2592000`; the route itself says a year).
+ * A change that redraws only cards the old drawing broke may keep it and purge each affected card's address instead.
+ * The long-title fit (23-10-2026) drew 210 of the 211 live cards byte for byte as before and fixed one (`term--pake`,
+ * a word that ran off the card), so it kept `dots-1` rather than moving all 211 addresses. Done that way:
+ * - the live set comes from every index, not the sitemap alone: its 71 pages, the 139 Learn pages it leaves out
+ *   (noindex), and pulse.ciphera.net's posts;
+ * - purge the exact card and cover addresses, never `/og/*`, and only once the deploy is `active` on Magic Containers
+ *   and has held 30 minutes: a purge before then can let an old instance draw the old card into the edge for another
+ *   30 days. Then fetch each one and compare it with the new drawing. Copies other sites fetched are not reachable.
  */
 export const OG_TEMPLATE = 'dots-1'
 export const OG_WIDTH = 1200

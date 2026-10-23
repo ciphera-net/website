@@ -3,9 +3,9 @@ import { COVER_TEMPLATE, OG_HEIGHT, OG_TEMPLATE, OG_WIDTH, type OgCard, type OgK
 
 /**
  * A card's address: `/og/<kind>--<key>--<hash>.png`, the hash being the first 12 hex of SHA-256 over the template and
- * the card's words. A changed title is a new URL, so the CDN, which keeps /og/* for a year, never shows an old card; the
- * route (app/og/[file]/route.ts) resolves the words again from the key, so nothing in a URL can make it draw text the
- * site does not say.
+ * the card's words. A changed title is a new URL, so the CDN and browsers, which keep a card 30 days, never show an old
+ * one; the route (app/og/[file]/route.ts) resolves the words again from the key, so nothing in a URL can make it draw
+ * text the site does not say.
  */
 export function cardHash(card: OgCard): string {
   return createHash('sha256')

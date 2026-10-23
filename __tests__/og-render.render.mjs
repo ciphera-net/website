@@ -79,12 +79,12 @@ test('a card is a 1200 x 630 PNG', () => {
   assert.ok(r.card.bytes > 10000, `a ${r.card.bytes}-byte card has no title`)
 })
 
-test('a title outside the metrics still gets a card, set by the renderer', () => {
-  assert.deepEqual(r.titleDots.metrics.layout, 'metrics')
+test('a title with a character the font lacks still gets a card, set line by line by the renderer', () => {
+  assert.deepEqual(r.titleDots.metrics.layout, 'glyphs')
   assert.equal(r.titleDots.metrics.lines, 1)
   // The approved card of the same title has 730 dots; the 1 px stroke keeps the system within a few per cent of it.
   assert.ok(Math.abs(r.titleDots.metrics.dots - 730) / 730 < 0.05, `${r.titleDots.metrics.dots} dots`)
-  assert.equal(r.titleDots.fallback.layout, 'renderer')
+  assert.equal(r.titleDots.fallback.layout, 'lines')
   assert.ok(r.titleDots.fallback.dots > 200)
 })
 
@@ -200,4 +200,103 @@ test('a word wider than a line breaks after its hyphen or slash, and only a titl
   assert.deepEqual([fit.huge.scale, fit.huge.cut], [0.7, false])
   assert.deepEqual([fit.cut.scale, fit.cut.cut], [0.6, true])
   assert.match(fit.cut.lines.at(-1), /\u2026$/)
+})
+
+// What the long-title rules promise, measured on what is drawn (23-10-2026, from the change's review: every assertion
+// below failed on at least one one-line mutation that the tests above let through).
+test('titles that fit keep the lines and the drawing they had', () => {
+  const h = r.hard
+  // The site's titles of up to four lines, as origin/main set them before the long-title change.
+  assert.deepEqual(h.golden, [
+    ['The EU-US Data Privacy', 'Framework Is Built', 'on an Executive Order \u2014', "and That's the Problem"],
+    ['Do You Need a Cookie', 'Banner for Analytics?', 'What EU Law Actually', 'Requires (2026)'],
+    ['Is Your Website', 'Analytics', 'GDPR-Compliant?', 'A 2026 Checklist'],
+    ['Privacy Tools: What', 'They Are and How', 'to Choose'],
+    ['How to Migrate Off', 'Google Analytics:', 'A 2026 Guide'],
+    ['Google Analytics', 'Alternative: Free,', 'Cookieless, No Banner'],
+    ['Privacy policy'],
+  ])
+  // Drawn at full size: a 1080 px canvas, the mock's box for that many lines, glyph by glyph.
+  for (const f of h.fitting) assert.deepEqual([f.w, f.h, f.layout], [1080, f.box, 'glyphs'])
+})
+
+test('a smaller title is drawn on a canvas as much wider as it is smaller, and shown at the card width', () => {
+  for (const [k, g] of Object.entries(r.hard.geometry)) {
+    assert.equal(g.w, Math.round(1080 / g.scale), `${k}: a ${g.w} px canvas at ${g.scale}`)
+    assert.equal(g.shown, Math.round(g.h * g.scale), `${k}: shown ${g.shown} px for a ${g.h} px box at ${g.scale}`)
+  }
+  assert.deepEqual([r.hard.geometry.huge.scale, r.hard.geometry.huge.lines, r.hard.geometry.cut.lines], [0.7, 6, 7])
+})
+
+test('no ink of any card leaves the title’s area: not above it, below it or past its right edge', () => {
+  // 17 cards: the long titles, the cut ones, titles with one- and two-line leads, an arrow, and three with a character
+  // the font lacks (an emoji), drawn line by line.
+  assert.equal(Object.keys(r.hard.ink).length, 17)
+  for (const [k, v] of Object.entries(r.hard.ink)) assert.deepEqual(v, { top: 0, bottom: 0, right: 0 }, `${k}: ink outside the area ${JSON.stringify(v)}`)
+})
+
+test('words break where the rules say, and a broken word stays whole', () => {
+  const h = r.hard
+  assert.deepEqual(h.exact.token, ['Cookie-less/GDPR-', 'compliant analytics,', 'explained for small', 'teams'])
+  assert.deepEqual(h.exact.slash, ['Plausible/Matomo/', 'Umami/Fathom/Pirsch/', 'Simple-Analytics/', 'Alternatives/Compared'])
+  // A word with neither breaks between two characters: every character kept, no line wider than its canvas.
+  assert.ok(h.longword.kept, `characters lost: ${JSON.stringify(h.longword.lines)}`)
+  assert.ok(h.longword.widest <= h.longword.canvas, `a ${h.longword.widest} px line on a ${h.longword.canvas} px canvas`)
+  // A one- or two-letter piece of a broken word moves down WITHOUT a space ("A/ B-testing" before the fix).
+  assert.deepEqual(h.joins, [
+    ['Switching Shops for', 'A/B-testing-and-', 'multivariate-', 'experimentation Setup'],
+    ['Your Google', 'e-commerce/B2B-', 'marketplace-analytics', 'and'],
+  ])
+  // A full stop split off a long word is not a line of its own (the orange block alone on a new line before the fix).
+  assert.deepEqual(h.stops, [['abdominohysterectomy'], ['Why we love', 'abdominohysterectomy']])
+})
+
+test('a cut keeps as many lines as fit, ends in one ellipsis, and only a cut title is marked cut', () => {
+  const h = r.hard
+  assert.deepEqual(h.exact.cut, [
+    'How to Replace Google Analytics with',
+    'a Cookieless, Privacy-First Alternative',
+    'Without Losing Your Reports, Your',
+    'Funnels, Your Goals or Your Sanity:',
+    'A Complete Field Guide for Teams',
+    'of Every Size and Every Budget, Across',
+    'Europe and Beyond, This Year and Next\u2026',
+  ])
+  assert.equal(h.ellipsis, 'Europe and Beyond, This Year and\u2026', 'two ellipses where the cut lands after a typed one')
+  assert.deepEqual(h.tiny, { lines: ['Privacy policy'], scale: 0.6, cut: false })
+  // The orange block stays on the canvas the title is drawn on, for 3,000 seeded titles.
+  assert.equal(h.overshoot, 0)
+  assert.equal(h.empty, 'og: the title is empty')
+})
+
+test('a title with a character the font lacks is fitted like any other, and its full stop follows its last line', () => {
+  const h = r.hard
+  // An emoji in the six-line title: drawn line by line, whole, smaller, inside its area (it was cut at five lines,
+  // over the lockup, before 23-10-2026).
+  assert.equal(h.lacks.layout, 'lines')
+  assert.ok(h.lacks.scale < 1 && h.lacks.height <= h.lacks.room, JSON.stringify(h.lacks))
+  assert.equal(h.lacksCut.cut, true)
+  assert.match(h.lacksCut.lines.at(-1), /\u2026$/)
+  // The block starts one gap after the last line's ink, never at a descender of the line above.
+  assert.equal(h.block.layout, 'lines')
+  assert.ok(h.block.gap > 0 && h.block.gap <= 4 * h.block.pitch, `the block is ${h.block.gap} px from the last line's ink`)
+  // An arrow is in the font: glyph by glyph, fitted.
+  assert.equal(h.arrow.layout, 'glyphs')
+  assert.deepEqual([h.arrow.fit.scale, h.arrow.fit.lines.length, h.arrow.fit.cut], [0.9, 4, false])
+  // A lead with an emoji is counted by its bound, never as one line.
+  assert.ok(h.lead.lines >= h.lead.plain, `${h.lead.lines} lines counted, ${h.lead.plain} without the emoji`)
+})
+
+test('a line next/og sets is wrapped by a bound that is never short of what it draws', () => {
+  const h = r.hard
+  // 1,000 seeded titles and leads with an emoji: every line within its width by the bound (the last one short of it by
+  // the orange block's room).
+  assert.equal(h.lineOver, 0, `${h.lineOver} titles have a line past its width`)
+  assert.equal(h.leadOver, 0, `${h.leadOver} leads have a line past the lead's width`)
+  // The bound against next/og itself: the rightmost dot of a line it set stays within the bound (one pitch for the
+  // dot's own radius and its cell).
+  for (const c of h.calibration) {
+    assert.deepEqual([c.layout, c.lines], ['lines', 1], c.title)
+    assert.ok(c.right <= c.bound + 6, `"${c.title}" drawn to ${c.right} px, bound ${c.bound} px`)
+  }
 })

@@ -26,11 +26,16 @@ FONTS = [
     (ROOT / 'lib/og/fonts/Geist-Regular.ttf', ROOT / 'lib/og/geist-regular-metrics.json'),
 ]
 
-# What a title can contain: printable ASCII, Latin-1, and the typographic punctuation the site writes. A title with
-# anything else is set by the renderer's own text layout instead (lib/og/render.tsx).
-CHARS = list(range(0x20, 0x7F)) + list(range(0xA0, 0x100)) + [
-    0x2018, 0x2019, 0x201C, 0x201D, 0x2013, 0x2014, 0x2026, 0x2022, 0x20AC, 0x2122,
-]
+# Every character the font has gets its advance width, so a card can place any of them (23-10-2026: a title with one
+# character outside the table, an arrow or a Polish letter, used to fall back to a layout that was neither fitted nor
+# kerned). Kerning is kept for the characters a title is written in: printable ASCII, Latin-1, Latin Extended-A, the
+# Romanian comma letters, and the punctuation, currency, arrows and maths signs the font has. Every pair over the whole
+# font is 175,545 pairs (1.5 MB a table); this set is about 45,000. A pair outside it is set unkerned.
+KERNED = (
+    list(range(0x20, 0x7F)) + list(range(0xA0, 0x180)) + [0x218, 0x219, 0x21A, 0x21B]
+    + list(range(0x2010, 0x2030)) + [0x2032, 0x2033, 0x2039, 0x203A, 0x2044]
+    + list(range(0x20A0, 0x20D0)) + [0x2116, 0x2122] + list(range(0x2190, 0x2300))
+)
 
 
 def pair_value(subtable, left, right):
@@ -64,8 +69,8 @@ def build(FONT, OUT):
         if gpos.FeatureList.FeatureRecord[fi].FeatureTag == 'kern'
         for index in gpos.FeatureList.FeatureRecord[fi].Feature.LookupListIndex
     )
-    chars = [c for c in CHARS if c in cmap]
-    advance = {chr(c): hmtx[cmap[c]][0] for c in chars}
+    chars = [c for c in KERNED if c in cmap]
+    advance = {chr(c): hmtx[cmap[c]][0] for c in sorted(cmap) if c >= 0x20}
     kern = {}
     for lc in chars:
         row = {}

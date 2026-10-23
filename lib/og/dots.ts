@@ -9,32 +9,17 @@
 export const DOT_SIZE = 100
 export const DOT_PITCH = 6
 export const DOT_LINE_HEIGHT = 1.02
-/** The width the title is drawn on, and the width it wraps to: every line keeps room for the orange block, as in the mock. */
+/** The width the title is drawn on at full size (lib/og/layout.ts wraps every line to leave room for the orange block). */
 export const DOT_WIDTH = 1080
-export const DOT_WRAP_WIDTH = DOT_WIDTH - DOT_PITCH * 4
 /** The mock's canvas set the first baseline at 0.8 × size and the next ones a line height apart. */
 export const DOT_BASELINE = DOT_SIZE * 0.8
 export const DOT_LINE = DOT_SIZE * DOT_LINE_HEIGHT
-/** Longer than any title the site has; the renderer draws this many lines' worth and counts what it used. */
-export const DOT_MAX_LINES = 5
 /** The mock's DotText box for a title of this many lines. */
 export const dotBoxHeight = (lines: number) => Math.ceil(DOT_SIZE * (1.04 + DOT_LINE_HEIGHT * (lines - 1)))
 
 export type Dot = { x: number; y: number; r: number; orange?: boolean }
 
 const INK = 96
-
-/**
- * For a title set by the renderer's own text layout (characters outside the metrics table; lib/og/layout.ts sets every
- * other title): no trailing full stop (the orange block is it), and a no-break space after every one- or two-letter
- * word, so such a word never ends a line. A lookbehind, so two short words in a row are both held ("A to B").
- */
-export function titleText(title: string): string {
-  return title
-    .trim()
-    .replace(/\.$/, '')
-    .replace(/(?<=^|\s)(\S{1,2}) (?=\S)/g, '$1 ')
-}
 
 /** Dots for every lit cell, sized by its 3 x 3 sub-sample coverage, as DotText does on a canvas. */
 export function sampleDots(alpha: Uint8Array, width: number, height: number, pitch = DOT_PITCH): Dot[] {
@@ -60,25 +45,6 @@ export function sampleDots(alpha: Uint8Array, width: number, height: number, pit
   return dots
 }
 
-/** How many lines the title took: a line has ink in its x-height band, which every letter and digit reaches. */
-export function countLines(alpha: Uint8Array, width: number, height: number): number {
-  let lines = 0
-  for (let i = 0; i < DOT_MAX_LINES; i++) {
-    const base = DOT_BASELINE + i * DOT_LINE
-    let ink = false
-    for (let y = Math.max(0, Math.round(base - 40)); y < Math.min(height, Math.round(base - 5)) && !ink; y++) {
-      for (let x = 0; x < width; x++) {
-        if (alpha[y * width + x] > INK) {
-          ink = true
-          break
-        }
-      }
-    }
-    if (ink) lines = i + 1
-  }
-  return lines
-}
-
 /**
  * The orange full stop: a 3 x 3 block one gap after the last line's end (the pen position after its last letter, as the
  * mock measured it), its bottom row on that line's baseline. The mock's own arithmetic.
@@ -93,13 +59,15 @@ export function fullStop(end: number, base: number, pitch = DOT_PITCH): Dot[] {
 }
 
 /**
- * For a title set by the renderer's own text layout (characters outside the metrics table): the last line's end, read
- * from the ink. The rightmost ink, plus about 2 px for the side bearing a measured width includes at this size, net of
- * the tracking.
+ * For a title whose lines next/og set (a character the font lacks): the last line's end, read from the ink. The
+ * rightmost ink, plus about 2 px for the side bearing a measured width includes at this size, net of the tracking.
+ * Only the last line's band is read, from 80 px above its baseline (Geist's caps stand 71 px, its brackets 75) to 30 px
+ * below it (its descenders reach 16): the line above's descenders end about 86 px up, so they are never taken for
+ * this line's end, which put the block under a "p" one line up (23-10-2026).
  */
 export function inkEnd(alpha: Uint8Array, width: number, height: number, base: number): number {
   let right = 0
-  for (let y = Math.max(0, Math.round(base - DOT_SIZE)); y < Math.min(height, Math.round(base + DOT_SIZE * 0.3)); y++) {
+  for (let y = Math.max(0, Math.round(base - DOT_SIZE * 0.8)); y < Math.min(height, Math.round(base + DOT_SIZE * 0.3)); y++) {
     for (let x = width - 1; x > right; x--) {
       if (alpha[y * width + x] > INK) {
         right = x
