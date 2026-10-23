@@ -23,7 +23,7 @@ import { renderPostBody, type Heading } from './PostBody'
 import { TocRail } from './TocRail'
 import { jsonLdHtml } from '@/lib/json-ld'
 import { cdnUrl } from '@/lib/cdn'
-import { postCardImages } from '@/lib/og/cards'
+import { postCardUrl } from '@/lib/og/cards'
 
 export type PostVariant = 'a' | 'b' | 'c' | 'plain'
 export const POST_VARIANTS: PostVariant[] = ['a', 'b', 'c', 'plain']
@@ -253,7 +253,7 @@ export function BlogPostView({ variant, post, posts }: { variant: PostVariant; p
       url,
       inLanguage: 'en',
       // The post's card, the image its page declares as og:image (D52): one image per post (23-10-2026).
-      image: `https://ciphera.net${postCardImages(slug, post.title).openGraph[0].url}`,
+      image: `https://ciphera.net${postCardUrl(slug, post.title)}`,
       datePublished: post.date.slice(0, 10),
       dateModified: (updated ?? post.date).slice(0, 10),
       wordCount: post.wordCount,

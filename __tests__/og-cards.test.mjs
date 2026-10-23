@@ -12,6 +12,13 @@ import { fileURLToPath } from 'node:url'
  */
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (...p) => readFileSync(join(root, ...p), 'utf8')
+// Comments stripped, as in the blog seam tests: a file that explains in prose what it no longer does would otherwise
+// satisfy (or fail) a guard by its comment alone.
+const code = (...p) =>
+  read(...p)
+    .replace(/\/\*(?!\.)[\s\S]*?\*\//g, '')
+    .replace(/(^|[^:])\/\/.*$/gm, '$1')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
 
 test('the metrics tables were made from the fonts the renderer draws with', () => {
   // lib/og/layout.ts places every glyph from these tables and the renderer draws it with the font file: a font swapped
@@ -89,4 +96,21 @@ test('the fonts and marks the route reads from disk are traced into the standalo
     const traced = file.startsWith('public/') || [...include.matchAll(/'\.\/(lib\/og\/[a-z-]+)\/\*\*'/g)].some((m) => file.startsWith(`${m[1]}/`))
     assert.ok(traced, `${file} is read by the card route but not traced into the build`)
   }
+})
+
+test('a post’s image is its card on the blog index and in its BlogPosting, never an uploaded image', () => {
+  // One image per post on both blogs (23-10-2026, option A of the index round): every slot on the index, the small list
+  // rows included, shows the card the page declares as og:image.
+  const cards = code('lib', 'og', 'cards.ts')
+  assert.match(cards, /^export const postCard = \(title: string\): OgCard => \(\{ label: 'Blog', title \}\)$/m)
+  assert.match(cards, /^export const postCardUrl = \(slug: string, title: string\) => cardPath\('post', slug, postCard\(title\)\)$/m)
+  // The og:image is the same address: ogCardImages builds its url with cardPath, from the same kind, key and card.
+  assert.match(cards, /^export const postCardImages = \(slug: string, title: string\) => ogCardImages\('post', slug, postCard\(title\)\)$/m)
+  assert.match(code('lib', 'og', 'url.ts'), /^  const url = cardPath\(kind, key, card\)$/m)
+  const index = code('components', 'overhaul', 'blog', 'BlogIndex.tsx')
+  // The index draws one image, in Cover, which every slot renders (directly or through CoverCard).
+  assert.equal(index.match(/<img\b/g)?.length, 1, 'the blog index draws an image outside Cover')
+  assert.match(index, /<img\s+src=\{postCardUrl\(post\.slug, post\.title\)\}\s+alt=""/)
+  assert.doesNotMatch(index, /post\.image|cdnUrl\(/, 'the blog index still shows an uploaded image')
+  assert.match(code('components', 'overhaul', 'blog', 'BlogPost.tsx'), /^      image: `https:\/\/ciphera\.net\$\{postCardUrl\(slug, post\.title\)\}`,$/m)
 })
