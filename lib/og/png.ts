@@ -7,6 +7,20 @@ import { inflateSync } from 'node:zlib'
  * renderer change cannot silently produce a card without its title.
  */
 export function decodePngAlpha(png: Uint8Array): { width: number; height: number; alpha: Uint8Array } {
+  const { width, height, channels, pixels } = decodePng(png)
+  const alpha = new Uint8Array(width * height)
+  for (let i = 0; i < width * height; i++) {
+    // Greyscale and RGB carry no alpha: a lit pixel is ink. Grey-alpha and RGBA: the alpha channel.
+    alpha[i] = channels === 4 ? pixels[i * 4 + 3] : channels === 2 ? pixels[i * 2 + 1] : pixels[i * channels]
+  }
+  return { width, height, alpha }
+}
+
+/**
+ * Every pixel of a PNG, row by row, `channels` bytes each (1 grey, 2 grey-alpha, 3 RGB, 4 RGBA), with the limits above.
+ * The render test compares a cover with its card through it (__tests__/og-render.render.mjs).
+ */
+export function decodePng(png: Uint8Array): { width: number; height: number; channels: number; pixels: Uint8Array } {
   const sig = [137, 80, 78, 71, 13, 10, 26, 10]
   if (!sig.every((b, i) => png[i] === b)) throw new Error('og/png: not a PNG')
   const view = new DataView(png.buffer, png.byteOffset, png.byteLength)
@@ -34,7 +48,7 @@ export function decodePngAlpha(png: Uint8Array): { width: number; height: number
   const stride = width * channels
   const prev = new Uint8Array(stride)
   const cur = new Uint8Array(stride)
-  const alpha = new Uint8Array(width * height)
+  const pixels = new Uint8Array(stride * height)
   for (let y = 0; y < height; y++) {
     const row = y * (stride + 1)
     const filter = raw[row]
@@ -59,11 +73,8 @@ export function decodePngAlpha(png: Uint8Array): { width: number; height: number
       }
       cur[x] = out & 0xff
     }
-    for (let x = 0; x < width; x++) {
-      // Greyscale and RGB carry no alpha: a lit pixel is ink. Grey-alpha and RGBA: the alpha channel.
-      alpha[y * width + x] = channels === 4 ? cur[x * 4 + 3] : channels === 2 ? cur[x * 2 + 1] : cur[x * channels]
-    }
+    pixels.set(cur, y * stride)
     prev.set(cur)
   }
-  return { width, height, alpha }
+  return { width, height, channels, pixels }
 }

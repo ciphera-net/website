@@ -83,11 +83,31 @@ test('card addresses parse back, and nothing else parses', () => {
   const [page, learn, upper, dots, jpg, kind] = r.url.parsed
   assert.equal(page.kind, 'page')
   assert.equal(page.key, 'about')
-  assert.deepEqual(learn, { kind: 'learn', key: 'pulse~core-web-vitals', hash: '0123456789ab' })
+  assert.deepEqual(learn, { kind: 'learn', key: 'pulse~core-web-vitals', hash: '0123456789ab', variant: 'card' })
   assert.equal(upper, null)
   assert.equal(dots, null)
   assert.equal(jpg, null)
   assert.equal(kind, null)
   assert.ok(r.url.hashChangesWithWords, 'a changed title must be a new address')
   assert.deepEqual(r.url.systemCard, [true, true, false, false])
+})
+
+test('a cover is the card, pixel for pixel, on the card’s ground at DEV’s 1000:420 shape', () => {
+  assert.equal(r.cover.width, 1500)
+  assert.equal(r.cover.height, 630)
+  assert.equal(r.cover.width * 420, r.cover.height * 1000, 'not DEV’s cover shape: DEV would crop it')
+  assert.equal(r.cover.left, 150)
+  // The card's own pixels, unscaled and unfiltered: a resampled card would differ here.
+  assert.equal(r.cover.middleDiff, 0, `the cover's middle differs from the card by up to ${r.cover.middleDiff}`)
+  assert.equal(r.cover.groundDiff, 0, `the cover's ground differs from #0a0a0a by up to ${r.cover.groundDiff}`)
+})
+
+test('cover addresses parse back with their own hash, and nothing else parses', () => {
+  assert.match(r.url.cover, /^\/og\/post--privacy-tools--[0-9a-f]{12}--cover\.png$/)
+  const [cover, jpg, covers] = r.url.coverParsed
+  assert.deepEqual({ kind: cover.kind, key: cover.key, variant: cover.variant }, { kind: 'post', key: 'privacy-tools', variant: 'cover' })
+  assert.equal(jpg, null)
+  assert.equal(covers, null)
+  assert.ok(r.url.coverHashIsItsOwn, 'a cover must not share its card’s hash, or a change to the cover alone would keep its address')
+  assert.ok(r.url.coverHashChangesWithWords, 'a changed title must be a new cover address')
 })

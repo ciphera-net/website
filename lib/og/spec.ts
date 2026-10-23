@@ -10,3 +10,12 @@ export type OgKind = 'page' | 'post' | 'term' | 'learn'
 export const OG_TEMPLATE = 'dots-1'
 export const OG_WIDTH = 1200
 export const OG_HEIGHT = 630
+
+/**
+ * A card's cover (23-10-2026): the same card, untouched, centred on its own ground at DEV's cover shape. DEV shows every
+ * cover at 1000 x 420 and crops anything else to that shape, which cut the lockup and the label off the top of a card;
+ * 1500 x 630 is exactly 1000:420, so DEV only scales it. Bump COVER_TEMPLATE when the cover's drawing changes.
+ */
+export const COVER_TEMPLATE = 'pad-1'
+export const COVER_WIDTH = 1500
+export const COVER_HEIGHT = 630
