@@ -116,6 +116,18 @@ export function cipheraBlocks() {
  */
 export const CDN_IMAGE_ORIGIN = 'https://cdn.ciphera.net/'
 
+/**
+ * 🔑 A LINK KEEPS WHAT THE EDITOR SET ON IT (24-10-2026). WordPress's "Open in new tab" writes
+ * target="_blank" rel="noreferrer noopener", and its nofollow setting adds "nofollow" to rel. Both are VALUE
+ * allowlists: a target other than _blank and a rel token other than these five are dropped (rel is a list, checked
+ * token by token). One definition for the post body (`schema` below) and CMS page text (`lib/cms/page-build.ts`'s
+ * `richTextSchema`); `newTabLinks` below finishes every new-tab link in both.
+ */
+export const EDITOR_LINK_ATTRIBUTES: NonNullable<SanitizeSchema['attributes']>[string] = [
+  ['target', '_blank'],
+  ['rel', 'nofollow', 'noopener', 'noreferrer', 'sponsored', 'ugc'],
+]
+
 /** Everything the two custom blocks and the block styles need, and nothing else. */
 export const schema: SanitizeSchema = {
   ...defaultSchema,
@@ -129,12 +141,9 @@ export const schema: SanitizeSchema = {
     // what stops the CMS making styling decisions; the site styles by element inside
     // `.prose`, and the two custom devices travel on data-* attributes instead.
     '*': ['data-ciphera-block', 'data-variant', 'data-src', 'data-q', 'data-a'],
-    // 🔑 A LINK KEEPS WHAT THE EDITOR SET ON IT (24-10-2026). WordPress's "Open in new tab" writes
-    // target="_blank" rel="noreferrer noopener", and its nofollow setting adds "nofollow" to rel. Until then
-    // this list held only href and title, so every body link opened in the same tab and lost its nofollow.
-    // Both are VALUE allowlists: a target other than _blank and a rel token other than these five are
-    // dropped (rel is a list, checked token by token). `newTabLinks` below finishes every new-tab link.
-    a: ['href', 'title', ['target', '_blank'], ['rel', 'nofollow', 'noopener', 'noreferrer', 'sponsored', 'ugc']],
+    // Until 24-10-2026 this list held only href and title, so every body link opened in the same tab and lost
+    // its nofollow. EDITOR_LINK_ATTRIBUTES (above) says what is kept and why.
+    a: ['href', 'title', ...EDITOR_LINK_ATTRIBUTES],
     img: ['src', 'alt', 'width', 'height'],
     th: ['colSpan', 'rowSpan', 'scope'],
     td: ['colSpan', 'rowSpan'],
@@ -213,6 +222,10 @@ export const NEW_TAB_CUE = ' (opens in a new tab)'
  * the sanitizer strips every class. An anchor with no href (an unsafe one the sanitizer emptied) is not a link: it
  * loses its target instead and gets no cue. ⚠️ The DEV sync (Infra devto-sync) leaves sr-only text out of the
  * Markdown; without that, DEV would show the cue in the link text.
+ *
+ * CMS page text runs it too (`components/cms/CmsRichText.tsx`), at RENDER time only, never in
+ * `sanitizeRichText`: page text is stored already sanitized, and its allowlist has no `span`, so a cue stored in the
+ * document would be unwrapped by the render-time sanitizer into visible text.
  */
 export function newTabLinks() {
   return (tree: Root) => {
