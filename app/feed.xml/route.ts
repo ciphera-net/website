@@ -30,8 +30,9 @@ export async function GET() {
     .map((post) => {
       // 🔴 THE SLUG IS ESCAPED HERE TOO, IN ADDITION TO lib/blog-transform.ts's WP_SLUG
       // shape check. That check keeps a malformed slug out of the build entirely, but
-      // this route reads whatever lib/blog-posts.gen.ts hands it — defence in depth,
-      // same reasoning as title/description/category already getting escapeXml below.
+      // this route serves whatever lib/blog hands it (a published CMS document or the
+      // build seed) — defence in depth, same reasoning as title/description/category
+      // already getting escapeXml below.
       // Ported from pulse-website@1c08fa7 (PULSE-243).
       const url = escapeXml(`https://ciphera.net/blog/${post.slug}`)
       return `    <item>

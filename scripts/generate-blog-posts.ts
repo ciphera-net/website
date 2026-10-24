@@ -28,7 +28,6 @@
  */
 import fs from 'fs'
 import path from 'path'
-import matter from 'gray-matter'
 import { WP_POST_FIELDS, type WpNode } from '../lib/blog-transform'
 import { buildBlogPosts } from '../lib/cms/blog-build'
 import { renderableImageSources, rawMediaRefs, dropUnreachableMedia } from '../lib/blog-html'
@@ -41,7 +40,6 @@ const CDN = process.env.NEXT_PUBLIC_CDN_URL ?? 'https://cdn.ciphera.net/website'
 /** The live site's own report of what it is serving — see the shrink guard below. */
 const LIVE_STATE = process.env.LIVE_SEO_STATE_URL ?? 'https://ciphera.net/sys/seo-state'
 
-const CONTENT_DIR = path.join(process.cwd(), 'content', 'blog')
 const SUMMARY_OUT = path.join(process.cwd(), 'lib', 'blog-posts.gen.ts')
 const BODIES_OUT = path.join(process.cwd(), 'lib', 'blog-wp.gen.ts')
 
@@ -73,25 +71,7 @@ async function head(url: string): Promise<number> {
 }
 
 async function main() {
-  // ── The sixteen (or however many remain) still in git ──────────────────────
-  const mdx: Record<string, unknown>[] = []
-  if (fs.existsSync(CONTENT_DIR)) {
-    for (const filename of fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith('.mdx'))) {
-      const slug = filename.replace(/\.mdx$/, '')
-      const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, filename), 'utf-8'))
-      mdx.push({
-        slug,
-        title: data.title as string,
-        description: data.description as string,
-        category: data.category as string,
-        date: data.date as string,
-        dateModified: (data.dateModified || data.date) as string,
-        readTime: data.readTime as string,
-      })
-    }
-  }
-
-  // ── WordPress ─────────────────────────────────────────────────────────────
+  // ── WordPress, the blog's only source (the git-tracked MDX posts were retired 23-10-2026) ──
   const res = await fetch(WP, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -111,37 +91,15 @@ async function main() {
 
   // ── Pass 1 (transform/skip/repair) and duplicate-slug dedupe — shared with the
   // publisher via lib/cms/blog-build.ts; see that module's header for exactly what
-  // this build-only script still does on top (MDX collision, network checks, below).
+  // this build-only script still does on top (the network checks, below).
   const built = buildBlogPosts(nodes, CDN)
   for (const r of built.repairs) repairs.push(r)
 
-  // ── A slug in both content/blog/*.mdx and WordPress: keep the git-tracked MDX one ──
-  // 🔴 P1-a REPAIR: this used to fail the build ("exists in BOTH … Delete one"). There is
-  // no field-level fix for two sources claiming one URL, so the WordPress side is
-  // skipped and the pre-existing MDX post keeps serving — never a coin flip, and never
-  // a post that silently disappears from both. BUILD-ONLY: needs the filesystem — see
-  // lib/cms/blog-build.ts's header for why the runtime seam needs no equivalent.
-  const mdxSlugs = new Set(mdx.map((p) => p.slug as string))
-  const wpSurvivors = built.posts.filter((post) => {
-    if (mdxSlugs.has(post.slug)) {
-      repair(
-        post.slug,
-        'slug',
-        'skipped',
-        `slug "${post.slug}" exists in BOTH content/blog/${post.slug}.mdx and WordPress — ` +
-          'kept the git-tracked MDX post, skipped the WordPress one'
-      )
-      console.log(`SKIP blog post ${post.slug}: exists in both content/blog/*.mdx and WordPress`)
-      return false
-    }
-    return true
-  })
-
   // ── Pass 2: the network-dependent checks, only for what actually survives ──
   const wp: WpBlogPost[] = []
-  const summaries: Record<string, unknown>[] = [...mdx]
+  const summaries: Record<string, unknown>[] = []
 
-  for (const post of wpSurvivors) {
+  for (const post of built.posts) {
     // 🔑 The recovery-copy honesty check now runs inside lib/cms/blog-build.ts (shared
     // with the publisher) — `built.repairs` above already carries any flag for this post.
 
@@ -324,7 +282,7 @@ async function main() {
 
   fs.writeFileSync(
     SUMMARY_OUT,
-    `// Auto-generated from content/blog/*.mdx AND WordPress — do not edit manually
+    `// Auto-generated from WordPress — do not edit manually
 // Run: npm run generate:blog
 //
 // 🔴 BUILD OUTPUT, NOT SOURCE. Git-ignored, because a committed copy is a second
@@ -347,8 +305,8 @@ export const blogPosts: BlogPostSummary[] = ${JSON.stringify(summaries, null, 2)
  * 🔑 NEW (WEB-26 round 2): the max \`modifiedGmt\` this build consumed from WordPress's
  * blog posts for this site — the 'blog' kind's own watermark, reported at
  * /sys/seo-state under watermarks.blog. Computed from the surviving, deduped
- * candidate set (lib/cms/blog-build.ts), before the MDX-collision drop — the same
- * "surviving input" convention lib/seo.gen.ts's SEO_WATERMARK uses.
+ * candidate set (lib/cms/blog-build.ts) — the same "surviving input" convention
+ * lib/seo.gen.ts's SEO_WATERMARK uses.
  */
 export const BLOG_WATERMARK = ${JSON.stringify(built.watermark)}
 `,
@@ -379,8 +337,7 @@ export const wpPosts: WpBlogPost[] = ${JSON.stringify(wp, null, 2)}
 
   recordContentRepairs([REPAIR_TYPE], repairs)
 
-  console.log(`Generated ${summaries.length} blog posts → lib/blog-posts.gen.ts`)
-  console.log(`  ${mdx.length} from content/blog/*.mdx, ${wp.length} from WordPress`)
+  console.log(`Generated ${summaries.length} blog posts → lib/blog-posts.gen.ts, from WordPress`)
   for (const p of wp) console.log(`  WP: ${p.slug} (${p.wordCount} words, ${p.faqs.length} faqs)`)
   if (repairs.length > 0) console.log(`  ${repairs.length} content repair(s)/skip(s)/flag(s) — see lib/content-repairs.gen.ts`)
 }

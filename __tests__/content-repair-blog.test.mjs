@@ -22,12 +22,13 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => readFileSync(join(root, p), 'utf-8')
 function code(p) {
   return read(p)
-    // 🔴 THE NEGATIVE LOOKAHEAD MATTERS. `content/blog/*.mdx` (this file's own glob,
-    // quoted several times) contains a literal `/*` that is NOT a comment opener — a
-    // bare `/\/\*[\s\S]*?\*\//g` treats it as one and non-greedily eats everything up
-    // to the NEXT unrelated `*/`, silently deleting whole functions from `code()`'s
-    // output. `(?!\.)` excludes exactly that false start; every real block comment in
-    // this codebase opens `/**` or `/* ` (a letter or `*`), never `/*.`.
+    // 🔴 THE NEGATIVE LOOKAHEAD MATTERS. A glob in a comment, such as `dir/*.ext`,
+    // contains a literal `/*` that is NOT a comment opener — a bare
+    // `/\/\*[\s\S]*?\*\//g` treats it as one and non-greedily eats everything up to the
+    // NEXT unrelated `*/`, silently deleting whole functions from `code()`'s output (the
+    // blog generator quoted `content/blog/*.mdx` several times until 23-10-2026).
+    // `(?!\.)` excludes exactly that false start; every real block comment in this
+    // codebase opens `/**` or `/* ` (a letter or `*`), never `/*.`.
     .replace(/\/\*(?!\.)[\s\S]*?\*\//g, '')
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
 }
@@ -84,11 +85,7 @@ test('lib/cms/blog-build.ts skips a post with no safe repair and records it, nev
   assert.match(built, /checkRecoveryCopy/)
   assert.match(built, /repair\(\s*post\.slug,\s*'recovery-copy',\s*'flagged'/)
 
-  // A slug shared with a git-tracked MDX post stays a BUILD-ONLY check — it needs the
-  // filesystem, and lib/cms/blog-build.ts documents why it has no runtime equivalent.
   const gen = code('scripts/generate-blog-posts.ts')
-  assert.match(gen, /exists in BOTH content\/blog\//)
-  assert.doesNotMatch(gen, /fail\(`slug "\$\{post\.slug\}" exists in BOTH/, 'an MDX/WP slug collision must no longer fail the build')
   assert.doesNotMatch(gen, /fail\(`duplicate published post/, 'a duplicate published post must no longer fail the build')
 
   // An unreachable image/tool-logo mark is DROPPED from the body (repaired), not fatal.

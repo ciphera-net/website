@@ -12,8 +12,8 @@ import { fileURLToPath } from 'node:url'
  * which can legitimately leave it empty while generate-blog-posts.ts still exits 0.
  *
  * 🔑 SOURCE-LEVEL, like the other P1-a content-repair tests: CI runs `npm test` with no
- * `npm ci`, so a route.ts that imports the generated lib/blog-posts.gen.ts cannot be
- * executed directly here.
+ * `npm ci`, so a route.ts that imports lib/blog (and through it the generated
+ * lib/blog-wp.gen.ts) cannot be executed directly here.
  */
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')

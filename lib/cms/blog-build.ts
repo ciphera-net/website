@@ -11,11 +11,6 @@
  *
  * 🔴 WHAT STAYS OUTSIDE THIS MODULE ON PURPOSE, AND WHY (the same split
  * lib/cms/glossary-build.ts documents for the repo-link scan):
- *   - the content/blog/*.mdx collision check — needs the filesystem, which only
- *     exists at build time. It does not need a runtime analogue: `lib/blog.ts`'s
- *     async seam always resolves an MDX slug from the repo FIRST and never even asks
- *     the CDN for it, so a CDN-published document for a colliding slug is harmless —
- *     it is uploaded (content addressing makes that nearly free) but never served.
  *   - the CDN image/tool-logo HEAD checks — network calls
  *     against the ASSET cdn (cdn.ciphera.net), one per image, on every pass. A build
  *     runs once; this publisher sweeps every 120s. Not replicated here: a post
@@ -57,7 +52,7 @@ export interface BlogBuildResult {
 /**
  * Published, site-filtered `blogPosts` GraphQL nodes → the posts this site renders,
  * every repair/skip/flag recorded (P1-a), and the watermark the caller folds into its
- * own. Does NOT do the network/filesystem-dependent checks — see the module header.
+ * own. Does NOT do the network-dependent checks — see the module header.
  *
  * `cdn` is the ASSET cdn (NEXT_PUBLIC_CDN_URL), used only for rewriting
  * `wp-content/uploads/...` references in the body — see `transformWpPost`.

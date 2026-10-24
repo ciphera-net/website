@@ -11,7 +11,8 @@ import { CMS_PAGE_HEADER, NOT_FOUND_ROUTE, classifyPath } from './lib/routing/no
  * Two jobs, in this order, before Next's router sees a request: the CMS's redirects, then the not-found gate.
  *
  * Next 16 renamed Middleware to Proxy (this was middleware.ts until R11, 20-10-2026). A proxy runs on the Node.js
- * runtime, which the gate needs: the blog and glossary resolvers read their build seeds from the filesystem.
+ * runtime, which the gate needs: Learn's article check (`learnArticleExists`, lib/learn.ts) reads content/learn from the
+ * filesystem.
  */
 export async function proxy(req: NextRequest) {
   const redirect = await cmsRedirect(req)

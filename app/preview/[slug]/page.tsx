@@ -245,7 +245,7 @@ export default async function PreviewPage({
       {/* The site's own post template (D37, option A), so a draft previews as it will publish. */}
       <BlogPostView
         variant="a"
-        post={{ ...post, content: post.html, body: { kind: 'html', content: post.html } }}
+        post={post}
         posts={await loadPosts()}
       />
     </>

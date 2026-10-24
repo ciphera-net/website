@@ -1,6 +1,7 @@
 /**
  * Round 8 (mock, 18-10-2026): what the glossary options read, on the server, from the same resolver the live glossary
- * uses (CMS content zone first, build seed as fallback). Server-only by construction: lib/glossary reads the filesystem.
+ * uses (CMS content zone first, build seed as fallback). Server-only: through lib/glossary this module carries every
+ * term, so no client module may import it (__tests__/client-boundary.test.mjs).
  */
 import { getGlossaryCategories, getGlossaryTerms, getTerm, type GlossaryTerm } from '@/lib/glossary'
 import { REMOVED } from './content'

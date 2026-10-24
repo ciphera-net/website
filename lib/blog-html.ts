@@ -70,10 +70,10 @@ export function cipheraBlocks() {
       }
 
       // 🔴 UNWRAP core/table's <figure>. WordPress renders a table as
-      // `<figure class="wp-block-table"><table>…`, and MDX renders a bare `<table>`
-      // through MDXTable — which already provides its own scroll container. Left in,
-      // the figure is a second wrapper the MDX corpus never had, and it showed up as
-      // the ONLY structural difference in 11 of the 16 migrated posts.
+      // `<figure class="wp-block-table"><table>…`, and the post body gives every table
+      // its own scroll region (BlogTable in components/overhaul/blog/PostBody.tsx). Left
+      // in, the figure is a second wrapper around it; it was also the ONLY structural
+      // difference from the MDX originals in 11 of the 16 posts migrated into WordPress.
       if (node.tagName === 'figure' && className.includes('wp-block-table')) {
         const table = node.children.find((c) => c.type === 'element' && c.tagName === 'table')
         if (table && table.type === 'element') {
@@ -86,7 +86,7 @@ export function cipheraBlocks() {
 
       if (node.tagName === 'blockquote') {
         // 🔴 THREE CASES, NOT TWO, AND CONFLATING THEM WAS A REAL DIFFERENCE.
-        // The corpus has 16 `<BlogBlockquote variant="tldr">`, 12 plain
+        // The MDX originals had 16 `<BlogBlockquote variant="tldr">`, 12 plain
         // `<BlogBlockquote>`, and one MARKDOWN `>` quote — and the last renders as a
         // bare <blockquote>, with none of the component's wrapper, border or padding.
         // Mapping every blockquote to BlogBlockquote gave that quote a card it never
@@ -134,8 +134,9 @@ export const schema: SanitizeSchema = {
     th: ['colSpan', 'rowSpan', 'scope'],
     td: ['colSpan', 'rowSpan'],
     // 🔴 THE ONE CLASS THAT SURVIVES, AND ONLY BY EXPLICIT VALUE.
-    // MDX emits `<code class="language-html">` for a fenced block's info string, and
-    // stripping every class silently changed the corpus's one code block. rehype-sanitize
+    // The corpus's one fenced code block carries `<code class="language-html">` (kept
+    // from its MDX original when the posts moved into WordPress), and stripping every
+    // class silently changed it. rehype-sanitize
     // takes [attribute, ...allowedValues], so this is a value allowlist rather than a
     // hole: an author cannot smuggle an arbitrary class through `code`.
     // ⚠️ Adding a language means adding it HERE. That is deliberate — it keeps the

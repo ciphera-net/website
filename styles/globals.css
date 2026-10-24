@@ -241,7 +241,8 @@
   }
 }
 
-/* * Scroll affordance for wide MDX tables (blog + learn). The cover gradients
+/* * Scroll affordance for wide tables (Learn's MDX tables, blog post bodies, the Trust
+   page's providers). The cover gradients
    (background-attachment: local) travel with the content and slide away from
    an edge as soon as there is anything to scroll toward; the shadow gradients
    (attachment: scroll) sit fixed at the container edges underneath them. Net
