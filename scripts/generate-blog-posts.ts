@@ -1,5 +1,5 @@
 /**
- * generate-blog-posts.ts — the blog's summary list, and the bodies WordPress holds.
+ * generate-blog-posts.ts — the blog's build seed: every post WordPress publishes for this site, and its watermark.
  *
  * Design: Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md §24.12
  * Design: Public/docs/plans/07-10-2026-cms-made-easy-design.md §4.1 P1-a
@@ -97,7 +97,6 @@ async function main() {
 
   // ── Pass 2: the network-dependent checks, only for what actually survives ──
   const wp: WpBlogPost[] = []
-  const summaries: Record<string, unknown>[] = []
 
   for (const post of built.posts) {
     // 🔑 The recovery-copy honesty check now runs inside lib/cms/blog-build.ts (shared
@@ -169,8 +168,6 @@ async function main() {
     // A post's share card is not checked here (23-10-2026): lib/og draws it from the title (app/og/[file]/route.ts),
     // so there is no uploaded card to look for.
 
-    const { html: _html, faqs: _faqs, wordCount: _wc, cta: _cta, ...summary } = post
-    summaries.push(summary)
     wp.push(post)
   }
 
@@ -235,7 +232,7 @@ async function main() {
         // justification — "nothing else in the estate can see that" — stopped being
         // true the same day it was written.
         const liveCount = servingNow
-        const shortfall = liveCount === null ? 0 : liveCount - summaries.length
+        const shortfall = liveCount === null ? 0 : liveCount - wp.length
         const collapse =
           liveCount !== null && shortfall > Math.max(2, Math.floor(liveCount * 0.25))
 
@@ -244,7 +241,7 @@ async function main() {
           // grew. Both are the normal case.
         } else if (!collapse) {
           console.log(
-            `⚠️  publishing ${summaries.length} posts; the live site serves ${liveCount}. ` +
+            `⚠️  publishing ${wp.length} posts; the live site serves ${liveCount}. ` +
               `${shortfall} fewer.\n` +
               `   Shipping: unpublishing a post is ordinary editorial work, and a content ` +
               `decision must not\n   block an unrelated deploy. WordpressBlogPostsDropped is ` +
@@ -252,7 +249,7 @@ async function main() {
           )
         } else {
           fail(
-            `this build would publish ${summaries.length} posts; ${LIVE_STATE} reports ${liveCount} live.\n` +
+            `this build would publish ${wp.length} posts; ${LIVE_STATE} reports ${liveCount} live.\n` +
               `   That is ${shortfall} gone at once — too many to be ordinary editing, and the\n` +
               `   shape of a real loss: a restore that dropped rows, or posts that silently lost\n` +
               `   their site term and fell out of the build's filter.\n` +
@@ -269,16 +266,7 @@ async function main() {
     }
   }
 
-  // 🔴 A DATE ALONE IS NOT A TOTAL ORDER, AND THE CORPUS HAS THREE POSTS ON 2026-07-22.
-  // Until the migration, ties were broken by `readdirSync` order — alphabetical by
-  // accident, on this filesystem, on this machine. WordPress returns them in its own
-  // order, and the sitemap and llms.txt shuffled. The slug is a stable, meaningful
-  // tiebreak and it reproduces exactly what the filesystem was doing.
-  summaries.sort(
-    (a, b) =>
-      new Date(b.date as string).getTime() - new Date(a.date as string).getTime() ||
-      (a.slug as string).localeCompare(b.slug as string)
-  )
+  // The order of the posts below does not matter: lib/blog.ts sorts the seed when it reads it (date, then slug).
 
   fs.writeFileSync(
     SUMMARY_OUT,
@@ -288,18 +276,10 @@ async function main() {
 // 🔴 BUILD OUTPUT, NOT SOURCE. Git-ignored, because a committed copy is a second
 // source of truth for what the CMS says and the stale one wins an argument nobody
 // knew was happening. To change a post, edit it at https://cms.teleport.ciphera.net.
-
-export interface BlogPostSummary {
-  slug: string
-  title: string
-  description: string
-  category: string
-  date: string
-  dateModified: string
-  readTime: string
-}
-
-export const blogPosts: BlogPostSummary[] = ${JSON.stringify(summaries, null, 2)}
+//
+// Only the blog's watermark lives here (/sys/seo-state reads it). The posts themselves
+// are in lib/blog-wp.gen.ts, the seed lib/blog.ts reads; the summary list this file
+// also carried was read by nothing after WEB-26 round 2 and was dropped 24-10-2026.
 
 /**
  * 🔑 NEW (WEB-26 round 2): the max \`modifiedGmt\` this build consumed from WordPress's
@@ -337,7 +317,7 @@ export const wpPosts: WpBlogPost[] = ${JSON.stringify(wp, null, 2)}
 
   recordContentRepairs([REPAIR_TYPE], repairs)
 
-  console.log(`Generated ${summaries.length} blog posts → lib/blog-posts.gen.ts, from WordPress`)
+  console.log(`Generated ${wp.length} blog posts → lib/blog-wp.gen.ts (watermark: lib/blog-posts.gen.ts), from WordPress`)
   for (const p of wp) console.log(`  WP: ${p.slug} (${p.wordCount} words, ${p.faqs.length} faqs)`)
   if (repairs.length > 0) console.log(`  ${repairs.length} content repair(s)/skip(s)/flag(s) — see lib/content-repairs.gen.ts`)
 }

@@ -35,6 +35,7 @@ import { buildMenus, type WpMenuNode, type MenuLocation, type MenuBuildOptions }
 import { HEADER_MEDIA_KEYS, FOOTER_MEDIA_KEYS } from '../lib/cms/menu-seed'
 import { WP_POST_FIELDS, type WpNode } from '../lib/blog-transform'
 import { getContentIndex, type ContentIndex, type ContentIndexKind } from '../lib/cms/content-client'
+import { isContentKey } from '../lib/content-key'
 import { CONTENT_BASE } from '../lib/cms/runtime-config'
 import {
   buildDocument,
@@ -241,6 +242,17 @@ interface KindPublishResult {
   pagePatterns: string[]
 }
 
+/**
+ * Can `key` be published? A document the uploader would refuse (lib/content-key.ts) is left out and named in the log:
+ * one refused document fails the whole upload, so it would hold every other change back (24-10-2026 review). The blog
+ * transform already names such a post; this guards every kind keyed by a CMS slug.
+ */
+function addressable(kind: string, key: string): boolean {
+  if (isContentKey(key)) return true
+  log(`${kind} "${key}" is not a content key (lowercase letters, digits, single hyphens) — left out of this pass`)
+  return false
+}
+
 async function publishGlossary(previousIndex: ContentIndex | null): Promise<KindPublishResult> {
   const nodes = await fetchGlossaryNodes()
   const publishedKeys = nodes.map((n) => n.slug).filter(Boolean)
@@ -248,6 +260,7 @@ async function publishGlossary(previousIndex: ContentIndex | null): Promise<Kind
 
   const docsByKey: Record<string, { path: string; bytes: string }> = {}
   for (const term of terms) {
+    if (!addressable('glossary', term.slug)) continue
     const doc = buildDocument(SITE, 'glossary', term.slug, term)
     docsByKey[term.slug] = { path: doc.path, bytes: doc.bytes }
   }
@@ -303,6 +316,7 @@ async function publishBlog(previousIndex: ContentIndex | null): Promise<KindPubl
 
   const docsByKey: Record<string, { path: string; bytes: string }> = {}
   for (const post of posts) {
+    if (!addressable('blog', post.slug)) continue
     const doc = buildDocument(SITE, 'blog', post.slug, post)
     docsByKey[post.slug] = { path: doc.path, bytes: doc.bytes }
   }
@@ -529,12 +543,20 @@ async function runPass(): Promise<void> {
   const startedAt = Date.now()
   log(`pass starting (kinds: ${[...PUBLISH_KINDS].join(', ') || '(none)'}${DRY_RUN ? ', DRY_RUN' : ''})`)
 
-  // §4.1.3a Publisher: "read the current index from the CDN (404 = empty)".
+  // §4.1.3a Publisher: "read the current index from the CDN (404 = empty)". 🔴 ONLY A 404 IS EMPTY (getContentIndex
+  // answers null for it). Any other failed read (a timeout, an HTTP 5xx, a body that is not JSON) ends the pass with
+  // nothing published, counted as a failure. Until 24-10-2026 it was read as "empty" and the pass went on: rebuilt on
+  // that base, the blog and the glossary dropped every item they keep from the last good index (mergeLastGood: a post
+  // WordPress publishes but this pass skipped), and a post missing from a readable index answers 404 since then.
   let previousIndex: ContentIndex | null = null
   try {
     previousIndex = await getContentIndex(SITE)
   } catch (e) {
-    log(`could not read the current index — proceeding as if empty: ${(e as Error).message}`)
+    metrics.failuresTotal += 1
+    log(`could not read the current index — publishing nothing this pass: ${(e as Error).message}`)
+    await pushMetrics()
+    log(`pass finished in ${Date.now() - startedAt}ms`)
+    return
   }
 
   const kinds: Record<string, ContentIndexKind> = { ...(previousIndex?.kinds ?? {}) }

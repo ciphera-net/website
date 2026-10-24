@@ -40,7 +40,7 @@ function parseKinds(raw: string | undefined): Set<string> {
   return new Set(kinds.length > 0 ? kinds : DEFAULT_RUNTIME_KINDS)
 }
 
-/** `CMS_RUNTIME_KINDS=glossary,blog` overrides the default; unset/empty keeps it off. */
+/** `CMS_RUNTIME_KINDS=glossary,blog` overrides the default; unset or empty means the default set (every kind). */
 export const CMS_RUNTIME_KINDS: Set<string> = parseKinds(process.env.CMS_RUNTIME_KINDS)
 
 export function isRuntimeKind(kind: string): boolean {

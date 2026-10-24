@@ -66,9 +66,10 @@ test('lib/cms/blog-build.ts skips a post with no safe repair and records it, nev
   // here, shared with cms-publisher.ts — see that module's own header.
   const built = code('lib/cms/blog-build.ts')
 
-  // The shape: no slug/invalid slug → post is null → SKIP. Title/body → SKIP.
+  // The shape: no slug/invalid slug → post is null → SKIP. A slug this site cannot publish under (24-10-2026), a missing
+  // title, an empty body → SKIP.
   assert.match(built, /if \(!post\) \{/)
-  assert.match(built, /const blocking = problems\.filter\(\(p\) => p\.field === 'title' \|\| p\.field === 'body'\)/)
+  assert.match(built, /const blocking = problems\.filter\(\(p\) => p\.field === 'slug' \|\| p\.field === 'title' \|\| p\.field === 'body'\)/)
   assert.match(built, /repair\(ref, p\.field, 'skipped', p\.message\)/)
   assert.match(built, /repair\(post\.slug, p\.field, 'skipped', p\.message\)/)
 
@@ -109,7 +110,7 @@ test('lib/cms/blog-build.ts skips a post with no safe repair and records it, nev
   // shrink guard, because it compares against the LIVE site's own report, not a
   // hardcoded constant.
   assert.match(gen, /const collapse =\s*\n\s*liveCount !== null && shortfall > Math\.max\(2, Math\.floor\(liveCount \* 0\.25\)\)/)
-  assert.match(gen, /fail\(\s*\n\s*`this build would publish \$\{summaries\.length\} posts/)
+  assert.match(gen, /fail\(\s*\n\s*`this build would publish \$\{wp\.length\} posts/)
 })
 
 test('dropUnreachableMedia removes exactly the unreachable <img> or tool-logo mark, nothing else', () => {
@@ -139,4 +140,19 @@ test('an off-CDN image or malformed tool-logo mark that cdnImagesOnly/toolLogosV
   assert.match(gen, /rawMediaRefs/, 'generate-blog-posts.ts must diff the raw refs against the surviving set')
   assert.match(gen, /is not on the CDN \(or is otherwise invalid\) — dropped from the post body/)
   assert.match(gen, /tool-logo mark "\$\{ref\.value\}" does not match the required shape — dropped from the post body/)
+})
+
+test('a post whose slug is not a content key is a problem that stops publishing, by name, and the build skips it (24-10-2026)', () => {
+  // The uploader stores a document only under a content key and refuses one other upload whole; WordPress keeps an
+  // underscore or a non-ASCII letter in a slug.
+  const key = read('lib/content-key.ts')
+  assert.match(key, /export const CONTENT_KEY_SHAPE = \/\^\[a-z0-9\]\+\(-\[a-z0-9\]\+\)\*\$\//, 'the shape must be the uploader\'s own (CONTENT_DOC_RE)')
+  const t = code('lib/blog-transform.ts')
+  assert.match(t, /import \{ isContentKey \} from '\.\/content-key'/)
+  const check = t.slice(t.indexOf('if (!isContentKey(slug))'))
+  assert.ok(t.includes('if (!isContentKey(slug))'), 'the transform must test the slug against the content key shape')
+  assert.match(check.slice(0, 400), /field: 'slug'[\s\S]*cannot be published/, 'and name it as a slug problem')
+  assert.doesNotMatch(check.slice(0, check.indexOf('}\n') + 2), /return \{ post: null/, 'the post is still built, so a preview can render it')
+  const b = code('lib/cms/blog-build.ts')
+  assert.match(b, /const blocking = problems\.filter\(\(p\) => p\.field === 'slug' \|\| p\.field === 'title' \|\| p\.field === 'body'\)/, 'the build must skip on it')
 })
