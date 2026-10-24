@@ -4,8 +4,8 @@
  *
  * 🔴 Dates are formatted HERE, in UTC, never in the browser. A date-only string ('2026-10-13') parses as UTC midnight,
  * and the live index formats it in the visitor's zone inside a client component, so readers west of UTC see the day
- * before (plan §5i). Spelled-out dates, as Trust and About print them. Server-only by construction: lib/blog reads the
- * filesystem.
+ * before (plan §5i). Spelled-out dates, as Trust and About print them. Server-only: through lib/blog this module carries
+ * every post's body, so no client module may import it (__tests__/client-boundary.test.mjs).
  */
 import { getBlogPost, getBlogPosts, type BlogPost, type BlogPostMeta } from '@/lib/blog'
 import { UNPUBLISHED } from './content'

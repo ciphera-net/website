@@ -56,14 +56,13 @@ function sortPosts<T extends { date: string; slug: string }>(posts: T[]): T[] {
   )
 }
 
-/** The build-time seed, exactly as the pre-WEB-26 getBlogPosts() computed it — the
- * flag-off path, and the only path scripts/generate-llms.ts (a build CLI script with
- * no request to serve) ever takes. */
+/** The build-time seed (lib/blog-wp.gen.ts) — the flag-off path, and the only path
+ * scripts/generate-llms.ts (a build CLI script with no request to serve) ever takes. */
 export function getBlogPostsSeed(): BlogPostMeta[] {
   return sortPosts(wpPosts.map(metaFromWp))
 }
 
-/** The build-time seed for one post, exactly as the pre-WEB-26 getBlogPost() computed it. */
+/** The build-time seed for one post. */
 export function getBlogPostSeed(slug: string): BlogPost | null {
   const wp = wpPosts.find((p) => p.slug === slug)
   return wp ? postFromWp(wp) : null

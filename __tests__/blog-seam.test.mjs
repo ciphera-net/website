@@ -1,11 +1,11 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 /**
- * The blog's dual-source seam.
+ * The blog's seam: WordPress, through the CMS's published documents at request time and the build's seed otherwise.
  *
  * Design: Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md §24.7
  *
@@ -30,9 +30,10 @@ const read = (p) => readFileSync(join(root, p), 'utf-8')
  */
 function code(p) {
   return read(p)
-    // (?!\.) — `content/blog/*.mdx` (quoted in several of these files) contains a
-    // literal `/*` that is not a comment opener; without the lookahead this regex
-    // treats it as one and non-greedily deletes everything up to an unrelated `*/`.
+    // (?!\.) — a glob in a comment, such as `dir/*.ext`, contains a literal `/*` that is
+    // not a comment opener; without the lookahead this regex treats it as one and
+    // non-greedily deletes everything up to an unrelated `*/`. (The blog generator quoted
+    // `content/blog/*.mdx` until 23-10-2026; none of these files holds such a glob today.)
     .replace(/\/\*(?!\.)[\s\S]*?\*\//g, '')
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
@@ -53,13 +54,36 @@ test('the four generator pipelines keep their BlogPostSummary contract', () => {
 test('WordPress is the only source of a post: nothing reads the blog from the repository', () => {
   // 23-10-2026: the git-tracked MDX posts were retired (content/blog/ held none since the move into the CMS, and the
   // post template never rendered an MDX body). A second source would need a precedence rule or a collision guard
-  // again; there is none, so there must be no second source either.
+  // again; there is none, so there must be no second source either. Every spelling of a file read counts: `node:fs`,
+  // either quote, require() and import(), a path built from parts.
+  const FILE_READ = /\bfrom\s*['"](?:node:)?(?:fs|path)(?:\/promises)?['"]|\b(?:require|import)\s*\(\s*['"](?:node:)?(?:fs|path)(?:\/promises)?['"]/
+  const BLOG_DIR = /content\/blog|['"]content['"]\s*,\s*['"]blog['"]/
+  const BLOG_FILES = new RegExp(`gray-matter|\\.mdx?\\b|${BLOG_DIR.source}`)
   const blog = code('lib/blog.ts')
-  assert.doesNotMatch(blog, /from 'fs'|from 'path'|gray-matter|content\/blog|\.mdx/, 'lib/blog.ts reads posts from the repository again')
-  const gen = code('scripts/generate-blog-posts.ts')
-  assert.doesNotMatch(gen, /gray-matter|content\/blog|\.mdx/, 'the blog generator reads posts from the repository again')
-  assert.ok(!existsSync(join(root, 'content', 'blog')), 'content/blog/ is back: the blog has one source, WordPress')
+  assert.doesNotMatch(blog, FILE_READ, 'lib/blog.ts reads files again: the blog has one source, WordPress')
+  assert.doesNotMatch(blog, BLOG_FILES, 'lib/blog.ts reads posts from the repository again')
+  // The generator imports fs and path to write its outputs; what it must not do is read posts from the repository.
+  assert.doesNotMatch(code('scripts/generate-blog-posts.ts'), BLOG_FILES, 'the blog generator reads posts from the repository again')
+  // Nor does any other module build a path into content/blog (Learn keeps its MDX in content/learn).
+  for (const file of ['app', 'components', 'lib', 'scripts'].flatMap(sources).concat('proxy.ts')) {
+    assert.doesNotMatch(code(file), BLOG_DIR, `${file} reads content/blog`)
+  }
+  // A directory git leaves behind (an ignored .DS_Store keeps it on a Mac) is not a source; any other file in it is.
+  const dir = join(root, 'content', 'blog')
+  const left = existsSync(dir) ? readdirSync(dir).filter((f) => !f.startsWith('.')) : []
+  assert.deepEqual(left, [], 'content/blog/ holds files again: the blog has one source, WordPress')
 })
+
+/** Every script and module under `dir` (declarations excluded). */
+function sources(dir) {
+  const out = []
+  for (const entry of readdirSync(join(root, dir), { withFileTypes: true })) {
+    const rel = join(dir, entry.name)
+    if (entry.isDirectory()) out.push(...sources(rel))
+    else if (/\.(?:ts|tsx|js|jsx|mjs)$/.test(entry.name) && !entry.name.endsWith('.d.ts')) out.push(rel)
+  }
+  return out
+}
 
 test('the post page renders the body through the sanitising renderer, and reads it once', () => {
   // ⚠️ THIS LIVES IN THE POST TEMPLATE, NOT THE ROUTE. The route only routes; the page is
@@ -79,13 +103,11 @@ test('the post page renders the body through the sanitising renderer, and reads 
 })
 
 test('the BlogPosting wordCount does not count HTML tags', () => {
+  // The count comes with the post, made from its text at build time (WpBlogPost.wordCount in lib/blog-types.ts):
+  // splitting an HTML body on whitespace counts its tags.
   const page = code('components/overhaul/blog/BlogPost.tsx')
-  assert.doesNotMatch(
-    page,
-    /wordCount:\s*post\.content\.split/,
-    'wordCount must come from lib/blog.ts, which computes it per source — splitting an HTML body on whitespace counts tags'
-  )
-  assert.match(page, /wordCount:\s*post\.wordCount/)
+  assert.match(page, /wordCount:\s*post\.wordCount/, "the BlogPosting wordCount must be the post's own, counted from text")
+  assert.doesNotMatch(page, /\.split\(\s*\/\\s/, 'a word count split from the body on whitespace counts its tags')
 })
 
 test('the sanitiser strips every class and merges (never replaces) the protocol map (WEB-16, mirrors PULSE-243)', () => {
@@ -94,9 +116,9 @@ test('the sanitiser strips every class and merges (never replaces) the protocol 
   // can run the exact same chain at build time. Since 23-10-2026 the chain itself lives there
   // too (`sanitizeChain`), and the renderer (components/overhaul/blog/PostBody.tsx) starts from it.
   const html = code('lib/blog-html.ts')
-  // The ONE exception, and it is a VALUE allowlist rather than a hole: MDX emits
-  // `<code class="language-html">` for a fenced block's info string, and stripping it
-  // silently changed the corpus's only code block. rehype-sanitize takes
+  // The ONE exception, and it is a VALUE allowlist rather than a hole: the corpus's one
+  // fenced code block carries `<code class="language-html">` (kept from its MDX original
+  // when the posts moved into WordPress), and stripping it silently changed that block. rehype-sanitize takes
   // [attribute, ...allowedValues], so an author cannot smuggle an arbitrary class
   // through `code`. Anything else claiming className is the thing this forbids.
   const classNameUses = [...html.matchAll(/'className'/g)]
@@ -425,8 +447,9 @@ test('a slug WordPress could not have produced is refused, in the shape WPGraphQ
 test('the feed escapes the full post URL, not just the slug (WEB-16, mirrors PULSE-243)', () => {
   const feed = code('app/feed.xml/route.ts')
   // 🔴 DEFENCE IN DEPTH: lib/blog-transform.ts's WP_SLUG check keeps a malformed slug
-  // out of the build entirely, but this route reads whatever lib/blog-posts.gen.ts
-  // hands it — the same reasoning that already applies escapeXml to title/description.
+  // out of the build entirely, but this route serves whatever lib/blog hands it (a
+  // published CMS document or the build seed) — the same reasoning that already applies
+  // escapeXml to title/description.
   assert.match(
     feed,
     /const url = escapeXml\(`https:\/\/ciphera\.net\/blog\/\$\{post\.slug\}`\)/,

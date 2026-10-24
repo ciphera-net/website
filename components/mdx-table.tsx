@@ -1,7 +1,8 @@
 import type { ComponentPropsWithoutRef } from 'react'
 
 /**
- * Shared `table` renderer for MDX article bodies (blog + learn).
+ * `table` renderer for Learn's MDX article bodies (the blog's WordPress tables have their own, BlogTable in
+ * components/overhaul/blog/PostBody.tsx).
  *
  * Markdown tables have no intrinsic overflow handling: anything wider than a
  * 390px viewport either clips against the page edge or crushes its columns to

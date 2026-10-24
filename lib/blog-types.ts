@@ -1,14 +1,12 @@
 /**
- * The blog's shared shape, across both sources.
+ * The blog's shared shape. WordPress is the only source (the git-tracked MDX posts were retired 23-10-2026).
  *
  * Design: Public/docs/plans/10-09-2026-headless-wordpress-cms-design.md §24.7
  *
- * 🔑 `lib/blog.ts` IS THE UNION POINT, NOT `lib/blog-posts.gen.ts`. Both are seams,
- * but they are not the same seam: `app/feed.xml/route.ts` and `app/blog/page.tsx` read
- * the generated summary file, while `app/sitemap.ts`, `scripts/generate-llms.ts` and
- * (then) `RelatedPosts` read `lib/blog.ts` off the filesystem. Unioning here means those three
- * change by ZERO lines; unioning at the generated file would have left the sitemap and
- * llms.txt blind to every WordPress post.
+ * 🔑 EVERY READER OF A PUBLISHED POST GOES THROUGH `lib/blog.ts`: the index, the posts, the homepage block, the feed,
+ * the sitemap and the cards ask it, and `scripts/generate-llms.ts` takes its build seed. It answers from the CMS's
+ * published documents at request time and from the build's seed (`lib/blog-wp.gen.ts`) otherwise. A draft is not
+ * published: the preview (app/preview/[slug]) reads it from WordPress through `lib/blog-transform.ts`.
  */
 
 export interface BlogPostFaq {
@@ -19,8 +17,8 @@ export interface BlogPostFaq {
 /**
  * A post's list-view fields — what the blog index and feed render without needing the
  * body. Lives here, not in `lib/blog.ts`, so a client component (which must never
- * import that server-only module — it reads WordPress and the filesystem) can still
- * type the prop it receives from its server parent (WEB-26 round 2; first for
+ * import that module: it carries every post's body, __tests__/client-boundary.test.mjs)
+ * can still type the prop it receives from its server parent (WEB-26 round 2; first for
  * components/blog/blog-page-client.tsx, removed 23-10-2026).
  */
 export interface BlogPostMeta {

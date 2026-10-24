@@ -52,7 +52,7 @@ export interface BlogBuildResult {
 /**
  * Published, site-filtered `blogPosts` GraphQL nodes → the posts this site renders,
  * every repair/skip/flag recorded (P1-a), and the watermark the caller folds into its
- * own. Does NOT do the network/filesystem-dependent checks — see the module header.
+ * own. Does NOT do the network-dependent checks — see the module header.
  *
  * `cdn` is the ASSET cdn (NEXT_PUBLIC_CDN_URL), used only for rewriting
  * `wp-content/uploads/...` references in the body — see `transformWpPost`.

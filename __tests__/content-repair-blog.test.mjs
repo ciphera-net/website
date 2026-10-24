@@ -22,12 +22,13 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => readFileSync(join(root, p), 'utf-8')
 function code(p) {
   return read(p)
-    // 🔴 THE NEGATIVE LOOKAHEAD MATTERS. `content/blog/*.mdx` (this file's own glob,
-    // quoted several times) contains a literal `/*` that is NOT a comment opener — a
-    // bare `/\/\*[\s\S]*?\*\//g` treats it as one and non-greedily eats everything up
-    // to the NEXT unrelated `*/`, silently deleting whole functions from `code()`'s
-    // output. `(?!\.)` excludes exactly that false start; every real block comment in
-    // this codebase opens `/**` or `/* ` (a letter or `*`), never `/*.`.
+    // 🔴 THE NEGATIVE LOOKAHEAD MATTERS. A glob in a comment, such as `dir/*.ext`,
+    // contains a literal `/*` that is NOT a comment opener — a bare
+    // `/\/\*[\s\S]*?\*\//g` treats it as one and non-greedily eats everything up to the
+    // NEXT unrelated `*/`, silently deleting whole functions from `code()`'s output (the
+    // blog generator quoted `content/blog/*.mdx` several times until 23-10-2026).
+    // `(?!\.)` excludes exactly that false start; every real block comment in this
+    // codebase opens `/**` or `/* ` (a letter or `*`), never `/*.`.
     .replace(/\/\*(?!\.)[\s\S]*?\*\//g, '')
     .replace(/(^|[^:])\/\/.*$/gm, '$1')
 }
