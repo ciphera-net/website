@@ -1,4 +1,5 @@
 import type { WpBlogPost, BlogPostFaq } from './blog-types'
+import { isContentKey } from './content-key'
 
 /**
  * The shape of a slug AS GRAPHQL HANDS IT TO THIS BUILD — measured, not assumed
@@ -201,6 +202,17 @@ export function transformWpPost(
       message: `the slug "${slug}" is not a shape WordPress could have produced`,
     })
     return { post: null, problems, repairs }
+  }
+  // 🔴 A shape WordPress produces is not always one this site can publish: the uploader stores a post only under a
+  // content key (lib/content-key.ts), and WordPress keeps an underscore or a non-ASCII letter in a slug. Such a post
+  // reached the publisher, whose upload the uploader then refused whole, so nothing published until it changed. It is
+  // a problem that stops publishing, by name (24-10-2026): lib/cms/blog-build.ts skips the post on it, and the draft
+  // preview still renders the post. The post is still built, since the slug is a safe one (WP_SLUG above).
+  if (!isContentKey(slug)) {
+    problems.push({
+      field: 'slug',
+      message: `the slug "${slug}" cannot be published: a post's address may hold only lowercase letters, digits and single hyphens`,
+    })
   }
 
   const title = (n.cipheraTitle ?? '').trim() || (n.title ?? '').trim()

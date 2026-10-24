@@ -80,7 +80,7 @@ export function buildBlogPosts(nodes: WpNode[], cdn: string): BlogBuildResult {
       for (const p of problems) repair(ref, p.field, 'skipped', p.message)
       continue
     }
-    const blocking = problems.filter((p) => p.field === 'title' || p.field === 'body')
+    const blocking = problems.filter((p) => p.field === 'slug' || p.field === 'title' || p.field === 'body')
     if (blocking.length > 0) {
       for (const p of blocking) repair(post.slug, p.field, 'skipped', p.message)
       continue

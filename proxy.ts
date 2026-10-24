@@ -118,12 +118,26 @@ function toNotFound(req: NextRequest): NextResponse {
   return NextResponse.rewrite(new URL(NOT_FOUND_ROUTE, req.url))
 }
 
-/** On to Next's router. `CMS_PAGE_HEADER` is set only when `cmsPage` says so; a copy the client sent is removed. */
+/**
+ * The user agent a request without one goes on with. Next renders page metadata in the head only for a user agent
+ * htmlLimitedBots matches (next.config.ts: every non-empty one), and it never tests a missing or empty one: that request
+ * gets the title and the card tags streamed past `</head>`. The edge keeps one copy of a page for every visitor, so such
+ * a request could fill it with the copy a link-preview bot then reads (24-10-2026 review). Nothing here reads the user
+ * agent otherwise.
+ */
+export const MISSING_USER_AGENT = 'no-user-agent'
+
+/**
+ * On to Next's router. `CMS_PAGE_HEADER` is set only when `cmsPage` says so; a copy the client sent is removed. A request
+ * without a user agent goes on with MISSING_USER_AGENT.
+ */
 function continueTo(req: NextRequest, cmsPage: boolean): NextResponse {
-  if (!cmsPage && !req.headers.has(CMS_PAGE_HEADER)) return NextResponse.next()
+  const noUserAgent = !req.headers.get('user-agent')
+  if (!cmsPage && !req.headers.has(CMS_PAGE_HEADER) && !noUserAgent) return NextResponse.next()
   const headers = new Headers(req.headers)
   headers.delete(CMS_PAGE_HEADER)
   if (cmsPage) headers.set(CMS_PAGE_HEADER, '1')
+  if (noUserAgent) headers.set('user-agent', MISSING_USER_AGENT)
   return NextResponse.next({ request: { headers } })
 }
 

@@ -32,8 +32,12 @@ const nextConfig: NextConfig = {
   // * when it resolves late, except for the user agents on its HTML-limited bot list, and the edge then keeps ONE copy of
   // * a page for everyone (zone 5440429, `vary: accept-encoding` only): a link-preview bot (Twitterbot, Slackbot,
   // * LinkedInBot…) was served a browser's copy with the title and og:image ~100 KB down, past `</head>` (23-10-2026).
-  // * Matching every user agent makes the HTML the same for all of them. Measured on /contact before the change: the
-  // * first byte is the same for a bot and a browser (67 ms warm, ~120 ms after the 15 s index cache expires).
+  // * Matching every user agent makes the HTML the same for all of them. The cost: a browser's first byte now waits for
+  // * the metadata, as a listed bot's did. Measured on /contact before the change, 67 ms warm and ~120 ms after the 15 s
+  // * index cache expires; while the content CDN stalls it adds up to one more index-read timeout (3 s), because the
+  // * proxy and the page each keep their own index cache and a failed read is not cached (24-10-2026 review; the
+  // * page's total time is unchanged). A request with no user agent, or an empty one, is never tested and streams, so
+  // * proxy.ts gives it one (MISSING_USER_AGENT).
   // * ⚠️ `.+`: Next tests only a non-empty user agent, so it matches what "dot star" would. This file must not contain a
   // * star followed by a slash anywhere, comments included: the glob in outputFileTracingIncludes opens a false block
   // * comment for the tests' comment-stripping regex, and that pair would close it, hiding the lines between.

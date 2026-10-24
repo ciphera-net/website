@@ -41,3 +41,19 @@ test('next.config.ts holds no star-slash pair, so the source checks of it see ev
   const config = readFileSync(join(root, 'next.config.ts'), 'utf-8')
   assert.equal(config.split('*/').length - 1, 0, 'next.config.ts contains a star-slash pair: use a // comment')
 })
+
+test('proxy.ts gives a request without a user agent one, which htmlLimitedBots matches', () => {
+  // 24-10-2026 review: Next never tests a missing or empty user agent against htmlLimitedBots, so such a request was
+  // rendered with the metadata streamed past </head>, and the edge keeps one copy of a page for every visitor.
+  const strip = (s) => s.replace(/\/\*(?!\.)[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1')
+  const proxy = strip(readFileSync(join(root, 'proxy.ts'), 'utf-8'))
+  const m = proxy.match(/export const MISSING_USER_AGENT = '([^']+)'/)
+  assert.ok(m, 'proxy.ts must export the MISSING_USER_AGENT it supplies')
+  const config = readFileSync(join(root, 'next.config.ts'), 'utf-8')
+  const [, src, flags] = config.match(/^\s*htmlLimitedBots:\s*\/(.+)\/([a-z]*),?\s*$/m)
+  assert.ok(new RegExp(src, flags).test(m[1]), 'the supplied user agent must be one htmlLimitedBots matches')
+  const body = proxy.slice(proxy.indexOf('function continueTo('))
+  assert.match(body, /const noUserAgent = !req\.headers\.get\('user-agent'\)/, 'continueTo must notice a missing or empty user agent')
+  assert.match(body, /if \(noUserAgent\) headers\.set\('user-agent', MISSING_USER_AGENT\)/, 'and go on with MISSING_USER_AGENT')
+  assert.match(body, /&& !noUserAgent\) return NextResponse\.next\(\)/, 'the plain pass-through must not skip a request without one')
+})
