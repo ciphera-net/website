@@ -6,6 +6,7 @@ import rehypeParse from 'rehype-parse'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeReact from 'rehype-react'
 import { dropUnsafeHrefs, richTextSchema } from '@/lib/cms/page-build'
+import { newTabLinks } from '@/lib/blog-html'
 
 /**
  * Renders a `text-section`'s already-sanitised body (WEB-28, §4.2.1).
@@ -16,11 +17,15 @@ import { dropUnsafeHrefs, richTextSchema } from '@/lib/cms/page-build'
  * document, so re-sanitising here is defence in depth, not the primary control: a
  * schema drift in the publish-time transform, or a document written some other way,
  * still cannot reach this page as raw HTML.
+ *
+ * `newTabLinks` (lib/blog-html.ts, the post body's) runs after the sanitizer, as in the post body: a link the
+ * editor set to open in a new tab gets `noopener noreferrer` and the hidden cue here, at render time only.
  */
 const processor = unified()
   .use(rehypeParse, { fragment: true })
   .use(rehypeSanitize, richTextSchema)
   .use(dropUnsafeHrefs)
+  .use(newTabLinks)
   .use(rehypeReact, { Fragment, jsx, jsxs, components: { a: richTextAnchor() } })
 
 export function CmsRichText({ html, className }: { html: string; className?: string }): ReactNode {
@@ -51,10 +56,10 @@ function isExternalHref(href: string | undefined): boolean {
 
 /**
  * The shared inline `<a>` renderer for both exports below. `richTextSchema`
- * (page-build.ts) deliberately keeps only `href` on an anchor, never a `class` (the
- * six-tag allowlist has no "trust this one attribute value" case), so a styled
- * inline link needs its class reconstructed here rather than carried on the stored
- * HTML — `cmsRichNodes`'s product-page callers pass one; `CmsRichText`'s plain
+ * (page-build.ts) keeps `href` and the editor's `target`/`rel` (value allowlists) on an
+ * anchor, and never a `class`: the stored document carries no styling decision from
+ * the CMS. So a styled inline link needs its class reconstructed here rather than
+ * carried on the stored HTML — `cmsRichNodes`'s product-page callers pass one; `CmsRichText`'s plain
  * `text-section` body passes none and is styled by its wrapper's `prose-a:*`
  * classes instead (an ancestor selector that matches an `<a>` regardless of which
  * React component rendered it, so routing through `next/link` here changes nothing
@@ -63,16 +68,16 @@ function isExternalHref(href: string | undefined): boolean {
  * `text-primary underline` (Tessera, which never hides the underline).
  */
 function richTextAnchor(linkClassName?: string) {
-  return function RichTextAnchor({ href, children }: AnchorHTMLAttributes<HTMLAnchorElement>) {
+  return function RichTextAnchor({ href, target, rel, children }: AnchorHTMLAttributes<HTMLAnchorElement>) {
     if (href !== undefined && !isExternalHref(href)) {
       return (
-        <NextLink href={href} className={linkClassName}>
+        <NextLink href={href} className={linkClassName} target={target} rel={rel}>
           {children}
         </NextLink>
       )
     }
     return (
-      <a href={href} className={linkClassName}>
+      <a href={href} target={target} rel={rel} className={linkClassName}>
         {children}
       </a>
     )
@@ -90,6 +95,7 @@ function productRichNodeProcessor(linkClassName: string) {
       .use(rehypeParse, { fragment: true })
       .use(rehypeSanitize, richTextSchema)
       .use(dropUnsafeHrefs)
+      .use(newTabLinks)
       .use(rehypeReact, { Fragment, jsx, jsxs, components: { a: richTextAnchor(linkClassName) } })
   }
   return productRichNodeProcessors[linkClassName]

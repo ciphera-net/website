@@ -20,7 +20,7 @@
  * unsanitised HTML) and repairs whatever does not match the shape it expects.
  *
  * 🔴 TEXT-SECTION BODY HTML IS SANITISED HERE, TO A SIX-TAG ALLOWLIST
- * (p/a[href]/strong/em/code/br), AND THE SANITISED STRING IS WHAT SHIPS IN THE
+ * (p/a[href target rel]/strong/em/code/br), AND THE SANITISED STRING IS WHAT SHIPS IN THE
  * DOCUMENT — unlike the blog body (sanitised at RENDER time only, in
  * `components/overhaul/blog/PostBody.tsx`, because its allowlist is large and structural:
  * tables, custom blocks, images). A six-tag allowlist is small enough to resolve once,
@@ -37,6 +37,7 @@ import rehypeStringify from 'rehype-stringify'
 import { visit } from 'unist-util-visit'
 import type { Root, Element } from 'hast'
 import type { ContentRepairEntry } from '../content-repair-types'
+import { EDITOR_LINK_ATTRIBUTES } from '../blog-html'
 
 export const PAGE_REPAIR_TYPE = 'page'
 
@@ -106,14 +107,20 @@ export function isSafeHref(href: string): boolean {
  * HAS a scheme, so it would wave a protocol-relative `//evil.example` straight
  * through (no scheme to check). This closes that one gap; everything else about the
  * allowlist is rehype-sanitize's job.
+ *
+ * An anchor whose href goes is not a link, so it loses its `target` too; and a `rel` whose every token the schema
+ * dropped (an empty list) goes, or it would be stored as `rel=""`.
  */
 export function dropUnsafeHrefs() {
   return (tree: Root) => {
     visit(tree, 'element', (node: Element) => {
       if (node.tagName !== 'a') return
+      const rel = node.properties?.rel
+      if (Array.isArray(rel) && rel.length === 0) delete node.properties.rel
       const href = node.properties?.href
       if (typeof href !== 'string' || !isSafeHref(href)) {
         delete node.properties.href
+        delete node.properties.target
       }
     })
   }
@@ -133,11 +140,16 @@ export function dropUnsafeHrefs() {
  * down to a bare `<br>` and the break would always show, never hiding on mobile as
  * the coded pages do. A `class` value on `br` cannot carry script or a clobber
  * vector, so this is a plain capability widening, not a narrowed guarantee.
+ *
+ * 🔑 `a` ALSO KEEPS `target` AND `rel` (24-10-2026), as the post body does: the editor's "Open in new tab" and
+ * nofollow settings, as value allowlists (`EDITOR_LINK_ATTRIBUTES`, lib/blog-html.ts). Until then page text dropped
+ * them. The stored string keeps exactly what the editor set; `CmsRichText` adds `noopener noreferrer` and the hidden
+ * new-tab cue when it renders.
  */
 export const richTextSchema: SanitizeSchema = {
   ...defaultSchema,
   tagNames: [...RICH_TEXT_TAGS],
-  attributes: { a: ['href'], br: ['className'] },
+  attributes: { a: ['href', ...EDITOR_LINK_ATTRIBUTES], br: ['className'] },
   protocols: { ...defaultSchema.protocols, href: ['http', 'https'] },
 }
 
