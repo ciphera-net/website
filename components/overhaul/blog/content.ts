@@ -3,6 +3,9 @@
  * and are W7's job; nothing here restates them. All DRAFTS for W7, humanized.
  */
 
+// The cookie post moves to do-you-need-consent-for-analytics (24-10-2026): a cookie-notice filter list blocks every
+// address holding "-cookie-banner-" (Public/docs/audits/24-10-2026-blog-card-blocked-by-cookie-notice-lists.md). Both
+// slugs are listed while the CMS rename goes live, so the post never leaves its lists; the old one goes next.
 export const INDEX = {
   title: 'Blog',
   // The homepage's "From the blog" lead, ruled with the homepage copy (D24), so the two read the same.
@@ -17,7 +20,7 @@ export const INDEX = {
     },
     {
       title: 'Cookies and the law',
-      slugs: ['do-you-need-a-cookie-banner-for-analytics', 'is-your-analytics-gdpr-compliant', 'eu-us-data-privacy-framework-executive-order'],
+      slugs: ['do-you-need-a-cookie-banner-for-analytics', 'do-you-need-consent-for-analytics', 'is-your-analytics-gdpr-compliant', 'eu-us-data-privacy-framework-executive-order'],
     },
     {
       title: 'How we build',
@@ -42,7 +45,7 @@ export const CATEGORIES = [
     key: 'privacy-law',
     title: 'Privacy law',
     lead: 'Cookies, consent and data transfers under EU law.',
-    slugs: ['do-you-need-a-cookie-banner-for-analytics', 'is-your-analytics-gdpr-compliant', 'eu-us-data-privacy-framework-executive-order', 'eu-ai-act-compliance-guide-2026'],
+    slugs: ['do-you-need-a-cookie-banner-for-analytics', 'do-you-need-consent-for-analytics', 'is-your-analytics-gdpr-compliant', 'eu-us-data-privacy-framework-executive-order', 'eu-ai-act-compliance-guide-2026'],
   },
   {
     key: 'privacy-tools',
@@ -92,8 +95,8 @@ export const POST = {
   },
   // Option B: three related posts picked by hand per post. A post without a pick shows none.
   related: {
-    'how-to-migrate-off-google-analytics': ['cookieless-analytics', 'do-you-need-a-cookie-banner-for-analytics', 'pulse-vs-google-analytics-plausible-fathom'],
-    'cookieless-analytics': ['do-you-need-a-cookie-banner-for-analytics', 'how-to-migrate-off-google-analytics', 'is-your-analytics-gdpr-compliant'],
+    'how-to-migrate-off-google-analytics': ['cookieless-analytics', 'do-you-need-a-cookie-banner-for-analytics', 'do-you-need-consent-for-analytics', 'pulse-vs-google-analytics-plausible-fathom'],
+    'cookieless-analytics': ['do-you-need-a-cookie-banner-for-analytics', 'do-you-need-consent-for-analytics', 'how-to-migrate-off-google-analytics', 'is-your-analytics-gdpr-compliant'],
   } as Record<string, readonly string[]>,
 } as const
 
