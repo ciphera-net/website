@@ -160,12 +160,13 @@ test('the post body and the build-time image check run ONE chain, in order (WEB-
   const html = code('lib/blog-html.ts')
   const preset = html.match(/export const sanitizeChain: Preset = \{\s*plugins: \[([\s\S]*?)\],?\s*\}/)
   assert.ok(preset, 'lib/blog-html.ts must write the chain once, as the sanitizeChain preset')
-  // Exactly these five steps, in this order: parse, the blocks (before the sanitiser strips the classes they read),
-  // the sanitiser, then the two validators. A validator before the sanitiser would check markup it has not finished.
+  // Exactly these six steps, in this order: parse, the blocks (before the sanitiser strips the classes they read),
+  // the sanitiser, the new-tab links (after it: their hidden cue carries a class the sanitiser would strip), then the
+  // two validators. A validator before the sanitiser would check markup it has not finished.
   assert.equal(
     preset[1].replace(/\s+/g, '').replace(/,$/, ''),
-    '[rehypeParse,{fragment:true}],cipheraBlocks,[rehypeSanitize,schema],cdnImagesOnly,toolLogosValidated',
-    'the chain must be parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated'
+    '[rehypeParse,{fragment:true}],cipheraBlocks,[rehypeSanitize,schema],newTabLinks,cdnImagesOnly,toolLogosValidated',
+    'the chain must be parse → cipheraBlocks → sanitize → newTabLinks → cdnImagesOnly → toolLogosValidated'
   )
   assert.match(html, /^const sanitizePipeline = unified\(\)\.use\(sanitizeChain\)$/m, 'renderableImageSources must run the preset itself')
 

@@ -1,6 +1,6 @@
 /**
  * A post's body, as the post template (BlogPost.tsx) renders it (first built for round 7, 18-10-2026).
- * It starts with the shared parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated chain
+ * It starts with the shared parse → cipheraBlocks → sanitize → newTabLinks → cdnImagesOnly → toolLogosValidated chain
  * (`sanitizeChain`, lib/blog-html.ts), the same one the build's image check runs, and builds elements from the tree,
  * never dangerouslySetInnerHTML. On top: two tree steps after the sanitizer and two quieter components.
  *
@@ -17,7 +17,7 @@ import { unified } from 'unified'
 import rehypeReact from 'rehype-react'
 import { toString as hastToString } from 'hast-util-to-string'
 import { visit } from 'unist-util-visit'
-import type { Element, Root } from 'hast'
+import type { Element, ElementContent, Root } from 'hast'
 import type { VFile } from 'vfile'
 import { ToolLogo } from '@/components/blog/tool-logo'
 import { sanitizeChain } from '@/lib/blog-html'
@@ -37,13 +37,25 @@ function slugify(text: string): string {
   return s.slice(0, 64).replace(/-[^-]*$/, '')
 }
 
+/**
+ * A heading's words as a reader sees them. Text for screen readers only is left out: the " (opens in a new tab)" cue
+ * lib/blog-html.ts's newTabLinks adds inside a link would otherwise become part of the table of contents and the id.
+ */
+function visibleText(node: ElementContent): string {
+  if (node.type === 'text') return node.value
+  if (node.type !== 'element') return ''
+  const cls = node.properties?.className
+  if (Array.isArray(cls) && cls.includes('sr-only')) return ''
+  return node.children.map(visibleText).join('')
+}
+
 function headingIds() {
   return (tree: Root, file: VFile) => {
     const used = new Set<string>(['questions'])
     const list: Heading[] = []
     visit(tree, 'element', (node: Element) => {
       if (node.tagName !== 'h2') return
-      const text = hastToString(node).replace(/\s+/g, ' ').trim()
+      const text = visibleText(node).replace(/\s+/g, ' ').trim()
       // An empty heading (one post's CMS body ends with <h2></h2>) has nothing to list: it would be a blank, unnamed link.
       if (!text) return
       const base = slugify(text) || 'section'
