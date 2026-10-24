@@ -133,9 +133,7 @@ test('a post’s image is its card on the blog index, on the homepage and in its
   const meta = ['slug', 'title', 'description', 'category', 'date', 'dateModified', 'readTime']
   assert.deepEqual(fields('BlogPostMeta'), meta)
   assert.deepEqual(fields('WpBlogPost'), [...meta, 'html', 'faqs', 'cta', 'wordCount'])
-  // The generator's summary, and the post lib/blog.ts hands the template.
-  const summary = code('scripts', 'generate-blog-posts.ts').match(/export interface BlogPostSummary \{([\s\S]*?)\n\}/)
-  assert.deepEqual([...summary[1].matchAll(/^\s*(\w+)\??:/gm)].map((f) => f[1]), meta)
+  // The post lib/blog.ts hands the template.
   const post = code('lib', 'blog.ts').match(/export interface BlogPost extends BlogPostMeta \{([\s\S]*?)\n\}/)
   assert.deepEqual([...post[1].matchAll(/^\s*(\w+)\??:/gm)].map((f) => f[1]), ['html', 'faqs', 'cta', 'wordCount'])
 })

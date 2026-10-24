@@ -39,16 +39,16 @@ function code(p) {
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
 }
 
-test('the four generator pipelines keep their BlogPostSummary contract', () => {
-  // feed.xml, the blog index, the sitemap and llms.txt all depend on this shape. A
-  // field dropped here is a field missing from the RSS feed, silently.
+test('the generator writes every post whole to the one seed lib/blog reads', () => {
+  // The index, the feed, the sitemap and llms.txt read lib/blog (since WEB-26 round 2), which reads the posts this
+  // generator writes to lib/blog-wp.gen.ts; their list fields are WpBlogPost's, whose shape og-cards.test.mjs pins. The
+  // summary list lib/blog-posts.gen.ts also carried was read by nothing and was dropped 24-10-2026: it must not come
+  // back as a second, unread copy of the posts.
   const gen = code('scripts/generate-blog-posts.ts')
-  for (const key of ['slug', 'title', 'description', 'category', 'date', 'dateModified', 'readTime']) {
-    assert.ok(
-      new RegExp(`\\b${key}\\b`).test(gen),
-      `generate-blog-posts.ts no longer emits "${key}" — feed.xml / the blog index / the sitemap read it`
-    )
-  }
+  assert.match(gen, /export const wpPosts: WpBlogPost\[\] = \$\{JSON\.stringify\(wp, null, 2\)\}/, 'the generator must write every post to lib/blog-wp.gen.ts')
+  assert.match(gen, /export const BLOG_WATERMARK = /, '/sys/seo-state reads the blog watermark from lib/blog-posts.gen.ts')
+  assert.doesNotMatch(gen, /BlogPostSummary|export const blogPosts/, 'the unread summary list is back')
+  assert.match(code('lib/blog.ts'), /import \{ wpPosts \} from '\.\/blog-wp\.gen'/, 'lib/blog.ts must read the seed the generator writes')
 })
 
 test('WordPress is the only source of a post: nothing reads the blog from the repository', () => {
