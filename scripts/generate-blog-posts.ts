@@ -104,7 +104,7 @@ async function main() {
 
     // 🔴 EVERY IMAGE AND TOOL-LOGO MARK THE PAGE WILL ACTUALLY RENDER MUST BE ON THE CDN
     // (design §29), AND REACHABLE. `renderableImageSources` (lib/blog-html.ts) runs the
-    // EXACT SAME parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated
+    // EXACT SAME parse → cipheraBlocks → sanitize → newTabLinks → cdnImagesOnly → toolLogosValidated
     // chain the page renders with, so this checks exactly the set of `<img>` sources AND
     // tool-logo marks that will reach a reader's browser.
     // 🔴 P1-a REPAIR: an unreachable image or tool-logo mark no longer fails the build —

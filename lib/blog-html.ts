@@ -14,7 +14,7 @@ import type { Root, Element } from 'hast'
 
 /**
  * The React-free half of the WordPress body pipeline: parse → cipheraBlocks →
- * rehype-sanitize → cdnImagesOnly → toolLogosValidated.
+ * rehype-sanitize → newTabLinks → cdnImagesOnly → toolLogosValidated.
  *
  * The chain is written once, as the `sanitizeChain` preset below.
  * components/overhaul/blog/PostBody.tsx starts its processor with it and adds two tree
@@ -129,7 +129,12 @@ export const schema: SanitizeSchema = {
     // what stops the CMS making styling decisions; the site styles by element inside
     // `.prose`, and the two custom devices travel on data-* attributes instead.
     '*': ['data-ciphera-block', 'data-variant', 'data-src', 'data-q', 'data-a'],
-    a: ['href', 'title'],
+    // 🔑 A LINK KEEPS WHAT THE EDITOR SET ON IT (24-10-2026). WordPress's "Open in new tab" writes
+    // target="_blank" rel="noreferrer noopener", and its nofollow setting adds "nofollow" to rel. Until then
+    // this list held only href and title, so every body link opened in the same tab and lost its nofollow.
+    // Both are VALUE allowlists: a target other than _blank and a rel token other than these five are
+    // dropped (rel is a list, checked token by token). `newTabLinks` below finishes every new-tab link.
+    a: ['href', 'title', ['target', '_blank'], ['rel', 'nofollow', 'noopener', 'noreferrer', 'sponsored', 'ugc']],
     img: ['src', 'alt', 'width', 'height'],
     th: ['colSpan', 'rowSpan', 'scope'],
     td: ['colSpan', 'rowSpan'],
@@ -195,6 +200,44 @@ export function cdnImagesOnly() {
   }
 }
 
+/** The site's cue for a link that opens a new tab: the footer and the Trust components say the same, hidden. */
+export const NEW_TAB_CUE = ' (opens in a new tab)'
+
+/**
+ * Runs AFTER rehype-sanitize. Every link the editor set to open in a new tab (target="_blank", the only target the
+ * schema keeps) gets the site's rule for such links: `noopener` and `noreferrer` in its rel (the opened page cannot
+ * reach this one through window.opener, and ciphera.net is not sent as the Referer), kept beside any nofollow,
+ * sponsored or ugc the editor set; and the hidden " (opens in a new tab)" cue as its last child, so a screen reader
+ * says so, as the footer's and the Trust components' new-tab links do (`select-none` keeps it out of a copied
+ * sentence: in prose, unlike a footer link, readers copy the text around it). The cue is added here, after the sanitizer, because
+ * the sanitizer strips every class. An anchor with no href (an unsafe one the sanitizer emptied) is not a link: it
+ * loses its target instead and gets no cue. ⚠️ The DEV sync (Infra devto-sync) leaves sr-only text out of the
+ * Markdown; without that, DEV would show the cue in the link text.
+ */
+export function newTabLinks() {
+  return (tree: Root) => {
+    visit(tree, 'element', (node: Element) => {
+      if (node.tagName !== 'a') return
+      const props = node.properties ?? {}
+      // A rel whose every token the schema dropped is left as an empty list, which would render as rel="".
+      if (Array.isArray(props.rel) && props.rel.length === 0) delete props.rel
+      if (props.target !== '_blank') return
+      if (typeof props.href !== 'string') {
+        delete props.target
+        return
+      }
+      const rel = Array.isArray(props.rel) ? props.rel.map(String) : []
+      node.properties = { ...props, rel: [...new Set([...rel, 'noopener', 'noreferrer'])] }
+      node.children.push({
+        type: 'element',
+        tagName: 'span',
+        properties: { className: ['sr-only', 'select-none'] },
+        children: [{ type: 'text', value: NEW_TAB_CUE }],
+      })
+    })
+  }
+}
+
 /**
  * The tool-logo block's `data-src` shape, measured against production (ciphera.net's 16
  * live posts, the only corpus that uses the block): 42 tool-logo blocks, every one of
@@ -254,7 +297,7 @@ const rawParsePipeline = unified()
   .use(cipheraBlocks)
 
 /**
- * 🔑 THE CHAIN, WRITTEN ONCE: parse → cipheraBlocks → sanitize → cdnImagesOnly →
+ * 🔑 THE CHAIN, WRITTEN ONCE: parse → cipheraBlocks → sanitize → newTabLinks → cdnImagesOnly →
  * toolLogosValidated. The post body renderer (components/overhaul/blog/PostBody.tsx) and
  * `renderableImageSources` below both start from this preset, so the images the build
  * HEAD-checks and the images a reader's browser requests come from one list of steps by
@@ -265,7 +308,7 @@ const rawParsePipeline = unified()
  * check would validate markup the sanitizer has not finished with.
  */
 export const sanitizeChain: Preset = {
-  plugins: [[rehypeParse, { fragment: true }], cipheraBlocks, [rehypeSanitize, schema], cdnImagesOnly, toolLogosValidated],
+  plugins: [[rehypeParse, { fragment: true }], cipheraBlocks, [rehypeSanitize, schema], newTabLinks, cdnImagesOnly, toolLogosValidated],
 }
 
 const sanitizePipeline = unified().use(sanitizeChain)
@@ -274,7 +317,7 @@ const sanitizePipeline = unified().use(sanitizeChain)
  * Every image source that will actually reach a reader's browser from this post body,
  * deduped, in document order — both a surviving `<img src>` and a surviving tool-logo
  * mark's resolved CDN URL. It is the result of the EXACT SAME
- * parse → cipheraBlocks → sanitize → cdnImagesOnly → toolLogosValidated chain
+ * parse → cipheraBlocks → sanitize → newTabLinks → cdnImagesOnly → toolLogosValidated chain
  * (`sanitizeChain`) components/overhaul/blog/PostBody.tsx renders with, minus only its
  * last three steps, none of which has any bearing on which images survive: `emptyCells`
  * removes only a heading with no text and no element child, `headingIds` only writes ids,
