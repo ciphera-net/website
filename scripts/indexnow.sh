@@ -35,7 +35,7 @@ else
     "https://ciphera.net/blog/open-source-privacy-tools-2026"
     "https://ciphera.net/blog/how-to-migrate-off-google-analytics"
     "https://ciphera.net/blog/is-your-analytics-gdpr-compliant"
-    "https://ciphera.net/blog/do-you-need-a-cookie-banner-for-analytics"
+    "https://ciphera.net/blog/do-you-need-consent-for-analytics"
     "https://ciphera.net/blog/pulse-vs-google-analytics-plausible-fathom"
     "https://ciphera.net/blog/eu-ai-act-compliance-guide-2026"
     "https://ciphera.net/blog/eu-us-data-privacy-framework-executive-order"
