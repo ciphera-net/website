@@ -28,6 +28,16 @@ const nextConfig: NextConfig = {
   // * Performance optimizations
   compress: true,
   poweredByHeader: false,
+  // * 🔴 Metadata blocks for every visitor (owner ruling 24-10-2026). Next streams `generateMetadata` after `</head>`
+  // * when it resolves late, except for the user agents on its HTML-limited bot list, and the edge then keeps ONE copy of
+  // * a page for everyone (zone 5440429, `vary: accept-encoding` only): a link-preview bot (Twitterbot, Slackbot,
+  // * LinkedInBot…) was served a browser's copy with the title and og:image ~100 KB down, past `</head>` (23-10-2026).
+  // * Matching every user agent makes the HTML the same for all of them. Measured on /contact before the change: the
+  // * first byte is the same for a bot and a browser (67 ms warm, ~120 ms after the 15 s index cache expires).
+  // * ⚠️ `.+`: Next tests only a non-empty user agent, so it matches what "dot star" would. This file must not contain a
+  // * star followed by a slash anywhere, comments included: the glob in outputFileTracingIncludes opens a false block
+  // * comment for the tests' comment-stripping regex, and that pair would close it, hiding the lines between.
+  htmlLimitedBots: /.+/,
   // * Redirects come from TWO places since 10-09-2026 (design §6.4, §34):
   // *   Tier 1 — structural, in this file, permanent, not editable by the agency.
   // *   Tier 2 — retired content, from WordPress, via the REDIRECTS import above.

@@ -123,11 +123,20 @@ async function resolvePost(slug: string): Promise<BlogPost | null> {
   try {
     const index = await getContentIndex(SITE_KEY)
     const kind = index?.kinds?.[KIND]
-    const docPath = kind?.schema === KNOWN_SCHEMA ? kind.items[slug] : undefined
-    if (!docPath) return getBlogPostSeed(slug)
+    // No index yet, no blog kind in it, or a schema this build predates: the CDN cannot be trusted for the blog, so
+    // the seed answers, as for an unreachable CDN below.
+    if (!index || !kind || kind.schema !== KNOWN_SCHEMA) return getBlogPostSeed(slug)
+    // 🔴 A READABLE INDEX THAT DOES NOT LIST THE POST: WordPress no longer publishes it, so the page goes at once, as it
+    // already has from the index, the feed and the sitemap (owner ruling 24-10-2026). The seed would keep it up until
+    // the next build. A post the publisher SKIPPED is still listed: it keeps its last good document
+    // (`mergeLastGood`, lib/cms/publisher-core.mjs).
+    const docPath = Object.hasOwn(kind.items, slug) ? kind.items[slug] : undefined
+    if (!docPath) return null
     try {
       return postFromWp(await getContentDocument<WpBlogPost>(docPath))
     } catch {
+      // This one listed document failed (a timeout, a stale entry, a bad body): the post is still published, so the
+      // seed's copy answers if it has one, as resolvePosts() does item by item.
       return getBlogPostSeed(slug)
     }
   } catch {

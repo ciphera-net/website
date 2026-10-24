@@ -5,7 +5,7 @@
  *
  * 🔑 ONE TRANSFORM, TWO CALLERS, SAME SHAPE OF REASON AS lib/cms/glossary-build.ts.
  * `scripts/generate-blog-posts.ts` calls this at build time to produce the seed
- * (`lib/blog-posts.gen.ts` / `lib/blog-wp.gen.ts`); `scripts/cms-publisher.ts` calls it
+ * (`lib/blog-wp.gen.ts`, its watermark in `lib/blog-posts.gen.ts`); `scripts/cms-publisher.ts` calls it
  * at publish time to produce the CDN documents. Both get the same skip/repair/dedupe
  * decisions, because there is only one function making them.
  *

@@ -109,7 +109,7 @@ test('lib/cms/blog-build.ts skips a post with no safe repair and records it, nev
   // shrink guard, because it compares against the LIVE site's own report, not a
   // hardcoded constant.
   assert.match(gen, /const collapse =\s*\n\s*liveCount !== null && shortfall > Math\.max\(2, Math\.floor\(liveCount \* 0\.25\)\)/)
-  assert.match(gen, /fail\(\s*\n\s*`this build would publish \$\{summaries\.length\} posts/)
+  assert.match(gen, /fail\(\s*\n\s*`this build would publish \$\{wp\.length\} posts/)
 })
 
 test('dropUnreachableMedia removes exactly the unreachable <img> or tool-logo mark, nothing else', () => {
