@@ -11,7 +11,7 @@ import { cdnUrl } from '@/lib/cdn'
 
 
 /** One revision date for the visible "Last updated" line, the JSON-LD dateModified and (when built) the sitemap. */
-export const UPDATED = { iso: '2026-10-17', label: '17 October 2026' }
+export const UPDATED = { iso: '2026-10-27', label: '27 October 2026' }
 
 // The page's title and meta description (/trust has no CMS SEO row: its metadata lives only in code). Draft.
 export const META = {
@@ -33,8 +33,8 @@ export const DATA = {
   lead: 'Each product keeps what it needs to work. The privacy policy lists every item and how long we keep it.',
   // Pulse, re-read against the live privacy policy §4.3 on 17-10 (round 5b): referrers AND UTM campaigns; location is
   // country, region AND city unless the site owner narrows it; device type, browser and OS (the user agent itself is
-  // not stored); the monthly visitor hash (since 26-08-2026, §5g item 3); a coarse bot-detection code, per site,
-  // deleted after 14 days. "No cookies" holds on the tracker (T-B05); "no browser storage" does not, so it is never
+  // not stored); a one-day identifier per visitor (since 27-10-2026; the monthly hash kept from 26-08 to 26-10 was deleted); a coarse bot-detection code, per site,
+  // deleted after 14 days. "No cookies" holds on the tracker (T-B05); "no browser storage" holds from tracker 1.7.0 (27-10) except the opt-out flag, and is still never
   // claimed. Never: IP addresses (discarded after the hash and the location lookup), anything typed (the interaction
   // script records no keystrokes or field values), cross-site linking (T-B07). "Names or email addresses" was DROPPED
   // from never: Pulse collects none by default, but a site owner can put them in a custom event, so "never" was untrue.
@@ -46,7 +46,7 @@ export const DATA = {
         'Which pages were viewed, and the site or campaign a visitor came from',
         'Country, region and city, unless the site owner narrows it',
         'Device type, browser and operating system',
-        'A visitor hash that changes every month, so a reader who comes back that month counts once',
+        'A one-day identifier for each visitor, so a returning reader counts once for each day they visit',
         'A short code for spotting bots, deleted after 14 days',
       ],
       never: ['Cookies', 'IP addresses', 'Anything you type', 'Anything that follows a person to other sites'],
@@ -84,7 +84,7 @@ export const DATA = {
       { label: 'Device', value: 'Desktop' },
       { label: 'Browser', value: 'Firefox', mark: 'firefox' },
       { label: 'Operating system', value: 'macOS' },
-      { label: 'Visitor hash', value: '3f9a1c…e27b', code: true, note: 'Changes every month' },
+      { label: 'One-day identifier', value: '3f9a1c…e27b', code: true, note: 'Changes every day' },
     ],
     absentTitle: 'Not in the record',
     absent: ['IP address', 'Cookie', 'Browser details (the user agent)', 'Anything you type'],
@@ -104,7 +104,7 @@ export const DATA = {
     // Each pin sits on the EDGE of its panel (never on the text it names) and its label rides above it, so labels
     // cannot run into a neighbouring pin (the first version's referrers label ran into the countries pin).
     pins: [
-      { x: 9.4, y: 14.1, label: 'Unique visitors, counted with the monthly hash' },
+      { x: 9.4, y: 14.1, label: 'Unique visitors, counted one day at a time' },
       { x: 10.6, y: 69.0, label: 'Referrers and campaigns' },
       { x: 57.2, y: 69.0, label: 'Country, region and city' },
     ],
@@ -270,11 +270,11 @@ export const OPEN_SOURCE = {
     line: 'The tracker your visitors load is byte for byte the file in our public repository.',
     served: 'js.ciphera.net/script.js',
     repo: 'github.com/ciphera-net/pulse/public/script.js',
-    // Re-measured 17-10 18:17 UTC: both URLs hash to this value (7,257 bytes served). An option may show the two
+    // Re-measured 27-10 20:39 UTC: both URLs hash to this value (7,081 bytes served). An option may show the two
     // commands below as a runnable check: they are literal shell, so mono is right for them.
     servedUrl: 'https://js.ciphera.net/script.js',
     rawUrl: 'https://raw.githubusercontent.com/ciphera-net/pulse/main/public/script.js',
-    sha256: '29a056db310484f7a724acd47a552f7429804c091079248205ced236089bb5f6',
+    sha256: '09104a61d7793d7eff4b3b9d6677647b97371a9ce36dd183f68b9a3435450840',
   },
   // §5g item 17, T-C01, T-C08: a self-audit (04-06-2026: 13 findings, 0 critical, 0 high) and a threat model; no
   // independent audit (not "planned": no engagement exists); no SOC 2 or ISO 27001.

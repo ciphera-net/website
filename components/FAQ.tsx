@@ -70,7 +70,7 @@ const GROUPS: FAQGroup[] = [
       },
       {
         q: 'Can Pulse identify individual visitors?',
-        a: 'No. Session identifiers rotate every day and are computed from a one-way hash — the same visitor on Monday and Tuesday produces two unlinked sessions. Raw IP addresses are discarded immediately after that computation, and site owners only ever see aggregates. A “show me this visitor’s history” view doesn’t exist because the data model can’t construct it.',
+        a: 'No. Session identifiers rotate every day and are computed from a one-way hash — the same visitor on Monday and Tuesday produces two unlinked sessions. Raw IP addresses are discarded immediately after that computation, and site owners see aggregates by default. A site owner can switch on a Visitors page, where each profile covers one IP address and browser on one day.',
       },
       {
         q: 'What makes Relay different from other email providers?',

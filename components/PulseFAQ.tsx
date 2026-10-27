@@ -73,7 +73,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
     {
       question: "Can Pulse identify individual users?",
-      answer: "No. Pulse is architecturally incapable of identifying individual users. Each pageview is treated as an independent, anonymous event. There are no user IDs, session IDs, or any form of persistent tracking.",
+      answer: "No. Pulse is architecturally incapable of identifying individual users. Each visitor is recognised for one day at most. There are no user IDs or any form of persistent tracking.",
     },
   ],
   technical: [
