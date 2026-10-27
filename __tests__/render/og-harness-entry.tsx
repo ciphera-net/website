@@ -8,7 +8,7 @@ import { DOT_BASELINE, DOT_LINE, DOT_LINE_HEIGHT, DOT_PITCH, DOT_SIZE, DOT_WIDTH
 import { LEAD, LEAD_WIDTH, TITLE, TITLE_ROOM, fitTitle, wrapLead, wrapTitle } from '../../lib/og/layout'
 import { OG_HEIGHT, TITLE_BOTTOM, TITLE_TOP } from '../../lib/og/spec'
 import { SATORI_BASELINE, renderCard, renderCover, titleDots } from '../../lib/og/render'
-import { cardHash, cardPath, coverHash, coverPath, hasSystemCard, parseCardFile } from '../../lib/og/url'
+import { addressKey, cardHash, cardPath, coverHash, coverPath, hasSystemCard, parseCardFile } from '../../lib/og/url'
 import { __resetContentCacheForTests, getContentIndex } from '../../lib/cms/content-client'
 import { getPulsePostTitle } from '../../lib/cms/pulse-posts'
 
@@ -416,6 +416,26 @@ async function main() {
         parseCardFile('pulse--google-analytics-alternative--5afc158210f8.png'),
         parseCardFile('pulse-posts--google-analytics-alternative--5afc158210f8.png'),
       ],
+      hex: {
+        keys: { about: addressKey('about'), learn: addressKey('pulse~core-web-vitals') },
+        pulseCard: `pulse-post--${addressKey('google-analytics-alternative')}--5afc158210f8.png`,
+        parsed: [
+          parseCardFile(`learn--${addressKey('pulse~core-web-vitals')}--0123456789ab.png`),
+          parseCardFile(`pulse-post--${addressKey('google-analytics-alternative')}--5afc158210f8.png`),
+          parseCardFile(`pulse-post--${addressKey('google-analytics-alternative')}--bf9874e6e44e--cover.png`),
+        ],
+        rejected: [
+          parseCardFile('page--_61626f757--0123456789ab.png'),
+          parseCardFile('page--_61626F7574--0123456789ab.png'),
+          parseCardFile('page--_2e2e--0123456789ab.png'),
+          parseCardFile('page--_41626f7574--0123456789ab.png'),
+          parseCardFile('page--_--0123456789ab.png'),
+          parseCardFile(`page--_${'61'.repeat(257)}--0123456789ab.png`),
+          parseCardFile('page--_c3a9--0123456789ab.png'),
+        ],
+        longest: parseCardFile(`page--_${'61'.repeat(256)}--0123456789ab.png`)?.key.length ?? null,
+        words: ['cookie-consent', 'consent-banner', 'google-analytics', 'ad-banner', 'tracking-pixel'].map((k) => cardPath('post', k, card)),
+      },
     },
     loader,
     long,

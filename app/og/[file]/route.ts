@@ -13,6 +13,7 @@ import { cardHash, cardPath, coverHash, coverPath, parseCardFile } from '@/lib/o
  *   unknown key or kind  404 (the words come from the page's own loaders, never from the URL)
  *   words unreadable     503, never cached (a Pulse post's words are read from the content CDN)
  *   stale hash           308 to the current card (an old share keeps working)
+ *   slug-form address    308 to the current card's hex address (the form before 27-10-2026; lib/og/url.ts says why)
  *   current              200 image/png, immutable
  *
  * A `--cover` address is the same card at DEV's cover shape (lib/og/spec.ts), with its own hash and the same rules.
@@ -37,7 +38,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ file: s
   }
   if (!card) return new Response('Not found', NOT_FOUND)
   const cover = parsed.variant === 'cover'
-  if ((cover ? coverHash(card) : cardHash(card)) !== parsed.hash) {
+  if (parsed.legacy || (cover ? coverHash(card) : cardHash(card)) !== parsed.hash) {
     const current = cover ? coverPath(parsed.kind, parsed.key, card) : cardPath(parsed.kind, parsed.key, card)
     return new Response(null, {
       status: 308,

@@ -89,12 +89,14 @@ test('a title with a character the font lacks still gets a card, set line by lin
 })
 
 test('card addresses parse back, and nothing else parses', () => {
-  assert.match(r.url.page, /^\/og\/page--about--[0-9a-f]{12}\.png$/)
-  assert.match(r.url.learn, /^\/og\/learn--pulse~core-web-vitals--[0-9a-f]{12}\.png$/)
+  assert.match(r.url.page, /^\/og\/page--_61626f7574--[0-9a-f]{12}\.png$/)
+  assert.match(r.url.learn, /^\/og\/learn--_70756c73657e636f72652d7765622d766974616c73--[0-9a-f]{12}\.png$/)
   const [page, learn, upper, dots, jpg, kind] = r.url.parsed
   assert.equal(page.kind, 'page')
   assert.equal(page.key, 'about')
-  assert.deepEqual(learn, { kind: 'learn', key: 'pulse~core-web-vitals', hash: '0123456789ab', variant: 'card' })
+  assert.equal(page.legacy, false)
+  // An address from before keys were hex still reads back, flagged, so the route can send it to the hex one.
+  assert.deepEqual(learn, { kind: 'learn', key: 'pulse~core-web-vitals', hash: '0123456789ab', variant: 'card', legacy: true })
   assert.equal(upper, null)
   assert.equal(dots, null)
   assert.equal(jpg, null)
@@ -114,9 +116,12 @@ test('a cover is the card, pixel for pixel, on the card’s ground at DEV’s 10
 })
 
 test('cover addresses parse back with their own hash, and nothing else parses', () => {
-  assert.match(r.url.cover, /^\/og\/post--privacy-tools--[0-9a-f]{12}--cover\.png$/)
+  assert.match(r.url.cover, /^\/og\/post--_707269766163792d746f6f6c73--[0-9a-f]{12}--cover\.png$/)
   const [cover, jpg, covers] = r.url.coverParsed
-  assert.deepEqual({ kind: cover.kind, key: cover.key, variant: cover.variant }, { kind: 'post', key: 'privacy-tools', variant: 'cover' })
+  assert.deepEqual(
+    { kind: cover.kind, key: cover.key, variant: cover.variant, legacy: cover.legacy },
+    { kind: 'post', key: 'privacy-tools', variant: 'cover', legacy: false },
+  )
   assert.equal(jpg, null)
   assert.equal(covers, null)
   assert.ok(r.url.coverHashIsItsOwn, 'a cover must not share its card’s hash, or a change to the cover alone would keep its address')
@@ -132,7 +137,8 @@ test('a Pulse card is the same card with Pulse’s lockup, and Ciphera’s cards
   const { left, top, right, bottom } = b.diffBox
   assert.ok(left >= 64 && top >= 52 && right < 300 && bottom < 97, `pixels outside the lockup differ: ${JSON.stringify(b.diffBox)}`)
   assert.deepEqual([b.pulseCover.width, b.pulseCover.height, b.pulseCover.middleDiff], [1500, 630, 0])
-  // ciphera.net/blog/privacy-tools's card and cover as served before brands existed: every Ciphera address stays put.
+  // ciphera.net/blog/privacy-tools's card and cover as served before brands existed: every Ciphera card keeps its
+  // hashes (the key's form in the address changed on 27-10-2026; the hashes did not).
   assert.deepEqual(b.hashes.cipheraLive, ['fc1e0c3f9679', '74400c4cce69'])
   assert.deepEqual(b.hashes.cipheraNamed, b.hashes.cipheraLive)
   // A brand is part of the address, so the same words for Pulse are another card. pulse.ciphera.net computes these
@@ -144,10 +150,29 @@ test('a Pulse card is the same card with Pulse’s lockup, and Ciphera’s cards
 
 test('pulse-post addresses parse, cards and covers, and nothing near them does', () => {
   const [card, cover, shortKind, longKind] = r.url.pulse
-  assert.deepEqual(card, { kind: 'pulse-post', key: 'google-analytics-alternative', hash: '5afc158210f8', variant: 'card' })
-  assert.deepEqual(cover, { kind: 'pulse-post', key: 'google-analytics-alternative', hash: 'bf9874e6e44e', variant: 'cover' })
+  assert.deepEqual(card, { kind: 'pulse-post', key: 'google-analytics-alternative', hash: '5afc158210f8', variant: 'card', legacy: true })
+  assert.deepEqual(cover, { kind: 'pulse-post', key: 'google-analytics-alternative', hash: 'bf9874e6e44e', variant: 'cover', legacy: true })
   assert.equal(shortKind, null)
   assert.equal(longKind, null)
+  const [hexLearn, hexCard, hexCover] = r.url.hex.parsed
+  assert.deepEqual(hexLearn, { kind: 'learn', key: 'pulse~core-web-vitals', hash: '0123456789ab', variant: 'card', legacy: false })
+  assert.deepEqual(hexCard, { kind: 'pulse-post', key: 'google-analytics-alternative', hash: '5afc158210f8', variant: 'card', legacy: false })
+  assert.deepEqual(hexCover, { kind: 'pulse-post', key: 'google-analytics-alternative', hash: 'bf9874e6e44e', variant: 'cover', legacy: false })
+})
+
+test('a key is written in hex, so an address never carries the words of its slug', () => {
+  // EasyList Cookie's `-cookie-consent-$~script` hid the Pulse post cookie-consent's card on its blog index (27-10-2026).
+  assert.equal(r.url.hex.keys.about, '_61626f7574')
+  assert.equal(r.url.hex.keys.learn, '_70756c73657e636f72652d7765622d766974616c73')
+  // pulse.ciphera.net builds this address itself (lib/blog-card.ts); its own test pins the same string.
+  assert.equal(r.url.hex.pulseCard, 'pulse-post--_676f6f676c652d616e616c79746963732d616c7465726e6174697665--5afc158210f8.png')
+  for (const address of r.url.hex.words) {
+    assert.match(address, /^\/og\/post--_[0-9a-f]+--[0-9a-f]{12}\.png$/)
+    assert.doesNotMatch(address.slice('/og/post--'.length), /cookie|consent|banner|google|analytics|track|pixel|ad-/)
+  }
+  // Odd length, upper-case hex, `..`, an upper-case key, no key, longer than a key may be, a non-ASCII key: none parse.
+  assert.deepEqual(r.url.hex.rejected, [null, null, null, null, null, null, null])
+  assert.equal(r.url.hex.longest, 256)
 })
 
 test('a Pulse post’s words come from Pulse’s published index: found, absent, or unreadable, never confused', () => {
