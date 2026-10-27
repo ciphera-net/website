@@ -270,7 +270,30 @@ export function newTabLinks() {
  * three holes by removing anything that does not match this shape, and
  * `renderableImageSources` reports every surviving one so the generator can HEAD it.
  */
-export const TOOL_LOGO_SRC = /^\/blog\/tools\/[a-z0-9][a-z0-9._-]*\.(?:png|svg|webp)(?:\?v=[0-9]+)?$/
+export const TOOL_LOGO_SRC = /^\/blog\/tools\/([a-z0-9][a-z0-9._-]*)\.(png|svg|webp)(\?v=[0-9]+)?$/
+
+/** `s` as lowercase hex of its UTF-8 bytes. */
+function hexOf(s: string): string {
+  return Array.from(new TextEncoder().encode(s), (b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+/**
+ * The address a tool-logo mark is drawn from: its file name written in hex,
+ * `/blog/tools/_<hex(name)>.<ext>`, keeping any `?v=` (27-10-2026). Blocker lists hide
+ * images by the words in their address (AdGuard Tracking Protection's
+ * `/google-analytics.` hid the Google Analytics logo), and a tool's name is exactly such a
+ * word. The CMS keeps the path the editor wrote; the address is derived here, and every
+ * reader of a mark goes through it: `ToolLogo`, `renderableImageSources`,
+ * `dropUnreachableMedia` and the generator's sanitizer ledger. The files are uploaded
+ * under both names. A path that does not match `TOOL_LOGO_SRC` comes back unchanged
+ * (`toolLogosValidated` removes it from the page).
+ */
+export function toolLogoAddress(dataSrc: string): string {
+  const m = TOOL_LOGO_SRC.exec(dataSrc)
+  if (!m) return dataSrc
+  const [, name, ext, version = ''] = m
+  return `/blog/tools/_${hexOf(name)}.${ext}${version}`
+}
 
 /**
  * Runs AFTER sanitize, same position as `cdnImagesOnly` and for the same reason:
@@ -371,7 +394,7 @@ export function renderableImageSources(html: string, opts: { toolLogoBase?: stri
       // match TOOL_LOGO_SRC (on span/div) or stripped the attributes entirely (on
       // any other tag), so every survivor here is a known-good path on span/div.
       const dataSrc = node.properties?.['data-src']
-      if (typeof dataSrc === 'string') add(`${toolLogoBase}${dataSrc}`)
+      if (typeof dataSrc === 'string') add(`${toolLogoBase}${toolLogoAddress(dataSrc)}`)
     }
   })
   return sources
@@ -426,11 +449,15 @@ export function rawMediaRefs(html: string): Array<{ kind: 'img' | 'tool-logo'; v
  * build-safety fix). A literal-match replace on the exact `src`/`data-src` value already
  * computed by `renderableImageSources` is unambiguous: both are build-generated absolute
  * CDN strings, not hand-typed prose that could coincidentally collide.
+ *
+ * `badToolLogoAddresses` holds ADDRESSES (`toolLogoAddress`, the CDN-relative path a
+ * browser requests), not what the editor typed: each mark's `data-src` is mapped before it
+ * is compared, so a mark is found by the same address `renderableImageSources` reported.
  */
 export function dropUnreachableMedia(
   html: string,
   badImgSrcs: ReadonlySet<string>,
-  badToolLogoDataSrcs: ReadonlySet<string>
+  badToolLogoAddresses: ReadonlySet<string>
 ): string {
   let out = html
   if (badImgSrcs.size > 0) {
@@ -440,12 +467,12 @@ export function dropUnreachableMedia(
       return src && badImgSrcs.has(src) ? '' : tag
     })
   }
-  if (badToolLogoDataSrcs.size > 0) {
+  if (badToolLogoAddresses.size > 0) {
     out = out.replace(/<(span|div)\b([^>]*)>([\s\S]*?)<\/\1>/gi, (full, _tag, attrs: string) => {
       if (!/data-ciphera-block=["']tool-logo["']/.test(attrs)) return full
       const m = /data-src=["']([^"']*)["']/.exec(attrs)
       const dataSrc = m?.[1]
-      return dataSrc && badToolLogoDataSrcs.has(dataSrc) ? '' : full
+      return dataSrc && badToolLogoAddresses.has(toolLogoAddress(dataSrc)) ? '' : full
     })
   }
   return out
