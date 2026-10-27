@@ -44,8 +44,9 @@ test('the card route answers 404 for what the site does not say, 308 for an old 
   assert.match(src, /if \(!parsed\) return new Response\('Not found', NOT_FOUND\)/)
   assert.match(src, /if \(!card\) return new Response\('Not found', NOT_FOUND\)/)
   assert.match(src, /status: 404, headers: \{ 'Cache-Control': 'no-store'/)
-  // A stale card goes to the current card, a stale cover to the current cover, each checked against its own hash.
-  assert.match(src, /\(cover \? coverHash\(card\) : cardHash\(card\)\) !== parsed\.hash/)
+  // A stale card goes to the current card, a stale cover to the current cover, each checked against its own hash. An
+  // address in the slug form (before 27-10-2026) goes to the hex one, even when its hash is current.
+  assert.match(src, /if \(parsed\.legacy \|\| \(cover \? coverHash\(card\) : cardHash\(card\)\) !== parsed\.hash\) \{/)
   assert.match(src, /const current = cover \? coverPath\(parsed\.kind, parsed\.key, card\) : cardPath\(parsed\.kind, parsed\.key, card\)/)
   assert.match(src, /status: 308,\s*headers: \{ Location: current,/)
   assert.match(src, /await \(cover \? renderCover\(card\) : renderCard\(card\)\)/)
@@ -108,6 +109,9 @@ test('a post’s image is its card on the blog index, on the homepage and in its
   // The og:image is the same address: ogCardImages builds its url with cardPath, from the same kind, key and card.
   assert.match(cards, /^export const postCardImages = \(slug: string, title: string\) => ogCardImages\('post', slug, postCard\(title\)\)$/m)
   assert.match(code('lib', 'og', 'url.ts'), /^  const url = cardPath\(kind, key, card\)$/m)
+  // Every address writes its key in hex (lib/og/url.ts says why): a slug's words in an image URL get it hidden by blockers.
+  assert.match(code('lib', 'og', 'url.ts'), /return `\/og\/\$\{kind\}--\$\{addressKey\(key\)\}--\$\{cardHash\(card\)\}\.png`/)
+  assert.match(code('lib', 'og', 'url.ts'), /return `\/og\/\$\{kind\}--\$\{addressKey\(key\)\}--\$\{coverHash\(card\)\}--cover\.png`/)
   const index = code('components', 'overhaul', 'blog', 'BlogIndex.tsx')
   // The index draws one image, in Cover, which every slot renders (directly or through CoverCard).
   assert.equal(index.match(/<img\b/g)?.length, 1, 'the blog index draws an image outside Cover')
