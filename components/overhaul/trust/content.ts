@@ -122,9 +122,11 @@ export const DATA = {
 /**
  * D30 (owner 17-10): every outside service, Let's Encrypt and Linear included. Corrected from lib/subprocessors.ts
  * (§5g items 7 to 9): Bunny's purpose names its hosting, and what it sees is the requests themselves (TLS ends at its
- * edge); Infomaniak's row drops "encrypted" until every backup set is (the CMS database mirror is plain gzip,
- * backup-policy.md:242); Exoscale's "Encrypted data at rest" was unverifiable without credentials and is not claimed.
- * MOCK ONLY: the build edits lib/subprocessors.ts itself, which the privacy policy §11 renders too (legal round, R9).
+ * edge). Since the move to Infomaniak (28-10-2026) Infomaniak's row comes first and names our servers, databases, file
+ * storage and backups, and Exoscale's names our email server and some backup storage. Neither row here has encryption
+ * words. The privacy policy's own table (lib/subprocessors.ts, which only /privacy renders) names Infomaniak's
+ * encryption at rest, because its contract states it, and makes no such claim for Exoscale.
+ * 🔴 This list and that table are two lists: edit them together.
  * `place`: the country flag an option may draw. `mark`: the brand mark an option may draw (brand-marks.ts INFRA_MARKS,
  * Phosphor's GitHub mark, Simple Icons CC0 where the icon exists, or the company's own drawing from its own site, as
  * Mollie's "m"; never a made-up logo).
@@ -136,13 +138,13 @@ export const PROVIDERS = {
   title: 'Every company we work with.',
   // §5g item 2: data and off-site backups in Switzerland (true); the website and the edge are not (Magic Containers).
   lead: [
-    'The servers that store your data are in Zurich, with off-site backups elsewhere in Switzerland.',
+    'The servers that store your data are in Geneva, with off-site backups elsewhere in Switzerland.',
     "Every request reaches them through bunny.net, which also hosts this website. Connections are decrypted on bunny.net's servers on the way in, so bunny.net handles the full requests, IP addresses included.",
   ],
   columns: { name: 'Company', role: 'What we use it for', sees: 'What it sees', where: 'Where' },
   rows: [
-    { name: 'Exoscale', mark: 'exoscale', role: 'Our servers, databases and file storage', sees: 'Everything we store', where: 'Switzerland', place: 'ch' },
-    { name: 'Infomaniak', mark: 'infomaniak', role: 'Off-site backups and our domain name', sees: 'Backup copies of our data', where: 'Switzerland', place: 'ch' },
+    { name: 'Infomaniak', mark: 'infomaniak', role: 'Our servers, databases, file storage and backups, and our domain name', sees: 'Everything we store', where: 'Switzerland', place: 'ch' },
+    { name: 'Exoscale', mark: 'exoscale', role: 'Our email server and some of our backup storage', sees: 'Our email and copies of our backups', where: 'Switzerland', place: 'ch' },
     { name: 'bunny.net', mark: 'bunnydotnet', role: 'Content delivery, DNS, DDoS protection, and hosting for this website', sees: 'Every request, including IP addresses', where: 'Slovenia, servers worldwide', place: 'si' },
     { name: 'Mollie', mark: 'mollie', role: 'Payments', sees: 'Billing and subscription details', where: 'Netherlands', place: 'nl' },
     { name: 'GitHub', mark: 'github', role: 'Our source code', sees: 'Code, no personal data about you', where: 'United States', place: 'us' },
@@ -212,8 +214,8 @@ export const SIGN_IN = {
     sessions: 'Once you are in',
   },
   // Round 5c (owner 17-10: "provide me more options"), option E, the exchange drawn large: where the server is
-  // (PROVIDERS: Exoscale, Zurich), and the label of the drawn password field (masking dots only, never a value).
-  serverPlace: 'Zurich, Switzerland',
+  // (PROVIDERS: Infomaniak, Geneva), and the label of the drawn password field (masking dots only, never a value).
+  serverPlace: 'Geneva, Switzerland',
   fieldLabel: 'Password',
   // Option F, one sign-in step by step. Each line restates a claim above: the password stays in the browser and what
   // travels is different every time (body, flow; RFC 9807); the server checks the browser's proof against the record

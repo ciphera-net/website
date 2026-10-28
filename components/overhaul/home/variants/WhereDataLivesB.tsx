@@ -2,7 +2,8 @@
  * Option B: the map is the argument. One flat, dotted Europe with two lit points joined by an arc — the two
  * jurisdictions read off their position on the map, not off a pair of equal-weight cards (that's option A).
  * Captions sit left/right beneath the map, mirroring where each place actually sits. Copy is a DRAFT; facts per
- * the design round brief (company: Diegem, Belgium; data: Zurich + a Swiss backup site).
+ * the design round brief (company: Diegem, Belgium; data: Geneva + a Swiss backup site, since the move to Infomaniak on
+ * 28-10-2026; it was Zurich).
  */
 import { createMap } from 'svg-dotted-map'
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
@@ -23,9 +24,11 @@ const MAP = { width: MAP_W, height: MAP_H, mapSamples: 6000, region: { lat: { mi
 // dot-field script asks for it. The two places come from the same projection without sampling (dotted-map-projection.ts).
 const landPoints = lazy(() => createMap(MAP).points)
 
-const [diegem, zurich] = [
+// The data's place goes through the same projection as before, so it lands where the library puts 46.2044 N, 6.1432 E
+// on this grid. The land dots do not depend on it: they are the static file above and stay valid (dot-field.ts).
+const [diegem, geneva] = [
   { lat: 50.8907, lng: 4.4614, key: 'diegem' },
-  { lat: 47.3769, lng: 8.5417, key: 'zurich' },
+  { lat: 46.2044, lng: 6.1432, key: 'geneva' },
 ].map(markerProjector(MAP))
 
 /** The map's dots for scripts/draw-dot-fields.ts: one radius, seven opacities (the page draws them from a static file). */
@@ -33,9 +36,13 @@ export function europeDots(): { w: number; h: number; dots: Dot[] } {
   return { w: MAP_W, h: MAP_H, dots: landPoints().map((p, i) => ({ x: p.x, y: p.y, r: 1.3, o: 0.14 + (i % 7) * 0.02 })) }
 }
 
-const midX = (diegem.x + zurich.x) / 2
-const bendY = Math.min(diegem.y, zurich.y) - 36
-const arc = `M ${diegem.x.toFixed(1)} ${diegem.y.toFixed(1)} Q ${midX.toFixed(1)} ${bendY.toFixed(1)} ${zurich.x.toFixed(1)} ${zurich.y.toFixed(1)}`
+const midX = (diegem.x + geneva.x) / 2
+const bendY = Math.min(diegem.y, geneva.y) - 36
+const arc = `M ${diegem.x.toFixed(1)} ${diegem.y.toFixed(1)} Q ${midX.toFixed(1)} ${bendY.toFixed(1)} ${geneva.x.toFixed(1)} ${geneva.y.toFixed(1)}`
+
+// "Runs on": Infomaniak first, because it hosts our servers, databases and backups, then the rest in INFRA_MARKS order.
+// Sorted here, not in brand-marks.ts: How we build's evidence line draws the same marks in the array's own order.
+const RUNS_ON = [...INFRA_MARKS].sort((a, b) => Number(b.key === 'infomaniak') - Number(a.key === 'infomaniak'))
 
 export function WhereDataLivesB() {
   return (

@@ -1,6 +1,10 @@
-// * Single source of truth for the published subprocessor disclosure.
-// * Rendered by BOTH the privacy policy (§11) and the /trust hub — edit here,
-// * never inline in a page, so the two surfaces cannot drift apart.
+// * The published subprocessor disclosure of the privacy policy (§11). Only app/privacy/page.tsx renders this file.
+// * 🔴 The /trust hub (#providers) does NOT: it keeps its own, longer list in
+// * components/overhaul/trust/content.ts (PROVIDERS, which also names Let's Encrypt and Linear). The two must be edited
+// * together, or the two surfaces drift apart; __tests__/hosting-geneva.test.mjs pins the hosting rows of both.
+// * Infomaniak's row names encryption at rest because its contract does (Public Cloud Specific Terms, art. 8.4: block
+// * storage under LUKS, object storage under AES-256). Nothing published supports the same for Exoscale, so its row makes
+// * no such claim.
 
 export interface Subprocessor {
   service: string
@@ -11,15 +15,15 @@ export interface Subprocessor {
 
 export const subprocessors: Subprocessor[] = [
   {
-    service: 'Exoscale',
-    purpose: 'Compute and object storage',
-    dataProcessed: 'Encrypted data at rest',
+    service: 'Infomaniak',
+    purpose: 'Servers, databases, object storage, off-site backups and domain registration',
+    dataProcessed: 'All data we store, encrypted at rest',
     location: 'Switzerland',
   },
   {
-    service: 'Infomaniak',
-    purpose: 'Off-site backup storage and domain registration',
-    dataProcessed: 'Encrypted backups',
+    service: 'Exoscale',
+    purpose: 'Email server and backup storage',
+    dataProcessed: 'Email and backup copies',
     location: 'Switzerland',
   },
   {

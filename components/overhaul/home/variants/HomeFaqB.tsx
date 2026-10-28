@@ -10,7 +10,7 @@ import { Reveal } from '../Reveal'
 const FAQ = [
   { q: 'What is Ciphera?', a: 'Ciphera BV is a Belgian software company in Diegem, near Brussels. We build privacy-first software for the web. Our product is Pulse Analytics.' },
   { q: 'What is Pulse Analytics?', a: 'Web analytics that shows how your site is doing without cookies and without following anyone. It is hosted in Switzerland and the Personal plan is free forever. See pulse.ciphera.net.' },
-  { q: 'Where is my data stored?', a: 'On servers in Zurich, with backups elsewhere in Switzerland, under the Swiss data protection act. Ciphera itself is a Belgian company, so Belgian law and the GDPR apply to us as well.' },
+  { q: 'Where is my data stored?', a: 'On servers in Geneva, with backups elsewhere in Switzerland, under the Swiss data protection act. Ciphera itself is a Belgian company, so Belgian law and the GDPR apply to us as well.' },
   { q: 'Do you use cookies or fingerprinting?', a: 'No. This site sets no cookies, and Pulse counts visits without cookies and without building a fingerprint of anyone.' },
   { q: 'Is your software open source?', a: 'Much of it. The Pulse app and CLI, our sign-in protocol Tessera, 14 platform integrations and this website are public on GitHub.' },
   { q: 'Can I export or delete my data?', a: 'Yes. Pulse exports your data as CSV, Excel or JSON, and you can delete it whenever you want.' },
