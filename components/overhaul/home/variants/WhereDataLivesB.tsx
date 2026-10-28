@@ -57,7 +57,7 @@ export function WhereDataLivesB() {
           viewBox={`0 0 ${MAP_W} ${MAP_H}`}
           className="block h-auto w-full"
           role="img"
-          aria-label="A dotted map of Europe marking Diegem, Belgium and Zurich, Switzerland"
+          aria-label="A dotted map of Europe marking Diegem, Belgium and Geneva, Switzerland"
         >
           <defs>
             <radialGradient id="wdlb-fade" cx="50%" cy="46%" r="72%">
@@ -81,7 +81,7 @@ export function WhereDataLivesB() {
           <path d={arc} pathLength={1} fill="none" stroke="#f4f4f4" strokeOpacity="0.16" strokeWidth="1.2" />
           <path className="eo-pulse" d={arc} pathLength={1} fill="none" stroke="#FFB36B" strokeWidth="1.8" strokeLinecap="round" />
 
-          {[diegem, zurich].map((m) => (
+          {[diegem, geneva].map((m) => (
             <g key={m.key}>
               <circle cx={m.x} cy={m.y} r="22" fill="url(#wdlb-glow)" />
               <circle className="eo-ring" cx={m.x} cy={m.y} r="5" fill="none" stroke="#FD5E0F" strokeOpacity="0.7" />
@@ -102,7 +102,7 @@ export function WhereDataLivesB() {
           </div>
           <div className="sm:text-right">
             <span className="inline-block h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
-            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">Zurich, Switzerland</h3>
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">Geneva, Switzerland</h3>
             <p className="mt-2 max-w-md text-[15px] leading-relaxed text-muted-foreground sm:ml-auto">
               Your data is stored on servers here, with backups elsewhere in Switzerland. The Swiss data protection
               act applies.
@@ -113,7 +113,7 @@ export function WhereDataLivesB() {
         <div className="mt-14 border-t border-border pt-8">
           <p className="text-sm text-muted-foreground">Runs on</p>
           <div className="mt-5 flex flex-wrap items-start gap-x-10 gap-y-5">
-            {INFRA_MARKS.map((m) => (
+            {RUNS_ON.map((m) => (
               <div key={m.key} className="flex items-center gap-3">
                 <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-foreground/80" fill="currentColor" aria-hidden="true">
                   <path d={m.path} />

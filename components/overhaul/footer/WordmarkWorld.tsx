@@ -1,6 +1,6 @@
 /**
  * Round 3b, C3 (mock, 16-10): "Europe inside the letters". The wordmark is a window (an SVG clipPath of the word) onto
- * the hero's world: the dotted map of Europe, Diegem and Zurich, and the hero's warm route lights flying into Zurich
+ * the hero's world: the dotted map of Europe, Diegem and Geneva, and the hero's warm route lights flying into Geneva
  * from the west, the east and the south. The lights only show where they pass through a letter. Server-rendered SVG,
  * no client JavaScript; motion is the hero's own `eo-pulse` / `eo-ring` CSS, which reduced motion already stops.
  */
@@ -20,22 +20,22 @@ const world = lazy(() => {
     mapSamples: 9000,
     region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
   })
-  const [diegemRaw, zurichRaw] = addMarkers([
+  const [diegemRaw, genevaRaw] = addMarkers([
     { lat: 50.8907, lng: 4.4614, key: 'diegem' },
-    { lat: 47.3769, lng: 8.5417, key: 'zurich' },
+    { lat: 46.2044, lng: 6.1432, key: 'geneva' },
   ])
-  // Shift the map so Zurich sits mid-height in the part of the letters the crop leaves visible (cap top ~33, edge 200).
-  const DY = 128 - zurichRaw.y
-  const zurich = { x: zurichRaw.x, y: zurichRaw.y + DY }
+  // Shift the map so Geneva sits mid-height in the part of the letters the crop leaves visible (cap top ~33, edge 200).
+  const DY = 128 - genevaRaw.y
+  const geneva = { x: genevaRaw.x, y: genevaRaw.y + DY }
   const diegem = { x: diegemRaw.x, y: diegemRaw.y + DY }
   const LAND = points.map((p) => ({ x: p.x, y: p.y + DY })).filter((p) => p.y > 0 && p.y < WM.h)
 
-  // Routes into Zurich: from beyond the left edge (the Americas), the right edge (Asia), the bottom right (the Gulf),
+  // Routes into Geneva: from beyond the left edge (the Americas), the right edge (Asia), the bottom right (the Gulf),
   // and Diegem. Generic directions, not customer locations. Quadratic arcs that bow upward, like the hero's.
   const arc = (from: { x: number; y: number }, lift: number) => {
-    const mx = (from.x + zurich.x) / 2
-    const my = Math.min(from.y, zurich.y) - lift
-    return `M ${from.x.toFixed(1)} ${from.y.toFixed(1)} Q ${mx.toFixed(1)} ${my.toFixed(1)} ${zurich.x.toFixed(1)} ${zurich.y.toFixed(1)}`
+    const mx = (from.x + geneva.x) / 2
+    const my = Math.min(from.y, geneva.y) - lift
+    return `M ${from.x.toFixed(1)} ${from.y.toFixed(1)} Q ${mx.toFixed(1)} ${my.toFixed(1)} ${geneva.x.toFixed(1)} ${geneva.y.toFixed(1)}`
   }
   const ROUTES = [
     { d: arc({ x: -60, y: 150 }, 70), delay: '0s' },
@@ -43,11 +43,11 @@ const world = lazy(() => {
     { d: arc({ x: WM.w - 120, y: 230 }, 40), delay: '2.2s' },
     { d: arc(diegem, 26), delay: '0.6s' },
   ]
-  return { zurich, diegem, LAND, ROUTES }
+  return { geneva, diegem, LAND, ROUTES }
 })
 
 export function WordmarkWorld() {
-  const { zurich, diegem, LAND, ROUTES } = world()
+  const { geneva, diegem, LAND, ROUTES } = world()
   return (
     <svg viewBox={`0 0 ${WM.w} ${WM.h}`} className="-mb-px block h-auto w-full select-none" aria-hidden="true">
       <defs>
@@ -74,9 +74,9 @@ export function WordmarkWorld() {
           </g>
         ))}
         <circle cx={diegem.x} cy={diegem.y} r="4" fill="#f4f4f4" fillOpacity="0.7" />
-        <circle cx={zurich.x} cy={zurich.y} r="30" fill="url(#wm-world-glow)" />
-        <circle className="eo-ring" cx={zurich.x} cy={zurich.y} r="7" fill="none" stroke="#FD5E0F" strokeOpacity="0.7" />
-        <circle cx={zurich.x} cy={zurich.y} r="5" fill="#FD5E0F" />
+        <circle cx={geneva.x} cy={geneva.y} r="30" fill="url(#wm-world-glow)" />
+        <circle className="eo-ring" cx={geneva.x} cy={geneva.y} r="7" fill="none" stroke="#FD5E0F" strokeOpacity="0.7" />
+        <circle cx={geneva.x} cy={geneva.y} r="5" fill="#FD5E0F" />
       </g>
     </svg>
   )

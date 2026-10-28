@@ -32,7 +32,7 @@ const SUMMARY =
   'Ciphera is a Belgian software company. We build privacy-first tools for the web and run them on Swiss infrastructure.'
 
 const INTRO =
-  'Ciphera BV is a software company in Diegem, near Brussels, founded on 18 September 2024. Its product is Pulse Analytics, web analytics without cookies (pulse.ciphera.net). Customer data and its backups are stored in Switzerland, at Exoscale in Zurich with backups at Infomaniak, under the Swiss data protection act. Ciphera itself is a Belgian company, so Belgian law and the GDPR apply to it as well.'
+  'Ciphera BV is a software company in Diegem, near Brussels, founded on 18 September 2024. Its product is Pulse Analytics, web analytics without cookies (pulse.ciphera.net). Customer data is stored in Switzerland, on servers at Infomaniak in Geneva, and its backups are in Switzerland too, under the Swiss data protection act. Ciphera itself is a Belgian company, so Belgian law and the GDPR apply to it as well.'
 
 const DISAMBIGUATION =
   'Ciphera BV (ciphera.net) is not affiliated with ciphera.co, ciphera.org, Ciphera Ltd (ciphera.uk) or the Ciphera apps.'
@@ -111,7 +111,7 @@ function buildLlmsTxt(): string {
   lines.push('## Key facts')
   lines.push('- Company: Ciphera BV, enterprise number (KBO/BCE) 1013.721.660, De Kleetlaan 2, 1831 Diegem, Belgium')
   lines.push('- Founded: 18 September 2024')
-  lines.push('- Data: stored in Switzerland (Exoscale, Zurich; backups at Infomaniak), under the Swiss data protection act')
+  lines.push('- Data: stored in Switzerland (Infomaniak, Geneva; backups also in Switzerland), under the Swiss data protection act')
   lines.push("- Sign-in: Ciphera's own, built on OPAQUE (RFC 9807); the password never leaves the user's device")
   lines.push('- ciphera.net sets no cookies, and Pulse counts visits without cookies and without building a fingerprint of anyone')
   lines.push('- Carbon footprint: estimated with life-cycle assessment, method published')

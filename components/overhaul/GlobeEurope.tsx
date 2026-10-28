@@ -1,8 +1,8 @@
 /**
  * Round 1d, "the planet IS the globe": Europe drawn ON the hero's planet, in an orthographic projection fitted to the
  * horizon's own circle, so the dots curve and thin toward the lit rim. Two looks:
- *   land   — dotted land, Diegem and Zurich lit
- *   lights — the night-side lights of Europe's cities, Diegem and Zurich brightest, land a faint hint
+ *   land   — dotted land, Diegem and Geneva lit
+ *   lights — the night-side lights of Europe's cities, Diegem and Geneva brightest, land a faint hint
  * Everything is computed at build time on the server; the page receives plain SVG.
  */
 import { createMap } from 'svg-dotted-map'
@@ -13,8 +13,8 @@ import { lazy } from './dotted-map-projection'
 
 const RAD = Math.PI / 180
 const DIEGEM = { lat: 50.8907, lng: 4.4614 }
-const ZURICH = { lat: 47.3769, lng: 8.5417 }
-const ANCHOR = { lat: 49.1, lng: 6.5 } // between the two, placed under the buttons
+const GENEVA = { lat: 46.2044, lng: 6.1432 }
+const ANCHOR = { lat: 48.55, lng: 5.3 } // the midpoint of the two places (Diegem and Geneva), placed under the buttons
 
 // The library projects a region crop linearly in longitude and in MERCATOR latitude (measured 16-10-2026: lat 45 in a
 // 20..70 crop lands at y 370/600, Mercator predicts 372, linear-latitude would be 300). Invert that exactly.
@@ -51,7 +51,7 @@ const CITIES: [number, number, number][] = [
   [36.75, 3.06, 0.8], [36.81, 10.18, 0.6], [33.57, -7.59, 0.8], [34.02, -6.84, 0.5],
 ]
 
-// World routes: generic cities on every continent, NOT customer locations. Each draws a great-circle arc to Zurich.
+// World routes: generic cities on every continent, NOT customer locations. Each draws a great-circle arc to Geneva.
 const ORIGINS: [number, number][] = [
   [40.71, -74.01], [37.77, -122.42], [43.65, -79.38], [-23.55, -46.63], [6.52, 3.38], [-33.92, 18.42],
   [25.2, 55.27], [19.08, 72.88], [1.35, 103.82], [35.68, 139.69], [-33.87, 151.21], [51.51, -0.13],
@@ -99,16 +99,16 @@ function fitCentre(s: Scene, target: { x: number; y: number }) {
 }
 
 /**
- * A route as seen from orbit: the great circle from `from` to Zurich, lifted off the surface by an altitude that grows
+ * A route as seen from orbit: the great circle from `from` to Geneva, lifted off the surface by an altitude that grows
  * with distance. Only the part in front of the planet, or outside its silhouette, is visible; the drawn run is the
- * visible stretch that ends at Zurich, so routes from the far side emerge over the horizon.
+ * visible stretch that ends at Geneva, so routes from the far side emerge over the horizon.
  */
 function route(s: Scene, c: { a: number; b: number }, from: [number, number]) {
   const l0 = c.b * RAD, p0 = c.a * RAD
   const e: V3 = [-Math.sin(l0), Math.cos(l0), 0]
   const n: V3 = [-Math.sin(p0) * Math.cos(l0), -Math.sin(p0) * Math.sin(l0), Math.cos(p0)]
   const k: V3 = vec(c.a, c.b)
-  const A = vec(from[0], from[1]), B = vec(ZURICH.lat, ZURICH.lng)
+  const A = vec(from[0], from[1]), B = vec(GENEVA.lat, GENEVA.lng)
   const w = Math.acos(Math.min(1, Math.max(-1, dot(A, B))))
   const lift = 0.015 + 0.06 * (w / Math.PI)
   const N = 90
@@ -119,7 +119,7 @@ function route(s: Scene, c: { a: number; b: number }, from: [number, number]) {
     const X = r * dot(v, e), Y = r * dot(v, n), Z = r * dot(v, k)
     return { x: s.cx + X * s.r, y: s.cy - Y * s.r, ok: Z >= 0 || X * X + Y * Y > 1 }
   })
-  // Draw only the arrival: the visible stretch within `reach` of Zurich, so lines come IN rather than cross the screen.
+  // Draw only the arrival: the visible stretch within `reach` of Geneva, so lines come IN rather than cross the screen.
   const reach = s.w * 0.36
   const end = pts[N]
   let i = N
@@ -142,7 +142,7 @@ function scene(s: Scene, target: { x: number; y: number }) {
     land: lazy(() => landLatLng().map((g) => put(g.lat, g.lng)).filter(inView)),
     cities: CITIES.map(([lat, lng, size]) => ({ ...put(lat, lng), size })).filter(inView),
     diegem: put(DIEGEM.lat, DIEGEM.lng),
-    zurich: put(ZURICH.lat, ZURICH.lng),
+    geneva: put(GENEVA.lat, GENEVA.lng),
     routes: ORIGINS.map((o) => route(s, c, o)).filter((r): r is NonNullable<typeof r> => r !== null),
   }
 }
@@ -179,7 +179,7 @@ export function globeLandDots(layer: 'desktop' | 'mobile'): { w: number; h: numb
 type Less = { cities?: boolean; half?: boolean }
 
 function Layer({ s, g, look, labels, id, quiet = false, world = false, cities = true, half = false }: { s: Scene; g: ReturnType<typeof scene>; look: 'land' | 'lights'; labels: boolean; id: string; quiet?: boolean; world?: boolean } & Less) {
-  const arc = `M ${g.diegem.x.toFixed(1)} ${g.diegem.y.toFixed(1)} Q ${((g.diegem.x + g.zurich.x) / 2 + 30).toFixed(1)} ${(Math.min(g.diegem.y, g.zurich.y) - 40).toFixed(1)} ${g.zurich.x.toFixed(1)} ${g.zurich.y.toFixed(1)}`
+  const arc = `M ${g.diegem.x.toFixed(1)} ${g.diegem.y.toFixed(1)} Q ${((g.diegem.x + g.geneva.x) / 2 + 30).toFixed(1)} ${(Math.min(g.diegem.y, g.geneva.y) - 40).toFixed(1)} ${g.geneva.x.toFixed(1)} ${g.geneva.y.toFixed(1)}`
   const dim = quiet ? 0.4 : 1
   return (
     <svg aria-hidden="true" viewBox={`0 0 ${s.w} ${s.h}`} preserveAspectRatio={s.align} className={`absolute inset-0 h-full w-full ${s.className}`}>
@@ -194,7 +194,7 @@ function Layer({ s, g, look, labels, id, quiet = false, world = false, cities = 
           <stop offset="1" stopColor="#FD5E0F" stopOpacity="0" />
         </radialGradient>
         {/* Routes fade in below the buttons, so they never cross the copy. */}
-        <linearGradient id={`${id}-routes-fade`} gradientUnits="userSpaceOnUse" x1="0" y1={g.zurich.y - 300} x2="0" y2={g.zurich.y - 170}>
+        <linearGradient id={`${id}-routes-fade`} gradientUnits="userSpaceOnUse" x1="0" y1={g.geneva.y - 300} x2="0" y2={g.geneva.y - 170}>
           <stop offset="0" stopColor="#fff" stopOpacity="0" />
           <stop offset="1" stopColor="#fff" />
         </linearGradient>
@@ -227,7 +227,7 @@ function Layer({ s, g, look, labels, id, quiet = false, world = false, cities = 
         <path className="eo-pulse" d={arc} pathLength={1} fill="none" stroke="#FFB36B" strokeWidth="2" strokeLinecap="round" />
         </>}
         {!quiet && <>
-        {[g.diegem, g.zurich].map((p, i) => (
+        {[g.diegem, g.geneva].map((p, i) => (
           <g key={i}>
             <circle cx={p.x} cy={p.y} r="24" fill={`url(#${id}-glow)`} />
             {(!world || i === 1) && <circle className="eo-ring" cx={p.x} cy={p.y} r="6" fill="none" stroke="#FD5E0F" strokeOpacity="0.7" />}
@@ -245,15 +245,15 @@ function Layer({ s, g, look, labels, id, quiet = false, world = false, cities = 
               {r.origin && <circle cx={r.origin.x} cy={r.origin.y} r="2.2" fill="#FFE7C8" fillOpacity={quiet ? 0.5 : 0.85} />}
             </g>
           ))}
-          {quiet && <circle cx={g.zurich.x} cy={g.zurich.y} r="3.5" fill="#FD5E0F" />}
+          {quiet && <circle cx={g.geneva.x} cy={g.geneva.y} r="3.5" fill="#FD5E0F" />}
         </g>
       )}
       {labels && (
         <g fontFamily="inherit">
           <text x={g.diegem.x - 18} y={g.diegem.y - 4} textAnchor="end" fill="#f4f4f4" fontSize="15" fontWeight="500" stroke="#0a0a0a" strokeWidth="5" paintOrder="stroke" strokeLinejoin="round">Diegem, Belgium</text>
           <text x={g.diegem.x - 18} y={g.diegem.y + 16} textAnchor="end" fill="#a3a3a3" fontSize="13" stroke="#0a0a0a" strokeWidth="5" paintOrder="stroke" strokeLinejoin="round">Where Ciphera works</text>
-          <text x={g.zurich.x + 18} y={g.zurich.y - 4} fill="#f4f4f4" fontSize="15" fontWeight="500" stroke="#0a0a0a" strokeWidth="5" paintOrder="stroke" strokeLinejoin="round">Zurich, Switzerland</text>
-          <text x={g.zurich.x + 18} y={g.zurich.y + 16} fill="#a3a3a3" fontSize="13" stroke="#0a0a0a" strokeWidth="5" paintOrder="stroke" strokeLinejoin="round">Where your data is stored</text>
+          <text x={g.geneva.x + 18} y={g.geneva.y - 4} fill="#f4f4f4" fontSize="15" fontWeight="500" stroke="#0a0a0a" strokeWidth="5" paintOrder="stroke" strokeLinejoin="round">Geneva, Switzerland</text>
+          <text x={g.geneva.x + 18} y={g.geneva.y + 16} fill="#a3a3a3" fontSize="13" stroke="#0a0a0a" strokeWidth="5" paintOrder="stroke" strokeLinejoin="round">Where your data is stored</text>
         </g>
       )}
     </svg>
@@ -277,7 +277,7 @@ export function GlobeLegend() {
     <ul className="hz-in hz-in-5 relative mx-auto mt-12 grid max-w-sm grid-cols-2 gap-4 text-left text-sm md:hidden">
       {[
         ['Diegem, Belgium', 'Where Ciphera works'],
-        ['Zurich, Switzerland', 'Where your data is stored'],
+        ['Geneva, Switzerland', 'Where your data is stored'],
       ].map(([name, role]) => (
         <li key={name} className="flex items-start gap-2">
           <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden="true" />

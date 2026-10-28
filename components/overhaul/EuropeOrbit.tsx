@@ -1,6 +1,6 @@
 /**
  * Round 1c, idea 1: the hero's planet becomes Earth. A dotted Europe on the night side, receding in perspective,
- * with Diegem (where Ciphera is) and Zurich (where the data is stored) lit and joined by an arc a light travels along.
+ * with Diegem (where Ciphera is) and Geneva (where the data is stored) lit and joined by an arc a light travels along.
  * Server-rendered SVG: no JavaScript ships for it.
  */
 import { createMap } from 'svg-dotted-map'
@@ -41,7 +41,7 @@ const flatMap = lazy(() =>
 
 const PLACE_LIST = [
   { lat: 50.8907, lng: 4.4614, key: 'diegem', name: 'Diegem, Belgium', role: 'Where Ciphera works', side: 'left' as const },
-  { lat: 47.3769, lng: 8.5417, key: 'zurich', name: 'Zurich, Switzerland', role: 'Where your data is stored', side: 'right' as const },
+  { lat: 46.2044, lng: 6.1432, key: 'geneva', name: 'Geneva, Switzerland', role: 'Where your data is stored', side: 'right' as const },
 ]
 const flatPlaces = lazy(() => flatMap().addMarkers(PLACE_LIST))
 const orbitPlaces = lazy(() => orbitMap().addMarkers(PLACE_LIST))
@@ -72,7 +72,7 @@ export function EuropeOrbit({ flat = false }: { flat?: boolean }) {
 
   return (
     <div data-mock="europe" className="hz-in hz-in-5 relative mx-auto mt-10 w-full max-w-6xl">
-      <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-label="A dotted map of Europe with Diegem in Belgium and Zurich in Switzerland highlighted">
+      <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-label="A dotted map of Europe with Diegem in Belgium and Geneva in Switzerland highlighted">
         <defs>
           <radialGradient id="eo-fade" cx="50%" cy="100%" r="75%">
             <stop offset="0.35" stopColor="#fff" />

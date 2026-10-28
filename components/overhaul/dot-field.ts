@@ -39,7 +39,7 @@ export function dotFieldSvg(w: number, h: number, dots: Dot[], colour = '#f4f4f4
 
 /** The drawn files, relative to the website's CDN prefix (cdnUrl). Printed by scripts/draw-dot-fields.ts. */
 export const DOT_FIELDS = {
-  globeDesktop: '/overhaul/dots/globe-desktop-b5a47fae34a9.svg', // 11,647 dots, 190,857 bytes (62 KB compressed)
-  globeMobile: '/overhaul/dots/globe-mobile-e6b0b4da35d3.svg', // 2,274 dots, 37,156 bytes
+  globeDesktop: '/overhaul/dots/globe-desktop-a643c02e27d1.svg', // 11,703 dots, 191,850 bytes (60 KB compressed)
+  globeMobile: '/overhaul/dots/globe-mobile-65386d8d7969.svg', // 2,165 dots, 35,469 bytes
   europe: '/overhaul/dots/europe-a97a71340d11.svg', // 3,861 dots, 61,058 bytes
 } as const

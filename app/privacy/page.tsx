@@ -12,7 +12,7 @@ const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 27-10-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 28-10-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -35,7 +35,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-09-03',
+  dateModified: '2026-10-28',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -696,7 +696,7 @@ export default function PrivacyPolicyPage() {
       />
       <PageOpeningC title="Privacy Policy" lead={PRIVACY.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-10-27">27-10-2026</time>
+          Last updated: <time dateTime="2026-10-28">28-10-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={PRIVACY.SUMMARIES} next={{ href: '/terms', label: 'Terms of Service' }} />

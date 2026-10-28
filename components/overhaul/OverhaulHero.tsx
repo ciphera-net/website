@@ -55,7 +55,7 @@ async function StatusLine() {
 // Company-level proof, each linking to its evidence (all live on 16-10-2026).
 const PROOFS = [
   { label: 'Belgian company', href: '/about', icon: Buildings },
-  { label: 'Hosted in Zurich', href: '/trust', icon: MapPin },
+  { label: 'Hosted in Geneva', href: '/trust', icon: MapPin },
   { label: 'Open source', href: 'https://github.com/ciphera-net', icon: GithubLogo },
   { label: 'Signed monthly canary', href: '/trust/canary', icon: SealCheck },
   { label: 'Measured footprint', href: '/sustainability', icon: Leaf },
