@@ -1,10 +1,12 @@
 /**
  * The receipt, read from website-backend's report and formatted on the server. The page computes nothing: the backend
- * owns the arithmetic (fallback.go, `Working`); this file only rounds and formats it. Three states:
+ * owns the arithmetic (fallback.go, `Working`); this file only rounds and formats it. Two states:
  * - estimate: our own estimate, the report's `working`, each input with its source and the notes in the margin;
- * - host: our host's life-cycle report returned a month, so the receipt lists its four phases and makes no notes;
  * - unavailable: no report, or one this page cannot read honestly (a computed report without its working, a number
- *   that is not finite). The printer says so and prints nothing; it never shows an invented figure.
+ *   that is not finite, a source it does not know). The printer says so and prints nothing; it never shows an invented
+ *   figure.
+ * Until 28-10-2026 there was a third state, the host's own life-cycle report. Exoscale removed the endpoint it came
+ * from (HTTP 410), and our servers now run at two providers, so it is retired.
  */
 import type { ImpactReport } from '@/components/sustainability/types'
 import { CORE, NOTES, PRINTER } from './content'
@@ -13,7 +15,7 @@ export type Row = { key: string; label: string; value: string; source?: string; 
 export type Group = { title: string; rows: Row[] }
 export type Note = { index: number; name: string; text: string }
 export type Printed = {
-  state: 'estimate' | 'host'
+  state: 'estimate'
   lead: string
   period: string
   panelLabel: string
@@ -82,12 +84,6 @@ export function receiptFrom(report: ImpactReport | null): ReceiptView {
   const unavailable: ReceiptView = { state: 'unavailable', lead: CORE.lead }
   if (!report || !report.period) return unavailable
 
-  const meta = (method: string) => [
-    { label: PRINTER.receipt.meta.period, value: report.period.label },
-    { label: PRINTER.receipt.meta.method, value: method },
-    { label: PRINTER.receipt.meta.updated, value: printedTime(report.lastUpdated) },
-  ]
-
   if (report.source === 'computed-fallback') {
     const w = report.working
     if (
@@ -154,44 +150,13 @@ export function receiptFrom(report: ImpactReport | null): ReceiptView {
           ],
         },
       ],
-      meta: meta(PRINTER.receipt.meta.methodValue),
+      meta: [
+        { label: PRINTER.receipt.meta.period, value: report.period.label },
+        { label: PRINTER.receipt.meta.method, value: PRINTER.receipt.meta.methodValue },
+        { label: PRINTER.receipt.meta.updated, value: printedTime(report.lastUpdated) },
+      ],
       barcodeText: barcodeText(report.period.start),
       notes,
-    }
-  }
-
-  if (report.source === 'exoscale-api') {
-    const L = report.lifecycle
-    if (!L || !finite(L.use?.amount, L.manufacturing?.amount, L.transport?.amount, L.endOfLife?.amount)) return unavailable
-    const grams = wholeGramsThatAddUp([L.use.amount, L.manufacturing.amount, L.transport.amount, L.endOfLife.amount])
-    if (grams.total <= 0) return unavailable
-    const [useG, mfgG, trnG, eolG] = grams.parts
-    return {
-      state: 'host',
-      lead: CORE.hostLead,
-      period: report.period.label,
-      panelLabel: PRINTER.panel.host,
-      total: nf(grams.total),
-      totalUnit: UNIT,
-      totalLabel: PRINTER.receipt.hostTotal,
-      groups: [
-        {
-          title: PRINTER.receipt.groups.electricity,
-          rows: [{ key: 'use', label: R.hostUse.label, value: `${nf(useG)} g`, source: R.hostUse.source, strong: true }],
-        },
-        {
-          title: PRINTER.receipt.groups.embodied,
-          rows: [
-            { key: 'manufacturing', label: R.hostManufacturing.label, value: `${nf(mfgG)} g`, source: R.hostManufacturing.source },
-            { key: 'transport', label: R.hostTransport.label, value: `${nf(trnG)} g`, source: R.hostTransport.source },
-            { key: 'endOfLife', label: R.hostEndOfLife.label, value: `${nf(eolG)} g`, source: R.hostEndOfLife.source },
-            { key: 'embodied', label: PRINTER.receipt.subtotal, value: `${nf(mfgG + trnG + eolG)} g`, strong: true },
-          ],
-        },
-      ],
-      meta: meta(PRINTER.receipt.meta.hostMethodValue),
-      barcodeText: barcodeText(report.period.start),
-      notes: [],
     }
   }
 

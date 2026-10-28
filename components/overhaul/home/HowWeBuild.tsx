@@ -18,7 +18,6 @@ const RULES = [
 export async function HowWeBuild() {
   const report = await fetchImpactReport()
   const kg = report?.totals?.co2e?.amount ?? null
-  const measured = report?.source === 'exoscale-api'
   return (
     <Section id="how" eyebrow="How we build" title="Four rules behind everything we ship." lead="Privacy-first is a set of decisions we have already made, so you do not have to trust us on each one.">
       <div className="grid border-l border-t border-border sm:grid-cols-2">
@@ -42,7 +41,7 @@ export async function HowWeBuild() {
                   {kg.toLocaleString('en-GB', { maximumFractionDigits: 2 })} kg CO₂e
                 </p>
                 <p className="mt-2 text-[13px] text-muted-foreground">
-                  {measured ? 'Measured' : 'Approximated with Boavizta life-cycle factors'}
+                  Approximated with Boavizta life-cycle factors
                   {report?.totals?.renewableShare === 100 ? ' · 100% renewable energy' : ''}
                 </p>
               </div>

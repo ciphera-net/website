@@ -19,7 +19,6 @@ const RULES = [
 export async function HowWeBuildB() {
   const report = await fetchImpactReport()
   const kg = report?.totals?.co2e?.amount ?? null
-  const measured = report?.source === 'exoscale-api'
   return (
     <Section
       id="how"
@@ -55,7 +54,7 @@ export async function HowWeBuildB() {
             <p className="text-sm text-muted-foreground">
               Our footprint, {report?.period.label}
               {' · '}
-              {measured ? 'Measured' : 'Approximated with Boavizta life-cycle factors'}
+              Approximated with Boavizta life-cycle factors
               {report?.totals?.renewableShare === 100 ? ' · 100% renewable energy' : ''}
             </p>
             <a href="/sustainability" className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors duration-150 hover:text-primary">

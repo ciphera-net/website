@@ -16,7 +16,7 @@ export const RULES = [
 export type RuleIcon = (typeof RULES)[number]['icon']
 
 /** The live footprint, read on the server (`fetchImpactReport`); null when the report cannot be read. */
-export type Receipt = { kg: string; period: string; measured: boolean; renewable: boolean } | null
+export type Receipt = { kg: string; period: string; renewable: boolean } | null
 
 export const HEADING = {
   eyebrow: 'How we build',
@@ -47,7 +47,7 @@ export function ReceiptCaption({ r }: { r: NonNullable<Receipt> }) {
     <p className="text-sm text-muted-foreground">
       Our footprint, {r.period}
       {' · '}
-      {r.measured ? 'Measured' : 'Approximated with Boavizta life-cycle factors'}
+      Approximated with Boavizta life-cycle factors
       {r.renewable ? ' · 100% renewable energy' : ''}
     </p>
   )

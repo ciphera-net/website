@@ -19,7 +19,6 @@ const RULES = [
 export async function HowWeBuildC() {
   const report = await fetchImpactReport()
   const kg = report?.totals?.co2e?.amount ?? null
-  const measured = report?.source === 'exoscale-api'
   return (
     <section id="how" data-mock-section="how" className="scroll-mt-24 border-t border-border px-6 py-24 sm:px-10 lg:py-32">
       <Reveal>
@@ -55,7 +54,7 @@ export async function HowWeBuildC() {
           </p>
           <p className="mt-2 text-lg text-muted-foreground">kg CO₂e</p>
           <p className="mt-4 text-[13px] text-muted-foreground">
-            {measured ? 'Measured' : 'Approximated with Boavizta life-cycle factors'}
+            Approximated with Boavizta life-cycle factors
             {report?.totals?.renewableShare === 100 ? ' · 100% renewable energy' : ''}
           </p>
           <a href="/sustainability" className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors duration-150 hover:text-primary">

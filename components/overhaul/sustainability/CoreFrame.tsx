@@ -1,6 +1,6 @@
 /**
  * The frame and header of /sustainability's core section: home/Section.tsx's border, gutters and rhythm, and its
- * eyebrow, title and lead, class for class. The lead changes with the report (ours, or our host's).
+ * eyebrow, title and lead, class for class. The lead arrives with the view (receipt.ts) and is the same in every state.
  */
 import type { ReactNode } from 'react'
 import { CORE } from './content'
