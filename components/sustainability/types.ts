@@ -2,7 +2,12 @@
 // Keep in sync with Public/website-backend/internal/sustainability/types.go.
 // JSON field names match the Go struct tags byte-for-byte.
 
-export type ReportSource = 'exoscale-api' | 'computed-fallback'
+/**
+ * Where the figures come from. One value since 28-10-2026: Exoscale removed the impact-report endpoint the backend used
+ * to call (it answers HTTP 410), so every report is our own estimate. The field stays on the wire, and the page still
+ * reads it: a report it does not recognise prints as unavailable.
+ */
+export type ReportSource = 'computed-fallback'
 
 export interface NumberWithUnit {
   amount: number
@@ -45,7 +50,8 @@ export interface InventoryItem {
 
 /**
  * Every number the /sustainability receipt prints for our own estimate, computed by website-backend (fallback.go,
- * `Working`): the page formats these and computes nothing. Present on the computed-fallback path, null on the host's.
+ * `Working`): the page formats these and computes nothing. Present on the computed-fallback path, which is the only
+ * one since 28-10-2026.
  */
 export interface Working {
   servers: number

@@ -16,7 +16,6 @@ export async function readReceipt(): Promise<Receipt> {
   return {
     kg: kg.toLocaleString('en-GB', { maximumFractionDigits: 2 }),
     period: report.period.label,
-    measured: report.source === 'exoscale-api',
     renewable: report.totals?.renewableShare === 100,
   }
 }

@@ -6,7 +6,8 @@
  *               (QuietTile, "neither lit nor struck") for what it leaves out. Not struck: leaving a thing out of the
  *               estimate is not a claim that it does not exist.
  * WhereItRuns — Trust's Where it runs A: a ruled row per provider, its mark in a 44 px tile in its real colour, the
- *               place with its flag. The two sentences are D59's ruled hosting line, verbatim.
+ *               place with its flag. The sentences are D59's hosting line, rewritten for the move to Infomaniak
+ *               (28-10-2026): each provider names its own place.
  * Commitments — the struck tile (StruckTile) Trust uses for what we never do, beside each line.
  * Closing     — Trust closing A's centred band: title and the two buttons, no arc and no photo, because the page opens on
  *               the sunrise (D23).

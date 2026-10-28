@@ -17,13 +17,11 @@ export const CORE = {
   title: 'The estimate and its working.',
   /** D63, W12-4: our own estimate. */
   lead: "We calculate it from the servers we run, a published grid figure and four assumptions of our own. We don't meter any of it.",
-  /** When the figures are our host's (its life-cycle report returned a month). */
-  hostLead: "These figures come from our host's life-cycle report for the servers we run.",
 }
 
 export const PRINTER = {
-  place: 'Zurich · CH-DK-2',
-  panel: { title: 'Our footprint', estimated: 'Estimated', host: "From our host's report" },
+  place: 'Geneva · Zurich',
+  panel: { title: 'Our footprint', estimated: 'Estimated' },
   status: { processing: 'Calculating the estimate', printing: 'Printing the receipt', complete: 'Receipt printed' },
   unavailable: 'The estimate is unavailable right now',
   again: 'Print again',
@@ -31,7 +29,7 @@ export const PRINTER = {
     title: 'Footprint receipt',
     groups: { electricity: 'Electricity', embodied: 'Making, shipping and disposing' },
     rows: {
-      servers: { label: 'Servers in Zurich', source: 'Our server list' },
+      servers: { label: 'Servers in Switzerland', source: 'Our server list' },
       vcpu: { label: 'vCPU', source: 'Our server list' },
       hours: { label: 'Hours', source: (days: number, month: string) => `${days} days in ${month}` },
       watts: { label: 'Power per vCPU', source: 'Our assumption' },
@@ -42,28 +40,23 @@ export const PRINTER = {
       embodiedPerVcpu: { label: 'Per vCPU, over its life', source: 'Our assumption' },
       lifetime: { label: 'Server life', source: 'Our assumption' },
       share: { label: "This month's share", source: 'Calculated' },
-      /** The host's report: its phases, each from the report. */
-      hostUse: { label: 'Running the servers', source: "Our host's report" },
-      hostManufacturing: { label: 'Manufacturing', source: "Our host's report" },
-      hostTransport: { label: 'Transport', source: "Our host's report" },
-      hostEndOfLife: { label: 'End of life', source: "Our host's report" },
     },
     subtotal: 'Subtotal',
     total: 'Total, estimated',
-    hostTotal: 'Total, from our host',
-    meta: { period: 'Period', method: 'Method', methodValue: 'Our estimate', hostMethodValue: "Our host's report", updated: 'Updated' },
+    meta: { period: 'Period', method: 'Method', methodValue: 'Our estimate', updated: 'Updated' },
   },
 } as const
 
 /**
  * The notes in the margin (D61), each beside the receipt line it explains; a phone lists them after the printer. Each is
- * true today: the servers line counts only the Exoscale servers (D59); the W and PUE constants are hand-set, and Exoscale
- * publishes no PUE; the grid note is VSE's account of its own 2025 figure, so it prints only while the figure is the 2025
- * one (D63, W12-1); and the embodied note's comparison prints only while it holds (D63, W12-2).
+ * true today (28-10-2026): the servers line counts our servers at Infomaniak and Exoscale (D59); the W and PUE constants
+ * are hand-set (Infomaniak states an average PUE below 1.1, Exoscale states none; 1.2 errs high, so one figure serves
+ * both); the grid note is VSE's account of its own 2025 figure, so it prints only while the figure is the 2025 one (D63,
+ * W12-1); and the embodied note's comparison prints only while it holds (D63, W12-2).
  */
 export const NOTES = {
   phoneTitle: 'Notes on the receipt',
-  servers: 'Only our servers at Exoscale. The receipt leaves out the Bunny containers that serve this website.',
+  servers: 'Only our servers at Infomaniak and Exoscale. The receipt leaves out the Bunny containers that serve this website.',
   watts: 'We picked this number and the overhead under it rather than measuring them.',
   /** The year the grid note was written for; any other year's figure prints without it. */
   gridYear: 2025,
@@ -72,7 +65,10 @@ export const NOTES = {
   embodiedOutweighs: 'Making, shipping and disposing of the servers emits more carbon than running them.',
 } as const
 
-/** What the estimate counts and what it leaves out (D59's ruled lines, the parentheticals dropped). */
+/**
+ * What the estimate counts and what it leaves out (D59's ruled lines, the parentheticals dropped; the compute line names
+ * both hosts since the move to Infomaniak, 28-10-2026).
+ */
 export const COUNTS = {
   id: 'counted',
   eyebrow: 'What it counts',
@@ -80,7 +76,7 @@ export const COUNTS = {
   countedLabel: 'Counted',
   notCountedLabel: 'Not counted',
   counted: [
-    { icon: 'HardDrives', text: 'Compute: our Exoscale servers in Zurich' },
+    { icon: 'HardDrives', text: 'Compute: our servers at Infomaniak in Geneva and at Exoscale in Zurich' },
     { icon: 'ArrowsClockwise', text: 'All four lifecycle phases of our servers (modelled, not metered)' },
   ],
   notCounted: [
@@ -91,13 +87,14 @@ export const COUNTS = {
   ],
 } as const
 
-/** Where it runs (D59's ruled hosting line, verbatim). */
+/** Where it runs (D59's hosting line, rewritten for the move to Infomaniak, 28-10-2026: each provider names its own place). */
 export const WHERE = {
   id: 'where',
   eyebrow: 'Where it runs',
   title: 'Where our servers are.',
   rows: [
-    { mark: 'exoscale', name: 'Exoscale', text: 'Our servers run on Exoscale in Zurich (CH-DK-2).', place: 'Zurich, Switzerland', flag: 'ch' },
+    { mark: 'infomaniak', name: 'Infomaniak', text: 'Most of our servers run on Infomaniak in Geneva.', place: 'Geneva, Switzerland', flag: 'ch' },
+    { mark: 'exoscale', name: 'Exoscale', text: 'Our mail server runs on Exoscale in Zurich.', place: 'Zurich, Switzerland', flag: 'ch' },
     { mark: 'bunnydotnet', name: 'bunny.net', text: 'This website is served by bunny.net from servers worldwide.', place: 'Worldwide', flag: null },
   ],
 } as const
