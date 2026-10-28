@@ -258,7 +258,7 @@ export const OPEN_SOURCE = {
     { name: '14 integrations', repo: '?q=pulse-&type=public', what: 'Pulse for Astro, Nuxt, Framer, Drupal, Joomla, TYPO3 and more.', licence: 'Mostly Apache-2.0' },
     { name: 'This website', repo: 'website', what: 'The code behind ciphera.net, this page included.', licence: 'AGPL-3.0' },
   ],
-  publicCount: '25 public repositories',
+  publicCount: '26 public repositories',
   // §5g item 4: the engine is private; the sign-in service and the mail service too (GitHub API: 404).
   notPublic: {
     label: 'Not public',

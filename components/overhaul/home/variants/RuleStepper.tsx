@@ -436,7 +436,7 @@ function EvidenceBody({ i, colour, size = 'sm' }: { i: number; colour: boolean; 
       <div className={t}>
         <p className="flex items-center gap-2.5">
           <GithubLogo className={`${size === 'md' ? 'h-5 w-5' : 'h-4 w-4'} text-foreground`} aria-hidden="true" />
-          <span className="font-medium text-foreground">25 public repositories</span>
+          <span className="font-medium text-foreground">26 public repositories</span>
         </p>
         <ul className="mt-2 space-y-1 font-mono text-xs text-muted-foreground">
           <li>ciphera-net/tessera</li>
@@ -490,7 +490,7 @@ function EvidenceLine({ i }: { i: number }) {
     return (
       <p className={row}>
         <GithubLogo className="h-4 w-4 shrink-0" aria-hidden="true" />
-        25 public repositories
+        26 public repositories
       </p>
     )
   return <p className="mt-3 text-sm text-muted-foreground">No vendor lock-in.</p>
