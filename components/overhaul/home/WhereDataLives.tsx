@@ -21,7 +21,7 @@ export function WhereDataLives() {
         <Reveal className="grid gap-px bg-border">
           {[
             { icon: Buildings, place: 'Diegem, Belgium', who: 'Ciphera BV', what: 'Our company, our contracts and our support. Belgian law and the GDPR apply.' },
-            { icon: HardDrives, place: 'Zurich, Switzerland', who: 'Your data', what: 'Stored on servers in Zurich, with backups elsewhere in Switzerland. The Swiss data protection act applies.' },
+            { icon: HardDrives, place: 'Geneva, Switzerland', who: 'Your data', what: 'Stored on servers in Geneva, with backups elsewhere in Switzerland. The Swiss data protection act applies.' },
           ].map((b) => (
             <div key={b.place} className="bg-background p-8">
               <b.icon className="h-6 w-6 text-foreground/80" aria-hidden="true" />

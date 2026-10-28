@@ -33,7 +33,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-09-03',
+  dateModified: '2026-09-25',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [

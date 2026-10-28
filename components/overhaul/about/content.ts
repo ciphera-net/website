@@ -41,8 +41,8 @@ export const STORY = {
     // 'mail' = an envelope glyph, the providers in their brand colours (brand-marks.ts INFRA_MARKS), 'github' white.
     { label: 'Our own sign-in', detail: 'Passwords never reach our servers', href: '/trust#sign-in', marks: ['ciphera-id'] },
     { label: 'Our own mail servers', detail: 'No third-party email service sends our mail', href: '/trust', marks: ['mail'] },
-    { label: 'Servers in Switzerland', detail: 'Exoscale in Zurich, backups at Infomaniak', href: '/#where', marks: ['exoscale', 'infomaniak'] },
-    { label: '25 public repositories', detail: 'Including this website', href: 'https://github.com/ciphera-net', marks: ['github'] },
+    { label: 'Servers in Switzerland', detail: 'Infomaniak in Geneva, email at Exoscale in Zurich', href: '/#where', marks: ['infomaniak', 'exoscale'] },
+    { label: '26 public repositories', detail: 'Including this website', href: 'https://github.com/ciphera-net', marks: ['github'] },
   ],
 }
 

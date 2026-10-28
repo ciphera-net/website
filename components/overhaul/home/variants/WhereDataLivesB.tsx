@@ -2,7 +2,8 @@
  * Option B: the map is the argument. One flat, dotted Europe with two lit points joined by an arc — the two
  * jurisdictions read off their position on the map, not off a pair of equal-weight cards (that's option A).
  * Captions sit left/right beneath the map, mirroring where each place actually sits. Copy is a DRAFT; facts per
- * the design round brief (company: Diegem, Belgium; data: Zurich + a Swiss backup site).
+ * the design round brief (company: Diegem, Belgium; data: Geneva + a Swiss backup site, since the move to Infomaniak on
+ * 28-10-2026; it was Zurich).
  */
 import { createMap } from 'svg-dotted-map'
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
@@ -23,9 +24,11 @@ const MAP = { width: MAP_W, height: MAP_H, mapSamples: 6000, region: { lat: { mi
 // dot-field script asks for it. The two places come from the same projection without sampling (dotted-map-projection.ts).
 const landPoints = lazy(() => createMap(MAP).points)
 
-const [diegem, zurich] = [
+// The data's place goes through the same projection as before, so it lands where the library puts 46.2044 N, 6.1432 E
+// on this grid. The land dots do not depend on it: they are the static file above and stay valid (dot-field.ts).
+const [diegem, geneva] = [
   { lat: 50.8907, lng: 4.4614, key: 'diegem' },
-  { lat: 47.3769, lng: 8.5417, key: 'zurich' },
+  { lat: 46.2044, lng: 6.1432, key: 'geneva' },
 ].map(markerProjector(MAP))
 
 /** The map's dots for scripts/draw-dot-fields.ts: one radius, seven opacities (the page draws them from a static file). */
@@ -33,9 +36,13 @@ export function europeDots(): { w: number; h: number; dots: Dot[] } {
   return { w: MAP_W, h: MAP_H, dots: landPoints().map((p, i) => ({ x: p.x, y: p.y, r: 1.3, o: 0.14 + (i % 7) * 0.02 })) }
 }
 
-const midX = (diegem.x + zurich.x) / 2
-const bendY = Math.min(diegem.y, zurich.y) - 36
-const arc = `M ${diegem.x.toFixed(1)} ${diegem.y.toFixed(1)} Q ${midX.toFixed(1)} ${bendY.toFixed(1)} ${zurich.x.toFixed(1)} ${zurich.y.toFixed(1)}`
+const midX = (diegem.x + geneva.x) / 2
+const bendY = Math.min(diegem.y, geneva.y) - 36
+const arc = `M ${diegem.x.toFixed(1)} ${diegem.y.toFixed(1)} Q ${midX.toFixed(1)} ${bendY.toFixed(1)} ${geneva.x.toFixed(1)} ${geneva.y.toFixed(1)}`
+
+// "Runs on": Infomaniak first, because it hosts our servers, databases and backups, then the rest in INFRA_MARKS order.
+// Sorted here, not in brand-marks.ts: How we build's evidence line draws the same marks in the array's own order.
+const RUNS_ON = [...INFRA_MARKS].sort((a, b) => Number(b.key === 'infomaniak') - Number(a.key === 'infomaniak'))
 
 export function WhereDataLivesB() {
   return (
@@ -50,7 +57,7 @@ export function WhereDataLivesB() {
           viewBox={`0 0 ${MAP_W} ${MAP_H}`}
           className="block h-auto w-full"
           role="img"
-          aria-label="A dotted map of Europe marking Diegem, Belgium and Zurich, Switzerland"
+          aria-label="A dotted map of Europe marking Diegem, Belgium and Geneva, Switzerland"
         >
           <defs>
             <radialGradient id="wdlb-fade" cx="50%" cy="46%" r="72%">
@@ -74,7 +81,7 @@ export function WhereDataLivesB() {
           <path d={arc} pathLength={1} fill="none" stroke="#f4f4f4" strokeOpacity="0.16" strokeWidth="1.2" />
           <path className="eo-pulse" d={arc} pathLength={1} fill="none" stroke="#FFB36B" strokeWidth="1.8" strokeLinecap="round" />
 
-          {[diegem, zurich].map((m) => (
+          {[diegem, geneva].map((m) => (
             <g key={m.key}>
               <circle cx={m.x} cy={m.y} r="22" fill="url(#wdlb-glow)" />
               <circle className="eo-ring" cx={m.x} cy={m.y} r="5" fill="none" stroke="#FD5E0F" strokeOpacity="0.7" />
@@ -95,7 +102,7 @@ export function WhereDataLivesB() {
           </div>
           <div className="sm:text-right">
             <span className="inline-block h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
-            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">Zurich, Switzerland</h3>
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">Geneva, Switzerland</h3>
             <p className="mt-2 max-w-md text-[15px] leading-relaxed text-muted-foreground sm:ml-auto">
               Your data is stored on servers here, with backups elsewhere in Switzerland. The Swiss data protection
               act applies.
@@ -106,7 +113,7 @@ export function WhereDataLivesB() {
         <div className="mt-14 border-t border-border pt-8">
           <p className="text-sm text-muted-foreground">Runs on</p>
           <div className="mt-5 flex flex-wrap items-start gap-x-10 gap-y-5">
-            {INFRA_MARKS.map((m) => (
+            {RUNS_ON.map((m) => (
               <div key={m.key} className="flex items-center gap-3">
                 <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-foreground/80" fill="currentColor" aria-hidden="true">
                   <path d={m.path} />

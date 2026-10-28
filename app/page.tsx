@@ -13,7 +13,7 @@ import { seoForAsync } from '@/lib/seo'
 import { pageCardImages } from '@/lib/og/cards'
 
 /**
- * The homepage (the overhaul, 18-10-2026): the approved hero (R1, D4, D26: the routes into Zurich, no city lights) and
+ * The homepage (the overhaul, 18-10-2026): the approved hero (R1, D4, D26: the routes into the data's city, Geneva since 28-10-2026, no city lights) and
  * the owner's Round 2 picks (D15, D16): What we build B, How we build M, Where your data lives B, Open by default A,
  * From the blog B, the FAQ (seven questions, D24) and the closing band. Header and footer come from the root layout.
  *

@@ -14,10 +14,10 @@
  *    Column and TesseraLink.
  * E, the exchange drawn large: SignInB's drawing (tiles opaque over a wire, the wire centred on them, stacked below lg)
  *    with real stations. Your device is a drawn password field, masking dots only, with its lock; On the way is a plain
- *    tile on the wire; Our server is a card holding a database tile, the Exoscale mark and the Swiss flag with the place.
+ *    tile on the wire; Our server is a card holding a database tile, the Infomaniak mark and the Swiss flag with the place.
  *    The wire out of the device is plain. The one out of On the way carries two lights, one to the server and one back
  *    (an exchange, not a password travelling). Colour: the lock (the one lit point of the device: the password is locked
- *    there), the two lights (the homepage arc's `eo-pulse`, #FFB36B, with its own reduced-motion rule), the Exoscale
+ *    there), the two lights (the homepage arc's `eo-pulse`, #FFB36B, with its own reduced-motion rule), the Infomaniak
  *    mark and the flag in their real colours. Reuses SignInB's Wire and its geometry, QuietTile, ProviderMark and FlagCH.
  * F, one sign-in step by step: the homepage stepper's vocabulary, simplified. Four LitTiles on a hairline track, each with
  *    its number, title and line; the track lights once, left to right (top to bottom below lg), when the block is
@@ -237,7 +237,7 @@ function PasswordCard() {
   )
 }
 
-/** The server: a database tile and the Exoscale mark, and where it stands. */
+/** The server: a database tile and the Infomaniak mark, and where it stands. */
 function ServerCard() {
   return (
     <div className={CARD}>
@@ -245,7 +245,7 @@ function ServerCard() {
         <QuietTile>
           <Database className="h-5 w-5" />
         </QuietTile>
-        <ProviderMark mark="exoscale" size={20} />
+        <ProviderMark mark="infomaniak" size={20} />
       </div>
       <p className="mt-2 flex items-center gap-2.5 text-sm leading-5 text-muted-foreground">
         <FlagCH className="h-3.5 w-auto shrink-0" />

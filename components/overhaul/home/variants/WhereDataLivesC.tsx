@@ -1,8 +1,8 @@
 /**
- * Option C: the data-flow idea. A step row shows the path a visit actually takes (you → the edge → Zurich →
+ * Option C: the data-flow idea. A step row shows the path a visit actually takes (you → the edge → Geneva →
  * the backup site) instead of stating the two places as equal cards (option A) or finding them on a map (option
  * B). Underneath, a plain spec sheet pairs each fact with the law that governs it. Copy is a DRAFT; facts per the
- * design round brief (company: Diegem, Belgium; data: Zurich + a Swiss backup site; providers from brand-marks).
+ * design round brief (company: Diegem, Belgium; data: Geneva + Swiss backup sites, since 28-10-2026; providers from brand-marks).
  */
 import { Fragment } from 'react'
 import { ArrowRight, Globe, Lightning, HardDrives, CloudArrowUp } from '@phosphor-icons/react/dist/ssr'
@@ -17,14 +17,14 @@ const infomaniak = INFRA_MARKS.find((m) => m.key === 'infomaniak')!
 const STEPS = [
   { key: 'you', icon: Globe, name: 'Your visit', detail: 'Starts in your browser' },
   { key: 'bunny', icon: Lightning, name: bunny.name, detail: `${bunny.role}, ${bunny.where}` },
-  { key: 'exoscale', icon: HardDrives, name: exoscale.name, detail: 'Compute and storage, Zurich, Switzerland' },
-  { key: 'infomaniak', icon: CloudArrowUp, name: infomaniak.name, detail: `${infomaniak.role}, ${infomaniak.where}` },
+  { key: 'infomaniak', icon: HardDrives, name: infomaniak.name, detail: 'Servers and storage, Geneva, Switzerland' },
+  { key: 'exoscale', icon: CloudArrowUp, name: exoscale.name, detail: `${exoscale.role}, ${exoscale.where}` },
 ]
 
 const LEDGER = [
   { label: 'Company', value: 'Ciphera BV, Diegem, Belgium' },
   { label: 'Governing law', value: 'Belgian law and the GDPR' },
-  { label: 'Your data', value: 'Zurich, with a backup elsewhere in Switzerland' },
+  { label: 'Your data', value: 'Geneva, with backups elsewhere in Switzerland' },
   { label: 'Governing law', value: 'The Swiss data protection act' },
 ]
 

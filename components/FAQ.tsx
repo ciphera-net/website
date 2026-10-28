@@ -91,7 +91,7 @@ const GROUPS: FAQGroup[] = [
       },
       {
         q: 'Where are the servers located?',
-        a: 'All Ciphera services run on Exoscale in Switzerland (CH-DK-2). Your data is protected by the Federal Act on Data Protection (FADP) alongside the GDPR.',
+        a: 'Your data is stored on servers at Infomaniak in Geneva, Switzerland, and is protected by the Federal Act on Data Protection (FADP) alongside the GDPR.',
       },
       {
         q: 'Is the code open source?',

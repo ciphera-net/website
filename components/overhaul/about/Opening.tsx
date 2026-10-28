@@ -23,7 +23,7 @@ const QUICK_FACTS = OPENING.facts
 /**
  * Option B's map: a small, quiet dotted Europe adapted from EuropeOrbit / WhereDataLivesB with the glow and the
  * pulse animation dropped (this page allows no gradients or glows) — flat dots, a plain line, two solid points.
- * Diegem is where Ciphera works (content.ts RECORD); Zurich is the data location the homepage names for the same
+ * Diegem is where Ciphera works (content.ts RECORD); Geneva is the data location the homepage names for the same
  * fact (WhereDataLivesB, GlobeEurope) — content.ts states it only as "Switzerland".
  */
 const MINI_W = 320
@@ -37,36 +37,36 @@ const miniMap = lazy(() => {
     mapSamples: 3200,
     region: { lat: { min: 42, max: 58.5 }, lng: { min: -14, max: 44 } },
   })
-  const [MINI_DIEGEM, MINI_ZURICH] = miniAddMarkers([
+  const [MINI_DIEGEM, MINI_GENEVA] = miniAddMarkers([
     { lat: 50.8907, lng: 4.4614, key: 'diegem', name: 'Diegem' },
-    { lat: 47.3769, lng: 8.5417, key: 'zurich', name: 'Zurich' },
+    { lat: 46.2044, lng: 6.1432, key: 'geneva', name: 'Geneva' },
   ])
-  const MINI_MID_X = (MINI_DIEGEM.x + MINI_ZURICH.x) / 2
-  const MINI_BEND_Y = Math.min(MINI_DIEGEM.y, MINI_ZURICH.y) - 20
-  const MINI_ARC = `M ${MINI_DIEGEM.x.toFixed(1)} ${MINI_DIEGEM.y.toFixed(1)} Q ${MINI_MID_X.toFixed(1)} ${MINI_BEND_Y.toFixed(1)} ${MINI_ZURICH.x.toFixed(1)} ${MINI_ZURICH.y.toFixed(1)}`
-  return { MINI_POINTS, MINI_DIEGEM, MINI_ZURICH, MINI_ARC }
+  const MINI_MID_X = (MINI_DIEGEM.x + MINI_GENEVA.x) / 2
+  const MINI_BEND_Y = Math.min(MINI_DIEGEM.y, MINI_GENEVA.y) - 20
+  const MINI_ARC = `M ${MINI_DIEGEM.x.toFixed(1)} ${MINI_DIEGEM.y.toFixed(1)} Q ${MINI_MID_X.toFixed(1)} ${MINI_BEND_Y.toFixed(1)} ${MINI_GENEVA.x.toFixed(1)} ${MINI_GENEVA.y.toFixed(1)}`
+  return { MINI_POINTS, MINI_DIEGEM, MINI_GENEVA, MINI_ARC }
 })
 
 function MiniEuropeMap() {
-  const { MINI_POINTS, MINI_DIEGEM, MINI_ZURICH, MINI_ARC } = miniMap()
+  const { MINI_POINTS, MINI_DIEGEM, MINI_GENEVA, MINI_ARC } = miniMap()
   return (
     <div className="w-full max-w-[260px]">
       <svg
         viewBox={`0 0 ${MINI_W} ${MINI_H}`}
         className="block h-auto w-full text-foreground"
         role="img"
-        aria-label="A small dotted map of Europe marking Diegem, Belgium and Zurich, Switzerland"
+        aria-label="A small dotted map of Europe marking Diegem, Belgium and Geneva, Switzerland"
       >
         {MINI_POINTS.map((p, i) => (
           <circle key={i} cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r="1.1" fill="currentColor" fillOpacity="0.14" />
         ))}
         <path d={MINI_ARC} fill="none" stroke="currentColor" strokeOpacity="0.22" strokeWidth="1" />
-        {/* One deliberate orange point: Zurich, where the data lives. Diegem stays white. */}
+        {/* One deliberate orange point: Geneva, where the data lives. Diegem stays white. */}
         <circle cx={MINI_DIEGEM.x} cy={MINI_DIEGEM.y} r="3" fill="currentColor" fillOpacity="0.85" />
-        <circle cx={MINI_ZURICH.x} cy={MINI_ZURICH.y} r="3" fill="#FD5E0F" />
+        <circle cx={MINI_GENEVA.x} cy={MINI_GENEVA.y} r="3" fill="#FD5E0F" />
       </svg>
       <dl className="mt-4 flex items-start justify-between gap-6 text-xs text-muted-foreground">
-        {[MINI_DIEGEM, MINI_ZURICH].map((m) => (
+        {[MINI_DIEGEM, MINI_GENEVA].map((m) => (
           <div key={m.key} className="flex items-center gap-2">
             <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/25" />
             <dt className="sr-only">Place</dt>
@@ -162,11 +162,11 @@ export function OpeningC() {
 /**
  * D — a smaller sibling of the homepage hero, full-bleed like it (breaks out of the max-w-6xl column the same way),
  * drawing the same lit Horizon and the same city-light GlobeEurope at the hero's own scale, with the two places this
- * page is about, Diegem and Zurich, labelled instead of the hero's whole-world routes (it is NOT zoomed; an earlier
+ * page is about, Diegem and Geneva, labelled instead of the hero's whole-world routes (it is NOT zoomed; an earlier
  * note said so, wrongly). No badge, no buttons: just OPENING.title as
  * the page's only H1 and OPENING.lead under it, centred, in the hero's own showBadge=false vertical rhythm and type
  * scale, with its exact legibility scrim reused unchanged. ~80svh, not the hero's 100 — About is not a second hero.
- * GlobeEurope already labels Diegem/Zurich on desktop; on mobile the globe runs quiet (no dots, by its own design),
+ * GlobeEurope already labels Diegem/Geneva on desktop; on mobile the globe runs quiet (no dots, by its own design),
  * so GlobeLegend — the same component the homepage hero uses for the same reason — names the two places in text,
  * safely below the lead rather than over the (there dimmer, cropped) globe.
  */
