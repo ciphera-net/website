@@ -26,6 +26,9 @@ test('the privacy table: Infomaniak hosts the servers, Exoscale the email server
   assert.match(src, /purpose: 'Servers, databases, object storage, off-site backups and domain registration'/)
   assert.match(src, /purpose: 'Email server and backup storage'/)
   assert.doesNotMatch(src, /Compute and object storage/)
+  // No encryption-at-rest claim until it holds for everything a row covers (28-10-2026), here or in the security section.
+  assert.doesNotMatch(src, /encrypted at rest/)
+  assert.doesNotMatch(read('app/privacy/page.tsx'), /Backups are encrypted at rest/)
 })
 
 test('the trust page: the same two roles, the servers in Geneva', () => {

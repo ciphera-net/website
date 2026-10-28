@@ -371,7 +371,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           Infrastructure Security
         </h3>
         <ul className={UL}>
-          <li>Backups are encrypted at rest using AES-256 server-side encryption together with client-side encryption; your account data and files are protected by client-side encryption, so they remain unreadable to us regardless of the underlying storage</li>
+          <li>Your account data and files are protected by client-side encryption, so they remain unreadable to us regardless of the underlying storage</li>
           <li>Access to production systems requires multi-factor authentication</li>
           <li>We follow the principle of least privilege for all internal access</li>
           <li>Regular security reviews and dependency audits are performed</li>

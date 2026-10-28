@@ -123,9 +123,8 @@ export const DATA = {
  * D30 (owner 17-10): every outside service, Let's Encrypt and Linear included. Corrected from lib/subprocessors.ts
  * (§5g items 7 to 9): Bunny's purpose names its hosting, and what it sees is the requests themselves (TLS ends at its
  * edge). Since the move to Infomaniak (28-10-2026) Infomaniak's row comes first and names our servers, databases, file
- * storage and backups, and Exoscale's names our email server and backup storage. Neither row here has encryption
- * words. The privacy policy's own table (lib/subprocessors.ts, which only /privacy renders) names Infomaniak's
- * encryption at rest, because its contract states it, and makes no such claim for Exoscale.
+ * storage and backups, and Exoscale's names our email server and backup storage. Neither row here, nor the privacy
+ * policy's own table (lib/subprocessors.ts, which only /privacy renders), claims encryption at rest (28-10-2026).
  * 🔴 This list and that table are two lists: edit them together.
  * `place`: the country flag an option may draw. `mark`: the brand mark an option may draw (brand-marks.ts INFRA_MARKS,
  * Phosphor's GitHub mark, Simple Icons CC0 where the icon exists, or the company's own drawing from its own site, as
