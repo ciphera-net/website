@@ -8,17 +8,23 @@
  * The summary is a grid so the heading and the summary line stay direct children of <summary>: a <span> may not hold an
  * <h2>. Numbers are the clause numbers the text cites ("see Section 14"), in tabular figures, never mono.
  */
-import type { ReactNode } from 'react'
+import { Fragment, type ReactNode } from 'react'
 import Link from 'next/link'
 import { CaretDown } from '@phosphor-icons/react/dist/ssr'
 import { OpenAll } from './OpenAll'
 
-export type LegalSectionData<Id extends string> = { id: Id; title: string; body: ReactNode }
+/**
+ * `label` replaces the position in the number column where the text numbers itself (the processing agreement's Clause 7,
+ * Annex II); an empty label leaves the column blank. `group` sets a caption above the row, for a document whose own
+ * structure has parts above its sections (the agreement's Sections I to III). Both are optional: the policy and the
+ * terms number by position, as before.
+ */
+export type LegalSectionData<Id extends string> = { id: Id; title: string; body: ReactNode; label?: string; group?: string }
 
 const READ = 'max-w-[42.5rem]' // the reading measure: 680 px, as the blog post's
 const PAGER = 'text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground'
 
-function LegalSection({ n, id, title, summary, children }: { n: number; id: string; title: string; summary: string; children: ReactNode }) {
+function LegalSection({ n, id, title, summary, children }: { n: number | string; id: string; title: string; summary: string; children: ReactNode }) {
   return (
     <details id={id} data-legal-section={n} className="group scroll-mt-28 border-b border-border">
       <summary className="grid cursor-pointer list-none grid-cols-[1.75rem_minmax(0,1fr)_1rem] gap-x-4 py-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
@@ -58,9 +64,12 @@ export function LegalSections<Id extends string>({
         </div>
         <div className="mt-4 border-t border-border">
           {sections.map((s, i) => (
-            <LegalSection key={s.id} n={i + 1} id={s.id} title={s.title} summary={summaries[s.id]}>
-              {s.body}
-            </LegalSection>
+            <Fragment key={s.id}>
+              {s.group ? <p className="pb-2 pt-10 text-sm text-muted-foreground">{s.group}</p> : null}
+              <LegalSection n={s.label ?? i + 1} id={s.id} title={s.title} summary={summaries[s.id]}>
+                {s.body}
+              </LegalSection>
+            </Fragment>
           ))}
         </div>
         <div className="mt-12 flex items-center justify-between gap-6">

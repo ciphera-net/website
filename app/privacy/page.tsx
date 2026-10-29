@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
+import { DPA_IN_FORCE } from '@/lib/dpa/agreement'
 import { pageCardImages } from '@/lib/og/cards'
 import { PageOpeningC } from '@/components/overhaul/system/PageOpening'
 import { LegalSections, type LegalSectionData } from '@/components/overhaul/legal/LegalSections'
@@ -178,7 +179,9 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), does not track users across websites, and does not collect personally identifiable information by default. To recognise automated traffic, Pulse derives a coarse code from the settings your browser reports on every request &mdash; browser family, operating system, device type, language, timezone and window size. That code is scoped to a single website, is never compared across websites, and is deleted after 14 days. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. The same applies to the interaction companion described above: a button&rsquo;s label is text the website owner wrote, so where that script is used it is the owner&rsquo;s responsibility to ensure their own interface labels do not contain personal data — Pulse shortens and redacts what it sends, but it cannot know that a label is a person&rsquo;s name. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
         </p>
         <p className={P}>
-          When website owners use Pulse on their websites, Ciphera BV acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
+          When website owners use Pulse on their websites, Ciphera BV acts as a data processor under GDPR Article 28. Our{' '}
+          <Link href="/dpa" className={LINK}>Data Processing Agreement</Link>{' '}
+          sets out that role. It takes effect on {DPA_IN_FORCE}; until then, it applies to any customer who asks for it at{' '}
           <a href="mailto:privacy@ciphera.net" className={LINK}>privacy@ciphera.net</a>.
         </p>
         <p className={P}>

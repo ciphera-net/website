@@ -135,6 +135,7 @@ function buildLlmsTxt(): string {
   lines.push('## Policies')
   lines.push(`- Privacy policy: ${SITE}/privacy`)
   lines.push(`- Terms of service: ${SITE}/terms`)
+  lines.push(`- Data processing agreement (for Pulse customers): ${SITE}/dpa`)
   lines.push(`- ${AI_POLICY}`)
   lines.push('')
 
@@ -253,6 +254,7 @@ function buildLlmsFullTxt(): string {
   lines.push('## Policies')
   lines.push(`- Privacy policy: ${SITE}/privacy`)
   lines.push(`- Terms of service: ${SITE}/terms`)
+  lines.push(`- Data processing agreement (for Pulse customers): ${SITE}/dpa`)
   lines.push(`- ${AI_POLICY}`)
   lines.push('')
 

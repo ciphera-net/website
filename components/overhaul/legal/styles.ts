@@ -14,6 +14,10 @@ export const P_NOTICE = cn(P, 'font-medium text-foreground')
 export const UL =
   'mt-5 list-disc space-y-2.5 pl-5 text-base leading-[1.7] text-foreground/85 marker:text-muted-foreground sm:text-[17px] [&>li]:pl-1'
 
+/** A numbered list the text refers to by number (the terms' 9.3 items): the list above, with figures for markers. */
+export const OL =
+  'mt-5 list-decimal space-y-2.5 pl-5 text-base leading-[1.7] text-foreground/85 marker:tabular-nums marker:text-muted-foreground sm:text-[17px] [&>li]:pl-1'
+
 /** scroll-mt clears the fixed header if a sub-heading ever becomes a link target (OpenAll opens its section first). */
 export const H3 = 'mt-10 scroll-mt-28 text-lg font-semibold text-foreground'
 

@@ -50,7 +50,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: '2026-03-06',
+      lastModified: '2026-10-30',
+    },
+    {
+      // The processing agreement (PUL-37): published 30-10-2026, in force 29-11-2026.
+      url: `${baseUrl}/dpa`,
+      lastModified: '2026-10-30',
     },
     {
       url: `${baseUrl}/trust`,
