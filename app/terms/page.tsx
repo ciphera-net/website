@@ -34,7 +34,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-09-25',
+  dateModified: '2026-10-30',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -567,7 +567,7 @@ export default function TermsOfServicePage() {
       />
       <PageOpeningC title="Terms of Service" lead={TERMS.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-09-25">25-09-2026</time>
+          Last updated: <time dateTime="2026-10-30">30-10-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={TERMS.SUMMARIES} next={{ href: '/privacy', label: 'Privacy Policy' }} />

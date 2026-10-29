@@ -11,7 +11,7 @@ import { cdnUrl } from '@/lib/cdn'
 
 
 /** One revision date for the visible "Last updated" line, the JSON-LD dateModified and (when built) the sitemap. */
-export const UPDATED = { iso: '2026-10-27', label: '27 October 2026' }
+export const UPDATED = { iso: '2026-10-30', label: '30 October 2026' }
 
 // The page's title and meta description (/trust has no CMS SEO row: its metadata lives only in code). Draft.
 export const META = {
