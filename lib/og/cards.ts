@@ -29,6 +29,7 @@ export const PAGE_CARDS = {
   learn: { label: 'Resources', title: 'Learn' },
   privacy: { label: 'Legal', title: 'Privacy policy' },
   terms: { label: 'Legal', title: 'Terms of service' },
+  dpa: { label: 'Legal', title: 'Data processing agreement' },
 } satisfies Record<string, OgCard>
 
 export type PageCardKey = keyof typeof PAGE_CARDS

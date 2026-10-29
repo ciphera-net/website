@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
+import { DPA_IN_FORCE } from '@/lib/dpa/agreement'
 import { pageCardImages } from '@/lib/og/cards'
 import { PageOpeningC } from '@/components/overhaul/system/PageOpening'
 import { LegalSections, type LegalSectionData } from '@/components/overhaul/legal/LegalSections'
@@ -12,7 +13,7 @@ const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 28-10-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 30-10-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -35,7 +36,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-10-28',
+  dateModified: '2026-10-30',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -175,10 +176,12 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           <li><strong>Approximate location</strong> — Country, region and city, unless the site owner has narrowed it. All three are determined from the IP address, which is then immediately discarded. We do not store IP addresses. A new Pulse site collects all three; a site owner can cap the detail at country only, or switch geographic collection off altogether.</li>
         </ul>
         <p className={P}>
-          Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), does not track users across websites, and does not collect personally identifiable information by default. To recognise automated traffic, Pulse derives a coarse code from the settings your browser reports on every request &mdash; browser family, operating system, device type, language, timezone and window size. That code is scoped to a single website, is never compared across websites, and is deleted after 14 days. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. The same applies to the interaction companion described above: a button&rsquo;s label is text the website owner wrote, so where that script is used it is the owner&rsquo;s responsibility to ensure their own interface labels do not contain personal data — Pulse shortens and redacts what it sends, but it cannot know that a label is a person&rsquo;s name. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
+          Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), does not track users across websites, and does not collect personally identifiable information by default. To recognise automated traffic, Pulse compares the settings each browser reports on every request (browser family, operating system, device type, language and screen size) across the visits to one website. It never compares them across websites. They are stored with each visit and deleted with the website&rsquo;s other analytics data. Custom event properties are defined by the website owner, who is responsible for ensuring they do not contain personal data. The same applies to the interaction companion described above: a button&rsquo;s label is text the website owner wrote, so where that script is used it is the owner&rsquo;s responsibility to ensure their own interface labels do not contain personal data — Pulse shortens and redacts what it sends, but it cannot know that a label is a person&rsquo;s name. Pulse is designed to operate without cookies or persistent identifiers, so it does not set a cookie consent banner.
         </p>
         <p className={P}>
-          When website owners use Pulse on their websites, Ciphera BV acts as a data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
+          When website owners use Pulse on their websites, Ciphera BV acts as a data processor under GDPR Article 28. Our{' '}
+          <Link href="/dpa" className={LINK}>Data Processing Agreement</Link>{' '}
+          sets out that role. It takes effect on {DPA_IN_FORCE}; until then, it applies to any customer who asks for it at{' '}
           <a href="mailto:privacy@ciphera.net" className={LINK}>privacy@ciphera.net</a>.
         </p>
         <p className={P}>
@@ -696,7 +699,7 @@ export default function PrivacyPolicyPage() {
       />
       <PageOpeningC title="Privacy Policy" lead={PRIVACY.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-10-28">28-10-2026</time>
+          Last updated: <time dateTime="2026-10-30">30-10-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={PRIVACY.SUMMARIES} next={{ href: '/terms', label: 'Terms of Service' }} />

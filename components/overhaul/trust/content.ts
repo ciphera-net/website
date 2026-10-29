@@ -11,7 +11,7 @@ import { cdnUrl } from '@/lib/cdn'
 
 
 /** One revision date for the visible "Last updated" line, the JSON-LD dateModified and (when built) the sitemap. */
-export const UPDATED = { iso: '2026-10-27', label: '27 October 2026' }
+export const UPDATED = { iso: '2026-10-30', label: '30 October 2026' }
 
 // The page's title and meta description (/trust has no CMS SEO row: its metadata lives only in code). Draft.
 export const META = {
@@ -374,7 +374,7 @@ export const DISCLOSURE = {
 
 export const CLOSING = {
   title: 'Running a vendor review?',
-  lead: 'Send security questionnaires to security@ciphera.net. For our data processing agreement, write to privacy@ciphera.net.',
+  lead: 'Send security questionnaires to security@ciphera.net. Our data processing agreement is published at ciphera.net/dpa.',
   primary: { label: 'Email security@ciphera.net', href: 'mailto:security@ciphera.net' },
   secondary: { label: 'Read the privacy policy', href: '/privacy' },
   contacts: [
@@ -386,7 +386,7 @@ export const CLOSING = {
   // Round 5c, option E: what a vendor review can ask for. The agreement and the questionnaires are the lead's two
   // sentences; the provider list is this page's #providers (the block above); the privacy policy is /privacy.
   kit: [
-    { key: 'dpa', title: 'Our data processing agreement', action: 'Write to privacy@ciphera.net', href: 'mailto:privacy@ciphera.net' },
+    { key: 'dpa', title: 'Our data processing agreement', action: 'Read it', href: '/dpa' },
     { key: 'questionnaire', title: 'Your security questionnaire', action: 'Send it to security@ciphera.net', href: 'mailto:security@ciphera.net' },
     { key: 'providers', title: 'Every company we work with', action: 'See the list above', href: '#providers' },
     { key: 'privacy', title: 'Our privacy policy', action: 'Read it', href: '/privacy' },

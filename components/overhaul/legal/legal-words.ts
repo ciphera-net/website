@@ -43,7 +43,7 @@ export const TERMS = {
     'encryption-and-zero-knowledge-architecture': 'What our encryption design means for you and your data.',
     'service-specific-terms': 'Terms that apply to each service.',
     'intellectual-property': 'Our trademarks, our open-source software, and your content.',
-    'privacy': 'How our privacy policy applies, and our role when you use Pulse on your site.',
+    'privacy': 'How our privacy policy applies, our role when you use Pulse on your site, and California.',
     'service-availability': 'When our services may be unavailable.',
     'disclaimer-of-warranties': 'What we do not guarantee.',
     'limitation-of-liability': 'The limits of our liability.',
@@ -61,3 +61,28 @@ export const TERMS = {
 
 export type PrivacySectionId = keyof typeof PRIVACY.SUMMARIES
 export type TermsSectionId = keyof typeof TERMS.SUMMARIES
+
+/** The processing agreement (/dpa, 29-10-2026, PUL-37): its lead and one line per row, keyed by row id. */
+export const DPA = {
+  LEAD: 'How we process personal data for you when you use Pulse, and what we promise about it.',
+  SUMMARIES: {
+    'how-this-agreement-applies': 'What this agreement is, when it takes effect, and how it relates to our terms.',
+    'clause-1': 'What the Clauses are for, and what they cover.',
+    'clause-2': 'The Clauses cannot be changed, only completed.',
+    'clause-3': 'The Clauses are read with the GDPR’s own definitions.',
+    'clause-4': 'The Clauses prevail over any other agreement between us.',
+    'clause-5': 'The optional docking clause, which we do not use.',
+    'clause-6': 'Where the processing is described.',
+    'clause-7': 'Our duties: instructions, security, sub-processors and transfers.',
+    'clause-8': 'How we help you answer requests and meet your duties.',
+    'clause-9': 'What we do if a personal data breach happens.',
+    'clause-10': 'Suspending or ending the processing, and what happens to the data.',
+    'annex-i': 'Who the parties are.',
+    'annex-ii': 'What data we process for you, why, and for how long.',
+    'annex-iii': 'How we protect it.',
+    'annex-iv': 'The companies that help us provide Pulse.',
+  },
+} as const
+
+export type DpaSectionId = keyof typeof DPA.SUMMARIES
+

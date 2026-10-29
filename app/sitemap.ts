@@ -46,17 +46,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Legal pages
     {
       url: `${baseUrl}/privacy`,
-      lastModified: '2026-10-27',
+      lastModified: '2026-10-30',
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: '2026-03-06',
+      lastModified: '2026-10-30',
+    },
+    {
+      // The processing agreement (PUL-37): published 30-10-2026, in force 29-11-2026.
+      url: `${baseUrl}/dpa`,
+      lastModified: '2026-10-30',
     },
     {
       url: `${baseUrl}/trust`,
       // Rebuilt 18-10-2026 (the overhaul); the canary and the transparency report were retired 16-10 and
       // /trust/canary and /trust/report redirect here. Identity facts updated 27-10-2026.
-      lastModified: '2026-10-27',
+      lastModified: '2026-10-30',
     },
 
     // Blog index (include even if posts are drafts -- the index page itself is valid)

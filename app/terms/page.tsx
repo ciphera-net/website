@@ -4,7 +4,8 @@ import { pageCardImages } from '@/lib/og/cards'
 import { PageOpeningC } from '@/components/overhaul/system/PageOpening'
 import { LegalSections, type LegalSectionData } from '@/components/overhaul/legal/LegalSections'
 import { TERMS, type TermsSectionId } from '@/components/overhaul/legal/legal-words'
-import { H3, LINK, P, P_NOTICE, UL } from '@/components/overhaul/legal/styles'
+import { H3, LINK, OL, P, P_NOTICE, UL } from '@/components/overhaul/legal/styles'
+import { CCPA_TERMS, DPA_IN_FORCE } from '@/lib/dpa/agreement'
 
 const CARD = pageCardImages('terms')
 
@@ -33,7 +34,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-09-25',
+  dateModified: '2026-10-30',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -264,16 +265,37 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
     title: 'Privacy',
     body: (
       <>
+        <h3 className={H3}>
+          9.1. Privacy Policy
+        </h3>
         <p className={P}>
           Your privacy is governed by our{' '}
           <Link href="/privacy" className={LINK}>Privacy Policy</Link>,
           which describes how we collect, use, and protect your personal data. By using the Services, you acknowledge that you have read and understood our Privacy Policy.
         </p>
+
+        <h3 className={H3}>
+          9.2. Data Processing
+        </h3>
         <p className={P}>
-          Where you use the Services to process personal data of third parties (for example, by using Pulse on your website to collect visitor analytics), you act as the data controller for that data under GDPR, and Ciphera BV acts as your data processor under GDPR Article 28. A Data Processing Agreement (DPA) is available upon request at{' '}
+          Where you use the Services to process personal data of other people (for example, by using Pulse on your website to measure visits), you are the controller of that data under the GDPR, and Ciphera BV is your processor under Article 28. From {DPA_IN_FORCE}, our{' '}
+          <Link href="/dpa" className={LINK}>Data Processing Agreement</Link>{' '}
+          sets out how we process it and forms part of these Terms: you accept it when you accept these Terms, and no signature is needed. Until then, it applies to you from the day you ask for it at{' '}
           <a href="mailto:privacy@ciphera.net" className={LINK}>privacy@ciphera.net</a>.
-          You are responsible for ensuring your use complies with applicable data protection laws, including maintaining an appropriate privacy policy for your own users.
+          You are responsible for using the Services in line with the data protection laws that apply to you, including a privacy policy for your own users.
         </p>
+
+        <h3 className={H3}>
+          9.3. California (CCPA)
+        </h3>
+        <p className={P}>
+          This section takes effect on {DPA_IN_FORCE}. It applies if the California Consumer Privacy Act covers you as a &quot;business&quot; and you use Pulse to measure visits to your website. For the personal information Pulse processes for you, Ciphera is your &quot;service provider&quot;.
+        </p>
+        <ol className={OL}>
+          {CCPA_TERMS.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ol>
       </>
     ),
   },
@@ -488,7 +510,9 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
       <>
         <p className={P}>
           These Terms, together with our{' '}
-          <Link href="/privacy" className={LINK}>Privacy Policy</Link>,
+          <Link href="/privacy" className={LINK}>Privacy Policy</Link>{' '}
+          and, from {DPA_IN_FORCE}, our{' '}
+          <Link href="/dpa" className={LINK}>Data Processing Agreement</Link>,
           constitute the entire agreement between you and Ciphera regarding the Services and supersede all prior or contemporaneous communications, proposals, and agreements, whether oral or written. Section headings are for convenience only and do not affect the interpretation of these Terms.
         </p>
         <p className={P}>
@@ -543,7 +567,7 @@ export default function TermsOfServicePage() {
       />
       <PageOpeningC title="Terms of Service" lead={TERMS.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-09-25">25-09-2026</time>
+          Last updated: <time dateTime="2026-10-30">30-10-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={TERMS.SUMMARIES} next={{ href: '/privacy', label: 'Privacy Policy' }} />
