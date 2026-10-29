@@ -1,4 +1,5 @@
 import { cdnUrl } from '@/lib/cdn'
+import { toolLogoAddress } from '@/lib/blog-html'
 
 /**
  * Small inline tool/company mark rendered before a tool's heading text in
@@ -12,6 +13,10 @@ import { cdnUrl } from '@/lib/cdn'
  * scripts/cdn-upload.sh, prefix website/blog/tools/) — never hotlinked, so
  * reading the post pings no third-party host.
  *
+ * The image is requested under its hex name (`toolLogoAddress`), never the
+ * path the editor wrote, because blocker lists hide images whose address
+ * carries a tool's name. Upload every new mark under both names.
+ *
  * Asset contract (normalized 19-07-2026): 128×128 transparent PNG, glyph
  * trimmed and centered with its longest side at 110px (~86% coverage). The
  * box here is fixed h-6/w-6 with object-contain, so any padding baked into a
@@ -22,7 +27,7 @@ export function ToolLogo({ src }: { src: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={cdnUrl(src)}
+      src={cdnUrl(toolLogoAddress(src))}
       alt=""
       aria-hidden="true"
       loading="lazy"

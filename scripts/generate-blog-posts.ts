@@ -30,7 +30,7 @@ import fs from 'fs'
 import path from 'path'
 import { WP_POST_FIELDS, type WpNode } from '../lib/blog-transform'
 import { buildBlogPosts } from '../lib/cms/blog-build'
-import { renderableImageSources, rawMediaRefs, dropUnreachableMedia } from '../lib/blog-html'
+import { renderableImageSources, rawMediaRefs, dropUnreachableMedia, toolLogoAddress } from '../lib/blog-html'
 import type { WpBlogPost } from '../lib/blog-types'
 import { recordContentRepairs } from '../lib/content-repair-log'
 import type { ContentRepairEntry } from '../lib/content-repair-types'
@@ -133,7 +133,8 @@ async function main() {
           `image ${ref.value} is not on the CDN (or is otherwise invalid) — dropped from the post body`
         )
       } else {
-        const absolute = `${CDN}${ref.value}`
+        // The address it would have been requested at (lib/blog-html.ts toolLogoAddress), as renderableImageSources reports it.
+        const absolute = `${CDN}${toolLogoAddress(ref.value)}`
         if (survivedSet.has(absolute) || sanitizerDropped.has(`tool-logo:${ref.value}`)) continue
         sanitizerDropped.add(`tool-logo:${ref.value}`)
         repair(
@@ -146,12 +147,12 @@ async function main() {
     }
 
     const badImgSrcs = new Set<string>()
-    const badToolLogoDataSrcs = new Set<string>()
+    const badToolLogoAddresses = new Set<string>()
     for (const src of survivingSources) {
       const imgStatus = await head(src)
       if (imgStatus !== 200) {
         const isToolLogo = src.startsWith(CDN) && src.slice(CDN.length).includes('/blog/tools/')
-        if (isToolLogo) badToolLogoDataSrcs.add(src.slice(CDN.length))
+        if (isToolLogo) badToolLogoAddresses.add(src.slice(CDN.length))
         else badImgSrcs.add(src)
         repair(
           post.slug,
@@ -161,8 +162,8 @@ async function main() {
         )
       }
     }
-    if (badImgSrcs.size > 0 || badToolLogoDataSrcs.size > 0) {
-      post.html = dropUnreachableMedia(post.html, badImgSrcs, badToolLogoDataSrcs)
+    if (badImgSrcs.size > 0 || badToolLogoAddresses.size > 0) {
+      post.html = dropUnreachableMedia(post.html, badImgSrcs, badToolLogoAddresses)
     }
 
     // A post's share card is not checked here (23-10-2026): lib/og draws it from the title (app/og/[file]/route.ts),

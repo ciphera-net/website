@@ -117,11 +117,14 @@ test('dropUnreachableMedia removes exactly the unreachable <img> or tool-logo ma
   const html = code('lib/blog-html.ts')
   assert.match(html, /export function dropUnreachableMedia/)
   assert.match(html, /badImgSrcs: ReadonlySet<string>/)
-  assert.match(html, /badToolLogoDataSrcs: ReadonlySet<string>/)
+  assert.match(html, /badToolLogoAddresses: ReadonlySet<string>/)
   // img removal keys off the exact `src` value renderableImageSources already computed.
   assert.match(html, /\\bsrc=\["'\]\(\[\^"'\]\*\)\["'\]/)
-  // tool-logo removal keys off `data-ciphera-block="tool-logo"` + the exact `data-src`.
+  // tool-logo removal keys off `data-ciphera-block="tool-logo"` + the address of its `data-src`
+  // (27-10-2026: marks are requested under a hex name, toolLogoAddress), the one renderableImageSources reported.
   assert.match(html, /data-ciphera-block=\["'\]tool-logo\["'\]/)
+  assert.match(html, /badToolLogoAddresses\.has\(toolLogoAddress\(dataSrc\)\)/)
+  assert.match(html, /add\(`\$\{toolLogoBase\}\$\{toolLogoAddress\(dataSrc\)\}`\)/)
 })
 
 test('an off-CDN image or malformed tool-logo mark that cdnImagesOnly/toolLogosValidated silently strip is still recorded (verifier finding, ledger gap closed)', () => {
