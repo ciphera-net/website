@@ -126,17 +126,21 @@ steps:
       # Measured exactly that way on id-frontend #92 and website #250.
       NODE_AUTH_TOKEN:
         from_secret: npm_read_token
-      CACHE_ENDPOINT: https://sos-ch-dk-2.exo.io
+      CACHE_ENDPOINT: https://s3.pub1.infomaniak.cloud
       CACHE_BUCKET: ciphera-build-cache
       CACHE_KEY: next-cache/ciphera-website.tar.gz
-      AWS_DEFAULT_REGION: ch-dk-2
+      AWS_DEFAULT_REGION: us-east-1
+      # Infomaniak refuses aws-chunked uploads (NotImplemented, measured 29-10-2026 with
+      # aws-cli 2.34 on node:22-alpine): checksums only when an operation requires one.
+      AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+      AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
     commands:
       # 🔴 SOVEREIGNTY TRIPWIRE — same reasoning as the buildctl steps. Every
       # S3-backed tool defaults to AWS when the endpoint is unset.
       - |
         case "$CACHE_ENDPOINT" in
-          https://sos-*.exo.io) echo "cache endpoint OK: $CACHE_ENDPOINT" ;;
-          *) echo "REFUSING: cache endpoint '$CACHE_ENDPOINT' is not Exoscale SOS"; exit 1 ;;
+          https://s3.pub1.infomaniak.cloud) echo "cache endpoint OK: $CACHE_ENDPOINT" ;;
+          *) echo "REFUSING: cache endpoint '$CACHE_ENDPOINT' is not Infomaniak object storage (pub1)"; exit 1 ;;
         esac
       # 🔑 WHY THIS S3 ROUND-TRIP EXISTS. Until phase 4 the Dockerfile used
       # `RUN --mount=type=cache` for .next/cache, which BuildKit persists in the
@@ -150,7 +154,7 @@ steps:
         if [ -n "$AWS_ACCESS_KEY_ID" ]; then
           apk add --no-cache aws-cli >/dev/null 2>&1
           if aws s3 cp "s3://$CACHE_BUCKET/$CACHE_KEY" - --endpoint-url "$CACHE_ENDPOINT" 2>/dev/null | tar xzf - 2>/dev/null; then
-            echo "next cache restored from SOS"
+            echo "next cache restored from object storage"
           else
             echo "next cache cold (no object yet, or first run after a key change)"
           fi
@@ -175,8 +179,12 @@ steps:
       # `npm run build` succeeded.
       - |
         if [ -n "$AWS_ACCESS_KEY_ID" ] && [ -d .next/cache ]; then
-          tar czf - .next/cache | aws s3 cp - "s3://$CACHE_BUCKET/$CACHE_KEY" --endpoint-url "$CACHE_ENDPOINT" \
-            && echo "next cache saved to SOS" || echo "WARN: cache save failed (build is still good)"
+          # ONE PutObject from a file, never a streamed multipart cp: overwriting a multipart
+          # object on Infomaniak (Swift) leaves the old parts behind for good (29-10-2026).
+          tar czf /tmp/next-cache.tgz .next/cache \
+            && aws s3api put-object --bucket "$CACHE_BUCKET" --key "$CACHE_KEY" --body /tmp/next-cache.tgz --endpoint-url "$CACHE_ENDPOINT" >/dev/null \
+            && echo "next cache saved to object storage" || echo "WARN: cache save failed (build is still good)"
+          rm -f /tmp/next-cache.tgz
         fi
       - echo "next build complete — the Dockerfile now only assembles this output"
   build-pr:
@@ -197,9 +205,9 @@ steps:
     # registry.ops.ciphera.net. This step never contacts it.
     environment:
       BUILDKIT_HOST: tcp://buildkitd.buildkit.svc.cluster.local:1234
-      CACHE_ENDPOINT: https://sos-ch-dk-2.exo.io
+      CACHE_ENDPOINT: https://s3.pub1.infomaniak.cloud
       CACHE_BUCKET: ciphera-build-cache
-      CACHE_REGION: ch-dk-2
+      CACHE_REGION: us-east-1
       CACHE_NAME: ciphera-website
       NEXT_PUBLIC_CDN_URL:
         from_secret: next_public_cdn_url
@@ -210,12 +218,12 @@ steps:
       # AWS SDK resolves its own default, which is AWS. A typo would ship our build
       # cache to a US provider. The daemon carries AWS_ENDPOINT_URL_S3 as a
       # backstop for the OMITTED case (measured: an endpoint-less export still
-      # landed in SOS), but an endpoint that is merely WRONG overrides that
+      # landed in the bucket), but an endpoint that is merely WRONG overrides that
       # backstop — so assert it here, where the value is written.
       - |
         case "$CACHE_ENDPOINT" in
-          https://sos-*.exo.io) echo "cache endpoint OK: $CACHE_ENDPOINT" ;;
-          *) echo "REFUSING: cache endpoint '$CACHE_ENDPOINT' is not Exoscale SOS"; exit 1 ;;
+          https://s3.pub1.infomaniak.cloud) echo "cache endpoint OK: $CACHE_ENDPOINT" ;;
+          *) echo "REFUSING: cache endpoint '$CACHE_ENDPOINT' is not Infomaniak object storage (pub1)"; exit 1 ;;
         esac
       # No --output: build everything, assemble nothing, push nothing.
       - |
