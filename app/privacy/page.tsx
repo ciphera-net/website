@@ -405,7 +405,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           rows={[
             ['Account data', 'While the account is active; deleted immediately and irreversibly on a verified deletion request', 'Contract'],
             ['Session data', <>Until logout or <span className="tabular-nums text-foreground">30 days</span> (refresh token expiry)</>, 'Contract'],
-            ['Analytics data (Pulse)', 'Aggregated indefinitely (no personal data)', 'Legitimate interest'],
+            ['Analytics data (Pulse)', 'The retention period each website owner sets (six months for a new site), then deleted', 'Legitimate interest'],
             ['Contact form messages', 'Not stored — forwarded to our team inbox', 'Consent'],
             ['Newsletter subscriptions', 'Until unsubscribe', 'Consent'],
             ['Security audit logs (hashed IPs only)', <>Up to <span className="tabular-nums text-foreground">180 days</span>, then permanently deleted</>, 'Legitimate interest'],

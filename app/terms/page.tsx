@@ -84,7 +84,7 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
           Ciphera provides privacy-first infrastructure and applications designed with zero-knowledge architecture:
         </p>
         <ul className={UL}>
-          <li><strong>Pulse Analytics:</strong> Privacy-respecting website analytics that operates without cookies, without fingerprinting techniques, and without personal data collection.</li>
+          <li><strong>Pulse Analytics:</strong> Privacy-respecting website analytics that operates without cookies, without fingerprinting techniques, and without storing IP addresses.</li>
           <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
           <li><strong>Ciphera Relay:</strong> Secure transactional email infrastructure for delivering encrypted communications.</li>
         </ul>
