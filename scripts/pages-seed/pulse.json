@@ -18,7 +18,7 @@
         "variant": "hero",
         "label": "Pulse",
         "heading": "Analytics without <br class=\"hidden sm:inline\">the surveillance.",
-        "body": "Get the insights you need without compromising user privacy. No cookies, no fingerprinting, no personal data. GDPR compliant by design.",
+        "body": "Get the insights you need without compromising user privacy. No cookies, no fingerprinting, no stored IP addresses. GDPR compliant by design.",
         "backgroundImage": "/pulse-showcase-bg.png",
         "backgroundImageAlt": "",
         "badgeStyle": "dots",
@@ -100,7 +100,7 @@
           {
             "icon": "globe",
             "title": "Visitor insights",
-            "body": "Top pages, referrer sources, browser breakdowns, geographic maps, and peak-hour traffic — the full picture, no personal data collected.",
+            "body": "Top pages, referrer sources, browser breakdowns, geographic maps, and peak-hour traffic — the full picture, no IP addresses stored.",
             "anchor": "visitors"
           },
           {
@@ -184,7 +184,7 @@
             "text": "Aggregate-first — visitor-level views are off by default and each profile covers up to one day"
           },
           {
-            "text": "No cookies, no fingerprinting, no personal data"
+            "text": "No cookies, no fingerprinting, no stored IP addresses"
           },
           {
             "text": "Data Processing Agreement available on request"

@@ -66,7 +66,7 @@ const GROUPS: FAQGroup[] = [
     items: [
       {
         q: 'Does Pulse use cookies to track visitors?',
-        a: 'No. Pulse is our privacy-first analytics tool that works without cookies, fingerprinting, or any form of personal data collection. It gives you meaningful insights like page views, referrers, and visitor counts while being fully GDPR compliant out of the box.',
+        a: 'No. Pulse is our privacy-first analytics tool that works without cookies or fingerprinting, and never stores IP addresses. It gives you meaningful insights like page views, referrers, and visitor counts while being fully GDPR compliant out of the box.',
       },
       {
         q: 'Can Pulse identify individual visitors?',
