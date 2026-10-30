@@ -81,7 +81,7 @@ export const COUNTS = {
   ],
   notCounted: [
     { icon: 'GlobeHemisphereWest', text: 'Bunny: the CDN, and the containers that serve this website, docs, help and status' },
-    { icon: 'Database', text: 'Object storage and backups (Exoscale, Infomaniak)' },
+    { icon: 'Database', text: 'Object storage and backups (Infomaniak)' },
     { icon: 'Lightning', text: 'Office electricity' },
     { icon: 'AirplaneTilt', text: 'Employee travel' },
   ],

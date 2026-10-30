@@ -5,6 +5,8 @@
 // * Neither row claims encryption at rest (28-10-2026). Infomaniak's contract covers its block and object storage (Public
 // * Cloud Specific Terms, art. 8.4: LUKS, AES-256) but says nothing of the Kubernetes control plane, and not every backup
 // * is encrypted by us yet. A claim comes back only once it holds for everything its row covers.
+// * Since 29-10-2026 every backup copy is at Infomaniak (both regions), so Exoscale's row names only the email server it
+// * still runs. DPA Annex IV renders the same rows (lib/dpa/agreement.ts).
 
 export interface Subprocessor {
   service: string
@@ -22,8 +24,8 @@ export const subprocessors: Subprocessor[] = [
   },
   {
     service: 'Exoscale',
-    purpose: 'Email server and backup storage',
-    dataProcessed: 'Email and backup copies',
+    purpose: 'Email server',
+    dataProcessed: 'Email',
     location: 'Switzerland',
   },
   {

@@ -72,3 +72,9 @@ test('the terms, the policy, the trust page, the footer, the sitemap and llms.tx
   assert.ok(read('app/sitemap.ts').includes('/dpa`'), 'sitemap: no /dpa')
   assert.equal(read('scripts/generate-llms.ts').match(/\$\{SITE\}\/dpa/g)?.length, 2, 'llms.txt and llms-full.txt: /dpa')
 })
+
+test('Annex II states when deleted data leaves the backups (Art. 28(3)(g), Clause 10(d))', () => {
+  const src = read('lib/dpa/agreement.ts')
+  assert.match(src, /Deleted data leaves our backups within \d+ days\./)
+  assert.ok(!src.includes('on their own schedule'), 'Annex II: the backup expiry is not stated')
+})

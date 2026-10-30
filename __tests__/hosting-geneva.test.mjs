@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url'
 
 /**
  * Where the data is, on every surface that says so (28-10-2026). Our servers, databases, file storage and backups moved
- * from Exoscale in Zurich to Infomaniak in Geneva on 27-28 October; Exoscale keeps our email server and backup storage.
+ * from Exoscale in Zurich to Infomaniak in Geneva on 27-28 October; Exoscale keeps our email server. The backup copies followed
+ * on 29 October (both in Infomaniak's object storage, two regions), so no surface may still place backups at Exoscale.
  *
  * Design: Public/docs/plans/28-10-2026-hosting-copy-after-infomaniak.md (rulings H1 A, H2 A).
  *
@@ -18,13 +19,13 @@ import { fileURLToPath } from 'node:url'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => readFileSync(join(root, p), 'utf-8')
 
-test('the privacy table: Infomaniak hosts the servers, Exoscale the email server and backup storage', () => {
+test('the privacy table: Infomaniak hosts the servers and the backups, Exoscale the email server', () => {
   const src = read('lib/subprocessors.ts')
   const infomaniak = src.indexOf("service: 'Infomaniak'")
   const exoscale = src.indexOf("service: 'Exoscale'")
   assert.ok(infomaniak > -1 && exoscale > infomaniak, 'Infomaniak comes first')
   assert.match(src, /purpose: 'Servers, databases, object storage, off-site backups and domain registration'/)
-  assert.match(src, /purpose: 'Email server and backup storage'/)
+  assert.match(src, /service: 'Exoscale',\n    purpose: 'Email server',\n    dataProcessed: 'Email',/)
   assert.doesNotMatch(src, /Compute and object storage/)
   // No encryption-at-rest claim until it holds for everything a row covers (28-10-2026), here or in the security section.
   assert.doesNotMatch(src, /encrypted at rest/)
@@ -35,7 +36,7 @@ test('the trust page: the same two roles, the servers in Geneva', () => {
   const src = read('components/overhaul/trust/content.ts')
   assert.match(src, /The servers that store your data are in Geneva/)
   assert.match(src, /name: 'Infomaniak', mark: 'infomaniak', role: 'Our servers, databases, file storage and backups/)
-  assert.match(src, /name: 'Exoscale', mark: 'exoscale', role: 'Our email server and backup storage'/)
+  assert.match(src, /name: 'Exoscale', mark: 'exoscale', role: 'Our email server', sees: 'Our email',/)
   assert.doesNotMatch(src, /Our servers, databases and file storage', sees: 'Everything we store'.*exoscale/)
   assert.match(src, /serverPlace: 'Geneva, Switzerland'/)
 })
@@ -59,4 +60,26 @@ test('About and the llms files say Infomaniak in Geneva', () => {
   assert.match(llms, /on servers at Infomaniak in Geneva/)
   assert.match(llms, /stored in Switzerland \(Infomaniak, Geneva; backups also in Switzerland\)/)
   assert.doesNotMatch(llms, /Exoscale in Zurich|Exoscale, Zurich/)
+})
+
+test('no provider list still places our backups at Exoscale (they moved to Infomaniak on 29-10-2026)', () => {
+  const line = (f, needle) => {
+    const hit = read(f).split('\n').find((l) => l.includes(needle))
+    assert.ok(hit, `${f} has no line with ${needle}`)
+    return hit
+  }
+  // The rows that name Exoscale, one per surface; DPA Annex IV renders the privacy table's rows.
+  const subprocessors = read('lib/subprocessors.ts')
+  const exoscaleRow = subprocessors.slice(subprocessors.indexOf("service: 'Exoscale'"), subprocessors.indexOf("service: 'Bunny'"))
+  for (const [where, text] of [
+    ['lib/subprocessors.ts', exoscaleRow],
+    ['components/overhaul/trust/content.ts', line('components/overhaul/trust/content.ts', "name: 'Exoscale'")],
+    ['components/overhaul/brand-marks.ts', line('components/overhaul/brand-marks.ts', "key: 'exoscale'")],
+    // One line carries both branches here; only the Exoscale branch is checked (Infomaniak's names the backups).
+    ['components/overhaul/home/variants/RuleStepper.tsx', read('components/overhaul/home/variants/RuleStepper.tsx').match(/m\.key === 'exoscale' \? '([^']*)'/)[1]],
+  ]) {
+    assert.doesNotMatch(text, /backup/i, where)
+  }
+  assert.match(line('components/overhaul/brand-marks.ts', "key: 'exoscale'"), /role: 'Email server'/)
+  assert.match(read('components/overhaul/sustainability/content.ts'), /text: 'Object storage and backups \(Infomaniak\)'/)
 })
