@@ -123,7 +123,7 @@ export const DATA = {
  * D30 (owner 17-10): every outside service, Let's Encrypt and Linear included. Corrected from lib/subprocessors.ts
  * (§5g items 7 to 9): Bunny's purpose names its hosting, and what it sees is the requests themselves (TLS ends at its
  * edge). Since the move to Infomaniak (28-10-2026) Infomaniak's row comes first and names our servers, databases, file
- * storage and backups, and Exoscale's names our email server and backup storage. Neither row here, nor the privacy
+ * storage and backups, and Exoscale's names our email server (its backup storage moved to Infomaniak on 29-10-2026). Neither row here, nor the privacy
  * policy's own table (lib/subprocessors.ts, which only /privacy renders), claims encryption at rest (28-10-2026).
  * 🔴 This list and that table are two lists: edit them together.
  * `place`: the country flag an option may draw. `mark`: the brand mark an option may draw (brand-marks.ts INFRA_MARKS,
@@ -143,7 +143,7 @@ export const PROVIDERS = {
   columns: { name: 'Company', role: 'What we use it for', sees: 'What it sees', where: 'Where' },
   rows: [
     { name: 'Infomaniak', mark: 'infomaniak', role: 'Our servers, databases, file storage and backups, and our domain name', sees: 'Everything we store', where: 'Switzerland', place: 'ch' },
-    { name: 'Exoscale', mark: 'exoscale', role: 'Our email server and backup storage', sees: 'Our email and copies of our backups', where: 'Switzerland', place: 'ch' },
+    { name: 'Exoscale', mark: 'exoscale', role: 'Our email server', sees: 'Our email', where: 'Switzerland', place: 'ch' },
     { name: 'bunny.net', mark: 'bunnydotnet', role: 'Content delivery, DNS, DDoS protection, and hosting for this website', sees: 'Every request, including IP addresses', where: 'Slovenia, servers worldwide', place: 'si' },
     { name: 'Mollie', mark: 'mollie', role: 'Payments', sees: 'Billing and subscription details', where: 'Netherlands', place: 'nl' },
     { name: 'GitHub', mark: 'github', role: 'Our source code', sees: 'Code, no personal data about you', where: 'United States', place: 'us' },

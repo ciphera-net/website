@@ -68,7 +68,7 @@ export const ANNEX_II: { term: string; text: string }[] = [
   },
   {
     term: 'Duration',
-    text: 'For as long as the controller uses Pulse. Events are kept for the retention period the controller sets for each site, six months for a new site unless changed, and then deleted. All of a site’s data is deleted when the site or the account is deleted; backup copies expire on their own schedule after that.',
+    text: 'For as long as the controller uses Pulse. Events are kept for the retention period the controller sets for each site, six months for a new site unless changed, and then deleted. All of a site’s data is deleted when the site or the account is deleted. Deleted data leaves our backups within 90 days. Until then, we use backups only to restore the service and to test that restoring works.',
   },
   {
     term: 'Processing by sub-processors',

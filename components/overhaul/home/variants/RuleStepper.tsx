@@ -425,7 +425,7 @@ function EvidenceBody({ i, colour, size = 'sm' }: { i: number; colour: boolean; 
             </svg>
             <div>
               <p className="font-medium text-foreground">{m.name}</p>
-              <p className="text-xs text-muted-foreground">{m.key === 'exoscale' ? 'Zurich · email and backup storage' : 'Geneva · servers, storage and backups'}</p>
+              <p className="text-xs text-muted-foreground">{m.key === 'exoscale' ? 'Zurich · email server' : 'Geneva · servers, storage and backups'}</p>
             </div>
           </li>
         ))}
