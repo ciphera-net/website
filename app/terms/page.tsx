@@ -192,7 +192,7 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
           7.1. Pulse Analytics
         </h3>
         <ul className={UL}>
-          <li>Pulse collects only aggregated, anonymous data. No personally identifiable information is collected from website visitors.</li>
+          <li>Pulse sets no cookies and never stores the IP addresses of website visitors.</li>
           <li>Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), and does not track visitors across websites. It does not require cookie consent banners.</li>
           <li><strong>Automated traffic.</strong> Pulse identifies traffic that appears to be automated and excludes it from your statistics. Excluded traffic is listed in your site&rsquo;s Bot &amp; Spam settings and can be restored by you at any time. Classification is automated and is not warranted to be free of error; if a real visitor is excluded, restoring the traffic returns it to your reports.</li>
           <li>Analytics data belongs to the website owner who installed Pulse. Ciphera does not access, share, or sell analytics data collected by Pulse.</li>

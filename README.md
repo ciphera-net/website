@@ -148,7 +148,7 @@ Contributions are welcome! See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guide
 ## Privacy
 
 This website follows privacy-first principles:
-- No tracking or analytics by default
+- No third-party tracking; the site measures its own traffic with Pulse
 - Minimal data collection
 - Respects user privacy preferences
 

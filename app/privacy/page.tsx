@@ -122,7 +122,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
     body: (
       <>
         <p className={P}>
-          We apply data minimization as a core design principle. Below is an exhaustive breakdown of every category of data we collect, organized by service.
+          We apply data minimization as a core design principle. Below is a breakdown of the data we collect, organized by service; logs are covered in section 6.
         </p>
 
         {/* 4.1 Website */}
@@ -272,11 +272,11 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           IP addresses are inherently part of internet communications and are temporarily processed by our servers during request handling. Our policy regarding IP addresses is:
         </p>
         <ul className={UL}>
-          <li><strong>No IP address storage</strong> — We do not store raw IP addresses in any database. All IP addresses are cryptographically hashed using HMAC-SHA256 before any persistence: for events tied to a signed-in account the hash is salted with a user-specific value, and for pre-authentication events (such as failed logins) it uses a server-side key. The original IP address is irreversibly discarded and cannot be recovered — not by us, not by anyone.</li>
+          <li><strong>No IP address storage</strong> — We do not store raw IP addresses in any database. All IP addresses are cryptographically hashed using HMAC-SHA256 before any persistence: for events tied to a signed-in account the hash is salted with a user-specific value, and for pre-authentication events (such as failed logins) it uses a server-side key. The original IP address is irreversibly discarded and cannot be recovered from anything we store.</li>
           <li><strong>Temporary processing</strong> — IP addresses may be temporarily held in server memory during active connections for rate limiting and abuse prevention. They are not written to persistent storage in their original form.</li>
           <li><strong>Pulse analytics</strong> — IP addresses are used to make a visitor&rsquo;s one-day identifier and to derive approximate location — country, region and city, unless the site owner has capped the detail or switched it off — then immediately discarded. The IP address itself is never stored.</li>
           <li><strong>Security audit logs</strong> — Security events (logins, password changes, 2FA changes) are logged with a cryptographic hash of the IP address, not the IP itself. This allows detection of patterns (e.g., same device logging in repeatedly) without storing personally identifiable information. Audit logs are retained for up to <span className="tabular-nums text-foreground">180 days</span>, then permanently deleted.</li>
-          <li><strong>Server logs</strong> — Operational server logs that may contain IP addresses are access-controlled and retained only as long as necessary for security and operational purposes.</li>
+          <li><strong>Server logs</strong> — Our own logs keep no IP addresses of visitors or users and are deleted within <span className="tabular-nums text-foreground">30 days</span>. Our content delivery network keeps request logs, with IP addresses, for <span className="tabular-nums text-foreground">3 days</span>, and its firewall keeps the requests it blocks or flags for <span className="tabular-nums text-foreground">3 days</span>. Only staff who need them can read them.</li>
         </ul>
       </>
     ),
@@ -409,7 +409,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
             ['Contact form messages', 'Not stored — forwarded to our team inbox', 'Consent'],
             ['Newsletter subscriptions', 'Until unsubscribe', 'Consent'],
             ['Security audit logs (hashed IPs only)', <>Up to <span className="tabular-nums text-foreground">180 days</span>, then permanently deleted</>, 'Legitimate interest'],
-            ['Server logs', 'Retained only as long as necessary for security and operational purposes', 'Legitimate interest'],
+            ['Server logs', 'Ours up to 30 days, without IP addresses; the content delivery network’s request logs and firewall events 3 days', 'Legitimate interest'],
             ['CAPTCHA verification tokens', 'Expired immediately after use', 'Legitimate interest'],
             ['Email delivery metadata (Relay)', '30 days', 'Contract'],
           ]}
@@ -476,7 +476,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           Your data is primarily stored in Switzerland, which benefits from an EU adequacy decision. In limited cases, data may be processed in other jurisdictions:
         </p>
         <ul className={UL}>
-          <li><strong>CDN/DNS services</strong> — Your requests may be routed through global edge servers for performance and DDoS protection. Only transient connection data (IP addresses) passes through these servers.</li>
+          <li><strong>CDN/DNS services</strong> — Your requests are routed through global edge servers for performance and DDoS protection. Every request passes through these servers, IP addresses included, and they keep request logs for <span className="tabular-nums text-foreground">3 days</span>.</li>
           <li><strong>GitHub</strong> — Public source code hosted in the United States. No personal user data is stored on GitHub.</li>
         </ul>
         <p className={P}>

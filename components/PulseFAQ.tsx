@@ -65,7 +65,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
     {
       question: "What happens to IP addresses?",
-      answer: "IP addresses are used only at the network edge for country-level geolocation. They are immediately discarded after the geo lookup — never stored, never logged, never written to disk. We can't retrieve them even if asked.",
+      answer: "IP addresses are used on arrival to derive an approximate location and a one-day visitor identifier, then discarded. They are not kept in Pulse's analytics data or in our servers' logs, so we can't retrieve them, even if asked.",
     },
     {
       question: "Where is my analytics data stored?",

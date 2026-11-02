@@ -131,3 +131,20 @@ test('a change to the legal pages moves every date that says when they last chan
   const meta = privacy.match(/Last updated (\d{2})-(\d{2})-(\d{4})\.'/)
   assert.equal(`${meta[3]}-${meta[2]}-${meta[1]}`, privacy.match(/dateModified: '(\d{4}-\d{2}-\d{2})'/)[1], 'privacy: the meta description carries another date')
 })
+
+test('the privacy policy, the Terms and the README claim only what holds about IP addresses and logs (02-11-2026)', () => {
+  const privacy = read('app/privacy/page.tsx')
+  for (const gone of ['not by us, not by anyone', 'Only transient connection data', 'an exhaustive breakdown of every category', 'retained only as long as necessary']) {
+    assert.ok(!privacy.includes(gone), `privacy still says "${gone}"`)
+  }
+  assert.ok(privacy.includes('cannot be recovered from anything we store.'))
+  assert.match(privacy, /Our own logs keep no IP addresses of visitors or users and are deleted within <span[^>]*>30 days<\/span>/)
+  assert.match(privacy, /its firewall keeps the requests it blocks or flags for <span[^>]*>3 days<\/span>/)
+  const terms = read('app/terms/page.tsx')
+  assert.ok(!terms.includes('only aggregated, anonymous data'), 'terms: Pulse keeps per-visit data, which the DPA lists as personal data')
+  assert.ok(terms.includes('Pulse sets no cookies and never stores the IP addresses of website visitors.'))
+  assert.ok(!read('README.md').includes('No tracking or analytics by default'), 'README: the site runs its own Pulse tag')
+  for (const f of ['scripts/pages-seed/pulse.json', 'components/PulseFAQ.tsx']) {
+    assert.ok(!/never logged|written to disk|0 seconds — discarded/.test(read(f)), `${f}: an absolute the CDN's firewall contradicts`)
+  }
+})
