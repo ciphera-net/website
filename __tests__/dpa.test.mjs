@@ -78,3 +78,56 @@ test('Annex II states when deleted data leaves the backups (Art. 28(3)(g), Claus
   assert.match(src, /Deleted data leaves our backups within \d+ days\./)
   assert.ok(!src.includes('on their own schedule'), 'Annex II: the backup expiry is not stated')
 })
+
+test('Annex IV names each sub-processor’s contracting company and seat, and Bunny’s row reads as /trust does', () => {
+  const src = read('lib/subprocessors.ts')
+  for (const [service, entity] of [
+    ['Infomaniak', 'Infomaniak Network SA, Geneva'],
+    ['Exoscale', 'Akenes SA, Lausanne'],
+    ['Bunny', 'BunnyWay, informacijske storitve d.o.o., Ljubljana'],
+  ]) {
+    assert.ok(src.includes(`service: '${service}',\n    entity: '${entity}',`), `${service}: no entity "${entity}"`)
+  }
+  assert.match(
+    src,
+    /service: 'Bunny',[\s\S]*?dataProcessed: 'Every request as it passes through, IP addresses included',\n {4}location: 'Slovenia, servers worldwide',/,
+  )
+  assert.ok(!src.includes('IP addresses (transient)'), 'Bunny: "transient" understates what its firewall keeps')
+  for (const page of ['app/dpa/sections.tsx', 'app/privacy/page.tsx']) {
+    assert.ok(read(page).includes('[subprocessorName(s), s.purpose, s.dataProcessed, s.location]'), `${page}: the table drops the company`)
+  }
+})
+
+test('Annex III names the one store of IP addresses and User-Agent strings: the firewall, for 3 days', () => {
+  const src = read('lib/dpa/agreement.ts')
+  assert.ok(
+    src.includes(
+      'used when a request arrives and never stored, except that our content delivery network’s firewall keeps the requests it blocks or flags, with both, for 3 days.',
+    ),
+    'Annex III: the firewall exception is missing',
+  )
+  assert.ok(!src.includes('used when a request arrives and never stored. '), 'Annex III: the unqualified "never stored" is back')
+})
+
+test('Terms 9.3 item 6 promises only what the providers’ agreements say', () => {
+  const src = read('lib/dpa/agreement.ts')
+  assert.ok(src.includes('a written contract binds each one to process it only on our instructions and to keep it secure.'))
+  assert.ok(!src.includes('binds each one to these terms'), 'item 6: no provider’s agreement mentions the CCPA')
+})
+
+test('a change to the legal pages moves every date that says when they last changed', () => {
+  const sitemap = read('app/sitemap.ts')
+  for (const name of ['privacy', 'terms']) {
+    const src = read(`app/${name}/page.tsx`)
+    const iso = src.match(/dateModified: '(\d{4}-\d{2}-\d{2})'/)[1]
+    const shown = src.match(/Last updated: <time dateTime="(\d{4}-\d{2}-\d{2})">(\d{2})-(\d{2})-(\d{4})<\/time>/)
+    assert.ok(shown, `${name}: no "Last updated" line`)
+    assert.equal(shown[1], iso, `${name}: dateModified and the shown date differ`)
+    assert.equal(`${shown[4]}-${shown[3]}-${shown[2]}`, iso, `${name}: the shown date and its dateTime differ`)
+    const site = sitemap.match(new RegExp(`/${name}\`,\\n\\s+lastModified: '(\\d{4}-\\d{2}-\\d{2})'`))[1]
+    assert.equal(site, iso, `${name}: the sitemap's lastModified differs`)
+  }
+  const privacy = read('app/privacy/page.tsx')
+  const meta = privacy.match(/Last updated (\d{2})-(\d{2})-(\d{4})\.'/)
+  assert.equal(`${meta[3]}-${meta[2]}-${meta[1]}`, privacy.match(/dateModified: '(\d{4}-\d{2}-\d{2})'/)[1], 'privacy: the meta description carries another date')
+})

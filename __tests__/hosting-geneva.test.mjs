@@ -25,7 +25,7 @@ test('the privacy table: Infomaniak hosts the servers and the backups, Exoscale 
   const exoscale = src.indexOf("service: 'Exoscale'")
   assert.ok(infomaniak > -1 && exoscale > infomaniak, 'Infomaniak comes first')
   assert.match(src, /purpose: 'Servers, databases, object storage, off-site backups and domain registration'/)
-  assert.match(src, /service: 'Exoscale',\n    purpose: 'Email server',\n    dataProcessed: 'Email',/)
+  assert.match(src, /service: 'Exoscale',\n    entity: 'Akenes SA, Lausanne',\n    purpose: 'Email server',\n    dataProcessed: 'Email',/)
   assert.doesNotMatch(src, /Compute and object storage/)
   // No encryption-at-rest claim until it holds for everything a row covers (28-10-2026), here or in the security section.
   assert.doesNotMatch(src, /encrypted at rest/)

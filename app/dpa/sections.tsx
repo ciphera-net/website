@@ -10,6 +10,7 @@ import type { DpaSectionId } from '@/components/overhaul/legal/legal-words'
 import { H3, P, UL } from '@/components/overhaul/legal/styles'
 import { ANNEX_I, ANNEX_II, ANNEX_III, ANNEX_IV, HOW_IT_APPLIES } from '@/lib/dpa/agreement'
 import { STANDARD_CLAUSES } from '@/lib/dpa/standard-clauses'
+import { subprocessorName } from '@/lib/subprocessors'
 
 const GROUP: Record<string, string> = {
   I: 'Section I',
@@ -98,7 +99,7 @@ export const DPA_SECTIONS: LegalSectionData<DpaSectionId>[] = [
         <LegalTable
           caption="Sub-processors: service, purpose, data processed, and location"
           head={['Service', 'Purpose', 'Data processed', 'Location']}
-          rows={ANNEX_IV.map((s) => [s.service, s.purpose, s.dataProcessed, s.location])}
+          rows={ANNEX_IV.map((s) => [subprocessorName(s), s.purpose, s.dataProcessed, s.location])}
         />
       </>
     ),

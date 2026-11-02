@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { subprocessors, weDoNotUse } from '@/lib/subprocessors'
+import { subprocessorName, subprocessors, weDoNotUse } from '@/lib/subprocessors'
 import { DPA_IN_FORCE } from '@/lib/dpa/agreement'
 import { pageCardImages } from '@/lib/og/cards'
 import { PageOpeningC } from '@/components/overhaul/system/PageOpening'
@@ -13,7 +13,7 @@ const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 30-10-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 02-11-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -36,7 +36,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-10-30',
+  dateModified: '2026-11-02',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -453,7 +453,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
         <LegalTable
           caption="Subprocessors — service, purpose, data processed, and location"
           head={['Service', 'Purpose', 'Data Processed', 'Location']}
-          rows={subprocessors.map((s) => [s.service, s.purpose, s.dataProcessed, s.location])}
+          rows={subprocessors.map((s) => [subprocessorName(s), s.purpose, s.dataProcessed, s.location])}
         />
         <p className={P}>
           All third-party processors are bound by Data Processing Agreements (DPAs) and are contractually required to process data only for the specified purpose. A complete list of sub-processor identities, including specific company names and registered addresses, is available upon request at{' '}
@@ -699,7 +699,7 @@ export default function PrivacyPolicyPage() {
       />
       <PageOpeningC title="Privacy Policy" lead={PRIVACY.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-10-30">30-10-2026</time>
+          Last updated: <time dateTime="2026-11-02">02-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={PRIVACY.SUMMARIES} next={{ href: '/terms', label: 'Terms of Service' }} />
