@@ -240,6 +240,14 @@ steps:
       #
       # The `name=` value carries a comma to publish two tags, so it must be QUOTED
       # INSIDE the CSV or buildctl reads `latest` as a separate attribute.
+      # 🔴 `oci-mediatypes=false` is LOAD-BEARING. BuildKit defaults to OCI media
+      # types; kaniko (replaced 21-08-2026) inherited the base image's, which was
+      # Docker v2. Bunny Magic Containers' image puller sends an Accept header
+      # listing ONLY the Docker types, so it cannot read an OCI manifest — measured
+      # 02-11-2026 against our own registry with Bunny's own header: the OCI tag
+      # answered 404, a Docker v2 tag of the same repo answered 200. Everything else
+      # we run (containerd, skopeo, the cluster) reads Docker v2, so this is strictly
+      # more compatible, not a trade.
       - |
         buildctl build \
           --frontend dockerfile.v0 \
@@ -250,6 +258,6 @@ steps:
           --opt build-arg:CIPHERA_BUILD_SHA="${CI_COMMIT_SHA:0:7}" \
           --import-cache "type=s3,region=$CACHE_REGION,bucket=$CACHE_BUCKET,endpoint_url=$CACHE_ENDPOINT,use_path_style=true,name=$CACHE_NAME" \
           --export-cache "type=s3,region=$CACHE_REGION,bucket=$CACHE_BUCKET,endpoint_url=$CACHE_ENDPOINT,use_path_style=true,name=$CACHE_NAME,mode=max,ignore-error=true,touch_refresh=87600h" \
-          --output "type=image,\"name=$REGISTRY/$IMAGE_REPO:$IMAGE_TAG,$REGISTRY/$IMAGE_REPO:latest\",push=true" \
+          --output "type=image,\"name=$REGISTRY/$IMAGE_REPO:$IMAGE_TAG,$REGISTRY/$IMAGE_REPO:latest\",push=true,oci-mediatypes=false" \
           --progress plain
       - echo "pushed $REGISTRY/$IMAGE_REPO:$IMAGE_TAG and :latest"
