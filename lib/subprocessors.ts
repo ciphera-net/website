@@ -7,9 +7,13 @@
 // * is encrypted by us yet. A claim comes back only once it holds for everything its row covers.
 // * Since 29-10-2026 every backup copy is at Infomaniak (both regions), so Exoscale's row names only the email server it
 // * still runs. DPA Annex IV renders the same rows (lib/dpa/agreement.ts).
+// * `entity` names the contracting company and its seat (02-11-2026), shown after the brand by subprocessorName(), as
+// * Annex IV of the standard clauses asks for each sub-processor's name and address. Bunny's data and location read as
+// * /trust does (components/overhaul/trust/content.ts).
 
 export interface Subprocessor {
   service: string
+  entity?: string
   purpose: string
   dataProcessed: string
   location: string
@@ -18,21 +22,24 @@ export interface Subprocessor {
 export const subprocessors: Subprocessor[] = [
   {
     service: 'Infomaniak',
+    entity: 'Infomaniak Network SA, Geneva',
     purpose: 'Servers, databases, object storage, off-site backups and domain registration',
     dataProcessed: 'All data we store',
     location: 'Switzerland',
   },
   {
     service: 'Exoscale',
+    entity: 'Akenes SA, Lausanne',
     purpose: 'Email server',
     dataProcessed: 'Email',
     location: 'Switzerland',
   },
   {
     service: 'Bunny',
+    entity: 'BunnyWay, informacijske storitve d.o.o., Ljubljana',
     purpose: 'CDN, DNS, DDoS protection, edge routing',
-    dataProcessed: 'IP addresses (transient)',
-    location: 'Global (edge network)',
+    dataProcessed: 'Every request as it passes through, IP addresses included',
+    location: 'Slovenia, servers worldwide',
   },
   {
     service: 'GitHub',
@@ -47,6 +54,11 @@ export const subprocessors: Subprocessor[] = [
     location: 'Netherlands',
   },
 ]
+
+/** The name a table shows: the brand, then the contracting company and its seat where one is recorded. */
+export function subprocessorName(s: Subprocessor): string {
+  return s.entity ? `${s.service} (${s.entity})` : s.service
+}
 
 export const weDoNotUse = [
   'Google Analytics, Google Tag Manager, or any Google tracking service',

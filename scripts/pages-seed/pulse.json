@@ -169,7 +169,7 @@
         "heading": "Hosted in Switzerland. Discarded at the edge.",
         "text": [
           {
-            "text": "All analytics data is processed and stored under the <a href=\"/glossary/fadp\">Federal Act on Data Protection (FADP)</a>. IP addresses are used only to derive an approximate location at the edge and immediately discarded — never stored, never logged."
+            "text": "All analytics data is processed and stored under the <a href=\"/glossary/fadp\">Federal Act on Data Protection (FADP)</a>. IP addresses are used on arrival to derive an approximate location and a one-day visitor identifier, then discarded. Pulse never stores them."
           }
         ],
         "trailingText": "",
@@ -209,7 +209,7 @@
           {
             "icon": "timer",
             "title": "IP retention",
-            "description": "0 seconds — discarded at edge"
+            "description": "None: Pulse never stores it"
           },
           {
             "icon": "shield-check",
@@ -399,7 +399,7 @@
           {
             "categoryKey": "privacy",
             "question": "What happens to IP addresses?",
-            "answer": "IP addresses are used only at the network edge for country-level geolocation. They are immediately discarded after the geo lookup — never stored, never logged, never written to disk. We can't retrieve them even if asked."
+            "answer": "IP addresses are used on arrival to derive an approximate location and a one-day visitor identifier, then discarded. They are not kept in Pulse's analytics data or in our servers' logs, so we can't retrieve them, even if asked."
           },
           {
             "categoryKey": "privacy",

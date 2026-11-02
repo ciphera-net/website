@@ -34,7 +34,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-10-30',
+  dateModified: '2026-11-02',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -192,7 +192,7 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
           7.1. Pulse Analytics
         </h3>
         <ul className={UL}>
-          <li>Pulse collects only aggregated, anonymous data. No personally identifiable information is collected from website visitors.</li>
+          <li>Pulse sets no cookies and never stores the IP addresses of website visitors.</li>
           <li>Pulse does not use cookies, does not use browser fingerprinting techniques (no canvas, WebGL, audio, font, or hardware probing), and does not track visitors across websites. It does not require cookie consent banners.</li>
           <li><strong>Automated traffic.</strong> Pulse identifies traffic that appears to be automated and excludes it from your statistics. Excluded traffic is listed in your site&rsquo;s Bot &amp; Spam settings and can be restored by you at any time. Classification is automated and is not warranted to be free of error; if a real visitor is excluded, restoring the traffic returns it to your reports.</li>
           <li>Analytics data belongs to the website owner who installed Pulse. Ciphera does not access, share, or sell analytics data collected by Pulse.</li>
@@ -567,7 +567,7 @@ export default function TermsOfServicePage() {
       />
       <PageOpeningC title="Terms of Service" lead={TERMS.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-10-30">30-10-2026</time>
+          Last updated: <time dateTime="2026-11-02">02-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={TERMS.SUMMARIES} next={{ href: '/privacy', label: 'Privacy Policy' }} />

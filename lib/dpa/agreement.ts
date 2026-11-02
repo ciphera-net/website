@@ -80,7 +80,7 @@ export const ANNEX_II: { term: string; text: string }[] = [
 export const ANNEX_III: { term: string; text: string }[] = [
   {
     term: 'Minimisation by design',
-    text: 'No cookies and no browser storage for analytics. The IP address and the User-Agent string are used when a request arrives and never stored. The visit identifier lasts one day of the site’s calendar, and its key is then deleted. Region and city are off unless the controller turns them on.',
+    text: 'No cookies and no browser storage for analytics. The IP address and the User-Agent string are used when a request arrives and never stored, except that our content delivery network’s firewall keeps the requests it blocks or flags, with both, for 3 days. The visit identifier lasts one day of the site’s calendar, and its key is then deleted. Region and city are off unless the controller turns them on.',
   },
   {
     term: 'Separation',
@@ -136,7 +136,7 @@ export const CCPA_TERMS: string[] = [
   'We follow the CCPA’s rules for service providers, give the information the same level of privacy protection the CCPA requires of you, and keep it secure.',
   'You may take reasonable and appropriate steps to check how we use it, including an audit once a year. If we decide we can no longer meet our obligations under the CCPA, we tell you, and you may then take reasonable and appropriate steps to stop and remedy any unauthorized use.',
   'We pass on or redirect any request from a visitor that reaches us, and we act on the requests you tell us about.',
-  'We tell you before we add or replace a subcontractor, and a written contract binds each one to these terms.',
+  'We tell you before we add or replace a subcontractor, and a written contract binds each one to process it only on our instructions and to keep it secure.',
   'You decide what Pulse collects, you give your visitors the notices the law requires, and you do not send us sensitive personal information in event properties.',
 ]
 
