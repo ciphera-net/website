@@ -229,11 +229,15 @@ export const SIGN_IN = {
   // gets the address alone, sealed for it at sign-up (id-frontend app/(public)/signup/page.tsx `sealForRelay(email, …)`;
   // the name rides inside the vault: read on main 17-10); the sign-in server can read neither (§5g item 1); nobody but
   // you has the password (OPAQUE). Column order is the `can` order.
+  // Your Pulse teammates (R67, 07-11-2026): Pulse's end-to-end encrypted team names give each teammate a copy of the
+  // display name sealed for their browsers' key, outside the vault (privacy policy, Display name bullet); their browsers
+  // read it, Pulse's servers cannot, and nobody gets the password or the email address that way.
   access: {
     caption: 'Who can read what',
     columns: ['Your password', 'Your name', 'Your email address'],
     rows: [
       { who: 'You, in your browser', can: [true, true, true] },
+      { who: 'Your Pulse teammates, in their browsers', can: [false, true, false] },
       { who: 'Our mail service', can: [false, false, true] },
       { who: 'Our sign-in server', can: [false, false, false] },
     ],

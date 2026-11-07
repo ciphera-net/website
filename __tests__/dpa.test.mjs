@@ -178,3 +178,15 @@ test('the privacy policy says a display name also lives in encrypted team copies
   const breach = bullet('What a database breach would expose:')
   assert.ok(breach.includes('Only encrypted vaults, encrypted team copies of display names, your encrypted team key, public keys that identify nothing, keyed hashes, your OPAQUE credential record and the mail service&rsquo;s encrypted copy of your email address'))
 })
+
+test('the trust page\'s "Who can read what" names the Pulse teammates who read a display name, and nothing else of theirs (07-11-2026)', () => {
+  const trust = read('components/overhaul/trust/content.ts')
+  const rows = [...trust.matchAll(/\{ who: '([^']+)', can: \[(true|false), (true|false), (true|false)\] \}/g)].map((m) => [m[1], m.slice(2, 5).join(',')])
+  assert.ok(trust.includes("columns: ['Your password', 'Your name', 'Your email address']"), 'trust: the columns moved, so the can order below means something else')
+  assert.deepEqual(rows, [
+    ['You, in your browser', 'true,true,true'],
+    ['Your Pulse teammates, in their browsers', 'false,true,false'],
+    ['Our mail service', 'false,false,true'],
+    ['Our sign-in server', 'false,false,false'],
+  ])
+})
