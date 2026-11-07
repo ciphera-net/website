@@ -46,11 +46,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Legal pages
     {
       url: `${baseUrl}/privacy`,
-      lastModified: '2026-11-02',
+      lastModified: '2026-11-07',
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: '2026-11-02',
+      lastModified: '2026-11-07',
     },
     {
       // The processing agreement (PUL-37): published 30-10-2026, in force 29-11-2026; Annexes III and IV updated 02-11-2026.
