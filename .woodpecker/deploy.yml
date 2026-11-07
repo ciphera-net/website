@@ -332,6 +332,72 @@ steps:
       # 15-08-2026. This step returning green means MC is CONFIGURED to run the new
       # image, not that every region already serves it. See purge-cdn below.
       - echo "Magic Containers app $MC_APP_ID set to sha-$DEPLOY_SHA ($MC_HOSTNAME) — rollout across 42 regions takes ~10 min"
+  # GREEN MEANS LIVE (since 07-11-2026). bunny-push ends as soon as the app's TEMPLATE holds the new digest, which
+  # the API shows within seconds; the regions then replace their instances over 2.5 to 20 minutes, and a rollout one
+  # region cannot start is put back by Bunny after about 25 minutes with no error anywhere (docs, 21-10-2026). So a
+  # green pipeline meant "configured", not "serving". This step waits until the app reads `active` on the shipped
+  # tag and digest and every ready container in /overview runs that digest, polling every 15 s for at most 20
+  # minutes. A template moved off the shipped tag is a revert and fails at once.
+  wait-live:
+    image: alpine:3.20
+    depends_on: [bunny-push]
+    backend_options:
+      kubernetes:
+        resources:
+          requests: { memory: 128Mi, cpu: 100m }
+          limits: { memory: 512Mi }
+    environment:
+      MC_APP_ID:
+        from_secret: mc_app_id
+      BUNNY_API_KEY:
+        from_secret: bunny_api_key
+    commands:
+      - apk add --no-cache curl jq >/dev/null || { echo "apk add failed"; exit 1; }
+      - |
+        LIMIT=1200
+        DIGEST=$(cat /woodpecker/digest) || { echo "digest handoff missing"; exit 1; }
+        TAG="sha-$(cat /woodpecker/deploy_sha)" || { echo "deploy_sha handoff missing"; exit 1; }
+        case "$DIGEST" in sha256:*) ;; *) echo "bad digest handoff [$DIGEST]"; exit 1 ;; esac
+        START=$(date +%s); LAST=""
+        while :; do
+          T=$(( $(date +%s) - START ))
+          A=$(curl -s --max-time 20 -o /tmp/mc-app.json -w '%{http_code}' -H "AccessKey: $BUNNY_API_KEY" \
+                "https://api.bunny.net/mc/apps/$MC_APP_ID") || A="curl rc=$?"
+          O=$(curl -s --max-time 30 -o /tmp/mc-overview.json -w '%{http_code}' -H "AccessKey: $BUNNY_API_KEY" \
+                "https://api.bunny.net/mc/apps/$MC_APP_ID/overview") || O="curl rc=$?"
+          if [ "$A" = 200 ] && [ "$O" = 200 ]; then
+            NOWTAG=$(jq -r '.containerTemplates[0].imageTag' /tmp/mc-app.json)
+            if [ "$NOWTAG" != "$TAG" ]; then
+              echo "FAIL: the app's template now names $NOWTAG, not $TAG. Bunny put the previous release back (a region could"
+              echo "not start the new one: read GET /mc/apps/<id>/logs), or a newer deploy replaced this one."
+              exit 1
+            fi
+            ST=$(jq -r --arg d "$DIGEST" '"\(.status) digest-match=\(.containerTemplates[0].imageDigest == $d)"' /tmp/mc-app.json)
+            RD=$(jq -r '[.regions[].pods[].containers[] | select(.status == "ready") | .image | sub(".*@sha256:"; "") | .[0:12]]
+                        | group_by(.) | map("\(.[0]) x\(length)") | join(", ")' /tmp/mc-overview.json)
+            LIVE=$(jq -r --arg d "$DIGEST" '[.regions[].pods[].containers[] | select(.status == "ready") | .image
+                        | endswith("@" + $d)] | (length > 0 and all)' /tmp/mc-overview.json)
+            LINE="$ST | ready containers by digest: $RD"
+            [ "$LINE" != "$LAST" ] && { echo "+$((T))s $LINE"; LAST=$LINE; }
+            if [ "$ST" = "active digest-match=true" ] && [ "$LIVE" = true ]; then
+              echo "LIVE after $((T))s: the app is active on $TAG and every ready container runs $DIGEST"
+              break
+            fi
+          else
+            echo "+$((T))s API read failed (app: $A, overview: $O), retrying"
+          fi
+          if [ "$T" -ge "$LIMIT" ]; then
+            echo "FAIL: not live after $((LIMIT / 60)) minutes. Regions not yet on $DIGEST:"
+            jq -r --arg d "$DIGEST" '.regions[] | select(any(.pods[].containers[]; .status != "ready" or (.image | endswith("@" + $d) | not)))
+                   | "  \(.region): \([.pods[].containers[] | "\(.status) \(.image | sub(".*@sha256:"; "") | .[0:12])"] | join(", "))"' \
+              /tmp/mc-overview.json
+            echo "Bunny reverts a rollout it cannot finish after about 25 minutes. Read GET /mc/apps/<id>/logs for"
+            echo "\"Failed to pull image\" or CreatePodSandboxError lines from those regions."
+            exit 1
+          fi
+          sleep 15
+        done
+
 
   # ⚠️ THIS PURGE NARROWS THE WINDOW; IT DOES NOT CLOSE IT.
   #
@@ -366,7 +432,7 @@ steps:
         resources:
           requests: { memory: 128Mi, cpu: 100m }
           limits: { memory: 512Mi }
-    depends_on: [bunny-push]
+    depends_on: [wait-live]
     environment:
       BUNNY_API_KEY:
         from_secret: bunny_api_key
@@ -404,4 +470,30 @@ steps:
             -H "AccessKey: $BUNNY_API_KEY" \
             || { echo "DEPLOY SHIPPED; CDN PURGE FAILED for $TARGET — re-run the purge only, do NOT re-deploy"; exit 1; }
           echo "Purged $TARGET"
+        done
+      # VERIFY (since 07-11-2026). wait-live proved every region serves the new build before the purge above, so a
+      # page the edge fetched after the purge is the new build. Each page must answer 200 and be a MISS or a copy
+      # cached after the purge; an older copy means the purge did not take on this edge (one edge node ignored
+      # purges for days in October), so it is purged again and re-read, every 15 s, for up to five minutes.
+      - |
+        PURGED=$(date -u +%s)
+        for URL in https://ciphera.net/ https://ciphera.net/privacy https://ciphera.net/terms https://ciphera.net/about; do
+          ok=no
+          for i in $(seq 1 20); do
+            CODE=$(curl -s -o /dev/null -D /tmp/h -w '%{http_code}' --max-time 30 "$URL") || CODE=000
+            CACHE=$(grep -i '^cdn-cache:' /tmp/h | tr -d '\r' | awk '{print toupper($2)}')
+            AT=$(grep -i '^cdn-cachedat:' /tmp/h | tr -d '\r' | cut -d' ' -f2-)
+            ATS=0
+            [ -n "$AT" ] && ATS=$(date -u -D '%m/%d/%Y %H:%M:%S' -d "$AT" +%s 2>/dev/null || echo 0)
+            if [ "$CODE" = 200 ] && { [ "$CACHE" = MISS ] || [ "$ATS" -ge "$PURGED" ]; }; then
+              echo "verified $URL: HTTP $CODE, cdn-cache $CACHE, cached at [$AT]"
+              ok=yes
+              break
+            fi
+            echo "$URL: HTTP $CODE, cdn-cache $CACHE, cached at [$AT], before the purge ended ($(date -u -d @"$PURGED" +%H:%M:%S)): purging it again"
+            curl -fsS --max-time 60 -X POST "https://api.bunny.net/purge?url=$URL&async=false" \
+              -H "AccessKey: $BUNNY_API_KEY" >/dev/null || echo "re-purge of $URL failed; re-reading anyway"
+            sleep 15
+          done
+          [ "$ok" = yes ] || { echo "FAIL: $URL still serves a copy cached before the purge, after five minutes"; exit 1; }
         done
