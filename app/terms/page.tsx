@@ -53,7 +53,7 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
     body: (
       <>
         <p className={P}>
-          By accessing or using any Ciphera service — including Pulse Analytics, Ciphera Captcha, the email we send, the Ciphera ID sign-in used to access them, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera BV, a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
+          By accessing or using any Ciphera service — including Pulse Analytics, Ciphera Captcha, Ciphera Relay, the Ciphera ID sign-in used to access them, and the ciphera.net website (collectively, the &quot;Services&quot;) — you agree to be bound by these Terms of Service (the &quot;Terms&quot;). These Terms constitute a legally binding agreement between you and Ciphera BV, a company incorporated under Belgian law (KBO/BCE: 1013.721.660), with registered offices at De Kleetlaan 2, 1831 Diegem, Belgium (&quot;Ciphera,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
         </p>
         <p className={P}>
           If you do not agree to these Terms, you must not access or use the Services. If you are accepting these Terms on behalf of an organization, you represent and warrant that you have the authority to bind that organization.
@@ -86,7 +86,7 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
         <ul className={UL}>
           <li><strong>Pulse Analytics:</strong> Privacy-respecting website analytics that operates without cookies, without fingerprinting techniques, and without storing IP addresses.</li>
           <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
-          <li><strong>Email:</strong> The mail service that sends account and Pulse email (section 7.4).</li>
+          <li><strong>Ciphera Relay:</strong> The email service that sends account and Pulse email (section 7.4).</li>
         </ul>
         <p className={P}>
           Access to these Services is authenticated by <strong>Ciphera ID</strong>, our zero-knowledge sign-in. Ciphera ID is internal infrastructure rather than a separately offered Service: it is not licensed, sold, or made available for third-party applications to integrate.
@@ -221,7 +221,7 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
         </ul>
 
         <h3 className={H3}>
-          7.4. Email
+          7.4. Ciphera Relay (Email)
         </h3>
         <ul className={UL}>
           <li>We send account email from Ciphera ID (sign-in codes and security notices) and email about your Pulse workspace (alerts, billing, reports and setup messages).</li>

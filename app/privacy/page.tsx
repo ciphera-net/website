@@ -219,12 +219,12 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           <strong>Legal basis:</strong> Legitimate interest (abuse prevention, service security).
         </p>
 
-        {/* 4.5 Email */}
+        {/* 4.5 Relay */}
         <h3 className={H3}>
-          4.5. Email
+          4.5. Ciphera Relay (Email)
         </h3>
         <p className={P}>
-          We send email from our own mail service, which runs on our servers. It sends two kinds of email:
+          We send email from Ciphera Relay, our own mail service, which runs on our servers. It sends two kinds of email:
         </p>
         <ul className={UL}>
           <li><strong>Account email from Ciphera ID:</strong> sign-in and verification codes, a notice when a new browser signs in, and notices when your email address, a passkey or two-factor sign-in changes.</li>
