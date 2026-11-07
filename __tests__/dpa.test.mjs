@@ -148,3 +148,45 @@ test('the privacy policy, the Terms and the README claim only what holds about I
     assert.ok(!/never logged|written to disk|0 seconds — discarded/.test(read(f)), `${f}: an absolute the CDN's firewall contradicts`)
   }
 })
+
+test('the privacy policy says a display name also lives in encrypted team copies, in the three places that describe the vault (07-11-2026)', () => {
+  const privacy = read('app/privacy/page.tsx')
+  const bullet = (label) => {
+    const m = privacy.match(new RegExp(`<li><strong>${label}</strong>(.*?)</li>`))
+    assert.ok(m, `privacy: no "${label}" bullet`)
+    return m[1]
+  }
+  for (const gone of ['stored only inside your client-encrypted', 'live only inside your account vault']) {
+    assert.ok(!privacy.includes(gone), `privacy still says "${gone}"`)
+  }
+  const name = bullet('Display name')
+  for (const claim of [
+    'it is stored inside your client-encrypted account vault and never held on our servers in readable form.',
+    'If you are in a Pulse team, your browser also encrypts it separately for each teammate,',
+    'which we never hold; our servers keep those encrypted copies without being able to read them.',
+    'The copies made for a teammate are deleted from the live database when that teammate leaves the team.',
+    'after you leave, so the team&rsquo;s activity log can still show who did what, and are deleted earlier if you clear your display name or delete your account.',
+  ]) {
+    assert.ok(name.includes(claim), `privacy, display name: missing "${claim}"`)
+  }
+  assert.match(name, /kept for up to <span[^>]*>twelve months<\/span> after you leave/)
+  const vault = bullet('Stored in your vault, not on our servers:')
+  assert.ok(vault.includes('They live inside your account vault, which is encrypted on your device under a key we never hold; if you are in a Pulse team, your display name also lives in encrypted copies for each teammate that only their browsers can open.'))
+  // The mail service's copy of the email address (section 4.5) shares these two bullets with the team copies:
+  // an edit made from an older base must not drop either claim.
+  assert.ok(vault.includes('Our mail service keeps a separately encrypted copy of your email address so it can email you (section 4.5).'))
+  const breach = bullet('What a database breach would expose:')
+  assert.ok(breach.includes('Only encrypted vaults, encrypted team copies of display names, your encrypted team key, public keys that identify nothing, keyed hashes, your OPAQUE credential record and the mail service&rsquo;s encrypted copy of your email address'))
+})
+
+test('the trust page\'s "Who can read what" names the Pulse teammates who read a display name, and nothing else of theirs (07-11-2026)', () => {
+  const trust = read('components/overhaul/trust/content.ts')
+  const rows = [...trust.matchAll(/\{ who: '([^']+)', can: \[(true|false), (true|false), (true|false)\] \}/g)].map((m) => [m[1], m.slice(2, 5).join(',')])
+  assert.ok(trust.includes("columns: ['Your password', 'Your name', 'Your email address']"), 'trust: the columns moved, so the can order below means something else')
+  assert.deepEqual(rows, [
+    ['You, in your browser', 'true,true,true'],
+    ['Your Pulse teammates, in their browsers', 'false,true,false'],
+    ['Our mail service', 'false,false,true'],
+    ['Our sign-in server', 'false,false,false'],
+  ])
+})
