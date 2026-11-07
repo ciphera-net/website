@@ -13,7 +13,7 @@ const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 02-11-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 07-11-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -36,7 +36,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-11-02',
+  dateModified: '2026-11-07',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -135,10 +135,9 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
         <ul className={UL}>
           <li><strong>Analytics data</strong> — Page views, referrer sources, UTM parameters, device type, browser, operating system, and approximate location (country, region, and city). Collected via our own Pulse Analytics platform, which uses no cookies, no fingerprinting, and no personal identifiers. It cannot be traced to you as a person: there is no name, no email, no account and no identifier that recognises a visitor for more than one day or reaches another website.</li>
           <li><strong>Contact form submissions</strong> — Name, email address, subject, and message content, submitted voluntarily through our contact page.</li>
-          <li><strong>Newsletter subscriptions</strong> — Email address only, submitted voluntarily with explicit consent.</li>
         </ul>
         <p className={P}>
-          <strong>Legal basis:</strong> Legitimate interest (analytics), consent (contact form, newsletter).
+          <strong>Legal basis:</strong> Legitimate interest (analytics), consent (contact form).
         </p>
 
         {/* 4.2 Ciphera ID */}
@@ -149,7 +148,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           When you create a Ciphera account, we collect:
         </p>
         <ul className={UL}>
-          <li><strong>Email address</strong> — Used for account identification, verification, and security notifications. Your email is never stored on our servers in readable form: it is kept only inside your client-encrypted account vault, which we cannot decrypt. To sign you in, we match your account using a blind index — an irreversible keyed hash derived from your email on your device and hashed again on our servers — so we can find your account without ever holding your address.</li>
+          <li><strong>Email address</strong> — Used for account identification, verification, and security notifications. Your email is never stored on our servers in readable form: it is kept inside your client-encrypted account vault, which we cannot decrypt, and, encrypted separately, by our mail service so it can email you (section 4.5). To sign you in, we match your account using a blind index — an irreversible keyed hash derived from your email on your device and hashed again on our servers — so finding your account never needs your address.</li>
           <li><strong>Display name</strong> — Chosen by you, used for display and identification purposes. Like your email, it is stored only inside your client-encrypted account vault and never held on our servers in readable form.</li>
           <li><strong>Password</strong> — Your password never leaves your device. We use OPAQUE (RFC 9807), a password-authenticated key exchange: your password is strengthened on your device using Argon2id and proven to our servers without ever being sent. We store only an opaque credential record that cannot be reversed into your password — no password, no password hash, and no password-equivalent verifier. We cannot see, recover, or reset your password.</li>
           <li><strong>Session metadata</strong> — Login timestamps, device type, and browser information for active session management.</li>
@@ -220,22 +219,30 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           <strong>Legal basis:</strong> Legitimate interest (abuse prevention, service security).
         </p>
 
-        {/* 4.6 Relay */}
+        {/* 4.5 Relay */}
         <h3 className={H3}>
-          4.5. Ciphera Relay (Email Infrastructure)
+          4.5. Ciphera Relay (Email)
         </h3>
         <p className={P}>
-          Relay handles transactional emails (account verification, security notifications, password resets) for Ciphera services. We collect:
+          We send email from Ciphera Relay, our own mail service, which runs on our servers. It sends two kinds of email:
         </p>
         <ul className={UL}>
-          <li><strong>Recipient email addresses</strong> — Required to deliver transactional emails.</li>
-          <li><strong>Delivery metadata</strong> — Delivery status, bounce information, and timestamps for operational monitoring.</li>
+          <li><strong>Account email from Ciphera ID:</strong> sign-in and verification codes, a notice when a new browser signs in, and notices when your email address, a passkey or two-factor sign-in changes.</li>
+          <li><strong>Email about your Pulse workspace:</strong> the alerts you set up (uptime, certificates, usage), billing (invoices, failed payments, renewals), the reports you schedule, the weekly summary while it is on, and messages that help you set up your sites, such as a reminder when a new site has not sent any data. Each one is about your own workspace. We send no newsletters, product news or advertising.</li>
         </ul>
         <p className={P}>
-          Relay does not send marketing emails, does not track email opens via tracking pixels, and does not share recipient data with third parties. Email content is transmitted over encrypted connections (TLS).
+          To send them, we keep:
+        </p>
+        <ul className={UL}>
+          <li><strong>Your email address:</strong> encrypted, and decrypted only to send you an email.</li>
+          <li><strong>Delivery records:</strong> for each email, its type, when we sent it, and whether the receiving mail server accepted or refused it (a refusal is called a bounce).</li>
+          <li><strong>Facts that time the setup messages:</strong> our own copy of an open-source scheduling tool (Dittofeed), running on our servers, holds each workspace&rsquo;s ids, counts, dates and plan. It never receives a name or an email address.</li>
+        </ul>
+        <p className={P}>
+          You can turn off each kind of Pulse email in your notification settings or with the link at the bottom of the email. Account, security and billing emails stay on while you have an account, because they concern access and payments. We do not track whether you open an email, we add no tracking pixels, and we share no recipient data with third parties. Email is sent over encrypted connections (TLS).
         </p>
         <p className={P}>
-          <strong>Legal basis:</strong> Contract performance (transactional communications).
+          <strong>Legal basis:</strong> Contract performance (account, security and billing email, and the alerts and reports you set up); legitimate interest (messages that help you set up your own workspace, which you can turn off).
         </p>
       </>
     ),
@@ -356,9 +363,9 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           Account Data Encryption
         </h3>
         <ul className={UL}>
-          <li><strong>Stored in your vault, not on our servers:</strong> Your email address and display name are never stored on our servers in readable form. They live only inside your account vault, which is encrypted on your device under a key we never hold. Two-factor authentication secrets, which our servers need in order to verify your codes, are encrypted at rest using AES-256-GCM.</li>
+          <li><strong>Stored in your vault, not on our servers:</strong> Your email address and display name are never stored on our servers in readable form. They live inside your account vault, which is encrypted on your device under a key we never hold; our mail service keeps a separately encrypted copy of your email address so it can email you (section 4.5). Two-factor authentication secrets, which our servers need in order to verify your codes, are encrypted at rest using AES-256-GCM.</li>
           <li><strong>Blind-index lookups:</strong> To find your account at sign-in, we use a blind index — an irreversible keyed hash of your email, computed on your device and hashed again on our servers. Your email is never stored in readable form.</li>
-          <li><strong>What a database breach would expose:</strong> Only encrypted vaults, keyed hashes, and your OPAQUE credential record — no plaintext email or display name, no password, and nothing that can be reversed into them.</li>
+          <li><strong>What a database breach would expose:</strong> Only encrypted vaults, keyed hashes, your OPAQUE credential record and the mail service&rsquo;s encrypted copy of your email address — no plaintext email or display name, no password, and nothing that can be reversed into them.</li>
         </ul>
 
         <h3 className={H3}>
@@ -407,11 +414,11 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
             ['Session data', <>Until logout or <span className="tabular-nums text-foreground">30 days</span> (refresh token expiry)</>, 'Contract'],
             ['Analytics data (Pulse)', 'The retention period each website owner sets (six months for a new site), then deleted', 'Legitimate interest'],
             ['Contact form messages', 'Not stored — forwarded to our team inbox', 'Consent'],
-            ['Newsletter subscriptions', 'Until unsubscribe', 'Consent'],
             ['Security audit logs (hashed IPs only)', <>Up to <span className="tabular-nums text-foreground">180 days</span>, then permanently deleted</>, 'Legitimate interest'],
             ['Server logs', 'Ours up to 30 days, without IP addresses; the content delivery network’s request logs and firewall events 3 days', 'Legitimate interest'],
             ['CAPTCHA verification tokens', 'Expired immediately after use', 'Legitimate interest'],
-            ['Email delivery metadata (Relay)', '30 days', 'Contract'],
+            ['Email delivery records', '90 days; 365 days for billing and security emails', 'Contract'],
+            ['Your email address (to send you email)', 'Until you delete your account', 'Contract'],
           ]}
         />
       </>
@@ -427,13 +434,13 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
         </p>
         <ul className={UL}>
           <li>
-            <strong>Contract performance (Article 6(1)(b)):</strong> Processing necessary to provide the services you requested — account management, session management, and transactional emails.
+            <strong>Contract performance (Article 6(1)(b)):</strong> Processing necessary to provide the services you requested — account management, session management, and the emails described in section 4.5.
           </li>
           <li>
-            <strong>Legitimate interest (Article 6(1)(f)):</strong> Processing necessary for our legitimate interests, where those interests are not overridden by your rights — anonymous website analytics, abuse prevention, rate limiting, and service security. We conduct balancing tests for each legitimate interest processing activity.
+            <strong>Legitimate interest (Article 6(1)(f)):</strong> Processing necessary for our legitimate interests, where those interests are not overridden by your rights — anonymous website analytics, messages that help you set up your own Pulse workspace, abuse prevention, rate limiting, and service security. We conduct balancing tests for each legitimate interest processing activity.
           </li>
           <li>
-            <strong>Consent (Article 6(1)(a)):</strong> Processing based on your freely given, specific, informed consent — newsletter subscriptions, contact form submissions, and optional communications. You may withdraw consent at any time.
+            <strong>Consent (Article 6(1)(a)):</strong> Processing based on your freely given, specific, informed consent — contact form submissions and optional communications. You may withdraw consent at any time.
           </li>
           <li>
             <strong>Legal obligation (Article 6(1)(c)):</strong> Processing necessary to comply with legal requirements — responding to valid law enforcement requests (see Section 14).
@@ -699,7 +706,7 @@ export default function PrivacyPolicyPage() {
       />
       <PageOpeningC title="Privacy Policy" lead={PRIVACY.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-11-02">02-11-2026</time>
+          Last updated: <time dateTime="2026-11-07">07-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={PRIVACY.SUMMARIES} next={{ href: '/terms', label: 'Terms of Service' }} />

@@ -34,7 +34,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-11-02',
+  dateModified: '2026-11-07',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -86,7 +86,7 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
         <ul className={UL}>
           <li><strong>Pulse Analytics:</strong> Privacy-respecting website analytics that operates without cookies, without fingerprinting techniques, and without storing IP addresses.</li>
           <li><strong>Ciphera Captcha:</strong> Privacy-first bot protection with ephemeral behavioral analysis. No cookies, no cross-site tracking, no third-party data collection.</li>
-          <li><strong>Ciphera Relay:</strong> Secure transactional email infrastructure for delivering encrypted communications.</li>
+          <li><strong>Ciphera Relay:</strong> The email service that sends account and Pulse email (section 7.4).</li>
         </ul>
         <p className={P}>
           Access to these Services is authenticated by <strong>Ciphera ID</strong>, our zero-knowledge sign-in. Ciphera ID is internal infrastructure rather than a separately offered Service: it is not licensed, sold, or made available for third-party applications to integrate.
@@ -221,12 +221,12 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
         </ul>
 
         <h3 className={H3}>
-          7.4. Ciphera Relay (Email Infrastructure)
+          7.4. Ciphera Relay (Email)
         </h3>
         <ul className={UL}>
-          <li>Relay handles transactional emails (account verification, security alerts, password resets) for Ciphera services.</li>
-          <li>Relay does not send marketing or promotional emails.</li>
-          <li>All emails are transmitted over encrypted connections (TLS). We do not use tracking pixels in any emails.</li>
+          <li>We send account email from Ciphera ID (sign-in codes and security notices) and email about your Pulse workspace (alerts, billing, reports and setup messages).</li>
+          <li>We do not send marketing or promotional emails.</li>
+          <li>Email is sent over encrypted connections (TLS). We do not use tracking pixels in any emails.</li>
         </ul>
       </>
     ),
@@ -568,7 +568,7 @@ export default function TermsOfServicePage() {
       />
       <PageOpeningC title="Terms of Service" lead={TERMS.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-11-02">02-11-2026</time>
+          Last updated: <time dateTime="2026-11-07">07-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={TERMS.SUMMARIES} next={{ href: '/privacy', label: 'Privacy Policy' }} />
