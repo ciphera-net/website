@@ -13,7 +13,7 @@ const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 07-11-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 08-11-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -36,7 +36,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-11-07',
+  dateModified: '2026-11-08',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -148,7 +148,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           When you create a Ciphera account, we collect:
         </p>
         <ul className={UL}>
-          <li><strong>Email address</strong> — Used for account identification, verification, and security notifications. Your email is never stored on our servers in readable form: it is kept inside your client-encrypted account vault, which we cannot decrypt, and, encrypted separately, by our mail service so it can email you (section 4.5). To sign you in, we match your account using a blind index — an irreversible keyed hash derived from your email on your device and hashed again on our servers — so finding your account never needs your address.</li>
+          <li><strong>Email address</strong> — Used for account identification, verification, and security notifications. Your email is never stored on our servers in readable form: it is kept inside your client-encrypted account vault, which we cannot decrypt, and, encrypted separately, by our mail service so it can email you (section 4.5). If you are in a Pulse team, your browser also encrypts your email address separately for each of the team&rsquo;s owners and admins, with a key only their browsers can use; our servers keep those copies without being able to read them. The copies made for an owner or admin are deleted from the live database when that person leaves the team or stops being an owner or admin. The copies made for the team&rsquo;s owners and admins are kept for up to <span className="tabular-nums text-foreground">twelve months</span> after you leave, so the team&rsquo;s activity log can still show who did what, and are deleted earlier if you delete your account. To sign you in, we match your account using a blind index — an irreversible keyed hash derived from your email on your device and hashed again on our servers — so finding your account never needs your address.</li>
           <li><strong>Display name</strong> — Chosen by you, used for display and identification purposes. Like your email, it is stored inside your client-encrypted account vault and never held on our servers in readable form. If you are in a Pulse team, your browser also encrypts it separately for each teammate, with a key that only that teammate&rsquo;s browsers can use and that is itself encrypted under their vault key, which we never hold; our servers keep those encrypted copies without being able to read them. The copies made for a teammate are deleted from the live database when that teammate leaves the team. The copies made for your teammates are kept for up to <span className="tabular-nums text-foreground">twelve months</span> after you leave, so the team&rsquo;s activity log can still show who did what, and are deleted earlier if you clear your display name or delete your account.</li>
           <li><strong>Password</strong> — Your password never leaves your device. We use OPAQUE (RFC 9807), a password-authenticated key exchange: your password is strengthened on your device using Argon2id and proven to our servers without ever being sent. We store only an opaque credential record that cannot be reversed into your password — no password, no password hash, and no password-equivalent verifier. We cannot see, recover, or reset your password.</li>
           <li><strong>Session metadata</strong> — Login timestamps, device type, and browser information for active session management.</li>
@@ -363,9 +363,9 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           Account Data Encryption
         </h3>
         <ul className={UL}>
-          <li><strong>Stored in your vault, not on our servers:</strong> Your email address and display name are never stored on our servers in readable form. They live inside your account vault, which is encrypted on your device under a key we never hold; if you are in a Pulse team, your display name also lives in encrypted copies for each teammate that only their browsers can open. Our mail service keeps a separately encrypted copy of your email address so it can email you (section 4.5). Two-factor authentication secrets, which our servers need in order to verify your codes, are encrypted at rest using AES-256-GCM.</li>
+          <li><strong>Stored in your vault, not on our servers:</strong> Your email address and display name are never stored on our servers in readable form. They live inside your account vault, which is encrypted on your device under a key we never hold; if you are in a Pulse team, your display name also lives in encrypted copies for each teammate, and your email address in encrypted copies for each owner and admin, that only their browsers can open. Our mail service keeps a separately encrypted copy of your email address so it can email you (section 4.5). Two-factor authentication secrets, which our servers need in order to verify your codes, are encrypted at rest using AES-256-GCM.</li>
           <li><strong>Blind-index lookups:</strong> To find your account at sign-in, we use a blind index — an irreversible keyed hash of your email, computed on your device and hashed again on our servers. Your email is never stored in readable form.</li>
-          <li><strong>What a database breach would expose:</strong> Only encrypted vaults, encrypted team copies of display names, your encrypted team key, public keys that identify nothing, keyed hashes, your OPAQUE credential record and the mail service&rsquo;s encrypted copy of your email address — no plaintext email or display name, no password, and nothing that can be reversed into them.</li>
+          <li><strong>What a database breach would expose:</strong> Only encrypted vaults, encrypted team copies of display names and email addresses, your encrypted team key, public keys that identify nothing, keyed hashes, your OPAQUE credential record and the mail service&rsquo;s encrypted copy of your email address — no plaintext email or display name, no password, and nothing that can be reversed into them.</li>
         </ul>
 
         <h3 className={H3}>
@@ -706,7 +706,7 @@ export default function PrivacyPolicyPage() {
       />
       <PageOpeningC title="Privacy Policy" lead={PRIVACY.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-11-07">07-11-2026</time>
+          Last updated: <time dateTime="2026-11-08">08-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={PRIVACY.SUMMARIES} next={{ href: '/terms', label: 'Terms of Service' }} />
