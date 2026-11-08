@@ -73,6 +73,21 @@ test('a Pulse post’s card is Ciphera’s post card with Pulse’s lockup, its 
   assert.match(read('lib', 'og', 'spec.ts'), /export type OgKind = 'page' \| 'post' \| 'term' \| 'learn' \| 'pulse-post'/)
 })
 
+test('status.ciphera.net’s card is a page card here, at the address that site declares', () => {
+  // status.ciphera.net is not built in this repo: it writes this card's address into its own head
+  // (ciphera-net/status, web/templates/status.html) and pins the same known answer in its tests.
+  const words = code('lib', 'og', 'cards.ts').match(/^  status: \{ label: '([^']*)', title: '([^']*)', lead: '([^']*)' \},$/m)
+  assert.ok(words, 'lib/og/cards.ts has no status card')
+  assert.deepEqual(words.slice(1), ['Resources', 'Ciphera status', 'Live status of Pulse, Ciphera ID, email and the Ciphera websites.'])
+  // The address worked out as lib/og/url.ts does: the key in hex, the hash over the template and the words.
+  const template = read('lib', 'og', 'spec.ts').match(/^export const OG_TEMPLATE = '([^']+)'$/m)?.[1]
+  assert.ok(template, 'lib/og/spec.ts has no OG_TEMPLATE')
+  const hash = createHash('sha256').update(JSON.stringify([template, ...words.slice(1)])).digest('hex').slice(0, 12)
+  // A change to the words or to OG_TEMPLATE fails here: update status.ciphera.net's og:image in step, or its card
+  // costs a 308 until it is.
+  assert.equal(`/og/page--_${Buffer.from('status', 'utf8').toString('hex')}--${hash}.png`, '/og/page--_737461747573--6f21c8c5416e.png')
+})
+
 test('a WordPress stub or CMS page image never replaces a page’s own card', () => {
   const seo = read('lib', 'seo.ts')
   // Both merges: the sync seoFor() and the runtime mergeRouteSeo().
