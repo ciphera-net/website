@@ -30,6 +30,11 @@ export const PAGE_CARDS = {
   privacy: { label: 'Legal', title: 'Privacy policy' },
   terms: { label: 'Legal', title: 'Terms of service' },
   dpa: { label: 'Legal', title: 'Data processing agreement' },
+  // status.ciphera.net's card (08-11-2026): that page is not built here, so it declares this address itself
+  // (ciphera-net/status, web/templates/status.html) and both repos pin the same known answer in a test. Its words are
+  // that page's own title and description; Resources is the footer column that links to it. A change to these words, or
+  // to OG_TEMPLATE, moves the address: status.ciphera.net's copy then costs a 308 here until it is updated.
+  status: { label: 'Resources', title: 'Ciphera status', lead: 'Live status of Pulse, Ciphera ID, email and the Ciphera websites.' },
 } satisfies Record<string, OgCard>
 
 export type PageCardKey = keyof typeof PAGE_CARDS
