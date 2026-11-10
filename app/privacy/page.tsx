@@ -13,7 +13,7 @@ const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 08-11-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 10-11-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -36,7 +36,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-11-08',
+  dateModified: '2026-11-10',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -228,7 +228,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
         </p>
         <ul className={UL}>
           <li><strong>Account email from Ciphera ID:</strong> sign-in and verification codes, a notice when a new browser signs in, and notices when your email address, a passkey or two-factor sign-in changes.</li>
-          <li><strong>Email about your Pulse workspace:</strong> the alerts you set up (uptime, certificates, usage), billing (invoices, failed payments, renewals), the reports you schedule, the weekly summary while it is on, and messages that help you set up your sites, such as a reminder when a new site has not sent any data. Each one is about your own workspace. We send no newsletters, product news or advertising.</li>
+          <li><strong>Email about your Pulse workspace:</strong> the alerts you set up (uptime, certificates, usage), billing (invoices, failed payments, renewals), the reports you schedule, the weekly and monthly summaries while they are on, and messages that help you set up your sites, such as a reminder when a new site has not sent any data. Each one is about your own workspace. We send no newsletters, product news or advertising.</li>
         </ul>
         <p className={P}>
           To send them, we keep:
@@ -706,7 +706,7 @@ export default function PrivacyPolicyPage() {
       />
       <PageOpeningC title="Privacy Policy" lead={PRIVACY.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-11-08">08-11-2026</time>
+          Last updated: <time dateTime="2026-11-10">10-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={PRIVACY.SUMMARIES} next={{ href: '/terms', label: 'Terms of Service' }} />
