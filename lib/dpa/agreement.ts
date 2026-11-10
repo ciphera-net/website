@@ -60,7 +60,7 @@ export const ANNEX_II: { term: string; text: string }[] = [
   },
   {
     term: 'Nature of the processing',
-    text: 'Receiving requests from visitors’ browsers through the content delivery network, deriving the data above, discarding the IP address and the User-Agent string, storing the events, counting them into statistics, showing them to the controller’s team, exporting them or sending reports as the controller sets up, and excluding automated traffic. Detection compares browser settings within one website only.',
+    text: 'Receiving requests from visitors’ browsers through the content delivery network, deriving the data above, discarding the IP address and the User-Agent string, storing the events, counting them into statistics, showing them to the controller’s team, answering the team’s questions about them with an AI model where the controller uses Pulse Analyst, exporting them or sending reports as the controller sets up, and excluding automated traffic. Detection compares browser settings within one website only.',
   },
   {
     term: 'Purposes',

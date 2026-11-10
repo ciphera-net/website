@@ -187,6 +187,9 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           Website owners can connect tools of their choice &mdash; such as an AI assistant &mdash; to their own Pulse analytics. When they do, Pulse provides aggregated statistics about their website to that tool on their instruction. The tool&rsquo;s provider receives the data as the website owner&rsquo;s recipient, not as Ciphera&rsquo;s sub-processor, and it may be located outside the European Union. Ciphera does not connect any such tool itself, and never sends analytics to an AI provider on its own initiative.
         </p>
         <p className={P}>
+          <strong>Pulse Analyst (beta).</strong> A team that uses Pulse Analyst can ask it questions about one of its websites. To answer, Pulse sends an AI model the question, the earlier questions and answers in the same conversation, the aggregated statistics the answer needs, the website&rsquo;s domain and timezone, the names of its goals and funnels, and any notes the team saved for Analyst. The model runs at Infomaniak in Switzerland, our sub-processor, which keeps a request only for as long as it takes to answer and does not use it to train its models. Pulse keeps each person&rsquo;s questions and answers for 30 days and then deletes them.
+        </p>
+        <p className={P}>
           <strong>Data you connect to or import into Pulse.</strong> Pulse can connect to Google Search Console, and can import a website&rsquo;s history from Google Analytics and from other analytics tools the website owner chooses. We process this data as the website owner&rsquo;s processor, like the rest of their Pulse analytics.
         </p>
         <ul className={UL}>

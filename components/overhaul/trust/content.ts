@@ -142,7 +142,7 @@ export const PROVIDERS = {
   ],
   columns: { name: 'Company', role: 'What we use it for', sees: 'What it sees', where: 'Where' },
   rows: [
-    { name: 'Infomaniak', mark: 'infomaniak', role: 'Our servers, databases, file storage and backups, and our domain name', sees: 'Everything we store', where: 'Switzerland', place: 'ch' },
+    { name: 'Infomaniak', mark: 'infomaniak', role: 'Our servers, databases, file storage and backups, our domain name, and the AI model that answers questions in Pulse Analyst', sees: 'Everything we store', where: 'Switzerland', place: 'ch' },
     { name: 'Exoscale', mark: 'exoscale', role: 'Our email server', sees: 'Our email', where: 'Switzerland', place: 'ch' },
     { name: 'bunny.net', mark: 'bunnydotnet', role: 'Content delivery, DNS, DDoS protection, and hosting for this website', sees: 'Every request, including IP addresses', where: 'Slovenia, servers worldwide', place: 'si' },
     { name: 'Mollie', mark: 'mollie', role: 'Payments', sees: 'Billing and subscription details', where: 'Netherlands', place: 'nl' },
