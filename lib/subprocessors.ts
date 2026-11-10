@@ -23,7 +23,7 @@ export const subprocessors: Subprocessor[] = [
   {
     service: 'Infomaniak',
     entity: 'Infomaniak Network SA, Geneva',
-    purpose: 'Servers, databases, object storage, off-site backups and domain registration',
+    purpose: 'Servers, databases, object storage, off-site backups, domain registration and the AI model that answers questions in Pulse Analyst',
     dataProcessed: 'All data we store',
     location: 'Switzerland',
   },
