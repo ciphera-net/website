@@ -13,7 +13,7 @@ const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 10-11-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 13-11-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -36,7 +36,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-11-10',
+  dateModified: '2026-11-13',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -413,7 +413,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
         <LegalTable
           head={['Data Type', 'Retention Period', 'Basis']}
           rows={[
-            ['Account data', 'While the account is active; deleted immediately and irreversibly on a verified deletion request', 'Contract'],
+            ['Account data', 'While the account is active; deleted after 90 days of inactivity (Terms, section 14.3), or immediately and irreversibly on a verified deletion request', 'Contract'],
             ['Session data', <>Until logout or <span className="tabular-nums text-foreground">30 days</span> (refresh token expiry)</>, 'Contract'],
             ['Analytics data (Pulse)', 'The retention period each website owner sets (six months for a new site), then deleted', 'Legitimate interest'],
             ['Contact form messages', 'Not stored — forwarded to our team inbox', 'Consent'],
@@ -421,7 +421,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
             ['Server logs', 'Ours up to 30 days, without IP addresses; the content delivery network’s request logs and firewall events 3 days', 'Legitimate interest'],
             ['CAPTCHA verification tokens', 'Expired immediately after use', 'Legitimate interest'],
             ['Email delivery records', '90 days; 365 days for billing and security emails', 'Contract'],
-            ['Your email address (to send you email)', 'Until you delete your account', 'Contract'],
+            ['Your email address (to send you email)', 'Until your account is deleted', 'Contract'],
           ]}
         />
       </>
@@ -709,7 +709,7 @@ export default function PrivacyPolicyPage() {
       />
       <PageOpeningC title="Privacy Policy" lead={PRIVACY.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-11-10">10-11-2026</time>
+          Last updated: <time dateTime="2026-11-13">13-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={PRIVACY.SUMMARIES} next={{ href: '/terms', label: 'Terms of Service' }} />

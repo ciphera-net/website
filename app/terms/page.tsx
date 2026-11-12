@@ -34,7 +34,7 @@ const termsSchema = {
   name: 'Terms of Service',
   description: 'Terms of Service for Ciphera products and services. Covers eligibility, acceptable use, encryption, liability, indemnification, and governing law under Belgian jurisdiction.',
   url: 'https://ciphera.net/terms',
-  dateModified: '2026-11-07',
+  dateModified: '2026-11-13',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -424,7 +424,14 @@ const SECTIONS: LegalSectionData<TermsSectionId>[] = [
         </p>
 
         <h3 className={H3}>
-          14.3. Effect of Termination
+          14.3. Inactive Accounts
+        </h3>
+        <p className={P}>
+          A Pulse workspace is inactive when, for 90 days, none of its members has signed in and none of its sites has received data. We delete an inactive workspace together with its sites and their statistics, and we delete the Ciphera ID account of each member who belongs to no other workspace. We never delete a workspace on a paid plan for inactivity. We email every member 30 days and 7 days before a deletion, and one sign-in before then keeps everything. We cannot undo a deletion.
+        </p>
+
+        <h3 className={H3}>
+          14.4. Effect of Termination
         </h3>
         <p className={P}>
           Upon termination, your right to use the Services ceases immediately. The following provisions survive termination: Sections 6 (Encryption), 8 (Intellectual Property), 11 (Disclaimer of Warranties), 12 (Limitation of Liability), 13 (Indemnification), 17 (Governing Law), and any other provisions that by their nature should survive.
@@ -568,7 +575,7 @@ export default function TermsOfServicePage() {
       />
       <PageOpeningC title="Terms of Service" lead={TERMS.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-11-07">07-11-2026</time>
+          Last updated: <time dateTime="2026-11-13">13-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={TERMS.SUMMARIES} next={{ href: '/privacy', label: 'Privacy Policy' }} />
