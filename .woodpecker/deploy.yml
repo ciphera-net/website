@@ -56,7 +56,8 @@ steps:
   # 27-07-2026 — which would pin a Deployment to something that is not the image
   # that was built, with every gate still green.
   digest:
-    image: alpine:3.20
+    image: registry.ops.ciphera.net/ciphera-net/ci-deploy:v1
+    pull: true
     # Resources declared 29-07-2026 — without them the step pod is QoS BestEffort, first
     # evicted under node memory pressure. Estate-wide sweep after two pulse-backend steps
     # were SIGKILLed (exit 137) mid-download, presenting as a test failure (see
@@ -78,7 +79,6 @@ steps:
       REGISTRY_PASSWORD:
         from_secret: registry_password
     commands:
-      - apk add --no-cache curl jq >/dev/null
       - export DEPLOY_SHA=${CI_COMMIT_SHA:0:7}
       - |
         DIGEST=$(curl -sfI --max-time 60 -u "$REGISTRY_USERNAME:$REGISTRY_PASSWORD" \
@@ -127,7 +127,8 @@ steps:
   # the account API key. Nothing below may put it in argv, echo it, or write it
   # anywhere that outlives this step.
   bunny-push:
-    image: alpine:3.20
+    image: registry.ops.ciphera.net/ciphera-net/ci-deploy:v1
+    pull: true
     depends_on: [digest]
     backend_options:
       kubernetes:
@@ -162,7 +163,6 @@ steps:
       BUNNY_API_KEY:
         from_secret: bunny_api_key
     commands:
-      - apk add --no-cache curl jq >/dev/null || { echo "apk add failed"; exit 1; }
       - |
         DIGEST=$(cat /woodpecker/digest) || { echo "digest handoff missing"; exit 1; }
         DEPLOY_SHA=$(cat /woodpecker/deploy_sha) || { echo "deploy_sha handoff missing"; exit 1; }
@@ -339,7 +339,8 @@ steps:
   # tag and digest and every ready container in /overview runs that digest, polling every 15 s for at most 20
   # minutes. A template moved off the shipped tag is a revert and fails at once.
   wait-live:
-    image: alpine:3.20
+    image: registry.ops.ciphera.net/ciphera-net/ci-deploy:v1
+    pull: true
     depends_on: [bunny-push]
     backend_options:
       kubernetes:
@@ -352,7 +353,6 @@ steps:
       BUNNY_API_KEY:
         from_secret: bunny_api_key
     commands:
-      - apk add --no-cache curl jq >/dev/null || { echo "apk add failed"; exit 1; }
       - |
         LIMIT=1200
         DIGEST=$(cat /woodpecker/digest) || { echo "digest handoff missing"; exit 1; }
@@ -426,7 +426,8 @@ steps:
   # it holds no HTML at all, and the chunks it does hold are content-hashed —
   # a new build has new paths and cannot collide with the old ones.
   purge-cdn:
-    image: alpine:3.20
+    image: registry.ops.ciphera.net/ciphera-net/ci-deploy:v1
+    pull: true
     backend_options:
       kubernetes:
         resources:
@@ -437,7 +438,6 @@ steps:
       BUNNY_API_KEY:
         from_secret: bunny_api_key
     commands:
-      - apk add --no-cache curl >/dev/null
       # Retry the purge rather than failing a deploy that already shipped on both
       # targets; wildcard purges are the rate-limited kind. If it still fails, say
       # precisely what to do, because the instinctive "re-run the deploy" would roll
