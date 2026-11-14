@@ -67,7 +67,7 @@ when:
 
 steps:
   write-npmrc-pr:
-    image: alpine:3.20
+    image: alpine:3.24
     backend_options:
       kubernetes:
         resources:
@@ -132,41 +132,9 @@ steps:
       # Measured exactly that way on id-frontend #92 and website #250.
       NODE_AUTH_TOKEN:
         from_secret: npm_read_token
-      CACHE_ENDPOINT: https://s3.pub1.infomaniak.cloud
-      CACHE_BUCKET: ciphera-build-cache
-      CACHE_KEY: next-cache/ciphera-website.tar.gz
-      AWS_DEFAULT_REGION: us-east-1
-      # Infomaniak refuses aws-chunked uploads (NotImplemented, measured 29-10-2026 with
-      # aws-cli 2.34 on node:22-alpine): checksums only when an operation requires one.
-      AWS_REQUEST_CHECKSUM_CALCULATION: when_required
-      AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
     commands:
-      # 🔴 SOVEREIGNTY TRIPWIRE — same reasoning as the buildctl steps. Every
-      # S3-backed tool defaults to AWS when the endpoint is unset.
-      - |
-        case "$CACHE_ENDPOINT" in
-          https://s3.pub1.infomaniak.cloud) echo "cache endpoint OK: $CACHE_ENDPOINT" ;;
-          *) echo "REFUSING: cache endpoint '$CACHE_ENDPOINT' is not Infomaniak object storage (pub1)"; exit 1 ;;
-        esac
-      # 🔑 WHY THIS S3 ROUND-TRIP EXISTS. Until phase 4 the Dockerfile used
-      # `RUN --mount=type=cache` for .next/cache, which BuildKit persists in the
-      # daemon. Moving the compile into a step LOSES that, because a step runs on a
-      # fresh per-workflow PVC. Without this restore/save, moving the compile out
-      # would trade a memory win for a cache regression.
-      # ⚠️ The credential is scoped to `push`/`tag` events only, so a PULL REQUEST
-      # build has no cache and compiles cold ON PURPOSE — a PR must not be able to
-      # read a credential that can write the estate's shared cache.
-      - |
-        if [ -n "$AWS_ACCESS_KEY_ID" ]; then
-          apk add --no-cache aws-cli >/dev/null 2>&1
-          if aws s3 cp "s3://$CACHE_BUCKET/$CACHE_KEY" - --endpoint-url "$CACHE_ENDPOINT" 2>/dev/null | tar xzf - 2>/dev/null; then
-            echo "next cache restored from object storage"
-          else
-            echo "next cache cold (no object yet, or first run after a key change)"
-          fi
-        else
-          echo "no cache credential on this event (pull_request) — compiling cold, by design"
-        fi
+      # Pull requests compile cold: no cache credential reaches this event, and the restore and save
+      # of .next/cache run only on merged code, in push.yml's cache steps (on the ci-deploy image).
       - cp .npmrc-ci /root/.npmrc
       - npm ci --prefer-offline --no-audit --progress=false
       # Render proofs need React, so they run here, after npm ci, not in test.yml (which installs
@@ -180,18 +148,6 @@ steps:
       # call — it is what the PR gate can prove about a file the Dockerfile only COPYs.
       - npm run build:cms-publisher
       - npm run selftest:cms-publisher
-      # Save AFTER a successful build only. A failed build must not publish its
-      # cache — `commands` stop at the first non-zero exit, so reaching here means
-      # `npm run build` succeeded.
-      - |
-        if [ -n "$AWS_ACCESS_KEY_ID" ] && [ -d .next/cache ]; then
-          # ONE PutObject from a file, never a streamed multipart cp: overwriting a multipart
-          # object on Infomaniak (Swift) leaves the old parts behind for good (29-10-2026).
-          tar czf /tmp/next-cache.tgz .next/cache \
-            && aws s3api put-object --bucket "$CACHE_BUCKET" --key "$CACHE_KEY" --body /tmp/next-cache.tgz --endpoint-url "$CACHE_ENDPOINT" >/dev/null \
-            && echo "next cache saved to object storage" || echo "WARN: cache save failed (build is still good)"
-          rm -f /tmp/next-cache.tgz
-        fi
       - echo "next build complete — the Dockerfile now only assembles this output"
   build-pr:
     image: moby/buildkit:v0.32.2@sha256:28a898719c18a33f4e8000685287fa36fd0dd9560c6440227d3a732d79bb41d8
