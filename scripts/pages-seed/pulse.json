@@ -4,10 +4,10 @@
   "title": "Pulse Analytics - Privacy-First Website Analytics",
   "seo": {
     "title": "Pulse Analytics - Privacy-First Website Analytics | Ciphera",
-    "description": "Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded. Open-source client.",
+    "description": "Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. The tracking script is about 3 KB. Open-source client.",
     "canonical": "https://ciphera.net/products/pulse",
     "ogTitle": "Pulse Analytics - Privacy-First Website Analytics | Ciphera",
-    "ogDescription": "Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. 2.7 KB tracking script — measured, not rounded.",
+    "ogDescription": "Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design. The tracking script is about 3 KB.",
     "twitterTitle": "Pulse Analytics - Privacy-First Website Analytics | Ciphera",
     "twitterDescription": "Cookie-free website analytics with real-time dashboards and geographic insights. GDPR compliant by design."
   },
@@ -37,7 +37,7 @@
           },
           {
             "icon": "lightning",
-            "label": "2.7 KB script"
+            "label": "3 KB script"
           }
         ],
         "stats": [],
@@ -132,7 +132,7 @@
         "heading": "One script tag. That's it.",
         "text": [
           {
-            "text": "Add a single script tag to your site and you're done. 2.7 KB gzipped — measured, not rounded — about 54x lighter than Google Analytics. Loads asynchronously, never blocks page rendering, works with any framework."
+            "text": "Add a single script tag to your site and you're done. The script is about 3 KB gzipped, roughly 50 times lighter than Google Analytics. It loads asynchronously, never blocks page rendering and works with any framework."
           }
         ],
         "trailingText": "",
@@ -230,7 +230,7 @@
         "statsStrip": [
           {
             "term": "Script size",
-            "detail": "Pulse 2.7 KB gzipped · GA 146 KB"
+            "detail": "Pulse 3 KB gzipped · GA 157 KB"
           },
           {
             "term": "Cookies",
@@ -256,7 +256,7 @@
             "text": "Open source client"
           },
           {
-            "text": "2.7 KB script — measured"
+            "text": "3 KB script"
           },
           {
             "text": "No cross-site tracking"
@@ -364,7 +364,7 @@
           {
             "categoryKey": "setup",
             "question": "How do I install Pulse?",
-            "answer": "Add a single script tag to your site's &lt;head&gt; section. That's it. No npm packages, no build steps, no configuration files. The script is under 3 KB gzipped and loads asynchronously."
+            "answer": "Add a single script tag to your site's &lt;head&gt; section. You need no npm package, build step or configuration file. The script is about 3 KB gzipped and loads asynchronously."
           },
           {
             "categoryKey": "setup",
@@ -384,7 +384,7 @@
           {
             "categoryKey": "setup",
             "question": "Does Pulse slow down my website?",
-            "answer": "No. The Pulse script is under 3 KB gzipped — about 54x smaller than Google Analytics. It loads asynchronously with the defer attribute, meaning it never blocks page rendering or affects your Core Web Vitals scores."
+            "answer": "No. The Pulse script is about 3 KB gzipped, roughly 50 times smaller than Google Analytics. It loads asynchronously with the defer attribute, so it never blocks page rendering or affects your Core Web Vitals scores."
           },
           {
             "categoryKey": "privacy",
