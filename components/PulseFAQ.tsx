@@ -35,7 +35,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
   setup: [
     {
       question: "How do I install Pulse?",
-      answer: "Add a single script tag to your site's <head> section. That's it. No npm packages, no build steps, no configuration files. The script is under 3 KB gzipped and loads asynchronously.",
+      answer: "Add a single script tag to your site's <head> section. You need no npm package, build step or configuration file. The script is about 3 KB gzipped and loads asynchronously.",
     },
     {
       question: "Does Pulse work with my framework?",
@@ -51,7 +51,7 @@ const faqData: Record<string, { question: string; answer: string }[]> = {
     },
     {
       question: "Does Pulse slow down my website?",
-      answer: "No. The Pulse script is under 3 KB gzipped — about 54x smaller than Google Analytics. It loads asynchronously with the defer attribute, meaning it never blocks page rendering or affects your Core Web Vitals scores.",
+      answer: "No. The Pulse script is about 3 KB gzipped, roughly 50 times smaller than Google Analytics. It loads asynchronously with the defer attribute, so it never blocks page rendering or affects your Core Web Vitals scores.",
     },
   ],
   privacy: [

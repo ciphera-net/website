@@ -45,7 +45,7 @@ export function PulseScriptTagCode() {
           </code>
         </pre>
         <div className="mt-4 flex items-center justify-between text-[10px] text-muted-foreground border-t border-border pt-3">
-          <span>2.7 KB gzipped</span>
+          <span>About 3 KB gzipped</span>
           <span className="flex items-center gap-1">
             <div className="w-1.5 h-1.5 bg-primary" />
             Non-blocking, async
