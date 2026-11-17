@@ -10,7 +10,7 @@ import { Reveal } from '../Reveal'
 import { cdnUrl } from '@/lib/cdn'
 
 const FACTS = [
-  { value: '75', label: 'platforms it plugs into' },
+  { value: '70+', label: 'platforms it plugs into' },
   { value: '3 KB', label: 'script, gzipped' },
   { value: 'Free', label: 'forever on the Personal plan' },
 ]
