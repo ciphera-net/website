@@ -62,11 +62,12 @@ export function WhatWeBuildB() {
         {/* The product in a device, tilted, an orange slab offset behind it, bleeding off the column's right and bottom
             edges (owner's reference, 16-10-2026). The bezel's rounded corners are a sanctioned exception to Facet's
             square radius, like MacWindow: it depicts hardware, not our UI. Captured from ciphera.net's own dashboard
-            (retaken 17-11-2026 after the dashboard's new arrangement shipped; avatar hidden),
+            (retaken 17-11-2026 after the dashboard's new arrangement shipped, and again that day when its column
+            names took a capital letter; avatar hidden),
             🔴 with ONE edit (ruled 17-10-2026): the live count reads 10 instead of the real 0. Since the retake the
             product draws it itself, in its own live state: the two reads that feed the count were answered with 10 and
             nothing else was touched. The alt text therefore does not say it is ciphera.net's dashboard. The capture as
-            measured is kept beside it: cdn.ciphera.net/website/overhaul/pulse-dashboard-home-17-11-2026-original.png. */}
+            measured is kept beside it: cdn.ciphera.net/website/overhaul/pulse-dashboard-home-17-11-2026-2-original.png. */}
         <Reveal delay={80} className="relative h-[340px] w-full overflow-hidden sm:h-[460px] lg:h-full lg:min-h-[620px]">
           <div className="absolute left-[7%] top-[13%] w-[128%] [perspective:2400px] sm:left-[9%] lg:top-[14%] lg:w-[132%]">
             <div className="relative origin-left [transform:rotateY(-17deg)_rotateX(6deg)_rotateZ(-1.5deg)]">
@@ -74,7 +75,7 @@ export function WhatWeBuildB() {
               <div className="relative rounded-[30px] bg-[#161616] p-[11px] ring-1 ring-white/25">
                 <div className="overflow-hidden rounded-[21px] bg-card p-3 ring-1 ring-white/[0.06]">
                   <Image
-                    src={cdnUrl('/overhaul/pulse-dashboard-home-17-11-2026.png')}
+                    src={cdnUrl('/overhaul/pulse-dashboard-home-17-11-2026-2.png')}
                     alt="The Pulse Analytics dashboard: visitors, pageviews, pages per visit, bounce rate, visit duration, the daily chart and the top referrers and pages"
                     width={2880}
                     height={2120}
