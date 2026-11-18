@@ -138,13 +138,13 @@ export const PROVIDERS = {
   // §5g item 2: data and off-site backups in Switzerland (true); the website and the edge are not (Magic Containers).
   lead: [
     'The servers that store your data are in Geneva, with off-site backups elsewhere in Switzerland.',
-    "Every request reaches them through bunny.net, which also hosts this website. Connections are decrypted on bunny.net's servers on the way in, so bunny.net handles the full requests, IP addresses included.",
+    "Every request reaches them through bunny.net, which also hosts this website and Pulse's web pages. Connections are decrypted on bunny.net's servers on the way in, so bunny.net handles the full requests, IP addresses included.",
   ],
   columns: { name: 'Company', role: 'What we use it for', sees: 'What it sees', where: 'Where' },
   rows: [
     { name: 'Infomaniak', mark: 'infomaniak', role: 'Our servers, databases, file storage and backups, our domain name, and the AI model that answers questions in Pulse Analyst', sees: 'Everything we store', where: 'Switzerland', place: 'ch' },
     { name: 'Exoscale', mark: 'exoscale', role: 'Our email server', sees: 'Our email', where: 'Switzerland', place: 'ch' },
-    { name: 'bunny.net', mark: 'bunnydotnet', role: 'Content delivery, DNS, DDoS protection, and hosting for this website', sees: 'Every request, including IP addresses', where: 'Slovenia, servers worldwide', place: 'si' },
+    { name: 'bunny.net', mark: 'bunnydotnet', role: "Content delivery, DNS, DDoS protection, and hosting for this website and Pulse's web pages", sees: 'Every request, including IP addresses', where: 'Slovenia, servers worldwide', place: 'si' },
     { name: 'Mollie', mark: 'mollie', role: 'Payments', sees: 'Billing and subscription details', where: 'Netherlands', place: 'nl' },
     { name: 'GitHub', mark: 'github', role: 'Our source code', sees: 'Code, no personal data about you', where: 'United States', place: 'us' },
     { name: "Let's Encrypt", mark: 'letsencrypt', role: 'Security certificates', sees: 'Our domain names, no personal data', where: 'United States', place: 'us' },

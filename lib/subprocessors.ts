@@ -37,7 +37,7 @@ export const subprocessors: Subprocessor[] = [
   {
     service: 'Bunny',
     entity: 'BunnyWay, informacijske storitve d.o.o., Ljubljana',
-    purpose: 'CDN, DNS, DDoS protection, edge routing',
+    purpose: "CDN, DNS, DDoS protection, edge routing, and hosting for our websites and Pulse's web pages",
     dataProcessed: 'Every request as it passes through, IP addresses included',
     location: 'Slovenia, servers worldwide',
   },
