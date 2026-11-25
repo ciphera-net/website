@@ -42,7 +42,7 @@ export const STORY = {
     { label: 'Our own sign-in', detail: 'Passwords never reach our servers', href: '/trust#sign-in', marks: ['ciphera-id'] },
     { label: 'Our own mail servers', detail: 'No third-party email service sends our mail', href: '/trust', marks: ['mail'] },
     { label: 'Servers in Switzerland', detail: 'Infomaniak in Geneva, email at Exoscale in Zurich', href: '/#where', marks: ['infomaniak', 'exoscale'] },
-    { label: '26 public repositories', detail: 'Including this website', href: 'https://github.com/ciphera-net', marks: ['github'] },
+    { label: '27 public repositories', detail: 'Including this website', href: 'https://github.com/ciphera-net', marks: ['github'] },
   ],
 }
 
