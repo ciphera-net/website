@@ -58,8 +58,12 @@ export interface GlossaryTerm {
   related: string[]
   /** External or internal references (RFCs, repos, product pages). */
   see: { label: string; href: string }[]
-  /** Optional Q&A block — emits FAQPage structured data on the term page. */
-  faq?: { q: string; a: string }[]
+  /**
+   * Optional Q&A block — emits FAQPage structured data on the term page. `a` is the answer's plain words (the FAQPage
+   * data reads it); `aHtml` is its sanitised inline HTML, present only when the answer carries markup such as a link
+   * (lib/blog-transform.ts's `faqAnswerOf`, 27-11-2026), and the page renders it when it is there.
+   */
+  faq?: { q: string; a: string; aHtml?: string }[]
 
   /**
    * 🔴 THE SEO FIELDS THE AGENCY OWNS, read from Yoast post meta.

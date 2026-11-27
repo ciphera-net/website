@@ -11,7 +11,17 @@
 
 export interface BlogPostFaq {
   question: string
+  /**
+   * The answer's plain words. The FAQPage data and every text check (the recovery-copy guards) read this, and it is
+   * all a document written before 27-11-2026 carries.
+   */
   answer: string
+  /**
+   * The answer as sanitised inline HTML (`a`, `strong`, `em`, `code`, `br`), present only when the CMS answer carries
+   * markup, such as a link. The page renders it when it is there and `answer` when it is not, so a build that predates
+   * this field still shows the words, never raw markup, and a document that predates it still renders.
+   */
+  answerHtml?: string
 }
 
 /**

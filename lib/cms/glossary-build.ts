@@ -188,7 +188,7 @@ export function buildGlossary(nodes: WpGlossaryTerm[]): GlossaryBuildResult {
         short: definition,
         html,
         paragraphs: paragraphsOf(html),
-        faq: faqs.map((f) => ({ q: f.question, a: f.answer })),
+        faq: faqs.map((f) => ({ q: f.question, a: f.answer, ...(f.answerHtml ? { aHtml: f.answerHtml } : {}) })),
         related: (n.cipheraRelated ?? '').split('\n').map((s) => s.trim()).filter(Boolean),
         see: parseSee(n.cipheraSee ?? ''),
         seoTitle: title,

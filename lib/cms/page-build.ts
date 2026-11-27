@@ -35,7 +35,7 @@ import rehypeParse from 'rehype-parse'
 import rehypeSanitize, { defaultSchema, type Options as SanitizeSchema } from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 import { visit } from 'unist-util-visit'
-import type { Root, Element } from 'hast'
+import type { Root, Element, RootContent } from 'hast'
 import type { ContentRepairEntry } from '../content-repair-types'
 import { EDITOR_LINK_ATTRIBUTES } from '../blog-html'
 
@@ -168,6 +168,57 @@ const sanitizeProcessor = unified()
  */
 export function sanitizeRichText(html: string): string {
   return String(sanitizeProcessor.processSync(html ?? '').value)
+}
+
+const inlineProcessor = unified().use(rehypeParse, { fragment: true }).use(rehypeSanitize, richTextSchema).use(dropUnsafeHrefs)
+const inlineStringifier = unified().use(rehypeStringify)
+
+/**
+ * Inline rich text (an FAQ answer, lib/blog-transform.ts's `faqAnswerOf`) → its sanitised HTML and its plain words.
+ *
+ * The same allowlist as `sanitizeRichText`, and then two unwraps for text that renders inside an element its caller
+ * already draws (an FAQ answer's `<dd>`): a `<p>` gives up its wrapper, a break between two paragraphs becoming a
+ * `<br>`; and an `<a>` that `dropUnsafeHrefs` left without an href gives up its wrapper too, so it reads as the words it
+ * holds instead of rendering as a link that goes nowhere. `html` is null when nothing but text is left; `text` is the
+ * words as a reader sees them, entities decoded once by the parser, a `<br>` read as a space.
+ */
+export function inlineRichText(html: string): { html: string | null; text: string } {
+  const tree = inlineProcessor.runSync(inlineProcessor.parse(html ?? '')) as Root
+  unwrapForInline(tree)
+  const out = String(inlineStringifier.stringify(tree))
+  // rehype-stringify writes every text `<` as a character reference, so a `<` followed by a letter is one of the
+  // allowlist's own tags.
+  return { html: /<[a-z]/.test(out) ? out : null, text: textOfTree(tree) }
+}
+
+function unwrapForInline(parent: Root | Element): void {
+  const kids: RootContent[] = []
+  let seenContent = false
+  for (const node of parent.children) {
+    if (node.type !== 'element') {
+      if (node.type === 'text' && node.value.trim()) seenContent = true
+      kids.push(node)
+      continue
+    }
+    unwrapForInline(node)
+    const isParagraph = node.tagName === 'p'
+    const isDeadLink = node.tagName === 'a' && typeof node.properties?.href !== 'string'
+    if (!isParagraph && !isDeadLink) {
+      seenContent = true
+      kids.push(node)
+      continue
+    }
+    if (isParagraph && seenContent) kids.push({ type: 'element', tagName: 'br', properties: {}, children: [] } satisfies Element)
+    if (node.children.length) seenContent = true
+    kids.push(...node.children)
+  }
+  parent.children = kids as typeof parent.children
+}
+
+function textOfTree(node: Root | RootContent): string {
+  if (node.type === 'text') return node.value
+  if (node.type === 'element' && node.tagName === 'br') return ' '
+  return 'children' in node ? (node.children as RootContent[]).map(textOfTree).join('') : ''
 }
 
 // ── Wire shapes ───────────────────────────────────────────────────────────────────────

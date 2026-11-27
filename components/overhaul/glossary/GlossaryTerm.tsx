@@ -18,6 +18,7 @@ import { INDEX, TERM } from './content'
 import { loadTerm } from './data'
 import { renderGlossaryBody } from './body'
 import { jsonLdHtml } from '@/lib/json-ld'
+import { faqAnswerNodes } from '@/components/overhaul/system/FaqAnswer'
 
 export type GlossaryTermVariant = 'a' | 'b' | 'c'
 export const GLOSSARY_TERM_VARIANTS: GlossaryTermVariant[] = ['a', 'b', 'c']
@@ -49,7 +50,7 @@ function Questions({ term }: { term: GlossaryTerm }) {
         {term.faq.map((f) => (
           <div key={f.q} className="py-6">
             <dt className="text-lg font-medium leading-snug text-foreground">{f.q}</dt>
-            <dd className="mt-3 text-base leading-relaxed text-muted-foreground">{f.a}</dd>
+            <dd className="mt-3 text-base leading-relaxed text-muted-foreground">{faqAnswerNodes(f.a, f.aHtml)}</dd>
           </div>
         ))}
       </dl>
