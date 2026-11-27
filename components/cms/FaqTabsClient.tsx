@@ -20,9 +20,11 @@ import { FaqTabs, type FaqTabsCategory, type FaqTabsItem } from '@ciphera-net/fa
  * package's own build did. `CmsPage` imports `FaqTabsClient`, never `FaqTabs`.
  *
  * Only serializable props cross this boundary — `title`/`subtitle` (strings) and
- * `categories`/`items` (plain data, `FaqTabsCategory[]`/`FaqTabsItem[]`), the exact
- * shape `CmsPage` already builds from a section's own fields. No function prop
- * exists on `FaqTabsProps` to forward.
+ * `categories`/`items` (`FaqTabsCategory[]`/`FaqTabsItem[]`), the shape `CmsPage`
+ * builds from a section's own fields. Since 27-11-2026 an item's `answer` may be the
+ * React elements `CmsPage` rendered from the answer's HTML (an inline link): elements
+ * are serializable across the boundary, and `next/link` inside them is a client
+ * reference. No function prop exists on `FaqTabsProps` to forward.
  */
 export function FaqTabsClient({
   title,
