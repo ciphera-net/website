@@ -115,16 +115,24 @@
     @apply text-white font-semibold;
   }
 
-  /* * Blog prose link styling — brand orange */
-  .prose a {
+  /* * Blog prose link styling — brand orange. `a.post-body-link` is the same link outside the prose wrapper: a link in
+     a blog or glossary FAQ answer (components/overhaul/system/FaqAnswer.tsx; picked 27-11-2026). One rule, so
+     the two cannot drift; the typography plugin gives a prose link its weight, so the FAQ link sets its own below. */
+  .prose a,
+  a.post-body-link {
     @apply text-brand-orange transition-colors duration-200;
     text-decoration: underline;
     text-decoration-color: rgba(253, 94, 15, 0.3);
     text-underline-offset: 2px;
   }
 
-  .prose a:hover {
+  .prose a:hover,
+  a.post-body-link:hover {
     text-decoration-color: #fd5e0f;
+  }
+
+  a.post-body-link {
+    font-weight: 500;
   }
 
   /* * Blog headings share the body face (Geist, one-family system) — they only

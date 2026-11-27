@@ -1,5 +1,6 @@
 import type { WpBlogPost, BlogPostFaq } from './blog-types'
 import { isContentKey } from './content-key'
+import { inlineRichText } from './cms/page-build'
 
 /**
  * The shape of a slug AS GRAPHQL HANDS IT TO THIS BUILD — measured, not assumed
@@ -128,15 +129,22 @@ export function truncateAtWordBoundary(text: string, max: number): string {
 /** `YYYY-MM-DD`, the one shape every date field on this site is stored and compared as. */
 export const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 
+const ATTRIBUTE_ENTITIES: Record<string, string> = {
+  amp: '&', lt: '<', gt: '>', quot: '"', nbsp: ' ', '#39': "'", '#039': "'", '#x27': "'", '#X27': "'",
+}
+
+/**
+ * Decode an attribute value once, in one pass, as an HTML parser decodes one: `&amp;lt;` becomes `&lt;`, never `<`.
+ *
+ * 🔴 ONE PASS (27-11-2026). This used to decode `&amp;` first and `&lt;` after it, so `&amp;lt;` came out as `<`. That
+ * never mattered while an FAQ answer was plain text. Since an answer is HTML, the CMS writes it into `data-a` with every
+ * `&` encoded (Infra/CMS/wordpress mu-plugins/ciphera-blocks.php): a `<` the editor typed as text arrives as `&amp;lt;`
+ * and must come out as `&lt;`, still text, while a link arrives as `&lt;a …&gt;` and comes out as `<a …>`. Every FAQ
+ * answer published before the change decodes exactly as it did (measured 27-11-2026 over all 104 published on the two
+ * sites: none holds an entity a second decode would touch). pulse-website's copy is the same function.
+ */
 export function decodeEntities(s: string): string {
-  return s
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&#x27;/gi, "'")
-    .replace(/&nbsp;/g, ' ')
+  return s.replace(/&(amp|lt|gt|quot|nbsp|#0?39|#[xX]27);/g, (_m, name: string) => ATTRIBUTE_ENTITIES[name])
 }
 
 /**
@@ -152,11 +160,32 @@ export function extractFaqs(html: string): { html: string; faqs: BlogPostFaq[] }
   const stripped = html.replace(
     /<div\s+data-ciphera-block="faq"\s+data-q="([^"]*)"\s+data-a="([^"]*)"\s*><\/div>/g,
     (_m, q: string, a: string) => {
-      faqs.push({ question: decodeEntities(q), answer: decodeEntities(a) })
+      faqs.push({ question: decodeEntities(q), ...faqAnswerOf(decodeEntities(a)) })
       return ''
     }
   )
   return { html: stripped, faqs }
+}
+
+/**
+ * One FAQ answer, as `data-a` holds it once decoded, split into what the page renders and what everything else reads.
+ * The answer is HTML since 27-11-2026 (the CMS editor keeps a pasted link); a plain-text answer from before reads the
+ * same as HTML with no tags.
+ *
+ * 🔑 THE WORDS STAY IN `answer`; THE MARKUP GOES IN `answerHtml`, AND ONLY WHEN THERE IS SOME. The FAQPage data, the
+ * recovery-copy guards (lib/cms/blog-build.ts, lib/cms/glossary-build.ts) and any reader built before the field existed
+ * all read `answer`, so they keep working on plain words, and the page renders `answerHtml` when it is there
+ * (components/overhaul/blog/BlogPost.tsx, and the glossary's `aHtml`). A document written before this, or by an older
+ * publisher, has no `answerHtml` and renders as it always did.
+ *
+ * The HTML is cut to the page text's allowlist (`inlineRichText`, lib/cms/page-build.ts: a[href target rel], strong,
+ * em, code, br; any other tag is unwrapped with its words kept), a paragraph is unwrapped because the answer renders
+ * inside its row's own element, and a link whose href is unsafe is left as its words. pulse-website's `faqAnswerOf`
+ * keeps the same contract with its own sanitiser.
+ */
+export function faqAnswerOf(raw: string): Pick<BlogPostFaq, 'answer' | 'answerHtml'> {
+  const { html, text } = inlineRichText(raw)
+  return html === null ? { answer: text } : { answer: text, answerHtml: html }
 }
 
 /** The house convention across the corpus, e.g. "8 min read". 200 wpm. */

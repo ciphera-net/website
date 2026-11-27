@@ -24,6 +24,7 @@ import { TocRail } from './TocRail'
 import { jsonLdHtml } from '@/lib/json-ld'
 import { cdnUrl } from '@/lib/cdn'
 import { postCardUrl } from '@/lib/og/cards'
+import { faqAnswerNodes } from '@/components/overhaul/system/FaqAnswer'
 
 export type PostVariant = 'a' | 'b' | 'c' | 'plain'
 export const POST_VARIANTS: PostVariant[] = ['a', 'b', 'c', 'plain']
@@ -140,7 +141,7 @@ function Questions({ post }: { post: BlogPost }) {
         {post.faqs.map((f) => (
           <div key={f.question} className="py-7">
             <dt className="text-lg font-medium leading-snug text-foreground">{f.question}</dt>
-            <dd className="mt-3 text-base leading-relaxed text-muted-foreground">{f.answer}</dd>
+            <dd className="mt-3 text-base leading-relaxed text-muted-foreground">{faqAnswerNodes(f.answer, f.answerHtml)}</dd>
           </div>
         ))}
       </dl>
