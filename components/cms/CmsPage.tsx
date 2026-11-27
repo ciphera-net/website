@@ -123,7 +123,18 @@ function Section({ section, index, path }: { section: PageSection; index: number
       )
 
     case 'faq':
-      return section.items.length > 0 ? <FaqBlock items={section.items} /> : null
+      // An answer with a link carries its HTML as `answerHtml` (lib/cms/page-build.ts `faqAnswerOf`, 27-11-2026):
+      // parsed by `cmsRichNodes` with this page's own link class, as every other section's text on the page; the
+      // FAQPage data reads the plain words through `text`.
+      return section.items.length > 0 ? (
+        <FaqBlock
+          items={section.items.map((i) => ({
+            question: i.question,
+            answer: i.answerHtml ? cmsRichNodes(i.answerHtml, linkClass) : i.answer,
+            text: i.answer,
+          }))}
+        />
+      ) : null
 
     case 'related-links':
       return section.items.length > 0 ? (
@@ -286,7 +297,16 @@ function Section({ section, index, path }: { section: PageSection; index: number
 
     case 'faq-tabs':
       return section.categories.length > 0 && section.items.length > 0 ? (
-        <FaqTabsClient title={section.title || undefined} subtitle={section.subtitle || undefined} categories={section.categories} items={section.items} />
+        <FaqTabsClient
+          title={section.title || undefined}
+          subtitle={section.subtitle || undefined}
+          categories={section.categories}
+          items={section.items.map((i) => ({
+            categoryKey: i.categoryKey,
+            question: i.question,
+            answer: i.answerHtml ? cmsRichNodes(i.answerHtml, linkClass) : i.answer,
+          }))}
+        />
       ) : null
 
     default:

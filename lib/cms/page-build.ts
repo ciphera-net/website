@@ -191,6 +191,29 @@ export function inlineRichText(html: string): { html: string | null; text: strin
   return { html: /<[a-z]/.test(out) ? out : null, text: textOfTree(tree) }
 }
 
+/**
+ * One FAQ answer, split into what the page renders and what everything else reads: a blog post's or glossary term's
+ * (lib/blog-transform.ts `extractFaqs`, after decoding `data-a` once) and a CMS page FAQ section's (`buildPages` below,
+ * `faq` and `faq-tabs`). The answer is HTML since 27-11-2026 (the CMS editor keeps a pasted link); a plain-text answer
+ * from before reads the same as HTML with no tags. Lives here, beside `inlineRichText`, because the page build cannot
+ * import the blog transform (the transform imports this module).
+ *
+ * 🔑 THE WORDS STAY IN `answer`; THE MARKUP GOES IN `answerHtml`, AND ONLY WHEN THERE IS SOME. The FAQPage data, the
+ * recovery-copy guards (lib/cms/blog-build.ts, lib/cms/glossary-build.ts) and any reader built before the field existed
+ * all read `answer`, so they keep working on plain words, and the page renders `answerHtml` when it is there
+ * (components/overhaul/blog/BlogPost.tsx, the glossary's `aHtml`, components/cms/CmsPage.tsx). A document written
+ * before this, or by an older publisher, has no `answerHtml` and renders as it always did.
+ *
+ * The HTML is cut to the page text's allowlist (`inlineRichText`, lib/cms/page-build.ts: a[href target rel], strong,
+ * em, code, br; any other tag is unwrapped with its words kept), a paragraph is unwrapped because the answer renders
+ * inside its row's own element, and a link whose href is unsafe is left as its words. pulse-website's `faqAnswerOf`
+ * keeps the same contract with its own sanitiser.
+ */
+export function faqAnswerOf(raw: string): { answer: string; answerHtml?: string } {
+  const { html, text } = inlineRichText(raw)
+  return html === null ? { answer: text } : { answer: text, answerHtml: html }
+}
+
 function unwrapForInline(parent: Root | Element): void {
   const kids: RootContent[] = []
   let seenContent = false
@@ -259,7 +282,8 @@ export interface TextSectionSection {
 }
 export interface FaqSection {
   type: 'faq'
-  items: { question: string; answer: string }[]
+  /** `answer` is the plain words (the FAQPage data reads it); `answerHtml` only when the answer carries markup. */
+  items: { question: string; answer: string; answerHtml?: string }[]
 }
 export interface RelatedLinksSection {
   type: 'related-links'
@@ -507,6 +531,8 @@ export interface FaqTabsItem {
   categoryKey: string
   question: string
   answer: string
+  /** Only when the answer carries markup (`faqAnswerOf`); `answer` stays the plain words. */
+  answerHtml?: string
 }
 export interface FaqTabsSection {
   type: 'faq-tabs'
@@ -663,6 +689,7 @@ function buildSections(
       case 'faq': {
         const items = coerceItems<{ question: string; answer: string }>(e.items, ['question', 'answer'])
           .filter((it) => it.question !== '')
+          .map((it) => ({ question: it.question, ...faqAnswerOf(it.answer) }))
         const dropped = coerceItems(e.items, ['question']).length - items.length
         if (dropped > 0) repair('faq', 'repaired', `dropped ${dropped} FAQ item(s) with no question`)
         sections.push({ type: 'faq', items })
@@ -899,10 +926,18 @@ function buildSections(
           e.categories, ['key', 'label'], ['key', 'label'],
           (n) => repair('faq-tabs', 'repaired', `dropped ${n} categor(y/ies) missing a key or label`)
         )
-        const items = coerceListItems<FaqTabsItem>(
+        const coerced = coerceListItems<FaqTabsItem>(
           e.items, ['categoryKey', 'question', 'answer'], ['categoryKey', 'question', 'answer'],
           (n) => repair('faq-tabs', 'repaired', `dropped ${n} FAQ item(s) missing a category, question or answer`)
         )
+        // The answer is HTML since 27-11-2026, so "no answer" is judged on its words: markup with nothing in it
+        // (`<p></p>`) is no answer, as an empty field was before.
+        const items = coerced
+          .map((it) => ({ categoryKey: it.categoryKey, question: it.question, ...faqAnswerOf(it.answer) }))
+          .filter((it) => it.answer.trim() !== '')
+        if (items.length !== coerced.length) {
+          repair('faq-tabs', 'repaired', `dropped ${coerced.length - items.length} FAQ item(s) whose answer has no words`)
+        }
         if (categories.length === 0 || items.length === 0) {
           repair('faq-tabs', 'skipped', 'dropped the whole section — it has no categories or no questions')
           break

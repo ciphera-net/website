@@ -1,6 +1,6 @@
 import type { WpBlogPost, BlogPostFaq } from './blog-types'
 import { isContentKey } from './content-key'
-import { inlineRichText } from './cms/page-build'
+import { faqAnswerOf } from './cms/page-build'
 
 /**
  * The shape of a slug AS GRAPHQL HANDS IT TO THIS BUILD — measured, not assumed
@@ -165,27 +165,6 @@ export function extractFaqs(html: string): { html: string; faqs: BlogPostFaq[] }
     }
   )
   return { html: stripped, faqs }
-}
-
-/**
- * One FAQ answer, as `data-a` holds it once decoded, split into what the page renders and what everything else reads.
- * The answer is HTML since 27-11-2026 (the CMS editor keeps a pasted link); a plain-text answer from before reads the
- * same as HTML with no tags.
- *
- * 🔑 THE WORDS STAY IN `answer`; THE MARKUP GOES IN `answerHtml`, AND ONLY WHEN THERE IS SOME. The FAQPage data, the
- * recovery-copy guards (lib/cms/blog-build.ts, lib/cms/glossary-build.ts) and any reader built before the field existed
- * all read `answer`, so they keep working on plain words, and the page renders `answerHtml` when it is there
- * (components/overhaul/blog/BlogPost.tsx, and the glossary's `aHtml`). A document written before this, or by an older
- * publisher, has no `answerHtml` and renders as it always did.
- *
- * The HTML is cut to the page text's allowlist (`inlineRichText`, lib/cms/page-build.ts: a[href target rel], strong,
- * em, code, br; any other tag is unwrapped with its words kept), a paragraph is unwrapped because the answer renders
- * inside its row's own element, and a link whose href is unsafe is left as its words. pulse-website's `faqAnswerOf`
- * keeps the same contract with its own sanitiser.
- */
-export function faqAnswerOf(raw: string): Pick<BlogPostFaq, 'answer' | 'answerHtml'> {
-  const { html, text } = inlineRichText(raw)
-  return html === null ? { answer: text } : { answer: text, answerHtml: html }
 }
 
 /** The house convention across the corpus, e.g. "8 min read". 200 wpm. */
