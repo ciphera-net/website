@@ -13,7 +13,7 @@ const CARD = pageCardImages('privacy')
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 27-11-2026.',
+  description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, GDPR compliance, and your rights. Last updated 28-11-2026.',
   alternates: {
     canonical: 'https://ciphera.net/privacy',
   },
@@ -415,7 +415,7 @@ const SECTIONS: LegalSectionData<PrivacySectionId>[] = [
           rows={[
             ['Account data', 'While the account is active; deleted after 90 days of inactivity (Terms, section 14.3), or immediately and irreversibly on a verified deletion request', 'Contract'],
             ['Session data', <>Until logout or <span className="tabular-nums text-foreground">30 days</span> (refresh token expiry)</>, 'Contract'],
-            ['Analytics data (Pulse)', 'The retention period each website owner sets (six months for a new site), then deleted', 'Legitimate interest'],
+            ['Analytics data (Pulse)', "The period of the team's plan (six months on Personal, two years on Business and the grants), then deleted. When a paid plan or a grant ends, the old period applies for 30 more days.", 'Legitimate interest'],
             ['Contact form messages', 'Not stored — forwarded to our team inbox', 'Consent'],
             ['Security audit logs (hashed IPs only)', <>Up to <span className="tabular-nums text-foreground">180 days</span>, then permanently deleted</>, 'Legitimate interest'],
             ['Server logs', 'Ours up to 30 days, without IP addresses; the content delivery network’s request logs and firewall events 3 days', 'Legitimate interest'],
@@ -709,7 +709,7 @@ export default function PrivacyPolicyPage() {
       />
       <PageOpeningC title="Privacy Policy" lead={PRIVACY.LEAD}>
         <p className="mt-8 text-sm tabular-nums text-muted-foreground">
-          Last updated: <time dateTime="2026-11-27">27-11-2026</time>
+          Last updated: <time dateTime="2026-11-28">28-11-2026</time>
         </p>
       </PageOpeningC>
       <LegalSections sections={SECTIONS} summaries={PRIVACY.SUMMARIES} next={{ href: '/terms', label: 'Terms of Service' }} />

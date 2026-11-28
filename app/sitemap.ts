@@ -46,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Legal pages
     {
       url: `${baseUrl}/privacy`,
-      lastModified: '2026-11-27',
+      lastModified: '2026-11-28',
     },
     {
       url: `${baseUrl}/terms`,
