@@ -36,7 +36,7 @@ const privacySchema = {
   name: 'Privacy Policy',
   description: 'Ciphera privacy policy: zero-knowledge encryption, minimal data collection, Swiss infrastructure, and GDPR compliance.',
   url: 'https://ciphera.net/privacy',
-  dateModified: '2026-11-27',
+  dateModified: '2026-11-28',
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
